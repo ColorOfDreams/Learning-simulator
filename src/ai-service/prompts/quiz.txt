@@ -1,0 +1,26 @@
+Tạo {{NUM_QUESTIONS}} câu hỏi trắc nghiệm (MCQ) về bài tập sau cho học sinh THPT Việt Nam.
+
+Bài tập: {{EXERCISE_TEXT}}
+Môn: {{SUBJECT}} — Chủ đề: {{TOPIC}}
+
+Yêu cầu:
+- Mỗi câu có 4 lựa chọn (A, B, C, D), chỉ 1 đúng
+- Độ khó tăng dần: câu 1 dễ nhất, câu cuối khó nhất
+- Câu 1-2: kiểm tra hiểu công thức/định nghĩa
+- Câu 3-4: áp dụng tính toán
+- Câu 5: phân tích, so sánh, suy luận nâng cao
+- Giải thích ngắn cho đáp án đúng (1-2 câu)
+
+Output JSON (không có text khác):
+{
+  "questions": [
+    {
+      "id": "q1",
+      "text": "<câu hỏi>",
+      "options": ["<A>", "<B>", "<C>", "<D>"],
+      "correct_index": <0-3>,
+      "difficulty": <1-5>,
+      "explanation": "<giải thích ngắn>"
+    }
+  ]
+}
