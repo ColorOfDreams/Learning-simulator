@@ -15,6 +15,25 @@ Repo    : Single source of truth — mọi context đều trong repo này
 
 ---
 
+## 1b. QUY TẮC NHÁNH (BRANCH STRATEGY)
+
+```
+main  ← production-ready. CHỈ merge từ dev. Tech Lead approve.
+  └── dev  ← integration branch. Mọi feature merge vào đây.
+        ├── feature/ASS-XXX-ten-task   (mỗi task = 1 branch)
+        └── fix/ASS-XXX-ten-fix        (hotfix tương tự)
+```
+
+**Tạo branch mới:**
+```bash
+git checkout dev && git pull origin dev
+git checkout -b feature/ASS-XXX-ten-task
+```
+
+**Khi xong task:** tạo PR → `dev` (KHÔNG phải `main`)
+
+---
+
 ## 2. VAI TRÒ & DOMAIN CỦA TỪNG THÀNH VIÊN
 
 > **Quy tắc cho AI:** Khi được giao task, chỉ đọc và chỉnh sửa file trong domain của người dùng hiện tại. Không tự ý thay đổi code hoặc spec của domain khác.
@@ -34,7 +53,7 @@ Repo    : Single source of truth — mọi context đều trong repo này
 - Thiết lập và cập nhật Specs, ADRs, API Contracts
 - Viết và tối ưu prompt templates cho LLM
 - Kết nối Frontend ↔ Backend (integration layer)
-- Review PR cuối — người duy nhất có quyền approve merge vào `main`
+- Review PR cuối — người duy nhất có quyền approve merge vào `dev` và `main`
 - Giải quyết blocker trong vòng 2–4 giờ
 - Chạy security audit, load test, production deploy
 
@@ -150,6 +169,7 @@ Bước 1: PICK TASK
   → Lấy task từ Sprint board (file /planning/sprints/sprint-XX.md)
   → Đọc file task: /tasks/ASS-XXX-ten-task.md
   → Đọc Spec + ADR + Contract liên quan
+  → Checkout từ dev: git checkout dev && git pull origin dev
   → Tạo branch: git checkout -b feature/ASS-XXX-ten-task
 
 Bước 2: AI + DEV CODE
@@ -169,8 +189,9 @@ Bước 4: PR & REVIEW
   → Tag reviewer (thành viên khác + Tech Lead cho final)
 
 Bước 5: MERGE
-  → Sau khi đủ Approved + CI green → merge vào main
-  → Deploy tự động lên staging
+  → Sau khi đủ Approved + CI green → merge feature vào dev
+  → Tech Lead review dev định kỳ → merge dev vào main khi đủ stable
+  → Deploy tự động lên staging (từ dev) và production (từ main)
 
 Bước 6: UPDATE DOCS
   → Đổi trạng thái task trong /tasks/ASS-XXX.md → Status: Done
