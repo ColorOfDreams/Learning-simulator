@@ -8,25 +8,25 @@
 
 | Layer | Lựa chọn | Lý do |
 |-------|----------|-------|
-| Framework | React 18 | Ecosystem lớn, team quen, Concurrent Mode cho streaming |
-| Build tool | Vite 5 | HMR nhanh, bundle nhỏ, ESM native |
-| Language | TypeScript 5 | Type-safety giảm bug runtime, ADR-004 enforce strict |
-| Styling | Tailwind CSS 3 | Utility-first, không cần design system riêng cho MVP |
-| State | TanStack Query v5 + useState/useReducer | Server state vs UI state rõ ràng |
-| Math render | KaTeX | Nhanh hơn MathJax, bundle nhỏ hơn |
-| Simulation | D3.js + Canvas API | D3 cho data binding, Canvas cho animation FPS cao |
-| SSE client | Native EventSource | Không cần library thêm |
+| Framework | React 19 + UmiJS v4 (@umijs/max) | Enterprise-level framework, routing tự động, kiến trúc chuẩn |
+| Language | TypeScript | Type-safety giảm bug runtime, dễ dàng scale |
+| Styling | Ant Design (antd) + Less + Styled Components | UI library mạnh mẽ, có sẵn nhiều component phức tạp (ProComponents) |
+| State | @umijs/plugin-model | State management tích hợp sẵn của UmiJS, nhẹ và dễ sử dụng |
+| API Client | Axios | Thư viện gọi API phổ biến, dễ cấu hình interceptor |
+| Charts | ApexCharts | Thư viện vẽ biểu đồ tương tác, dễ custom |
+| Text Editor| TinyMCE | Tích hợp trình soạn thảo văn bản mạnh mẽ |
 
 ## Backend
 
 | Layer | Lựa chọn | Lý do |
 |-------|----------|-------|
-| Framework | Fastify 4 | Nhanh nhất Node.js web framework, schema validation built-in |
-| Language | TypeScript 5 | Consistency với FE |
-| Database | PostgreSQL 15 | ACID, JSON support, Railway free tier |
-| Cache/Queue | Redis 7 + BullMQ | Session cache + AI job queue |
-| Auth | fastify-jwt + @fastify/oauth2 | Native Fastify plugins |
-| ORM | Drizzle ORM | Type-safe, lightweight, migration-first |
+| Framework | NestJS 11 | Kiến trúc module hóa chặt chẽ, dễ maintain và scale (Angular-like) |
+| Language | TypeScript | Consistency với FE, type-safe APIs |
+| Database | PostgreSQL | ACID, ổn định, hỗ trợ dữ liệu phức tạp |
+| ORM | TypeORM | Tích hợp sâu với NestJS, hỗ trợ nhiều loại database, Active Record/Data Mapper |
+| Auth | Passport (JWT, Google OAuth) | Tiêu chuẩn bảo mật được verify kỹ lưỡng, dễ dàng mở rộng nhiều strategy |
+| Validation| class-validator + class-transformer | Decorator-based validation, tích hợp sẵn vào ValidationPipe của NestJS |
+| API Docs | Swagger (@nestjs/swagger) | Tự động sinh tài liệu API từ Decorators |
 
 ## AI
 

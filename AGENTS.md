@@ -434,14 +434,14 @@ chore(ci): add staging auto-deploy step
 
 ### Tech Stack
 ```
-Frontend : React 18 + TypeScript + Vite + Tailwind CSS
+Frontend : React 19 + TypeScript + UmiJS v4 (@umijs/max) + Ant Design + Less
 Simulation: D3.js + Canvas API (quyết định sau ASS-006 POC)
 Math     : KaTeX (inline LaTeX rendering)
-State    : React Query (TanStack) + useState/useReducer
+State    : @umijs/plugin-model (built-in data flow)
 
-Backend  : Fastify + TypeScript + Node.js
-Database : PostgreSQL (Railway) + Redis (cache + rate limit)
-Auth     : JWT + Google OAuth 2.0
+Backend  : NestJS 11 + TypeScript + Node.js
+Database : PostgreSQL (TypeORM) + Redis (cache + rate limit)
+Auth     : Passport (JWT + Google OAuth 2.0)
 Streaming: Server-Sent Events (SSE)
 Queue    : BullMQ + Redis
 

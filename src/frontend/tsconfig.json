@@ -1,25 +1,57 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+	"compilerOptions": {
+		"outDir": "build/dist",
+		"module": "esnext",
+		"target": "esnext",
+		"lib": [
+			"esnext",
+			"dom"
+		],
+		"sourceMap": true,
+		"jsx": "react-jsx",
+		"resolveJsonModule": true,
+		"baseUrl": ".",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"allowJs": true,
+		"skipLibCheck": true,
+		"experimentalDecorators": true,
+		"strict": true,
+		"paths": {
+			"@/*": [
+				"./src/*"
+			],
+			"@@/*": [
+				"./src/.umi/*"
+			],
+			"react": [
+				"./node_modules/@types/react"
+			]
+		}
+	},
+	"include": [
+		"mock/**/*",
+		"src/**/*",
+		"tests/**/*",
+		"test/**/*",
+		"__test__/**/*",
+		"typings/**/*",
+		"config/**/*",
+		".eslintrc.js",
+		".stylelintrc.js",
+		".prettierrc.js",
+		"mock/*"
+	],
+	"exclude": [
+		"node_modules",
+		"build",
+		"dist",
+		"scripts",
+		"src/.umi/*",
+		"webpack",
+		"jest"
+	]
 }
