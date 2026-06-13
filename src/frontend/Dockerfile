@@ -1,11 +1,13 @@
 # 1. For build React app
 FROM node:22-alpine AS development
 
+RUN corepack enable
 
 # Set environment variables
-ENV APP_CONFIG_IP_ROOT=https://api.hvpnvn.edu.vn/
+ENV APP_CONFIG_IP_ROOT=http://localhost:3000
 ENV APP_CONFIG_ONE_SIGNAL_ID=f3857a81-2891-49be-87a7-903a4a1a54be
 ENV APP_CONFIG_SENTRY_DSN=https://ed934e521d476c44a89a42aaa8a6993a@sentry.aisoftech.vn/3
+ENV APP_CONFIG_GOOGLE_CLIENT_ID=dummy-client-id.apps.googleusercontent.com
 ENV APP_CONFIG_KEYCLOAK_AUTHORITY=https://sso.hvpnvn.edu.vn/realms/vwa
 ENV APP_CONFIG_PREFIX_OF_KEYCLOAK_CLIENT_ID=vwa-
 ENV APP_CONFIG_APP_VERSION=241218.1100
@@ -38,10 +40,12 @@ ENV APP_CONFIG_URL_TAP_CHI_KH=https://tapchikhoahoc.hvpnvn.edu.vn/
 # Set working directory
 WORKDIR /app
 
-COPY package.json /app/
+COPY package.json yarn.lock .yarnrc.yml postinstall.js /app/
 RUN yarn install
 
 COPY . /app
+
+EXPOSE 8000
 
 FROM development AS build
 RUN yarn build

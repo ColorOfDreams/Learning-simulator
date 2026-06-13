@@ -29,6 +29,12 @@
 		icon: 'HomeOutlined',
 	},
 	{
+		path: '/ai-demo',
+		name: 'AI Demo',
+		component: './AiDemo',
+		icon: 'RobotOutlined',
+	},
+	{
 		path: '/gioi-thieu',
 		name: 'About',
 		component: './TienIch/GioiThieu',

@@ -1,39 +1,10 @@
 import Footer from '@/components/Footer';
-import { getUserInfo, verifyGoogleLogin } from '@/services/base/api';
-import { message } from 'antd';
+import { Button } from 'antd';
 import React from 'react';
-import { history, useModel } from 'umi';
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { history } from 'umi';
 import styles from './index.less';
 
-declare const APP_CONFIG_GOOGLE_CLIENT_ID: string;
-
 const Login: React.FC = () => {
-  const { initialState, setInitialState } = useModel('@@initialState');
-
-  const handleGoogleSuccess = async (credentialResponse: any) => {
-    try {
-      const idToken = credentialResponse.credential;
-
-      const res = await verifyGoogleLogin({ token: idToken });
-      const accessToken = res.data?.data?.access_token || res.data?.access_token;
-
-      localStorage.setItem('access_token', accessToken);
-      localStorage.setItem('token', accessToken);
-
-      const info = await getUserInfo(); // Lấy thông tin từ backend
-      setInitialState({
-        ...initialState,
-        currentUser: info.data?.data || info.data,
-      });
-
-      message.success('Đăng nhập thành công');
-      history.push('/dashboard');
-    } catch (error) {
-      message.error('Đăng nhập thất bại');
-    }
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.contentWrapper}>
@@ -44,18 +15,13 @@ const Login: React.FC = () => {
         <div className={styles.rightPanel}>
           <div className={styles.loginCard}>
             <div className={styles.header}>
-              <div className={styles.desc}>Đăng nhập bằng tài khoản Google</div>
+              <div className={styles.desc}>Đăng nhập Google đang tạm tắt trong bản demo</div>
             </div>
 
             <div className={styles.main}>
-              <GoogleOAuthProvider clientId={APP_CONFIG_GOOGLE_CLIENT_ID || 'dummy-client-id.apps.googleusercontent.com'}>
-                <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={() => {
-                    message.error('Đăng nhập Google thất bại');
-                  }}
-                />
-              </GoogleOAuthProvider>
+              <Button type='primary' block onClick={() => history.push('/ai-demo')}>
+                Vào AI Demo
+              </Button>
             </div>
           </div>
         </div>

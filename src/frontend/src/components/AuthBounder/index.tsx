@@ -2,7 +2,7 @@ import { history, useModel } from 'umi';
 import React, { useEffect, useState } from 'react';
 import { Spin } from 'antd';
 
-export const unCheckPermissionPaths = ['/user/login', '/user/register'];
+export const unCheckPermissionPaths = ['/user/login', '/user/register', '/ai-demo'];
 
 const AuthBounder: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { initialState } = useModel('@@initialState');
