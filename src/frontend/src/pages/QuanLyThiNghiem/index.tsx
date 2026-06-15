@@ -2,7 +2,8 @@ import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
 import FormScene from './components/Form';
 
-import { Popconfirm, Space } from 'antd';
+import { DeleteOutlined, LoginOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, Space, Tooltip } from 'antd';
 import { history } from 'umi';
 import useInitModel from '@/hooks/useInitModel';
 
@@ -13,7 +14,7 @@ const QuanLyThiNghiem = () => {
     {
       title: 'Tên thí nghiệm',
       dataIndex: 'name',
-      width: 250,
+      width: 150,
       filterType: 'string',
     },
     {
@@ -32,32 +33,39 @@ const QuanLyThiNghiem = () => {
     },
     {
       title: 'Thao tác',
-      width: 150,
+      width: 80,
       align: 'center',
       render: (val, record) => (
         <Space>
-          <a
-            onClick={(e) => {
-              e.stopPropagation();
-              history.push(`/thi-nghiem?id=${record.id}`);
-            }}
-            style={{ fontWeight: 'bold' }}
-          >
-            Vào phòng
-          </a>
+          <Tooltip title="Vào phòng">
+            <Button
+              type="primary"
+              icon={<LoginOutlined />}
+              onClick={(e) => {
+                e.stopPropagation();
+                history.push(`/thi-nghiem?id=${record.id}`);
+              }}
+            />
+          </Tooltip>
           <Popconfirm
             title="Bạn có chắc chắn muốn xóa?"
+            placement="topRight"
             onConfirm={(e) => {
-              e?.stopPropagation();
+              e?.stopPropagation()
               if (deleteModel) {
                 deleteModel(record.id, getModel);
               }
             }}
             onCancel={(e) => e?.stopPropagation()}
           >
-            <a style={{ color: 'red' }} onClick={(e) => e.stopPropagation()}>
-              Xóa
-            </a>
+            <Tooltip title="Xóa">
+              <Button
+                type="primary"
+                danger
+                icon={<DeleteOutlined />}
+                onClick={(e) => e.stopPropagation()}
+              />
+            </Tooltip>
           </Popconfirm>
         </Space>
       ),
