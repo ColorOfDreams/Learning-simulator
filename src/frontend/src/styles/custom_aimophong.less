@@ -229,8 +229,6 @@ body {
 }
 
 .ant-table-cell {
-	text-align: left !important;
-
 	p,
 	.ant-typography {
 		margin-bottom: 0 !important;
@@ -243,17 +241,6 @@ body {
 }
 
 .ant-table-thead {
-	.ant-table-cell {
-		text-align: left !important;
-
-		.ant-table-column-title {
-			display: flex !important;
-			justify-content: flex-start !important;
-			text-align: left !important;
-			width: auto !important;
-		}
-	}
-
 	>tr>th:last-child,
 	.ant-table-cell:last-child {
 		border-right: none !important;
@@ -261,7 +248,6 @@ body {
 }
 
 .ttCellWrapper {
-	justify-content: flex-start !important;
 }
 
 .ant-table-tbody .ant-table-row .ant-table-cell-fix-right:last-child {
@@ -287,7 +273,7 @@ body {
 		white-space: pre-wrap;
 		font-size: 18px !important;
 		font-weight: bold !important;
-		color: var(--color-primary) !important;
+		color: rgba(0, 0, 0, 0.85) !important;
 	}
 
 	&.has-indicator {
@@ -305,7 +291,7 @@ body {
 		>.ant-card-head {
 			>.ant-card-head-wrapper>.ant-card-head-title {
 				font-size: 22px !important;
-				color: var(--color-accent-800) !important;
+				color: rgba(0, 0, 0, 0.85) !important;
 				margin-left: 0 !important;
 				padding-left: 0 !important;
 			}
@@ -420,7 +406,7 @@ body {
 		left: 0;
 		right: 0;
 		height: 172px;
-		background-image: url('/header_page.png') !important;
+		// background-image: url('/header_page.png') !important;
 		background-size: cover !important;
 		background-position: top center !important;
 		background-repeat: no-repeat !important;
@@ -449,24 +435,22 @@ body {
 	}
 
 	.ant-page-header {
-		border-bottom: none !important;
-		padding: 16px !important;
+		border-bottom: 1px solid #f0f0f0 !important;
+		padding: 0 24px !important;
 		min-height: 64px !important;
 		height: 64px !important;
 		display: flex !important;
 		align-items: center !important;
 		justify-content: end;
+		background-color: #ffffff !important;
+		
+		/* Restore fixed positioning so it acts as top header */
 		position: fixed !important;
 		top: 0 !important;
 		left: 0 !important;
 		right: 0 !important;
 		width: 100vw !important;
 		z-index: 10 !important;
-		background-color: transparent !important;
-		background-image: url('/header_page.png') !important;
-		background-size: cover !important;
-		background-position: top center !important;
-		background-repeat: no-repeat !important;
 
 		@media (max-width: 767px) {
 			display: none !important;
@@ -524,7 +508,7 @@ body {
 		}
 
 		.ant-page-header-heading-title {
-			color: var(--color-accent-800) !important;
+			color: rgba(0, 0, 0, 0.85) !important;
 			font-size: 22px !important;
 			font-weight: 700 !important;
 			line-height: 1.5 !important;

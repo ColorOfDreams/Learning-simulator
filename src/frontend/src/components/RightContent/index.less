@@ -31,7 +31,7 @@
 	}
 
 	:global(.anticon),
-	a > img {
+	a>img {
 		display: flex;
 
 		&:hover {
@@ -40,7 +40,7 @@
 		}
 	}
 
-	a > img {
+	a>img {
 		padding: 12px 8px;
 	}
 
@@ -51,7 +51,7 @@
 		cursor: pointer;
 		transition: all 0.3s;
 
-		> span {
+		>span {
 			vertical-align: middle;
 		}
 
@@ -62,6 +62,10 @@
 		&:global(.opened) {
 			background: @pro-header-hover-bg;
 		}
+	}
+
+	.name {
+		color: rgba(0, 0, 0, 0.85) !important;
 	}
 
 	.account {
