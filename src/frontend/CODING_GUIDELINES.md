@@ -9,8 +9,8 @@ Tài liệu này cung cấp hướng dẫn toàn diện cho việc phát triển
 Việc đặt file và cấu trúc thư mục đúng quy định là **bắt buộc** để giữ cho dự án gọn gàng và dễ bảo trì.
 
 - `src/pages/[TenModule]`: Chứa các màn hình của hệ thống (VD: `pages/QuanLySinhVien`). Bên trong mỗi page chia thành:
-  - `index.tsx`: Chứa component chính hiển thị `TableBase`.
-  - `Form.tsx` hoặc thư mục `components/`: Chứa Form dùng để thêm/sửa hoặc các component con đặc thù của page.
+  - `index.tsx`: Chứa component chính hiển thị UI hoặc `TableBase`.
+  - `components/`: **Bắt buộc** tạo thư mục này để chứa các component con đặc thù của page (VD: `Form.tsx`, `Filter.tsx`, `Overlay.tsx`...). Không để các file component con nằm rải rác ngang hàng với `index.tsx`.
 - `src/models/`: Chứa các custom model hoặc model mở rộng (nếu cần thiết). Đa số các CRUD cơ bản sẽ dùng `useInitModel` dùng chung, không cần tạo model mới.
 - `src/components/`: Nơi đặt các component dùng chung trên toàn hệ thống (không đặt component nghiệp vụ riêng lẻ ở đây).
 - `src/services/`: Chứa định nghĩa endpoint gọi API, file `api.ts` và `typing.d.ts` cho các interface.
@@ -154,5 +154,10 @@ export default FormKhoa;
    - Chỉ dùng CSS file (hoặc LESS) cho component cụ thể khi thực sự cần thiết. Khuyến khích sử dụng inline styles để dễ kiểm soát hoặc Antd design token.
    - Các class LESS đặt tên theo định dạng kebab-case.
 
-3. **Lưu ý khi mở rộng Base:**
+3. **Quy tắc về Type / Interface (Typing):**
+   - Các interface / type định nghĩa trong `src/services/` phải được bọc trong `declare module [TenModule]` (VD: `declare module Scene { ... }`).
+   - Interface chính đại diện cho bản ghi bắt buộc phải đặt tên là `export interface IRecord`.
+   - Lợi ích: Không cần `import type` ở khắp nơi trong project, UmiJS sẽ tự nhận diện Global Types.
+
+4. **Lưu ý khi mở rộng Base:**
    - Nếu bạn thấy 1 tính năng có thể dùng chung cho nhiều page (VD: Component chọn đơn vị hành chính), hãy viết nó ở `src/components` thay vì để kẹp trong thư mục của 1 page.

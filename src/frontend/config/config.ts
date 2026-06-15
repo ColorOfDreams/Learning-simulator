@@ -12,6 +12,14 @@ const {
 
 export default defineConfig({
 	hash: true,
+	mfsu: false,
+	chainWebpack(memo) {
+		memo.experiments({
+			...memo.get('experiments'),
+			asyncWebAssembly: true,
+			syncWebAssembly: true,
+		});
+	},
 	title: `AI Thực chiến - ${APP_CONFIG_TEN_TRUONG.toUpperCase()}`,
 	metas: [
 		{

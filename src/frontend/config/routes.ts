@@ -1,4 +1,4 @@
-﻿export default [
+export default [
 	{
 		path: '/user',
 		layout: false,
@@ -32,6 +32,27 @@
 		path: '/gioi-thieu',
 		name: 'About',
 		component: './TienIch/GioiThieu',
+		hideInMenu: true,
+	},
+	{
+		name: 'Quản lý thí nghiệm',
+		path: '/quan-ly-thi-nghiem',
+		icon: 'ExperimentOutlined',
+		component: './QuanLyThiNghiem',
+	},
+	{
+		name: 'Tạo thí nghiệm',
+		path: '/tao-thi-nghiem',
+		icon: 'PlusSquareOutlined',
+		component: './TaoThiNghiem',
+		hideInMenu: true,
+	},
+	{
+		name: 'Phòng thí nghiệm 3D',
+		path: '/thi-nghiem',
+		icon: 'PlayCircleOutlined',
+		component: './ThiNghiem',
+		layout: false,
 		hideInMenu: true,
 	},
 
