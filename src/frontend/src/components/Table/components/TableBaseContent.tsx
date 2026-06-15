@@ -22,8 +22,8 @@ export const TableBaseContent = (props: TableBaseProps) => {
 	const intl = useIntl();
 	const { modelName, dependencies = [], params, rowSortable, title } = props;
 	const model = useModel(modelName) as any;
-	const { page, limit, setPage, setLimit, condition, sort, setSort, setFilters, initFilter } = model;
-	const { danhSach: dsPhanVung } = useModel('core.phanvungdulieu');
+	const { page, limit, setPage, setLimit, condition, sort, setSort, setFilters, initFilter } = model || {};
+	const { danhSach: dsPhanVung } = (useModel('core.phanvungdulieu' as any) as any) || {};
 	const {
 		visibleImport,
 		setVisibleImport,
@@ -61,7 +61,7 @@ export const TableBaseContent = (props: TableBaseProps) => {
 			model?.[props.dataState || 'danhSach']?.map((item: any, index: number) => ({
 				...item,
 				index: index + 1 + (page - 1) * limit * (props.pageable === false ? 0 : 1),
-				key: item?._id ?? index,
+				key: item?._id ?? item?.id ?? index,
 				children:
 					!props.hideChildrenRows && item?.children && Array.isArray(item.children) && item.children.length
 						? item.children

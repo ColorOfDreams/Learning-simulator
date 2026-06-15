@@ -72,7 +72,7 @@ import { KhoaEntity } from './khoa.entity';
 import { KhoaService } from './khoa.service';
 
 @ApiTags('Danh mục khoa')
-@Controller('khoa') // Router endpoint: /api/khoa
+@Controller('khoa') // Router endpoint: /khoa
 export class KhoaController extends BaseController<KhoaEntity> {
   constructor(private readonly khoaService: KhoaService) {
     super(khoaService);

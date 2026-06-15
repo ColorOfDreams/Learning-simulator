@@ -7,7 +7,7 @@ import type { ESettingKey } from './constant';
 import type { ISetting } from './typing';
 
 export async function getUserInfo() {
-	return axios.get(`${ip3}/api/users/me`);
+	return axios.get(`${ip3}/users/me`);
 }
 
 export async function adminlogin(payload: { username?: string; password?: string }) {
@@ -15,7 +15,7 @@ export async function adminlogin(payload: { username?: string; password?: string
 }
 
 export async function verifyGoogleLogin(payload: { token: string }) {
-	return axios.post(`${ip3}/api/auth/google/verify`, payload);
+	return axios.post(`${ip3}/auth/google/verify`, payload);
 }
 
 export async function initOneSignal(payload: { playerId: string }) {
