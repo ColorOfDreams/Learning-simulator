@@ -118,7 +118,7 @@ const TableBase = <T extends object = any>(props: TableBaseProps<T>) => {
 		isView,
 		edit,
 		deleteManyModel,
-	} = model;
+	} = model || {};
 
 	const handleDeleteMany = () => {
 		if (deleteManyModel && selectedIds?.length)

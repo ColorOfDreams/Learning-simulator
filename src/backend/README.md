@@ -27,7 +27,7 @@ DB_NAME=ai_mo_phong
 JWT_SECRET=super_secret_key_change_me_in_production
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_CALLBACK_URL=http://localhost:3000/api/auth/google/callback
+GOOGLE_CALLBACK_URL=http://localhost:3000/auth/google/callback
 PORT=3000
 ```
 
@@ -41,7 +41,7 @@ yarn run start:dev
 
 ## 📖 Swagger API Docs
 Sau khi chạy server, truy cập Swagger UI để test API tại:
-[http://localhost:3000/api/docs](http://localhost:3000/api/docs)
+[http://localhost:3000/api](http://localhost:3000/api)
 
 ## 🏗 Hướng dẫn tạo module CRUD mới bằng Base Controller/Service
 Thay vì viết lại CRUD cho từng thực thể, bạn chỉ cần kế thừa `BaseController` và `BaseService`.
@@ -93,8 +93,8 @@ export class StudentController extends BaseController<StudentEntity> {
   }
 }
 ```
-Khi chạy dự án, endpoint `/api/students/page`, `/api/students/all`, `/api/students/:id`, v.v. (bao gồm import/export) sẽ tự động có sẵn để Frontend gọi qua `useInitModel`.
+Khi chạy dự án, endpoint `/students/page`, `/students/all`, `/students/:id`, v.v. (bao gồm import/export) sẽ tự động có sẵn để Frontend gọi qua `useInitModel`.
 
 ## 🔐 Google Login
 Tích hợp sẵn qua `@nestjs/passport` và `passport-google-oauth20`.
-- **Luồng:** Người dùng truy cập `/api/auth/google` -> Đăng nhập trên popup Google -> Redirect về `/api/auth/google/callback` -> Backend xử lý, lưu user vào db và trả về JWT token redirect sang frontend.
+- **Luồng:** Người dùng truy cập `/auth/google` -> Đăng nhập trên popup Google -> Redirect về `/auth/google/callback` -> Backend xử lý, lưu user vào db và trả về JWT token redirect sang frontend.
