@@ -1,6 +1,27 @@
-version: '3.8'
-
 services:
+  frontend:
+    build:
+      context: .
+      target: development
+    container_name: ai_mo_phong_frontend
+    command: yarn dev --host 0.0.0.0
+    ports:
+      - '8000:8000'
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8000
+      APP_CONFIG_IP_ROOT: http://localhost:3000
+      APP_CONFIG_TEN_TRUONG: AI Mô Phỏng
+      APP_CONFIG_TIEN_TO_TRUONG: Hệ thống
+      APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH: AI
+      APP_CONFIG_PRIMARY_COLOR: '#134D8B'
+      APP_CONFIG_HIGHLIGHT_COLOR: '#C72127'
+      APP_CONFIG_GOOGLE_CLIENT_ID: dummy-client-id.apps.googleusercontent.com
+    volumes:
+      - .:/app
+      - frontend_node_modules:/app/node_modules
+    restart: unless-stopped
+
   mongodb:
     image: mongo:6
     container_name: baseweb_mongodb
@@ -16,3 +37,4 @@ services:
 
 volumes:
   mongodb_data:
+  frontend_node_modules:

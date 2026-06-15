@@ -21,6 +21,7 @@ declare const APP_CONFIG_IP_ROOT: string;
 declare const APP_CONFIG_ONE_SIGNAL_ID: string;
 declare const APP_CONFIG_SENTRY_DSN: string;
 declare const APP_CONFIG_APP_VERSION: string;
+declare const APP_CONFIG_GOOGLE_CLIENT_ID: string;
 
 declare const APP_CONFIG_TEN_TRUONG: string;
 declare const APP_CONFIG_TIEN_TO_TRUONG: string;

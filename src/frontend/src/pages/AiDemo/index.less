@@ -1,0 +1,64 @@
+.ai-demo-page {
+	display: grid;
+	gap: 16px;
+	padding: 16px;
+
+	.ai-demo-main {
+		display: grid;
+		grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+		gap: 16px;
+		align-items: start;
+
+		@media (max-width: @screen-lg) {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.ai-demo-panel {
+		background: #fff;
+		border: 1px solid #f0f0f0;
+		border-radius: 6px;
+		padding: 16px;
+	}
+
+	.ai-demo-stack {
+		display: grid;
+		gap: 12px;
+	}
+
+	.ai-demo-metadata {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.ai-demo-list {
+		margin: 0;
+		padding-left: 20px;
+	}
+
+	.ai-demo-params {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+		gap: 8px;
+	}
+
+	.ai-demo-param {
+		border: 1px solid #f0f0f0;
+		border-radius: 6px;
+		padding: 10px;
+		background: #fafafa;
+	}
+
+	.ai-demo-json {
+		max-height: 360px;
+		overflow: auto;
+		margin: 0;
+		padding: 12px;
+		border-radius: 6px;
+		background: #111827;
+		color: #e5e7eb;
+		font-size: 12px;
+		white-space: pre-wrap;
+	}
+}
