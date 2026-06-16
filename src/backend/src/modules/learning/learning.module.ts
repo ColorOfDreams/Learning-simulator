@@ -16,6 +16,9 @@ import { TheoryChunkController } from './theory-chunk/theory-chunk.controller';
 import { ProblemPatternEntity } from './problem-pattern/problem-pattern.entity';
 import { ProblemPatternService } from './problem-pattern/problem-pattern.service';
 import { ProblemPatternController } from './problem-pattern/problem-pattern.controller';
+import { LearningController } from './learning.controller';
+import { LearningDatasetSeedService } from './learning-dataset-seed.service';
+import { LearningService } from './learning.service';
 
 @Module({
   imports: [
@@ -27,12 +30,15 @@ import { ProblemPatternController } from './problem-pattern/problem-pattern.cont
     ]),
   ],
   controllers: [
+    LearningController,
     SimulationTemplateController,
     LearningItemController,
     TheoryChunkController,
     ProblemPatternController,
   ],
   providers: [
+    LearningService,
+    LearningDatasetSeedService,
     SimulationTemplateService,
     LearningItemService,
     TheoryChunkService,
