@@ -4,6 +4,13 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from '../auth.service';
 
+interface GoogleProfile {
+  id: string;
+  emails: Array<{ value: string }>;
+  name?: { givenName?: string; familyName?: string; displayName?: string };
+  photos: Array<{ value: string }>;
+}
+
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
@@ -21,14 +28,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   async validate(
     accessToken: string,
     refreshToken: string,
-    profile: any,
+    profile: GoogleProfile,
     done: VerifyCallback,
-  ): Promise<any> {
-    try {
-      const jwt = await this.authService.validateOAuthLogin(profile);
-      done(null, jwt);
-    } catch (err) {
-      done(err, false);
-    }
+  ): Promise<void> {
+    const jwt = await this.authService.validateOAuthLogin(profile);
+    done(null, jwt);
   }
 }

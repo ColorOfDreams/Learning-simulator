@@ -14,56 +14,64 @@ import type {
 @Entity('problem_patterns')
 export class ProblemPatternEntity {
   @PrimaryColumn({ name: 'pattern_id', type: 'varchar' })
-  patternId: string;
+  patternId!: string;
 
   @Column({ type: 'varchar', default: 'physics' })
-  subject: string;
+  subject!: string;
 
   @Column({ type: 'int', default: 11 })
-  grade: number;
+  grade!: number;
 
   @Column({ type: 'varchar' })
-  chapter: string;
+  chapter!: string;
 
   @Column({ type: 'varchar' })
-  topic: string;
+  topic!: string;
 
   @Column({ type: 'varchar' })
-  name: string;
+  name!: string;
 
   @Column({ type: 'text' })
-  description: string;
+  description!: string;
 
   @Column({ name: 'main_formula', type: 'varchar', nullable: true })
   mainFormula?: string;
 
-  @Column({ name: 'required_parameters', type: 'jsonb', default: () => "'[]'::jsonb" })
-  requiredParameters: string[];
+  @Column({
+    name: 'required_parameters',
+    type: 'jsonb',
+    default: () => "'[]'::jsonb",
+  })
+  requiredParameters!: string[];
 
-  @Column({ name: 'optional_parameters', type: 'jsonb', default: () => "'[]'::jsonb" })
-  optionalParameters: string[];
+  @Column({
+    name: 'optional_parameters',
+    type: 'jsonb',
+    default: () => "'[]'::jsonb",
+  })
+  optionalParameters!: string[];
 
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
-  target: string[];
+  target!: string[];
 
   @Column({ name: 'simulation_id', type: 'varchar', nullable: true })
   simulationId?: string;
 
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
-  levels: ProblemPatternLevel[];
+  levels!: ProblemPatternLevel[];
 
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
-  examples: ProblemPatternExample[];
+  examples!: ProblemPatternExample[];
 
   @Column({ type: 'jsonb', nullable: true })
   metadata?: ProblemPatternMetadata;
 
   @Column({ name: 'is_active', type: 'boolean', default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }

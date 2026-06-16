@@ -1,9 +1,21 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import { UserEntity } from '../users/entities/user.entity';
 import { OAuth2Client } from 'google-auth-library';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
+
+interface GoogleProfile {
+  id: string;
+  emails: Array<{ value: string }>;
+  name?: { givenName?: string; familyName?: string; displayName?: string };
+  photos: Array<{ value: string }>;
+}
 
 @Injectable()
 export class AuthService {
@@ -14,10 +26,18 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {
-    this.oauth2Client = new OAuth2Client(this.configService.get<string>('GOOGLE_CLIENT_ID'));
+    this.oauth2Client = new OAuth2Client(
+      this.configService.get<string>('GOOGLE_CLIENT_ID'),
+    );
   }
 
-  async register(dto: { email: string; password: string; firstName?: string; lastName?: string; phone?: string }) {
+  async register(dto: {
+    email: string;
+    password: string;
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+  }) {
     const existing = await this.usersService.findByEmail(dto.email);
     if (existing) {
       throw new ConflictException('Email đã được sử dụng');
@@ -34,7 +54,10 @@ export class AuthService {
     });
 
     const jwtPayload = { sub: user.id, email: user.email, role: user.role };
-    return { access_token: this.jwtService.sign(jwtPayload), user: { id: user.id, email: user.email, role: user.role } };
+    return {
+      access_token: this.jwtService.sign(jwtPayload),
+      user: { id: user.id, email: user.email, role: user.role },
+    };
   }
 
   async login(dto: { email: string; password: string }) {
@@ -49,7 +72,10 @@ export class AuthService {
     }
 
     const jwtPayload = { sub: user.id, email: user.email, role: user.role };
-    return { access_token: this.jwtService.sign(jwtPayload), user: { id: user.id, email: user.email, role: user.role } };
+    return {
+      access_token: this.jwtService.sign(jwtPayload),
+      user: { id: user.id, email: user.email, role: user.role },
+    };
   }
 
   async verifyGoogleIdToken(token: string): Promise<string> {
@@ -65,7 +91,9 @@ export class AuthService {
 
       const email = payload.email;
       if (!email) {
-        throw new UnauthorizedException('Google Token does not contain an email');
+        throw new UnauthorizedException(
+          'Google Token does not contain an email',
+        );
       }
 
       const firstName = payload.given_name || payload.name || '';
@@ -78,7 +106,7 @@ export class AuthService {
       if (!user) {
         user = await this.usersService.findByEmail(email);
         if (user) {
-          const updateData: any = { googleId, picture };
+          const updateData: Partial<UserEntity> = { googleId, picture };
           if (!user.firstName && firstName) updateData.firstName = firstName;
           if (!user.lastName && lastName) updateData.lastName = lastName;
           await this.usersService.update(user.id, updateData);
@@ -95,43 +123,39 @@ export class AuthService {
 
       const jwtPayload = { sub: user.id, email: user.email, role: user.role };
       return this.jwtService.sign(jwtPayload);
-    } catch (err) {
+    } catch {
       throw new UnauthorizedException('Authentication failed');
     }
   }
 
-  async validateOAuthLogin(profile: any): Promise<string> {
-    try {
-      const { id, emails, name, photos } = profile;
-      const email = emails[0].value;
-      const firstName = name.givenName || name.displayName || name || '';
-      const lastName = name.familyName || '';
-      const picture = photos[0].value;
+  async validateOAuthLogin(profile: GoogleProfile): Promise<string> {
+    const { id, emails, name, photos } = profile;
+    const email = emails[0].value;
+    const firstName = name?.givenName || name?.displayName || '';
+    const lastName = name?.familyName || '';
+    const picture = photos[0].value;
 
-      let user = await this.usersService.findByGoogleId(id);
+    let user = await this.usersService.findByGoogleId(id);
 
-      if (!user) {
-        user = await this.usersService.findByEmail(email);
-        if (user) {
-          const updateData: any = { googleId: id, picture };
-          if (!user.firstName && firstName) updateData.firstName = firstName;
-          if (!user.lastName && lastName) updateData.lastName = lastName;
-          await this.usersService.update(user.id, updateData);
-        } else {
-          user = await this.usersService.create({
-            email,
-            firstName,
-            lastName,
-            picture,
-            googleId: id,
-          });
-        }
+    if (!user) {
+      user = await this.usersService.findByEmail(email);
+      if (user) {
+        const updateData: Partial<UserEntity> = { googleId: id, picture };
+        if (!user.firstName && firstName) updateData.firstName = firstName;
+        if (!user.lastName && lastName) updateData.lastName = lastName;
+        await this.usersService.update(user.id, updateData);
+      } else {
+        user = await this.usersService.create({
+          email,
+          firstName,
+          lastName,
+          picture,
+          googleId: id,
+        });
       }
-
-      const payload = { sub: user.id, email: user.email, role: user.role };
-      return this.jwtService.sign(payload);
-    } catch (err) {
-      throw err;
     }
+
+    const payload = { sub: user.id, email: user.email, role: user.role };
+    return this.jwtService.sign(payload);
   }
 }

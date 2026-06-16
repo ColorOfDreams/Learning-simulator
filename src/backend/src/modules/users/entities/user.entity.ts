@@ -12,33 +12,33 @@ export enum UserRole {
 export class UserEntity extends BaseEntity {
   @ApiProperty()
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @ApiProperty()
   @Column({ nullable: true })
-  password: string;
+  password?: string;
 
   @ApiProperty()
   @Column({ nullable: true })
-  firstName: string;
+  firstName?: string;
 
   @ApiProperty()
   @Column({ nullable: true })
-  lastName: string;
+  lastName?: string;
 
   @ApiProperty()
   @Column({ nullable: true })
-  picture: string;
+  picture?: string;
 
   @ApiProperty()
   @Column({ nullable: true })
-  googleId: string;
+  googleId?: string;
 
   @ApiProperty()
   @Column({ nullable: true })
-  phone: string;
+  phone?: string;
 
   @ApiProperty({ enum: UserRole, default: UserRole.STUDENT })
   @Column({ type: 'enum', enum: UserRole, default: UserRole.STUDENT })
-  role: UserRole;
+  role!: UserRole;
 }

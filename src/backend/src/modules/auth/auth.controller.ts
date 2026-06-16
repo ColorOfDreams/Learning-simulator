@@ -1,6 +1,16 @@
-import { Controller, Get, Post, Req, Res, UseGuards, Body, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+  Body,
+  HttpCode,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
+import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 
 @ApiTags('auth')
@@ -30,7 +40,13 @@ export class AuthController {
     @Body('lastName') lastName?: string,
     @Body('phone') phone?: string,
   ) {
-    return this.authService.register({ email, password, firstName, lastName, phone });
+    return this.authService.register({
+      email,
+      password,
+      firstName,
+      lastName,
+      phone,
+    });
   }
 
   @Post('login')
@@ -44,7 +60,10 @@ export class AuthController {
       required: ['email', 'password'],
     },
   })
-  async login(@Body('email') email: string, @Body('password') password: string) {
+  async login(
+    @Body('email') email: string,
+    @Body('password') password: string,
+  ) {
     return this.authService.login({ email, password });
   }
 
@@ -59,13 +78,13 @@ export class AuthController {
   @Get('google')
   @UseGuards(AuthGuard('google'))
   @ApiOperation({ summary: 'Khởi tạo đăng nhập bằng Google' })
-  async googleAuth(@Req() req) {}
+  googleAuth() {}
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
   @ApiOperation({ summary: 'Callback sau khi Google xác thực xong' })
-  googleAuthRedirect(@Req() req, @Res() res) {
-    const token = req.user;
+  googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+    const token = req.user as string;
     return res.redirect(`http://localhost:8000/login/success?token=${token}`);
   }
 }

@@ -14,31 +14,31 @@ import type {
 @Entity('theory_chunks')
 export class TheoryChunkEntity {
   @PrimaryColumn({ type: 'varchar' })
-  id: string;
+  id!: string;
 
   @Column({ type: 'varchar', default: 'physics' })
-  subject: string;
+  subject!: string;
 
   @Column({ type: 'int', default: 11 })
-  grade: number;
+  grade!: number;
 
   @Column({ type: 'varchar' })
-  chapter: string;
+  chapter!: string;
 
   @Column({ type: 'varchar' })
-  topic: string;
+  topic!: string;
 
   @Column({ type: 'varchar', nullable: true })
   title?: string;
 
   @Column({ type: 'varchar' })
-  type: TheoryChunkType;
+  type!: TheoryChunkType;
 
   @Column({ type: 'text' })
-  text: string;
+  text!: string;
 
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
-  keywords: string[];
+  keywords!: string[];
 
   @Column({ type: 'jsonb', nullable: true })
   source?: TheorySource;
@@ -47,11 +47,11 @@ export class TheoryChunkEntity {
   metadata?: TheoryMetadata;
 
   @Column({ name: 'is_active', type: 'boolean', default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }

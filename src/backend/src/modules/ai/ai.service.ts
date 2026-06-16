@@ -62,7 +62,10 @@ export class AiService {
       },
       answer,
       simulation,
-      render_blocks: this.buildRenderBlocks(answer.steps.length > 0, simulation),
+      render_blocks: this.buildRenderBlocks(
+        answer.steps.length > 0,
+        simulation,
+      ),
       references: ragChunks.map((chunk) => ({
         id: chunk.id,
         title: chunk.title ?? chunk.id,
@@ -268,7 +271,11 @@ export class AiService {
     const omega = given.find((item) => item.key === 'omega');
     const omegaNumeric = given.find((item) => item.key === 'omega_numeric');
 
-    if (target.includes('T') && omega && typeof omegaNumeric?.value === 'number') {
+    if (
+      target.includes('T') &&
+      omega &&
+      typeof omegaNumeric?.value === 'number'
+    ) {
       const period = (2 * Math.PI) / omegaNumeric.value;
 
       return {

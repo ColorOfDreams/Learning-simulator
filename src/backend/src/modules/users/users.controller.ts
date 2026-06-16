@@ -1,6 +1,7 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import type { Request } from 'express';
 import { BaseController } from '../../core/base/base.controller';
 import { UserEntity } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -16,7 +17,7 @@ export class UsersController extends BaseController<UserEntity> {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Lấy thông tin user hiện tại' })
-  getMe(@Req() req) {
-    return req.user;
+  getMe(@Req() req: Request): UserEntity {
+    return req.user as UserEntity;
   }
 }

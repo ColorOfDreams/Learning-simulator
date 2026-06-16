@@ -20,4 +20,4 @@ export type TheoryMetadata = {
   tags?: string[];
   formulaKeys?: string[];
   conceptKeys?: string[];
-};  
+};
