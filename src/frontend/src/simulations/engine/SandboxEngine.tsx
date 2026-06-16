@@ -75,7 +75,7 @@ interface SandboxEngineProps {
 
 const SandboxEngine: React.FC<SandboxEngineProps> = ({ sceneGraph, isPlaying, interactionMode, onUpdatePosition }) => {
   return (
-    <div style={{ width: '100%', height: '100vh', background: '#f0f2f5' }}>
+    <div style={{ width: '100%', height: '100%', background: '#f0f2f5' }}>
       <Canvas shadows camera={{ position: [0, 5, 10], fov: 50 }}>
         <color attach="background" args={['#f0f2f5']} />
         <ambientLight intensity={0.6} />

@@ -1,5 +1,6 @@
 import axios from './axios';
 import button from './button';
+import chatbot from './chatbot';
 import components from './components';
 import header from './header';
 import message from './message';
@@ -14,4 +15,5 @@ export default {
 	...components,
 	...validation,
 	...axios,
+	...chatbot,
 };

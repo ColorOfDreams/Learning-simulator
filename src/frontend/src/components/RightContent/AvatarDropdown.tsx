@@ -25,9 +25,6 @@ const AvatarDropdown = () => {
 	const firstLast = `${c?.lastName ?? ''} ${c?.firstName ?? ''}`.trim();
 	const familyGiven = `${c?.family_name ?? ''} ${c?.given_name ?? ''}`.trim();
 	let fullName = firstLast || familyGiven || c?.name || c?.preferred_username || c?.email || '';
-	if (fullName === 'Admin' || fullName === 'Administrator') {
-		fullName = '';
-	}
 	const lastNameChar = fullName.split(' ')?.at(-1)?.[0]?.toUpperCase();
 
 	const items: ItemType[] = [

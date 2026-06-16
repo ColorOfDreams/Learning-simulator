@@ -78,3 +78,5 @@ build
 # Sentry Auth Token
 #.sentryclirc
 
+
+.ai-log/

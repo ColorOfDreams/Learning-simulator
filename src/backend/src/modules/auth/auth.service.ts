@@ -1,8 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { OAuth2Client } from 'google-auth-library';
 import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,41 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {
     this.oauth2Client = new OAuth2Client(this.configService.get<string>('GOOGLE_CLIENT_ID'));
+  }
+
+  async register(dto: { email: string; password: string; firstName?: string; lastName?: string; phone?: string }) {
+    const existing = await this.usersService.findByEmail(dto.email);
+    if (existing) {
+      throw new ConflictException('Email đã được sử dụng');
+    }
+
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+
+    const user = await this.usersService.create({
+      email: dto.email,
+      password: hashedPassword,
+      firstName: dto.firstName || '',
+      lastName: dto.lastName || '',
+      phone: dto.phone || undefined,
+    });
+
+    const jwtPayload = { sub: user.id, email: user.email, role: user.role };
+    return { access_token: this.jwtService.sign(jwtPayload), user: { id: user.id, email: user.email, role: user.role } };
+  }
+
+  async login(dto: { email: string; password: string }) {
+    const user = await this.usersService.findByEmail(dto.email);
+    if (!user || !user.password) {
+      throw new UnauthorizedException('Email hoặc mật khẩu không đúng');
+    }
+
+    const isMatch = await bcrypt.compare(dto.password, user.password);
+    if (!isMatch) {
+      throw new UnauthorizedException('Email hoặc mật khẩu không đúng');
+    }
+
+    const jwtPayload = { sub: user.id, email: user.email, role: user.role };
+    return { access_token: this.jwtService.sign(jwtPayload), user: { id: user.id, email: user.email, role: user.role } };
   }
 
   async verifyGoogleIdToken(token: string): Promise<string> {
@@ -57,7 +93,7 @@ export class AuthService {
         }
       }
 
-      const jwtPayload = { sub: user.id, email: user.email };
+      const jwtPayload = { sub: user.id, email: user.email, role: user.role };
       return this.jwtService.sign(jwtPayload);
     } catch (err) {
       throw new UnauthorizedException('Authentication failed');
@@ -92,7 +128,7 @@ export class AuthService {
         }
       }
 
-      const payload = { sub: user.id, email: user.email };
+      const payload = { sub: user.id, email: user.email, role: user.role };
       return this.jwtService.sign(payload);
     } catch (err) {
       throw err;
