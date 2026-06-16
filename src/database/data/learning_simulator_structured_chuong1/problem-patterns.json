@@ -1,0 +1,1302 @@
+[
+  {
+    "patternId": "OSC_CONCEPT_MECHANICAL_OSCILLATION",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "mechanical_oscillation",
+    "name": "Nhận biết dao động cơ",
+    "description": "Nhận biết và nêu ví dụ về chuyển động qua lại quanh vị trí cân bằng.",
+    "mainFormula": null,
+    "requiredParameters": [],
+    "optionalParameters": [],
+    "target": [
+      "concept_explanation"
+    ],
+    "simulationId": "SIM_MECHANICAL_OSCILLATION_3D",
+    "solverKey": null,
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Nhận biết dao động cơ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Nhận biết dao động cơ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Nhận biết dao động cơ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Nhận biết dao động cơ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [],
+      "conceptKeys": [
+        "mechanical_oscillation"
+      ],
+      "skillKeys": [
+        "concept_explain"
+      ],
+      "tags": [
+        "mechanical_oscillation"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_IDENTIFY_PARAMETERS",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "simple_harmonic_motion",
+    "name": "Xác định đại lượng từ phương trình dao động",
+    "description": "Cho phương trình x = A cos(omega t + phi), xác định A, omega, phi.",
+    "mainFormula": "SHM_POSITION_EQUATION",
+    "requiredParameters": [
+      "equation"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "A",
+      "omega",
+      "phi"
+    ],
+    "simulationId": "SIM_SHM_BASIC_3D",
+    "solverKey": "identifyShmParameters",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Xác định đại lượng từ phương trình dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Xác định đại lượng từ phương trình dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Xác định đại lượng từ phương trình dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Xác định đại lượng từ phương trình dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "SHM_POSITION_EQUATION"
+      ],
+      "conceptKeys": [
+        "simple_harmonic_motion",
+        "amplitude",
+        "angular_frequency",
+        "initial_phase"
+      ],
+      "skillKeys": [
+        "compare_with_standard_form"
+      ],
+      "tags": [
+        "simple_harmonic_motion"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_POSITION_AT_TIME",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "simple_harmonic_motion",
+    "name": "Tính li độ tại thời điểm",
+    "description": "Cho A, omega, phi và t, tính x.",
+    "mainFormula": "SHM_POSITION_EQUATION",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "phi",
+      "t"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "x"
+    ],
+    "simulationId": "SIM_SHM_BASIC_3D",
+    "solverKey": "solveShmPositionAtTime",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Tính li độ tại thời điểm",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Tính li độ tại thời điểm",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Tính li độ tại thời điểm",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Tính li độ tại thời điểm",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "SHM_POSITION_EQUATION"
+      ],
+      "conceptKeys": [
+        "displacement",
+        "phase"
+      ],
+      "skillKeys": [
+        "substitute_formula"
+      ],
+      "tags": [
+        "simple_harmonic_motion"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_PHASE_AT_TIME",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "simple_harmonic_motion",
+    "name": "Tính pha tại thời điểm",
+    "description": "Cho omega, phi và t, tính pha omega t + phi.",
+    "mainFormula": "SHM_PHASE_AT_TIME",
+    "requiredParameters": [
+      "omega",
+      "phi",
+      "t"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "phase"
+    ],
+    "simulationId": "SIM_SHM_BASIC_3D",
+    "solverKey": "solveShmPhaseAtTime",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Tính pha tại thời điểm",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Tính pha tại thời điểm",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Tính pha tại thời điểm",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Tính pha tại thời điểm",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "SHM_PHASE_AT_TIME"
+      ],
+      "conceptKeys": [
+        "phase"
+      ],
+      "skillKeys": [
+        "substitute_formula"
+      ],
+      "tags": [
+        "simple_harmonic_motion"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_FIND_PERIOD_FREQUENCY",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "simple_harmonic_motion",
+    "name": "Tính chu kì, tần số, tần số góc",
+    "description": "Dùng các quan hệ f = 1/T và omega = 2pi/T = 2pi f.",
+    "mainFormula": "ANGULAR_FREQUENCY_PERIOD",
+    "requiredParameters": [
+      "omega_or_T_or_f"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "T",
+      "f",
+      "omega"
+    ],
+    "simulationId": "SIM_SHM_GRAPH_3D",
+    "solverKey": "solveShmPeriodFrequency",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Tính chu kì, tần số, tần số góc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Tính chu kì, tần số, tần số góc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Tính chu kì, tần số, tần số góc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Tính chu kì, tần số, tần số góc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "ANGULAR_FREQUENCY_PERIOD"
+      ],
+      "conceptKeys": [
+        "period",
+        "frequency",
+        "angular_frequency"
+      ],
+      "skillKeys": [
+        "formula_transform"
+      ],
+      "tags": [
+        "simple_harmonic_motion"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_WRITE_EQUATION",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "simple_harmonic_motion",
+    "name": "Viết phương trình dao động",
+    "description": "Dựa vào A, omega, phi hoặc đồ thị để viết phương trình x = A cos(omega t + phi).",
+    "mainFormula": "SHM_POSITION_EQUATION",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "phi"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "equation"
+    ],
+    "simulationId": "SIM_SHM_BASIC_3D",
+    "solverKey": "writeShmEquation",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Viết phương trình dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Viết phương trình dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Viết phương trình dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Viết phương trình dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "SHM_POSITION_EQUATION"
+      ],
+      "conceptKeys": [
+        "simple_harmonic_motion",
+        "phase"
+      ],
+      "skillKeys": [
+        "construct_equation"
+      ],
+      "tags": [
+        "simple_harmonic_motion"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_FIND_AMPLITUDE_FROM_RANGE",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "simple_harmonic_motion",
+    "name": "Tìm biên độ từ quãng dao động",
+    "description": "Nếu vật dao động trên đoạn thẳng dài 2A thì biên độ bằng nửa độ dài đoạn dao động.",
+    "mainFormula": "AMPLITUDE_FROM_RANGE",
+    "requiredParameters": [
+      "range_length"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "A"
+    ],
+    "simulationId": "SIM_SHM_BASIC_3D",
+    "solverKey": "solveAmplitudeFromRange",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Tìm biên độ từ quãng dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Tìm biên độ từ quãng dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Tìm biên độ từ quãng dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Tìm biên độ từ quãng dao động",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "AMPLITUDE_FROM_RANGE"
+      ],
+      "conceptKeys": [
+        "amplitude"
+      ],
+      "skillKeys": [
+        "interpret_physical_range"
+      ],
+      "tags": [
+        "simple_harmonic_motion"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_READ_GRAPH",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "simple_harmonic_motion",
+    "name": "Đọc đồ thị li độ thời gian",
+    "description": "Dựa vào đồ thị x-t để xác định biên độ, chu kì, tần số, pha ban đầu hoặc li độ tại thời điểm.",
+    "mainFormula": null,
+    "requiredParameters": [
+      "graph_data"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "A",
+      "T",
+      "f",
+      "omega",
+      "phi",
+      "x"
+    ],
+    "simulationId": "SIM_SHM_GRAPH_3D",
+    "solverKey": "readShmGraph",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Đọc đồ thị li độ thời gian",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Đọc đồ thị li độ thời gian",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Đọc đồ thị li độ thời gian",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Đọc đồ thị li độ thời gian",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [],
+      "conceptKeys": [
+        "graph_reading",
+        "amplitude",
+        "period"
+      ],
+      "skillKeys": [
+        "read_graph"
+      ],
+      "tags": [
+        "simple_harmonic_motion"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_PHASE_DIFFERENCE",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "simple_harmonic_motion",
+    "name": "Xác định độ lệch pha",
+    "description": "So sánh hai dao động cùng chu kì để xác định sớm pha, trễ pha, đồng pha hoặc ngược pha.",
+    "mainFormula": "PHASE_DIFFERENCE",
+    "requiredParameters": [
+      "phi1",
+      "phi2"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "delta_phi"
+    ],
+    "simulationId": "SIM_SHM_PHASE_COMPARE_3D",
+    "solverKey": "solvePhaseDifference",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Xác định độ lệch pha",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Xác định độ lệch pha",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Xác định độ lệch pha",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Xác định độ lệch pha",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "PHASE_DIFFERENCE"
+      ],
+      "conceptKeys": [
+        "phase_difference"
+      ],
+      "skillKeys": [
+        "compare_phase"
+      ],
+      "tags": [
+        "simple_harmonic_motion"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_CIRCULAR_PROJECTION",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "simple_harmonic_motion",
+    "name": "Liên hệ chuyển động tròn đều và dao động điều hòa",
+    "description": "Dùng hình chiếu của chuyển động tròn đều để mô tả dao động điều hòa.",
+    "mainFormula": "CIRCULAR_PROJECTION_SHM",
+    "requiredParameters": [
+      "radius",
+      "omega",
+      "phi"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "x"
+    ],
+    "simulationId": "SIM_SHM_CIRCULAR_PROJECTION_3D",
+    "solverKey": "solveCircularProjection",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Liên hệ chuyển động tròn đều và dao động điều hòa",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Liên hệ chuyển động tròn đều và dao động điều hòa",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Liên hệ chuyển động tròn đều và dao động điều hòa",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Liên hệ chuyển động tròn đều và dao động điều hòa",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "CIRCULAR_PROJECTION_SHM"
+      ],
+      "conceptKeys": [
+        "circular_motion_projection"
+      ],
+      "skillKeys": [
+        "visual_reasoning"
+      ],
+      "tags": [
+        "simple_harmonic_motion"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_VELOCITY_EQUATION",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "shm_kinematics",
+    "name": "Viết phương trình vận tốc",
+    "description": "Lấy đạo hàm phương trình li độ để viết v = -omega A sin(omega t + phi).",
+    "mainFormula": "SHM_VELOCITY_EQUATION",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "phi"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "v_equation"
+    ],
+    "simulationId": "SIM_SHM_XVA_3D",
+    "solverKey": "writeVelocityEquation",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Viết phương trình vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Viết phương trình vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Viết phương trình vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Viết phương trình vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "SHM_VELOCITY_EQUATION"
+      ],
+      "conceptKeys": [
+        "velocity"
+      ],
+      "skillKeys": [
+        "differentiate"
+      ],
+      "tags": [
+        "shm_kinematics"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_ACCELERATION_EQUATION",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "shm_kinematics",
+    "name": "Viết phương trình gia tốc",
+    "description": "Lấy đạo hàm vận tốc để viết a = -omega^2 A cos(omega t + phi).",
+    "mainFormula": "SHM_ACCELERATION_EQUATION",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "phi"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "a_equation"
+    ],
+    "simulationId": "SIM_SHM_XVA_3D",
+    "solverKey": "writeAccelerationEquation",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Viết phương trình gia tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Viết phương trình gia tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Viết phương trình gia tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Viết phương trình gia tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "SHM_ACCELERATION_EQUATION"
+      ],
+      "conceptKeys": [
+        "acceleration"
+      ],
+      "skillKeys": [
+        "differentiate"
+      ],
+      "tags": [
+        "shm_kinematics"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_MAX_VELOCITY_ACCELERATION",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "shm_kinematics",
+    "name": "Tính vận tốc và gia tốc cực đại",
+    "description": "Dùng vmax = omega A và amax = omega^2 A.",
+    "mainFormula": "SHM_MAX_VELOCITY_ACCELERATION",
+    "requiredParameters": [
+      "A",
+      "omega"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "vmax",
+      "amax"
+    ],
+    "simulationId": "SIM_SHM_XVA_3D",
+    "solverKey": "solveShmMaxVelocityAcceleration",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Tính vận tốc và gia tốc cực đại",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Tính vận tốc và gia tốc cực đại",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Tính vận tốc và gia tốc cực đại",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Tính vận tốc và gia tốc cực đại",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "SHM_MAX_VELOCITY_ACCELERATION"
+      ],
+      "conceptKeys": [
+        "maximum_velocity",
+        "maximum_acceleration"
+      ],
+      "skillKeys": [
+        "formula_substitution"
+      ],
+      "tags": [
+        "shm_kinematics"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_AMPLITUDE_FROM_X_V",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "shm_problem_solving",
+    "name": "Tìm biên độ từ li độ và vận tốc",
+    "description": "Dùng A = sqrt(x^2 + v^2/omega^2) khi biết x, v và omega.",
+    "mainFormula": "SHM_AMPLITUDE_FROM_X_V",
+    "requiredParameters": [
+      "x",
+      "v",
+      "omega"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "A"
+    ],
+    "simulationId": "SIM_SHM_XVA_3D",
+    "solverKey": "solveAmplitudeFromXv",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Tìm biên độ từ li độ và vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Tìm biên độ từ li độ và vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Tìm biên độ từ li độ và vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Tìm biên độ từ li độ và vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "SHM_AMPLITUDE_FROM_X_V"
+      ],
+      "conceptKeys": [
+        "amplitude",
+        "velocity"
+      ],
+      "skillKeys": [
+        "formula_substitution"
+      ],
+      "tags": [
+        "shm_problem_solving"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_ENERGY_AT_POSITION",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "shm_energy",
+    "name": "Tính động năng, thế năng, cơ năng theo li độ",
+    "description": "Dùng Wd = 1/2 m omega^2(A^2-x^2), Wt = 1/2 m omega^2 x^2, W = 1/2 m omega^2 A^2.",
+    "mainFormula": "SHM_ENERGY_SET",
+    "requiredParameters": [
+      "m",
+      "omega",
+      "A",
+      "x"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "Wd",
+      "Wt",
+      "W"
+    ],
+    "simulationId": "SIM_SHM_ENERGY_3D",
+    "solverKey": "solveShmEnergyAtPosition",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Tính động năng, thế năng, cơ năng theo li độ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Tính động năng, thế năng, cơ năng theo li độ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Tính động năng, thế năng, cơ năng theo li độ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Tính động năng, thế năng, cơ năng theo li độ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "SHM_ENERGY_SET"
+      ],
+      "conceptKeys": [
+        "kinetic_energy",
+        "potential_energy",
+        "mechanical_energy"
+      ],
+      "skillKeys": [
+        "energy_calculation"
+      ],
+      "tags": [
+        "shm_energy"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_ENERGY_FROM_VELOCITY",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "shm_energy",
+    "name": "Tính thế năng từ vận tốc",
+    "description": "Dùng bảo toàn cơ năng: Wt = 1/2 m(omega^2 A^2 - v^2).",
+    "mainFormula": "POTENTIAL_ENERGY_FROM_SPEED",
+    "requiredParameters": [
+      "m",
+      "omega",
+      "A",
+      "v"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "Wt"
+    ],
+    "simulationId": "SIM_SHM_ENERGY_3D",
+    "solverKey": "solvePotentialEnergyFromVelocity",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Tính thế năng từ vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Tính thế năng từ vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Tính thế năng từ vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Tính thế năng từ vận tốc",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "POTENTIAL_ENERGY_FROM_SPEED"
+      ],
+      "conceptKeys": [
+        "potential_energy",
+        "velocity"
+      ],
+      "skillKeys": [
+        "energy_conservation"
+      ],
+      "tags": [
+        "shm_energy"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SHM_ENERGY_RATIO",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "shm_energy",
+    "name": "Tỉ lệ động năng và thế năng",
+    "description": "Tính phần trăm động năng, thế năng theo cơ năng tại li độ cho trước.",
+    "mainFormula": "ENERGY_RATIO_BY_POSITION",
+    "requiredParameters": [
+      "A",
+      "x"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "Wd_ratio",
+      "Wt_ratio"
+    ],
+    "simulationId": "SIM_SHM_ENERGY_3D",
+    "solverKey": "solveEnergyRatio",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Tỉ lệ động năng và thế năng",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Tỉ lệ động năng và thế năng",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Tỉ lệ động năng và thế năng",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Tỉ lệ động năng và thế năng",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "ENERGY_RATIO_BY_POSITION"
+      ],
+      "conceptKeys": [
+        "energy_ratio"
+      ],
+      "skillKeys": [
+        "ratio_reasoning"
+      ],
+      "tags": [
+        "shm_energy"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "SPRING_OSCILLATOR_PERIOD",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "spring_oscillator",
+    "name": "Chu kì con lắc lò xo",
+    "description": "Tính chu kì con lắc lò xo bằng T = 2pi sqrt(m/k).",
+    "mainFormula": "SPRING_PERIOD",
+    "requiredParameters": [
+      "m",
+      "k"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "T"
+    ],
+    "simulationId": "SIM_SPRING_OSCILLATOR_3D",
+    "solverKey": "solveSpringPeriod",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Chu kì con lắc lò xo",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Chu kì con lắc lò xo",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Chu kì con lắc lò xo",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Chu kì con lắc lò xo",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "SPRING_PERIOD"
+      ],
+      "conceptKeys": [
+        "spring_oscillator",
+        "period"
+      ],
+      "skillKeys": [
+        "formula_substitution"
+      ],
+      "tags": [
+        "spring_oscillator"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "PENDULUM_SMALL_ANGLE_ENERGY",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "simple_pendulum",
+    "name": "Năng lượng con lắc đơn góc nhỏ",
+    "description": "Dùng bảo toàn cơ năng và xấp xỉ góc nhỏ để tính thế năng, động năng của con lắc đơn.",
+    "mainFormula": "PENDULUM_SMALL_ANGLE_ENERGY",
+    "requiredParameters": [
+      "m",
+      "g",
+      "l",
+      "alpha0",
+      "alpha"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "Wt",
+      "Wd"
+    ],
+    "simulationId": "SIM_SIMPLE_PENDULUM_3D",
+    "solverKey": "solvePendulumSmallAngleEnergy",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Năng lượng con lắc đơn góc nhỏ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Năng lượng con lắc đơn góc nhỏ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Năng lượng con lắc đơn góc nhỏ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Năng lượng con lắc đơn góc nhỏ",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "PENDULUM_SMALL_ANGLE_ENERGY"
+      ],
+      "conceptKeys": [
+        "simple_pendulum",
+        "energy_conservation"
+      ],
+      "skillKeys": [
+        "small_angle_approximation"
+      ],
+      "tags": [
+        "simple_pendulum"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "DAMPED_OSCILLATION_CONCEPT",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "damped_oscillation",
+    "name": "Giải thích dao động tắt dần",
+    "description": "Giải thích nguyên nhân và ứng dụng của dao động tắt dần.",
+    "mainFormula": null,
+    "requiredParameters": [],
+    "optionalParameters": [],
+    "target": [
+      "concept_explanation"
+    ],
+    "simulationId": "SIM_DAMPED_OSCILLATION_3D",
+    "solverKey": null,
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Giải thích dao động tắt dần",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Giải thích dao động tắt dần",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Giải thích dao động tắt dần",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Giải thích dao động tắt dần",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [],
+      "conceptKeys": [
+        "damped_oscillation"
+      ],
+      "skillKeys": [
+        "concept_explain"
+      ],
+      "tags": [
+        "damped_oscillation"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "FORCED_OSCILLATION_CONCEPT",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "forced_oscillation",
+    "name": "Giải thích dao động cưỡng bức",
+    "description": "Nhận biết đặc điểm của dao động cưỡng bức và ví dụ thực tế.",
+    "mainFormula": null,
+    "requiredParameters": [],
+    "optionalParameters": [],
+    "target": [
+      "concept_explanation"
+    ],
+    "simulationId": "SIM_FORCED_RESONANCE_3D",
+    "solverKey": null,
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Giải thích dao động cưỡng bức",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Giải thích dao động cưỡng bức",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Giải thích dao động cưỡng bức",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Giải thích dao động cưỡng bức",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [],
+      "conceptKeys": [
+        "forced_oscillation"
+      ],
+      "skillKeys": [
+        "concept_explain"
+      ],
+      "tags": [
+        "forced_oscillation"
+      ]
+    },
+    "isActive": true
+  },
+  {
+    "patternId": "RESONANCE_CONDITION",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "oscillation",
+    "topic": "resonance",
+    "name": "Điều kiện cộng hưởng",
+    "description": "Giải thích điều kiện f = f0 và tác dụng có lợi hoặc có hại của cộng hưởng.",
+    "mainFormula": "RESONANCE_CONDITION",
+    "requiredParameters": [
+      "f",
+      "f0"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "resonance_state"
+    ],
+    "simulationId": "SIM_FORCED_RESONANCE_3D",
+    "solverKey": "solveResonanceCondition",
+    "levels": [
+      {
+        "level": "recognition",
+        "description": "Mức recognition cho dạng Điều kiện cộng hưởng",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "understanding",
+        "description": "Mức understanding cho dạng Điều kiện cộng hưởng",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "application",
+        "description": "Mức application cho dạng Điều kiện cộng hưởng",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      },
+      {
+        "level": "high_application",
+        "description": "Mức high_application cho dạng Điều kiện cộng hưởng",
+        "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+      }
+    ],
+    "examples": [],
+    "metadata": {
+      "formulaKeys": [
+        "RESONANCE_CONDITION"
+      ],
+      "conceptKeys": [
+        "resonance"
+      ],
+      "skillKeys": [
+        "concept_explain"
+      ],
+      "tags": [
+        "resonance"
+      ]
+    },
+    "isActive": true
+  }
+]

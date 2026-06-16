@@ -6,6 +6,7 @@ export type SimulationParameter = {
 };
 
 export type SimulationOutput =
+  | string
   | 'motion_animation'
   | 'x_t_graph'
   | 'v_t_graph'

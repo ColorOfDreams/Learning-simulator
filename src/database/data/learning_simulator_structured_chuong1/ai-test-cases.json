@@ -1,0 +1,320 @@
+[
+  {
+    "id": "AI_TEST_OSC_001",
+    "input": "Một vật dao động điều hòa có phương trình x = 2cos(4πt + π/2) cm. Xác định biên độ và pha ban đầu.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_IDENTIFY_PARAMETERS",
+      "targets": [
+        "A",
+        "phi"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D"
+    },
+    "sourceItemId": "LI_B1_SHM_001",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_002",
+    "input": "Với x = 2cos(4πt + π/2) cm, tính pha và li độ tại t = 2 s.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_POSITION_AT_TIME",
+      "targets": [
+        "phase",
+        "x"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D"
+    },
+    "sourceItemId": "LI_B1_SHM_002",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_003",
+    "input": "Pít-tông dao động trên một đoạn thẳng dài 16 cm. Xác định biên độ dao động.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_FIND_AMPLITUDE_FROM_RANGE",
+      "targets": [
+        "A"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D"
+    },
+    "sourceItemId": "LI_B1_SHM_003",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_004",
+    "input": "Một dao động điều hòa có chu kì T = 2 s. Tính tần số và tần số góc.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_FIND_PERIOD_FREQUENCY",
+      "targets": [
+        "f",
+        "omega"
+      ],
+      "simulationId": "SIM_SHM_GRAPH_3D"
+    },
+    "sourceItemId": "LI_B2_SHM_001",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_005",
+    "input": "Hai dao động cùng biên độ, cùng chu kì; dao động 1 đạt cực đại sớm hơn dao động 2 một khoảng T/4. Xác định độ lệch pha.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_PHASE_DIFFERENCE",
+      "targets": [
+        "delta_phi"
+      ],
+      "simulationId": "SIM_SHM_PHASE_COMPARE_3D"
+    },
+    "sourceItemId": "LI_B2_SHM_003",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_006",
+    "input": "Vật dao động điều hòa có A = 10 cm, f = 5 Hz, tại t = 0 vật ở li độ cực đại dương. Viết phương trình dao động.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_WRITE_EQUATION",
+      "targets": [
+        "equation"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D"
+    },
+    "sourceItemId": "LI_B2_SHM_004",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_007",
+    "input": "Vật dao động theo x = 5cos(4πt) cm. Viết phương trình vận tốc.",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_kinematics",
+      "patternId": "SHM_VELOCITY_EQUATION",
+      "targets": [
+        "v_equation"
+      ],
+      "simulationId": "SIM_SHM_XVA_3D"
+    },
+    "sourceItemId": "LI_B3_SHM_001",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_008",
+    "input": "Vật dao động theo x = 5cos(4πt) cm. Viết phương trình gia tốc.",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_kinematics",
+      "patternId": "SHM_ACCELERATION_EQUATION",
+      "targets": [
+        "a_equation"
+      ],
+      "simulationId": "SIM_SHM_XVA_3D"
+    },
+    "sourceItemId": "LI_B3_SHM_002",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_009",
+    "input": "Khi vật qua vị trí cân bằng, tốc độ là 20 cm/s. Khi tốc độ là 10 cm/s thì gia tốc có độ lớn 40√3 cm/s². Tính biên độ dao động.",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_kinematics",
+      "patternId": "SHM_MAX_VELOCITY_ACCELERATION",
+      "targets": [
+        "A"
+      ],
+      "simulationId": "SIM_SHM_XVA_3D"
+    },
+    "sourceItemId": "LI_B3_SHM_003",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_010",
+    "input": "Cho x = 5cos(10πt + π/6) cm. Xác định A, f, φ và x tại t = 0,05 s.",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_problem_solving",
+      "patternId": "SHM_IDENTIFY_PARAMETERS",
+      "targets": [
+        "A",
+        "f",
+        "phi",
+        "x"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D"
+    },
+    "sourceItemId": "LI_B4_SHM_001",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_011",
+    "input": "Vật dao động điều hòa với f = 2 Hz, tại t = 0 có x = 5 cm và v = -30 cm/s. Xác định biên độ.",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_problem_solving",
+      "patternId": "SHM_AMPLITUDE_FROM_X_V",
+      "targets": [
+        "A"
+      ],
+      "simulationId": "SIM_SHM_XVA_3D"
+    },
+    "sourceItemId": "LI_B4_SHM_002",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_012",
+    "input": "Với f = 2 Hz và A ≈ 5,54 cm, tính vận tốc cực đại và gia tốc cực đại.",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_problem_solving",
+      "patternId": "SHM_MAX_VELOCITY_ACCELERATION",
+      "targets": [
+        "vmax",
+        "amax"
+      ],
+      "simulationId": "SIM_SHM_XVA_3D"
+    },
+    "sourceItemId": "LI_B4_SHM_003",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_013",
+    "input": "Vật dao động có A = 10 cm, T = 2 s, tại t = 0 có x = A. Viết phương trình dao động.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_WRITE_EQUATION",
+      "targets": [
+        "equation"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D"
+    },
+    "sourceItemId": "LI_B4_SHM_004",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_014",
+    "input": "Với x = 10cos(πt) cm, tìm thời điểm đầu tiên vật qua x = 5 cm.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_POSITION_AT_TIME",
+      "targets": [
+        "t"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D"
+    },
+    "sourceItemId": "LI_B4_SHM_005",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_015",
+    "input": "Vật dao động điều hòa có m, omega, A. Tính động năng tại li độ x.",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_energy",
+      "patternId": "SHM_ENERGY_AT_POSITION",
+      "targets": [
+        "Wd"
+      ],
+      "simulationId": "SIM_SHM_ENERGY_3D"
+    },
+    "sourceItemId": "LI_B5_EN_001",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_016",
+    "input": "Vật dao động điều hòa có m, omega. Tính thế năng tại li độ x.",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_energy",
+      "patternId": "SHM_ENERGY_AT_POSITION",
+      "targets": [
+        "Wt"
+      ],
+      "simulationId": "SIM_SHM_ENERGY_3D"
+    },
+    "sourceItemId": "LI_B5_EN_002",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_017",
+    "input": "Con lắc lò xo có khối lượng m và độ cứng k. Tính chu kì T.",
+    "expected": {
+      "intent": "solve",
+      "topic": "spring_oscillator",
+      "patternId": "SPRING_OSCILLATOR_PERIOD",
+      "targets": [
+        "T"
+      ],
+      "simulationId": "SIM_SPRING_OSCILLATOR_3D"
+    },
+    "sourceItemId": "LI_B5_EN_003",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_018",
+    "input": "Con lắc lò xo có k = 100 N/m, m = 200 g, A = 5 cm. Xác định li độ khi động năng bằng 3 lần thế năng.",
+    "expected": {
+      "intent": "solve",
+      "topic": "spring_oscillator",
+      "patternId": "SHM_ENERGY_RATIO",
+      "targets": [
+        "x"
+      ],
+      "simulationId": "SIM_SHM_ENERGY_3D"
+    },
+    "sourceItemId": "LI_B5_EN_004",
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_019",
+    "input": "Dao động điều hòa là gì?",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "referenceChunkIds": [
+        "TH_SHM_001"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D"
+    },
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_020",
+    "input": "Tại sao ở vị trí cân bằng vận tốc cực đại?",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_kinematics",
+      "referenceChunkIds": [
+        "TH_SHM_020",
+        "TH_SHM_023"
+      ],
+      "simulationId": "SIM_SHM_XVA_3D"
+    },
+    "validationStatus": "verified"
+  },
+  {
+    "id": "AI_TEST_OSC_021",
+    "input": "Cộng hưởng xảy ra khi nào?",
+    "expected": {
+      "intent": "explain",
+      "topic": "resonance",
+      "referenceChunkIds": [
+        "TH_OSC_008",
+        "TH_OSC_009"
+      ],
+      "simulationId": "SIM_FORCED_RESONANCE_3D"
+    },
+    "validationStatus": "verified"
+  }
+]
