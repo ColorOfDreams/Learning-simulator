@@ -12,10 +12,12 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
       PORT: 3000
+      LEARNING_DATASET_PATH: /data/learning_simulator_structured_chuong1/all-in-one.learning-data.json
     ports:
       - '${PORT:-3000}:3000'
     volumes:
       - .:/app
+      - ../database/data:/data:ro
       - backend_node_modules:/app/node_modules
     depends_on:
       - postgres
