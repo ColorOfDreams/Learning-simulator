@@ -4,14 +4,17 @@ import { BaseEntity } from '../../core/base/base.entity';
 @Entity('scenes')
 export class SceneEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
-  name: string;
+  name!: string;
 
   @Column({ name: 'room_type', type: 'varchar', length: 50 })
-  roomType: string;
+  roomType!: string;
 
   @Column({ type: 'jsonb', nullable: true })
-  environment: any;
+  environment?: Record<string, unknown>;
 
   @Column({ type: 'jsonb', default: [] })
-  objects: any[];
+  objects!: Record<string, unknown>[];
+
+  @Column({ nullable: true })
+  image?: string;
 }

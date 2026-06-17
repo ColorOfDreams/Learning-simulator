@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Repository, DeepPartial, FindOptionsWhere, In } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { BaseEntity } from './base.entity';
@@ -9,7 +10,11 @@ export abstract class BaseService<T extends BaseEntity> {
     return this.repository.find(options);
   }
 
-  async findPaginated(page: number = 1, limit: number = 10, options?: any): Promise<{ result: T[]; total: number }> {
+  async findPaginated(
+    page: number = 1,
+    limit: number = 10,
+    options?: any,
+  ): Promise<{ result: T[]; total: number }> {
     const [result, total] = await this.repository.findAndCount({
       ...options,
       skip: (page - 1) * limit,
@@ -63,23 +68,23 @@ export abstract class BaseService<T extends BaseEntity> {
   async getImportHeaders(query?: any) {
     return [];
   }
-  
+
   async getImportTemplate(query?: any) {
     return {};
   }
-  
+
   async validateImport(rows: any[]) {
     return [];
   }
-  
+
   async executeImport(rows: any[]) {
     return [];
   }
-  
+
   async getExportFields(query?: any) {
     return [];
   }
-  
+
   async executeExport(payload: any) {
     return null;
   }

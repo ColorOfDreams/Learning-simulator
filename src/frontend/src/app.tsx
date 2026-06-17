@@ -13,7 +13,7 @@ import AuthBounder, { unCheckPermissionPaths } from './components/AuthBounder';
 
 import OneSignalBounder from './components/OneSignalBounder';
 import HeaderContentPage from './components/RightContent/Header';
-import TechnicalSupportBounder from './components/TechnicalSupportBounder';
+import AIChatBotBounder from './components/AIChatBot';
 import ConfigBounder from './components/TechnicalSupportBounder/ConfigBounder';
 import NotAccessible from './pages/exception/403';
 import NotFoundContent from './pages/exception/404';
@@ -49,6 +49,17 @@ export async function getInitialState(): Promise<IInitialState> {
 	const token = localStorage.getItem('token');
 	if (token && token !== 'undefined') {
 		try {
+			const payload = JSON.parse(atob(token.split('.')[1]));
+			initialState.authorizedPermissions = [
+				{
+					scopes: payload.scopes ?? [],
+					rsname: currentRole,
+					rsid: currentRole,
+				},
+			];
+		} catch {}
+
+		try {
 			const info = await getUserInfo();
 			initialState.currentUser = info.data?.data || info.data;
 		} catch (error) {
@@ -68,9 +79,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
 	return {
 		unAccessible: (
 			<AuthBounder>
-				<TechnicalSupportBounder>
+				<AIChatBotBounder>
 					<NotAccessible />
-				</TechnicalSupportBounder>
+				</AIChatBotBounder>
 			</AuthBounder>
 		),
 		noFound: <NotFoundContent />,
@@ -117,9 +128,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
 			const content = (
 				<AuthBounder>
 					<ErrorBoundary>
-						<TechnicalSupportBounder>
+						<AIChatBotBounder>
 							<OneSignalBounder>{dom}</OneSignalBounder>
-						</TechnicalSupportBounder>
+						</AIChatBotBounder>
 					</ErrorBoundary>
 				</AuthBounder>
 			);

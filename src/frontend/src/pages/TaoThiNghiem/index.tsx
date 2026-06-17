@@ -49,11 +49,16 @@ const TaoThiNghiem = () => {
     }
 
     try {
+      let result;
       if (postModel) {
-        await postModel(sceneData);
+        result = await postModel(sceneData);
       }
       message.success('Tạo thí nghiệm thành công!');
-      history.push('/quan-ly-thi-nghiem');
+      if (result?.id) {
+        history.push(`/thi-nghiem?id=${result.id}`);
+      } else {
+        history.push('/quan-ly-thi-nghiem');
+      }
     } catch (err) {
       console.error(err);
       message.error('Lỗi lưu thí nghiệm. Xem console để biết thêm chi tiết.');

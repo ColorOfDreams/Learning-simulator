@@ -87,13 +87,15 @@ export const problemPatternSeed: Partial<ProblemPatternEntity>[] = [
       },
       {
         level: 'application',
-        description: 'Tính T rồi kết hợp tính f hoặc trạng thái tại một thời điểm.',
+        description:
+          'Tính T rồi kết hợp tính f hoặc trạng thái tại một thời điểm.',
         generationInstruction:
           'Tạo bài yêu cầu tính chu kì, tần số, hoặc li độ tại một thời điểm sau khi xác định ω.',
       },
       {
         level: 'high_application',
-        description: 'Kết hợp chu kì với pha, thời điểm hoặc chiều chuyển động.',
+        description:
+          'Kết hợp chu kì với pha, thời điểm hoặc chiều chuyển động.',
         generationInstruction:
           'Tạo bài có phương trình dao động và yêu cầu suy luận thời điểm vật đi qua một vị trí cho trước.',
       },
@@ -144,7 +146,8 @@ export const problemPatternSeed: Partial<ProblemPatternEntity>[] = [
       },
       {
         level: 'application',
-        description: 'Tính li độ kết hợp đổi đơn vị hoặc giá trị lượng giác đặc biệt.',
+        description:
+          'Tính li độ kết hợp đổi đơn vị hoặc giá trị lượng giác đặc biệt.',
         generationInstruction:
           'Tạo bài yêu cầu tính x tại thời điểm có pha là giá trị lượng giác quen thuộc như 0, π/2, π, 3π/2.',
       },
@@ -196,8 +199,7 @@ export const problemPatternSeed: Partial<ProblemPatternEntity>[] = [
       {
         level: 'understanding',
         description: 'Tính vmax khi đã biết A và ω.',
-        generationInstruction:
-          'Tạo bài cho A và ω, yêu cầu tính vmax = ωA.',
+        generationInstruction: 'Tạo bài cho A và ω, yêu cầu tính vmax = ωA.',
       },
       {
         level: 'application',
@@ -207,7 +209,8 @@ export const problemPatternSeed: Partial<ProblemPatternEntity>[] = [
       },
       {
         level: 'high_application',
-        description: 'Kết hợp vmax với năng lượng hoặc vận tốc tại vị trí bất kì.',
+        description:
+          'Kết hợp vmax với năng lượng hoặc vận tốc tại vị trí bất kì.',
         generationInstruction:
           'Tạo bài kết hợp vận tốc cực đại với công thức v² = ω²(A² - x²) ở mức nâng cao.',
       },
@@ -253,8 +256,7 @@ export const problemPatternSeed: Partial<ProblemPatternEntity>[] = [
       {
         level: 'understanding',
         description: 'Tính W khi biết k và A.',
-        generationInstruction:
-          'Tạo bài cho k và A, yêu cầu tính cơ năng.',
+        generationInstruction: 'Tạo bài cho k và A, yêu cầu tính cơ năng.',
       },
       {
         level: 'application',
@@ -264,7 +266,8 @@ export const problemPatternSeed: Partial<ProblemPatternEntity>[] = [
       },
       {
         level: 'high_application',
-        description: 'Kết hợp cơ năng với động năng hoặc thế năng tại vị trí x.',
+        description:
+          'Kết hợp cơ năng với động năng hoặc thế năng tại vị trí x.',
         generationInstruction:
           'Tạo bài yêu cầu tính cơ năng, sau đó tính động năng hoặc thế năng tại một li độ cho trước.',
       },

@@ -15,19 +15,19 @@ import type {
 @Entity('learning_items')
 export class LearningItemEntity {
   @PrimaryColumn({ type: 'varchar' })
-  id: string;
+  id!: string;
 
   @Column({ type: 'varchar', default: 'physics' })
-  subject: string;
+  subject!: string;
 
   @Column({ type: 'int', default: 11 })
-  grade: number;
+  grade!: number;
 
   @Column({ type: 'varchar' })
-  chapter: string;
+  chapter!: string;
 
   @Column({ type: 'varchar' })
-  topic: string;
+  topic!: string;
 
   @Column({ name: 'pattern_id', type: 'varchar', nullable: true })
   patternId?: string;
@@ -36,35 +36,35 @@ export class LearningItemEntity {
   simulationId?: string;
 
   @Column({ type: 'varchar' })
-  title: string;
+  title!: string;
 
   @Column({ type: 'text' })
-  text: string;
+  text!: string;
 
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
-  parameters: LearningParameter[];
+  parameters!: LearningParameter[];
 
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
-  target: LearningTarget[];
+  target!: LearningTarget[];
 
   @Column({ type: 'jsonb' })
-  answer: LearningAnswer;
+  answer!: LearningAnswer;
 
   @Column({ type: 'varchar', default: 'recognition' })
-  difficulty: LearningDifficulty;
+  difficulty!: LearningDifficulty;
 
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
-  concepts: string[];
+  concepts!: string[];
 
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
-  skills: string[];
+  skills!: string[];
 
   @Column({ name: 'is_active', type: 'boolean', default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  updatedAt!: Date;
 }

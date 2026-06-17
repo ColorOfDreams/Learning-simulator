@@ -118,8 +118,7 @@ export const learningItemSeed: Partial<LearningItemEntity>[] = [
       steps: [
         {
           step: 1,
-          content:
-            'So sánh với dạng x = Acos(ωt + φ), ta có A = 10 cm.',
+          content: 'So sánh với dạng x = Acos(ωt + φ), ta có A = 10 cm.',
         },
         {
           step: 2,

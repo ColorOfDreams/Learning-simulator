@@ -1,9 +1,10 @@
-import Footer from '@/components/Footer';
-import { getUserInfo, verifyGoogleLogin } from '@/services/base/api';
+import { getUserInfo, verifyGoogleLogin, login as loginApi, register as registerApi } from '@/services/base/api';
 import { GoogleLogin, GoogleOAuthProvider, type CredentialResponse } from '@react-oauth/google';
-import { message } from 'antd';
-import React from 'react';
+import { Button, Form, Input, message } from 'antd';
+import { MailOutlined, LockOutlined, UserOutlined} from '@ant-design/icons';
+import React, { useState } from 'react';
 import { history, useModel } from 'umi';
+import { currentRole } from '@/utils/ip';
 import styles from './index.less';
 
 const GOOGLE_CLIENT_ID =
@@ -42,6 +43,61 @@ const TWINKLES = [
 
 const Login: React.FC = () => {
 	const { initialState, setInitialState } = useModel('@@initialState');
+	const [mode, setMode] = useState<'login' | 'register'>('login');
+	const [loading, setLoading] = useState(false);
+	const [form] = Form.useForm();
+
+	const handleAuthSuccess = async (accessToken: string) => {
+		localStorage.setItem('access_token', accessToken);
+		localStorage.setItem('token', accessToken);
+
+		let scopes: string[] = [];
+		try {
+			const payload = JSON.parse(atob(accessToken.split('.')[1]));
+			scopes = payload.scopes ?? [];
+		} catch {}
+
+		try {
+			const info = await getUserInfo();
+			setInitialState({
+				...initialState,
+				currentUser: info.data?.data || info.data,
+				authorizedPermissions: [
+					{ scopes, rsname: currentRole, rsid: currentRole },
+				],
+			});
+		} catch {
+			setInitialState({
+				...initialState,
+				authorizedPermissions: [
+					{ scopes, rsname: currentRole, rsid: currentRole },
+				],
+			});
+		}
+
+		message.success(mode === 'register' ? 'Đăng ký thành công' : 'Đăng nhập thành công');
+		history.push('/dashboard');
+	};
+
+	const handleEmailAuth = async (values: any) => {
+		setLoading(true);
+		try {
+			const fn = mode === 'register' ? registerApi : loginApi;
+			const { confirmPassword, ...payload } = values;
+			const res = await fn(payload);
+			const accessToken = res.data?.data?.access_token || res.data?.access_token;
+			if (!accessToken) {
+				message.error('Máy chủ không trả về token xác thực');
+				return;
+			}
+			await handleAuthSuccess(accessToken);
+		} catch (err: any) {
+			const msg = err?.response?.data?.message || err?.message || 'Đăng nhập thất bại';
+			message.error(msg);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
 		try {
@@ -59,21 +115,15 @@ const Login: React.FC = () => {
 				return;
 			}
 
-			localStorage.setItem('access_token', accessToken);
-			localStorage.setItem('token', accessToken);
-
-			const info = await getUserInfo();
-			setInitialState({
-				...initialState,
-				currentUser: info.data?.data || info.data,
-			});
-
-			message.success('Đăng nhập thành công');
-			history.push('/dashboard');
-		} catch (error) {
-			console.error('Google login failed', error);
+			await handleAuthSuccess(accessToken);
+		} catch {
 			message.error('Đăng nhập thất bại');
 		}
+	};
+
+	const switchMode = (val: string | number) => {
+		setMode(val as 'login' | 'register');
+		form.resetFields();
 	};
 
 	return (
@@ -94,35 +144,13 @@ const Login: React.FC = () => {
 
 			<div className={styles.particles}>
 				{PARTICLES.map((particle, index) => (
-					<div
-						key={index}
-						className={styles.particle}
-						style={
-							{
-								left: particle.left,
-								width: particle.size,
-								height: particle.size,
-								animationDelay: particle.delay,
-								animationDuration: particle.duration,
-								'--drift': particle.drift,
-							} as React.CSSProperties
-						}
-					/>
+					<div key={index} className={styles.particle} style={{ left: particle.left, width: particle.size, height: particle.size, animationDelay: particle.delay, animationDuration: particle.duration, '--drift': particle.drift } as React.CSSProperties} />
 				))}
 			</div>
 
 			<div className={styles.twinkles}>
 				{TWINKLES.map((twinkle, index) => (
-					<div
-						key={index}
-						className={styles.twinkle}
-						style={{
-							top: twinkle.top,
-							left: twinkle.left,
-							animationDelay: twinkle.delay,
-							animationDuration: twinkle.dur,
-						}}
-					/>
+					<div key={index} className={styles.twinkle} style={{ top: twinkle.top, left: twinkle.left, animationDelay: twinkle.delay, animationDuration: twinkle.dur }} />
 				))}
 			</div>
 
@@ -196,13 +224,88 @@ const Login: React.FC = () => {
 				<div className={styles.rightPanel}>
 					<div className={styles.loginCard}>
 						<div className={styles.cardHeader}>
-							<div className={styles.cardTitle}>Bắt đầu học tập</div>
-							<div className={styles.cardDesc}>Đăng nhập để vào phòng thí nghiệm số của bạn</div>
+							<div className={styles.cardTitle}>
+								{mode === 'login' ? 'Bắt đầu học tập' : 'Đăng ký tài khoản'}
+							</div>
 						</div>
+
+						<div className={styles.authModeSwitch}>
+							<span
+								className={`${styles.modeTab} ${mode === 'login' ? styles.modeTabActive : ''}`}
+								onClick={() => switchMode('login')}
+							>
+								Đăng nhập
+							</span>
+							<span className={styles.modeTabSep}>|</span>
+							<span
+								className={`${styles.modeTab} ${mode === 'register' ? styles.modeTabActive : ''}`}
+								onClick={() => switchMode('register')}
+							>
+								Đăng ký
+							</span>
+						</div>
+
+						<Form form={form} layout="vertical" onFinish={handleEmailAuth} className={styles.authForm}>
+							{mode === 'register' && (
+								<Form.Item name="firstName">
+									<Input prefix={<UserOutlined />} placeholder="Họ và tên" size="large" className={styles.authInput} />
+								</Form.Item>
+							)}
+
+							<Form.Item
+								name="email"
+								rules={[
+									{ required: true, message: 'Vui lòng nhập email' },
+									{ type: 'email', message: 'Email không hợp lệ' },
+								]}
+							>
+								<Input prefix={<MailOutlined />} placeholder="Email" size="large" className={styles.authInput} />
+							</Form.Item>
+
+							{/* {mode === 'register' && (
+								<Form.Item name="phone">
+									<Input prefix={<PhoneOutlined />} placeholder="Số điện thoại (tuỳ chọn)" size="large" className={styles.authInput} />
+								</Form.Item>
+							)} */}
+
+							<Form.Item
+								name="password"
+								rules={[
+									{ required: true, message: 'Vui lòng nhập mật khẩu' },
+									{ min: 6, message: 'Mật khẩu ít nhất 6 ký tự' },
+								]}
+							>
+								<Input.Password prefix={<LockOutlined />} placeholder="Mật khẩu" size="large" className={styles.authInput} />
+							</Form.Item>
+
+							{mode === 'register' && (
+								<Form.Item
+									name="confirmPassword"
+									dependencies={['password']}
+									rules={[
+										{ required: true, message: 'Vui lòng xác nhận mật khẩu' },
+										({ getFieldValue }) => ({
+											validator(_, value) {
+												if (!value || getFieldValue('password') === value) return Promise.resolve();
+												return Promise.reject(new Error('Mật khẩu xác nhận không khớp'));
+											},
+										}),
+									]}
+								>
+									<Input.Password prefix={<LockOutlined />} placeholder="Xác nhận mật khẩu" size="large" className={styles.authInput} />
+								</Form.Item>
+							)}
+
+							<Form.Item style={{ marginBottom: 0 }}>
+								<Button type="primary" htmlType="submit" loading={loading} block size="large">
+									{mode === 'login' ? 'Đăng nhập' : 'Đăng ký'}
+								</Button>
+							</Form.Item>
+						</Form>
 
 						<div className={styles.divider}>
 							<div className={styles.dividerLine} />
-							<span className={styles.dividerText}>Tiếp tục với Google</span>
+							<span className={styles.dividerText}>hoặc tiếp tục với</span>
 							<div className={styles.dividerLine} />
 						</div>
 
@@ -221,10 +324,6 @@ const Login: React.FC = () => {
 						</div>
 					</div>
 				</div>
-			</div>
-
-			<div className={styles.loginFooter}>
-				<Footer />
 			</div>
 		</div>
 	);

@@ -28,7 +28,7 @@ export class AiService {
     private readonly simulationTemplateService: SimulationTemplateService,
     private readonly theoryChunkService: TheoryChunkService,
     private readonly llmService: LlmService,
-  ) {}
+  ) { }
 
   async analyze(request: AnalyzeRequestDto): Promise<AiAnalysisOutput> {
     const message = request.message.trim();
@@ -42,8 +42,8 @@ export class AiService {
     const selectedPattern = this.selectPattern(message, target, patterns);
     const simulationTemplate = selectedPattern?.simulationId
       ? await this.simulationTemplateService.findById(
-          selectedPattern.simulationId,
-        )
+        selectedPattern.simulationId,
+      )
       : undefined;
     const ragChunks = await this.findRelevantTheoryChunks(
       message,
@@ -103,8 +103,8 @@ export class AiService {
     );
     const simulationTemplate = selectedPattern?.simulationId
       ? await this.simulationTemplateService.findById(
-          selectedPattern.simulationId,
-        )
+        selectedPattern.simulationId,
+      )
       : undefined;
     const llmAnswer = await this.generateLlmResponse({
       message,
@@ -482,8 +482,7 @@ export class AiService {
           'Đã nhận diện được dạng bài. LLM/RAG sẽ bổ sung lời giải thân thiện hơn nếu đã cấu hình API key.',
         steps: [
           `Dạng bài phù hợp: ${pattern.name}.`,
-          `Công thức hoặc hướng xử lí chính: ${
-            pattern.mainFormula ?? 'giải thích khái niệm'
+          `Công thức hoặc hướng xử lí chính: ${pattern.mainFormula ?? 'giải thích khái niệm'
           }.`,
         ],
       };
@@ -508,8 +507,8 @@ export class AiService {
       value: string | number;
       unit?: string;
     }[] = Array.isArray(template.defaultParameters)
-      ? template.defaultParameters
-      : Object.entries(template.defaultParameters ?? {}).map(([key, value]) => ({
+        ? template.defaultParameters
+        : Object.entries(template.defaultParameters ?? {}).map(([key, value]) => ({
           key,
           label: key,
           value: value as string | number,
@@ -637,9 +636,8 @@ export class AiService {
         )
         .join('\n');
       const patternText = payload.selectedPattern
-        ? `Dạng bài: ${payload.selectedPattern.name}; công thức/hướng xử lí: ${
-            payload.selectedPattern.mainFormula ?? 'khái niệm'
-          }; mục tiêu: ${payload.selectedPattern.target?.join(', ')}`
+        ? `Dạng bài: ${payload.selectedPattern.name}; công thức/hướng xử lí: ${payload.selectedPattern.mainFormula ?? 'khái niệm'
+        }; mục tiêu: ${payload.selectedPattern.target?.join(', ')}`
         : 'Chưa nhận diện chắc dạng bài từ dataset.';
       const generalKnowledgeRule = payload.allowGeneralKnowledge
         ? 'Nếu tài liệu nội bộ không đủ, được dùng kiến thức Vật lí 11 phổ thông, nhưng hãy nói rõ là đang suy luận ngoài dữ liệu nội bộ.'

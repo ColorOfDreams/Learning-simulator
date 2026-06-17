@@ -55,7 +55,12 @@ export const simulationTemplateSeed: Partial<SimulationTemplateEntity>[] = [
         unit: 'N/m',
       },
     ],
-    outputs: ['energy_bar', 'kinetic_energy', 'potential_energy', 'total_energy'],
+    outputs: [
+      'energy_bar',
+      'kinetic_energy',
+      'potential_energy',
+      'total_energy',
+    ],
     isActive: true,
   },
 ];

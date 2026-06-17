@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   Get,
   Post,
@@ -38,7 +39,8 @@ export abstract class BaseController<T extends BaseEntity> {
   @Get('one')
   @ApiOperation({ summary: 'Lấy một bản ghi theo điều kiện' })
   async getOne(@Query('condition') condition: any) {
-    const parsedCondition = typeof condition === 'string' ? JSON.parse(condition) : condition;
+    const parsedCondition =
+      typeof condition === 'string' ? JSON.parse(condition) : condition;
     return this.baseService.findOne(parsedCondition);
   }
 

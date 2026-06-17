@@ -27,13 +27,9 @@ export default [
 		name: 'Dashboard',
 		component: './TrangChu',
 		icon: 'HomeOutlined',
-	},
-	{
-		path: '/ai-demo',
-		name: 'AI Demo',
-		component: './AiDemo',
-		icon: 'RobotOutlined',
-	},
+		access: 'accessFilter',
+		maChucNang: 'dashboard|xem',
+	}, 
 	{
 		path: '/gioi-thieu',
 		name: 'About',
@@ -45,6 +41,8 @@ export default [
 		path: '/quan-ly-thi-nghiem',
 		icon: 'ExperimentOutlined',
 		component: './QuanLyThiNghiem',
+		access: 'accessFilter',
+		maChucNang: 'quanlythinghiem|tao',
 	},
 	{
 		name: 'Tạo thí nghiệm',
@@ -52,6 +50,8 @@ export default [
 		icon: 'PlusSquareOutlined',
 		component: './TaoThiNghiem',
 		hideInMenu: true,
+		access: 'accessFilter',
+		maChucNang: 'quanlythinghiem|tao',
 	},
 	{
 		name: 'Phòng thí nghiệm 3D',
@@ -60,6 +60,14 @@ export default [
 		component: './ThiNghiem',
 		layout: false,
 		hideInMenu: true,
+	},
+	{
+		name: 'Bài Học',
+		path: '/bai-hoc',
+		icon: 'BookOutlined',
+		component: './BaiHoc',
+		access: 'accessFilter',
+		maChucNang: 'baihoc|xem',
 	},
 
 	// // DANH MUC HE THONG

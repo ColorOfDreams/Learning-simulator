@@ -14,6 +14,14 @@ export async function adminlogin(payload: { username?: string; password?: string
 	return axios.post(`${ip3}/auth/login`, { ...payload, platform: 'Web' });
 }
 
+export async function login(payload: { email: string; password: string }) {
+	return axios.post(`${ip3}/auth/login`, payload);
+}
+
+export async function register(payload: { email: string; password: string; firstName?: string; lastName?: string; phone?: string }) {
+	return axios.post(`${ip3}/auth/register`, payload);
+}
+
 export async function verifyGoogleLogin(payload: { token: string }) {
 	return axios.post(`${ip3}/auth/google/verify`, payload);
 }
