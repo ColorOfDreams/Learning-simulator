@@ -27,7 +27,9 @@ export default [
 		name: 'Dashboard',
 		component: './TrangChu',
 		icon: 'HomeOutlined',
-	},
+		access: 'accessFilter',
+		maChucNang: 'dashboard|xem',
+	}, 
 	{
 		path: '/gioi-thieu',
 		name: 'About',
@@ -39,6 +41,8 @@ export default [
 		path: '/quan-ly-thi-nghiem',
 		icon: 'ExperimentOutlined',
 		component: './QuanLyThiNghiem',
+		access: 'accessFilter',
+		maChucNang: 'quanlythinghiem|tao',
 	},
 	{
 		name: 'Tạo thí nghiệm',
@@ -46,6 +50,8 @@ export default [
 		icon: 'PlusSquareOutlined',
 		component: './TaoThiNghiem',
 		hideInMenu: true,
+		access: 'accessFilter',
+		maChucNang: 'quanlythinghiem|tao',
 	},
 	{
 		name: 'Phòng thí nghiệm 3D',

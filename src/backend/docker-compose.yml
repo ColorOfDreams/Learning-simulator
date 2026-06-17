@@ -12,6 +12,7 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
       PORT: 3000
+      PERMISSION_SERVICE_URL: http://host.docker.internal:3001
       LEARNING_DATASET_PATH: /data/learning_simulator_structured_chuong1/all-in-one.learning-data.json
     ports:
       - '${PORT:-3000}:3000'

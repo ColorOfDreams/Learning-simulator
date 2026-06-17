@@ -1,10 +1,10 @@
-import Footer from '@/components/Footer';
 import { getUserInfo, verifyGoogleLogin, login as loginApi, register as registerApi } from '@/services/base/api';
 import { GoogleLogin, GoogleOAuthProvider, type CredentialResponse } from '@react-oauth/google';
 import { Button, Form, Input, message } from 'antd';
-import { MailOutlined, LockOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
+import { MailOutlined, LockOutlined, UserOutlined} from '@ant-design/icons';
 import React, { useState } from 'react';
 import { history, useModel } from 'umi';
+import { currentRole } from '@/utils/ip';
 import styles from './index.less';
 
 const GOOGLE_CLIENT_ID =
@@ -51,14 +51,28 @@ const Login: React.FC = () => {
 		localStorage.setItem('access_token', accessToken);
 		localStorage.setItem('token', accessToken);
 
+		let scopes: string[] = [];
+		try {
+			const payload = JSON.parse(atob(accessToken.split('.')[1]));
+			scopes = payload.scopes ?? [];
+		} catch {}
+
 		try {
 			const info = await getUserInfo();
 			setInitialState({
 				...initialState,
 				currentUser: info.data?.data || info.data,
+				authorizedPermissions: [
+					{ scopes, rsname: currentRole, rsid: currentRole },
+				],
 			});
 		} catch {
-			// silently continue — user info will be fetched on next page load
+			setInitialState({
+				...initialState,
+				authorizedPermissions: [
+					{ scopes, rsname: currentRole, rsid: currentRole },
+				],
+			});
 		}
 
 		message.success(mode === 'register' ? 'Đăng ký thành công' : 'Đăng nhập thành công');

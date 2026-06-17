@@ -2,6 +2,7 @@ import {
   Injectable,
   UnauthorizedException,
   ConflictException,
+  Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
@@ -19,6 +20,7 @@ interface GoogleProfile {
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   private oauth2Client: OAuth2Client;
 
   constructor(
@@ -29,6 +31,29 @@ export class AuthService {
     this.oauth2Client = new OAuth2Client(
       this.configService.get<string>('GOOGLE_CLIENT_ID'),
     );
+  }
+  private async fetchScopes(role: string): Promise<string[]> {
+    try {
+      const baseUrl = this.configService.get<string>('PERMISSION_SERVICE_URL');
+      if (!baseUrl) {
+        this.logger.warn(
+          'PERMISSION_SERVICE_URL chưa được cấu hình, bỏ qua lấy scopes',
+        );
+        return [];
+      }
+      const phanHe = this.configService.get<string>('PHAN_HE') || 'ai-mo-phong';
+      const res = await fetch(
+        `${baseUrl}/phan-quyen/role/${role}/chuc-nang?phanHe=${phanHe}`,
+      );
+      if (!res.ok) return [];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const json = await res.json();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+      return json.data?.[0]?.scopes ?? [];
+    } catch (err) {
+      this.logger.warn(`Không lấy được scopes từ API phân quyền: ${err}`);
+      return [];
+    }
   }
 
   async register(dto: {
@@ -53,10 +78,16 @@ export class AuthService {
       phone: dto.phone || undefined,
     });
 
-    const jwtPayload = { sub: user.id, email: user.email, role: user.role };
+    const scopes = await this.fetchScopes(user.role);
+    const jwtPayload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+      scopes,
+    };
     return {
       access_token: this.jwtService.sign(jwtPayload),
-      user: { id: user.id, email: user.email, role: user.role },
+      user: { id: user.id, email: user.email, role: user.role, scopes },
     };
   }
 
@@ -71,10 +102,16 @@ export class AuthService {
       throw new UnauthorizedException('Email hoặc mật khẩu không đúng');
     }
 
-    const jwtPayload = { sub: user.id, email: user.email, role: user.role };
+    const scopes = await this.fetchScopes(user.role);
+    const jwtPayload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+      scopes,
+    };
     return {
       access_token: this.jwtService.sign(jwtPayload),
-      user: { id: user.id, email: user.email, role: user.role },
+      user: { id: user.id, email: user.email, role: user.role, scopes },
     };
   }
 
@@ -121,7 +158,13 @@ export class AuthService {
         }
       }
 
-      const jwtPayload = { sub: user.id, email: user.email, role: user.role };
+      const scopes = await this.fetchScopes(user.role);
+      const jwtPayload = {
+        sub: user.id,
+        email: user.email,
+        role: user.role,
+        scopes,
+      };
       return this.jwtService.sign(jwtPayload);
     } catch {
       throw new UnauthorizedException('Authentication failed');
@@ -155,7 +198,13 @@ export class AuthService {
       }
     }
 
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const scopes = await this.fetchScopes(user.role);
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+      scopes,
+    };
     return this.jwtService.sign(payload);
   }
 }

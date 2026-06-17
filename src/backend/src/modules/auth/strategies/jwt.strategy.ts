@@ -9,6 +9,7 @@ interface JwtPayload {
   sub: string;
   email: string;
   role: string;
+  scopes?: string[];
 }
 
 @Injectable()
@@ -24,11 +25,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload): Promise<UserEntity> {
+  async validate(
+    payload: JwtPayload,
+  ): Promise<UserEntity & { scopes: string[] }> {
     const user = await this.usersService.findById(payload.sub);
     if (!user) {
       throw new UnauthorizedException();
     }
-    return user;
+    return Object.assign(user, { scopes: payload.scopes ?? [] });
   }
 }

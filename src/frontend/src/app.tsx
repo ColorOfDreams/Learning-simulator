@@ -49,6 +49,17 @@ export async function getInitialState(): Promise<IInitialState> {
 	const token = localStorage.getItem('token');
 	if (token && token !== 'undefined') {
 		try {
+			const payload = JSON.parse(atob(token.split('.')[1]));
+			initialState.authorizedPermissions = [
+				{
+					scopes: payload.scopes ?? [],
+					rsname: currentRole,
+					rsid: currentRole,
+				},
+			];
+		} catch {}
+
+		try {
 			const info = await getUserInfo();
 			initialState.currentUser = info.data?.data || info.data;
 		} catch (error) {
