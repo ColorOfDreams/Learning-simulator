@@ -14,4 +14,7 @@ export class SceneEntity extends BaseEntity {
 
   @Column({ type: 'jsonb', default: [] })
   objects!: Record<string, unknown>[];
+
+  @Column({ nullable: true })
+  image?: string;
 }

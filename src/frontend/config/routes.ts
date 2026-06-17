@@ -61,6 +61,14 @@ export default [
 		layout: false,
 		hideInMenu: true,
 	},
+	{
+		name: 'Bài Học',
+		path: '/bai-hoc',
+		icon: 'BookOutlined',
+		component: './BaiHoc',
+		access: 'accessFilter',
+		maChucNang: 'baihoc|xem',
+	},
 
 	// // DANH MUC HE THONG
 	// {
