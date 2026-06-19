@@ -478,19 +478,16 @@ export class AiService {
 
     if (pattern) {
       return {
-        short_answer:
-          'Đã nhận diện được dạng bài. LLM/RAG sẽ bổ sung lời giải thân thiện hơn nếu đã cấu hình API key.',
+        short_answer: `Dạng bài: ${pattern.name}. ${pattern.mainFormula ?? ''}`,
         steps: [
           `Dạng bài phù hợp: ${pattern.name}.`,
-          `Công thức hoặc hướng xử lí chính: ${pattern.mainFormula ?? 'giải thích khái niệm'
-          }.`,
+          `Công thức hoặc hướng xử lí chính: ${pattern.mainFormula ?? 'giải thích khái niệm'}.`,
         ],
       };
     }
 
     return {
-      short_answer:
-        'Chưa tìm thấy dữ liệu khớp thật chắc trong kho chương 1. Nếu đã cấu hình LLM, hệ thống sẽ dùng kiến thức Vật lí 11 để giải thích có kiểm soát.',
+      short_answer: 'Xin lỗi, hệ thống chưa tìm thấy dữ liệu phù hợp cho câu hỏi này. Vui lòng thử diễn đạt lại hoặc hỏi câu khác.',
       steps: [],
     };
   }
@@ -579,37 +576,33 @@ export class AiService {
     selectedPattern?: ProblemPattern;
     ragChunks: TheoryChunk[];
   }) {
-    const shouldUseLlm =
-      this.llmService.isConfigured() &&
-      ['chat', 'explain', 'solve_and_simulate'].includes(payload.intent) &&
-      (payload.answer.steps.length === 0 ||
-        payload.answer.short_answer.includes('LLM/RAG') ||
-        payload.answer.short_answer.includes('Chưa tìm thấy'));
-
-    if (!shouldUseLlm) {
+    if (!this.llmService.isConfigured()) {
       return payload.answer;
     }
 
-    const llmText = await this.generateLlmResponse({
-      message: payload.message,
-      topic: payload.topic,
-      subject: 'physics',
-      grade: 11,
-      intent: payload.intent,
-      context: [],
-      ragChunks: payload.ragChunks,
-      selectedPattern: payload.selectedPattern,
-      allowGeneralKnowledge: true,
-    });
-
-    if (!llmText) {
+    if (!['chat', 'explain', 'solve_and_simulate'].includes(payload.intent)) {
       return payload.answer;
     }
 
-    return {
-      short_answer: llmText,
-      steps: [],
-    };
+    try {
+      const llmText = await this.generateLlmResponse({
+        message: payload.message,
+        topic: payload.topic,
+        subject: 'physics',
+        grade: 11,
+        intent: payload.intent,
+        context: [],
+        ragChunks: payload.ragChunks,
+        selectedPattern: payload.selectedPattern,
+        allowGeneralKnowledge: true,
+      });
+
+      if (!llmText) return payload.answer;
+
+      return { short_answer: llmText, steps: [] };
+    } catch {
+      return payload.answer;
+    }
   }
 
   private async generateLlmResponse(payload: {
@@ -673,8 +666,7 @@ export class AiService {
       ]);
 
       return this.cleanMathText(response);
-    } catch (error) {
-      console.error(error);
+    } catch {
       return undefined;
     }
   }
@@ -698,10 +690,10 @@ export class AiService {
     }
 
     return [
-      'Chưa tìm thấy mảnh dữ liệu khớp trong dataset nội bộ.',
+      'Xin lỗi, hệ thống chưa tìm thấy dữ liệu phù hợp cho câu hỏi này.',
       `Câu hỏi: ${message}`,
-      `Topic dự đoán: ${topic}.`,
-      'Khi bạn điền LLM_API_KEY, mình sẽ dùng LLM để giải thích bằng kiến thức Vật lí 11 có kiểm soát.',
+      `Chủ đề dự đoán: ${topic}.`,
+      'Vui lòng thử diễn đạt lại hoặc hỏi một câu khác.',
     ].join('\n\n');
   }
 
@@ -798,6 +790,158 @@ export class AiService {
 
   private formatNumber(value: number) {
     return Number(value.toFixed(3)).toString().replace('.', ',');
+  }
+
+  async chatRaw(request: { message: string; subject?: string; grade?: number }) {
+    const msg = request.message.trim();
+    const subject = request.subject ?? 'physics';
+    const grade = request.grade ?? 11;
+    const topic = this.detectTopic(msg);
+    const intent = this.detectIntent(msg);
+    const ragChunks = await this.findRelevantTheoryChunks(msg, topic);
+    const patterns = await this.findPatternsForTopic(topic, msg);
+    const selectedPattern = this.selectPattern(msg, this.extractTarget(msg), patterns);
+
+    const llmAnswer = await this.generateLlmResponse({
+      message: msg,
+      topic,
+      subject,
+      grade,
+      intent,
+      context: [],
+      ragChunks,
+      selectedPattern,
+      allowGeneralKnowledge: true,
+    });
+
+    return {
+      intent,
+      topic,
+      answer: llmAnswer ?? this.buildLocalChatFallback(msg, topic, ragChunks, selectedPattern),
+      used_llm: Boolean(llmAnswer),
+    };
+  }
+
+  async generateGuidance(sceneGraph?: { roomType?: string; objects?: Array<{ modelName: string; properties?: Record<string, unknown> }> }) {
+    if (!sceneGraph?.objects?.length) {
+      return {
+        text: 'Chào bạn! Hãy tạo một thí nghiệm với các dụng cụ để bắt đầu. Vào mục "Tạo thí nghiệm" để chọn dụng cụ phù hợp.',
+        steps: [],
+      };
+    }
+
+    const names = sceneGraph.objects.map((o) => {
+      const map: Record<string, string> = {
+        Stand: 'Giá đỡ', SimplePendulum: 'Con lắc đơn', SpringPendulum: 'Con lắc lò xo',
+        Spring: 'Lò xo', MassBlock: 'Vật nặng', WoodenBlock: 'Khối gỗ',
+        Beaker: 'Cốc thủy tinh', Stopwatch: 'Đồng hồ bấm giờ', Ruler: 'Thước đo',
+        Protractor: 'Thước đo góc', Dashpot: 'Bộ giảm chấn', DrivingMotor: 'Động cơ rung',
+        EnergyMeter: 'Đồng hồ năng lượng',
+      };
+      return map[o.modelName] ?? o.modelName;
+    });
+
+    const hasStand = sceneGraph.objects.some((o) => o.modelName === 'Stand');
+    const pendulums = sceneGraph.objects.filter((o) =>
+      ['SimplePendulum', 'SpringPendulum', 'Spring'].includes(o.modelName),
+    );
+    const hasPendulum = pendulums.length > 0;
+    const hasMass = sceneGraph.objects.some((o) => o.modelName === 'MassBlock');
+
+    const steps: Array<{ id: string; title: string; description: string; targetEquipment?: string }> = [];
+
+    if (hasStand && hasPendulum) {
+      steps.push({
+        id: 'attach',
+        title: 'Gắn dụng cụ vào giá đỡ',
+        description: `Kéo ${pendulums[0].modelName === 'SimplePendulum' ? 'con lắc đơn' : pendulums[0].modelName === 'SpringPendulum' ? 'con lắc lò xo' : 'lò xo'} vào kẹp của giá đỡ. Khi lại gần, dụng cụ sẽ tự động gắn vào.`,
+        targetEquipment: pendulums[0].modelName,
+      });
+      steps.push({
+        id: 'play',
+        title: 'Bấm Play để quan sát',
+        description: 'Nhấn nút Play (▶) trên thanh công cụ để bắt đầu mô phỏng. Quan sát dao động của vật.',
+      });
+      steps.push({
+        id: 'adjust',
+        title: 'Điều chỉnh thông số',
+        description: 'Thay đổi chiều dài dây hoặc khối lượng để xem chu kì thay đổi như thế nào. Chu kì T = 2π√(l/g) với con lắc đơn.',
+      });
+    } else if (hasStand && hasMass) {
+      steps.push({
+        id: 'attach_mass',
+        title: 'Gắn vật nặng vào lò xo',
+        description: 'Kéo lò xo vào giá đỡ, sau đó kéo vật nặng vào đầu dưới của lò xo.',
+      });
+      steps.push({ id: 'play', title: 'Bấm Play để quan sát', description: 'Nhấn nút Play (▶) để xem dao động.' });
+      steps.push({ id: 'adjust', title: 'Thay đổi khối lượng', description: 'Thử với các khối lượng khác nhau: T = 2π√(m/k).' });
+    } else {
+      steps.push({
+        id: 'explore',
+        title: 'Khám phá dụng cụ',
+        description: `Phòng thí nghiệm có: ${names.join(', ')}. Hãy kéo thả và khám phá từng dụng cụ.`,
+      });
+      steps.push({ id: 'play', title: 'Bấm Play để quan sát', description: 'Nhấn Play (▶) để xem chuyển động.' });
+    }
+
+    return {
+      text: `Chào bạn! Phòng thí nghiệm có: ${names.join(', ')}. Hãy làm theo các bước bên dưới để bắt đầu thí nghiệm dao động điều hòa.`,
+      steps,
+    };
+  }
+
+  async generateExperiment(message: string) {
+    if (!this.llmService.isConfigured()) {
+      return {
+        name: 'Thí nghiệm mới',
+        roomType: 'physics',
+        explanation: 'LLM chưa được cấu hình. Vui lòng tạo thủ công.',
+        objects: [] as Array<{ modelName: string; properties: Record<string, unknown> }>,
+      };
+    }
+
+    const equipmentList = [
+      'Vật lý: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
+      'Hóa học: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
+      'Toán học: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
+    ].join('\n');
+
+    try {
+      const response = await this.llmService.complete([
+        { role: 'system', content: `Bạn là trợ lý thiết kế thí nghiệm 3D cho học sinh lớp 11. 
+Dụng cụ có sẵn:\n${equipmentList}\n
+Dựa trên mô tả của học sinh, hãy chọn dụng cụ và thông số phù hợp.
+Trả về CHỈ JSON (không markdown, không giải thích):
+{
+  "name": "tên thí nghiệm",
+  "roomType": "physics|chemistry|math",
+  "explanation": "giải thích ngắn 1-2 câu",
+  "objects": [
+    { "modelName": "tên dụng cụ", "properties": { "key": value } }
+  ]
+}` },
+        { role: 'user', content: message },
+      ]);
+
+      const cleaned = (response || '').replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(cleaned);
+      return {
+        name: parsed.name || 'Thí nghiệm mới',
+        roomType: parsed.roomType || 'physics',
+        explanation: parsed.explanation || '',
+        objects: (parsed.objects || []).map((obj: any) => ({
+          modelName: obj.modelName,
+          properties: obj.properties || {},
+        })),
+      };
+    } catch {
+      return {
+        name: 'Thí nghiệm mới',
+        roomType: 'physics',
+        explanation: 'Không thể tạo tự động, vui lòng thử lại hoặc tạo thủ công.',
+        objects: [],
+      };
+    }
   }
 
   private cleanMathText(value?: string) {

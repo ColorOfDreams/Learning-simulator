@@ -1,14 +1,11 @@
 import TableBase from '@/components/Table';
 import type { IColumn } from '@/components/Table/typing';
-import FormScene from './components/Form';
-
 import { DeleteOutlined, LoginOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Space, Tooltip } from 'antd';
-import { history } from 'umi';
-import useInitModel from '@/hooks/useInitModel';
+import { history, useModel } from 'umi';
 
 const QuanLyThiNghiem = () => {
-  const { deleteModel, getModel } = useInitModel<Scene.IRecord>('scene');
+  const { deleteModel, getModel } = useModel('scene');
 
   const columns: IColumn<any>[] = [
     {

@@ -49,8 +49,14 @@ export class LlmService {
     });
 
     if (!response.ok) {
-      const body = await response.text();
-      throw new Error(`LLM request failed: ${response.status} ${body}`);
+      const body = await response.text().catch(() => '');
+      if (response.status === 429 || body.includes('insufficient_quota') || body.includes('quota')) {
+        return undefined;
+      }
+      if (response.status === 401 || response.status === 403) {
+        return undefined;
+      }
+      return undefined;
     }
 
     const json = (await response.json()) as {

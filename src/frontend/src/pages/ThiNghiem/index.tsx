@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'umi';
 import { useModel } from '@umijs/max';
 import SandboxEngine from '@/simulations/engine/SandboxEngine';
@@ -13,39 +13,36 @@ const ThiNghiem: React.FC = () => {
   const { getByIdModel } = useInitModel<Scene.IRecord>('scene');
   const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [interactionMode, setInteractionMode] = useState<'observe' | 'practice'>('observe');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const { sceneGraph, initScene, clearScene, updateObjectPosition } = useModel('useSimulationModel');
-  const { openChatbot, closeChatbot } = useModel('useAIChatBotModel');
+  const { openChatbot, closeChatbot, requestGuidance } = useModel('useAIChatBotModel');
 
   useEffect(() => {
-    const fetchScene = async () => {
-      if (id) {
-        setLoading(true);
-        if (getByIdModel) {
-          const data = await getByIdModel(id);
-          if (data) {
-            initScene(data as Scene.IRecord);
-            openChatbot(data.roomType);
-          }
+    const load = async () => {
+      if (!id) { setLoading(false); return; }
+      setLoading(true);
+      if (getByIdModel) {
+        const data = await getByIdModel(id);
+        if (data) {
+          initScene(data as Scene.IRecord);
+          openChatbot(data.roomType, data);
         }
-        setLoading(false);
       }
+      setLoading(false);
     };
-    fetchScene();
-
-    return () => {
-      clearScene();
-      closeChatbot();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    load();
+    return () => { clearScene(); closeChatbot(); };
   }, [id]);
+
+  const handleGuidance = useCallback(() => {
+    if (sceneGraph) requestGuidance(sceneGraph);
+  }, [sceneGraph, requestGuidance]);
 
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#f0f2f5' }}>
-        <Spin size="large" tip="Đang nạp dữ liệu phòng thí nghiệm..." />
+        <Spin size="large" tip="Đang nạp phòng thí nghiệm..." />
       </div>
     );
   }
@@ -57,23 +54,20 @@ const ThiNghiem: React.FC = () => {
         onToggle={() => setSidebarCollapsed((prev) => !prev)}
         subject={sceneGraph?.roomType}
       />
-
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         <div style={{ flex: 1, position: 'relative' }}>
           <SandboxEngine
             sceneGraph={sceneGraph}
             isPlaying={isPlaying}
-            interactionMode={interactionMode}
             onUpdatePosition={updateObjectPosition}
           />
         </div>
         <FooterBar
           isPlaying={isPlaying}
           onTogglePlay={() => setIsPlaying((prev) => !prev)}
-          interactionMode={interactionMode}
-          onToggleMode={() => setInteractionMode((prev) => (prev === 'observe' ? 'practice' : 'observe'))}
           sidebarCollapsed={sidebarCollapsed}
           onToggleSidebar={() => setSidebarCollapsed((prev) => !prev)}
+          onRequestGuidance={handleGuidance}
         />
       </div>
     </div>

@@ -334,7 +334,8 @@ const useInitModel = <T extends object>(
 			if (newPage > maxPage) {
 				newPage = maxPage;
 				setPage(newPage);
-			} else if (getData) getData();
+			}
+			if (getData) getData();
 			else getModel(undefined, undefined, undefined, newPage);
 
 			return res.data;
@@ -365,7 +366,8 @@ const useInitModel = <T extends object>(
 			if (newPage > maxPage) {
 				newPage = maxPage;
 				setPage(newPage);
-			} else if (getData) getData();
+			}
+			if (getData) getData();
 			else getModel(undefined, undefined, undefined, newPage);
 
 			return res.data;

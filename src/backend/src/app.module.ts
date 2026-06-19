@@ -7,6 +7,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { LearningModule } from './modules/learning/learning.module';
 import { AiModule } from './modules/ai/ai.module';
+import { ChatModule } from './modules/chat/chat.module';
 import { SceneModule } from './modules/scene/scene.module';
 
 @Module({
@@ -32,6 +33,7 @@ import { SceneModule } from './modules/scene/scene.module';
     AuthModule,
     LearningModule,
     AiModule,
+    ChatModule,
     SceneModule,
   ],
   controllers: [AppController],
