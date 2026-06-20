@@ -1,0 +1,517 @@
+@import '../components/student-theme.less';
+
+// ═══════════════════════════════════
+// Student Home Page
+// ═══════════════════════════════════
+
+.stu-home {
+  flex: 1;
+  overflow-y: auto;
+  padding: 34px 44px 56px;
+  position: relative;
+  background:
+    radial-gradient(900px 540px at 12% -8%, oklch(0.66 0.16 264 / 0.12), transparent 60%),
+    radial-gradient(820px 520px at 100% 4%, oklch(0.6 0.18 350 / 0.10), transparent 58%),
+    radial-gradient(760px 600px at 88% 100%, oklch(0.58 0.12 195 / 0.10), transparent 60%),
+    @stu-bg;
+  .stu-scrollbar();
+
+  &__grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(oklch(0.5 0.05 280 / 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.5 0.05 280 / 0.035) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%);
+    -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%);
+  }
+
+  &__content {
+    position: relative;
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  // ── Header ──
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  &__welcome {
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    color: @stu-text-primary;
+  }
+
+  &__subtitle {
+    font-size: 15px;
+    color: @stu-text-hint;
+    margin-top: 4px;
+  }
+
+  &__badges {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+
+  &__badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 13px;
+    border-radius: @stu-radius-pill;
+    background: @stu-bg-card;
+    border: 1px solid @stu-border;
+    box-shadow: @stu-shadow-sm;
+
+    span {
+      font-size: 13px;
+      font-weight: 700;
+      color: @stu-text-body;
+    }
+
+    &-dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 5px;
+
+      &--level {
+        background: @stu-accent;
+      }
+
+      &--streak {
+        border-radius: 50%;
+        background: @stu-gold;
+      }
+    }
+  }
+
+  &__xp-bar {
+    min-width: 158px;
+  }
+
+  &__xp-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: @stu-text-placeholder;
+    margin-bottom: 5px;
+  }
+
+  &__xp-track {
+    height: 8px;
+    border-radius: @stu-radius-pill;
+    background: @stu-text-segment-bg;
+  }
+
+  &__xp-fill {
+    height: 100%;
+    border-radius: @stu-radius-pill;
+    background: linear-gradient(90deg, oklch(0.66 0.16 264), oklch(0.58 0.17 285));
+  }
+
+  // ── Hero AI Bar ──
+  &__hero {
+    background: linear-gradient(135deg, #fbfaf7, #f5f3fb);
+    border: 1px solid @stu-border;
+    border-radius: @stu-radius-2xl;
+    padding: 28px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: @stu-shadow-lg;
+
+    &-header {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    &-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: @stu-accent-gradient2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+    }
+
+    &-title {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      color: @stu-text-primary;
+    }
+
+    &-desc {
+      font-size: 13.5px;
+      color: @stu-text-hint;
+    }
+
+    &-input-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    &-input {
+      flex: 1;
+      height: 54px;
+      border-radius: @stu-radius-lg;
+      background: @stu-bg-card;
+      border: 1px solid @stu-border-light;
+      padding: 0 18px;
+      font-size: 15px;
+      font-family: @font-heading;
+      color: @stu-text-primary;
+      outline: none;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: @stu-accent;
+      }
+
+      &::placeholder {
+        color: @stu-text-placeholder;
+      }
+    }
+
+    &-btn {
+      flex: none;
+      padding: 0 26px;
+      height: 54px;
+      border-radius: @stu-radius-lg;
+      background: @stu-accent-gradient;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: @stu-shadow-btn;
+      transition: transform 0.15s, box-shadow 0.15s;
+      user-select: none;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 14px oklch(0.6 0.16 264 / 0.4);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    &-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      align-items: center;
+
+      &-label {
+        font-size: 12.5px;
+        color: @stu-text-placeholder;
+        margin-right: 2px;
+      }
+    }
+
+    &-chip {
+      padding: 8px 14px;
+      border-radius: @stu-radius-pill;
+      background: @stu-bg-card;
+      border: 1px solid @stu-border-light;
+      font-size: 13px;
+      color: @stu-text-body;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+
+      &:hover {
+        border-color: @stu-accent;
+        color: @stu-accent-dark;
+        background: @stu-accent-tint;
+      }
+    }
+  }
+
+  // ── Divider ──
+  &__divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    &-line {
+      flex: 1;
+      height: 1px;
+      background: @stu-border-muted;
+    }
+
+    &-text {
+      font-size: 13px;
+      color: @stu-text-placeholder;
+    }
+  }
+
+  // ── Controls ──
+  &__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__grade-tabs {
+    display: inline-flex;
+    background: @stu-text-segment-bg;
+    border-radius: 11px;
+    padding: 3px;
+  }
+
+  &__grade-tab {
+    padding: 8px 17px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    color: @stu-text-muted;
+    font-weight: 500;
+    transition: all 0.15s;
+    user-select: none;
+
+    &--active {
+      background: @stu-bg-card;
+      color: @stu-accent-dark;
+      font-weight: 700;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+  }
+
+  &__filter-chips {
+    display: flex;
+    gap: 9px;
+  }
+
+  &__filter-chip {
+    display: flex;
+    align-items: center;
+    padding: 9px 15px;
+    border-radius: @stu-radius-md;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1px solid @stu-border-light;
+    background: @stu-bg-card;
+    color: @stu-text-secondary;
+    font-weight: 500;
+    transition: all 0.15s;
+    user-select: none;
+
+    &--active {
+      font-weight: 700;
+
+      &.stu-home__filter-chip--all {
+        border-color: @stu-accent-dark;
+        background: @stu-accent-tint;
+        color: @stu-accent-dark;
+      }
+
+      &.stu-home__filter-chip--math {
+        border-color: @stu-math-dark;
+        background: @stu-math-tint;
+        color: @stu-math-dark;
+      }
+
+      &.stu-home__filter-chip--physics {
+        border-color: @stu-physics-dark;
+        background: @stu-physics-tint;
+        color: @stu-physics-dark;
+      }
+
+      &.stu-home__filter-chip--chem {
+        border-color: @stu-chem-dark;
+        background: @stu-chem-tint;
+        color: @stu-chem-dark;
+      }
+    }
+  }
+
+  // ── Card Grid ──
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  &__card {
+    border: 1px solid @stu-border;
+    border-radius: @stu-radius-xl;
+    overflow: hidden;
+    background: @stu-bg-card;
+    cursor: pointer;
+    box-shadow: @stu-shadow-md;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    animation: stu-fadeUp 0.5s ease backwards;
+
+    &:hover {
+      box-shadow: @stu-shadow-xl;
+      transform: translateY(-3px);
+    }
+
+    &-thumb {
+      height: 112px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &--physics { background: @stu-physics-gradient; }
+      &--math { background: @stu-math-gradient; }
+      &--chem { background: @stu-chem-gradient; }
+
+      &-label {
+        font-family: @font-mono;
+        font-size: 11px;
+        color: #fff;
+        opacity: 0.85;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    &-lock {
+      position: absolute;
+      inset: 0;
+      background: rgba(40, 40, 38, 0.34);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &-body {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    &-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 3px;
+      flex: none;
+
+      &--physics { background: @stu-physics; }
+      &--math { background: @stu-math; }
+      &--chem { background: @stu-chem; }
+    }
+
+    &-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: @stu-text-heading;
+    }
+
+    &-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &-level {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: @stu-radius-pill;
+      font-weight: 700;
+    }
+
+    &-mins {
+      font-size: 12px;
+      color: @stu-text-placeholder;
+    }
+
+    &-xp {
+      margin-left: auto;
+      font-size: 12px;
+      font-weight: 600;
+      color: @stu-accent-dark;
+    }
+  }
+}
+
+// ── Level Badges ──
+.level-beginner {
+  background: #eceae4;
+  color: @stu-text-muted;
+}
+
+.level-intermediate {
+  background: @stu-accent-tint2;
+  color: @stu-accent-dark;
+}
+
+.level-advanced {
+  background: #efe6d4;
+  color: @stu-gold-dark;
+}
+
+.level-locked {
+  background: #ece9e2;
+  color: @stu-text-placeholder;
+}
+
+// ── Responsive ──
+@media (max-width: 1024px) {
+  .stu-home__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stu-home {
+    padding: 24px 20px 40px;
+  }
+
+  .stu-home__welcome {
+    font-size: 22px;
+  }
+
+  .stu-home__badges {
+    flex-wrap: wrap;
+  }
+
+  .stu-home__hero-input-row {
+    flex-direction: column;
+  }
+
+  .stu-home__hero-btn {
+    height: 48px;
+    justify-content: center;
+  }
+
+  .stu-home__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stu-home__controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

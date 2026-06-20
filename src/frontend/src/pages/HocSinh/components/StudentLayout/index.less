@@ -1,0 +1,202 @@
+@import '../student-theme.less';
+
+// ═══════════════════════════════════
+// Student Layout — Root & Sidebar
+// ═══════════════════════════════════
+
+.stu-root {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background: @stu-bg;
+  color: @stu-text-primary;
+  overflow: hidden;
+  font-family: @font-heading;
+  -webkit-font-smoothing: antialiased;
+}
+
+// ── Sidebar ──
+
+.stu-sidebar {
+  width: @stu-sidebar-width;
+  flex: none;
+  background: @stu-bg-sidebar;
+  border-right: 1px solid @stu-border;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  .stu-scrollbar();
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 6px 8px 22px;
+    cursor: pointer;
+
+    &-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: @stu-accent-gradient2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+    }
+
+    &-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      color: @stu-text-primary;
+    }
+
+    &-sub {
+      font-size: 11px;
+      color: @stu-text-placeholder;
+      margin-top: -2px;
+    }
+  }
+
+  // Navigation
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__nav-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 12px;
+    border-radius: @stu-radius-md;
+    font-size: 14px;
+    cursor: pointer;
+    color: @stu-text-secondary;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    user-select: none;
+
+    &:hover {
+      background: @stu-text-segment-bg;
+    }
+
+    &--active {
+      background: @stu-accent-tint;
+      color: @stu-accent-darker;
+      font-weight: 700;
+
+      &:hover {
+        background: @stu-accent-tint;
+      }
+    }
+  }
+
+  // Bottom section
+  &__bottom {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 8px 4px;
+    border-top: 1px solid @stu-border;
+    margin-top: 8px;
+
+    &-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(140deg, #cfc8e8, #b8c4e6);
+      flex: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #4a4670;
+    }
+
+    &-info {
+      min-width: 0;
+    }
+
+    &-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: @stu-text-heading;
+      white-space: nowrap;
+    }
+
+    &-meta {
+      font-size: 11px;
+      color: @stu-text-placeholder;
+    }
+  }
+}
+
+// ── Main Content Area ──
+
+.stu-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &--full {
+    width: 100%;
+  }
+}
+
+// ── Responsive ──
+
+@media (max-width: 900px) {
+  .stu-sidebar {
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .stu-sidebar {
+    width: 60px;
+    padding: 16px 8px;
+
+    .stu-sidebar__logo-title,
+    .stu-sidebar__logo-sub,
+    .stu-sidebar__user-info,
+    .stu-sidebar__nav-item {
+      font-size: 0;
+      gap: 0;
+
+      svg {
+        margin: 0 auto;
+      }
+    }
+
+    .stu-sidebar__nav-item {
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .stu-sidebar__logo {
+      justify-content: center;
+
+      & > div:last-child {
+        display: none;
+      }
+    }
+
+    .stu-sidebar__user-info {
+      display: none;
+    }
+  }
+}

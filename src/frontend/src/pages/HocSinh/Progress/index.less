@@ -1,0 +1,260 @@
+@import '../components/student-theme.less';
+
+// ═══════════════════════════════════
+// Progress Page
+// ═══════════════════════════════════
+
+.stu-progress {
+  flex: 1;
+  overflow-y: auto;
+  padding: 34px 44px 56px;
+  .stu-scrollbar();
+
+  &__inner {
+    max-width: 1020px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__title {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    color: @stu-text-primary;
+  }
+
+  // ── Stat Cards ──
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  &__stat-card {
+    border: 1px solid @stu-border;
+    border-radius: 15px;
+    background: @stu-bg-card;
+    padding: 17px;
+    box-shadow: @stu-shadow-md;
+  }
+
+  &__stat-label {
+    font-size: 12px;
+    color: @stu-text-placeholder;
+  }
+
+  &__stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: @stu-text-primary;
+    margin-top: 4px;
+
+    &--accent {
+      color: @stu-accent-dark;
+    }
+  }
+
+  // ── Charts Row ──
+  &__charts {
+    display: flex;
+    gap: 18px;
+  }
+
+  &__chart-card {
+    border: 1px solid @stu-border;
+    border-radius: @stu-radius-xl;
+    background: @stu-bg-card;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: @stu-shadow-md;
+    flex: 1;
+
+    &--wide {
+      flex: 1.4;
+    }
+  }
+
+  &__chart-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: @stu-text-primary;
+  }
+
+  // ── XP Chart ──
+  &__xp-chart {
+    position: relative;
+    height: 190px;
+  }
+
+  &__xp-axis-y {
+    position: absolute;
+    left: 5%;
+    top: 2%;
+    bottom: 11%;
+    width: 1px;
+    background: @stu-text-segment-bg;
+  }
+
+  &__xp-axis-x {
+    position: absolute;
+    left: 5%;
+    right: 2%;
+    bottom: 11%;
+    height: 1px;
+    background: @stu-text-segment-bg;
+  }
+
+  &__xp-svg {
+    position: absolute;
+    left: 5%;
+    right: 2%;
+    top: 2%;
+    bottom: 11%;
+    width: 93%;
+    height: 87%;
+  }
+
+  &__xp-label {
+    position: absolute;
+    bottom: 1%;
+    font-family: @font-mono;
+    font-size: 10px;
+    color: @stu-text-placeholder;
+
+    &--start { left: 5%; }
+    &--end { right: 2%; }
+  }
+
+  // ── Subject Mastery ──
+  &__mastery {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1;
+  }
+
+  &__mastery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+  }
+
+  &__mastery-ring {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__mastery-inner {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: @stu-bg-card;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    color: @stu-text-primary;
+  }
+
+  &__mastery-label {
+    font-size: 12px;
+    color: @stu-text-secondary;
+  }
+
+  // ── Badges ──
+  &__badges-card {
+    border: 1px solid @stu-border;
+    border-radius: @stu-radius-xl;
+    background: @stu-bg-card;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: @stu-shadow-md;
+  }
+
+  &__badges-grid {
+    display: flex;
+    gap: 26px;
+    flex-wrap: wrap;
+  }
+
+  &__badge-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 88px;
+  }
+
+  &__badge-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--earned {
+      background: @stu-accent-tint3;
+      border: 2px solid oklch(0.62 0.16 264 / 0.5);
+      color: @stu-accent-dark;
+    }
+
+    &--locked {
+      background: #f0eee9;
+      border: 2px dashed #d0cec7;
+      color: #b8b6ad;
+    }
+  }
+
+  &__badge-name {
+    font-size: 11px;
+    color: @stu-text-secondary;
+    text-align: center;
+
+    &--locked {
+      color: @stu-text-disabled;
+    }
+  }
+}
+
+// ── Responsive ──
+@media (max-width: 1024px) {
+  .stu-progress__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stu-progress__charts {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .stu-progress {
+    padding: 24px 20px 40px;
+  }
+
+  .stu-progress__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stu-progress__mastery {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .stu-progress__badges-grid {
+    justify-content: center;
+  }
+}

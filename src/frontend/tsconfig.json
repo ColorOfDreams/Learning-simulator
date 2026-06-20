@@ -27,6 +27,9 @@
 			"@@/*": [
 				"./src/.umi/*"
 			],
+			"@simulations/*": [
+				"../simulations/*"
+			],
 			"react": [
 				"./node_modules/@types/react"
 			]
@@ -35,6 +38,7 @@
 	"include": [
 		"mock/**/*",
 		"src/**/*",
+		"../simulations/**/*",
 		"tests/**/*",
 		"test/**/*",
 		"__test__/**/*",

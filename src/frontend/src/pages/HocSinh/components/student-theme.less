@@ -1,0 +1,182 @@
+// ═══════════════════════════════════════════
+// Student Dashboard — Design Tokens
+// Prototype: SciLab Virtual Lab
+// ═══════════════════════════════════════════
+
+// ── Fonts (loaded via Google Fonts in StudentLayout) ──
+@font-heading: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+@font-mono: 'IBM Plex Mono', 'Fira Code', 'Consolas', monospace;
+
+// ── Base Colors ──
+@stu-bg: #f2f1ec;
+@stu-bg-sidebar: #fbfaf7;
+@stu-bg-card: #fff;
+@stu-bg-panel: #faf9f5;
+@stu-border: #e6e4dd;
+@stu-border-light: #dcdad2;
+@stu-border-muted: #e2e0d9;
+
+// ── Text Colors ──
+@stu-text-primary: #2a2a28;
+@stu-text-heading: #2f2e2b;
+@stu-text-body: #3a3a36;
+@stu-text-secondary: #5a5852;
+@stu-text-muted: #6a6862;
+@stu-text-hint: #86847c;
+@stu-text-placeholder: #9a988f;
+@stu-text-disabled: #a8a69e;
+@stu-text-faint: #b0aea7;
+@stu-text-segment-bg: #eae8e2;
+
+// ── Accent / Brand Purple ──
+@stu-accent: oklch(0.62 0.16 264);
+@stu-accent-deep: oklch(0.55 0.17 285);
+@stu-accent-dark: oklch(0.5 0.16 264);
+@stu-accent-darker: oklch(0.47 0.16 264);
+@stu-accent-darker2: oklch(0.45 0.16 264);
+@stu-accent-tint: oklch(0.62 0.16 264 / 0.12);
+@stu-accent-tint2: oklch(0.62 0.16 264 / 0.13);
+@stu-accent-tint3: oklch(0.62 0.16 264 / 0.15);
+@stu-accent-shadow: oklch(0.6 0.16 264 / 0.3);
+@stu-accent-gradient: linear-gradient(150deg, oklch(0.64 0.16 264), oklch(0.55 0.17 282));
+@stu-accent-gradient2: linear-gradient(150deg, oklch(0.66 0.16 264), oklch(0.55 0.17 285));
+
+// ── Subject Colors ──
+@stu-physics: oklch(0.58 0.15 262);
+@stu-physics-dark: oklch(0.46 0.15 262);
+@stu-physics-tint: oklch(0.58 0.15 262 / 0.14);
+@stu-physics-gradient: linear-gradient(135deg, oklch(0.66 0.15 262), oklch(0.56 0.16 270));
+
+@stu-math: oklch(0.58 0.12 195);
+@stu-math-dark: oklch(0.48 0.12 195);
+@stu-math-tint: oklch(0.55 0.12 195 / 0.14);
+@stu-math-gradient: linear-gradient(135deg, oklch(0.66 0.12 195), oklch(0.56 0.12 200));
+
+@stu-chem: oklch(0.6 0.18 350);
+@stu-chem-dark: oklch(0.5 0.18 350);
+@stu-chem-tint: oklch(0.6 0.18 350 / 0.12);
+@stu-chem-gradient: linear-gradient(135deg, oklch(0.7 0.16 350), oklch(0.6 0.18 350));
+
+// ── Status Colors ──
+@stu-success: oklch(0.62 0.13 150);
+@stu-success-dark: oklch(0.4 0.12 150);
+@stu-success-tint: oklch(0.6 0.13 150 / 0.13);
+@stu-error: oklch(0.6 0.18 25);
+@stu-error-dark: oklch(0.48 0.18 25);
+@stu-error-tint: oklch(0.62 0.18 25 / 0.12);
+@stu-gold: #e0a82e;
+@stu-gold-dark: #a07d1e;
+@stu-crown: oklch(0.78 0.13 85);
+
+// ── Spacing ──
+@stu-sidebar-width: 236px;
+@stu-radius-sm: 8px;
+@stu-radius-md: 10px;
+@stu-radius-lg: 13px;
+@stu-radius-xl: 16px;
+@stu-radius-2xl: 20px;
+@stu-radius-pill: 999px;
+
+// ── Shadows ──
+@stu-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.03);
+@stu-shadow-md: 0 1px 3px rgba(0, 0, 0, 0.04);
+@stu-shadow-lg: 0 2px 10px rgba(60, 50, 90, 0.05);
+@stu-shadow-xl: 0 8px 22px rgba(60, 50, 90, 0.12);
+@stu-shadow-hover: 0 16px 36px rgba(0, 0, 0, 0.12);
+@stu-shadow-btn: 0 3px 10px oklch(0.6 0.16 264 / 0.3);
+
+// ── Animations ──
+@keyframes stu-fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes stu-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes stu-slotFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+// ── Scrollbar ──
+.stu-scrollbar() {
+  &::-webkit-scrollbar { width: 9px; height: 9px; }
+  &::-webkit-scrollbar-thumb {
+    background: #d8d6cf;
+    border-radius: 9px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+}
+
+// ── Range Input ──
+.stu-range-input() {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: @stu-radius-pill;
+  background: @stu-text-segment-bg;
+  outline: none;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid @stu-accent;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  &::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid @stu-accent;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+}
+
+// ── Toggle Switch ──
+.stu-toggle-track(@active: false) {
+  width: 44px;
+  height: 24px;
+  border-radius: @stu-radius-pill;
+  position: relative;
+  flex: none;
+  transition: background 0.15s;
+  cursor: pointer;
+
+  & when (@active) {
+    background: @stu-accent;
+  }
+  & when not (@active) {
+    background: #dddbd4;
+  }
+}
+
+.stu-toggle-knob(@active: false) {
+  position: absolute;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: left 0.15s;
+
+  & when (@active) {
+    left: 22px;
+  }
+  & when not (@active) {
+    left: 2px;
+  }
+}

@@ -84,6 +84,34 @@ export default [
 	// 	],
 	// },
 
+	// ─── GIAO DIỆN HỌC SINH ───
+	{
+		path: '/hoc-sinh',
+		layout: false,
+		routes: [
+			{
+				path: '/hoc-sinh',
+				component: './HocSinh/Home',
+			},
+			{
+				path: '/hoc-sinh/my-labs',
+				component: './HocSinh/MyLabs',
+			},
+			{
+				path: '/hoc-sinh/progress',
+				component: './HocSinh/Progress',
+			},
+			{
+				path: '/hoc-sinh/leaderboard',
+				component: './HocSinh/Leaderboard',
+			},
+			{
+				path: '/hoc-sinh/workspace',
+				component: './HocSinh/Workspace',
+			},
+		],
+	},
+
 	{
 		path: '/notification',
 		routes: [
