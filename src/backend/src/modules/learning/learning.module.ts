@@ -19,6 +19,8 @@ import { ProblemPatternController } from './problem-pattern/problem-pattern.cont
 import { LearningController } from './learning.controller';
 import { LearningDatasetSeedService } from './learning-dataset-seed.service';
 import { LearningService } from './learning.service';
+import { AiTestCaseEntity } from './ai-test-case/ai-test-case.entity';
+import { MediaAssetEntity } from './media-asset/media-asset.entity';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { LearningService } from './learning.service';
       LearningItemEntity,
       TheoryChunkEntity,
       ProblemPatternEntity,
+      AiTestCaseEntity,
+      MediaAssetEntity,
     ]),
   ],
   controllers: [

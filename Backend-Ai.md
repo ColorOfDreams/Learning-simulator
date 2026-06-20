@@ -1,666 +1,729 @@
-# Backend AI - Learning Simulator
+# Backend AI – Learning Simulator Vật lí 11
 
-Tài liệu này ghi lại toàn bộ phần đã cập nhật cho luồng backend AI, dataset chương 1 Dao động Vật lí 11, LLM chat/fallback và frontend test tối giản.
+Tài liệu này là điểm bàn giao cho người hoặc AI tiếp tục triển khai backend AI. Mục tiêu là chạy được luồng dữ liệu thật, có kiểm tra trước khi seed, truy hồi kiến thức từ PostgreSQL và giữ nguyên nội dung Vật lí trong dataset.
 
-Mục tiêu hiện tại:
+## 1. Phạm vi và nguyên tắc
 
-- Seed được dataset thật của chương 1 vào backend.
-- Chạy được luồng end-to-end để test nhanh: seed -> analyze -> chat.
-- Ưu tiên dữ liệu nội bộ từ dataset, nhưng khi thiếu dữ liệu thì LLM được phép giải thích bằng kiến thức Vật lí 11 có kiểm soát.
-- Không phụ thuộc frontend chính của dự án khi test.
+- Backend: NestJS + TypeORM + PostgreSQL tại `src/backend`.
+- Dataset chuẩn hiện tại: `src/database/data/all-in-one.learning-data.json`.
+- Không sửa câu hỏi, công thức, đáp án hoặc kiến thức Vật lí trong JSON nếu không có yêu cầu biên tập rõ ràng.
+- `validationStatus` là metadata; chỉ nhận: `draft`, `ai_generated`, `needs_review`, `solver_verified`, `human_verified`, `gold`.
+- Retrieval hiện ưu tiên keyword phrase, sau đó fallback theo từng token. Chưa cần `pgvector`.
+- `sourceData` trong entity giữ nguyên bản ghi JSON nguồn để backend có thể normalize mà không làm mất thông tin.
 
----
-
-## 1. Dataset đang dùng
-
-Dataset chính trong repo:
+Luồng dữ liệu:
 
 ```text
-C2-App-107/src/database/data/learning_simulator_structured_chuong1/all-in-one.learning-data.json
+all-in-one.learning-data.json
+  -> TypeScript validation schema
+  -> TypeORM upsert vào PostgreSQL
+  -> TheoryChunk keyword retrieval
+  -> /ai/analyze hoặc /ai/chat
+  -> answer + simulation + references
 ```
 
-Bản local ban đầu ở workspace ngoài repo:
+## 2. Cấu trúc repo cần biết
 
 ```text
-D:\LearnSimulator\data\learning_simulator_structured_chuong1/
+C2-App-107/
+├─ Backend-Ai.md
+├─ src/backend/
+│  ├─ src/modules/ai/
+│  ├─ src/modules/learning/
+│  ├─ scripts/
+│  ├─ docker-compose.yml
+│  └─ .env
+└─ src/database/
+   ├─ data/
+   │  ├─ all-in-one.learning-data.json
+   │  ├─ theory-chunks.json
+   │  ├─ problem-patterns.json
+   │  ├─ learning-items.json
+   │  ├─ ai-test-cases.json
+   │  ├─ simulation-templates.json
+   │  ├─ media-assets.json
+   │  └─ manifest.json
+   └─ migrations/
 ```
 
-Các file dataset quan trọng:
+`LEARNING_DATASET_PATH` được ưu tiên nếu được cấu hình. Nếu chưa có, seed service thử lần lượt:
 
-- `all-in-one.learning-data.json`: payload tổng hợp để seed/test.
-- `theory-chunks.json`: mảnh lý thuyết cho RAG-lite.
-- `problem-patterns.json`: dạng bài, công thức, mục tiêu, simulation id.
-- `learning-items.json`: bài tập/ví dụ mẫu.
-- `simulation-templates.json`: template mô phỏng 3D.
-- `ai-test-cases.json`: bộ câu hỏi benchmark/demo.
-- `media-assets.json`: reference ảnh, hiện chủ yếu là placeholder.
+1. `../database/data/11/all-in-one.learning-data.json` (tương thích layout cũ/mới);
+2. `../database/data/all-in-one.learning-data.json` (layout thực tế hiện tại).
 
-Dataset này tập trung vào chương 1 Dao động lớp 11:
+Trong Docker, `src/database/data` được mount thành `/data`, vì vậy biến môi trường phải là:
 
-- dao động cơ,
-- dao động điều hòa,
-- động học dao động `x-v-a`,
-- năng lượng dao động,
-- con lắc lò xo,
-- con lắc đơn,
-- dao động tắt dần,
-- dao động cưỡng bức,
-- cộng hưởng.
+```env
+LEARNING_DATASET_PATH=/data/all-in-one.learning-data.json
+```
 
----
+## 3. Data contract
 
-## 2. Backend NestJS chính
+Payload tổng hợp phải có sáu mảng:
 
-Backend chính nằm ở:
+```ts
+type LearningDataset = {
+  manifest?: Record<string, unknown>;
+  theoryChunks: TheoryChunk[];
+  problemPatterns: ProblemPattern[];
+  learningItems: LearningItem[];
+  aiTestCases: AiTestCase[];
+  simulationTemplates: SimulationTemplate[];
+  mediaAssets: MediaAsset[];
+};
+```
+
+### TheoryChunk
+
+Required: `id`, `subject`, `grade`, `chapter`, `lessonId`, `topic`, `type`, `title`, `text`, `validationStatus`.
+
+Được dùng cho retrieval/RAG. `text` là nguồn tri thức chính, `keywords` là tín hiệu hỗ trợ tìm kiếm.
+
+### ProblemPattern
+
+Required: `id`, `subject`, `grade`, `topic`, `title`, `description`, `validationStatus`.
+
+`simulationId` là optional nhưng nếu có phải trỏ tới `simulationTemplates[].id`.
+
+### LearningItem
+
+Required: `id`, `subject`, `grade`, `chapter`, `lessonId`, `topic`, `title`, `text`, `patternId`, `validationStatus`.
+
+- `patternId` bắt buộc trỏ tới `problemPatterns[].id`.
+- `simulationId` optional; nếu có phải trỏ tới `simulationTemplates[].id`.
+- `answer`, `parameters`, `target`, `concepts`, `skills` được seed theo dạng tương thích với entity cũ.
+
+### AiTestCase
+
+Required: `id`, `input`, `expected`, `validationStatus`.
+
+- `expected.patternId` optional; nếu có phải tồn tại trong `problemPatterns`.
+- `sourceLearningItemId` optional; nếu có phải tồn tại trong `learningItems`.
+
+### SimulationTemplate và MediaAsset
+
+`SimulationTemplate` cần `id`, `subject`, `grade`, `topic`, `title`, `engine`, `sceneType`, `validationStatus`.
+
+`MediaAsset` cần `id`, `subject`, `grade`, `chapter`, `lessonId`, `title`, `type`, `path`, `validationStatus`.
+
+Schema và các rule kiểm tra nằm tại:
 
 ```text
-C2-App-107/src/backend
+src/backend/src/modules/learning/learning-data.schema.ts
 ```
 
-### 2.1. Endpoint seed dataset
+## 4. Validation trước seed
 
-Đã thêm endpoint:
+Script:
 
-```http
-POST /learning/seed/chapter1
+```text
+src/backend/scripts/validate-learning-data.ts
 ```
 
-File chính:
+Nó kiểm tra:
+
+- file JSON parse được;
+- đủ sáu collection;
+- mỗi record là object và có các required field;
+- ID không trùng trong từng collection;
+- tất cả `validationStatus` hợp lệ;
+- reference `LearningItem -> ProblemPattern`;
+- reference optional `LearningItem -> SimulationTemplate`;
+- reference optional `ProblemPattern -> SimulationTemplate`;
+- reference optional `AiTestCase.expected.patternId -> ProblemPattern`;
+- reference optional `AiTestCase.sourceLearningItemId -> LearningItem`.
+
+Chạy:
+
+```powershell
+cd C2-App-107/src/backend
+npm run validate:learning-data
+```
+
+Hoặc kiểm tra một file khác:
+
+```powershell
+node node_modules/ts-node/dist/bin.js scripts/validate-learning-data.ts D:\duong-dan\all-in-one.learning-data.json
+```
+
+Validator trả exit code `1` khi có lỗi. Seed service cũng chạy lại validation, nên không có trường hợp seed nửa chừng một dataset không hợp lệ.
+
+## 5. Seed PostgreSQL
+
+File triển khai:
 
 ```text
 src/backend/src/modules/learning/learning-dataset-seed.service.ts
-src/backend/src/modules/learning/learning.controller.ts
-src/backend/src/modules/learning/learning.module.ts
+src/backend/scripts/seed-learning-data.ts
 ```
 
-Service `LearningDatasetSeedService` đọc file `all-in-one.learning-data.json`, normalize dữ liệu và upsert vào các bảng hiện có:
+Thứ tự seed:
 
-- `simulation_templates`
-- `theory_chunks`
-- `problem_patterns`
-- `learning_items`
+1. `simulation_templates`
+2. `problem_patterns`
+3. `theory_chunks`
+4. `learning_items`
+5. `ai_test_cases`
+6. `media_assets`
 
-Các normalize quan trọng:
+Tất cả dùng TypeORM `upsert`, vì vậy có thể chạy lại an toàn theo ID. Seed không ghi đè JSON nguồn.
 
-- `simulationTemplates.defaultParameters` trong dataset có thể là object, backend cần array `{ key, label, value, unit? }`.
-- `learningItems.answer.steps` trong dataset có thể là string array, backend cần object `{ step, content }`.
-- `problemPatterns.solverKey` và `validationStatus` không có cột riêng, được giữ trong `metadata` khi phù hợp.
-- `mainFormula` null được fallback thành `solverKey` hoặc `CONCEPTUAL_EXPLANATION`.
+Lệnh:
 
-### 2.2. LearningModule
+```powershell
+npm run seed:learning-data
+```
 
-`LearningController` đã được đăng ký lại trong `LearningModule`, nên các endpoint sau có thể hoạt động:
+Có thể truyền path rõ ràng:
+
+```powershell
+npm run seed:learning-data -- ..\database\data\all-in-one.learning-data.json
+```
+
+Endpoint tương đương:
 
 ```http
-GET /learning/health
-POST /learning/seed/chapter1
+POST /learning/seed
 ```
 
-Trước đó file controller tồn tại nhưng chưa được khai báo trong module.
+Route cũ `POST /learning/seed/chapter1` vẫn còn để tương thích ngược, nhưng giờ seed dataset được cấu hình, không chỉ riêng Chương I.
 
-### 2.3. Simulation output type
+## 6. Entity, migration và tương thích ngược
 
-File:
+Các entity cũ được mở rộng bằng cột nullable, nên dữ liệu cũ vẫn hoạt động:
+
+- `TheoryChunkEntity`: `lessonId`, `lessonTitle`, `validationStatus`, `sourceData`.
+- `ProblemPatternEntity`: `validationStatus`, `sourceData`.
+- `LearningItemEntity`: `lessonId`, `lessonTitle`, `source`, `validationStatus`, `sourceData`.
+- `SimulationTemplateEntity`: `engine`, `sceneType`, `parameterSchema`, `supportedActions`, `validationStatus`, `sourceData`.
+
+Entity mới:
 
 ```text
-src/backend/src/modules/learning/simulation-template/simulation-template.types.ts
+src/backend/src/modules/learning/ai-test-case/ai-test-case.entity.ts
+src/backend/src/modules/learning/media-asset/media-asset.entity.ts
 ```
 
-`SimulationOutput` đã được nới để nhận thêm string, vì dataset mới có output như:
-
-- `three_scene`
-- `parameter_panel`
-- `position_trace`
-- `x_t_graph`
-
----
-
-## 3. AI analyze và chat
-
-File chính:
+Migration PostgreSQL:
 
 ```text
-src/backend/src/modules/ai/ai.service.ts
-src/backend/src/modules/ai/ai.controller.ts
-src/backend/src/modules/ai/ai.module.ts
-src/backend/src/modules/ai/llm.service.ts
-src/backend/src/modules/ai/dto/chat-request.dto.ts
+src/database/migrations/1770000000000-learning-dataset-v11.ts
 ```
 
-### 3.1. Analyze endpoint
+`app.module.ts` đang bật `synchronize: true` cho môi trường dev. Production cần chạy migration bằng pipeline TypeORM, sau đó tắt `synchronize`; không dựa vào sync schema trong production.
 
-Endpoint có sẵn:
+## 7. Retrieval và AI
+
+### `/ai/analyze`
 
 ```http
 POST /ai/analyze
-```
+Content-Type: application/json
 
-Payload:
-
-```json
 {
-  "message": "Một vật dao động điều hòa có phương trình x = 2cos(4πt + π/2) cm. Xác định biên độ và pha ban đầu",
+  "message": "Giải thích dao động điều hòa",
   "subject": "physics",
   "grade": 11
 }
 ```
 
-Kết quả mong đợi với câu trên:
+`AiService` gọi `TheoryChunkService.searchForRag()`. Service này truy vấn bảng `theory_chunks` thật bằng `ILIKE`:
+
+1. tìm exact phrase trên `title`, `text`, `topic`;
+2. nếu không có, tách query theo token và gộp kết quả;
+3. sau đó ưu tiên chunk cùng topic nếu phù hợp.
+
+Không dùng mock data và chưa phụ thuộc pgvector. File liên quan:
 
 ```text
-intent: solve_and_simulate
-topic: simple_harmonic_motion
-pattern: SHM_IDENTIFY_PARAMETERS
-answer: Biên độ A = 2 cm, pha ban đầu phi = +π/2 rad.
-simulation: SIM_SHM_BASIC_3D
-references: TH_SHM_003, TH_SHM_014, TH_SHM_008, TH_SHM_015, TH_SHM_001
+src/backend/src/modules/learning/theory-chunk/theory-chunk.service.ts
+src/backend/src/modules/ai/ai.service.ts
 ```
 
-### 3.2. Chat endpoint
+Response có `references`; đây là các chunk đã lấy từ database. Khi mở rộng AI, luôn truyền các chunk này vào prompt trước khi dùng kiến thức ngoài dataset.
 
-Đã thêm endpoint:
+### `/ai/chat`
+
+`POST /ai/chat` dùng cùng retrieval. Nếu `LLM_API_KEY` chưa cấu hình hoặc provider lỗi, backend trả fallback từ dữ liệu nội bộ thay vì throw lỗi cho frontend.
+
+LLM env (không commit secret):
+
+```env
+LLM_API_KEY=
+LLM_BASE_URL=https://api.openai.com/v1
+LLM_MODEL=gpt-4o-mini
+LLM_TEMPERATURE=0.45
+LLM_MAX_TOKENS=900
+```
+
+## 8. Kiểm thử sau seed
+
+Script smoke test:
+
+```text
+src/backend/scripts/smoke-test-learning-data.ts
+```
+
+Chạy:
+
+```powershell
+npm run test:learning-data
+```
+
+Nó kiểm tra số bản ghi trong database và yêu cầu keyword search có kết quả cho:
+
+- `dao động điều hòa`;
+- `bước sóng`;
+- `định luật Coulomb`.
+
+Dataset hiện có số lượng kỳ vọng:
+
+| Collection | Count |
+| --- | ---: |
+| TheoryChunk | 670 |
+| ProblemPattern | 24 |
+| LearningItem | 128 |
+| AiTestCase | 125 |
+| SimulationTemplate | 19 |
+| MediaAsset | 122 |
+
+TypeScript check không cần Nest CLI:
+
+```powershell
+node node_modules/typescript/bin/tsc --noEmit
+```
+
+## 9. Chạy local/Docker
+
+`.env` local tối thiểu (dùng placeholder, không đưa credential thật vào tài liệu):
+
+```env
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=<set-local-password>
+DB_NAME=ai_mo_phong
+PORT=3000
+LEARNING_DATASET_PATH=../database/data/all-in-one.learning-data.json
+```
+
+Với Docker Desktop đang chạy:
+
+```powershell
+cd C2-App-107/src/backend
+docker compose up -d postgres
+npm run seed:learning-data
+npm run test:learning-data
+```
+
+Hoặc chạy cả backend và database trong Docker:
+
+```powershell
+docker compose up --build
+```
+
+Sau khi seed, kiểm tra:
 
 ```http
-POST /ai/chat
+GET  http://localhost:3000/learning/health
+POST http://localhost:3000/learning/seed
+POST http://localhost:3000/ai/analyze
+POST http://localhost:3000/ai/chat
 ```
 
-Payload:
+Swagger ở `http://localhost:3000/api`. Đây là đường dẫn Swagger, không phải global API prefix; route thực tế không có `/api` trừ khi người triển khai chủ động thêm prefix trong `main.ts`.
+
+## 10. Checklist cho người/AI tiếp quản
+
+1. Đọc `Backend-Ai.md`, `learning-data.schema.ts`, seed service và `AiService` trước khi sửa code.
+2. Không tạo câu hỏi/đáp án Vật lí mới bằng script trừ khi được yêu cầu rõ và đánh dấu `validationStatus` phù hợp.
+3. Mọi thay đổi dataset phải chạy `npm run validate:learning-data` trước.
+4. Mọi migration mới phải backward compatible: cột nullable/default, không rename/drop cột đang dùng khi chưa có kế hoạch migrate dữ liệu.
+5. Sau seed phải chạy `npm run test:learning-data`.
+6. Nếu retrieval không tìm thấy chunk, kiểm tra database đã seed, query có keyword đúng, `isActive=true`, và field `text/title` có dữ liệu trước khi thêm embedding/vector.
+7. Nếu seed lỗi `ECONNREFUSED 127.0.0.1:5432`, PostgreSQL/Docker chưa chạy; đó không phải lỗi JSON hay TypeScript.
+8. Không commit `.env`, API keys, password hoặc dữ liệu cá nhân.
+
+## 11. Hướng phát triển kế tiếp
+
+- Viết unit test cho schema validator và keyword search.
+- Thêm endpoint quản trị để xem validation report và seed history.
+- Dùng pgvector chỉ khi keyword retrieval không còn đủ, nhưng vẫn giữ keyword retrieval làm fallback minh bạch.
+- Bổ sung full-text index PostgreSQL (`GIN`/`tsvector`) trước khi dùng vector để cải thiện hiệu năng keyword search.
+- Tạo bộ test `human_verified`/`gold` trước khi dùng đánh giá mô hình hoặc cho điểm học sinh.
+
+## 12. Kết nối SQL/PostgreSQL từ đầu đến cuối
+
+### 12.1. Cách khuyến nghị: để backend seed qua TypeORM
+
+Đây là cách chuẩn. Không tự viết `INSERT` cho từng JSON record vì seed service đã xử lý:
+
+- validate trước khi ghi;
+- mapping schema dataset mới sang entity cũ;
+- upsert theo primary key;
+- lưu nguyên record nguồn trong `source_data`.
+
+Điều kiện tối thiểu là PostgreSQL đang lắng nghe đúng host/port trong `.env`.
+
+```powershell
+cd C2-App-107/src/backend
+npm run validate:learning-data
+npm run seed:learning-data
+npm run test:learning-data
+```
+
+Nếu PostgreSQL chạy bằng Docker:
+
+```powershell
+docker compose up -d postgres
+docker compose ps
+npm run seed:learning-data
+```
+
+`ECONNREFUSED 127.0.0.1:5432` nghĩa là DB chưa chạy hoặc sai `DB_HOST`/`DB_PORT`. Không phải lỗi của JSON.
+
+### 12.2. Kết nối trực tiếp bằng `psql`
+
+Các biến phải có trong `.env`:
+
+```env
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_USER=<postgres-user>
+DB_PASSWORD=<local-password>
+DB_NAME=ai_mo_phong
+```
+
+Kiểm tra service PostgreSQL:
+
+```powershell
+pg_isready -h 127.0.0.1 -p 5432 -U <postgres-user>
+psql "postgresql://<postgres-user>:<password>@127.0.0.1:5432/ai_mo_phong"
+```
+
+Nếu dùng container, mở SQL shell trong container:
+
+```powershell
+docker compose exec postgres psql -U <postgres-user> -d ai_mo_phong
+```
+
+Các truy vấn kiểm tra an toàn, chỉ đọc:
+
+```sql
+SELECT COUNT(*) FROM theory_chunks;
+SELECT COUNT(*) FROM problem_patterns;
+SELECT COUNT(*) FROM learning_items;
+
+SELECT id, title, lesson_id
+FROM theory_chunks
+WHERE is_active = true
+  AND (title ILIKE '%dao động điều hòa%' OR text ILIKE '%dao động điều hòa%')
+LIMIT 5;
+
+SELECT id, title, lesson_id
+FROM theory_chunks
+WHERE is_active = true
+  AND text ILIKE '%bước sóng%'
+LIMIT 5;
+
+SELECT id, title, lesson_id
+FROM theory_chunks
+WHERE is_active = true
+  AND text ILIKE '%định luật Coulomb%'
+LIMIT 5;
+```
+
+Không cần và không nên dùng `psql` để import thẳng JSON trong giai đoạn này. Nếu bắt buộc import thủ công, phải map từng trường đúng với JSONB và vẫn chạy validator trước; điều đó dễ sai hơn seed TypeORM.
+
+### 12.3. Các bảng được seed
+
+| Dataset collection | PostgreSQL table | Primary key | Ghi chú |
+| --- | --- | --- | --- |
+| `theoryChunks` | `theory_chunks` | `id` | Nguồn retrieval/RAG |
+| `problemPatterns` | `problem_patterns` | `pattern_id` | Dataset `id` được map sang `pattern_id` |
+| `learningItems` | `learning_items` | `id` | Dataset `patternId`/`simulationId` được giữ |
+| `simulationTemplates` | `simulation_templates` | `simulation_id` | Dataset `id` được map sang `simulation_id` |
+| `aiTestCases` | `ai_test_cases` | `id` | Entity mới |
+| `mediaAssets` | `media_assets` | `id` | Entity mới |
+
+Các cột `source_data JSONB` là bản ghi JSON đầy đủ, để về sau có thể mở rộng schema mà không mất dữ liệu nguồn. Các trường JSON như `keywords`, `metadata`, `answer`, `parameters`, `target`, `expected`, `outputs` cũng được lưu bằng `JSONB`.
+
+## 13. API contract: input, output và ví dụ gọi API
+
+Mọi response thành công hiện đi qua `ResponseInterceptor`, nên payload thực tế được bọc theo cấu trúc:
 
 ```json
 {
-  "message": "Vì sao ở vị trí cân bằng vận tốc cực đại?",
-  "subject": "physics",
-  "grade": 11,
-  "context": []
+  "data": {},
+  "message": "Thành công",
+  "statusCode": 200
 }
 ```
 
-Response chính:
+Frontend phải đọc `response.data.data`, không phải trực tiếp `response.data`.
+
+### 13.1. Health và seed
+
+```http
+GET /learning/health
+POST /learning/seed
+POST /learning/seed/chapter1
+```
+
+Ví dụ output seed (nằm trong trường `data` của wrapper):
+
+```json
+{
+  "message": "Learning dataset seeded successfully",
+  "datasetPath": "D:/.../all-in-one.learning-data.json",
+  "datasetId": "PHY11_STRUCTURED_MVP_26_LESSONS",
+  "counts": {
+    "theoryChunks": 670,
+    "problemPatterns": 24,
+    "learningItems": 128,
+    "aiTestCases": 125,
+    "simulationTemplates": 19,
+    "mediaAssets": 122
+  }
+}
+```
+
+Ví dụ PowerShell:
+
+```powershell
+Invoke-RestMethod -Method Post -Uri http://localhost:3000/learning/seed
+Invoke-RestMethod -Method Get -Uri http://localhost:3000/learning/health
+```
+
+### 13.2. Theory retrieval API
+
+```http
+GET /learning/theory-chunks
+GET /learning/theory-chunks?topic=oscillation
+GET /learning/theory-chunks?q=dao%20động%20điều%20hòa
+GET /learning/theory-chunks/rag/search?q=bước%20sóng
+GET /learning/theory-chunks/:id
+```
+
+`q` dùng keyword search. `rag/search` trả tối đa năm chunk phù hợp, có ưu tiên topic khi topic được truyền vào.
+
+### 13.3. Analyze API
+
+Input:
+
+```http
+POST /ai/analyze
+Content-Type: application/json
+
+{
+  "message": "Dao động điều hòa là gì?",
+  "subject": "physics",
+  "grade": 11
+}
+```
+
+`message` là required string. `subject` và `grade` optional, mặc định `physics` và `11`.
+
+Output `data` có dạng:
 
 ```json
 {
   "intent": "explain",
   "subject": "physics",
-  "grade": 11,
-  "topic": "shm_kinematics",
-  "answer": "...",
-  "used_llm": true,
-  "simulation": {},
-  "references": []
+  "topic": "simple_harmonic_motion",
+  "confidence": 0.86,
+  "analysis": {
+    "concepts": ["..."],
+    "skills": ["..."],
+    "given": [],
+    "target": [],
+    "pattern_id": "PP_PHY11_SHM_IDENTIFY_PARAMETERS"
+  },
+  "answer": {
+    "short_answer": "...",
+    "steps": ["..."]
+  },
+  "simulation": {
+    "simulation_id": "SIM_PHY11_SHM_BASIC_3D",
+    "title": "...",
+    "parameters": []
+  },
+  "render_blocks": [
+    { "type": "answer_card" },
+    { "type": "formula_card" },
+    { "type": "theory_card" }
+  ],
+  "references": [
+    { "id": "TH_PHY11_C01_L01_001", "title": "...", "source": "..." }
+  ]
 }
 ```
 
-`used_llm = true` nghĩa là LLM đã được gọi thành công.
+`references` là evidence lấy thật từ bảng `theory_chunks`. Không xem `confidence` là điểm chính xác học thuật; đó chỉ là heuristic routing hiện tại.
 
-`used_llm = false` nghĩa là backend fallback bằng dữ liệu nội bộ, thường do:
+### 13.4. Chat API
 
-- chưa điền `LLM_API_KEY`,
-- key sai,
-- backend chưa restart sau khi sửa `.env`,
-- LLM provider lỗi mạng/API.
-
-### 3.3. Nhận diện topic/pattern
-
-`AiService` đã được mở rộng để hiểu các topic mới của dataset:
-
-- `mechanical_oscillation`
-- `simple_harmonic_motion`
-- `shm_kinematics`
-- `shm_energy`
-- `spring_oscillator`
-- `simple_pendulum`
-- `damped_oscillation`
-- `forced_oscillation`
-- `resonance`
-
-Pattern ID mới được hỗ trợ:
-
-- `SHM_IDENTIFY_PARAMETERS`
-- `SHM_POSITION_AT_TIME`
-- `SHM_FIND_PERIOD_FREQUENCY`
-- `SHM_MAX_VELOCITY_ACCELERATION`
-- `SHM_ENERGY_AT_POSITION`
-- `SHM_ENERGY_FROM_VELOCITY`
-- `SHM_ENERGY_RATIO`
-- `SPRING_OSCILLATOR_PERIOD`
-- `RESONANCE_CONDITION`
-
-Vẫn giữ fallback cho một số ID cũ như:
-
-- `SHM_FIND_PERIOD_FROM_EQUATION`
-- `SHM_MAX_VELOCITY`
-- `SHM_ENERGY_BASIC`
-
-### 3.4. Parser phương trình
-
-Parser hiện hỗ trợ cơ bản dạng:
-
-```text
-x = A cos(ωt + φ)
-x = A cos(4πt + π/2) cm
-x = A sin(...)
-```
-
-Nó trích xuất:
-
-- `A`
-- `omega`
-- `omega_numeric`
-- `phi`
-- `phi_numeric`
-- `t` nếu có dạng `t = ... s`
-
-Lưu ý: parser vẫn là rule-based demo, không thay thế LLM. Các bài phức tạp sẽ cần LLM hoặc solver riêng.
-
----
-
-## 4. LLM integration
-
-LLM gọi theo chuẩn OpenAI-compatible Chat Completions bằng `fetch`, không cài thêm package.
-
-File:
-
-```text
-src/backend/src/modules/ai/llm.service.ts
-```
-
-Biến môi trường:
-
-```env
-LLM_API_KEY=
-LLM_BASE_URL=https://api.openai.com/v1
-LLM_MODEL=gpt-4o-mini
-LLM_TEMPERATURE=0.45
-LLM_MAX_TOKENS=900
-```
-
-Prompt LLM có các nguyên tắc:
-
-- Trợ lý học Vật lí 11, chương Dao động.
-- Ưu tiên dữ liệu nội bộ và dạng bài đã nhận diện.
-- Nếu tài liệu nội bộ thiếu, được dùng kiến thức Vật lí 11 phổ thông.
-- Khi suy luận ngoài dữ liệu nội bộ thì phải nói rõ.
-- Không bịa nguồn.
-- Không đi quá xa khỏi Vật lí 11.
-- Giọng vui vừa phải, dễ hiểu.
-- Nếu là bài tính: nhận dạng dữ kiện -> công thức -> thay số -> kết luận.
-- Không dùng block LaTeX kiểu `\[...\]` hoặc `\(...\)`.
-- Công thức nên viết bằng plain text/Unicode, ví dụ:
-
-```text
-v = ±ω√(A² - x²)
-```
-
-### 4.1. Clean công thức
-
-Đã thêm clean output để tránh LLM trả công thức dạng:
-
-```text
-\[ v = \pm \omega \sqrt{A^2 - 0^2} = \pm \omega A \]
-```
-
-Backend/Frontend sẽ chuyển thành:
-
-```text
-v = ± ω √(A² - 0²) = ± ω A
-```
-
-File liên quan:
-
-```text
-src/backend/src/modules/ai/ai.service.ts
-D:\LearnSimulator\simple-ai-test-frontend\script.js
-D:\LearnSimulator\simple-ai-test-frontend\demo-backend.js
-```
-
----
-
-## 5. Environment
-
-File:
-
-```text
-src/backend/.env
-src/backend/.env.example
-```
-
-Các biến đã thêm:
-
-```env
-LEARNING_DATASET_PATH=../database/data/learning_simulator_structured_chuong1/all-in-one.learning-data.json
-LLM_API_KEY=
-LLM_BASE_URL=https://api.openai.com/v1
-LLM_MODEL=gpt-4o-mini
-LLM_TEMPERATURE=0.45
-LLM_MAX_TOKENS=900
-```
-
-Trong Docker Compose, backend container dùng path khác:
-
-```env
-LEARNING_DATASET_PATH=/data/learning_simulator_structured_chuong1/all-in-one.learning-data.json
-```
-
-Và mount:
-
-```yaml
-- ../database/data:/data:ro
-```
-
-File:
-
-```text
-src/backend/docker-compose.yml
-```
-
----
-
-## 6. Demo backend tạm thời
-
-Vì máy hiện tại chưa có PostgreSQL local và Docker daemon chưa chạy, đã tạo một demo backend độc lập để test end-to-end ngay với data thật, không cần DB.
-
-Lưu ý: demo backend này là công cụ local-only để test nhanh, không nằm trong phạm vi push lên Git.
-
-File:
-
-```text
-D:\LearnSimulator\simple-ai-test-frontend\demo-backend.js
-```
-
-Chạy:
-
-```bash
-cd D:\LearnSimulator
-node simple-ai-test-frontend\demo-backend.js
-```
-
-Server:
-
-```text
-http://localhost:3000
-```
-
-Endpoint demo:
+Input:
 
 ```http
-GET  /learning/health
-POST /learning/seed/chapter1
-POST /ai/analyze
 POST /ai/chat
+Content-Type: application/json
+
+{
+  "message": "Bước sóng là gì?",
+  "subject": "physics",
+  "grade": 11,
+  "context": [
+    { "role": "user", "content": "Tôi đang học bài Sóng." }
+  ]
+}
 ```
 
-Demo backend đọc trực tiếp:
+Output `data` gồm `intent`, `topic`, `answer`, `used_llm`, `simulation` (nếu có) và `references`.
 
-```text
-C2-App-107/src/database/data/learning_simulator_structured_chuong1/all-in-one.learning-data.json
-```
+- `used_llm: true`: LLM provider đã được gọi thành công.
+- `used_llm: false`: backend dùng fallback từ retrieved chunks/pattern. Đây là trạng thái hợp lệ, không phải server error.
 
-Nó cũng đọc key từ:
-
-```text
-C2-App-107/src/backend/.env
-```
-
-Lưu ý quan trọng:
-
-- Demo backend chỉ dùng để unblock test frontend và luồng dữ liệu thật.
-- Nó không ghi vào PostgreSQL.
-- Khi Docker/Postgres đã chạy ổn, nên chuyển về Nest backend chính.
-
----
-
-## 7. Frontend test độc lập
-
-Frontend test nằm ngoài frontend chính:
-
-```text
-D:\LearnSimulator\simple-ai-test-frontend
-```
-
-Lưu ý: frontend test này chỉ để debug local, không commit/push lên nhánh `AI-data`.
-
-Các file:
-
-```text
-index.html
-styles.css
-script.js
-demo-backend.js
-```
-
-Mở trực tiếp:
-
-```text
-D:\LearnSimulator\simple-ai-test-frontend\index.html
-```
-
-Hoặc chạy static server:
+### 13.5. Test bằng curl
 
 ```bash
-cd D:\LearnSimulator\simple-ai-test-frontend
-python -m http.server 5177
+curl -X POST http://localhost:3000/ai/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"message":"định luật Coulomb là gì?","subject":"physics","grade":11}'
+
+curl "http://localhost:3000/learning/theory-chunks/rag/search?q=định%20luật%20Coulomb"
 ```
 
-Sau đó mở:
+## 14. Cách AI được triển khai hiện tại và cách mở rộng
+
+### 14.1. Pipeline hiện tại
+
+`AiService.analyze()` thực hiện theo trình tự:
+
+1. validate DTO và chuẩn hóa `message`;
+2. detect intent bằng rule-based (`solve`, `explain`, `simulate`...);
+3. detect topic bằng keyword;
+4. trích dữ kiện cơ bản, hiện có parser cho một số phương trình dao động;
+5. tìm `ProblemPattern` theo topic, rồi theo keyword nếu topic không rõ;
+6. lấy `SimulationTemplate` theo `simulationId`;
+7. lấy `TheoryChunk` thật từ DB bằng `searchForRag`;
+8. tạo câu trả lời rule-based hoặc đưa evidence + câu hỏi vào LLM;
+9. trả answer, simulation và references cho frontend.
+
+`AiService.chat()` dùng chung retrieval/pattern selection, nhưng thiên về trả lời hội thoại và giữ tối đa sáu message context gần nhất cho LLM.
+
+### 14.2. Quy tắc triển khai AI tiếp theo
+
+Khi thêm một tính năng AI, luôn giữ thứ tự ưu tiên:
 
 ```text
-http://localhost:5177
+validated input
+  -> deterministic solver/rule nếu có
+  -> keyword retrieval từ DB
+  -> LLM với evidence giới hạn
+  -> fallback minh bạch nếu thiếu evidence hoặc LLM lỗi
 ```
 
-Các nút trong UI:
+Không để LLM tự tạo `patternId`, `simulationId`, số liệu kết quả, hoặc citation. Các ID phải lấy từ database; phép tính có thể kiểm chứng phải do solver code xử lý.
 
-- `Check backend`: kiểm tra backend ở `localhost:3000` và `localhost:3000/api`.
-- `Seed chương 1`: gọi `POST /learning/seed/chapter1`.
-- `Analyze`: gọi `POST /ai/analyze`.
-- `Chat LLM`: gọi `POST /ai/chat`.
+### 14.3. Các bước để mở rộng sang topic mới
 
-Frontend test có xử lý:
+1. Bổ sung `TheoryChunk`/`ProblemPattern`/`LearningItem` đã validate.
+2. Thêm keyword/topic mapping vào `AiService.detectTopic()` nếu cần routing chính xác.
+3. Thêm solver riêng nếu pattern cần tính toán.
+4. Thêm/đăng ký `SimulationTemplate` nếu UI có mô phỏng tương ứng.
+5. Thêm `AiTestCase` với status `draft`, sau đó nâng thành `human_verified` hoặc `gold` sau review.
+6. Chạy validate, seed và smoke test.
 
-- hiển thị lỗi fetch rõ hơn,
-- tự nhận biết prefix `/api`,
-- render công thức dễ đọc hơn,
-- không đụng vào frontend chính tại `src/frontend`.
+### 14.4. Khi nào dùng embedding/pgvector
 
----
+Chỉ thêm khi keyword search không đủ bao phủ synonym/câu hỏi dài. Khi thêm:
 
-## 8. Cách chạy end-to-end hiện tại
+- giữ keyword exact phrase làm tier đầu tiên;
+- thêm cột embedding và index vector bằng migration riêng;
+- ghi version model embedding và thời điểm tạo embedding;
+- retrieval hybrid: exact keyword > full-text > vector > rerank;
+- không đưa toàn bộ database vào prompt; giới hạn top-k và trả references.
 
-### Cách nhanh bằng demo backend
+## 15. Deployment runbook
 
-1. Chạy demo backend:
+### Development local
 
-```bash
-cd D:\LearnSimulator
-node simple-ai-test-frontend\demo-backend.js
+```powershell
+cd C2-App-107/src/backend
+npm install
+npm run validate:learning-data
+docker compose up -d postgres
+npm run seed:learning-data
+npm run test:learning-data
+npm run start:dev
 ```
 
-2. Mở frontend test:
+### Production/CI
 
-```text
-D:\LearnSimulator\simple-ai-test-frontend\index.html
+1. Cài dependency lockfile chính xác.
+2. Đặt secret DB và LLM qua secret manager/environment, không dùng `.env` commit.
+3. Chạy TypeScript/build/test.
+4. Chạy migration có kiểm soát; tắt `synchronize: true`.
+5. Validate dataset trong CI.
+6. Seed bằng job một lần hoặc admin-only endpoint, không seed mỗi lúc app start.
+7. Chạy smoke test sau seed/deploy.
+8. Chỉ sau đó expose API cho frontend.
+
+`POST /learning/seed` hiện hữu ích cho development. Trước production phải bảo vệ endpoint bằng authentication/role admin hoặc tắt route này, vì seed là thao tác ghi database.
+
+### Observability tối thiểu
+
+Log và đo các giá trị sau, tuyệt đối không log API key hoặc toàn bộ dữ liệu nhạy cảm của người dùng:
+
+- request ID, route, latency, status code;
+- số chunk retrieval được và ID chunk được chọn;
+- `used_llm`, model, token/cost nếu provider cung cấp;
+- validation failure count;
+- seed counts và thời điểm seed;
+- lỗi DB/LLM đã được sanitize.
+
+## 16. Hiệu năng, index và bảo mật
+
+Khi dữ liệu tăng, có thể thêm index PostgreSQL qua migration:
+
+```sql
+CREATE INDEX IF NOT EXISTS idx_theory_chunks_active_topic
+  ON theory_chunks (is_active, topic);
+
+CREATE INDEX IF NOT EXISTS idx_theory_chunks_lesson_id
+  ON theory_chunks (lesson_id);
 ```
 
-3. Bấm `Check backend`.
+Với search text lớn, dùng full-text search PostgreSQL thay vì `%ILIKE%` thuần; vẫn phải xử lý tiếng Việt và benchmark trước khi thay đổi contract API.
 
-4. Bấm `Seed chương 1`.
+Nguyên tắc bảo mật:
 
-5. Test `Analyze` với:
+- không public endpoint seed ở production;
+- giới hạn CORS theo domain frontend thật;
+- rate-limit `/ai/analyze` và `/ai/chat`;
+- đặt timeout/retry có giới hạn cho LLM;
+- không gửi `source_data` nguyên khối cho frontend nếu không cần;
+- xác thực role trước khi cho upload/replace dataset;
+- backup DB trước migration destructively (tránh migration destructive nếu có thể).
 
-```text
-Một vật dao động điều hòa có phương trình x = 2cos(4πt + π/2) cm. Xác định biên độ và pha ban đầu
-```
+## 17. Quy trình làm việc bắt buộc cho AI/maintainer
 
-6. Test `Chat LLM` với:
+Trước khi sửa:
 
-```text
-Vì sao ở vị trí cân bằng vận tốc cực đại?
-```
+1. đọc schema, seed service và API contract ở tài liệu này;
+2. xác nhận dataset path đang được dùng bằng `LEARNING_DATASET_PATH`;
+3. không giả định database đã seed.
 
-### Cách bằng Nest backend thật
+Sau khi sửa code/dataset:
 
-Cần PostgreSQL hoặc Docker.
+1. `node node_modules/typescript/bin/tsc --noEmit`;
+2. `npm run validate:learning-data`;
+3. chạy migration nếu schema thay đổi;
+4. `npm run seed:learning-data`;
+5. `npm run test:learning-data`;
+6. gọi thủ công `/ai/analyze` cho ít nhất ba query: `dao động điều hòa`, `bước sóng`, `định luật Coulomb`;
+7. kiểm tra references trả về đến từ database và không bịa ID.
 
-Nếu dùng Docker:
-
-```bash
-cd D:\LearnSimulator\C2-App-107\src\backend
-docker compose up --build
-```
-
-Sau khi backend chạy:
-
-```http
-POST http://localhost:3000/learning/seed/chapter1
-POST http://localhost:3000/ai/analyze
-POST http://localhost:3000/ai/chat
-```
-
-Nếu backend có global prefix `/api`, dùng:
-
-```http
-POST http://localhost:3000/api/learning/seed/chapter1
-POST http://localhost:3000/api/ai/analyze
-POST http://localhost:3000/api/ai/chat
-```
-
----
-
-## 9. Lỗi thường gặp
-
-### 9.1. Failed to fetch
-
-Nguyên nhân thường là:
-
-- backend chưa chạy,
-- sai Backend URL,
-- sai prefix `/api`,
-- CORS bị chặn,
-- port 3000 chưa mở.
-
-Cách kiểm:
-
-```http
-GET http://localhost:3000/learning/health
-GET http://localhost:3000/api/learning/health
-```
-
-Trong frontend test, bấm `Check backend`.
-
-### 9.2. Seed lỗi
-
-Kiểm tra:
-
-- `LEARNING_DATASET_PATH` đúng chưa.
-- File `all-in-one.learning-data.json` có tồn tại không.
-- Nếu chạy Docker, đã mount `../../../data:/data:ro` chưa.
-
-### 9.3. LLM không chạy
-
-Kiểm tra:
-
-- `.env` đã có `LLM_API_KEY` chưa.
-- Backend đã restart sau khi sửa `.env` chưa.
-- `LLM_BASE_URL` đúng provider chưa.
-- Response có `used_llm: true` không.
-
-### 9.4. Công thức hiện kiểu `\[...\]`
-
-Đã thêm clean/render để xử lý. Nếu vẫn thấy ở raw JSON thì kiểm tra:
-
-- demo backend đã restart chưa,
-- frontend đã refresh cache chưa,
-- đang xem raw debug JSON hay answer card chính.
-
----
-
-## 10. Kiểm chứng đã chạy
-
-Đã chạy TypeScript check:
-
-```bash
-node node_modules\typescript\lib\tsc.js --noEmit -p tsconfig.build.json
-```
-
-Kết quả: pass.
-
-Nest CLI build chưa chạy được trong môi trường hiện tại vì `node_modules`/Yarn state bị lỗi:
-
-```text
-Cannot find module 'string-width'
-```
-
-Và `corepack yarn install --immutable` từng bị timeout.
-
-Điều này là vấn đề môi trường dependency, không phải lỗi TypeScript của phần AI vừa sửa.
-
----
-
-## 11. Các file đã thêm/sửa chính
-
-Backend Nest:
-
-```text
-src/backend/src/modules/learning/learning-dataset-seed.service.ts
-src/backend/src/modules/learning/learning.controller.ts
-src/backend/src/modules/learning/learning.module.ts
-src/backend/src/modules/learning/simulation-template/simulation-template.types.ts
-src/backend/src/modules/ai/ai.service.ts
-src/backend/src/modules/ai/ai.controller.ts
-src/backend/src/modules/ai/ai.module.ts
-src/backend/src/modules/ai/llm.service.ts
-src/backend/src/modules/ai/dto/chat-request.dto.ts
-src/backend/.env.example
-src/backend/docker-compose.yml
-```
-
-Demo/frontend test local-only, không push:
-
-```text
-D:\LearnSimulator\simple-ai-test-frontend\index.html
-D:\LearnSimulator\simple-ai-test-frontend\styles.css
-D:\LearnSimulator\simple-ai-test-frontend\script.js
-D:\LearnSimulator\simple-ai-test-frontend\demo-backend.js
-```
-
-Dataset copy trong repo:
-
-```text
-src/database/data/learning_simulator_structured_chuong1/
-```
-
----
-
-## 12. Ghi chú cho người/AI làm tiếp
-
-1. Ưu tiên giữ dataset là nguồn thật, không hardcode từng câu hỏi.
-
-2. `ai-test-cases.json` chỉ là benchmark/demo. Hệ thống không nên yêu cầu câu hỏi phải trùng y hệt test case mới trả lời.
-
-3. Với câu hỏi mới:
-
-- tìm topic,
-- tìm pattern,
-- tìm theory chunks,
-- nếu đủ thì trả lời từ dữ liệu nội bộ,
-- nếu thiếu thì gọi LLM với ràng buộc chương Dao động Vật lí 11.
-
-4. Demo backend chỉ là cầu tạm khi không có DB. Khi production hóa, đưa hết về Nest backend + PostgreSQL.
-
-5. Nên bổ sung solver riêng cho các dạng bài hay gặp:
-
-- `SHM_IDENTIFY_PARAMETERS`
-- `SHM_FIND_PERIOD_FREQUENCY`
-- `SHM_POSITION_AT_TIME`
-- `SHM_MAX_VELOCITY_ACCELERATION`
-- `SHM_ENERGY_AT_POSITION`
-- `RESONANCE_CONDITION`
-
-6. Nên bổ sung retrieval tốt hơn:
-
-- pgvector/embedding,
-- ranking theo topic + keyword + source,
-- trả evidence text rõ hơn cho frontend.
-
-7. Các media asset hiện vẫn là reference, chưa có ảnh thật trong workspace.
-
-8. Nếu dùng Docker, nhớ Docker Desktop phải chạy trước. Hiện máy đã từng báo không kết nối được Docker daemon.
+Nếu một bước fail, báo rõ output và không tuyên bố deploy/seed thành công.
+- Thêm solver chuyên biệt cho các problem pattern có công thức, không để LLM tự tính toán khi có thể kiểm chứng bằng code.
