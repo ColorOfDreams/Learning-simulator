@@ -1,10 +1,6 @@
 import axios from '@/utils/axios';
 import { ip3 } from '@/utils/ip';
 
-export async function analyzeAiPrompt(payload: Ai.AnalyzeRequest) {
-  return axios.post<{ data: Ai.IRecord }>(`${ip3}/ai/analyze`, payload);
-}
-
 export const chatSessionApi = {
   create: (data: { title?: string; subject?: string; sceneId?: string }) =>
     axios.post(`${ip3}/ai/chat/sessions`, data),
