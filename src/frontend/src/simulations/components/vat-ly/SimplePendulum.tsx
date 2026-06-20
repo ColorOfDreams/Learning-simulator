@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { Line } from '@react-three/drei';
 import * as THREE from 'three';
-import DraggablePhysicsObject from '../../engine/DraggablePhysicsObject';
+import DraggablePhysicsObject, { getSnapPointsForModel } from '../../engine/DraggablePhysicsObject';
 
 interface Props {
   object: Scene.Object;
@@ -15,21 +16,34 @@ const SimplePendulum: React.FC<Props> = ({ object, isPlaying = false, onUpdatePo
   const color = object.properties?.color || '#ff0000';
   const armRef = useRef<THREE.Group>(null);
   const timeRef = useRef(0);
+  const trailRef = useRef<[number,number,number][]>([]);
 
   useFrame((_, delta) => {
     if (isPlaying && armRef.current) {
+      // Check attached to stand
+      const allObjs = sceneGraph?.objects || [];
+      const attached = allObjs.some((o) => o.modelName === 'Stand' && 
+        Math.abs(o.position[0] + 1.6 - object.position[0]) < 0.25 &&
+        Math.abs(o.position[1] + 2.0 - (object.position[1] + length / 2)) < 0.25
+      );
+      if (!attached) { timeRef.current = 0; trailRef.current = []; return; }
       timeRef.current += delta;
       const omega = Math.sqrt(9.81 / length);
       armRef.current.rotation.z = 0.5 * Math.sin(timeRef.current * omega);
+      const localBob: [number,number,number] = [0, length/2 - length, 0];
+      trailRef.current.push(localBob);
+      if (trailRef.current.length > 20) trailRef.current.shift();
     } else if (!isPlaying && armRef.current) {
       armRef.current.rotation.z = THREE.MathUtils.lerp(armRef.current.rotation.z, 0, 0.1);
       timeRef.current = 0;
+      trailRef.current = [];
     }
   });
 
   return (
     <DraggablePhysicsObject object={object} label="Con Lắc Đơn" colliderArgs={[0.5, length / 2, 0.5]}
-      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}>
+      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}
+      snapPoints={getSnapPointsForModel('SimplePendulum', object.properties)}>
       <group>
         <mesh position={[0, length / 2, 0]} castShadow>
           <boxGeometry args={[0.4, 0.1, 0.4]} />
@@ -46,6 +60,9 @@ const SimplePendulum: React.FC<Props> = ({ object, isPlaying = false, onUpdatePo
           </mesh>
         </group>
       </group>
+      {trailRef.current.length > 2 && (
+        <Line points={trailRef.current} color={color} lineWidth={1.5} opacity={0.25} transparent />
+      )}
     </DraggablePhysicsObject>
   );
 };

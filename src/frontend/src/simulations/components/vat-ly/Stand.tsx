@@ -1,5 +1,5 @@
 import React from 'react';
-import DraggablePhysicsObject from '../../engine/DraggablePhysicsObject';
+import DraggablePhysicsObject, { getSnapPointsForModel } from '../../engine/DraggablePhysicsObject';
 
 interface Props {
   object: Scene.Object;
@@ -10,7 +10,8 @@ interface Props {
 
 const Stand: React.FC<Props> = ({ object, isPlaying, onUpdatePosition, sceneGraph }) => (
   <DraggablePhysicsObject object={object} label="Giá Đỡ" colliderArgs={[1, 2.5, 1]}
-    isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}>
+    isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}
+    snapPoints={getSnapPointsForModel('Stand', object.properties)}>
     <group>
       <mesh position={[0, -2.4, 0]} castShadow receiveShadow>
         <boxGeometry args={[2, 0.2, 2]} />

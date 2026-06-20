@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import DraggablePhysicsObject from '../../engine/DraggablePhysicsObject';
@@ -11,15 +11,18 @@ interface Props {
 }
 
 const Stopwatch: React.FC<Props> = ({ object, isPlaying = false, onUpdatePosition, sceneGraph }) => {
-  const timeRef = useRef(0);
-  const displayRef = useRef('0.00s');
-
   useFrame((_, delta) => {
-    if (isPlaying) {
-      timeRef.current += delta;
-      displayRef.current = `${timeRef.current.toFixed(2)}s`;
+    if (!object.properties) return;
+    const running = object.properties.running ?? false;
+    if (isPlaying && running) {
+      object.properties.elapsed = (object.properties.elapsed || 0) + delta;
+    }
+    if (!isPlaying && !running) {
+      // Keep elapsed when paused, only reset on explicit action
     }
   });
+
+  const elapsed = object.properties?.elapsed || 0;
 
   return (
     <DraggablePhysicsObject object={object} label="Đồng Hồ" colliderArgs={[0.15, 0.1, 0.25]}
@@ -34,7 +37,7 @@ const Stopwatch: React.FC<Props> = ({ object, isPlaying = false, onUpdatePositio
           <meshStandardMaterial color="#0f172a" roughness={0.1} />
         </mesh>
         <Text position={[0, 0.13, 0.01]} fontSize={0.08} color="#22d3ee" anchorX="center" anchorY="middle">
-          {isPlaying ? displayRef.current : '0.00s'}
+          {elapsed.toFixed(2)}s
         </Text>
         <mesh position={[0, -0.12, 0]}>
           <cylinderGeometry args={[0.06, 0.06, 0.04]} />

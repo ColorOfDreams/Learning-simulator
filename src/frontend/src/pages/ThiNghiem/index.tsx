@@ -4,6 +4,7 @@ import { useModel } from '@umijs/max';
 import SandboxEngine from '@/simulations/engine/SandboxEngine';
 import ChatSidebar from './components/ChatSidebar';
 import FooterBar from './components/FooterBar';
+import EquipmentDetail from './components/EquipmentDetail';
 import useInitModel from '@/hooks/useInitModel';
 import { Spin } from 'antd';
 
@@ -14,8 +15,9 @@ const ThiNghiem: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [selectedEquipmentId, setSelectedEquipmentId] = useState<string | null>(null);
 
-  const { sceneGraph, initScene, clearScene, updateObjectPosition } = useModel('useSimulationModel');
+  const { sceneGraph, initScene, clearScene, updateObjectPosition, updateObjectProperty, updateAllProperties } = useModel('useSimulationModel');
   const { openChatbot, closeChatbot, requestGuidance } = useModel('useAIChatBotModel');
 
   useEffect(() => {
@@ -39,6 +41,14 @@ const ThiNghiem: React.FC = () => {
     if (sceneGraph) requestGuidance(sceneGraph);
   }, [sceneGraph, requestGuidance]);
 
+  const handleUpdateProperty = (objectId: string, key: string, value: any) => {
+    updateObjectProperty(objectId, key, value);
+  };
+
+  const handleUpdateAllProperties = (objectId: string, props: Record<string, any>) => {
+    updateAllProperties(objectId, props);
+  };
+
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#f0f2f5' }}>
@@ -60,6 +70,8 @@ const ThiNghiem: React.FC = () => {
             sceneGraph={sceneGraph}
             isPlaying={isPlaying}
             onUpdatePosition={updateObjectPosition}
+            selectedEquipmentId={selectedEquipmentId}
+            onSelectEquipment={setSelectedEquipmentId}
           />
         </div>
         <FooterBar
@@ -70,6 +82,16 @@ const ThiNghiem: React.FC = () => {
           onRequestGuidance={handleGuidance}
         />
       </div>
+      {selectedEquipmentId && (
+        <EquipmentDetail
+          objectId={selectedEquipmentId}
+          sceneGraph={sceneGraph}
+          isPlaying={isPlaying}
+          onClose={() => setSelectedEquipmentId(null)}
+          onUpdateProperty={handleUpdateProperty}
+          onUpdateAllProperties={handleUpdateAllProperties}
+        />
+      )}
     </div>
   );
 };

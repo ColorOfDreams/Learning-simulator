@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import DraggablePhysicsObject from '../../engine/DraggablePhysicsObject';
+import DraggablePhysicsObject, { getSnapPointsForModel } from '../../engine/DraggablePhysicsObject';
 
 interface Props {
   object: Scene.Object;
@@ -21,6 +21,13 @@ const Spring: React.FC<Props> = ({ object, isPlaying = false, onUpdatePosition, 
 
   useFrame((_, delta) => {
     if (isPlaying && springRef.current && hookRef.current) {
+      // Check if attached to stand
+      const allObjs = sceneGraph?.objects || [];
+      const anchored = allObjs.some((o) => o.modelName === 'Stand' && 
+        Math.abs(o.position[0] + 1.6 - object.position[0]) < 0.3 &&
+        Math.abs(o.position[1] + 2.0 - (object.position[1] + length / 2)) < 0.3
+      );
+      if (!anchored) { timeRef.current = 0; return; }
       timeRef.current += delta;
       const omega = Math.sqrt(stiffness / 1);
       const displacement = 0.3 * Math.sin(timeRef.current * omega);
@@ -38,7 +45,8 @@ const Spring: React.FC<Props> = ({ object, isPlaying = false, onUpdatePosition, 
 
   return (
     <DraggablePhysicsObject object={object} label="Lò Xo" colliderArgs={[0.3, length / 2, 0.3]}
-      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}>
+      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}
+      snapPoints={getSnapPointsForModel('Spring', object.properties)}>
       <group>
         <mesh position={[0, length / 2, 0]} castShadow>
           <boxGeometry args={[0.5, 0.08, 0.5]} />

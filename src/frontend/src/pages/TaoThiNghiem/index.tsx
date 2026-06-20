@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Button, message, Tabs } from 'antd';
-import { ArrowLeftOutlined, ArrowRightOutlined, CheckOutlined, RobotOutlined, ToolOutlined } from '@ant-design/icons';
+import { Button, message, Tabs, Modal } from 'antd';
+import { ArrowLeftOutlined, ArrowRightOutlined, CheckOutlined, RobotOutlined, ToolOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import useInitModel from '@/hooks/useInitModel';
 import Step1Subject from './components/Step1Subject';
 import Step2Equipments from './components/Step2Equipments';
 import Step3Properties from './components/Step3Properties';
 import AiGenerate from './components/AiGenerate';
+import { validateExperiment } from '@/utils/experiment-validator';
 import './TaoThiNghiem.less';
 
 const TaoThiNghiem: React.FC = () => {
@@ -27,7 +28,28 @@ const TaoThiNghiem: React.FC = () => {
   const handleSave = async (data?: Partial<Scene.IRecord>) => {
     const payload = data || sceneData;
     if (!payload.name?.trim()) { message.warning('Vui lòng đặt tên thí nghiệm'); return; }
-    if (!payload.objects?.length) { message.warning('Vui lòng chọn ít nhất 1 dụng cụ'); return; }
+
+    const validation = validateExperiment(payload.objects || []);
+    if (validation.errors.length > 0) {
+      Modal.error({ title: 'Không thể lưu', content: validation.errors.join('\n'), centered: true });
+      return;
+    }
+    if (validation.warnings.length > 0) {
+      Modal.confirm({
+        title: 'Thí nghiệm có thể chưa hoàn chỉnh',
+        icon: <ExclamationCircleOutlined />,
+        content: validation.warnings.join('\n'),
+        okText: 'Vẫn lưu',
+        cancelText: 'Quay lại',
+        centered: true,
+        onOk: () => doSave(payload),
+      });
+      return;
+    }
+    doSave(payload);
+  };
+
+  const doSave = async (payload: Partial<Scene.IRecord>) => {
     setSubmitting(true);
     try {
       if (postModel) {

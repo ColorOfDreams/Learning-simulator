@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+﻿import { Injectable } from '@nestjs/common';
 import { ProblemPatternService } from '../learning/problem-pattern/problem-pattern.service';
 import { SimulationTemplateService } from '../learning/simulation-template/simulation-template.service';
 import { TheoryChunkService } from '../learning/theory-chunk/theory-chunk.service';
@@ -254,19 +254,19 @@ export class AiService {
   private extractGivenValues(message: string): AiGivenValue[] {
     const values: AiGivenValue[] = [];
     const equationMatch = message.match(
-      /x\s*=\s*([+-]?\d+(?:[,.]\d+)?)\s*(?:cos|sin)\s*\(\s*([+-]?(?:\d+(?:[,.]\d+)?)?)\s*(π|pi|Ï€)?\s*t\s*([+-]\s*(?:π|pi|Ï€)\s*\/\s*\d+|[+-]\s*\d+(?:[,.]\d+)?)?\s*\)\s*(cm|m)?/i,
+      /x\s*=\s*([+-]?\d+(?:[,.]\d+)?)\s*(?:cos|sin)\s*\(\s*([+-]?(?:\d+(?:[,.]\d+)?)?)\s*(Ï€|pi|Ãâ‚¬)?\s*t\s*([+-]\s*(?:Ï€|pi|Ãâ‚¬)\s*\/\s*\d+|[+-]\s*\d+(?:[,.]\d+)?)?\s*\)\s*(cm|m)?/i,
     );
 
     if (equationMatch) {
       const amplitude = this.toNumber(equationMatch[1]);
       const omegaCoefficient = equationMatch[2]?.replace(',', '.');
       const omegaText = equationMatch[3]
-        ? `${omegaCoefficient || ''}π`
+        ? `${omegaCoefficient || ''}Ï€`
         : omegaCoefficient || '1';
       const omegaValue = this.piTextToNumber(omegaText);
       const phiText = equationMatch[4]
         ?.replace(/\s/g, '')
-        .replace(/pi|Ï€/gi, 'π');
+        .replace(/pi|Ãâ‚¬/gi, 'Ï€');
       const phiValue = phiText ? this.piTextToNumber(phiText) : undefined;
       const positionUnit = equationMatch[5] ?? 'cm';
 
@@ -274,13 +274,13 @@ export class AiService {
         key: 'A',
         value: amplitude,
         unit: positionUnit,
-        label: 'Biên độ',
+        label: 'BiÃªn Ä‘á»™',
       });
       values.push({
         key: 'omega',
         value: omegaText,
         unit: 'rad/s',
-        label: 'Tần số góc',
+        label: 'Táº§n sá»‘ gÃ³c',
       });
 
       if (phiText && phiValue !== undefined && Number.isFinite(phiValue)) {
@@ -288,13 +288,13 @@ export class AiService {
           key: 'phi',
           value: phiText,
           unit: 'rad',
-          label: 'Pha ban đầu',
+          label: 'Pha ban Ä‘áº§u',
         });
         values.push({
           key: 'phi_numeric',
           value: Number(phiValue.toFixed(3)),
           unit: 'rad',
-          label: 'Pha ban đầu dạng số',
+          label: 'Pha ban Ä‘áº§u dáº¡ng sá»‘',
         });
       }
 
@@ -303,13 +303,13 @@ export class AiService {
           key: 'omega_numeric',
           value: Number(omegaValue.toFixed(3)),
           unit: 'rad/s',
-          label: 'Tần số góc dạng số',
+          label: 'Táº§n sá»‘ gÃ³c dáº¡ng sá»‘',
         });
       }
     }
 
     const timeMatch = message.match(
-      /(?:t|thời điểm|thoi diem)\s*=\s*([+-]?\d+(?:[,.]\d+)?)\s*s/i,
+      /(?:t|thá»i Ä‘iá»ƒm|thoi diem)\s*=\s*([+-]?\d+(?:[,.]\d+)?)\s*s/i,
     );
 
     if (timeMatch) {
@@ -317,7 +317,7 @@ export class AiService {
         key: 't',
         value: this.toNumber(timeMatch[1]),
         unit: 's',
-        label: 'Thời gian',
+        label: 'Thá»i gian',
       });
     }
 
@@ -448,11 +448,11 @@ export class AiService {
       const period = (2 * Math.PI) / omegaNumeric.value;
 
       return {
-        short_answer: `Chu kì dao động là T = ${this.formatNumber(period)} s.`,
+        short_answer: `Chu kÃ¬ dao Ä‘á»™ng lÃ  T = ${this.formatNumber(period)} s.`,
         steps: [
-          `Từ phương trình dao động, ta xác định được omega = ${omega.value} rad/s.`,
-          'Áp dụng công thức T = 2π / omega.',
-          `Suy ra T = 2π / ${omega.value} = ${this.formatNumber(period)} s.`,
+          `Tá»« phÆ°Æ¡ng trÃ¬nh dao Ä‘á»™ng, ta xÃ¡c Ä‘á»‹nh Ä‘Æ°á»£c omega = ${omega.value} rad/s.`,
+          'Ãp dá»¥ng cÃ´ng thá»©c T = 2Ï€ / omega.',
+          `Suy ra T = 2Ï€ / ${omega.value} = ${this.formatNumber(period)} s.`,
         ],
       };
     }
@@ -465,12 +465,12 @@ export class AiService {
       const frequency = omegaNumeric.value / (2 * Math.PI);
 
       return {
-        short_answer: `Tần số dao động là f = ${this.formatNumber(
+        short_answer: `Táº§n sá»‘ dao Ä‘á»™ng lÃ  f = ${this.formatNumber(
           frequency,
         )} Hz.`,
         steps: [
-          `Từ phương trình, omega = ${omega.value} rad/s.`,
-          'Áp dụng f = omega / 2π.',
+          `Tá»« phÆ°Æ¡ng trÃ¬nh, omega = ${omega.value} rad/s.`,
+          'Ãp dá»¥ng f = omega / 2Ï€.',
           `Suy ra f = ${this.formatNumber(frequency)} Hz.`,
         ],
       };
@@ -478,16 +478,16 @@ export class AiService {
 
     if (pattern) {
       return {
-        short_answer: `Dạng bài: ${pattern.name}. ${pattern.mainFormula ?? ''}`,
+        short_answer: `Dáº¡ng bÃ i: ${pattern.name}. ${pattern.mainFormula ?? ''}`,
         steps: [
-          `Dạng bài phù hợp: ${pattern.name}.`,
-          `Công thức hoặc hướng xử lí chính: ${pattern.mainFormula ?? 'giải thích khái niệm'}.`,
+          `Dáº¡ng bÃ i phÃ¹ há»£p: ${pattern.name}.`,
+          `CÃ´ng thá»©c hoáº·c hÆ°á»›ng xá»­ lÃ­ chÃ­nh: ${pattern.mainFormula ?? 'giáº£i thÃ­ch khÃ¡i niá»‡m'}.`,
         ],
       };
     }
 
     return {
-      short_answer: 'Xin lỗi, hệ thống chưa tìm thấy dữ liệu phù hợp cho câu hỏi này. Vui lòng thử diễn đạt lại hoặc hỏi câu khác.',
+      short_answer: 'Xin lá»—i, há»‡ thá»‘ng chÆ°a tÃ¬m tháº¥y dá»¯ liá»‡u phÃ¹ há»£p cho cÃ¢u há»i nÃ y. Vui lÃ²ng thá»­ diá»…n Ä‘áº¡t láº¡i hoáº·c há»i cÃ¢u khÃ¡c.',
       steps: [],
     };
   }
@@ -629,37 +629,37 @@ export class AiService {
         )
         .join('\n');
       const patternText = payload.selectedPattern
-        ? `Dạng bài: ${payload.selectedPattern.name}; công thức/hướng xử lí: ${payload.selectedPattern.mainFormula ?? 'khái niệm'
-        }; mục tiêu: ${payload.selectedPattern.target?.join(', ')}`
-        : 'Chưa nhận diện chắc dạng bài từ dataset.';
+        ? `Dáº¡ng bÃ i: ${payload.selectedPattern.name}; cÃ´ng thá»©c/hÆ°á»›ng xá»­ lÃ­: ${payload.selectedPattern.mainFormula ?? 'khÃ¡i niá»‡m'
+        }; má»¥c tiÃªu: ${payload.selectedPattern.target?.join(', ')}`
+        : 'ChÆ°a nháº­n diá»‡n cháº¯c dáº¡ng bÃ i tá»« dataset.';
       const generalKnowledgeRule = payload.allowGeneralKnowledge
-        ? 'Nếu tài liệu nội bộ không đủ, được dùng kiến thức Vật lí 11 phổ thông, nhưng hãy nói rõ là đang suy luận ngoài dữ liệu nội bộ.'
-        : 'Chỉ dùng tài liệu nội bộ; nếu thiếu dữ liệu thì nói chưa đủ căn cứ.';
+        ? 'Náº¿u tÃ i liá»‡u ná»™i bá»™ khÃ´ng Ä‘á»§, Ä‘Æ°á»£c dÃ¹ng kiáº¿n thá»©c Váº­t lÃ­ 11 phá»• thÃ´ng, nhÆ°ng hÃ£y nÃ³i rÃµ lÃ  Ä‘ang suy luáº­n ngoÃ i dá»¯ liá»‡u ná»™i bá»™.'
+        : 'Chá»‰ dÃ¹ng tÃ i liá»‡u ná»™i bá»™; náº¿u thiáº¿u dá»¯ liá»‡u thÃ¬ nÃ³i chÆ°a Ä‘á»§ cÄƒn cá»©.';
 
       const response = await this.llmService.complete([
         {
           role: 'system',
           content: [
-            'Bạn là trợ lý học tập cho học sinh lớp 11, chủ đề chính là Chương 1: Dao động.',
-            'Ưu tiên trả lời theo dữ liệu nội bộ và dạng bài đã nhận diện.',
+            'Báº¡n lÃ  trá»£ lÃ½ há»c táº­p cho há»c sinh lá»›p 11, chá»§ Ä‘á» chÃ­nh lÃ  ChÆ°Æ¡ng 1: Dao Ä‘á»™ng.',
+            'Æ¯u tiÃªn tráº£ lá»i theo dá»¯ liá»‡u ná»™i bá»™ vÃ  dáº¡ng bÃ i Ä‘Ã£ nháº­n diá»‡n.',
             generalKnowledgeRule,
-            'Không bịa nguồn, không đi quá xa khỏi Vật lí 11.',
-            'Giọng giải thích vui, dễ hiểu, có ví dụ trực quan ngắn; vẫn giữ công thức chính xác.',
-            'Không dùng block LaTeX kiểu \\[...\\] hoặc \\(...\\); hãy viết công thức bằng plain text/Unicode, ví dụ v = ±ω√(A² - x²).',
-            'Nếu là bài tính, trình bày ngắn theo: nhận dạng dữ kiện, công thức, thay số, kết luận.',
+            'KhÃ´ng bá»‹a nguá»“n, khÃ´ng Ä‘i quÃ¡ xa khá»i Váº­t lÃ­ 11.',
+            'Giá»ng giáº£i thÃ­ch vui, dá»… hiá»ƒu, cÃ³ vÃ­ dá»¥ trá»±c quan ngáº¯n; váº«n giá»¯ cÃ´ng thá»©c chÃ­nh xÃ¡c.',
+            'KhÃ´ng dÃ¹ng block LaTeX kiá»ƒu \\[...\\] hoáº·c \\(...\\); hÃ£y viáº¿t cÃ´ng thá»©c báº±ng plain text/Unicode, vÃ­ dá»¥ v = Â±Ï‰âˆš(AÂ² - xÂ²).',
+            'Náº¿u lÃ  bÃ i tÃ­nh, trÃ¬nh bÃ y ngáº¯n theo: nháº­n dáº¡ng dá»¯ kiá»‡n, cÃ´ng thá»©c, thay sá»‘, káº¿t luáº­n.',
           ].join('\n'),
         },
         {
           role: 'user',
           content: [
-            `Môn: ${payload.subject}, lớp: ${payload.grade}`,
+            `MÃ´n: ${payload.subject}, lá»›p: ${payload.grade}`,
             `Intent: ${payload.intent}`,
             `Topic: ${payload.topic}`,
             patternText,
             references
-              ? `Tài liệu nội bộ:\n${references}`
-              : 'Tài liệu nội bộ: chưa tìm thấy chunk phù hợp.',
-            `Câu hỏi của học sinh: ${payload.message}`,
+              ? `TÃ i liá»‡u ná»™i bá»™:\n${references}`
+              : 'TÃ i liá»‡u ná»™i bá»™: chÆ°a tÃ¬m tháº¥y chunk phÃ¹ há»£p.',
+            `CÃ¢u há»i cá»§a há»c sinh: ${payload.message}`,
           ].join('\n\n'),
         },
         ...payload.context.slice(-6),
@@ -681,19 +681,19 @@ export class AiService {
       const chunk = ragChunks[0];
 
       return [
-        `Mình tìm thấy phần liên quan trong dữ liệu chương 1: ${chunk.title ?? chunk.id}.`,
+        `MÃ¬nh tÃ¬m tháº¥y pháº§n liÃªn quan trong dá»¯ liá»‡u chÆ°Æ¡ng 1: ${chunk.title ?? chunk.id}.`,
         chunk.text,
         selectedPattern
-          ? `Dạng gần nhất là: ${selectedPattern.name}.`
-          : 'Bạn có thể hỏi cụ thể hơn để mình chọn đúng dạng bài.',
+          ? `Dáº¡ng gáº§n nháº¥t lÃ : ${selectedPattern.name}.`
+          : 'Báº¡n cÃ³ thá»ƒ há»i cá»¥ thá»ƒ hÆ¡n Ä‘á»ƒ mÃ¬nh chá»n Ä‘Ãºng dáº¡ng bÃ i.',
       ].join('\n\n');
     }
 
     return [
-      'Xin lỗi, hệ thống chưa tìm thấy dữ liệu phù hợp cho câu hỏi này.',
-      `Câu hỏi: ${message}`,
-      `Chủ đề dự đoán: ${topic}.`,
-      'Vui lòng thử diễn đạt lại hoặc hỏi một câu khác.',
+      'Xin lá»—i, há»‡ thá»‘ng chÆ°a tÃ¬m tháº¥y dá»¯ liá»‡u phÃ¹ há»£p cho cÃ¢u há»i nÃ y.',
+      `CÃ¢u há»i: ${message}`,
+      `Chá»§ Ä‘á» dá»± Ä‘oÃ¡n: ${topic}.`,
+      'Vui lÃ²ng thá»­ diá»…n Ä‘áº¡t láº¡i hoáº·c há»i má»™t cÃ¢u khÃ¡c.',
     ].join('\n\n');
   }
 
@@ -713,15 +713,15 @@ export class AiService {
 
   private defaultConcepts(topic: string) {
     const topicConcepts: Record<string, string[]> = {
-      mechanical_oscillation: ['dao động cơ', 'vị trí cân bằng'],
-      simple_harmonic_motion: ['dao động điều hòa', 'biên độ', 'pha'],
-      shm_kinematics: ['li độ', 'vận tốc', 'gia tốc'],
-      shm_energy: ['cơ năng', 'động năng', 'thế năng'],
-      spring_oscillator: ['con lắc lò xo', 'chu kì'],
-      simple_pendulum: ['con lắc đơn', 'dao động nhỏ'],
-      damped_oscillation: ['dao động tắt dần'],
-      forced_oscillation: ['dao động cưỡng bức'],
-      resonance: ['cộng hưởng'],
+      mechanical_oscillation: ['dao Ä‘á»™ng cÆ¡', 'vá»‹ trÃ­ cÃ¢n báº±ng'],
+      simple_harmonic_motion: ['dao Ä‘á»™ng Ä‘iá»u hÃ²a', 'biÃªn Ä‘á»™', 'pha'],
+      shm_kinematics: ['li Ä‘á»™', 'váº­n tá»‘c', 'gia tá»‘c'],
+      shm_energy: ['cÆ¡ nÄƒng', 'Ä‘á»™ng nÄƒng', 'tháº¿ nÄƒng'],
+      spring_oscillator: ['con láº¯c lÃ² xo', 'chu kÃ¬'],
+      simple_pendulum: ['con láº¯c Ä‘Æ¡n', 'dao Ä‘á»™ng nhá»'],
+      damped_oscillation: ['dao Ä‘á»™ng táº¯t dáº§n'],
+      forced_oscillation: ['dao Ä‘á»™ng cÆ°á»¡ng bá»©c'],
+      resonance: ['cá»™ng hÆ°á»Ÿng'],
     };
 
     return topicConcepts[topic] ?? [];
@@ -729,11 +729,11 @@ export class AiService {
 
   private defaultSkills(target: string[]) {
     if (target.includes('T')) {
-      return ['xác định chu kì từ phương trình dao động'];
+      return ['xÃ¡c Ä‘á»‹nh chu kÃ¬ tá»« phÆ°Æ¡ng trÃ¬nh dao Ä‘á»™ng'];
     }
 
     if (target.includes('energy')) {
-      return ['phân tích năng lượng trong dao động điều hòa'];
+      return ['phÃ¢n tÃ­ch nÄƒng lÆ°á»£ng trong dao Ä‘á»™ng Ä‘iá»u hÃ²a'];
     }
 
     return [];
@@ -744,10 +744,10 @@ export class AiService {
       .toLowerCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
-      .replace(/đ/g, 'd')
-      .replace(/ð/g, 'd')
-      .replace(/Đ/g, 'd')
-      .replace(/Ä‘/g, 'd');
+      .replace(/Ä‘/g, 'd')
+      .replace(/Ã°/g, 'd')
+      .replace(/Ä/g, 'd')
+      .replace(/Ã„â€˜/g, 'd');
   }
 
   private hasAny(value: string, keywords: string[]) {
@@ -762,17 +762,17 @@ export class AiService {
     const compact = value
       .replace(/\s/g, '')
       .replace(',', '.')
-      .replace(/pi|Ï€/gi, 'π');
+      .replace(/pi|Ãâ‚¬/gi, 'Ï€');
     const sign = compact.startsWith('-') ? -1 : 1;
     const unsigned = compact.replace(/^[+-]/, '');
 
-    if (!unsigned.includes('π')) {
+    if (!unsigned.includes('Ï€')) {
       return Number(compact);
     }
 
-    const [coefficientText, denominatorText] = unsigned.split('π/');
+    const [coefficientText, denominatorText] = unsigned.split('Ï€/');
     const coefficient =
-      coefficientText === '' ? 1 : Number(coefficientText.replace('π', ''));
+      coefficientText === '' ? 1 : Number(coefficientText.replace('Ï€', ''));
     const denominator = denominatorText ? Number(denominatorText) : 1;
 
     return sign * ((coefficient * Math.PI) / denominator);
@@ -822,102 +822,78 @@ export class AiService {
     };
   }
 
-  async generateGuidance(sceneGraph?: { roomType?: string; objects?: Array<{ modelName: string; properties?: Record<string, unknown> }> }) {
+async generateGuidance(sceneGraph?: { roomType?: string; objects?: Array<{ modelName: string; properties?: Record<string, unknown> }> }) {
     if (!sceneGraph?.objects?.length) {
-      return {
-        text: 'Chào bạn! Hãy tạo một thí nghiệm với các dụng cụ để bắt đầu. Vào mục "Tạo thí nghiệm" để chọn dụng cụ phù hợp.',
-        steps: [],
-      };
+      return { text: 'Chao ban! Hay tao mot thi nghiem voi cac dung cu de bat dau.', steps: [] };
     }
-
-    const names = sceneGraph.objects.map((o) => {
-      const map: Record<string, string> = {
-        Stand: 'Giá đỡ', SimplePendulum: 'Con lắc đơn', SpringPendulum: 'Con lắc lò xo',
-        Spring: 'Lò xo', MassBlock: 'Vật nặng', WoodenBlock: 'Khối gỗ',
-        Beaker: 'Cốc thủy tinh', Stopwatch: 'Đồng hồ bấm giờ', Ruler: 'Thước đo',
-        Protractor: 'Thước đo góc', Dashpot: 'Bộ giảm chấn', DrivingMotor: 'Động cơ rung',
-        EnergyMeter: 'Đồng hồ năng lượng',
-      };
-      return map[o.modelName] ?? o.modelName;
-    });
-
-    const hasStand = sceneGraph.objects.some((o) => o.modelName === 'Stand');
-    const pendulums = sceneGraph.objects.filter((o) =>
-      ['SimplePendulum', 'SpringPendulum', 'Spring'].includes(o.modelName),
-    );
-    const hasPendulum = pendulums.length > 0;
-    const hasMass = sceneGraph.objects.some((o) => o.modelName === 'MassBlock');
-
-    const steps: Array<{ id: string; title: string; description: string; targetEquipment?: string }> = [];
-
-    if (hasStand && hasPendulum) {
-      steps.push({
-        id: 'attach',
-        title: 'Gắn dụng cụ vào giá đỡ',
-        description: `Kéo ${pendulums[0].modelName === 'SimplePendulum' ? 'con lắc đơn' : pendulums[0].modelName === 'SpringPendulum' ? 'con lắc lò xo' : 'lò xo'} vào kẹp của giá đỡ. Khi lại gần, dụng cụ sẽ tự động gắn vào.`,
-        targetEquipment: pendulums[0].modelName,
-      });
-      steps.push({
-        id: 'play',
-        title: 'Bấm Play để quan sát',
-        description: 'Nhấn nút Play (▶) trên thanh công cụ để bắt đầu mô phỏng. Quan sát dao động của vật.',
-      });
-      steps.push({
-        id: 'adjust',
-        title: 'Điều chỉnh thông số',
-        description: 'Thay đổi chiều dài dây hoặc khối lượng để xem chu kì thay đổi như thế nào. Chu kì T = 2π√(l/g) với con lắc đơn.',
-      });
-    } else if (hasStand && hasMass) {
-      steps.push({
-        id: 'attach_mass',
-        title: 'Gắn vật nặng vào lò xo',
-        description: 'Kéo lò xo vào giá đỡ, sau đó kéo vật nặng vào đầu dưới của lò xo.',
-      });
-      steps.push({ id: 'play', title: 'Bấm Play để quan sát', description: 'Nhấn nút Play (▶) để xem dao động.' });
-      steps.push({ id: 'adjust', title: 'Thay đổi khối lượng', description: 'Thử với các khối lượng khác nhau: T = 2π√(m/k).' });
-    } else {
-      steps.push({
-        id: 'explore',
-        title: 'Khám phá dụng cụ',
-        description: `Phòng thí nghiệm có: ${names.join(', ')}. Hãy kéo thả và khám phá từng dụng cụ.`,
-      });
-      steps.push({ id: 'play', title: 'Bấm Play để quan sát', description: 'Nhấn Play (▶) để xem chuyển động.' });
+    if (this.llmService.isConfigured()) {
+      try {
+        const equipDesc = sceneGraph.objects.map((o) => {
+          const p = o.properties || {};
+          const d: string[] = [];
+          if (p.length) d.push('dai ' + p.length + 'm');
+          if (p.mass) d.push('nang ' + p.mass + 'kg');
+          if (p.stiffness) d.push('do cung ' + p.stiffness + 'N/m');
+          if (p.symbol) d.push('ky hieu ' + p.symbol);
+          if (p.volume) d.push(p.volume + 'ml');
+          return '- ' + o.modelName + (d.length ? ' (' + d.join(', ') + ')' : '');
+        }).join('\n');
+        const subj = sceneGraph.roomType === 'chemistry' ? 'Hoa hoc' : sceneGraph.roomType === 'math' ? 'Toan hoc' : 'Vat ly';
+        const response = await this.llmService.complete([
+          { role: 'user', content: [
+            'Ban la tro ly huong dan thi nghiem. Dung cu hien co:',
+            equipDesc, 'Mon: ' + subj,
+            'Tao 3-5 buoc huong dan. Tra ve CHI JSON: { "steps": [{ "id":"...", "title":"...", "description":"...", "targetEquipment":"..." }] }',
+          ].join('\n') },
+        ]);
+        if (response) {
+          const cleaned = response.replace(/```json|```/g, '').trim();
+          const match = cleaned.match(/\{[\s\S]*\}/);
+          if (match) {
+            const parsed = JSON.parse(match[0]);
+            return {
+              text: 'Chao ban! Hay lam theo huong dan ben duoi.',
+              steps: (parsed.steps || []).map((s: any, i: number) => ({
+                id: s.id || 'step_' + (i+1), title: s.title || '', description: s.description || '',
+                targetEquipment: s.targetEquipment, condition: s.condition || null,
+              })),
+            };
+          }
+        }
+      } catch { /* fallback */ }
     }
-
-    return {
-      text: `Chào bạn! Phòng thí nghiệm có: ${names.join(', ')}. Hãy làm theo các bước bên dưới để bắt đầu thí nghiệm dao động điều hòa.`,
-      steps,
-    };
+    const names = sceneGraph.objects.map((o: any) => o.modelName);
+    return { text: 'Phong thi nghiem co: ' + names.join(', ') + '. Bat dau kham pha nhe.', steps: [{ id:'explore', title:'Kham pha dung cu', description:'Keo tha va kham pha tung dung cu.' }, { id:'play', title:'Bam Play', description:'Nhan Play de xem mo phong.' }] };
   }
 
   async generateExperiment(message: string) {
     if (!this.llmService.isConfigured()) {
       return {
-        name: 'Thí nghiệm mới',
+        name: 'ThÃ­ nghiá»‡m má»›i',
         roomType: 'physics',
-        explanation: 'LLM chưa được cấu hình. Vui lòng tạo thủ công.',
+        explanation: 'LLM chÆ°a Ä‘Æ°á»£c cáº¥u hÃ¬nh. Vui lÃ²ng táº¡o thá»§ cÃ´ng.',
         objects: [] as Array<{ modelName: string; properties: Record<string, unknown> }>,
       };
     }
 
     const equipmentList = [
-      'Vật lý: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
-      'Hóa học: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
-      'Toán học: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
+      'Váº­t lÃ½: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
+      'HÃ³a há»c: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
+      'ToÃ¡n há»c: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
     ].join('\n');
 
     try {
       const response = await this.llmService.complete([
-        { role: 'system', content: `Bạn là trợ lý thiết kế thí nghiệm 3D cho học sinh lớp 11. 
-Dụng cụ có sẵn:\n${equipmentList}\n
-Dựa trên mô tả của học sinh, hãy chọn dụng cụ và thông số phù hợp.
-Trả về CHỈ JSON (không markdown, không giải thích):
+        { role: 'system', content: `Báº¡n lÃ  trá»£ lÃ½ thiáº¿t káº¿ thÃ­ nghiá»‡m 3D cho há»c sinh lá»›p 11. 
+Dá»¥ng cá»¥ cÃ³ sáºµn:\n${equipmentList}\n
+Dá»±a trÃªn mÃ´ táº£ cá»§a há»c sinh, hÃ£y chá»n dá»¥ng cá»¥ vÃ  thÃ´ng sá»‘ phÃ¹ há»£p.
+Tráº£ vá» CHá»ˆ JSON (khÃ´ng markdown, khÃ´ng giáº£i thÃ­ch):
 {
-  "name": "tên thí nghiệm",
+  "name": "tÃªn thÃ­ nghiá»‡m",
   "roomType": "physics|chemistry|math",
-  "explanation": "giải thích ngắn 1-2 câu",
+  "explanation": "giáº£i thÃ­ch ngáº¯n 1-2 cÃ¢u",
   "objects": [
-    { "modelName": "tên dụng cụ", "properties": { "key": value } }
+    { "modelName": "tÃªn dá»¥ng cá»¥", "properties": { "key": value } }
   ]
 }` },
         { role: 'user', content: message },
@@ -926,7 +902,7 @@ Trả về CHỈ JSON (không markdown, không giải thích):
       const cleaned = (response || '').replace(/```json|```/g, '').trim();
       const parsed = JSON.parse(cleaned);
       return {
-        name: parsed.name || 'Thí nghiệm mới',
+        name: parsed.name || 'ThÃ­ nghiá»‡m má»›i',
         roomType: parsed.roomType || 'physics',
         explanation: parsed.explanation || '',
         objects: (parsed.objects || []).map((obj: any) => ({
@@ -936,9 +912,9 @@ Trả về CHỈ JSON (không markdown, không giải thích):
       };
     } catch {
       return {
-        name: 'Thí nghiệm mới',
+        name: 'ThÃ­ nghiá»‡m má»›i',
         roomType: 'physics',
-        explanation: 'Không thể tạo tự động, vui lòng thử lại hoặc tạo thủ công.',
+        explanation: 'KhÃ´ng thá»ƒ táº¡o tá»± Ä‘á»™ng, vui lÃ²ng thá»­ láº¡i hoáº·c táº¡o thá»§ cÃ´ng.',
         objects: [],
       };
     }
@@ -954,18 +930,18 @@ Trả về CHỈ JSON (không markdown, không giải thích):
 
   private simplifyLatexFormula(value: string) {
     return value
-      .replace(/\\pm/g, '±')
-      .replace(/\\omega/g, 'ω')
-      .replace(/\\alpha/g, 'α')
-      .replace(/\\Delta/g, 'Δ')
-      .replace(/\\pi/g, 'π')
-      .replace(/\\varphi|\\phi/g, 'φ')
-      .replace(/\\times/g, '×')
-      .replace(/\\cdot/g, '·')
-      .replace(/\\sqrt\{([^{}]+)\}/g, '√($1)')
+      .replace(/\\pm/g, 'Â±')
+      .replace(/\\omega/g, 'Ï‰')
+      .replace(/\\alpha/g, 'Î±')
+      .replace(/\\Delta/g, 'Î”')
+      .replace(/\\pi/g, 'Ï€')
+      .replace(/\\varphi|\\phi/g, 'Ï†')
+      .replace(/\\times/g, 'Ã—')
+      .replace(/\\cdot/g, 'Â·')
+      .replace(/\\sqrt\{([^{}]+)\}/g, 'âˆš($1)')
       .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, '($1)/($2)')
-      .replace(/\^\{2\}|\^2/g, '²')
-      .replace(/\^\{3\}|\^3/g, '³')
+      .replace(/\^\{2\}|\^2/g, 'Â²')
+      .replace(/\^\{3\}|\^3/g, 'Â³')
       .replace(/\{|\}/g, '')
       .replace(/\\/g, '')
       .replace(/\s+/g, ' ')

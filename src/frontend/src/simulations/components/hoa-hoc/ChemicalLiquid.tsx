@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { MeshTransmissionMaterial, Text } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import DraggablePhysicsObject from '../../engine/DraggablePhysicsObject';
+import DraggablePhysicsObject, { getSnapPointsForModel } from '../../engine/DraggablePhysicsObject';
 import { findChemical } from '../../chemicals-catalog';
 
 interface Props {
@@ -36,7 +36,8 @@ const ChemicalLiquid: React.FC<Props> = ({ object, isPlaying, onUpdatePosition, 
 
   return (
     <DraggablePhysicsObject object={object} label={label} colliderArgs={[0.3, 0.45, 0.3]}
-      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}>
+      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}
+      snapPoints={getSnapPointsForModel('ChemicalLiquid', object.properties)}>
       <group>
         {/* Bottle body - outer glass */}
         <mesh castShadow receiveShadow>

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Text } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import DraggablePhysicsObject from '../../engine/DraggablePhysicsObject';
+import DraggablePhysicsObject, { getSnapPointsForModel } from '../../engine/DraggablePhysicsObject';
 import { findChemical } from '../../chemicals-catalog';
 
 interface Props {
@@ -67,7 +67,8 @@ const ChemicalGas: React.FC<Props> = ({ object, isPlaying, onUpdatePosition, sce
 
   return (
     <DraggablePhysicsObject object={object} label={label} colliderArgs={[0.35, 0.35, 0.35]}
-      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}>
+      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}
+      snapPoints={getSnapPointsForModel('ChemicalGas', object.properties)}>
       <group ref={groupRef}>
         {/* Main cloud */}
         <mesh ref={cloudRef}>

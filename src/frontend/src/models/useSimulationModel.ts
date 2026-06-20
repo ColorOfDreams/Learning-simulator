@@ -58,12 +58,38 @@ export default function useSimulationModel() {
     });
   }, []);
 
+  const updateObjectProperty = useCallback((id: string, key: string, value: any) => {
+    setSceneGraph((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        objects: (prev.objects || []).map((obj) =>
+          obj.id === id ? { ...obj, properties: { ...obj.properties, [key]: value } } : obj
+        ),
+      };
+    });
+  }, []);
+
+  const updateAllProperties = useCallback((id: string, props: Record<string, any>) => {
+    setSceneGraph((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        objects: (prev.objects || []).map((obj) =>
+          obj.id === id ? { ...obj, properties: props } : obj
+        ),
+      };
+    });
+  }, []);
+
   return {
     sceneGraph,
     initScene,
     clearScene,
     addObject,
     removeObject,
-    updateObjectPosition
+    updateObjectPosition,
+    updateObjectProperty,
+    updateAllProperties,
   };
 }

@@ -5,6 +5,7 @@ import {
   ALL_EQUIPMENT, GRADE_OPTIONS, CHAPTERS, TOPICS, EQUIPMENT_TYPES, INITIAL_Y, EquipmentDef,
 } from '@/simulations/equipment-catalog';
 import { ALL_CHEMICALS, GROUP_COLORS, Chemical } from '@/simulations/chemicals-catalog';
+import { validateExperiment } from '@/utils/experiment-validator';
 import MiniPreview from '@/simulations/components/MiniPreview';
 
 interface Props {
@@ -71,6 +72,18 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
   }, [chemPicker, chemSearch]);
 
   const selectedIds = data.objects?.map((o) => o.modelName) || [];
+  const validation = useMemo(() => validateExperiment(data.objects || []), [data.objects]);
+
+  const addSuggestion = (modelName: string) => {
+    const y = INITIAL_Y[modelName] || 0;
+    const newObj: Scene.Object = {
+      id: `${modelName}_${Date.now()}`, modelName,
+      position: [Math.random() * 4 - 2, y, Math.random() * 2 - 1] as [number, number, number],
+      rotation: [0, 0, 0], scale: [1, 1, 1],
+      properties: modelName === 'WoodenBlock' ? { color: '#feca57' } : modelName === 'Beaker' ? { liquidVolume: 200 } : {},
+    };
+    onChange({ ...data, objects: [...(data.objects || []), newObj] });
+  };
 
   const addChemical = (chem: Chemical) => {
     if (!chemPicker) return;
@@ -135,6 +148,27 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
           options={EQUIPMENT_TYPES.map((t) => ({ value: t.value, label: t.label }))}
           allowClear style={{ width: 110 }} />
       </div>
+
+      {/* Validation warnings */}
+      {validation.errors.length > 0 && (
+        <div className="s2-validation errors">
+          {validation.errors.map((e, i) => (
+            <div key={i} className="s2-validation-item">
+              <span>⛔ {e}</span>
+              {validation.suggestions[i] && (
+                <Button size="small" type="primary" onClick={() => addSuggestion(validation.suggestions[i])}>
+                  Thêm ngay
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      {validation.warnings.length > 0 && (
+        <div className="s2-validation warnings">
+          {validation.warnings.map((w, i) => <div key={i} className="s2-validation-item">⚠️ {w}</div>)}
+        </div>
+      )}
 
       {/* 3D Preview Popup */}
       {preview && (

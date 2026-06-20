@@ -12,21 +12,54 @@ interface Props {
 }
 
 const Thermometer: React.FC<Props> = ({ object, isPlaying, onUpdatePosition, sceneGraph }) => {
-  const targetTemp = object.properties?.temperature ?? 25;
   const tempRef = useRef(25);
   const mercuryRef = useRef<THREE.Group>(null);
+  const autoTimerRef = useRef(0);
+  const lastRecordRef = useRef(0);
 
   const mercuryMaxHeight = 2.8;
   const mercuryBaseY = -1.5 + 0.04;
 
   useFrame((_, delta) => {
-    if (isPlaying) {
-      const direction = object.properties?.temperature ? targetTemp - tempRef.current : 0;
+    // Auto-detect nearby BunsenBurner
+    const allObjs = sceneGraph?.objects || [];
+    const burners = allObjs.filter((o) => o.modelName === 'BunsenBurner');
+    let ambientTemp = object.properties?.temperature ?? 25;
+    for (const burner of burners) {
+      const dx = object.position[0] - burner.position[0];
+      const dy = object.position[1] - burner.position[1];
+      const dz = object.position[2] - burner.position[2];
+      const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+      if (dist < 2.5 && isPlaying) {
+        const flameTemp = 200 - (dist / 2.5) * 175;
+        ambientTemp = Math.max(ambientTemp, flameTemp);
+      }
+    }
+    if (!isPlaying) ambientTemp = Math.max(25, ambientTemp - delta * 30);
+
+    if (isPlaying || ambientTemp !== (object.properties?.temperature ?? 25)) {
+      const direction = ambientTemp - tempRef.current;
       if (Math.abs(direction) < 0.1) {
-        tempRef.current = targetTemp;
+        tempRef.current = ambientTemp;
       } else {
         tempRef.current += direction * delta * 60;
       }
+      if (object.properties) object.properties.temperature = tempRef.current;
+      // Auto-record every 5 seconds when temperature changing
+      autoTimerRef.current += delta;
+      if (autoTimerRef.current > 5 && isPlaying && object.properties) {
+        autoTimerRef.current = 0;
+        const t = parseFloat(tempRef.current.toFixed(1));
+        if (Math.abs(t - lastRecordRef.current) > 0.5) {
+          lastRecordRef.current = t;
+          const measurements = object.properties.measurements || [];
+          const count = measurements.filter((m: any) => m.type === 'auto').length + 1;
+          measurements.push({ id: Date.now().toString(), type: 'auto', label: 'Tự động ' + count, value: t, timestamp: Date.now() });
+          if (measurements.length > 20) measurements.shift();
+          object.properties.measurements = measurements;
+        }
+      }
+      if (!isPlaying) { autoTimerRef.current = 0; lastRecordRef.current = 0; }
     }
     const h = Math.max(0, Math.min(mercuryMaxHeight, (tempRef.current / 200) * mercuryMaxHeight));
     if (mercuryRef.current) {

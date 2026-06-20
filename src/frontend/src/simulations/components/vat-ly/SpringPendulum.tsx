@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { Line } from '@react-three/drei';
 import * as THREE from 'three';
-import DraggablePhysicsObject from '../../engine/DraggablePhysicsObject';
+import DraggablePhysicsObject, { getSnapPointsForModel } from '../../engine/DraggablePhysicsObject';
 
 interface Props {
   object: Scene.Object;
@@ -19,9 +20,17 @@ const SpringPendulum: React.FC<Props> = ({ object, isPlaying = false, onUpdatePo
   const springRef = useRef<THREE.Mesh>(null);
   const bobRef = useRef<THREE.Mesh>(null);
   const timeRef = useRef(0);
+  const trailRef = useRef<[number,number,number][]>([]);
 
   useFrame((_, delta) => {
     if (isPlaying) {
+      // Check attached to stand
+      const allObjs = sceneGraph?.objects || [];
+      const attached = allObjs.some((o) => o.modelName === 'Stand' && 
+        Math.abs(o.position[0] + 1.6 - object.position[0]) < 0.25 &&
+        Math.abs(o.position[1] + 2.0 - (object.position[1] + length / 2)) < 0.25
+      );
+      if (!attached) { timeRef.current = 0; trailRef.current = []; return; }
       timeRef.current += delta;
       const omega = Math.sqrt(stiffness / mass);
       const displacement = 0.4 * Math.sin(timeRef.current * omega);
@@ -30,9 +39,14 @@ const SpringPendulum: React.FC<Props> = ({ object, isPlaying = false, onUpdatePo
         springRef.current.scale.set(1, cl / length, 1);
         springRef.current.position.y = length / 2 - cl / 2;
       }
-      if (bobRef.current) bobRef.current.position.y = length / 2 - cl;
+      if (bobRef.current) {
+        bobRef.current.position.y = length / 2 - cl;
+        trailRef.current.push([0, bobRef.current.position.y, 0]);
+        if (trailRef.current.length > 20) trailRef.current.shift();
+      }
     } else {
       timeRef.current = 0;
+      trailRef.current = [];
       if (springRef.current) {
         springRef.current.scale.y = THREE.MathUtils.lerp(springRef.current.scale.y, 1, 0.1);
         const cl = length * springRef.current.scale.y;
@@ -44,7 +58,8 @@ const SpringPendulum: React.FC<Props> = ({ object, isPlaying = false, onUpdatePo
 
   return (
     <DraggablePhysicsObject object={object} label="Con Lắc Lò Xo" colliderArgs={[0.5, length / 2, 0.5]}
-      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}>
+      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}
+      snapPoints={getSnapPointsForModel('SpringPendulum', object.properties)}>
       <group>
         <mesh position={[0, length / 2, 0]} castShadow>
           <boxGeometry args={[0.6, 0.1, 0.6]} />
@@ -59,6 +74,9 @@ const SpringPendulum: React.FC<Props> = ({ object, isPlaying = false, onUpdatePo
           <meshStandardMaterial color={color} roughness={0.2} metalness={0.8} />
         </mesh>
       </group>
+      {trailRef.current.length > 2 && (
+        <Line points={trailRef.current} color={color} lineWidth={1.5} opacity={0.2} transparent />
+      )}
     </DraggablePhysicsObject>
   );
 };

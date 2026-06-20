@@ -104,9 +104,10 @@ const DraggablePhysicsObject: React.FC<Props> = ({
   const posRef = useRef<[number, number, number]>([...object.position]);
   const offsetRef = useRef({ x: 0, y: 0, z: 0 });
   const planeRef = useRef<THREE.Plane>(new THREE.Plane());
+  const pointerStart = useRef({ x: 0, y: 0 });
 
   const { camera, raycaster } = useThree();
-  const { setHoveredObjectId, setIsDragging } = useInteraction();
+  const { setHoveredObjectId, setIsDragging, setSelectedEquipmentId } = useInteraction();
 
   const half = colliderArgs ?? getCollider(object.modelName, object.properties);
   const kinematic = forceKinematic ?? ['Stand', 'SimplePendulum', 'SpringPendulum', 'Spring', 'Dashpot', 'DrivingMotor'].includes(object.modelName);
@@ -137,8 +138,16 @@ const DraggablePhysicsObject: React.FC<Props> = ({
           if (!sp.connectsTo.includes(os.type) && !os.connectsTo.includes(sp.type)) continue;
           const ox = op[0] + os.position[0], oy = op[1] + os.position[1], oz = op[2] + os.position[2];
           const dist = Math.sqrt((worldX - ox) ** 2 + (worldY - oy) ** 2 + (worldZ - oz) ** 2);
-          if (dist < 0.8) {
-            return [ox - sp.position[0], oy - sp.position[1], oz - sp.position[2]];
+          // Magnetic pull: lerp toward snap point when within range
+          if (dist < 1.5) {
+            const t = Math.max(0, Math.min(1, (1.5 - dist) / 0.7)); // 0 at 1.5, 1 at 0.8
+            const pullX = targetX + (ox - sp.position[0] - targetX) * t;
+            const pullY = targetY + (oy - sp.position[1] - targetY) * t;
+            const pullZ = targetZ + (oz - sp.position[2] - targetZ) * t;
+            if (dist < 1.2) {
+              return [ox - sp.position[0], oy - sp.position[1], oz - sp.position[2]];
+            }
+            return [pullX, pullY, pullZ];
           }
         }
       }
@@ -153,6 +162,7 @@ const DraggablePhysicsObject: React.FC<Props> = ({
     globalDraggingId = object.id;
     setDragging(true);
     setIsDragging(true);
+    pointerStart.current = { x: e.clientX, y: e.clientY };
     velRef.current = { x: 0, y: 0, z: 0 };
 
     const normal = new THREE.Vector3();
@@ -174,8 +184,14 @@ const DraggablePhysicsObject: React.FC<Props> = ({
     globalDraggingId = null;
     setDragging(false);
     setIsDragging(false);
+    // Detect click (not drag)
+    const dx = e.clientX - pointerStart.current.x;
+    const dy = e.clientY - pointerStart.current.y;
+    if (Math.abs(dx) < 4 && Math.abs(dy) < 4) {
+      setSelectedEquipmentId((prev) => prev === object.id ? null : object.id);
+    }
     onUpdatePosition?.(object.id, posRef.current);
-  }, [object, onUpdatePosition, setIsDragging]);
+  }, [object, onUpdatePosition, setIsDragging, setSelectedEquipmentId]);
 
   useFrame((state, delta) => {
     if (!groupRef.current) return;
@@ -270,6 +286,15 @@ export function getSnapPointsForModel(modelName: string, properties?: any): Snap
       ];
     case 'DrivingMotor':
       return [{ id: 'output', position: [0, 0.3, 0], type: 'motor_output', label: 'Trục ra', connectsTo: ['hook', 'spring_bottom'] }];
+    case 'ChemicalSolid':
+    case 'ChemicalLiquid':
+    case 'ChemicalGas':
+      return [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['chemical', 'container'] }];
+    case 'Beaker':
+    case 'TestTube':
+    case 'ErlenmeyerFlask':
+    case 'RoundFlask':
+      return [{ id: 'container', position: [0, -0.1, 0], type: 'container', label: 'Bình chứa', connectsTo: ['chemical'] }];
     default:
       return undefined;
   }

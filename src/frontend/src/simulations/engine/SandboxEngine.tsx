@@ -1,9 +1,12 @@
-import React, { Suspense, useMemo, useState } from 'react';
+import React, { Suspense, useMemo, useState, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import RoomEnvironment from '../components/RoomEnvironment';
 import { InteractionContext } from './InteractionContext';
 import ConnectionLines from './ConnectionLines';
+import InteractionEffects from './InteractionEffects';
+import InteractionGuideSystem from './InteractionGuideSystem';
+import EquipmentHighlighter from './EquipmentHighlighter';
 
 import { Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter } from '../components/vat-ly';
 import { Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas, ReactionSystem } from '../components/hoa-hoc';
@@ -77,15 +80,32 @@ interface Props {
   sceneGraph: Scene.IRecord | null;
   isPlaying: boolean;
   onUpdatePosition?: (id: string, position: [number, number, number]) => void;
+  showGuide?: boolean;
+  onDismissGuide?: () => void;
+  highlightedObjectId?: string | null;
+  highlightLabel?: string;
+  highlightColor?: string;
+  selectedEquipmentId?: string | null;
+  onSelectEquipment?: (id: string | null) => void;
 }
 
-const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePosition }) => {
+const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePosition, showGuide, onDismissGuide, highlightedObjectId, highlightLabel, highlightColor, selectedEquipmentId: externalSelectedId, onSelectEquipment }) => {
   const [hoveredObjectId, setHoveredObjectId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [internalSelectedId, setInternalSelectedId] = useState<string | null>(null);
+
+  const selectedEquipmentId = onSelectEquipment ? (externalSelectedId ?? null) : internalSelectedId;
+
+  const handleSelectEquipment = useCallback((id: string | null) => {
+    setInternalSelectedId(id);
+    onSelectEquipment?.(id);
+  }, [onSelectEquipment]);
 
   const interaction = useMemo(() => ({
     hoveredObjectId, setHoveredObjectId, isDragging, setIsDragging,
-  }), [hoveredObjectId, isDragging]);
+    selectedEquipmentId,
+    setSelectedEquipmentId: handleSelectEquipment,
+  }), [hoveredObjectId, isDragging, selectedEquipmentId, handleSelectEquipment]);
 
   return (
     <div style={{ width: '100%', height: '100%', background: '#f0f2f5' }}>
@@ -109,10 +129,23 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
                   objects={sceneGraph.objects || []}
                   hoveredObjectId={hoveredObjectId}
                 />
+                <InteractionEffects
+                  objects={sceneGraph.objects || []}
+                  isPlaying={isPlaying}
+                />
               </Suspense>
             </>
           )}
 
+          <InteractionGuideSystem visible={!!showGuide} onDismiss={onDismissGuide || (() => {})} />
+          {highlightedObjectId && sceneGraph && (
+            <EquipmentHighlighter
+              objectId={highlightedObjectId}
+              color={highlightColor || '#f59e0b'}
+              label={highlightLabel}
+              objects={sceneGraph.objects || []}
+            />
+          )}
           {!hoveredObjectId && (
             <OrbitControls
               makeDefault

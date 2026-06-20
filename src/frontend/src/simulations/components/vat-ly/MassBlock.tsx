@@ -1,5 +1,5 @@
 import React from 'react';
-import DraggablePhysicsObject from '../../engine/DraggablePhysicsObject';
+import DraggablePhysicsObject, { getSnapPointsForModel } from '../../engine/DraggablePhysicsObject';
 
 interface Props {
   object: Scene.Object;
@@ -15,7 +15,8 @@ const MassBlock: React.FC<Props> = ({ object, isPlaying, onUpdatePosition, scene
 
   return (
     <DraggablePhysicsObject object={object} label={`Vật Nặng (${mass}kg)`} colliderArgs={[s, s, s]}
-      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}>
+      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}
+      snapPoints={getSnapPointsForModel('MassBlock', object.properties)}>
       <group>
         <mesh position={[0, s, 0]} castShadow>
           <torusGeometry args={[0.12, 0.04, 8, 16]} />

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import DraggablePhysicsObject from '../../engine/DraggablePhysicsObject';
+import DraggablePhysicsObject, { getSnapPointsForModel } from '../../engine/DraggablePhysicsObject';
 
 interface Props {
   object: Scene.Object;
@@ -26,7 +26,8 @@ const Dashpot: React.FC<Props> = ({ object, isPlaying = false, onUpdatePosition,
 
   return (
     <DraggablePhysicsObject object={object} label="Giảm Chấn" colliderArgs={[0.3, 1.0, 0.3]}
-      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}>
+      isPlaying={isPlaying} onUpdatePosition={onUpdatePosition} sceneGraph={sceneGraph}
+      snapPoints={getSnapPointsForModel('Dashpot', object.properties)}>
       <group>
         <mesh position={[0, 1.0, 0]} castShadow>
           <boxGeometry args={[0.5, 0.08, 0.5]} />
