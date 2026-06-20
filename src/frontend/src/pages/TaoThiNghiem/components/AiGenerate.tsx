@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Input, Button, Card, Tag, message } from 'antd';
 import { RobotOutlined, ThunderboltOutlined, EditOutlined, RocketOutlined } from '@ant-design/icons';
 import { chatSessionApi } from '@/services/ai/api';
-import { INITIAL_Y } from '@/simulations/equipment-catalog';
+import { layDungCu } from '@/dung-cu/thanh-ghi';
 
 interface Props {
   onAccept: (data: Partial<Scene.IRecord>) => Promise<void>;
@@ -31,7 +31,7 @@ const AiGenerate: React.FC<Props> = ({ onAccept, onSwitchToManual, submitting })
     const objects = (result.objects || []).map((obj: any) => ({
       id: `${obj.modelName}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       modelName: obj.modelName,
-      position: [Math.random() * 4 - 2, INITIAL_Y[obj.modelName] || 0.5, Math.random() * 2 - 1] as [number, number, number],
+      position: [Math.random() * 4 - 2, layDungCu(obj.modelName)?.viTriY || 0.5, Math.random() * 2 - 1] as [number, number, number],
       rotation: [0, 0, 0], scale: [1, 1, 1],
       properties: obj.properties || {},
     }));

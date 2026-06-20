@@ -16,8 +16,9 @@ const ThiNghiem: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<string | null>(null);
+  const [rotationAxis, setRotationAxis] = useState<'x' | 'y' | 'z' | null>(null);
 
-  const { sceneGraph, initScene, clearScene, updateObjectPosition, updateObjectProperty, updateAllProperties } = useModel('useSimulationModel');
+  const { sceneGraph, initScene, clearScene, updateObjectPosition, updateObjectRotation, updateObjectProperty, updateAllProperties } = useModel('useSimulationModel');
   const { openChatbot, closeChatbot, requestGuidance } = useModel('useAIChatBotModel');
 
   useEffect(() => {
@@ -49,6 +50,10 @@ const ThiNghiem: React.FC = () => {
     updateAllProperties(objectId, props);
   };
 
+  const handleUpdateRotation = (objectId: string, rotation: [number, number, number]) => {
+    updateObjectRotation(objectId, rotation);
+  };
+
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#f0f2f5' }}>
@@ -72,6 +77,8 @@ const ThiNghiem: React.FC = () => {
             onUpdatePosition={updateObjectPosition}
             selectedEquipmentId={selectedEquipmentId}
             onSelectEquipment={setSelectedEquipmentId}
+            rotationAxis={rotationAxis}
+            onSetRotationAxis={setRotationAxis}
           />
         </div>
         <FooterBar
@@ -87,9 +94,12 @@ const ThiNghiem: React.FC = () => {
           objectId={selectedEquipmentId}
           sceneGraph={sceneGraph}
           isPlaying={isPlaying}
-          onClose={() => setSelectedEquipmentId(null)}
+          onClose={() => { setSelectedEquipmentId(null); setRotationAxis(null); }}
           onUpdateProperty={handleUpdateProperty}
           onUpdateAllProperties={handleUpdateAllProperties}
+          onUpdateRotation={handleUpdateRotation}
+          rotationAxis={rotationAxis}
+          onSetRotationAxis={setRotationAxis}
         />
       )}
     </div>

@@ -27,8 +27,10 @@ const EquipmentHighlighter: React.FC<Props> = ({ objectId, color, label, objects
 
   if (!target) return null;
 
-  const pos = [...target.position] as [number, number, number];
-  if (pos[1] === 5) pos[1] = getInitY(target.modelName);
+  const targetModel = (target as any).modelName || (target as any).maDungCu || '';
+  const targetPos = (target.position || (target as any).viTri || [0, 0, 0]) as [number, number, number];
+  const pos = [...targetPos] as [number, number, number];
+  if (pos[1] === 5) pos[1] = getInitY(targetModel);
 
   const half = [0.4, 0.4, 0.4] as [number, number, number];
   return (

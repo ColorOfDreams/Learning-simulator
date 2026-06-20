@@ -23,6 +23,43 @@ import './styles/global.less';
 import { currentRole } from './utils/ip';
 import { getUserInfo } from '@/services/base/api';
 
+// Tự động đăng ký tất cả dụng cụ vào registry khi app khởi động
+import '@/dung-cu/vat-ly/ConLacDon';
+import '@/dung-cu/vat-ly/ConLacLoXo';
+import '@/dung-cu/vat-ly/DongHoBamGiay';
+import '@/dung-cu/vat-ly/DongCoRung';
+import '@/dung-cu/vat-ly/GiaDo';
+import '@/dung-cu/vat-ly/LoXo';
+import '@/dung-cu/vat-ly/VatNang';
+import '@/dung-cu/vat-ly/KhoiGo';
+import '@/dung-cu/vat-ly/ThuocDo';
+import '@/dung-cu/vat-ly/ThuocDoGoc';
+import '@/dung-cu/vat-ly/BoGiamChan';
+import '@/dung-cu/vat-ly/DongHoNangLuong';
+import '@/dung-cu/hoa-hoc/CocThuyTinh';
+import '@/dung-cu/hoa-hoc/OngNghiem';
+import '@/dung-cu/hoa-hoc/BinhTamGiac';
+import '@/dung-cu/hoa-hoc/BinhCau';
+import '@/dung-cu/hoa-hoc/Buret';
+import '@/dung-cu/hoa-hoc/Pipet';
+import '@/dung-cu/hoa-hoc/NhietKe';
+import '@/dung-cu/hoa-hoc/DenCon';
+import '@/dung-cu/hoa-hoc/MayDoPH';
+import '@/dung-cu/hoa-hoc/OngSinhHan';
+import '@/dung-cu/hoa-hoc/CoiChay';
+import '@/dung-cu/hoa-hoc/ChatRan';
+import '@/dung-cu/hoa-hoc/ChatLong';
+import '@/dung-cu/hoa-hoc/ChatKhi';
+import '@/dung-cu/hoa-hoc/BangTuanHoan';
+import '@/dung-cu/toan-hoc/MatPhangToaDo';
+import '@/dung-cu/toan-hoc/DoThiParabol';
+import '@/dung-cu/toan-hoc/SongLuongGiac';
+import '@/dung-cu/toan-hoc/TamGiac';
+import '@/dung-cu/toan-hoc/DuongTron';
+import '@/dung-cu/toan-hoc/Vector2D';
+import '@/dung-cu/toan-hoc/BangVeDoThi';
+import '@/dung-cu/toan-hoc/BieuDoThongKe';
+
 
 
 export function rootContainer(container: React.ReactNode) {

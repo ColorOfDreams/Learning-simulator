@@ -2,8 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { Input, Select, Button, Modal, Tooltip } from 'antd';
 import { SearchOutlined, CheckCircleFilled, ExperimentOutlined } from '@ant-design/icons';
 import {
-  ALL_EQUIPMENT, GRADE_OPTIONS, CHAPTERS, TOPICS, EQUIPMENT_TYPES, INITIAL_Y, EquipmentDef,
+  GRADE_OPTIONS, CHAPTERS, TOPICS, EQUIPMENT_TYPES, INITIAL_Y, EquipmentDef,
 } from '@/simulations/equipment-catalog';
+import { layTatCa } from '@/dung-cu/thanh-ghi';
 import { ALL_CHEMICALS, GROUP_COLORS, Chemical } from '@/simulations/chemicals-catalog';
 import { validateExperiment } from '@/utils/experiment-validator';
 import MiniPreview from '@/simulations/components/MiniPreview';
@@ -42,8 +43,23 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
   }, [chapter]);
 
   const filtered = useMemo(() => {
-    return ALL_EQUIPMENT.filter((eq) => {
-      if (eq.subject !== data.roomType) return false;
+    const roomToMon: Record<string, string> = { physics: 'vat-ly', chemistry: 'hoa-hoc', math: 'toan-hoc' };
+    const monFilter = roomToMon[data.roomType || 'physics'] || 'vat-ly';
+    const tatCa = layTatCa().map((d) => ({
+      id: d.maDungCu,
+      name: d.tenDungCu,
+      subject: d.monHoc,
+      grade: d.lop,
+      chapter: d.chuong,
+      chapterName: d.chuong,
+      topic: d.chuDe,
+      topicName: d.chuDe,
+      type: d.loai,
+      connections: [],
+      initialY: d.viTriY,
+    } as EquipmentDef));
+    return tatCa.filter((eq) => {
+      if (eq.subject !== monFilter) return false;
       if (grade && eq.grade !== grade) return false;
       if (chapter && eq.chapter !== chapter) return false;
       if (topic && eq.topic !== topic) return false;
@@ -175,8 +191,8 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
         <div className="s2-preview-overlay" onClick={() => setPreview(null)}>
           <div className="s2-preview-card" onClick={(e) => e.stopPropagation()}>
             <MiniPreview modelName={preview} size={300} />
-            <h3>{ALL_EQUIPMENT.find((e) => e.id === preview)?.name}</h3>
-            <p>{ALL_EQUIPMENT.find((e) => e.id === preview)?.chapterName}</p>
+            <h3>{layTatCa().find((e) => e.maDungCu === preview)?.tenDungCu || preview}</h3>
+            <p>{layTatCa().find((e) => e.maDungCu === preview)?.chuong || ''}</p>
             <Button onClick={() => setPreview(null)}>Đóng</Button>
           </div>
         </div>

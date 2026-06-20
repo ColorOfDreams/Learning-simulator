@@ -1,53 +1,37 @@
 import React, { Suspense, useMemo, useState, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import RoomEnvironment from '../components/RoomEnvironment';
+import { OrbitControls, Environment } from '@react-three/drei';
+import RoomEnvironment from '@/dung-cu/dung-chung/PhongThiNghiem';
 import { InteractionContext } from './InteractionContext';
 import ConnectionLines from './ConnectionLines';
 import InteractionEffects from './InteractionEffects';
 import InteractionGuideSystem from './InteractionGuideSystem';
 import EquipmentHighlighter from './EquipmentHighlighter';
+import { layDungCu } from '@/dung-cu/thanh-ghi';
 
-import { Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter } from '../components/vat-ly';
-import { Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas, ReactionSystem } from '../components/hoa-hoc';
-import { CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart } from '../components/toan-hoc';
+const COMPONENT_MAP: Record<string, React.FC<any>> = {};
 
-const COMPONENT_MAP: Record<string, React.FC<any>> = {
-  // Physics
-  WoodenBlock, SimplePendulum, SpringPendulum, Stand,
-  Spring, MassBlock, Stopwatch, Ruler, Protractor,
-  Dashpot, DrivingMotor, EnergyMeter,
-  // Chemistry
-  TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette,
-  Thermometer, BunsenBurner, pHMeter, Condenser, Mortar,
-  PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas, ReactionSystem,
-  // Math
-  CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle,
-  GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart,
-  // hoa-hoc Beaker replaces old
-  Beaker,
+const getComponent = (modelName: string): React.FC<any> | undefined => {
+  if (COMPONENT_MAP[modelName]) return COMPONENT_MAP[modelName];
+  const def = layDungCu(modelName);
+  if (def) {
+    COMPONENT_MAP[modelName] = def.component as unknown as React.FC<any>;
+    return COMPONENT_MAP[modelName];
+  }
+  return undefined;
 };
 
-const getInitialY = (modelName: string) => {
-  const map: Record<string, number> = {
-    // Physics
-    WoodenBlock: 0.15, Stand: 1.9,
-    SimplePendulum: 1.5, SpringPendulum: 1.5, Spring: 1.5,
-    MassBlock: 0.2, Stopwatch: 0.1, Ruler: 0.05, Protractor: 0.05,
-    Dashpot: 0.5, DrivingMotor: 0.2, EnergyMeter: 0.05,
-    // Chemistry
-    Beaker: 0.4, TestTube: 0.2, ErlenmeyerFlask: 0.3, RoundFlask: 0.4,
-    Burette: 1.5, Pipette: 0.05, Thermometer: 0.05, BunsenBurner: 0.1,
-    pHMeter: 0.05, Condenser: 0.3, Mortar: 0.05, PeriodicTable: 1.5,
-    ChemicalSolid: 0.1, ChemicalLiquid: 0.2, ChemicalGas: 0.5,
-    ReactionSystem: 0.3,
-    // Math
-    CoordinatePlane: 0.05, ParabolaGraph: 0.05, TrigWave: 0.05,
-    GeometryTriangle: 0.05, GeometryCircle: 0.05, Vector2D: 0.05,
-    FunctionPlotter: 0.05, StatisticsChart: 0.05,
-  };
-  return map[modelName] ?? 0;
+const getInitialY = (modelName: string): number => {
+  const def = layDungCu(modelName);
+  if (def) return def.viTriY;
+  return 0;
 };
+
+function normalizeThuocTinh(obj: Scene.Object): Record<string, any> {
+  const tt: Record<string, any> = { ...(obj as any).thuocTinh, ...obj.properties };
+  if ((obj as any).thuocTinh) return (obj as any).thuocTinh;
+  return obj.properties || {};
+}
 
 const SceneObjects = React.memo(({
   objects, isPlaying, onUpdatePosition, sceneGraph,
@@ -56,25 +40,44 @@ const SceneObjects = React.memo(({
   isPlaying: boolean;
   onUpdatePosition?: (id: string, pos: [number, number, number]) => void;
   sceneGraph: Scene.IRecord | null;
-}) => (
-  <>
-    {objects.map((obj) => {
-      const Comp = COMPONENT_MAP[obj.modelName];
-      if (!Comp) return null;
-      const pos = [...obj.position] as [number, number, number];
-      if (pos[1] === 5) pos[1] = getInitialY(obj.modelName);
-      return (
-        <Comp
-          key={obj.id}
-          object={{ ...obj, position: pos }}
-          isPlaying={isPlaying}
-          onUpdatePosition={onUpdatePosition}
-          sceneGraph={sceneGraph}
-        />
-      );
-    })}
-  </>
-));
+}) => {
+  const adapted = useMemo(() => objects.map((obj) => {
+    const mn = obj.modelName || (obj as any).maDungCu;
+    const pos = [...(obj.position || (obj as any).viTri || [0, 5, 0])] as [number, number, number];
+    if (pos[1] === 5) pos[1] = getInitialY(mn);
+    return {
+      ...obj,
+      modelName: mn,
+      position: pos,
+      viTri: pos,
+      thuocTinh: normalizeThuocTinh(obj),
+    };
+  }), [objects]);
+
+  return (
+    <>
+      {adapted.map((obj) => {
+        const Comp = getComponent(obj.modelName);
+        if (!Comp) return null;
+        return (
+          <Suspense key={obj.id} fallback={null}>
+            <Comp
+              key={obj.id}
+              object={obj}
+              doiTuong={obj}
+              isPlaying={isPlaying}
+              dangChay={isPlaying}
+              onUpdatePosition={onUpdatePosition}
+              capNhatViTri={onUpdatePosition}
+              sceneGraph={sceneGraph}
+              doThiScene={sceneGraph}
+            />
+          </Suspense>
+        );
+      })}
+    </>
+  );
+});
 
 interface Props {
   sceneGraph: Scene.IRecord | null;
@@ -87,14 +90,37 @@ interface Props {
   highlightColor?: string;
   selectedEquipmentId?: string | null;
   onSelectEquipment?: (id: string | null) => void;
+  rotationAxis?: 'x' | 'y' | 'z' | null;
+  onSetRotationAxis?: (axis: 'x' | 'y' | 'z' | null) => void;
 }
 
-const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePosition, showGuide, onDismissGuide, highlightedObjectId, highlightLabel, highlightColor, selectedEquipmentId: externalSelectedId, onSelectEquipment }) => {
+const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePosition, showGuide, onDismissGuide, highlightedObjectId, highlightLabel, highlightColor, selectedEquipmentId: externalSelectedId, onSelectEquipment, rotationAxis: externalRotationAxis, onSetRotationAxis }) => {
   const [hoveredObjectId, setHoveredObjectId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [internalSelectedId, setInternalSelectedId] = useState<string | null>(null);
+  const [snapTargetId, setSnapTargetId] = useState<string | null>(null);
+  const [internalRotationAxis, setInternalRotationAxis] = useState<'x' | 'y' | 'z' | null>(null);
 
   const selectedEquipmentId = onSelectEquipment ? (externalSelectedId ?? null) : internalSelectedId;
+  const rotationAxis = onSetRotationAxis ? (externalRotationAxis ?? null) : internalRotationAxis;
+  const setRotationAxis = onSetRotationAxis || setInternalRotationAxis;
+
+  const heSoTatDan = useMemo(() => {
+    const objs = sceneGraph?.objects || [];
+    let found = 0;
+    for (const o of objs) {
+      const mn = (o as any).modelName || (o as any).maDungCu;
+      const nhan = (o as any).nhan || (o as any).tenDungCu;
+      if (mn === 'Dashpot' || mn === 'BoGiamChan' || nhan === 'Bộ giảm chấn' || nhan === 'Giảm Chấn') {
+        let val = o.properties?.heSoTatDan ?? (o as any).thuocTinh?.heSoTatDan;
+        if (typeof val === 'string') val = parseFloat(val);
+        if (typeof val !== 'number' || isNaN(val)) val = 0.5;
+        found = val;
+        break;
+      }
+    }
+    return found;
+  }, [sceneGraph?.objects]);
 
   const handleSelectEquipment = useCallback((id: string | null) => {
     setInternalSelectedId(id);
@@ -103,17 +129,23 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
 
   const interaction = useMemo(() => ({
     hoveredObjectId, setHoveredObjectId, isDragging, setIsDragging,
-    selectedEquipmentId,
+    selectedEquipmentId, snapTargetId, setSnapTargetId,
+    rotationAxis, setRotationAxis, heSoTatDan,
     setSelectedEquipmentId: handleSelectEquipment,
-  }), [hoveredObjectId, isDragging, selectedEquipmentId, handleSelectEquipment]);
+  }), [hoveredObjectId, isDragging, selectedEquipmentId, snapTargetId, rotationAxis, heSoTatDan, handleSelectEquipment]);
 
   return (
     <div style={{ width: '100%', height: '100%', background: '#f0f2f5' }}>
       <Canvas shadows camera={{ position: [0, 5, 10], fov: 50 }}>
         <InteractionContext.Provider value={interaction}>
           <color attach="background" args={['#f0f2f5']} />
-          <ambientLight intensity={0.6} />
-          <directionalLight castShadow position={[10, 20, 10]} intensity={1.2} />
+          <ambientLight intensity={0.5} />
+          <directionalLight castShadow position={[10, 20, 10]} intensity={1.0}
+            shadow-mapSize={2048} shadow-camera-near={0.5} shadow-camera-far={50}
+            shadow-camera-left={-15} shadow-camera-right={15}
+            shadow-camera-top={15} shadow-camera-bottom={-15} />
+          <spotLight position={[0, 8, 0]} intensity={0.4} angle={Math.PI / 4} penumbra={0.5} castShadow />
+          <Environment preset="warehouse" />
 
           {sceneGraph && (
             <>
@@ -146,7 +178,15 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
               objects={sceneGraph.objects || []}
             />
           )}
-          {!hoveredObjectId && (
+          {snapTargetId && sceneGraph && (
+            <EquipmentHighlighter
+              objectId={snapTargetId}
+              color="#22c55e"
+              label="Thả để gắn"
+              objects={sceneGraph.objects || []}
+            />
+          )}
+          {!hoveredObjectId && !isDragging && (
             <OrbitControls
               makeDefault
               minPolarAngle={0}

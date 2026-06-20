@@ -58,6 +58,18 @@ export default function useSimulationModel() {
     });
   }, []);
 
+  const updateObjectRotation = useCallback((id: string, rotation: [number, number, number]) => {
+    setSceneGraph((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        objects: (prev.objects || []).map((obj) =>
+          obj.id === id ? { ...obj, rotation } : obj
+        ),
+      };
+    });
+  }, []);
+
   const updateObjectProperty = useCallback((id: string, key: string, value: any) => {
     setSceneGraph((prev) => {
       if (!prev) return prev;
@@ -76,7 +88,7 @@ export default function useSimulationModel() {
       return {
         ...prev,
         objects: (prev.objects || []).map((obj) =>
-          obj.id === id ? { ...obj, properties: props } : obj
+          obj.id === id ? { ...obj, properties: { ...obj.properties, ...props } } : obj
         ),
       };
     });
@@ -89,6 +101,7 @@ export default function useSimulationModel() {
     addObject,
     removeObject,
     updateObjectPosition,
+    updateObjectRotation,
     updateObjectProperty,
     updateAllProperties,
   };

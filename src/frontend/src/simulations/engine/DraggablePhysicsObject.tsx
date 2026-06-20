@@ -13,18 +13,29 @@ export interface SnapPoint {
 }
 
 interface Props {
-  object: Scene.Object;
-  label: string;
+  object?: Scene.Object;
+  doiTuong?: Scene.Object;
+  label?: string;
+  nhan?: string;
   colliderArgs?: [number, number, number];
+  kichThuocVaCham?: [number, number, number];
   children: React.ReactNode;
   isPlaying?: boolean;
+  dangChay?: boolean;
   onUpdatePosition?: (id: string, position: [number, number, number]) => void;
+  capNhatViTri?: (id: string, position: [number, number, number]) => void;
   sceneGraph?: Scene.IRecord | null;
+  doThiScene?: Scene.IRecord | null;
   snapPoints?: SnapPoint[];
+  diemSnap?: SnapPoint[];
   isKinematic?: boolean;
+  coDinh?: boolean;
 }
 
 let globalDraggingId: string | null = null;
+
+const getModel = (obj: any) => obj.modelName || obj.maDungCu || '';
+const getPos = (obj: any): [number, number, number] => [...(obj.position || obj.viTri || [0, 5, 0])] as [number, number, number];
 
 const getCollider = (modelName: string, props?: any): [number, number, number] => {
   const map: Record<string, [number, number, number]> = {
@@ -70,9 +81,9 @@ const resolveCollisions = (
     let hit = false;
     for (const obj of objects) {
       if (obj.id === excludeId) continue;
-      const oh = getCollider(obj.modelName, obj.properties);
-      const op = [...obj.position] as [number, number, number];
-      if (op[1] === 5) op[1] = getInitY(obj.modelName);
+      const oh = getCollider(getModel(obj), obj.properties);
+      const op = getPos(obj);
+      if (op[1] === 5) op[1] = getInitY(getModel(obj));
 
       const dx = x - op[0], dy = y - op[1], dz = z - op[2];
       const px = (half[0] + oh[0]) - Math.abs(dx);
@@ -94,10 +105,16 @@ const resolveCollisions = (
   return [x, y, z];
 };
 
-const DraggablePhysicsObject: React.FC<Props> = ({
-  object, label, colliderArgs, children, isPlaying = false,
-  onUpdatePosition, sceneGraph, snapPoints, isKinematic: forceKinematic,
-}) => {
+const DraggablePhysicsObject: React.FC<Props> = (props) => {
+  const object = (props.object ?? props.doiTuong)!;
+  const label = props.label ?? props.nhan ?? '';
+  const colliderArgs = props.colliderArgs ?? props.kichThuocVaCham;
+  const isPlaying = props.isPlaying ?? props.dangChay ?? false;
+  const onUpdatePosition = props.onUpdatePosition ?? props.capNhatViTri;
+  const sceneGraph = props.sceneGraph ?? props.doThiScene ?? null;
+  const snapPoints = props.snapPoints ?? props.diemSnap;
+  const forceKinematic = props.isKinematic ?? props.coDinh;
+  const { children } = props;
   const groupRef = useRef<THREE.Group>(null);
   const [dragging, setDragging] = useState(false);
   const velRef = useRef({ x: 0, y: 0, z: 0 });
@@ -105,9 +122,11 @@ const DraggablePhysicsObject: React.FC<Props> = ({
   const offsetRef = useRef({ x: 0, y: 0, z: 0 });
   const planeRef = useRef<THREE.Plane>(new THREE.Plane());
   const pointerStart = useRef({ x: 0, y: 0 });
+  const rotStartRef = useRef({ x: 0, y: 0 });
+  const snapTargetRef = useRef<string | null>(null);
 
   const { camera, raycaster } = useThree();
-  const { setHoveredObjectId, setIsDragging, setSelectedEquipmentId } = useInteraction();
+  const { setHoveredObjectId, setIsDragging, setSelectedEquipmentId, selectedEquipmentId, setSnapTargetId, rotationAxis } = useInteraction();
 
   const half = colliderArgs ?? getCollider(object.modelName, object.properties);
   const kinematic = forceKinematic ?? ['Stand', 'SimplePendulum', 'SpringPendulum', 'Spring', 'Dashpot', 'DrivingMotor'].includes(object.modelName);
@@ -120,7 +139,11 @@ const DraggablePhysicsObject: React.FC<Props> = ({
   }, [object.position, dragging]);
 
   const findSnapTarget = useCallback((targetX: number, targetY: number, targetZ: number): [number, number, number] | null => {
+    snapTargetRef.current = null;
     if (!snapPoints?.length) return null;
+    let bestDist = 1.5;
+    let bestPos: [number, number, number] | null = null;
+
     for (const sp of snapPoints) {
       const worldX = targetX + sp.position[0];
       const worldY = targetY + sp.position[1];
@@ -128,41 +151,46 @@ const DraggablePhysicsObject: React.FC<Props> = ({
 
       for (const other of allObjects) {
         if (other.id === object.id) continue;
-        const otherSnaps = getSnapPointsForModel(other.modelName, other.properties);
+        const otherModel = (other as any).modelName || (other as any).maDungCu || '';
+        const otherSnaps = getSnapPointsForModel(otherModel, other.properties);
         if (!otherSnaps?.length) continue;
 
-        const op = [...other.position] as [number, number, number];
-        if (op[1] === 5) op[1] = getInitY(other.modelName);
+        const op = [...(other.position || (other as any).viTri || [0, 5, 0])] as [number, number, number];
+        if (op[1] === 5) op[1] = getInitY(otherModel);
 
         for (const os of otherSnaps) {
           if (!sp.connectsTo.includes(os.type) && !os.connectsTo.includes(sp.type)) continue;
           const ox = op[0] + os.position[0], oy = op[1] + os.position[1], oz = op[2] + os.position[2];
           const dist = Math.sqrt((worldX - ox) ** 2 + (worldY - oy) ** 2 + (worldZ - oz) ** 2);
-          // Magnetic pull: lerp toward snap point when within range
-          if (dist < 1.5) {
-            const t = Math.max(0, Math.min(1, (1.5 - dist) / 0.7)); // 0 at 1.5, 1 at 0.8
+          if (dist < bestDist) {
+            bestDist = dist;
+            snapTargetRef.current = other.id;
+            const t = Math.max(0, Math.min(1, (1.5 - dist) / 0.7));
             const pullX = targetX + (ox - sp.position[0] - targetX) * t;
             const pullY = targetY + (oy - sp.position[1] - targetY) * t;
             const pullZ = targetZ + (oz - sp.position[2] - targetZ) * t;
             if (dist < 1.2) {
-              return [ox - sp.position[0], oy - sp.position[1], oz - sp.position[2]];
+              bestPos = [ox - sp.position[0], oy - sp.position[1], oz - sp.position[2]];
+            } else {
+              bestPos = [pullX, pullY, pullZ];
             }
-            return [pullX, pullY, pullZ];
           }
         }
       }
     }
-    return null;
+    return bestPos;
   }, [snapPoints, allObjects, object.id]);
 
   const onPointerDown = useCallback((e: any) => {
     if (globalDraggingId) return;
+    if (e.button !== 0) return; // Only left-click — let right/middle pass to OrbitControls
     e.stopPropagation();
     e.target.setPointerCapture(e.pointerId);
     globalDraggingId = object.id;
     setDragging(true);
     setIsDragging(true);
     pointerStart.current = { x: e.clientX, y: e.clientY };
+    rotStartRef.current = { x: e.clientX, y: e.clientY };
     velRef.current = { x: 0, y: 0, z: 0 };
 
     const normal = new THREE.Vector3();
@@ -177,26 +205,70 @@ const DraggablePhysicsObject: React.FC<Props> = ({
     }
   }, [camera, raycaster, object, setIsDragging]);
 
+  // Separate rotation via pointer events (screen coords — does not interfere with 3D drag)
+  const onPointerMove = useCallback((e: any) => {
+    if (!dragging || !rotationAxis || selectedEquipmentId !== object.id) return;
+    e.stopPropagation();
+    e.preventDefault();
+    const dx = e.clientX - rotStartRef.current.x;
+    const dy = e.clientY - rotStartRef.current.y;
+    rotStartRef.current = { x: e.clientX, y: e.clientY };
+
+    const rot = [
+      groupRef.current?.rotation.x ?? 0,
+      groupRef.current?.rotation.y ?? 0,
+      groupRef.current?.rotation.z ?? 0,
+    ];
+    const speed = 0.01;
+    if (rotationAxis === 'x') rot[0] += dy * speed;
+    if (rotationAxis === 'y') rot[1] -= dx * speed;
+    if (rotationAxis === 'z') rot[2] += dx * speed;
+
+    if (groupRef.current) {
+      groupRef.current.rotation.set(rot[0], rot[1], rot[2]);
+    }
+  }, [dragging, rotationAxis, selectedEquipmentId, object.id]);
+
   const onPointerUp = useCallback((e: any) => {
     if (globalDraggingId !== object.id) return;
+    if (e.button !== 0) return;
     e.stopPropagation();
-    e.target.releasePointerCapture(e.pointerId);
+    try { e.target.releasePointerCapture(e.pointerId); } catch {}
     globalDraggingId = null;
     setDragging(false);
     setIsDragging(false);
-    // Detect click (not drag)
+
     const dx = e.clientX - pointerStart.current.x;
     const dy = e.clientY - pointerStart.current.y;
+
+    // Click detection (not a drag)
     if (Math.abs(dx) < 4 && Math.abs(dy) < 4) {
-      setSelectedEquipmentId((prev) => prev === object.id ? null : object.id);
+      setSelectedEquipmentId(selectedEquipmentId === object.id ? null : object.id);
     }
-    onUpdatePosition?.(object.id, posRef.current);
-  }, [object, onUpdatePosition, setIsDragging, setSelectedEquipmentId]);
+
+    // Save rotation if we were in rotation mode
+    if (rotationAxis && selectedEquipmentId === object.id && groupRef.current) {
+      const rot = [
+        groupRef.current.rotation.x,
+        groupRef.current.rotation.y,
+        groupRef.current.rotation.z,
+      ] as [number, number, number];
+      (object as any).rotation = rot;
+      onUpdatePosition?.(object.id, rot as unknown as [number, number, number]);
+    } else {
+      // Normal drag — save position
+      onUpdatePosition?.(object.id, posRef.current);
+    }
+  }, [object, rotationAxis, selectedEquipmentId, onUpdatePosition, setIsDragging, setSelectedEquipmentId]);
 
   useFrame((state, delta) => {
     if (!groupRef.current) return;
 
     if (dragging) {
+      if (rotationAxis && selectedEquipmentId === object.id) {
+        return; // Rotation handled by onPointerMove — don't move position
+      }
+
       const ray = state.raycaster.ray;
       const intersection = new THREE.Vector3();
       if (ray.intersectPlane(planeRef.current, intersection)) {
@@ -207,18 +279,26 @@ const DraggablePhysicsObject: React.FC<Props> = ({
         const snapped = findSnapTarget(tx, ty, tz);
         if (snapped) { tx = snapped[0]; ty = snapped[1]; tz = snapped[2]; }
 
+        setSnapTargetId(snapTargetRef.current);
+
         const resolved = resolveCollisions([tx, ty, tz], half, object.id, allObjects);
         posRef.current = resolved;
         groupRef.current.position.set(resolved[0], resolved[1], resolved[2]);
       }
-    } else if (isPlaying && !kinematic) {
-      let [x, y, z] = posRef.current;
-      velRef.current.y -= 9.81 * delta;
-      const py = y + velRef.current.y * delta;
-      const resolved = resolveCollisions([x, py, z], half, object.id, allObjects);
-      if (resolved[1] > py) velRef.current.y = 0;
-      posRef.current = resolved;
-      groupRef.current.position.set(resolved[0], resolved[1], resolved[2]);
+    } else {
+      if (snapTargetRef.current) {
+        snapTargetRef.current = null;
+        setSnapTargetId(null);
+      }
+      if (isPlaying && !kinematic) {
+        let [x, y, z] = posRef.current;
+        velRef.current.y -= 9.81 * delta;
+        const py = y + velRef.current.y * delta;
+        const resolved = resolveCollisions([x, py, z], half, object.id, allObjects);
+        if (resolved[1] > py) velRef.current.y = 0;
+        posRef.current = resolved;
+        groupRef.current.position.set(resolved[0], resolved[1], resolved[2]);
+      }
     }
 
     groupRef.current.rotation.set(object.rotation[0], object.rotation[1], object.rotation[2]);
@@ -228,6 +308,7 @@ const DraggablePhysicsObject: React.FC<Props> = ({
     <group ref={groupRef} position={object.position} rotation={object.rotation}>
       <group
         onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerEnter={() => setHoveredObjectId(object.id)}
         onPointerLeave={() => { if (!dragging) setHoveredObjectId(null); }}
@@ -256,7 +337,10 @@ const DraggablePhysicsObject: React.FC<Props> = ({
 export function getSnapPointsForModel(modelName: string, properties?: any): SnapPoint[] | undefined {
   switch (modelName) {
     case 'Stand':
-      return [{ id: 'clamp', position: [1.6, 2.0, 0], type: 'clamp', label: 'Kẹp', connectsTo: ['anchor', 'spring_top', 'dashpot_top'] }];
+      return [
+        { id: 'clamp_right', position: [1.6, 2.0, 0], type: 'clamp', label: 'Kẹp phải', connectsTo: ['anchor', 'spring_top', 'dashpot_top'] },
+        { id: 'clamp_left', position: [-1.6, 2.0, 0], type: 'clamp', label: 'Kẹp trái', connectsTo: ['anchor', 'spring_top', 'dashpot_top'] },
+      ];
     case 'SimplePendulum': {
       const l = properties?.length || 2;
       return [{ id: 'anchor', position: [0, l / 2, 0], type: 'anchor', label: 'Điểm neo', connectsTo: ['clamp'] }];
