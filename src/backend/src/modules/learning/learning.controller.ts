@@ -22,4 +22,10 @@ export class LearningController {
   seedChapterOneDataset() {
     return this.learningDatasetSeedService.seedChapterOneDataset();
   }
+
+  @Post('seed')
+  @ApiOperation({ summary: 'Seed the configured Learning Simulator dataset' })
+  seedLearningDataset() {
+    return this.learningDatasetSeedService.seedLearningDataset();
+  }
 }

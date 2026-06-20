@@ -44,6 +44,28 @@ export class TheoryChunkService {
   }
 
   async search(query: string) {
+    const phrase = query.trim();
+    if (!phrase) {
+      return [];
+    }
+
+    // Keyword phrase search is deliberately the first retrieval tier. This keeps
+    // /ai/analyze deterministic and avoids a pgvector dependency for the MVP.
+    const phraseMatches = await this.searchByKeyword(phrase);
+    if (phraseMatches.length > 0) {
+      return phraseMatches;
+    }
+
+    const tokens = [...new Set(phrase.split(/\s+/).filter((token) => token.length >= 2))];
+    const tokenMatches = await Promise.all(
+      tokens.map((token) => this.searchByKeyword(token)),
+    );
+    const byId = new Map<string, TheoryChunkEntity>();
+    tokenMatches.flat().forEach((chunk) => byId.set(chunk.id, chunk));
+    return [...byId.values()].slice(0, 8);
+  }
+
+  private searchByKeyword(query: string) {
     return this.theoryChunkRepo.find({
       where: [
         {
