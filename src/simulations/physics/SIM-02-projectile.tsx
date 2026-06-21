@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import type { SimulationProps, SimulationParam } from '../types';
 
 interface TrajectoryPoint {
@@ -259,9 +259,6 @@ export default function ProjectileSimulation({
       ctx.setLineDash([4, 4]);
 
       // Peak vertical marker
-      const peakX = stats.maxX / 2; // Approximate peak position for simple marker
-      let peakY = stats.maxY;
-      
       // Look for maximum Y point in computed trajectory
       const maxPt = trajectory.reduce((max, p) => p.y > max.y ? p : max, trajectory[0]);
       

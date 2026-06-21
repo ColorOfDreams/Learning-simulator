@@ -29,6 +29,11 @@ export class ChatRequestDto {
   @Min(1)
   grade?: number;
 
+  @ApiPropertyOptional({ example: 'SIM-01' })
+  @IsOptional()
+  @IsString()
+  simulationId?: string;
+
   @ApiPropertyOptional({ type: [ChatMessageDto] })
   @IsOptional()
   @IsArray()

@@ -587,6 +587,51 @@
     box-shadow: 0 0 0 3px oklch(0.62 0.13 150 / 0.2);
   }
 
+  &__right-tabs {
+    display: flex;
+    border-bottom: 1px solid @stu-border;
+    background: @stu-bg-panel;
+    padding: 0 18px;
+    gap: 18px;
+  }
+
+  &__right-tab {
+    padding: 10px 2px;
+    font-size: 13px;
+    font-weight: 600;
+    color: @stu-text-muted;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.15s;
+
+    &:hover {
+      color: @stu-text-primary;
+    }
+
+    &--active {
+      color: @stu-accent-dark;
+      font-weight: 700;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: @stu-accent;
+        border-radius: 2px;
+      }
+    }
+  }
+
+  &__quiz-tab-content {
+    flex: 1;
+    overflow-y: auto;
+    .stu-scrollbar();
+    padding-top: 16px;
+  }
+
   // Chat
   &__chat {
     flex: 1;
@@ -807,3 +852,361 @@
     display: none;
   }
 }
+
+// ── Dynamic Quiz UI ──
+.dqz-setup {
+  &__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: @stu-text-secondary;
+    margin-bottom: 6px;
+  }
+
+  &__options {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  &__count-btn {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 10px;
+    border: 1.5px solid @stu-border-light;
+    background: @stu-bg-card;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: @stu-text-secondary;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+      border-color: @stu-accent;
+      color: @stu-accent-dark;
+    }
+
+    &--active {
+      border-color: @stu-accent;
+      background: @stu-accent-tint2;
+      color: @stu-accent-dark;
+    }
+  }
+
+  &__hint {
+    font-size: 12px;
+    color: @stu-text-placeholder;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  &__start-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    border-radius: 11px;
+    background: @stu-accent-gradient;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px @stu-accent-shadow;
+    transition: transform 0.1s, opacity 0.15s;
+
+    &:hover {
+      transform: translateY(-1px);
+      opacity: 0.93;
+    }
+  }
+}
+
+.dqz-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 16px;
+
+  &__spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid @stu-border;
+    border-top-color: @stu-accent;
+    border-radius: 50%;
+    animation: dqz-spin 0.8s linear infinite;
+  }
+
+  &__text {
+    font-size: 13px;
+    color: @stu-text-muted;
+  }
+}
+
+@keyframes dqz-spin {
+  to { transform: rotate(360deg); }
+}
+
+.dqz-nav-dots {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.dqz-nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: @stu-border-light;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex: none;
+
+  &--active {
+    background: @stu-accent;
+  }
+
+  &--correct {
+    background: oklch(0.55 0.13 150);
+  }
+
+  &--wrong {
+    background: oklch(0.58 0.18 25);
+  }
+}
+
+.dqz-nav-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.dqz-nav-btn {
+  padding: 8px 14px;
+  border-radius: 9px;
+  border: 1px solid @stu-border-light;
+  background: @stu-bg-card;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: @stu-text-secondary;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: @stu-text-segment-bg; }
+
+  &--primary {
+    background: @stu-accent;
+    border-color: @stu-accent;
+    color: #fff;
+
+    &:hover { opacity: 0.9; }
+  }
+}
+
+.dqz-print-wrap {
+  margin-left: auto;
+  position: relative;
+}
+
+.dqz-print-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid @stu-border-light;
+  background: @stu-bg-card;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.15s;
+
+  &:hover { background: @stu-text-segment-bg; }
+}
+
+.dqz-print-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  background: @stu-bg-card;
+  border: 1px solid @stu-border-light;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  overflow: hidden;
+
+  &__item {
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: @stu-text-body;
+    cursor: pointer;
+    transition: background 0.12s;
+
+    &:hover {
+      background: @stu-accent-tint2;
+      color: @stu-accent-dark;
+    }
+
+    & + & {
+      border-top: 1px solid @stu-border;
+    }
+  }
+}
+
+.dqz-results {
+  &__score {
+    text-align: center;
+    padding: 16px 0 12px;
+    border-bottom: 1px solid @stu-border;
+    margin-bottom: 12px;
+  }
+
+  &__pct {
+    font-size: 40px;
+    font-weight: 900;
+    color: @stu-accent-dark;
+    line-height: 1;
+  }
+
+  &__sub {
+    font-size: 13px;
+    color: @stu-text-muted;
+    margin-top: 4px;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    padding: 7px 10px;
+    border-radius: 8px;
+
+    &--correct {
+      background: @stu-success-tint;
+      color: @stu-success-dark;
+    }
+
+    &--wrong {
+      background: @stu-error-tint;
+      color: @stu-error-dark;
+    }
+  }
+}
+
+// Hidden print area — only visible when printing
+.stu-ws__print-area {
+  display: none;
+}
+
+// ── @media print — clean exam worksheet ──
+@media print {
+  // Hide everything except the print area
+  body * { visibility: hidden !important; }
+
+  .stu-ws__print-area,
+  .stu-ws__print-area * {
+    visibility: visible !important;
+  }
+
+  .stu-ws__print-area {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    color: #000;
+    font-family: 'Times New Roman', Times, serif;
+    padding: 24mm 20mm;
+    box-sizing: border-box;
+  }
+
+  .print-header {
+    text-align: center;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10pt;
+    margin-bottom: 16pt;
+
+    h1 {
+      font-size: 16pt;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0 0 4pt;
+    }
+
+    p {
+      font-size: 11pt;
+      margin: 3pt 0;
+      color: #333;
+    }
+  }
+
+  .print-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 18pt;
+  }
+
+  .print-question {
+    page-break-inside: avoid;
+  }
+
+  .print-q-text {
+    font-size: 11pt;
+    line-height: 1.5;
+    margin-bottom: 6pt;
+  }
+
+  .print-opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4pt 16pt;
+    padding-left: 12pt;
+  }
+
+  .print-opt {
+    font-size: 10.5pt;
+    line-height: 1.4;
+  }
+
+  .print-answer-key {
+    margin-top: 24pt;
+    border-top: 1.5px solid #000;
+    padding-top: 12pt;
+    page-break-before: always;
+
+    h2 {
+      font-size: 13pt;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 12pt;
+      text-transform: uppercase;
+    }
+  }
+
+  .print-key-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8pt;
+  }
+
+  .print-key-item {
+    font-size: 10.5pt;
+    border: 1px solid #ccc;
+    padding: 4pt 6pt;
+    border-radius: 4pt;
+    text-align: center;
+  }
+}
+

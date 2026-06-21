@@ -90,6 +90,7 @@ export default defineConfig({
 	alias: {
 		'pdfjs-dist': require.resolve('@react-pdf-viewer/pdfjs-dist-signature'),
 		'@simulations': require('path').resolve(__dirname, '../../simulations'),
+		'three': require('path').resolve(__dirname, '../node_modules/three'),
 	},
 
 	jsMinifier: 'terser',
