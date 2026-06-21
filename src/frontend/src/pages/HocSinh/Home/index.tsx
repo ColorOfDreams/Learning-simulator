@@ -51,6 +51,36 @@ const SUBJECT_LABELS: Record<string, string> = {
 	chem: 'hóa học',
 };
 
+const getSubjectIcon = (subject: 'physics' | 'math' | 'chem', idx: number) => {
+	const iconStyle = {
+		animation: 'labFloat 4s ease-in-out infinite',
+		animationDelay: `${idx * 0.2}s`,
+		opacity: 0.9,
+	};
+
+	if (subject === 'chem') {
+		return (
+			<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={iconStyle}>
+				<path d="M9 3h6M10 3v5.5L5.2 16.8A2 2 0 0 0 7 20h10a2 2 0 0 0 1.8-3.2L14 8.5V3" />
+				<path d="M8 14h8" />
+			</svg>
+		);
+	}
+	if (subject === 'physics') {
+		return (
+			<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={iconStyle}>
+				<path d="M4 20c6 0 12-6 16-16M14 4h6v6M4 20l4-1-3-3Z" />
+			</svg>
+		);
+	}
+	return (
+		<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={iconStyle}>
+			<path d="M3 20c4 0 5-14 9-14M3 20h6M14 9l6 6M20 9l-6 6" />
+		</svg>
+	);
+};
+
+
 const HERO_CHIPS = [
 	{ label: 'Tráng bạc', subject: 'chem', simId: 'SIM-05' },
 	{ label: 'Điều chế ethyl acetate', subject: 'chem', simId: 'SIM-01' },
@@ -299,7 +329,8 @@ const HocSinhHome: React.FC = () => {
 								onClick={() => !lab.locked && openWorkspace(lab.subject, lab.simId)}
 							>
 								<div className={`stu-home__card-thumb stu-home__card-thumb--${lab.subject}`}>
-									<span className="stu-home__card-thumb-label">{SUBJECT_LABELS[lab.subject]}</span>
+									{getSubjectIcon(lab.subject, idx)}
+									<div className="stu-home__card-shine" style={{ animationDelay: `${1 + idx * 0.3}s` }} />
 									{lab.locked && (
 										<div className="stu-home__card-lock">
 											<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

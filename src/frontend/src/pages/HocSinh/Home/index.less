@@ -546,15 +546,17 @@
       &--physics { background: @stu-physics-gradient; }
       &--math { background: @stu-math-gradient; }
       &--chem { background: @stu-chem-gradient; }
+    }
 
-      &-label {
-        font-family: @font-mono;
-        font-size: 11px;
-        color: #fff;
-        opacity: 0.85;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
+    &-shine {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 38%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+      animation: labShine 5s ease-in-out infinite;
+      pointer-events: none;
     }
 
     &-lock {
