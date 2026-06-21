@@ -454,7 +454,13 @@
     flex: 1;
     min-height: 220px;
     border-radius: 18px;
-    background: repeating-linear-gradient(45deg, #faf9f6, #faf9f6 11px, #f3f1ec 11px, #f3f1ec 22px);
+    background: repeating-linear-gradient(
+      45deg,
+      var(--sim-bg-1, #faf9f6),
+      var(--sim-bg-1, #faf9f6) 11px,
+      var(--sim-bg-2, #f3f1ec) 11px,
+      var(--sim-bg-2, #f3f1ec) 22px
+    );
     position: relative;
     display: flex;
     align-items: center;

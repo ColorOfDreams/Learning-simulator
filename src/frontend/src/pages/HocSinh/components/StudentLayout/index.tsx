@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { history, useLocation } from 'umi';
 import './index.less';
 
@@ -71,6 +71,29 @@ const NAV_ITEMS: NavItem[] = [
 const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) => {
 	const location = useLocation();
 
+	const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+		try {
+			const t = localStorage.getItem('scl-theme');
+			if (t === 'dark' || t === 'light') return t;
+		} catch {}
+		return 'light';
+	});
+
+	const toggleTheme = () => {
+		const next = theme === 'dark' ? 'light' : 'dark';
+		setTheme(next);
+		try {
+			localStorage.setItem('scl-theme', next);
+		} catch {}
+	};
+
+	useEffect(() => {
+		const root = document.querySelector('.stu-root');
+		if (root) {
+			root.setAttribute('data-theme', theme);
+		}
+	}, [theme]);
+
 	const isActive = (path: string) => {
 		if (path === '/hoc-sinh') return location.pathname === '/hoc-sinh';
 		return location.pathname.startsWith(path);
@@ -82,7 +105,7 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 	};
 
 	return (
-		<div className="stu-root">
+		<div className="stu-root" data-theme={theme}>
 			{/* Google Fonts */}
 			<link rel="preconnect" href="https://fonts.googleapis.com" />
 			<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -94,6 +117,10 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 			{/* Sidebar */}
 			{!hideSidebar && (
 				<aside className="stu-sidebar">
+					{/* Glow decorative overlays */}
+					<div className="stu-sidebar__glow-top" />
+					<div className="stu-sidebar__glow-bottom" />
+
 					{/* Logo */}
 					<div className="stu-sidebar__logo" onClick={() => handleNav('/hoc-sinh')}>
 						<div className="stu-sidebar__logo-icon">
@@ -113,7 +140,11 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 						{NAV_ITEMS.map((item) => (
 							<div
 								key={item.key}
-								className={`stu-sidebar__nav-item ${isActive(item.path) ? 'stu-sidebar__nav-item--active' : ''}`}
+								className={`stu-sidebar__nav-item stu-sidebar__nav-item--${item.key} ${
+									isActive(item.path)
+										? `stu-sidebar__nav-item--active stu-sidebar__nav-item--active-${item.key}`
+										: ''
+								}`}
 								onClick={() => handleNav(item.path)}
 							>
 								{item.icon}
@@ -124,20 +155,24 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 
 					{/* Bottom */}
 					<div className="stu-sidebar__bottom">
-						<div className="stu-sidebar__nav-item">
+						<div className="stu-sidebar__nav-item stu-sidebar__nav-item--settings" onClick={toggleTheme}>
 							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
 								<path d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
 								<path d="M12 3v2.2M12 18.8V21M5 12H3M21 12h-2M6 6l1.6 1.6M16.4 16.4 18 18M6 18l1.6-1.6M16.4 7.6 18 6" />
 							</svg>
 							Cài đặt
+							<span className="stu-sidebar__theme-badge">{theme === 'dark' ? 'Tối' : 'Sáng'}</span>
 						</div>
 
-						<div className="stu-sidebar__user">
-							<div className="stu-sidebar__user-avatar">HS</div>
+						<div className="stu-sidebar__user" onClick={() => handleNav('/hoc-sinh/profile')}>
+							<div className="stu-sidebar__user-avatar">AR</div>
 							<div className="stu-sidebar__user-info">
-								<div className="stu-sidebar__user-name">Học Sinh</div>
+								<div className="stu-sidebar__user-name">Alex Rivera</div>
 								<div className="stu-sidebar__user-meta">Lớp 11 · Level 7</div>
 							</div>
+							<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#a8a69e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flex: 'none' }}>
+								<path d="M9 6l6 6-6 6" />
+							</svg>
 						</div>
 					</div>
 				</aside>

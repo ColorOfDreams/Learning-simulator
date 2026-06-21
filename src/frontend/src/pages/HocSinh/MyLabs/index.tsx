@@ -89,10 +89,15 @@ const MyLabs: React.FC = () => {
 					{/* In Progress */}
 					{activeTab === 0 && (
 						<div className="stu-labs__list">
-							{IN_PROGRESS.map((lab) => {
+							{IN_PROGRESS.map((lab, idx) => {
 								const subj = SUBJECT_MAP[lab.subject];
 								return (
-									<div key={lab.id} className="stu-labs__progress-card" onClick={() => openWorkspace(lab.subject)}>
+									<div
+										key={lab.id}
+										className="stu-labs__progress-card"
+										style={{ animationDelay: `${idx * 0.08}s` }}
+										onClick={() => openWorkspace(lab.subject)}
+									>
 										<div className={`stu-labs__progress-thumb stu-labs__progress-thumb--${subj.className}`}>
 											{getSubjectIcon(lab.subject, lab.id)}
 											<div className="stu-labs__card-shine" style={{ animationDelay: `${lab.id * 0.3}s` }} />
@@ -134,10 +139,14 @@ const MyLabs: React.FC = () => {
 								<div className="stu-labs__section-label">Đã hoàn thành</div>
 							)}
 							<div className="stu-labs__completed-grid">
-								{COMPLETED.map((lab) => {
+								{COMPLETED.map((lab, idx) => {
 									const subj = SUBJECT_MAP[lab.subject];
 									return (
-										<div key={lab.id} className="stu-labs__completed-card">
+										<div
+											key={lab.id}
+											className="stu-labs__completed-card"
+											style={{ animationDelay: `${idx * 0.08}s` }}
+										>
 											<div className={`stu-labs__completed-thumb stu-labs__completed-thumb--${subj.className}`}>
 												{getSubjectIcon(lab.subject, lab.id)}
 												<div className="stu-labs__card-shine" style={{ animationDelay: `${lab.id * 0.35}s` }} />

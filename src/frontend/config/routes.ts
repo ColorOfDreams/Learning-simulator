@@ -109,6 +109,10 @@ export default [
 				path: '/hoc-sinh/workspace',
 				component: './HocSinh/Workspace',
 			},
+			{
+				path: '/hoc-sinh/profile',
+				component: './HocSinh/Profile',
+			},
 		],
 	},
 

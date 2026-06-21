@@ -81,12 +81,25 @@ const getSubjectIcon = (subject: 'physics' | 'math' | 'chem', idx: number) => {
 };
 
 
+interface ChatMessage {
+	role: 'user' | 'ai';
+	text: string;
+	simulation?: {
+		simulation_id: string;
+		title: string;
+		subject: 'physics' | 'math' | 'chem';
+		level?: string;
+		mins?: string;
+		xp?: string;
+	};
+}
+
 const HERO_CHIPS = [
-	{ label: 'Tráng bạc', subject: 'chem', simId: 'SIM-05' },
-	{ label: 'Điều chế ethyl acetate', subject: 'chem', simId: 'SIM-01' },
-	{ label: 'Xà phòng hóa chất béo', subject: 'chem', simId: 'SIM-03' },
-	{ label: 'Chuyển động ném xiên', subject: 'physics', simId: 'SIM-02' },
-	{ label: 'Nhiệt nhôm', subject: 'chem', simId: 'SIM-11' },
+	{ label: 'Chuẩn độ axit-bazơ', prompt: 'Giúp mình bài chuẩn độ axit-bazơ' },
+	{ label: 'Chuyển động ném xiên', prompt: 'Mình cần thực hành chuyển động ném xiên' },
+	{ label: 'Đồ thị hàm số bậc hai', prompt: 'Bài tập đồ thị hàm số bậc hai' },
+	{ label: 'Xà phòng hóa chất béo', prompt: 'Phản ứng xà phòng hóa chất béo' },
+	{ label: 'Phản ứng tráng bạc', prompt: 'Thí nghiệm tráng bạc của glucose' }
 ];
 
 const GRADES = [10, 11, 12];
@@ -104,8 +117,15 @@ const HocSinhHome: React.FC = () => {
 
 	// AI Assistant States
 	const [aiLoading, setAiLoading] = useState(false);
-	const [aiResponse, setAiResponse] = useState<Ai.IRecord | null>(null);
-	const [showAiPanel, setShowAiPanel] = useState(false);
+	const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+
+	// Auto-scroll chat to bottom
+	React.useEffect(() => {
+		const el = document.getElementById('hero-chat-scroll');
+		if (el) {
+			el.scrollTop = el.scrollHeight;
+		}
+	}, [chatMessages, aiLoading]);
 
 	const filteredLabs = useMemo(
 		() => ALL_LABS.filter((l) => l.grade === grade && (filter === 'all' || l.subject === filter)),
@@ -118,18 +138,61 @@ const HocSinhHome: React.FC = () => {
 		history.push(path);
 	}, []);
 
-	const handleHeroRun = useCallback(async () => {
-		if (!heroInput.trim()) return;
+	const handleHeroRun = useCallback(async (customPrompt?: string) => {
+		const prompt = (customPrompt || heroInput).trim();
+		if (!prompt) return;
+
+		// Add user message
+		setChatMessages((prev) => [...prev, { role: 'user', text: prompt }]);
+		setHeroInput('');
 		setAiLoading(true);
-		setShowAiPanel(true);
-		setAiResponse(null);
+
 		try {
-			const res = await analyzeAiPrompt({ message: heroInput });
-			if (res?.data?.data) {
-				setAiResponse(res.data.data);
+			const res = await analyzeAiPrompt({ message: prompt });
+			const data = res?.data?.data;
+			
+			let text = 'Mình có thể giúp bạn làm bài tập này! Hãy nhập chủ đề — ví dụ: chuẩn độ, ném xiên, đồ thị hàm số — hoặc chọn phòng thí nghiệm bên dưới nhé.';
+			let recommendedSim = undefined;
+			
+			if (data) {
+				if (data.answer?.short_answer) {
+					text = data.answer.short_answer;
+				} else {
+					text = 'Mình đã tìm thấy một phòng thí nghiệm rất phù hợp với chủ đề của bạn. Hãy trải nghiệm ngay nhé:';
+				}
+
+				if (data.simulation) {
+					const matchedLab = ALL_LABS.find(
+						(l) => l.simId === data.simulation?.simulation_id
+					);
+					recommendedSim = {
+						simulation_id: data.simulation.simulation_id,
+						title: data.simulation.title || matchedLab?.title || 'Phòng thí nghiệm',
+						subject: data.subject || matchedLab?.subject || 'chem',
+						level: matchedLab?.level || 'Trung bình',
+						mins: matchedLab?.mins || '~15 phút',
+						xp: matchedLab?.xp || '+120 XP'
+					};
+				}
 			}
+
+			setChatMessages((prev) => [
+				...prev,
+				{
+					role: 'ai',
+					text,
+					simulation: recommendedSim
+				}
+			]);
 		} catch (err) {
 			console.error('AI search analysis error:', err);
+			setChatMessages((prev) => [
+				...prev,
+				{
+					role: 'ai',
+					text: 'Xin lỗi bạn, trợ lý AI đang gặp sự cố kết nối. Bạn có thể tự chọn phòng thí nghiệm bên dưới nhé!'
+				}
+			]);
 		} finally {
 			setAiLoading(false);
 		}
@@ -159,7 +222,7 @@ const HocSinhHome: React.FC = () => {
 					{/* Header */}
 					<div className="stu-home__header">
 						<div>
-							<div className="stu-home__welcome">Chào mừng trở lại, Học Sinh</div>
+							<div className="stu-home__welcome">Chào mừng trở lại, Alex</div>
 							<div className="stu-home__subtitle">Sẵn sàng cho thí nghiệm hôm nay?</div>
 						</div>
 						<div className="stu-home__badges">
@@ -195,95 +258,96 @@ const HocSinhHome: React.FC = () => {
 							</div>
 							<div>
 								<div className="stu-home__hero-title">Trợ lý AI Phòng Thí Nghiệm</div>
-								<div className="stu-home__hero-desc">Nhập bài tập hoặc mô tả thí nghiệm để bắt đầu</div>
+								<div className="stu-home__hero-desc">Nhập chủ đề hoặc dán đề bài tập để trợ lý chuẩn bị phòng thí nghiệm</div>
 							</div>
 						</div>
+
+						{/* Scrollable Chat History */}
+						{chatMessages.length > 0 && (
+							<div id="hero-chat-scroll" className="stu-home__hero-chat-scroll scl">
+								{chatMessages.map((msg, index) => (
+									<div
+										key={index}
+										className={`stu-home__hero-chat-row ${
+											msg.role === 'user'
+												? 'stu-home__hero-chat-row--user'
+												: 'stu-home__hero-chat-row--ai'
+										}`}
+									>
+										<div className="stu-home__hero-chat-bubble-container">
+											<div className="stu-home__hero-chat-bubble">{msg.text}</div>
+											{msg.simulation && (
+												<div className="stu-home__hero-chat-labs">
+													<div
+														className="stu-home__hero-chat-lab-card"
+														onClick={() => openWorkspace(msg.simulation!.subject, msg.simulation!.simulation_id)}
+													>
+														<div className="stu-profile__achievement-badge-icon stu-profile__achievement-badge-icon--chem" style={{ background: 'rgba(98, 43, 226, 0.15)', color: 'oklch(0.62 0.16 264)' }}>
+															<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+																<path d="M9 3h6M10 3v5.5L5.2 16.8A2 2 0 0 0 7 20h10a2 2 0 0 0 1.8-3.2L14 8.5V3" />
+															</svg>
+														</div>
+														<div style={{ flex: 1, minWidth: 0 }}>
+															<div className="stu-home__hero-chat-lab-title">{msg.simulation.title}</div>
+															<div className="stu-home__hero-chat-lab-meta">
+																{msg.simulation.level} · {msg.simulation.mins} · {msg.simulation.xp}
+															</div>
+														</div>
+														<div className="stu-home__hero-chat-lab-btn">
+															Bắt đầu
+															<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+																<path d="M5 12h14M13 6l6 6-6 6" />
+															</svg>
+														</div>
+													</div>
+												</div>
+											)}
+										</div>
+									</div>
+								))}
+
+								{aiLoading && (
+									<div className="stu-home__hero-chat-row stu-home__hero-chat-row--ai">
+										<div className="stu-home__hero-chat-typing">
+											<div className="stu-home__hero-chat-typing-dot" />
+											<div className="stu-home__hero-chat-typing-dot" />
+											<div className="stu-home__hero-chat-typing-dot" />
+										</div>
+									</div>
+								)}
+							</div>
+						)}
+
+						{/* Chat Input row */}
 						<div className="stu-home__hero-input-row">
 							<input
 								className="stu-home__hero-input"
 								value={heroInput}
 								onChange={(e) => setHeroInput(e.target.value)}
 								onKeyDown={handleHeroKey}
-								placeholder='VD: "Giúp mình bài chuẩn độ axit-bazơ"'
+								placeholder="Ví dụ: &quot;giúp mình bài chuẩn độ axit-bazơ&quot; hoặc nhập yêu cầu..."
 							/>
-							<div className="stu-home__hero-btn" onClick={handleHeroRun}>
-								Chạy với AI
-								<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+							<div className="stu-home__hero-btn" onClick={() => handleHeroRun()}>
+								<span>Chạy bằng AI</span>
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
 									<path d="M5 12h14M13 6l6 6-6 6" />
 								</svg>
 							</div>
 						</div>
+
+						{/* Chips */}
 						<div className="stu-home__hero-chips">
 							<span className="stu-home__hero-chips-label">Thử:</span>
 							{HERO_CHIPS.map((c) => (
-								<span key={c.label} className="stu-home__hero-chip" onClick={() => openWorkspace(c.subject, c.simId)}>
+								<span
+									key={c.label}
+									className="stu-home__hero-chip"
+									onClick={() => handleHeroRun(c.prompt)}
+								>
 									{c.label}
 								</span>
 							))}
 						</div>
-
-						{showAiPanel && (
-							<div className="stu-home__assistant-panel">
-								<div className="stu-home__assistant-close" onClick={() => setShowAiPanel(false)}>
-									<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-										<line x1="18" y1="6" x2="6" y2="18"></line>
-										<line x1="6" y1="6" x2="18" y2="18"></line>
-									</svg>
-								</div>
-								
-								{aiLoading ? (
-									<div className="stu-home__assistant-loading">
-										<div className="stu-home__assistant-spinner"></div>
-										<span>Trợ lý AI đang phân tích yêu cầu...</span>
-									</div>
-								) : aiResponse ? (
-									<div className="stu-home__assistant-result">
-										<div className="stu-home__assistant-header">
-											<div className="stu-home__assistant-avatar">
-												<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-													<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-7.6-4.7L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-												</svg>
-											</div>
-											<span className="stu-home__assistant-name">Phản hồi từ Trợ lý AI</span>
-										</div>
-										
-										<div className="stu-home__assistant-answer">
-											{aiResponse.answer?.short_answer}
-										</div>
-
-										{aiResponse.simulation && (
-											<div className="stu-home__assistant-recommendation">
-												<div className="stu-home__recommend-card">
-													<div className={`stu-home__recommend-badge stu-home__recommend-badge--${aiResponse.subject}`}>
-														{aiResponse.subject === 'chem' ? 'Hóa học' : aiResponse.subject === 'math' ? 'Toán học' : 'Vật lý'}
-													</div>
-													<div className="stu-home__recommend-content">
-														<div className="stu-home__recommend-title">{aiResponse.simulation.title}</div>
-														<div className="stu-home__recommend-desc">Mô phỏng tương tác giúp trực quan hóa lý thuyết và hỗ trợ giải bài tập.</div>
-													</div>
-													<div 
-														className="stu-home__recommend-action-btn"
-														onClick={() => openWorkspace(
-															aiResponse.subject, 
-															aiResponse.simulation?.simulation_id
-														)}
-													>
-														Trải nghiệm ngay
-														<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-															<path d="M5 12h14M13 6l6 6-6 6" />
-														</svg>
-													</div>
-												</div>
-											</div>
-										)}
-									</div>
-								) : (
-									<div className="stu-home__assistant-error">
-										Không nhận được phản hồi từ trợ lý. Vui lòng thử lại.
-									</div>
-								)}
-							</div>
-						)}
 					</div>
 
 					{/* Divider */}
