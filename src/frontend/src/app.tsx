@@ -8,12 +8,13 @@ import React from 'react'; // Bổ sung import React
 import type { RunTimeLayoutConfig } from 'umi';
 import { getIntl, history } from 'umi';
 import defaultSettings from '../config/defaultSettings';
-import ErrorBoundary from './components/ErrorBoundary';
 import AuthBounder, { unCheckPermissionPaths } from './components/AuthBounder';
+import ErrorBoundary from './components/ErrorBoundary';
 
+import { getUserInfo } from '@/services/base/api';
+import AIChatBotBounder from './components/AIChatBot';
 import OneSignalBounder from './components/OneSignalBounder';
 import HeaderContentPage from './components/RightContent/Header';
-import AIChatBotBounder from './components/AIChatBot';
 import ConfigBounder from './components/TechnicalSupportBounder/ConfigBounder';
 import NotAccessible from './pages/exception/403';
 import NotFoundContent from './pages/exception/404';
@@ -21,9 +22,6 @@ import { AppModules } from './services/base/constant';
 import type { IInitialState } from './services/base/typing';
 import './styles/global.less';
 import { currentRole } from './utils/ip';
-import { getUserInfo } from '@/services/base/api';
-
-
 
 export function rootContainer(container: React.ReactNode) {
 	return (
@@ -44,7 +42,7 @@ export async function getInitialState(): Promise<IInitialState> {
 			const { authorizedPermissions } = JSON.parse(raw) as Partial<IInitialState>;
 			Object.assign(initialState, { authorizedPermissions });
 		}
-	} catch (e) { }
+	} catch (e) {}
 
 	const token = localStorage.getItem('token');
 	if (token && token !== 'undefined') {
@@ -137,13 +135,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
 
 			if (initialState?.settings?.layout === 'side') {
 				return (
-					<PageContainer
-						ghost
-						breadcrumbRender={false}
-						title={false}
-						extra={<GlobalHeaderRight />}
-						header={{}}
-					>
+					<PageContainer ghost breadcrumbRender={false} title={false} extra={<GlobalHeaderRight />} header={{}}>
 						{content}
 					</PageContainer>
 				);

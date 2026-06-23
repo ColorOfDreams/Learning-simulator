@@ -1,4 +1,3 @@
-import React from 'react';
 import { CardProps } from 'antd';
 
 export interface PageCardProps extends CardProps {

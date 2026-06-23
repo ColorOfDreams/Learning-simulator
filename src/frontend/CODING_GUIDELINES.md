@@ -24,8 +24,8 @@ Frontend Base cung cấp các component rất mạnh mẽ để build UI nhanh c
 
 ### 1. Các Component Hỗ Trợ Sẵn Nổi Bật
 
-- **`TableBase`** (`@/components/Table`): 
-  - Là "trái tim" của hệ thống quản lý. 
+- **`TableBase`** (`@/components/Table`):
+  - Là "trái tim" của hệ thống quản lý.
   - Hỗ trợ tự động: Phân trang (Pagination), Tìm kiếm (Global search + Column filter), Export/Import.
   - Tự động call API, tự quản lý state danh sách, hiển thị Loading, hiển thị Modal Form.
 - **`PageCard`** (`@/components/PageCard`): Dùng làm layout vỏ ngoài bao bọc TableBase để tạo các khoảng trắng chuẩn chỉ và hỗ trợ back về trang trước.
@@ -43,6 +43,7 @@ Không dùng `useState` hoặc `useEffect` để call API danh sách thủ công
 Frontend base thường dùng hàm `useInitModel(endpoint)` để tạo động model call xuống backend.
 
 **Bước 2: Xây dựng file `index.tsx` của màn hình:**
+
 ```tsx
 import React from 'react';
 import TableBase from '@/components/Table';
@@ -50,39 +51,39 @@ import type { IColumn } from '@/components/Table/typing';
 import FormKhoa from './Form';
 
 const QuanLyKhoa = () => {
-  // Định nghĩa các cột cho Table
-  const columns: IColumn<any>[] = [
-    {
-      title: 'Mã khoa',
-      dataIndex: 'maKhoa',
-      width: 150,
-      filterType: 'string', // Sẽ hiển thị ô search string ở tiêu đề cột
-    },
-    {
-      title: 'Tên khoa',
-      dataIndex: 'tenKhoa',
-      width: 250,
-      filterType: 'string',
-    },
-  ];
+	// Định nghĩa các cột cho Table
+	const columns: IColumn<any>[] = [
+		{
+			title: 'Mã khoa',
+			dataIndex: 'maKhoa',
+			width: 150,
+			filterType: 'string', // Sẽ hiển thị ô search string ở tiêu đề cột
+		},
+		{
+			title: 'Tên khoa',
+			dataIndex: 'tenKhoa',
+			width: 250,
+			filterType: 'string',
+		},
+	];
 
-  return (
-    <TableBase
-      title="Danh sách khoa"
-      modelName="khoa" // Tên alias của model hoặc config hook (khớp với endpoint)
-      columns={columns}
-      Form={FormKhoa} // Tự động hiển thị Form Khoa khi bấm nút "Thêm mới" hoặc "Sửa"
-      formType="Modal" // Chọn 'Modal' hoặc 'Drawer'
-      widthDrawer={800} // Độ rộng của Modal
-      buttons={{
-        create: true,
-        export: true,
-        reload: true,
-      }}
-      rowSelection={true} // Bật tính năng chọn nhiều dòng
-      deleteMany={true}   // Bật tính năng xóa nhiều
-    />
-  );
+	return (
+		<TableBase
+			title='Danh sách khoa'
+			modelName='khoa' // Tên alias của model hoặc config hook (khớp với endpoint)
+			columns={columns}
+			Form={FormKhoa} // Tự động hiển thị Form Khoa khi bấm nút "Thêm mới" hoặc "Sửa"
+			formType='Modal' // Chọn 'Modal' hoặc 'Drawer'
+			widthDrawer={800} // Độ rộng của Modal
+			buttons={{
+				create: true,
+				export: true,
+				reload: true,
+			}}
+			rowSelection={true} // Bật tính năng chọn nhiều dòng
+			deleteMany={true} // Bật tính năng xóa nhiều
+		/>
+	);
 };
 
 export default QuanLyKhoa;
@@ -90,6 +91,7 @@ export default QuanLyKhoa;
 
 **Bước 3: Xây dựng `Form.tsx`:**
 `Form` được truyền vào `TableBase` sẽ nhận các props nội bộ.
+
 ```tsx
 import React, { useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
@@ -97,46 +99,50 @@ import { useModel } from 'umi';
 import rules from '@/utils/rules';
 
 const FormKhoa = () => {
-  const [form] = Form.useForm();
-  // Lấy các state tự động từ model "khoa" do TableBase quản lý
-  const { record, edit, setVisibleForm, postModel, putModel } = useModel('khoa' as any);
+	const [form] = Form.useForm();
+	// Lấy các state tự động từ model "khoa" do TableBase quản lý
+	const { record, edit, setVisibleForm, postModel, putModel } = useModel('khoa' as any);
 
-  useEffect(() => {
-    if (edit && record) {
-      form.setFieldsValue(record); // Load data lên form khi sửa
-    } else {
-      form.resetFields(); // Reset khi thêm mới
-    }
-  }, [record, edit]);
+	useEffect(() => {
+		if (edit && record) {
+			form.setFieldsValue(record); // Load data lên form khi sửa
+		} else {
+			form.resetFields(); // Reset khi thêm mới
+		}
+	}, [record, edit]);
 
-  const onFinish = async (values: any) => {
-    try {
-      if (edit) {
-        await putModel(record?.id, values);
-      } else {
-        await postModel(values);
-      }
-      setVisibleForm(false); // Thành công thì đóng form
-    } catch (error) {
-      console.error(error);
-    }
-  };
+	const onFinish = async (values: any) => {
+		try {
+			if (edit) {
+				await putModel(record?.id, values);
+			} else {
+				await postModel(values);
+			}
+			setVisibleForm(false); // Thành công thì đóng form
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
-  return (
-    <Form layout="vertical" form={form} onFinish={onFinish}>
-      <Form.Item label="Mã khoa" name="maKhoa" rules={[rules.required]}>
-        <Input placeholder="Nhập mã khoa" />
-      </Form.Item>
-      <Form.Item label="Tên khoa" name="tenKhoa" rules={[rules.required]}>
-        <Input placeholder="Nhập tên khoa" />
-      </Form.Item>
-      
-      <div style={{ textAlign: 'right' }}>
-        <Button onClick={() => setVisibleForm(false)} style={{ marginRight: 8 }}>Hủy</Button>
-        <Button type="primary" htmlType="submit">Lưu lại</Button>
-      </div>
-    </Form>
-  );
+	return (
+		<Form layout='vertical' form={form} onFinish={onFinish}>
+			<Form.Item label='Mã khoa' name='maKhoa' rules={[rules.required]}>
+				<Input placeholder='Nhập mã khoa' />
+			</Form.Item>
+			<Form.Item label='Tên khoa' name='tenKhoa' rules={[rules.required]}>
+				<Input placeholder='Nhập tên khoa' />
+			</Form.Item>
+
+			<div style={{ textAlign: 'right' }}>
+				<Button onClick={() => setVisibleForm(false)} style={{ marginRight: 8 }}>
+					Hủy
+				</Button>
+				<Button type='primary' htmlType='submit'>
+					Lưu lại
+				</Button>
+			</div>
+		</Form>
+	);
 };
 
 export default FormKhoa;
@@ -147,14 +153,17 @@ export default FormKhoa;
 ## ⚖️ Quy Tắc Chung (Naming & Code Conventions)
 
 1. **Naming Conventions:**
+
    - Đặt tên file component UI Frontend: Viết hoa chữ cái đầu (PascalCase), VD: `QuanLySinhVien.tsx`, `PageCard.tsx`.
    - Đặt tên file hooks, utils, services: Viết thường (camelCase), VD: `useInitModel.ts`, `formatDate.ts`.
 
 2. **Styling:**
+
    - Chỉ dùng CSS file (hoặc LESS) cho component cụ thể khi thực sự cần thiết. Khuyến khích sử dụng inline styles để dễ kiểm soát hoặc Antd design token.
    - Các class LESS đặt tên theo định dạng kebab-case.
 
 3. **Quy tắc về Type / Interface (Typing):**
+
    - Các interface / type định nghĩa trong `src/services/` phải được bọc trong `declare module [TenModule]` (VD: `declare module Scene { ... }`).
    - Interface chính đại diện cho bản ghi bắt buộc phải đặt tên là `export interface IRecord`.
    - Lợi ích: Không cần `import type` ở khắp nơi trong project, UmiJS sẽ tự nhận diện Global Types.

@@ -1,6 +1,7 @@
 export default {
 	'global.validation.json.invalid': 'Json không hợp lệ',
-	'global.validation.arrNumber.onlyNumbers': 'Chỉ được nhập số, ngăn cách giữa phần nguyên và phần thập phân bởi dấu chấm',
+	'global.validation.arrNumber.onlyNumbers':
+		'Chỉ được nhập số, ngăn cách giữa phần nguyên và phần thập phân bởi dấu chấm',
 	'global.validation.arrNumber.max': 'Giá trị tối đa: {max}',
 	'global.validation.arrNumber.min': 'Giá trị nhỏ nhất: {min}',
 	'global.validation.dacbiet.noSpecialChars': 'Không chứa kí tự đặc biệt',
@@ -36,7 +37,8 @@ export default {
 	'global.validation.fileName.format': 'Tên file chỉ bao gồm chữ cái viết thường, số, ký tự - và ký tự _',
 	'global.validation.fileType.allowed': 'Chỉ được tải lên file dạng {types}',
 	'global.validation.fileLimit.max': 'Số lượng không quá {len} file',
-	'global.validation.floatnumber.onlyNumbers': 'Chỉ được nhập số, ngăn cách giữa phần nguyên và phần thập phân bởi dấu chấm',
+	'global.validation.floatnumber.onlyNumbers':
+		'Chỉ được nhập số, ngăn cách giữa phần nguyên và phần thập phân bởi dấu chấm',
 	'global.validation.floatnumber.decimalPlaces': 'Chỉ được {sauDauPhay} số sau dấu phẩy',
 	'global.validation.floatnumber.max': 'Giá trị tối đa: {max}',
 	'global.validation.floatnumber.min': 'Giá trị nhỏ nhất: {min}',

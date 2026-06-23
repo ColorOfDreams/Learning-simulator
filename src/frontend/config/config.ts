@@ -33,19 +33,25 @@ export default defineConfig({
 		},
 		{ name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' },
 	],
-	links: [{ rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' }],
+	links: [
+		{ rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' },
+		{ rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css' },
+	],
 
-	headScripts: APP_CONFIG_GA_ID
-		? [
-			{ src: `https://www.googletagmanager.com/gtag/js?id=${APP_CONFIG_GA_ID}`, async: true },
-			{
-				content: `window.dataLayer = window.dataLayer || [];
-						function gtag(){dataLayer.push(arguments);}
-						gtag('js', new Date());
-						gtag('config', '${APP_CONFIG_GA_ID}');`,
-			},
-		]
-		: [],
+	headScripts: [
+		{ src: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js' },
+		...(APP_CONFIG_GA_ID
+			? [
+					{ src: `https://www.googletagmanager.com/gtag/js?id=${APP_CONFIG_GA_ID}`, async: true },
+					{
+						content: `window.dataLayer = window.dataLayer || [];
+							function gtag(){dataLayer.push(arguments);}
+							gtag('js', new Date());
+							gtag('config', '${APP_CONFIG_GA_ID}');`,
+					},
+				]
+			: []),
+	],
 
 	antd: {
 		import: false,
@@ -90,7 +96,7 @@ export default defineConfig({
 	alias: {
 		'pdfjs-dist': require.resolve('@react-pdf-viewer/pdfjs-dist-signature'),
 		'@simulations': require('path').resolve(__dirname, '../../simulations'),
-		'three': require('path').resolve(__dirname, '../node_modules/three'),
+		three: require('path').resolve(__dirname, '../node_modules/three'),
 	},
 
 	jsMinifier: 'terser',

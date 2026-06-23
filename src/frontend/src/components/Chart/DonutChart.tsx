@@ -1,10 +1,10 @@
 import { tienVietNam } from '@/utils/utils';
-import vi from 'apexcharts/dist/locales/vi.json';
+import { getLocale } from '@umijs/max';
 import en from 'apexcharts/dist/locales/en.json';
+import vi from 'apexcharts/dist/locales/vi.json';
 import Chart from 'react-apexcharts';
 import { type DataChartType } from '.';
 import './style.less';
-import { getLocale } from '@umijs/max';
 
 const DonutChart = (props: DataChartType) => {
 	const { xAxis, yAxis, height, colors, formatY, showTotal, width, otherOptions } = props;

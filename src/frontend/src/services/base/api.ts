@@ -1,8 +1,5 @@
 import axios from '@/utils/axios';
-import {
-	ip3,
-	ipNotif,
-} from '@/utils/ip';
+import { ip3, ipNotif } from '@/utils/ip';
 import type { ESettingKey } from './constant';
 import type { ISetting } from './typing';
 
@@ -18,7 +15,13 @@ export async function login(payload: { email: string; password: string }) {
 	return axios.post(`${ip3}/auth/login`, payload);
 }
 
-export async function register(payload: { email: string; password: string; firstName?: string; lastName?: string; phone?: string }) {
+export async function register(payload: {
+	email: string;
+	password: string;
+	firstName?: string;
+	lastName?: string;
+	phone?: string;
+}) {
 	return axios.post(`${ip3}/auth/register`, payload);
 }
 

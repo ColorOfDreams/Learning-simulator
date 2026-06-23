@@ -1,12 +1,12 @@
 import { primaryColor } from '@/services/base/constant';
 import { tienVietNam } from '@/utils/utils';
+import { getLocale } from '@umijs/max';
 import { type ApexOptions } from 'apexcharts';
-import vi from 'apexcharts/dist/locales/vi.json';
 import en from 'apexcharts/dist/locales/en.json';
+import vi from 'apexcharts/dist/locales/vi.json';
 import Chart from 'react-apexcharts';
 import { type DataChartType } from '.';
 import './style.less';
-import { getLocale } from '@umijs/max';
 
 const ColumnChart = (props: DataChartType) => {
 	const { title, xAxis, yAxis, yLabel, height, type, formatY, colors, otherOptions } = props;
