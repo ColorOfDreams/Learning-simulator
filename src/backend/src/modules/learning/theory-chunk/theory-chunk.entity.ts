@@ -43,6 +43,21 @@ export class TheoryChunkEntity {
   @Column({ type: 'text' })
   text: string;
 
+  @Column('vector', { length: 1536, nullable: true })
+  embedding?: number[];
+
+  @Column({ name: 'embedding_model', type: 'text', nullable: true })
+  embeddingModel?: string;
+
+  @Column({ name: 'embedding_version', type: 'text', nullable: true })
+  embeddingVersion?: string;
+
+  @Column({ name: 'content_hash', type: 'text', nullable: true })
+  contentHash?: string;
+
+  @Column({ name: 'embedded_at', type: 'timestamp', nullable: true })
+  embeddedAt?: Date;
+
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
   keywords: string[];
 

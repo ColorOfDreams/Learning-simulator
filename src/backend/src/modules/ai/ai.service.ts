@@ -5,6 +5,7 @@ import { TheoryChunkService } from '../learning/theory-chunk/theory-chunk.servic
 import { AnalyzeRequestDto } from './dto/analyze-request.dto';
 import { ChatRequestDto } from './dto/chat-request.dto';
 import { LlmService } from './llm.service';
+import { RagReference, RagRetrievalService } from './rag-retrieval.service';
 import {
   AiAnalysisOutput,
   AiAnswer,
@@ -21,6 +22,12 @@ type TheoryChunk = Awaited<
   ReturnType<TheoryChunkService['findByTopic']>
 >[number];
 
+type RagContextChunk = {
+  id: string;
+  title?: string;
+  text: string;
+};
+
 @Injectable()
 export class AiService {
   constructor(
@@ -28,6 +35,7 @@ export class AiService {
     private readonly simulationTemplateService: SimulationTemplateService,
     private readonly theoryChunkService: TheoryChunkService,
     private readonly llmService: LlmService,
+    private readonly ragRetrievalService: RagRetrievalService,
   ) {}
 
   async analyze(request: AnalyzeRequestDto): Promise<AiAnalysisOutput> {
@@ -83,7 +91,10 @@ export class AiService {
       },
       answer,
       simulation,
-      render_blocks: this.buildRenderBlocks(answer.steps.length > 0, simulation),
+      render_blocks: this.buildRenderBlocks(
+        answer.steps.length > 0,
+        simulation,
+      ),
       references: this.toReferences(ragChunks),
     };
   }
@@ -94,43 +105,72 @@ export class AiService {
     const grade = request.grade ?? 11;
     const topic = this.detectTopic(message);
     const intent = this.detectIntent(message);
-    const ragChunks = await this.findRelevantTheoryChunks(message, topic);
+    const ragChunks = await this.ragRetrievalService.retrieveTheoryChunks({
+      message,
+      subject,
+      grade,
+      topic,
+      simulationId: request.simulationId,
+    });
     const patterns = await this.findPatternsForTopic(topic, message);
     const selectedPattern = this.selectPattern(
       message,
       this.extractTarget(message),
       patterns,
     );
-    const simulationTemplate = selectedPattern?.simulationId
-      ? await this.simulationTemplateService.findById(
-          selectedPattern.simulationId,
-        )
-      : undefined;
+    const simulationTemplate = request.simulationId
+      ? await this.simulationTemplateService.findById(request.simulationId)
+      : selectedPattern?.simulationId
+        ? await this.simulationTemplateService.findById(
+            selectedPattern.simulationId,
+          )
+        : undefined;
     const llmAnswer = await this.generateLlmResponse({
       message,
       topic,
       subject,
       grade,
       intent,
+      sessionId: request.session_id,
+      simulationId: request.simulationId,
+      simulationTitle: simulationTemplate?.title,
       context: request.context ?? [],
       ragChunks,
       selectedPattern,
-      allowGeneralKnowledge: true,
+      allowGeneralKnowledge: false,
     });
+
+    const answer =
+      llmAnswer ??
+      this.buildLocalChatFallback(message, topic, ragChunks, selectedPattern);
+    const debug = this.shouldIncludeChatDebug()
+      ? {
+          debug: {
+            retrievalTopK: 5,
+            referenceCount: ragChunks.length,
+            hasVectorResults: ragChunks.some(
+              (reference) => reference.vectorScore !== undefined,
+            ),
+            hasKeywordResults: ragChunks.some(
+              (reference) => reference.keywordScore !== undefined,
+            ),
+          },
+        }
+      : {};
 
     return {
       intent,
       subject,
       grade,
       topic,
-      answer:
-        llmAnswer ??
-        this.buildLocalChatFallback(message, topic, ragChunks, selectedPattern),
+      session_id: request.session_id,
+      answer,
       used_llm: Boolean(llmAnswer),
       simulation: simulationTemplate
         ? this.buildSimulation(simulationTemplate, [])
         : undefined,
-      references: this.toReferences(ragChunks),
+      references: ragChunks,
+      ...debug,
     };
   }
 
@@ -211,13 +251,7 @@ export class AiService {
     }
 
     if (
-      this.hasAny(normalized, [
-        'van toc',
-        'gia toc',
-        'vmax',
-        'amax',
-        'xva',
-      ])
+      this.hasAny(normalized, ['van toc', 'gia toc', 'vmax', 'amax', 'xva'])
     ) {
       return 'shm_kinematics';
     }
@@ -389,8 +423,7 @@ export class AiService {
 
     if (target.includes('x')) {
       return (
-        this.findPatternByIds(patterns, ['SHM_POSITION_AT_TIME']) ??
-        patterns[0]
+        this.findPatternByIds(patterns, ['SHM_POSITION_AT_TIME']) ?? patterns[0]
       );
     }
 
@@ -416,8 +449,7 @@ export class AiService {
 
     if (target.includes('resonance_condition')) {
       return (
-        this.findPatternByIds(patterns, ['RESONANCE_CONDITION']) ??
-        patterns[0]
+        this.findPatternByIds(patterns, ['RESONANCE_CONDITION']) ?? patterns[0]
       );
     }
 
@@ -509,11 +541,13 @@ export class AiService {
       unit?: string;
     }[] = Array.isArray(template.defaultParameters)
       ? template.defaultParameters
-      : Object.entries(template.defaultParameters ?? {}).map(([key, value]) => ({
-          key,
-          label: key,
-          value: value as string | number,
-        }));
+      : Object.entries(template.defaultParameters ?? {}).map(
+          ([key, value]) => ({
+            key,
+            label: key,
+            value: value as string | number,
+          }),
+        );
     const params = defaultParameters.map((parameter) => {
       const extracted =
         given.find((item) => item.key === `${parameter.key}_numeric`) ??
@@ -619,8 +653,11 @@ export class AiService {
     subject: string;
     grade: number;
     intent: AiIntent;
+    sessionId?: string;
+    simulationId?: string;
+    simulationTitle?: string;
     context: { role: 'user' | 'assistant'; content: string }[];
-    ragChunks: TheoryChunk[];
+    ragChunks: RagContextChunk[];
     selectedPattern?: ProblemPattern;
     allowGeneralKnowledge: boolean;
   }) {
@@ -633,45 +670,52 @@ export class AiService {
         .slice(0, 5)
         .map(
           (chunk, index) =>
-            `[${index + 1}] ${chunk.title ?? chunk.id}: ${chunk.text}`,
+            `[${index + 1}]\ntitle: ${chunk.title ?? chunk.id}\ntext: ${chunk.text}`,
         )
         .join('\n');
-      const patternText = payload.selectedPattern
-        ? `Dạng bài: ${payload.selectedPattern.name}; công thức/hướng xử lí: ${
-            payload.selectedPattern.mainFormula ?? 'khái niệm'
-          }; mục tiêu: ${payload.selectedPattern.target?.join(', ')}`
-        : 'Chưa nhận diện chắc dạng bài từ dataset.';
       const generalKnowledgeRule = payload.allowGeneralKnowledge
         ? 'Nếu tài liệu nội bộ không đủ, được dùng kiến thức Vật lí 11 phổ thông, nhưng hãy nói rõ là đang suy luận ngoài dữ liệu nội bộ.'
-        : 'Chỉ dùng tài liệu nội bộ; nếu thiếu dữ liệu thì nói chưa đủ căn cứ.';
+        : 'Không suy đoán hoặc bịa thêm khi tài liệu không đủ; hãy nói rõ: "Mình chưa có đủ dữ liệu trong tài liệu hiện tại."';
+      const context = payload.context
+        .slice(-6)
+        .map((item) => `${item.role}: ${item.content}`)
+        .join('\n');
+      const userPrompt = [
+        `SUBJECT: ${payload.subject}`,
+        `GRADE: ${payload.grade}`,
+        `TOPIC: ${payload.topic}`,
+        `SIMULATION_ID: ${payload.simulationId ?? 'none'}`,
+        payload.simulationTitle
+          ? `SIMULATION_TITLE: ${payload.simulationTitle}`
+          : '',
+        `INTENT: ${payload.intent}`,
+        'REFERENCES:',
+        references || '(Không có theory chunk phù hợp.)',
+        'CONTEXT:',
+        context || '(Không có ngữ cảnh trước đó.)',
+        'QUESTION:',
+        payload.message,
+      ]
+        .filter(Boolean)
+        .join('\n\n');
 
       const response = await this.llmService.complete([
         {
           role: 'system',
           content: [
-            'Bạn là trợ lý học tập cho học sinh lớp 11, chủ đề chính là Chương 1: Dao động.',
-            'Ưu tiên trả lời theo dữ liệu nội bộ và dạng bài đã nhận diện.',
+            'Bạn là trợ lý AI trong phòng thí nghiệm mô phỏng khoa học THPT.',
+            'Trả lời bằng tiếng Việt tự nhiên, ngắn gọn, dễ hiểu; câu trả lời phù hợp một sidebar, khoảng 4–6 câu.',
+            'Ưu tiên nội dung trong REFERENCES/theory chunks được cung cấp.',
             generalKnowledgeRule,
-            'Không bịa nguồn, không đi quá xa khỏi Vật lí 11.',
-            'Giọng giải thích vui, dễ hiểu, có ví dụ trực quan ngắn; vẫn giữ công thức chính xác.',
-            'Không dùng block LaTeX kiểu \\[...\\] hoặc \\(...\\); hãy viết công thức bằng plain text/Unicode, ví dụ v = ±ω√(A² - x²).',
-            'Nếu là bài tính, trình bày ngắn theo: nhận dạng dữ kiện, công thức, thay số, kết luận.',
+            'Không bịa nguồn hoặc chi tiết không có căn cứ. Có thể nhắc [1], [2] khi phù hợp, nhưng không cần trích dẫn hình thức.',
+            'Không dùng LaTeX dưới bất kỳ dạng nào, gồm $$...$$, \\[...\\], \\(...\\). Dùng công thức plain text/Unicode, ví dụ T = 2*pi/ω, x = A*cos(ωt + φ), T = 2*pi*sqrt(l/g), A².',
+            'Nếu có SIMULATION_ID, liên hệ với mô phỏng và gợi ý một thao tác cụ thể khi phù hợp.',
           ].join('\n'),
         },
         {
           role: 'user',
-          content: [
-            `Môn: ${payload.subject}, lớp: ${payload.grade}`,
-            `Intent: ${payload.intent}`,
-            `Topic: ${payload.topic}`,
-            patternText,
-            references
-              ? `Tài liệu nội bộ:\n${references}`
-              : 'Tài liệu nội bộ: chưa tìm thấy chunk phù hợp.',
-            `Câu hỏi của học sinh: ${payload.message}`,
-          ].join('\n\n'),
+          content: userPrompt,
         },
-        ...payload.context.slice(-6),
       ]);
 
       return this.cleanMathText(response);
@@ -684,15 +728,15 @@ export class AiService {
   private buildLocalChatFallback(
     message: string,
     topic: string,
-    ragChunks: TheoryChunk[],
+    ragChunks: RagContextChunk[],
     selectedPattern?: ProblemPattern,
   ) {
     if (ragChunks.length > 0) {
       const chunk = ragChunks[0];
 
       return [
-        `Mình tìm thấy phần liên quan trong dữ liệu chương 1: ${chunk.title ?? chunk.id}.`,
-        chunk.text,
+        `Dựa trên tài liệu hiện có, ${chunk.title ?? chunk.id} cho biết:`,
+        this.truncateForFallback(chunk.text),
         selectedPattern
           ? `Dạng gần nhất là: ${selectedPattern.name}.`
           : 'Bạn có thể hỏi cụ thể hơn để mình chọn đúng dạng bài.',
@@ -700,19 +744,24 @@ export class AiService {
     }
 
     return [
-      'Chưa tìm thấy mảnh dữ liệu khớp trong dataset nội bộ.',
-      `Câu hỏi: ${message}`,
-      `Topic dự đoán: ${topic}.`,
-      'Khi bạn điền LLM_API_KEY, mình sẽ dùng LLM để giải thích bằng kiến thức Vật lí 11 có kiểm soát.',
+      'Mình chưa tìm thấy đủ dữ liệu trong tài liệu hiện tại để trả lời chắc chắn.',
+      'Bạn có thể hỏi lại với chủ đề cụ thể hơn hoặc cung cấp thêm dữ kiện.',
     ].join('\n\n');
   }
 
   private toReferences(chunks: TheoryChunk[]) {
-    return chunks.map((chunk) => ({
-      id: chunk.id,
-      title: chunk.title ?? chunk.id,
-      source: chunk.source?.sourceName,
-    }));
+    return chunks.map((chunk) => {
+      const source = chunk.source?.sourceName ?? chunk.source?.fileName;
+
+      return {
+        id: chunk.id,
+        title: chunk.title ?? chunk.id,
+        text: chunk.text,
+        topic: chunk.topic,
+        ...(source ? { source } : {}),
+        ...(chunk.metadata ? { metadata: chunk.metadata } : {}),
+      };
+    });
   }
 
   private findPatternByIds(patterns: ProblemPattern[], ids: string[]) {
@@ -802,12 +851,27 @@ export class AiService {
     return Number(value.toFixed(3)).toString().replace('.', ',');
   }
 
+  private shouldIncludeChatDebug() {
+    return process.env.NODE_ENV !== 'production' || process.env.AI_DEBUG === 'true';
+  }
+
+  private truncateForFallback(value: string, maxLength = 600) {
+    const normalized = value.trim();
+    return normalized.length <= maxLength
+      ? normalized
+      : `${normalized.slice(0, maxLength).trimEnd()}…`;
+  }
+
   private cleanMathText(value?: string) {
-    return String(value ?? '').replace(
-      /\\\[((?:.|\n)*?)\\\]|\\\(((?:.|\n)*?)\\\)/g,
-      (_match, blockFormula, inlineFormula) =>
-        this.simplifyLatexFormula(blockFormula || inlineFormula),
-    );
+    return String(value ?? '')
+      .replace(
+        /\$\$([\s\S]*?)\$\$|\\\[([\s\S]*?)\\\]|\\\(([\s\S]*?)\\\)|\$([^$\n]+)\$/g,
+        (_match, blockFormula, squareFormula, inlineFormula, dollarFormula) =>
+          this.simplifyLatexFormula(
+            blockFormula || squareFormula || inlineFormula || dollarFormula,
+          ),
+      )
+      .trim();
   }
 
   private simplifyLatexFormula(value: string) {
