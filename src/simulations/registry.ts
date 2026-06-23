@@ -14,6 +14,18 @@ import CollisionSimulation from './physics/SIM-29-collision'
 import EnergySimulation from './physics/SIM-30-energy'
 import SoapSimulation from './chemistry/SIM-03-soap'
 import GenericChemSimulation from './chemistry/GenericChemSimulation'
+import BoyleSimulation from './physics/SIM-31-boyle'
+import CharlesSimulation from './physics/SIM-32-charles'
+import KineticSimulation from './physics/SIM-33-kinetic'
+import StateChangeSimulation from './physics/SIM-34-statechange'
+import MagForceSimulation from './physics/SIM-35-magforce'
+import LorentzSimulation from './physics/SIM-36-lorentz'
+import InductionSimulation from './physics/SIM-37-induction'
+import ACGenSimulation from './physics/SIM-38-acgen'
+import RadioactiveSimulation from './physics/SIM-39-radioactive'
+import NuclearSimulation from './physics/SIM-40-nuclear'
+import BindingEnergySimulation from './physics/SIM-41-bindingenergy'
+
 
 // Math 10 simulations
 import QuadraticSimulation from './math/SIM-08-quadratic'
@@ -68,6 +80,18 @@ registerSimulation('SIM-27', PendulumSimulation)
 registerSimulation('SIM-28', CircularSimulation)
 registerSimulation('SIM-29', CollisionSimulation)
 registerSimulation('SIM-30', EnergySimulation)
+registerSimulation('SIM-31', BoyleSimulation)
+registerSimulation('SIM-32', CharlesSimulation)
+registerSimulation('SIM-33', KineticSimulation)
+registerSimulation('SIM-34', StateChangeSimulation)
+registerSimulation('SIM-35', MagForceSimulation)
+registerSimulation('SIM-36', LorentzSimulation)
+registerSimulation('SIM-37', InductionSimulation)
+registerSimulation('SIM-38', ACGenSimulation)
+registerSimulation('SIM-39', RadioactiveSimulation)
+registerSimulation('SIM-40', NuclearSimulation)
+registerSimulation('SIM-41', BindingEnergySimulation)
+
 
 
 

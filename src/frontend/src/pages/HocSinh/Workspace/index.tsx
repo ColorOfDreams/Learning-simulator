@@ -13,6 +13,17 @@ import PendulumSimulation from '@simulations/physics/SIM-27-pendulum';
 import CircularSimulation from '@simulations/physics/SIM-28-circular';
 import CollisionSimulation from '@simulations/physics/SIM-29-collision';
 import EnergySimulation from '@simulations/physics/SIM-30-energy';
+import BoyleSimulation from '@simulations/physics/SIM-31-boyle';
+import CharlesSimulation from '@simulations/physics/SIM-32-charles';
+import KineticSimulation from '@simulations/physics/SIM-33-kinetic';
+import StateChangeSimulation from '@simulations/physics/SIM-34-statechange';
+import MagForceSimulation from '@simulations/physics/SIM-35-magforce';
+import LorentzSimulation from '@simulations/physics/SIM-36-lorentz';
+import InductionSimulation from '@simulations/physics/SIM-37-induction';
+import ACGenSimulation from '@simulations/physics/SIM-38-acgen';
+import RadioactiveSimulation from '@simulations/physics/SIM-39-radioactive';
+import NuclearSimulation from '@simulations/physics/SIM-40-nuclear';
+import BindingEnergySimulation from '@simulations/physics/SIM-41-bindingenergy';
 import React, { useCallback, useMemo, useState } from 'react';
 import { history, useLocation } from 'umi';
 import StudentLayout from '../components/StudentLayout';
@@ -132,6 +143,17 @@ const LAB_META = {
 	'SIM-28': { label: 'Vật lý', title: 'Chuyển động tròn đều', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
 	'SIM-29': { label: 'Vật lý', title: 'Va chạm 1D — bảo toàn động lượng', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
 	'SIM-30': { label: 'Vật lý', title: 'Bảo toàn cơ năng', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
+	'SIM-31': { label: 'Vật lý', title: 'Định luật Boyle (đẳng nhiệt)', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-32': { label: 'Vật lý', title: 'Định luật Charles (đẳng áp)', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-33': { label: 'Vật lý', title: 'Thuyết động học phân tử chất khí', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-34': { label: 'Vật lý', title: 'Sự chuyển thể của chất', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-35': { label: 'Vật lý', title: 'Lực từ tác dụng lên dây dẫn', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-36': { label: 'Vật lý', title: 'Lực Lorentz', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-37': { label: 'Vật lý', title: 'Hiện tượng cảm ứng điện từ', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-38': { label: 'Vật lý', title: 'Máy phát điện xoay chiều', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-39': { label: 'Vật lý', title: 'Phóng xạ & chu kỳ bán rã', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-40': { label: 'Vật lý', title: 'Phản ứng phân hạch & nhiệt hạch', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-41': { label: 'Vật lý', title: 'Năng lượng liên kết riêng', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-08-math': { label: 'Toán', title: 'Đồ thị hàm số bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'SIM-16': { label: 'Toán', title: 'Ném xiên và vòm cổng parabol', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'SIM-17': { label: 'Toán', title: 'Miền nghiệm hệ bất phương trình', tutor: 'Trợ lý Toán AI', className: 'math' },
@@ -253,6 +275,39 @@ const LAB_INITIAL_CHATS: Record<string, ChatMessage[]> = {
 	],
 	'SIM-30': [
 		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng bảo toàn cơ năng trên máng cong! Thế năng và động năng chuyển hóa thế nào khi vật chuyển động?' }
+	],
+	'SIM-31': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật Boyle! Hãy nén khí (giảm thể tích V) và quan sát áp suất p thay đổi thế nào nhé.' }
+	],
+	'SIM-32': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật Charles! Đun nóng khí (tăng nhiệt độ T) làm phân tử chuyển động nhanh hơn và đẩy piston ra thế nào?' }
+	],
+	'SIM-33': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng thuyết động học phân tử! Bạn sẽ thấy các phân tử va chạm hỗn loạn sinh ra áp suất. Hãy tăng T hoặc số hạt N để kiểm nghiệm.' }
+	],
+	'SIM-34': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng sự chuyển thể! Trong quá trình nóng chảy hoặc hóa hơi, nhiệt độ của chất có thay đổi không?' }
+	],
+	'SIM-35': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng lực từ Laplace! Dây dẫn mang dòng I đặt trong từ trường đều B sẽ chịu lực từ hướng nào? Hãy dùng quy tắc bàn tay trái.' }
+	],
+	'SIM-36': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng lực Lorentz! Lực Lorentz luôn vuông góc với vận tốc nên đóng vai trò lực hướng tâm làm điện tích chuyển động tròn.' }
+	],
+	'SIM-37': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng cảm ứng điện từ Faraday! Khi di chuyển nam châm nhanh hay chậm, suất điện động cảm ứng sinh ra thế nào?' }
+	],
+	'SIM-38': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng máy phát điện xoay chiều! Suất điện động cảm ứng biến thiên hình sin do từ thông qua khung dây thay đổi.' }
+	],
+	'SIM-39': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng phân rã phóng xạ! Bạn nghĩ sau thời gian bằng đúng 1 chu kỳ bán rã T, số hạt nhân chưa phân rã còn lại bao nhiêu phần trăm?' }
+	],
+	'SIM-40': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng phản ứng hạt nhân! Hãy so sánh năng lượng tỏa ra của phản ứng phân hạch và phản ứng nhiệt hạch.' }
+	],
+	'SIM-41': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng năng lượng liên kết riêng! Hạt nhân bền vững nhất nằm trong vùng số khối A bằng bao nhiêu?' }
 	],
 	default_math: [
 		{
@@ -530,6 +585,105 @@ export const LAB_QUIZZES = {
 			{ k: 'a', t: 'Thế năng chuyển hóa thành động năng, cơ năng bảo toàn' },
 			{ k: 'b', t: 'Động năng chuyển hóa thành thế năng' },
 			{ k: 'c', t: 'Thế năng hao hụt do ma sát tỏa nhiệt' }
+		],
+		correct: 'a'
+	},
+	'SIM-31': {
+		q: 'Trong quá trình đẳng nhiệt của một lượng khí nhất định, nếu thể tích giảm đi một nửa thì áp suất thay đổi như thế nào?',
+		opts: [
+			{ k: 'a', t: 'Không thay đổi' },
+			{ k: 'b', t: 'Tăng lên gấp đôi' },
+			{ k: 'c', t: 'Giảm đi một nửa' }
+		],
+		correct: 'b'
+	},
+	'SIM-32': {
+		q: 'Định luật Charles phát biểu rằng đối với một lượng khí nhất định ở áp suất không đổi, thể tích khí:',
+		opts: [
+			{ k: 'a', t: 'Tỉ lệ thuận với nhiệt độ tuyệt đối T (Kelvin)' },
+			{ k: 'b', t: 'Tỉ lệ nghịch với nhiệt độ tuyệt đối T' },
+			{ k: 'c', t: 'Tỉ lệ thuận với nhiệt độ Celsius t' }
+		],
+		correct: 'a'
+	},
+	'SIM-33': {
+		q: 'Nhiệt độ tuyệt đối của một khối khí lý tưởng là đại lượng đặc trưng cho:',
+		opts: [
+			{ k: 'a', t: 'Khối lượng trung bình của các phân tử khí' },
+			{ k: 'b', t: 'Động năng tịnh tiến trung bình của các phân tử khí' },
+			{ k: 'c', t: 'Số lượng phân tử khí trong một đơn vị thể tích' }
+		],
+		correct: 'b'
+	},
+	'SIM-34': {
+		q: 'Trong suốt thời gian đang nóng chảy hoặc đang sôi của một chất tinh khiết, nhiệt độ của nó:',
+		opts: [
+			{ k: 'a', t: 'Liên tục tăng do tiếp tục được cung cấp nhiệt lượng' },
+			{ k: 'b', t: 'Không đổi, nhiệt lượng dùng để phá vỡ liên kết cấu trúc' },
+			{ k: 'c', t: 'Giảm đi do tỏa nhiệt ra xung quanh' }
+		],
+		correct: 'b'
+	},
+	'SIM-35': {
+		q: 'Một đoạn dây dẫn mang dòng điện nằm ngang đặt vuông góc với từ trường đều hướng thẳng đứng từ trên xuống. Lực từ tác dụng lên dây có hướng:',
+		opts: [
+			{ k: 'a', t: 'Song song với dòng điện' },
+			{ k: 'b', t: 'Theo phương ngang vuông góc với dòng điện (Left-Hand Rule)' },
+			{ k: 'c', t: 'Hướng thẳng đứng lên trên' }
+		],
+		correct: 'b'
+	},
+	'SIM-36': {
+		q: 'Lực Lorentz tác dụng lên hạt mang điện chuyển động trong từ trường đều KHÔNG thực hiện công cơ học vì:',
+		opts: [
+			{ k: 'a', t: 'Độ lớn lực Lorentz luôn bằng không' },
+			{ k: 'b', t: 'Lực Lorentz luôn vuông góc với vector vận tốc của hạt' },
+			{ k: 'c', t: 'Hạt chuyển động thẳng đều' }
+		],
+		correct: 'b'
+	},
+	'SIM-37': {
+		q: 'Theo định luật Lenz, dòng điện cảm ứng xuất hiện trong mạch kín có chiều sao cho từ trường cảm ứng do nó sinh ra:',
+		opts: [
+			{ k: 'a', t: 'Luôn cùng chiều với từ trường ban đầu' },
+			{ k: 'b', t: 'Chống lại sự biến thiên từ thông sinh ra nó' },
+			{ k: 'c', t: 'Luôn ngược chiều với từ trường ban đầu' }
+		],
+		correct: 'b'
+	},
+	'SIM-38': {
+		q: 'Nguyên tắc hoạt động của máy phát điện xoay chiều dựa trên hiện tượng vật lý nào?',
+		opts: [
+			{ k: 'a', t: 'Tự cảm' },
+			{ k: 'b', t: 'Cảm ứng điện từ' },
+			{ k: 'c', t: 'Cộng hưởng điện từ' }
+		],
+		correct: 'b'
+	},
+	'SIM-39': {
+		q: 'Sau 3 chu kỳ bán rã T, tỉ lệ số hạt nhân phóng xạ ban đầu chưa phân rã còn lại là bao nhiêu?',
+		opts: [
+			{ k: 'a', t: '1/3' },
+			{ k: 'b', t: '1/8' },
+			{ k: 'c', t: '1/6' }
+		],
+		correct: 'b'
+	},
+	'SIM-40': {
+		q: 'Phản ứng nhiệt hạch (sự kết hợp của các hạt nhân rất nhẹ) giải phóng năng lượng lớn và xảy ra chủ yếu ở:',
+		opts: [
+			{ k: 'a', t: 'Trong các lò phản ứng hạt nhân thương mại hiện nay' },
+			{ k: 'b', t: 'Trong lòng Mặt Trời và các ngôi sao' },
+			{ k: 'c', t: 'Ở điều kiện nhiệt độ phòng bình thường' }
+		],
+		correct: 'b'
+	},
+	'SIM-41': {
+		q: 'Đại lượng nào sau đây đặc trưng cho mức độ bền vững của một hạt nhân nguyên tử?',
+		opts: [
+			{ k: 'a', t: 'Năng lượng liên kết riêng (năng lượng liên kết trên mỗi nucleon)' },
+			{ k: 'b', t: 'Năng lượng liên kết toàn phần' },
+			{ k: 'c', t: 'Độ hụt khối lượng của hạt nhân' }
 		],
 		correct: 'a'
 	},
@@ -838,6 +992,17 @@ const Workspace: React.FC = () => {
 		'SIM-28',
 		'SIM-29',
 		'SIM-30',
+		'SIM-31',
+		'SIM-32',
+		'SIM-33',
+		'SIM-34',
+		'SIM-35',
+		'SIM-36',
+		'SIM-37',
+		'SIM-38',
+		'SIM-39',
+		'SIM-40',
+		'SIM-41',
 	].includes(simId)
 		? simId === 'SIM-08' && subject === 'math'
 			? 'SIM-08-math'
@@ -905,6 +1070,48 @@ const Workspace: React.FC = () => {
 	// SIM-30 Energy
 	const [energyH0, setEnergyH0] = useState(6);
 	const [energyM, setEnergyM] = useState(1);
+
+	// SIM-31 Boyle
+	const [boyleV, setBoyleV] = useState(3);
+
+	// SIM-32 Charles
+	const [charlesT, setCharlesT] = useState(300);
+
+	// SIM-33 Kinetic Theory
+	const [kineticT, setKineticT] = useState(300);
+	const [kineticN, setKineticN] = useState(30);
+
+	// SIM-34 State Change
+	const [stateChangeP, setStateChangeP] = useState(20);
+
+	// SIM-35 Magnetic Force
+	const [magForceB, setMagForceB] = useState(1.0);
+	const [magForceI, setMagForceI] = useState(3.0);
+	const [magForceL, setMagForceL] = useState(2.0);
+
+	// SIM-36 Lorentz Force
+	const [lorentzB, setLorentzB] = useState(1.5);
+	const [lorentzV, setLorentzV] = useState(3.0);
+	const [lorentzQ, setLorentzQ] = useState(1.0);
+	const [lorentzM, setLorentzM] = useState(1.0);
+
+	// SIM-37 Induction
+	const [inductionSpd, setInductionSpd] = useState(1.5);
+
+	// SIM-38 AC Generator
+	const [acGenW, setAcGenW] = useState(3.0);
+	const [acGenB, setAcGenB] = useState(1.0);
+	const [acGenN, setAcGenN] = useState(4);
+
+	// SIM-39 Radioactivity
+	const [radioactiveT, setRadioactiveT] = useState(3.0);
+	const [radioactiveN0, setRadioactiveN0] = useState(64);
+
+	// SIM-40 Nuclear
+	const [nuclearType, setNuclearType] = useState(0);
+
+	// SIM-41 Binding Energy
+	const [bindingEnergyA, setBindingEnergyA] = useState(56);
 
 	// Math params
 	const [mA, setMA] = useState(1);
@@ -1146,6 +1353,37 @@ const Workspace: React.FC = () => {
 			} else if (simId === 'SIM-30') {
 				setEnergyH0(6);
 				setEnergyM(1);
+			} else if (simId === 'SIM-31') {
+				setBoyleV(3);
+			} else if (simId === 'SIM-32') {
+				setCharlesT(300);
+			} else if (simId === 'SIM-33') {
+				setKineticT(300);
+				setKineticN(30);
+			} else if (simId === 'SIM-34') {
+				setStateChangeP(20);
+			} else if (simId === 'SIM-35') {
+				setMagForceB(1.0);
+				setMagForceI(3.0);
+				setMagForceL(2.0);
+			} else if (simId === 'SIM-36') {
+				setLorentzB(1.5);
+				setLorentzV(3.0);
+				setLorentzQ(1.0);
+				setLorentzM(1.0);
+			} else if (simId === 'SIM-37') {
+				setInductionSpd(1.5);
+			} else if (simId === 'SIM-38') {
+				setAcGenW(3.0);
+				setAcGenB(1.0);
+				setAcGenN(4);
+			} else if (simId === 'SIM-39') {
+				setRadioactiveT(3.0);
+				setRadioactiveN0(64);
+			} else if (simId === 'SIM-40') {
+				setNuclearType(0);
+			} else if (simId === 'SIM-41') {
+				setBindingEnergyA(56);
 			} else {
 				setPhAngle(45);
 				setPhVel(20);
@@ -1220,7 +1458,31 @@ const Workspace: React.FC = () => {
 												? 'm_1 v_1 + m_2 v_2 = m_1 v_1\' + m_2 v_2\' \\quad \\vert \\quad e = \\frac{v_2\' - v_1\'}{v_1 - v_2}'
 												: simId === 'SIM-30'
 													? 'W = W_t + W_đ = mgh + \\frac{1}{2}\\,m\\,v^2 = \\text{const}'
-													: 'y = v_0 \\sin\\theta\\,t - \\frac{1}{2}\\,g\\,t^2 \\quad \\vert \\quad x = v_0 \\cos\\theta\\,t'
+													: simId === 'SIM-31'
+														? 'p\\,V = \\text{const} \\quad \\vert \\quad p_1\\,V_1 = p_2\\,V_2'
+														: simId === 'SIM-32'
+															? '\\frac{V}{T} = \\text{const} \\quad \\vert \\quad \\frac{V_1}{T_1} = \\frac{V_2}{T_2}'
+															: simId === 'SIM-33'
+																? 'p = \\frac{1}{3}\\,\\frac{N}{V}\\,m\\,\\bar{v}^2 \\quad \\vert \\quad \\bar{E}_đ = \\frac{3}{2}\\,k\\,T'
+																: simId === 'SIM-34'
+																	? 'Q = m\\,\\lambda \\quad \\vert \\quad Q = m\\,L'
+																	: simId === 'SIM-35'
+																		? 'F = B\\,I\\,L\\,\\sin\\theta \\quad \\vert \\quad \\vec{F} \\perp (\\vec{B}, \\vec{I})'
+																		: simId === 'SIM-36'
+																			? 'f = |q|\\,v\\,B\\,\\sin\\theta \\quad \\vert \\quad R = \\frac{m\\,v}{|q|\\,B}'
+																			: simId === 'SIM-37'
+																				? 'e_c = -\\frac{\\Delta\\Phi}{\\Delta t} \\quad \\vert \\quad \\Phi = B\\,S\\,\\cos\\alpha'
+																				: simId === 'SIM-38'
+																					? 'e = E_0\\,\\sin(\\omega\\,t) \\quad \\vert \\quad E_0 = N\\,B\\,S\\,\\omega'
+																					: simId === 'SIM-39'
+																						? 'N(t) = N_0\\,2^{-\\frac{t}{T}} = N_0\\,e^{-\\lambda\\,t}'
+																						: simId === 'SIM-40'
+																							? nuclearType === 0
+																								? '{^{235}_{92}}\\text{U} + n \\rightarrow X + Y + 3n'
+																								: '{^2_1}\\text{H} + {^3_1}\\text{H} \\rightarrow {^4_2}\\text{He} + n'
+																							: simId === 'SIM-41'
+																								? 'E_{lk} = \\Delta m\\,c^2 \\quad \\vert \\quad E_{lkr} = \\frac{E_{lk}}{A}'
+																								: 'y = v_0 \\sin\\theta\\,t - \\frac{1}{2}\\,g\\,t^2 \\quad \\vert \\quad x = v_0 \\cos\\theta\\,t'
 			: subject === 'math'
 				? simId === 'SIM-16'
 					? `x(t) = 2 + v_0 \\cos\\alpha\\,t \\quad \\vert \\quad y(t) = v_0 \\sin\\alpha\\,t - \\frac{1}{2}\\,g\\,t^2 \\quad \\vert \\quad \\text{Cổng: } y = -0.25 (x - 8)^2 + 9`
@@ -1283,7 +1545,29 @@ const Workspace: React.FC = () => {
 												? 'Va chạm 1D'
 												: simId === 'SIM-30'
 													? 'Bảo toàn cơ năng'
-													: 'Quỹ đạo'
+													: simId === 'SIM-31'
+														? 'Định luật Boyle'
+														: simId === 'SIM-32'
+															? 'Định luật Charles'
+															: simId === 'SIM-33'
+																? 'Thuyết động học phân tử'
+																: simId === 'SIM-34'
+																	? 'Sự chuyển thể của chất'
+																	: simId === 'SIM-35'
+																		? 'Lực từ Laplace'
+																		: simId === 'SIM-36'
+																			? 'Lực Lorentz'
+																			: simId === 'SIM-37'
+																				? 'Cảm ứng điện từ'
+																				: simId === 'SIM-38'
+																					? 'Máy phát điện xoay chiều'
+																					: simId === 'SIM-39'
+																						? 'Phân rã phóng xạ'
+																						: simId === 'SIM-40'
+																							? 'Phản ứng phân hạch & nhiệt hạch'
+																							: simId === 'SIM-41'
+																								? 'Năng lượng liên kết riêng'
+																								: 'Quỹ đạo'
 			: subject === 'math'
 				? simId === 'SIM-08' || simId === 'SIM-08-math' || !simId
 					? 'Đồ thị hàm bậc hai'
@@ -2641,6 +2925,1164 @@ const Workspace: React.FC = () => {
 											))}
 										</div>
 									</>
+								) : simId === 'SIM-31' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Thể tích (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>V</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{boyleV}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>L</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={5}
+												step={0.1}
+												value={boyleV}
+												style={getTrackStyle(boyleV, 1, 5, '#4f6ef7')}
+												onChange={(e) => setBoyleV(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('p\\,V = \\text{const}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('p_1\\,V_1 = p_2\\,V_2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Định luật Boyle:</b> Đối với một lượng khí nhất định ở nhiệt độ không đổi, áp suất tỉ lệ nghịch với thể tích khí. Khi nén khí (giảm $V$), áp suất $p$ sẽ tăng tương ứng.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'p', desc: 'áp suất lượng khí (atm)' },
+												{ sym: 'V', desc: 'thể tích khí (L)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-32' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Nhiệt độ (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>T</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{charlesT}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>K</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={100}
+												max={500}
+												step={10}
+												value={charlesT}
+												style={getTrackStyle(charlesT, 100, 500, '#6d54e8')}
+												onChange={(e) => setCharlesT(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\frac{V}{T} = \\text{const}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('\\frac{V_1}{T_1} = \\frac{V_2}{T_2}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Định luật Charles:</b> Đối với một lượng khí nhất định ở áp suất không đổi, thể tích tỉ lệ thuận với nhiệt độ tuyệt đối. Khi đun nóng khí, thể tích của nó tăng lên đẩy piston ra.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'V', desc: 'thể tích khí (L)' },
+												{ sym: 'T', desc: 'nhiệt độ tuyệt đối (K)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-33' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Nhiệt độ (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>T</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{kineticT}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>K</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={100}
+												max={600}
+												step={10}
+												value={kineticT}
+												style={getTrackStyle(kineticT, 100, 600, '#6d54e8')}
+												onChange={(e) => setKineticT(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Số hạt (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>N</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{kineticN}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>hạt</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={10}
+												max={100}
+												step={5}
+												value={kineticN}
+												style={getTrackStyle(kineticN, 10, 100, '#4f6ef7')}
+												onChange={(e) => setKineticN(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('p = \\frac{1}{3}\\,\\frac{N}{V}\\,m\\,\\bar{v}^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('\\bar{E}_đ = \\frac{3}{2}\\,k\\,T')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Động học phân tử:</b> Áp suất khí sinh ra do va chạm của các phân tử lên thành bình. Khi nhiệt độ tăng, các phân tử chuyển động nhanh hơn, va chạm mạnh hơn sinh ra áp suất lớn hơn.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'p', desc: 'áp suất chất khí (Pa)' },
+												{ sym: 'N', desc: 'tổng số phân tử khí' },
+												{ sym: 'T', desc: 'nhiệt độ tuyệt đối (K)' },
+												{ sym: 'Ed', desc: 'động năng tịnh tiến trung bình (J)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'Ed' ? <>E<sub>đ</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-34' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Công suất nung (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>P</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{stateChangeP}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>W</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={5}
+												max={100}
+												step={5}
+												value={stateChangeP}
+												style={getTrackStyle(stateChangeP, 5, 100, '#4f6ef7')}
+												onChange={(e) => setStateChangeP(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('Q = m\\,\\lambda \\quad (\\text{nóng chảy})')} style={{ fontSize: '14.5px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('Q = m\\,L \\quad (\\text{hóa hơi})')} style={{ fontSize: '14.5px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Sự chuyển thể:</b> Trong suốt quá trình nóng chảy hoặc sôi, nhiệt độ của chất không thay đổi. Nhiệt năng hấp thụ được dùng hoàn toàn để phá vỡ liên kết cấu trúc tinh thể hoặc liên kết lỏng.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'Q', desc: 'nhiệt lượng nhận vào (J)' },
+												{ sym: 'm', desc: 'khối lượng chất (kg)' },
+												{ sym: 'lambda', desc: 'nhiệt nóng chảy riêng (J/kg)' },
+												{ sym: 'L', desc: 'nhiệt hóa hơi riêng (J/kg)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'lambda' ? <>&lambda;</> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-35' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Từ trường (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>B</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{magForceB.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>T</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={-2}
+												max={2}
+												step={0.2}
+												value={magForceB}
+												style={getTrackStyle(magForceB, -2, 2, '#4f6ef7')}
+												onChange={(e) => setMagForceB(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Dòng điện (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>I</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{magForceI.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>A</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={magForceI}
+												style={getTrackStyle(magForceI, -5, 5, '#6d54e8')}
+												onChange={(e) => setMagForceI(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Chiều dài dây (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>L</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{magForceL.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={0.5}
+												max={3}
+												step={0.1}
+												value={magForceL}
+												style={getTrackStyle(magForceL, 0.5, 3, '#4f6ef7')}
+												onChange={(e) => setMagForceL(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('F = B\\,I\\,L\\,\\sin\\theta')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('\\vec{F} \\perp (\\vec{B}, \\vec{I})')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lực Laplace:</b> Chiều của lực từ tác dụng lên dây dẫn mang dòng điện đặt trong từ trường được xác định bằng quy tắc bàn tay trái. Đảo chiều dòng điện hoặc từ trường sẽ đảo chiều lực từ.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'F', desc: 'lực từ tác dụng lên dây (N)' },
+												{ sym: 'B', desc: 'cảm ứng từ (T)' },
+												{ sym: 'I', desc: 'cường độ dòng điện (A)' },
+												{ sym: 'L', desc: 'chiều dài dây mang dòng điện (m)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-36' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Từ trường (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>B</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{lorentzB.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>T</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.2}
+												value={lorentzB}
+												style={getTrackStyle(lorentzB, -3, 3, '#4f6ef7')}
+												onChange={(e) => setLorentzB(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Vận tốc (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>v</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{lorentzV.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={6}
+												step={0.2}
+												value={lorentzV}
+												style={getTrackStyle(lorentzV, 1, 6, '#6d54e8')}
+												onChange={(e) => setLorentzV(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Điện tích (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>q</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{lorentzQ.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>C</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={-2}
+												max={2}
+												step={0.5}
+												value={lorentzQ}
+												style={getTrackStyle(lorentzQ, -2, 2, '#4f6ef7')}
+												onChange={(e) => setLorentzQ(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Khối lượng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>m</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{lorentzM.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>kg</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={0.5}
+												max={3}
+												step={0.5}
+												value={lorentzM}
+												style={getTrackStyle(lorentzM, 0.5, 3, '#6d54e8')}
+												onChange={(e) => setLorentzM(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('f = |q|\\,v\\,B\\,\\sin\\theta')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('R = \\frac{m\\,v}{|q|\\,B}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lực Lorentz:</b> Lực từ tác dụng lên hạt mang điện chuyển động trong từ trường đều. Do lực Lorentz luôn vuông góc với vận tốc, nó đóng vai trò lực hướng tâm khiến hạt chuyển động tròn.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'f', desc: 'lực Lorentz tác dụng (N)' },
+												{ sym: 'q', desc: 'điện tích hạt chuyển động (C)' },
+												{ sym: 'v', desc: 'vận tốc tức thời của hạt (m/s)' },
+												{ sym: 'B', desc: 'cảm ứng từ trường (T)' },
+												{ sym: 'R', desc: 'bán kính quỹ đạo tròn (m)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-37' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Tốc độ chuyển động (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>v</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{inductionSpd.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={0.2}
+												max={3.0}
+												step={0.1}
+												value={inductionSpd}
+												style={getTrackStyle(inductionSpd, 0.2, 3.0, '#4f6ef7')}
+												onChange={(e) => setInductionSpd(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('e_c = -\\frac{\\Delta\\Phi}{\\Delta t}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('\\Phi = B\\,S\\,\\cos\\alpha')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Định luật Faraday:</b> Suất điện động cảm ứng tỷ lệ thuận với tốc độ biến thiên từ thông qua mạch kín. Tốc độ đưa nam châm vào/ra càng nhanh thì cường độ dòng điện cảm ứng sinh ra càng lớn.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'Phi', desc: 'từ thông xuyên qua vòng dây (Wb)' },
+												{ sym: 'ec', desc: 'suất điện động cảm ứng sinh ra (V)' },
+												{ sym: 'v', desc: 'tốc độ dịch chuyển nam châm (m/s)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'Phi' ? <>&Phi;</> : row.sym === 'ec' ? <>e<sub>c</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-38' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Tốc độ quay (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{acGenW.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={8}
+												step={0.5}
+												value={acGenW}
+												style={getTrackStyle(acGenW, 1, 8, '#4f6ef7')}
+												onChange={(e) => setAcGenW(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Từ trường (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>B</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{acGenB.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>T</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={0.2}
+												max={2.0}
+												step={0.1}
+												value={acGenB}
+												style={getTrackStyle(acGenB, 0.2, 2.0, '#6d54e8')}
+												onChange={(e) => setAcGenB(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Số vòng dây (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>N</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{acGenN}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>vòng</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={10}
+												step={1}
+												value={acGenN}
+												style={getTrackStyle(acGenN, 1, 10, '#4f6ef7')}
+												onChange={(e) => setAcGenN(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('e(t) = E_0\\,\\sin(\\omega\\,t)')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('E_0 = N\\,B\\,S\\,\\omega')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Máy phát điện xoay chiều:</b> Hoạt động dựa trên hiện tượng cảm ứng điện từ. Khi cuộn dây quay đều trong từ trường, từ thông qua nó biến thiên sinh ra suất điện động hình sin cảm ứng.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'e', desc: 'suất điện động tức thời (V)' },
+												{ sym: 'E0', desc: 'suất điện động cực đại (V)' },
+												{ sym: 'N', desc: 'số vòng dây của cuộn cảm' },
+												{ sym: 'omega', desc: 'tốc độ góc quay rotor (rad/s)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'E0' ? <>E<sub>0</sub></> : row.sym === 'omega' ? <>&omega;</> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-39' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Chu kỳ bán rã (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>T</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{radioactiveT.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>s</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={6}
+												step={0.5}
+												value={radioactiveT}
+												style={getTrackStyle(radioactiveT, 1, 6, '#4f6ef7')}
+												onChange={(e) => setRadioactiveT(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Số hạt ban đầu (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>N<sub>0</sub></em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{radioactiveN0}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>hạt</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={20}
+												max={128}
+												step={4}
+												value={radioactiveN0}
+												style={getTrackStyle(radioactiveN0, 20, 128, '#6d54e8')}
+												onChange={(e) => setRadioactiveN0(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('N(t) = N_0\\,2^{-\\frac{t}{T}}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('N(t) = N_0\\,e^{-\\lambda\\,t}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Định luật phóng xạ:</b> Số lượng hạt nhân chưa phân rã giảm theo hàm mũ theo thời gian. Sau mỗi chu kỳ bán rã T, số lượng hạt nhân chưa phân rã còn lại giảm đi một nửa.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'N0', desc: 'số hạt nhân phóng xạ ban đầu' },
+												{ sym: 'N', desc: 'số hạt nhân chưa phân rã tại thời điểm t' },
+												{ sym: 'T', desc: 'chu kỳ bán rã chất phóng xạ' },
+												{ sym: 'lambda', desc: 'hằng số phóng xạ' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'N0' ? <>N<sub>0</sub></> : row.sym === 'lambda' ? <>&lambda;</> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-40' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+											<button
+												style={{
+													flex: 1,
+													padding: '8px 12px',
+													borderRadius: '8px',
+													border: '1px solid #4f6ef7',
+													background: nuclearType === 0 ? '#4f6ef7' : '#fff',
+													color: nuclearType === 0 ? '#fff' : '#4f6ef7',
+													fontWeight: 600,
+													cursor: 'pointer',
+													transition: 'all 0.2s',
+												}}
+												onClick={() => setNuclearType(0)}
+											>
+												Phân hạch
+											</button>
+											<button
+												style={{
+													flex: 1,
+													padding: '8px 12px',
+													borderRadius: '8px',
+													border: '1px solid #6d54e8',
+													background: nuclearType === 1 ? '#6d54e8' : '#fff',
+													color: nuclearType === 1 ? '#fff' : '#6d54e8',
+													fontWeight: 600,
+													cursor: 'pointer',
+													transition: 'all 0.2s',
+												}}
+												onClick={() => setNuclearType(1)}
+											>
+												Nhiệt hạch
+											</button>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											{nuclearType === 0 ? (
+												<>
+													<div dangerouslySetInnerHTML={renderTex('{^{235}_{92}}\\text{U} + n \\rightarrow X + Y + 3n')} style={{ fontSize: '14px', color: '#2b2f45', fontWeight: 500 }} />
+													<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+													<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+														💡 <b>Phản ứng phân hạch:</b> Hạt nhân nặng (như Uranium-235) hấp thụ một neutron chậm rồi vỡ thành 2 hạt nhân nhẹ hơn kèm theo giải phóng năng lượng lớn và vài neutron. Các neutron mới có thể tiếp tục kích hoạt phản ứng dây chuyền.
+													</div>
+												</>
+											) : (
+												<>
+													<div dangerouslySetInnerHTML={renderTex('{^2_1}\\text{H} + {^3_1}\\text{H} \\rightarrow {^4_2}\\text{He} + n')} style={{ fontSize: '14px', color: '#2b2f45', fontWeight: 500 }} />
+													<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+													<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+														💡 <b>Phản ứng nhiệt hạch:</b> Là sự kết hợp giữa 2 hạt nhân rất nhẹ (như Deuterium và Tritium) dưới nhiệt độ và áp suất cực lớn tạo thành hạt nhân Heli nặng hơn và tỏa nhiệt lượng khổng lồ.
+													</div>
+												</>
+											)}
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'U-235', desc: 'hạt nhân nguyên liệu Uranium nặng' },
+												{ sym: 'n', desc: 'hạt neutron (không mang điện)' },
+												{ sym: 'He-4', desc: 'hạt nhân Heli sinh ra từ nhiệt hạch' },
+												{ sym: 'E', desc: 'năng lượng tỏa ra (MeV)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-41' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Số khối hạt nhân (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{bindingEnergyA}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>nucleon</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={4}
+												max={240}
+												step={4}
+												value={bindingEnergyA}
+												style={getTrackStyle(bindingEnergyA, 4, 240, '#4f6ef7')}
+												onChange={(e) => setBindingEnergyA(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('E_{lk} = \\Delta m\\,c^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('E_{lkr} = \\frac{E_{lk}}{A}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Năng lượng liên kết riêng:</b> {"Là năng lượng liên kết tính trên một nucleon. Hạt nhân bền vững nhất ở vùng số khối trung bình (50 < A < 80, ví dụ Fe-56) với năng lượng liên kết riêng lớn nhất (xấp xỉ 8.8 MeV)."}
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'Elk', desc: 'năng lượng liên kết toàn phần (MeV)' },
+												{ sym: 'Elkr', desc: 'năng lượng liên kết riêng (MeV/nucleon)' },
+												{ sym: 'A', desc: 'số khối hạt nhân (tổng số nucleon)' },
+												{ sym: 'dm', desc: 'độ hụt khối lượng của hạt nhân (u)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'Elk' ? <>E<sub>lk</sub></> : row.sym === 'Elkr' ? <>E<sub>lkr</sub></> : row.sym === 'dm' ? <>&Delta;m</> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
 								) : (
 									<>
 										<div className='stu-ws__section-label'>
@@ -3283,7 +4725,29 @@ const Workspace: React.FC = () => {
 																		? `m₁ ${collisionM1} kg  ·  m₂ ${collisionM2} kg  ·  e ${collisionE}`
 																		: simId === 'SIM-30'
 																			? `h₀ ${energyH0} m  ·  m ${energyM} kg`
-																			: `θ ${phAngle}°  ·  v ${phVel} m/s  ·  g ${f(phGrav)}`)}
+																			: simId === 'SIM-31'
+																				? `V ${boyleV} L  ·  p ${(10 / boyleV).toFixed(1)} atm`
+																				: simId === 'SIM-32'
+																					? `T ${charlesT} K  ·  V ${(charlesT * 0.01).toFixed(2)} L`
+																					: simId === 'SIM-33'
+																						? `T ${kineticT} K  ·  N ${kineticN} hạt`
+																						: simId === 'SIM-34'
+																							? `Công suất P ${stateChangeP} W`
+																							: simId === 'SIM-35'
+																								? `B ${magForceB.toFixed(1)} T  ·  I ${magForceI.toFixed(1)} A  ·  L ${magForceL.toFixed(1)} m`
+																								: simId === 'SIM-36'
+																									? `B ${lorentzB.toFixed(1)} T  ·  v ${lorentzV.toFixed(1)} m/s  ·  q ${lorentzQ.toFixed(1)} C  ·  m ${lorentzM.toFixed(1)} kg`
+																									: simId === 'SIM-37'
+																										? `Tốc độ v ${inductionSpd.toFixed(1)} m/s`
+																										: simId === 'SIM-38'
+																											? `ω ${acGenW.toFixed(1)} rad/s  ·  B ${acGenB.toFixed(1)} T  ·  N ${acGenN} vòng`
+																											: simId === 'SIM-39'
+																												? `T ${radioactiveT.toFixed(1)}s  ·  N₀ ${radioactiveN0} hạt`
+																												: simId === 'SIM-40'
+																													? `Loại: ${nuclearType === 0 ? 'Phân hạch' : 'Nhiệt hạch'}`
+																													: simId === 'SIM-41'
+																														? `Số khối A ${bindingEnergyA}`
+																														: `θ ${phAngle}°  ·  v ${phVel} m/s  ·  g ${f(phGrav)}`)}
 								{subject === 'math' &&
 									(simId === 'SIM-08' || simId === 'SIM-08-math' || !simId
 										? `a ${f(mA)}  ·  b ${f(mB)}  ·  c ${f(mC)}`
@@ -3485,6 +4949,180 @@ const Workspace: React.FC = () => {
 										isPlaying={isPhPlaying}
 										isSlow={isPhSlow}
 										onAnimationEnd={() => setIsPhPlaying(false)}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-31' ? (
+									<BoyleSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-31',
+											subject: 'physics',
+											topic: 'boyle',
+											parameters: [
+												{ key: 'V', value: boyleV, unit: 'L', label: 'Thể tích' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-32' ? (
+									<CharlesSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-32',
+											subject: 'physics',
+											topic: 'charles',
+											parameters: [
+												{ key: 'T', value: charlesT, unit: 'K', label: 'Nhiệt độ' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-33' ? (
+									<KineticSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-33',
+											subject: 'physics',
+											topic: 'kinetic',
+											parameters: [
+												{ key: 'T', value: kineticT, unit: 'K', label: 'Nhiệt độ' },
+												{ key: 'N', value: kineticN, unit: 'hạt', label: 'Số hạt' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-34' ? (
+									<StateChangeSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-34',
+											subject: 'physics',
+											topic: 'statechange',
+											parameters: [
+												{ key: 'P', value: stateChangeP, unit: 'W', label: 'Công suất nung' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-35' ? (
+									<MagForceSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-35',
+											subject: 'physics',
+											topic: 'magforce',
+											parameters: [
+												{ key: 'B', value: magForceB, unit: 'T', label: 'Từ trường B' },
+												{ key: 'I', value: magForceI, unit: 'A', label: 'Dòng điện I' },
+												{ key: 'L', value: magForceL, unit: 'm', label: 'Chiều dài L' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-36' ? (
+									<LorentzSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-36',
+											subject: 'physics',
+											topic: 'lorentz',
+											parameters: [
+												{ key: 'B', value: lorentzB, unit: 'T', label: 'Từ trường B' },
+												{ key: 'v', value: lorentzV, unit: 'm/s', label: 'Vận tốc v' },
+												{ key: 'q', value: lorentzQ, unit: 'C', label: 'Điện tích q' },
+												{ key: 'm', value: lorentzM, unit: 'kg', label: 'Khối lượng m' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-37' ? (
+									<InductionSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-37',
+											subject: 'physics',
+											topic: 'induction',
+											parameters: [
+												{ key: 'spd', value: inductionSpd, unit: 'm/s', label: 'Tốc độ nam châm' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-38' ? (
+									<ACGenSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-38',
+											subject: 'physics',
+											topic: 'acgen',
+											parameters: [
+												{ key: 'w', value: acGenW, unit: 'rad/s', label: 'Tốc độ quay' },
+												{ key: 'B', value: acGenB, unit: 'T', label: 'Từ trường B' },
+												{ key: 'N', value: acGenN, unit: 'vòng', label: 'Số vòng dây' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-39' ? (
+									<RadioactiveSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-39',
+											subject: 'physics',
+											topic: 'radioactive',
+											parameters: [
+												{ key: 'T', value: radioactiveT, unit: 's', label: 'Chu kỳ bán rã' },
+												{ key: 'N0', value: radioactiveN0, unit: 'hạt', label: 'Số hạt ban đầu' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-40' ? (
+									<NuclearSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-40',
+											subject: 'physics',
+											topic: 'nuclear',
+											parameters: [
+												{ key: 'type', value: nuclearType, unit: '', label: 'Loại phản ứng' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-41' ? (
+									<BindingEnergySimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-41',
+											subject: 'physics',
+											topic: 'bindingenergy',
+											parameters: [
+												{ key: 'A', value: bindingEnergyA, unit: '', label: 'Số khối A' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
 										resetKey={physResetKey}
 									/>
 								) : (
