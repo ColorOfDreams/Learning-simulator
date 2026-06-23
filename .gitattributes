@@ -1,0 +1,15 @@
+# Chuẩn hoá line-ending: lưu LF trong repo, checkout theo nền tảng
+* text=auto
+
+# Binary — không đụng vào
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

@@ -12,18 +12,18 @@ const MyDatePicker = (
 		format?: string;
 		pickerStyle?: 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' | undefined;
 		showTime?:
-		| boolean
-		| {
-			format?: string;
-			showNow?: boolean;
-			showHour?: boolean;
-			showMinute?: boolean;
-			showSecond?: boolean;
-			use12Hours?: boolean;
-			hourStep?: number;
-			minuteStep?: number;
-			secondStep?: number;
-		};
+			| boolean
+			| {
+					format?: string;
+					showNow?: boolean;
+					showHour?: boolean;
+					showMinute?: boolean;
+					showSecond?: boolean;
+					use12Hours?: boolean;
+					hourStep?: number;
+					minuteStep?: number;
+					secondStep?: number;
+			  };
 		allowClear?: boolean;
 		disabled?: boolean;
 

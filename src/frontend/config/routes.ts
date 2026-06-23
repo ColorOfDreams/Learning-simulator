@@ -29,7 +29,7 @@ export default [
 		icon: 'HomeOutlined',
 		access: 'accessFilter',
 		maChucNang: 'dashboard|xem',
-	}, 
+	},
 	{
 		path: '/gioi-thieu',
 		name: 'About',
