@@ -1654,6 +1654,68 @@ const Workspace: React.FC = () => {
 												onChange={(e) => setHorizV0(+e.target.value)}
 											/>
 										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('y = h - \\frac{1}{2}\\,g\\,t^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('x = v_0\\,t \\quad \\vert \\quad L = v_0\\,\\sqrt{\\frac{2h}{g}}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lưu ý:</b> Thời gian rơi chỉ phụ thuộc độ cao $h$. Tầm xa toàn phần $L$ phụ thuộc đồng thời vào vận tốc ném đầu $v_0$ và độ cao $h$.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'h', desc: 'độ cao ném vật (m)' },
+												{ sym: 'v0', desc: 'vận tốc ban đầu (m/s)' },
+												{ sym: 'g', desc: 'gia tốc rơi tự do (m/s²)' },
+												{ sym: 't', desc: 'thời gian rơi (s)' },
+												{ sym: 'x', desc: 'tầm xa tức thời theo Ox (m)' },
+												{ sym: 'L', desc: 'tầm xa toàn phần (m)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'v0' ? <>v<sub>0</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
 									</>
 								) : simId === 'SIM-24' ? (
 									<>
@@ -1720,6 +1782,67 @@ const Workspace: React.FC = () => {
 												onChange={(e) => setNewtonMu(+e.target.value)}
 											/>
 										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('a = \\frac{F - F_{ms}}{m}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('F_{ms} = \\mu\\,m\\,g')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lưu ý:</b> Gia tốc xe tỉ lệ thuận với hợp lực kéo và tỉ lệ nghịch với khối lượng xe. Xe sẽ đứng yên hoặc chuyển động thẳng đều nếu lực kéo F &le; F_ms.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'F', desc: 'lực kéo tác dụng (N)' },
+												{ sym: 'm', desc: 'khối lượng xe lăn (kg)' },
+												{ sym: 'mu', desc: 'hệ số ma sát lăn' },
+												{ sym: 'a', desc: 'gia tốc của xe (m/s²)' },
+												{ sym: 'Fms', desc: 'lực ma sát lăn cản trở (N)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'mu' ? <>&mu;</> : row.sym === 'Fms' ? <>F<sub>ms</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
 									</>
 								) : simId === 'SIM-25' ? (
 									<>
@@ -1784,6 +1907,67 @@ const Workspace: React.FC = () => {
 												style={getTrackStyle(inclineM, 0.5, 3, '#4f6ef7')}
 												onChange={(e) => setInclineM(+e.target.value)}
 											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('a = g\\,(\\sin\\alpha - \\mu\\,\\cos\\alpha)')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('F_{ms} = \\mu\\,m\\,g\\,\\cos\\alpha')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lưu ý:</b> Vật trượt xuống dốc khi góc nghiêng $\alpha$ đủ lớn thỏa mãn $\tan\alpha$ &gt; $\mu$. Nếu $\tan\alpha$ &le; $\mu$, vật đứng yên do lực ma sát tĩnh cân bằng thành phần trọng lực trượt.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'alpha', desc: 'góc nghiêng của mặt dốc (°)' },
+												{ sym: 'mu', desc: 'hệ số ma sát trượt' },
+												{ sym: 'm', desc: 'khối lượng vật trượt (kg)' },
+												{ sym: 'a', desc: 'gia tốc trượt xuống (m/s²)' },
+												{ sym: 'Fms', desc: 'lực ma sát cản trở (N)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'alpha' ? <>&alpha;</> : row.sym === 'mu' ? <>&mu;</> : row.sym === 'Fms' ? <>F<sub>ms</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
 										</div>
 									</>
 								) : simId === 'SIM-26' ? (
@@ -1852,6 +2036,69 @@ const Workspace: React.FC = () => {
 												onChange={(e) => setSpringA(+e.target.value)}
 											/>
 										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('W_t = \\frac{1}{2}\\,k\\,x^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('W_đ = \\frac{1}{2}\\,m\\,v^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div dangerouslySetInnerHTML={renderTex('W = W_t + W_đ = \\text{const}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lưu ý:</b> Bỏ qua ma sát, tổng cơ năng của con lắc lò xo luôn được bảo toàn. Động năng biến đổi tuần hoàn ngược pha với thế năng đàn hồi.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'k', desc: 'độ cứng của lò xo (N/m)' },
+												{ sym: 'm', desc: 'khối lượng vật nặng (kg)' },
+												{ sym: 'A', desc: 'biên độ dao động (m)' },
+												{ sym: 'x', desc: 'ly độ dao động - độ biến dạng (m)' },
+												{ sym: 'Wt', desc: 'thế năng đàn hồi (J)' },
+												{ sym: 'Wd', desc: 'động năng vật (J)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'Wt' ? <>W<sub>t</sub></> : row.sym === 'Wd' ? <>W<sub>đ</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
 									</>
 								) : simId === 'SIM-27' ? (
 									<>
@@ -1917,6 +2164,67 @@ const Workspace: React.FC = () => {
 												style={getTrackStyle(pendulumG, 1.6, 12, '#4f6ef7')}
 												onChange={(e) => setPendulumG(+e.target.value)}
 											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\theta(t) = \\theta_0\\,\\cos(\\omega\\,t)')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('T = 2\\pi\\,\\sqrt{\\frac{L}{g}}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lưu ý:</b> Chu kỳ $T$ của con lắc đơn tỷ lệ thuận với căn bậc hai chiều dài dây $L$. Khối lượng vật nặng không làm thay đổi chu kỳ dao động của con lắc.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'L', desc: 'chiều dài dây treo con lắc (m)' },
+												{ sym: 'theta0', desc: 'góc lệch lớn nhất - biên độ góc (°)' },
+												{ sym: 'g', desc: 'gia tốc trọng trường (m/s²)' },
+												{ sym: 'T', desc: 'chu kỳ dao động (s)' },
+												{ sym: 'omega', desc: 'tần số góc dao động (rad/s)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'theta0' ? <>&theta;<sub>0</sub></> : row.sym === 'omega' ? <>&omega;</> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
 										</div>
 									</>
 								) : simId === 'SIM-28' ? (
@@ -1984,6 +2292,67 @@ const Workspace: React.FC = () => {
 												style={getTrackStyle(circularM, 0.5, 4, '#4f6ef7')}
 												onChange={(e) => setCircularM(+e.target.value)}
 											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('v = \\omega\\,r \\quad \\vert \\quad a_{ht} = \\omega^2 r = \\frac{v^2}{r}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('F_{ht} = m\\,a_{ht}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lưu ý:</b> Lực hướng tâm F_ht vuông góc với vector vận tốc, chỉ đóng vai trò uốn cong quỹ đạo của vật thành hình tròn mà không làm thay đổi tốc độ dài.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'r', desc: 'bán kính quỹ đạo tròn (m)' },
+												{ sym: 'omega', desc: 'tốc độ góc (rad/s)' },
+												{ sym: 'm', desc: 'khối lượng quả nặng (kg)' },
+												{ sym: 'v', desc: 'tốc độ dài tiếp tuyến (m/s)' },
+												{ sym: 'Fht', desc: 'lực hướng tâm giữ dây (N)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'omega' ? <>&omega;</> : row.sym === 'Fht' ? <>F<sub>ht</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
 										</div>
 									</>
 								) : simId === 'SIM-29' ? (
@@ -2101,6 +2470,67 @@ const Workspace: React.FC = () => {
 												onChange={(e) => setCollisionE(+e.target.value)}
 											/>
 										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('m_1 v_1 + m_2 v_2 = m_1 v_1\' + m_2 v_2\'')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('e = \\frac{v_2\' - v_1\'}{v_1 - v_2}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lưu ý:</b> Động lượng toàn phần luôn được bảo toàn. Động năng chỉ bảo toàn trong va chạm đàn hồi hoàn toàn ($e=1$). Trong va chạm mềm ($e=0$), động năng hao hụt lớn nhất.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'm1', desc: 'khối lượng xe xanh (kg)' },
+												{ sym: 'v1', desc: 'vận tốc ban đầu xe xanh (m/s)' },
+												{ sym: 'm2', desc: 'khối lượng xe cam (kg)' },
+												{ sym: 'v2', desc: 'vận tốc ban đầu xe cam (m/s)' },
+												{ sym: 'e', desc: 'hệ số đàn hồi phục hồi' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'm1' ? <>m<sub>1</sub></> : row.sym === 'v1' ? <>v<sub>1</sub></> : row.sym === 'm2' ? <>m<sub>2</sub></> : row.sym === 'v2' ? <>v<sub>2</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
 									</>
 								) : simId === 'SIM-30' ? (
 									<>
@@ -2147,6 +2577,68 @@ const Workspace: React.FC = () => {
 												style={getTrackStyle(energyM, 0.5, 4, '#6d54e8')}
 												onChange={(e) => setEnergyM(+e.target.value)}
 											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('W = W_t + W_đ = mgh + \\frac{1}{2}\\,m\\,v^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('W = \\text{const}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lưu ý:</b> Khi quả cầu trượt không ma sát trên dốc cong, động năng và thế năng chuyển hóa qua lại lẫn nhau nhưng cơ năng toàn phần luôn không đổi.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'h0', desc: 'độ cao thả cực đại (m)' },
+												{ sym: 'm', desc: 'khối lượng quả nặng (kg)' },
+												{ sym: 'h', desc: 'độ cao tức thời tại vị trí khảo sát (m)' },
+												{ sym: 'v', desc: 'vận tốc tức thời (m/s)' },
+												{ sym: 'Wt', desc: 'thế năng trọng trường (J)' },
+												{ sym: 'Wd', desc: 'động năng (J)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'h0' ? <>h<sub>0</sub></> : row.sym === 'Wt' ? <>W<sub>t</sub></> : row.sym === 'Wd' ? <>W<sub>đ</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
 										</div>
 									</>
 								) : (
