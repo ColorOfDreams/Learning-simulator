@@ -259,6 +259,17 @@ export class AiService {
 
     if (
       this.hasAny(normalized, [
+        'thang deu',
+        'bien doi deu',
+        'kinematics',
+        'chuyen dong thang',
+      ])
+    ) {
+      return 'kinematics';
+    }
+
+    if (
+      this.hasAny(normalized, [
         'cong huong',
         'tan so rieng',
         'tan so cuong buc',
@@ -993,18 +1004,19 @@ export class AiService {
         '- SIM-18: Hệ thức lượng tam giác cột cờ (Môn: math, topic: triangulation)',
         '- SIM-19: Định nghĩa Elip ghim đinh (Môn: math, topic: conic)',
         '- SIM-20: Thống kê số liệu mẫu và biểu đồ (Môn: math, topic: statistics)',
+        '- SIM-21: Chuyển động thẳng đều & biến đổi đều (Môn: physics, topic: kinematics)',
         '',
         'Nhiệm vụ của bạn là:',
         '1. Đánh giá câu hỏi/yêu cầu của học sinh:',
         '- Nếu câu hỏi/yêu cầu hoàn toàn KHÔNG liên quan đến Toán, Lý, Hóa hay khoa học tự nhiên cấp THPT (ví dụ: thời tiết, nấu ăn thường ngày, địa lý, chính trị, thể thao giải trí, kể chuyện cười, đùa cợt, đời sống xã hội...): Hãy trả lời khéo léo và từ chối lịch sự bằng tiếng Việt, hướng dẫn học sinh quay lại chủ đề học tập khoa học. Set "is_related": false, "simulation_id": null.',
-        '- Nếu liên quan đến khoa học/Toán/Lý/Hóa nhưng KHÔNG có mô phỏng nào phù hợp trong danh sách 20 mô phỏng trên: Giải thích ngắn gọn lý thuyết/khái niệm đó một cách súc tích, dễ hiểu bằng tiếng Việt (2-4 câu), đồng thời thông báo khéo léo rằng hệ thống chưa có mô phỏng tương tác cho chủ đề này và hẹn gặp lại ở các phiên bản sau, hoặc gợi ý các bài học liên quan có sẵn trong kho. Set "is_related": true, "has_simulation": false, "simulation_id": null.',
-        '- Nếu liên quan và có thể liên kết trực tiếp với 1 trong 20 mô phỏng trên: Giải thích kiến thức hoặc trả lời yêu cầu bằng tiếng Việt một cách tự nhiên, sinh động (2-4 câu), giới thiệu mô phỏng đó và khuyên học sinh nhấp nút trải nghiệm mô phỏng bên dưới để hiểu bài sâu sắc hơn. Set "is_related": true, "has_simulation": true, "simulation_id": "SIM-XX" tương ứng.',
+        '- Nếu liên quan đến khoa học/Toán/Lý/Hóa nhưng KHÔNG có mô phỏng nào phù hợp trong danh sách 21 mô phỏng trên: Giải thích ngắn gọn lý thuyết/khái niệm đó một cách súc tích, dễ hiểu bằng tiếng Việt (2-4 câu), đồng thời thông báo khéo léo rằng hệ thống chưa có mô phỏng tương tác cho chủ đề này và hẹn gặp lại ở các phiên bản sau, hoặc gợi ý các bài học liên quan có sẵn trong kho. Set "is_related": true, "has_simulation": false, "simulation_id": null.',
+        '- Nếu liên quan và có thể liên kết trực tiếp với 1 trong 21 mô phỏng trên: Giải thích kiến thức hoặc trả lời yêu cầu bằng tiếng Việt một cách tự nhiên, sinh động (2-4 câu), giới thiệu mô phỏng đó và khuyên học sinh nhấp nút trải nghiệm mô phỏng bên dưới để hiểu bài sâu sắc hơn. Set "is_related": true, "has_simulation": true, "simulation_id": "SIM-XX" tương ứng.',
         '',
         '2. Hãy trả về kết quả dưới dạng JSON duy nhất với cấu trúc sau:',
         '{',
         '  "is_related": boolean,',
         '  "has_simulation": boolean,',
-        '  "simulation_id": "SIM-01" | "SIM-02" | ... | "SIM-20" | null,',
+        '  "simulation_id": "SIM-01" | "SIM-02" | ... | "SIM-21" | null,',
         '  "subject": "physics" | "math" | "chem",',
         '  "topic": string,',
         '  "short_answer": "Lời giải thích tự nhiên, thân thiện bằng tiếng Việt. Sử dụng Unicode cho công thức nếu cần. Tránh dấu LaTeX block.",',
@@ -1196,6 +1208,9 @@ export class AiService {
     if (/thong ke|so lieu mau|bieu do hop|box plot/.test(normalizedText)) {
       return { simId: 'SIM-20', subject: 'math', topic: 'statistics', title: 'Thống kê số liệu mẫu và biểu đồ' };
     }
+    if (/thang deu|bien doi deu|kinematics|chuyen dong thang|gia toc|van toc dau/.test(normalizedText)) {
+      return { simId: 'SIM-21', subject: 'physics', topic: 'kinematics', title: 'Chuyển động thẳng đều & biến đổi đều' };
+    }
     if (/nem xien|quy dao|van toc dau|goc nem/.test(normalizedText)) {
       return { simId: 'SIM-02', subject: 'physics', topic: 'projectile', title: 'Chuyển động ném xiên' };
     }
@@ -1234,7 +1249,8 @@ const SIMULATIONS_METADATA: Record<string, { title: string; subject: 'math' | 'p
   'SIM-17': { title: 'Miền nghiệm hệ bất phương trình', subject: 'math', topic: 'inequality' },
   'SIM-18': { title: 'Hệ thức lượng tam giác cột cờ', subject: 'math', topic: 'triangulation' },
   'SIM-19': { title: 'Định nghĩa Elip ghim đinh', subject: 'math', topic: 'conic' },
-  'SIM-20': { title: 'Thống kê số liệu mẫu và biểu đồ', subject: 'math', topic: 'statistics' }
+  'SIM-20': { title: 'Thống kê số liệu mẫu và biểu đồ', subject: 'math', topic: 'statistics' },
+  'SIM-21': { title: 'Chuyển động thẳng đều & biến đổi đều', subject: 'physics', topic: 'kinematics' }
 };
 
 function getSimulationMetadata(simId: string, subject?: string): { title: string; subject: 'math' | 'physics' | 'chem'; topic: string } | undefined {
@@ -1363,6 +1379,41 @@ const LOCAL_FALLBACK_QUESTIONS: Record<string, Array<{
       ],
       correct: "c",
       explanation: "Vận tốc v = √(vx² + vy²). Vì vx = v0 * cos(α) không đổi và vy giảm về 0 tại đỉnh quỹ đạo, nên vận tốc đạt cực tiểu tại đỉnh và bằng vx."
+    }
+  ],
+  'SIM-21': [
+    {
+      q: "Trong chuyển động thẳng biến đổi đều, công thức nào dưới đây xác định vận tốc v tại thời điểm t?",
+      opts: [
+        { k: "a", t: "v = v0 + a*t" },
+        { k: "b", t: "v = v0 + 0.5*a*t^2" },
+        { k: "c", t: "v = v0 - a*t" },
+        { k: "d", t: "v = a*t" }
+      ],
+      correct: "a",
+      explanation: "Công thức vận tốc của chuyển động thẳng biến đổi đều là v = v0 + a*t."
+    },
+    {
+      q: "Chuyển động thẳng nhanh dần đều có đặc điểm nào dưới đây về gia tốc a và vận tốc v?",
+      opts: [
+        { k: "a", t: "a ngược dấu với v (a·v < 0)" },
+        { k: "b", t: "a luôn bằng 0" },
+        { k: "c", t: "a cùng dấu với v (a·v > 0)" },
+        { k: "d", t: "a luôn luôn dương" }
+      ],
+      correct: "c",
+      explanation: "Trong chuyển động nhanh dần đều, gia tốc a cùng chiều với vận tốc v, do đó tích số a·v > 0."
+    },
+    {
+      q: "Khi một ô tô chuyển động thẳng đều với vận tốc v = 4 m/s, gia tốc của ô tô là bao nhiêu?",
+      opts: [
+        { k: "a", t: "4 m/s²" },
+        { k: "b", t: "0 m/s²" },
+        { k: "c", t: "2 m/s²" },
+        { k: "d", t: "Không xác định được" }
+      ],
+      correct: "b",
+      explanation: "Chuyển động thẳng đều có vận tốc không đổi theo thời gian, do đó gia tốc a = 0."
     }
   ],
   'SIM-01': [

@@ -24,12 +24,13 @@ Các simulation có sẵn:
 - SIM-18: Hệ thức lượng tam giác cột cờ (Toán, topic: triangulation)
 - SIM-19: Định nghĩa Elip ghim đinh (Toán, topic: conic)
 - SIM-20: Thống kê số liệu mẫu và biểu đồ (Toán, topic: statistics)
+- SIM-21: Chuyển động thẳng đều & biến đổi đều (Vật lý, topic: kinematics)
 
 Output format (JSON duy nhất, không có text khác):
 {
   "subject": "physics" | "chemistry" | "math",
   "topic": "<topic string>",
-  "simulation_id": "SIM-01" | "SIM-02" | ... | "SIM-20" | null,
+  "simulation_id": "SIM-01" | "SIM-02" | ... | "SIM-21" | null,
   "parameters": [
     { "key": "<param_key>", "value": <number>, "unit": "<unit>", "label": "<Vietnamese label>" }
   ],
