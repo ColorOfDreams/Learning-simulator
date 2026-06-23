@@ -18,4 +18,6 @@ export interface SimulationProps {
   isPlaying?: boolean
   isSlow?: boolean
   onAnimationEnd?: () => void
+  resetKey?: number
 }
+

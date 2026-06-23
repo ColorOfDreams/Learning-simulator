@@ -2,6 +2,16 @@ import type { ComponentType } from 'react'
 import type { SimulationProps } from './types'
 import EsterSimulation from './chemistry/SIM-01-ester'
 import ProjectileSimulation from './physics/SIM-02-projectile'
+import KinematicsSimulation from './physics/SIM-21-kinematics'
+import FreefallSimulation from './physics/SIM-22-freefall'
+import HorizontalSimulation from './physics/SIM-23-horizontal'
+import Newton2Simulation from './physics/SIM-24-newton2'
+import InclineSimulation from './physics/SIM-25-incline'
+import SpringSimulation from './physics/SIM-26-spring'
+import PendulumSimulation from './physics/SIM-27-pendulum'
+import CircularSimulation from './physics/SIM-28-circular'
+import CollisionSimulation from './physics/SIM-29-collision'
+import EnergySimulation from './physics/SIM-30-energy'
 import SoapSimulation from './chemistry/SIM-03-soap'
 import GenericChemSimulation from './chemistry/GenericChemSimulation'
 
@@ -48,6 +58,16 @@ registerSimulation('SIM-17', InequalitySimulation)
 registerSimulation('SIM-18', TriangulationSimulation)
 registerSimulation('SIM-19', ConicSimulation)
 registerSimulation('SIM-20', StatisticsSimulation)
+registerSimulation('SIM-21', KinematicsSimulation)
+registerSimulation('SIM-22', FreefallSimulation)
+registerSimulation('SIM-23', HorizontalSimulation)
+registerSimulation('SIM-24', Newton2Simulation)
+registerSimulation('SIM-25', InclineSimulation)
+registerSimulation('SIM-26', SpringSimulation)
+registerSimulation('SIM-27', PendulumSimulation)
+registerSimulation('SIM-28', CircularSimulation)
+registerSimulation('SIM-29', CollisionSimulation)
+registerSimulation('SIM-30', EnergySimulation)
 
 
 
