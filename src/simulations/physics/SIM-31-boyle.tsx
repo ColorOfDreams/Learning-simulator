@@ -11,6 +11,86 @@ interface BoyleSimulationProps extends SimulationProps {
 
 const PHYS_FONT = '"Be Vietnam Pro","Segoe UI",sans-serif';
 
+function drawRich(g: CanvasRenderingContext2D, text: string, x: number, y: number, fs: number, color: string, align: 'left' | 'right' | 'center' = 'left') {
+  const parts: Array<{ s: string; sub: boolean }> = [];
+  let i = 0;
+  while (i < text.length) {
+    if (text[i] === '_') {
+      i++;
+      let sub = '';
+      if (text[i] === '{') {
+        const e = text.indexOf('}', i);
+        const end = e < 0 ? text.length : e;
+        sub = text.slice(i + 1, end);
+        i = e < 0 ? text.length : e + 1;
+      } else {
+        sub = text[i] || '';
+        i++;
+      }
+      parts.push({ s: sub, sub: true });
+    } else {
+      let j = i;
+      while (j < text.length && text[j] !== '_') j++;
+      parts.push({ s: text.slice(i, j), sub: false });
+      i = j;
+    }
+  }
+  const subFs = Math.round(fs * 0.68);
+  const subDy = fs * 0.16;
+  let w = 0;
+  for (const p of parts) {
+    g.font = `bold ${p.sub ? subFs : fs}px ${PHYS_FONT}`;
+    w += g.measureText(p.s).width;
+  }
+  let cx = align === 'right' ? x - w : align === 'center' ? x - w / 2 : x;
+  const prev = g.textAlign;
+  g.textAlign = 'left';
+  g.fillStyle = color;
+  for (const p of parts) {
+    g.font = `bold ${p.sub ? subFs : fs}px ${PHYS_FONT}`;
+    g.fillText(p.s, cx, y + (p.sub ? subDy : 0));
+    cx += g.measureText(p.s).width;
+  }
+  g.textAlign = prev;
+}
+
+function drawStats(
+  panel: any,
+  defs: Array<{ key: string; label: string; unit?: string }>,
+  vals: Record<string, string>
+) {
+  const g = panel.g;
+  const W = panel.W;
+  const H = panel.H;
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  g.fillStyle = '#0e1f33';
+  g.fillRect(0, 0, W, H);
+  g.strokeStyle = '#3a5f86';
+  g.lineWidth = 5;
+  g.strokeRect(4, 4, W - 8, H - 8);
+  g.fillStyle = '#bfe0ff';
+  g.textAlign = 'left';
+  g.font = `bold 38px ${PHYS_FONT}`;
+  g.fillText('📊 Thông số', 26, 56);
+  let y = 104;
+  for (const d of defs) {
+    drawRich(g, d.label, 28, y, 26, '#9fc0de', 'left');
+    const v = (vals[d.key] != null ? vals[d.key] : '–') + (d.unit ? (' ' + d.unit) : '');
+    const big = v.length <= 12;
+    g.fillStyle = '#ffffff';
+    g.font = `bold ${big ? 42 : 28}px ${PHYS_FONT}`;
+    g.fillText(v, 28, y + (big ? 46 : 42));
+    g.strokeStyle = '#223c56';
+    g.lineWidth = 1.5;
+    g.beginPath();
+    g.moveTo(24, y + 64);
+    g.lineTo(W - 24, y + 64);
+    g.stroke();
+    y += 84;
+  }
+  panel.flush();
+}
+
 function makeGasParticles(group: THREE.Group, n: number, color = 0x66e0ff) {
   const arr: THREE.Mesh[] = [];
   const geo = new THREE.SphereGeometry(0.14, 8, 6);
@@ -183,14 +263,14 @@ export default function BoyleSimulation({
     const gasParticles = makeGasParticles(group, 26, 0x66e0ff);
 
     // ── 5. Graph Panel ──
-    const makePanel = (x: number, y: number, z: number, worldW: number) => {
+    const makePanel = (x: number, y: number, z: number, worldW: number, px = 560, py = 320) => {
       const c = document.createElement('canvas');
-      c.width = 560;
-      c.height = 320;
+      c.width = px;
+      c.height = py;
       const g = c.getContext('2d')!;
       const tex = new THREE.CanvasTexture(c);
       tex.anisotropy = 8;
-      const worldH = worldW * 320 / 560;
+      const worldH = worldW * py / px;
       const mesh = new THREE.Mesh(
         new THREE.PlaneGeometry(worldW, worldH),
         new THREE.MeshBasicMaterial({ map: tex, transparent: true })
@@ -210,8 +290,8 @@ export default function BoyleSimulation({
         c,
         g,
         tex,
-        W: 560,
-        H: 320,
+        W: px,
+        H: py,
         grp,
         flush() {
           tex.needsUpdate = true;
@@ -226,6 +306,13 @@ export default function BoyleSimulation({
     };
 
     const gPanel = makePanel(6.3, 6, -1, 7);
+
+    const roDefs = [
+      { key: 'p', label: 'p (áp suất)', unit: 'atm' },
+      { key: 'V', label: 'V (thể tích)', unit: '' },
+      { key: 'pV', label: 'p·V', unit: '' },
+    ];
+    const statsPanel = makePanel(-6.7, 5.7, -1, 4.6, 560, 80 + roDefs.length * 84);
 
     const drawGraph = (panel: any, o: any) => {
       const g = panel.g;
@@ -310,6 +397,7 @@ export default function BoyleSimulation({
 
     const render = () => {
       gPanel.grp.lookAt(camera.position);
+      statsPanel.grp.lookAt(camera.position);
       renderer.render(scene, camera);
     };
 
@@ -372,6 +460,13 @@ export default function BoyleSimulation({
       g.fill();
       gPanel.flush();
 
+      // Update stats panel
+      drawStats(statsPanel, roDefs, {
+        p: pr.toFixed(2),
+        V: activeV.toFixed(2),
+        pV: (pr * activeV).toFixed(2),
+      });
+
       controls.update();
       render();
       animFrameId = requestAnimationFrame(tick);
@@ -390,6 +485,8 @@ export default function BoyleSimulation({
     });
     resizeObserver.observe(mountRef.current);
 
+
+
     return () => {
       cancelAnimationFrame(animFrameId);
       resizeObserver.disconnect();
@@ -399,6 +496,7 @@ export default function BoyleSimulation({
       controls.dispose();
       renderer.dispose();
       gPanel.dispose();
+      statsPanel.dispose();
       wall.geometry.dispose();
       (wall.material as THREE.Material).dispose();
       rails.forEach((rail) => {
