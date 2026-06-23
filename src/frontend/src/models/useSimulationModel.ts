@@ -1,69 +1,73 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 export default function useSimulationModel() {
-  const [sceneGraph, setSceneGraph] = useState<Scene.IRecord | null>(null);
+	const [sceneGraph, setSceneGraph] = useState<Scene.IRecord | null>(null);
 
-  const initScene = useCallback((data: Scene.IRecord) => {
-    setSceneGraph(data);
-  }, []);
+	const initScene = useCallback((data: Scene.IRecord) => {
+		setSceneGraph(data);
+	}, []);
 
-  const clearScene = useCallback(() => {
-    setSceneGraph(null);
-  }, []);
+	const clearScene = useCallback(() => {
+		setSceneGraph(null);
+	}, []);
 
-  const addObject = useCallback((modelName: string) => {
-    setSceneGraph((prev) => {
-      if (!prev) return prev;
-      const getInitialY = (name: string) => {
-        switch (name) {
-          case 'WoodenBlock': return 0.15;
-          case 'Beaker': return 0.4;
-          case 'Stand': return 1.9;
-          case 'SimplePendulum': return 1.5;
-          case 'SpringPendulum': return 1.5;
-          default: return 0;
-        }
-      };
-      const newObj: Scene.Object = {
-        id: `${modelName}_${Date.now()}`,
-        modelName,
-        position: [Math.random() * 4 - 2, getInitialY(modelName), Math.random() * 4 - 2] as [number, number, number],
-        rotation: [0, 0, 0] as [number, number, number],
-        scale: [1, 1, 1] as [number, number, number],
-        properties: modelName === 'WoodenBlock' ? { color: '#feca57' } : { liquidVolume: 200 },
-      };
-      return { ...prev, objects: [...(prev.objects || []), newObj] };
-    });
-  }, []);
+	const addObject = useCallback((modelName: string) => {
+		setSceneGraph((prev) => {
+			if (!prev) return prev;
+			const getInitialY = (name: string) => {
+				switch (name) {
+					case 'WoodenBlock':
+						return 0.15;
+					case 'Beaker':
+						return 0.4;
+					case 'Stand':
+						return 1.9;
+					case 'SimplePendulum':
+						return 1.5;
+					case 'SpringPendulum':
+						return 1.5;
+					default:
+						return 0;
+				}
+			};
+			const newObj: Scene.Object = {
+				id: `${modelName}_${Date.now()}`,
+				modelName,
+				position: [Math.random() * 4 - 2, getInitialY(modelName), Math.random() * 4 - 2] as [number, number, number],
+				rotation: [0, 0, 0] as [number, number, number],
+				scale: [1, 1, 1] as [number, number, number],
+				properties: modelName === 'WoodenBlock' ? { color: '#feca57' } : { liquidVolume: 200 },
+			};
+			return { ...prev, objects: [...(prev.objects || []), newObj] };
+		});
+	}, []);
 
-  const removeObject = useCallback((id: string) => {
-    setSceneGraph((prev) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        objects: (prev.objects || []).filter((obj) => obj.id !== id),
-      };
-    });
-  }, []);
+	const removeObject = useCallback((id: string) => {
+		setSceneGraph((prev) => {
+			if (!prev) return prev;
+			return {
+				...prev,
+				objects: (prev.objects || []).filter((obj) => obj.id !== id),
+			};
+		});
+	}, []);
 
-  const updateObjectPosition = useCallback((id: string, position: [number, number, number]) => {
-    setSceneGraph((prev) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        objects: (prev.objects || []).map((obj) => 
-          obj.id === id ? { ...obj, position } : obj
-        ),
-      };
-    });
-  }, []);
+	const updateObjectPosition = useCallback((id: string, position: [number, number, number]) => {
+		setSceneGraph((prev) => {
+			if (!prev) return prev;
+			return {
+				...prev,
+				objects: (prev.objects || []).map((obj) => (obj.id === id ? { ...obj, position } : obj)),
+			};
+		});
+	}, []);
 
-  return {
-    sceneGraph,
-    initScene,
-    clearScene,
-    addObject,
-    removeObject,
-    updateObjectPosition
-  };
+	return {
+		sceneGraph,
+		initScene,
+		clearScene,
+		addObject,
+		removeObject,
+		updateObjectPosition,
+	};
 }

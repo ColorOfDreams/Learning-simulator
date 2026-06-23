@@ -3,7 +3,7 @@
     "id": "lib_001",
     "subject": "physics",
     "topic": "uniform_motion",
-    "simulation_id": "SIM-01",
+    "simulation_id": "SIM-21",
     "title": "Chuyển động thẳng đều cơ bản",
     "text": "Một vật chuyển động thẳng đều với vận tốc v = 5 m/s. Tính quãng đường vật đi được sau 10 giây.",
     "parameters": [
@@ -15,7 +15,7 @@
     "id": "lib_002",
     "subject": "physics",
     "topic": "uniform_acceleration",
-    "simulation_id": "SIM-01",
+    "simulation_id": "SIM-21",
     "title": "Chuyển động thẳng biến đổi đều",
     "text": "Xe ô tô xuất phát từ đứng yên, gia tốc đều 2 m/s². Tính vận tốc sau 5 giây và quãng đường đi được.",
     "parameters": [
