@@ -1,13 +1,13 @@
 import { tienVietNam } from '@/utils/utils';
+import { getLocale } from '@umijs/max';
 import { Empty } from 'antd';
 import type { ApexOptions } from 'apexcharts';
-import vi from 'apexcharts/dist/locales/vi.json';
 import en from 'apexcharts/dist/locales/en.json';
+import vi from 'apexcharts/dist/locales/vi.json';
 import Chart from 'react-apexcharts';
 import { useMediaQuery } from 'react-responsive';
 import type { DataChartType } from '.';
 import './style.less';
-import { getLocale } from '@umijs/max';
 
 const BarChart = (props: DataChartType) => {
 	const { title, xAxis, yAxis, yLabel, height = 350, formatY, otherOptions } = props;

@@ -15,4 +15,9 @@ export interface SimulationConfig {
 export interface SimulationProps {
   config: SimulationConfig
   onParamChange?: (key: string, value: number) => void
+  isPlaying?: boolean
+  isSlow?: boolean
+  onAnimationEnd?: () => void
+  resetKey?: number
 }
+

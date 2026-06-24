@@ -1,0 +1,617 @@
+@import '../components/student-theme.less';
+
+// ═══════════════════════════════════
+// Progress Page
+// ═══════════════════════════════════
+
+.stu-progress {
+	flex: 1;
+	overflow-y: auto;
+	padding: 34px 44px 56px;
+	position: relative;
+	background:
+		radial-gradient(900px 520px at 8% -8%, oklch(0.66 0.16 264 / 0.1), transparent 60%),
+		radial-gradient(820px 520px at 100% 2%, oklch(0.6 0.18 350 / 0.08), transparent 58%),
+		radial-gradient(760px 600px at 92% 100%, oklch(0.58 0.12 195 / 0.08), transparent 60%), @stu-bg;
+	.stu-scrollbar();
+
+	&__inner {
+		max-width: 1020px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	&__title {
+		font-size: 26px;
+		font-weight: 800;
+		letter-spacing: -0.4px;
+		color: @stu-text-primary;
+	}
+
+	// ── Hero Card (Dark Themed) ──
+	&__hero {
+		position: relative;
+		overflow: hidden;
+		border-radius: 24px;
+		background: linear-gradient(135deg, #221f2b 0%, #17151e 60%, #141019 100%);
+		border: 1px solid #2e2b39;
+		padding: 34px 38px 26px;
+		box-shadow: 0 24px 50px -26px rgba(40, 25, 80, 0.55);
+	}
+
+	&__hero-glow1 {
+		position: absolute;
+		width: 440px;
+		height: 440px;
+		right: -90px;
+		top: -180px;
+		border-radius: 50%;
+		background: radial-gradient(circle, oklch(0.6 0.18 350 / 0.38), transparent 64%);
+		pointer-events: none;
+	}
+
+	&__hero-glow2 {
+		position: absolute;
+		width: 400px;
+		height: 400px;
+		left: -130px;
+		bottom: -200px;
+		border-radius: 50%;
+		background: radial-gradient(circle, oklch(0.62 0.16 264 / 0.38), transparent 64%);
+		pointer-events: none;
+	}
+
+	&__hero-grid {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		background-image:
+			linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+		background-size: 30px 30px;
+		mask-image: radial-gradient(120% 120% at 80% 0%, #000, transparent 70%);
+		-webkit-mask-image: radial-gradient(120% 120% at 80% 0%, #000, transparent 70%);
+	}
+
+	&__hero-body {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 30px;
+		flex-wrap: wrap;
+		z-index: 1;
+	}
+
+	&__hero-left {
+		min-width: 260px;
+		flex: 1;
+	}
+
+	&__hero-subtitle {
+		font-family: @font-mono;
+		font-size: 11px;
+		letter-spacing: 3px;
+		color: oklch(0.78 0.18 350 / 0.9);
+		text-transform: uppercase;
+	}
+
+	&__hero-identity {
+		display: flex;
+		align-items: flex-end;
+		gap: 18px;
+		margin-top: 8px;
+	}
+
+	&__hero-level {
+		font-size: 82px;
+		line-height: 0.82;
+		font-weight: 800;
+		color: #fff;
+		letter-spacing: -3px;
+		flex: none;
+	}
+
+	&__hero-rank-name {
+		font-size: 14px;
+		color: #b9b6c8;
+		line-height: 1.35;
+		padding-bottom: 9px;
+		white-space: nowrap;
+		flex: none;
+	}
+
+	&__hero-xp-section {
+		margin-top: 22px;
+		max-width: 360px;
+	}
+
+	&__hero-xp-labels {
+		display: flex;
+		justify-content: space-between;
+		font-family: @font-mono;
+		font-size: 11px;
+		color: #9a96ad;
+		margin-bottom: 8px;
+
+		span:first-child {
+			color: #d8d5e4;
+		}
+	}
+
+	&__hero-xp-track {
+		height: 11px;
+		border-radius: 7px;
+		background: rgba(255, 255, 255, 0.1);
+		overflow: hidden;
+	}
+
+	&__hero-xp-fill {
+		height: 100%;
+		border-radius: 7px;
+		background: linear-gradient(90deg, oklch(0.7 0.16 264), oklch(0.72 0.18 350));
+		box-shadow: 0 0 14px oklch(0.7 0.17 320 / 0.65);
+		transform-origin: left;
+		animation: labBar 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+		animation-delay: 0.3s;
+	}
+
+	&__hero-hint {
+		font-size: 11.5px;
+		color: #8a86a0;
+		margin-top: 9px;
+	}
+
+	// Radial Gauge
+	&__hero-gauge {
+		position: relative;
+		width: 154px;
+		height: 154px;
+		flex: none;
+	}
+
+	&__gauge-svg {
+		transform: rotate(-90deg);
+	}
+
+	&__gauge-fill {
+		animation: prRing 1.4s cubic-bezier(0.3, 0.85, 0.3, 1) both;
+		animation-delay: 0.25s;
+	}
+
+	&__gauge-text {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__gauge-number {
+		font-size: 32px;
+		font-weight: 800;
+		color: #fff;
+		letter-spacing: -1px;
+
+		span {
+			font-size: 17px;
+		}
+	}
+
+	&__gauge-sub {
+		font-size: 9.5px;
+		color: #9a96ad;
+		font-family: @font-mono;
+		letter-spacing: 1.5px;
+		margin-top: 2px;
+	}
+
+	// Stats Footer
+	&__hero-stats {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px 0;
+		margin-top: 26px;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		padding-top: 20px;
+		z-index: 1;
+	}
+
+	&__hero-stat {
+		flex: 1;
+		min-width: 120px;
+		animation: fadeUp 0.5s both;
+
+		&:not(:first-child) {
+			border-left: 1px solid rgba(255, 255, 255, 0.09);
+			padding-left: 22px;
+		}
+
+		&:first-child {
+			padding-left: 0;
+		}
+
+		&:nth-child(1) {
+			animation-delay: 0.35s;
+		}
+		&:nth-child(2) {
+			animation-delay: 0.43s;
+		}
+		&:nth-child(3) {
+			animation-delay: 0.51s;
+		}
+		&:nth-child(4) {
+			animation-delay: 0.59s;
+		}
+	}
+
+	&__hero-stat-lbl {
+		font-size: 10.5px;
+		color: #8a86a0;
+		font-family: @font-mono;
+		text-transform: uppercase;
+		letter-spacing: 1.5px;
+	}
+
+	&__hero-stat-val {
+		display: flex;
+		align-items: baseline;
+		gap: 8px;
+		margin-top: 7px;
+		font-size: 25px;
+		font-weight: 800;
+		color: #fff;
+		letter-spacing: -0.5px;
+	}
+
+	&__hero-stat-plus {
+		font-size: 11px;
+		font-weight: 700;
+		color: oklch(0.82 0.16 150);
+	}
+
+	&__hero-stat-sub {
+		font-size: 11px;
+		font-weight: 700;
+		color: #9a96ad;
+	}
+
+	// ── Charts Row ──
+	&__charts-row {
+		display: flex;
+		gap: 18px;
+		flex-wrap: wrap;
+		animation: fadeUp 0.55s both;
+		animation-delay: 0.35s;
+	}
+
+	&__chart-box {
+		border: 1px solid @stu-border;
+		border-radius: 18px;
+		background: @stu-bg-card;
+		padding: 22px;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		box-shadow: @stu-shadow-md;
+		flex: 1;
+		min-width: 280px;
+
+		&--wide {
+			flex: 1.5;
+			min-width: 340px;
+		}
+	}
+
+	&__chart-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	&__chart-title {
+		font-size: 14px;
+		font-weight: 700;
+		color: @stu-text-primary;
+	}
+
+	&__chart-badge {
+		font-size: 11.5px;
+		font-weight: 700;
+		color: @stu-accent-dark;
+		background: @stu-accent-tint2;
+		padding: 4px 10px;
+		border-radius: 7px;
+	}
+
+	&__chart-desc {
+		font-size: 11.5px;
+		color: @stu-text-placeholder;
+		font-family: @font-mono;
+	}
+
+	// XP Chart
+	&__xp-chart {
+		position: relative;
+		height: 200px;
+	}
+
+	&__xp-axis-y {
+		position: absolute;
+		left: 5%;
+		top: 2%;
+		bottom: 11%;
+		width: 1px;
+		background: @stu-border;
+	}
+
+	&__xp-axis-x {
+		position: absolute;
+		left: 5%;
+		right: 2%;
+		bottom: 11%;
+		height: 1px;
+		background: @stu-border;
+	}
+
+	&__xp-svg {
+		position: absolute;
+		left: 5%;
+		right: 2%;
+		top: 2%;
+		bottom: 11%;
+		width: 93%;
+		height: 87%;
+	}
+
+	&__xp-path-fill {
+		animation: prFade 1s ease-out both;
+		animation-delay: 0.5s;
+	}
+
+	&__xp-path-line {
+		animation: prLine 1.5s cubic-bezier(0.45, 0.05, 0.3, 1) both;
+		animation-delay: 0.25s;
+	}
+
+	&__chart-dot {
+		position: absolute;
+		left: calc(5% + 93% * 0.96 - 6px);
+		top: calc(2% + 87% * 0.16 - 6px);
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		background: @stu-bg-card;
+		border: 3px solid oklch(0.6 0.16 264);
+		box-shadow: 0 2px 6px oklch(0.6 0.16 264 / 0.4);
+		animation:
+			prDot 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.4) both,
+			prDotPulse 2.4s ease-out infinite;
+		animation-delay: 1.5s, 1.9s;
+	}
+
+	&__chart-tooltip {
+		position: absolute;
+		right: 1%;
+		top: 2%;
+		font-family: @font-mono;
+		font-size: 11px;
+		font-weight: 700;
+		color: oklch(0.5 0.16 264);
+		background: @stu-bg-card;
+		border: 1px solid oklch(0.62 0.16 264 / 0.3);
+		padding: 2px 7px;
+		border-radius: 6px;
+		animation: fadeUp 0.5s both;
+		animation-delay: 1.7s;
+	}
+
+	&__xp-label {
+		position: absolute;
+		bottom: 1%;
+		font-family: @font-mono;
+		font-size: 10px;
+		color: @stu-text-placeholder;
+
+		&--start {
+			left: 5%;
+		}
+
+		&--end {
+			right: 2%;
+		}
+	}
+
+	// Mastery linear bars
+	&__mastery-list {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		flex: 1;
+		justify-content: center;
+	}
+
+	&__mastery-row {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	&__mastery-info {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		span {
+			font-size: 13px;
+			color: @stu-text-body;
+			font-weight: 600;
+		}
+
+		strong {
+			font-family: @font-mono;
+			font-size: 13px;
+			color: @stu-text-primary;
+			font-weight: 700;
+		}
+	}
+
+	&__mastery-track {
+		height: 10px;
+		border-radius: 6px;
+		background: #efede7;
+		overflow: hidden;
+	}
+
+	&__mastery-fill {
+		height: 100%;
+		border-radius: 6px;
+		transform-origin: left;
+		animation: labBar 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+		&--chem {
+			background: linear-gradient(90deg, oklch(0.6 0.18 350 / 0.75), oklch(0.6 0.18 350));
+			animation-delay: 0.45s;
+		}
+
+		&--math {
+			background: linear-gradient(90deg, oklch(0.58 0.12 195 / 0.75), oklch(0.58 0.12 195));
+			animation-delay: 0.57s;
+		}
+
+		&--physics {
+			background: linear-gradient(90deg, oklch(0.62 0.16 264 / 0.75), oklch(0.62 0.16 264));
+			animation-delay: 0.69s;
+		}
+	}
+
+	// ── Badges Section ──
+	&__badges-box {
+		border: 1px solid @stu-border;
+		border-radius: 18px;
+		background: @stu-bg-card;
+		padding: 22px;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		box-shadow: @stu-shadow-md;
+		animation: fadeUp 0.55s both;
+		animation-delay: 0.5s;
+	}
+
+	&__badges-flex {
+		display: flex;
+		gap: 14px;
+		flex-wrap: wrap;
+	}
+
+	&__badge-card {
+		flex: none;
+		width: 120px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+		padding: 16px 10px;
+		animation: lbPop 0.55s cubic-bezier(0.2, 0.7, 0.3, 1.5) both;
+		border-radius: 15px;
+
+		&--chem {
+			border: 1px solid oklch(0.6 0.18 350 / 0.35);
+			background: oklch(0.6 0.18 350 / 0.07);
+			animation-delay: 0.55s;
+		}
+
+		&--streak {
+			border: 1px solid oklch(0.65 0.17 50 / 0.35);
+			background: oklch(0.65 0.17 50 / 0.07);
+			animation-delay: 0.65s;
+		}
+
+		&--learner {
+			border: 1px solid oklch(0.62 0.16 264 / 0.35);
+			background: oklch(0.62 0.16 264 / 0.07);
+			animation-delay: 0.75s;
+		}
+
+		&--locked {
+			border: 1px solid @stu-border;
+			background: #faf9f6;
+			animation-delay: 0.85s;
+		}
+	}
+
+	&__badge-avatar {
+		width: 54px;
+		height: 54px;
+		border-radius: 14px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		&--chem {
+			background: oklch(0.6 0.18 350 / 0.15);
+		}
+
+		&--streak {
+			background: oklch(0.65 0.17 50 / 0.15);
+		}
+
+		&--learner {
+			background: oklch(0.62 0.16 264 / 0.15);
+		}
+
+		&--locked {
+			background: #efede7;
+		}
+	}
+
+	&__badge-title {
+		font-size: 11.5px;
+		color: #4a4a46;
+		text-align: center;
+		font-weight: 600;
+		line-height: 1.3;
+
+		&--locked {
+			color: @stu-text-disabled;
+		}
+	}
+}
+
+// ── Responsive ──
+@media (max-width: 1024px) {
+	.stu-progress__stats {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.stu-progress__charts-row {
+		flex-direction: column;
+	}
+}
+
+@media (max-width: 768px) {
+	.stu-progress {
+		padding: 24px 20px 40px;
+	}
+
+	.stu-progress__hero-stats {
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	.stu-progress__hero-stat:not(:first-child) {
+		border-left: none;
+		padding-left: 0;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+		padding-top: 12px;
+	}
+
+	.stu-progress__badges-flex {
+		justify-content: center;
+	}
+}

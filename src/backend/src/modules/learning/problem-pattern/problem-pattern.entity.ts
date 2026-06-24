@@ -66,6 +66,12 @@ export class ProblemPatternEntity {
   @Column({ type: 'jsonb', nullable: true })
   metadata?: ProblemPatternMetadata;
 
+  @Column({ name: 'validation_status', type: 'varchar', nullable: true })
+  validationStatus?: string;
+
+  @Column({ name: 'source_data', type: 'jsonb', nullable: true })
+  sourceData?: any;
+
   @Column({ name: 'is_active', type: 'boolean', default: true })
   isActive!: boolean;
 

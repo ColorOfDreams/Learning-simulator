@@ -1,4 +1,4 @@
-import { AppModules, EModuleKey } from '@/services/base/constant';
+import { EModuleKey } from '@/services/base/constant';
 
 const ipRoot = APP_CONFIG_IP_ROOT; // ip dev
 
@@ -15,12 +15,4 @@ const currentRole = EModuleKey.BASE;
 const sentryDSN = APP_CONFIG_SENTRY_DSN;
 const oneSignalClient = APP_CONFIG_ONE_SIGNAL_ID;
 
-export {
-	currentRole,
-	ip3,
-	ipCore,
-	ipNotif,
-	ipSlink,
-	oneSignalClient,
-	sentryDSN,
-};
+export { currentRole, ip3, ipCore, ipNotif, ipSlink, oneSignalClient, sentryDSN };

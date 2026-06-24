@@ -14,7 +14,11 @@ const ModalExpandable = (
 	const { children, fullScreen, ...otherProps } = props;
 
 	return (
-		<Modal className={`modal-expandable ${isExpanded || fullScreen ? 'modal-full' : ''}`} closable={false} {...otherProps}>
+		<Modal
+			className={`modal-expandable ${isExpanded || fullScreen ? 'modal-full' : ''}`}
+			closable={false}
+			{...otherProps}
+		>
 			{typeof children === 'function' ? children(isExpanded) : children}
 
 			<div className='modal-buttons'>

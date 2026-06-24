@@ -1,9 +1,9 @@
 import { coQuanChuQuan, unitName } from '@/services/base/constant';
 import dayjs from '@/utils/dayjs';
+import { useIntl } from '@umijs/max';
 import { Col, Row } from 'antd';
 import React from 'react';
 import './style.less';
-import { useIntl } from '@umijs/max';
 
 /**
  * PRINT TEMPLATE

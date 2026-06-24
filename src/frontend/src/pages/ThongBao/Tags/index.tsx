@@ -6,7 +6,6 @@ import { ThongBao } from '@/services/ThongBao/typing';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Popconfirm } from 'antd';
 import { useModel } from 'umi';
-import { kiemTraPhanVung } from '../../../utils/constants';
 import FormTags from './components/Form';
 
 const Tags = () => {

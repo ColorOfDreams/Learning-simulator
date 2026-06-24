@@ -3,10 +3,7 @@
 		"outDir": "build/dist",
 		"module": "esnext",
 		"target": "esnext",
-		"lib": [
-			"esnext",
-			"dom"
-		],
+		"lib": ["esnext", "dom"],
 		"sourceMap": true,
 		"jsx": "react-jsx",
 		"resolveJsonModule": true,
@@ -21,20 +18,20 @@
 		"experimentalDecorators": true,
 		"strict": true,
 		"paths": {
-			"@/*": [
-				"./src/*"
-			],
-			"@@/*": [
-				"./src/.umi/*"
-			],
-			"react": [
-				"./node_modules/@types/react"
-			]
+			"@/*": ["./src/*"],
+			"@@/*": ["./src/.umi/*"],
+			"@simulations/*": ["../simulations/*"],
+			"react": ["./node_modules/react", "./node_modules/@types/react"],
+			"react/*": ["./node_modules/react/*", "./node_modules/@types/react/*"],
+			"react/jsx-runtime": ["./node_modules/@types/react/jsx-runtime", "./node_modules/react/jsx-runtime"],
+			"three": ["./node_modules/three", "./node_modules/@types/three"],
+			"three/*": ["./node_modules/three/*"]
 		}
 	},
 	"include": [
 		"mock/**/*",
 		"src/**/*",
+		"../simulations/**/*",
 		"tests/**/*",
 		"test/**/*",
 		"__test__/**/*",
@@ -45,13 +42,5 @@
 		".prettierrc.js",
 		"mock/*"
 	],
-	"exclude": [
-		"node_modules",
-		"build",
-		"dist",
-		"scripts",
-		"src/.umi/*",
-		"webpack",
-		"jest"
-	]
+	"exclude": ["node_modules", "build", "dist", "scripts", "src/.umi/*", "webpack", "jest"]
 }

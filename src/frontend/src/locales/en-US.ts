@@ -9,5 +9,5 @@ export default {
 	...menu,
 	...pages,
 	...global,
-	...modules
+	...modules,
 };

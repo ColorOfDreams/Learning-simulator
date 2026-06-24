@@ -87,9 +87,7 @@ export const updateFiltersByField = (
 		if (nextFilter && isSameFilterField(nextFilter.field, fieldName)) {
 			const isBlockedByExternal = options?.skipExternal === true && isExternalFilterNode(nextFilter);
 			const isBlockedByReadOnlyExternal =
-				options?.skipReadOnlyExternal === true &&
-				nextFilter.readOnly === true &&
-				isExternalFilterNode(nextFilter);
+				options?.skipReadOnlyExternal === true && nextFilter.readOnly === true && isExternalFilterNode(nextFilter);
 
 			if (!isBlockedByExternal && !isBlockedByReadOnlyExternal) {
 				nextFilter = updater(nextFilter);

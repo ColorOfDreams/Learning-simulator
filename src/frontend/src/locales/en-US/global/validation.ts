@@ -33,7 +33,8 @@ export default {
 	'global.validation.length.max': 'Maximum {len} characters',
 	'global.validation.fixKiTu.exact': 'String must have exactly {len} characters',
 	'global.validation.fileRequired.required': 'Please select a file',
-	'global.validation.fileName.format': 'File name should only contain lowercase letters, numbers, "-" and "_" characters',
+	'global.validation.fileName.format':
+		'File name should only contain lowercase letters, numbers, "-" and "_" characters',
 	'global.validation.fileType.allowed': 'Only files of type {types} are allowed',
 	'global.validation.fileLimit.max': 'Maximum {len} files',
 	'global.validation.floatnumber.onlyNumbers': 'Only numbers allowed, use dot to separate integer and decimal parts',
