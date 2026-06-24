@@ -105,14 +105,14 @@ export default defineConfig({
 	define: {
 		// Defaults cho tất cả APP_CONFIG_* identifiers — esbuild sẽ replace tất cả,
 		// tránh ReferenceError khi env var không được set lúc build
-		APP_CONFIG_IP_ROOT: '',
+		APP_CONFIG_IP_ROOT: process.env.APP_CONFIG_IP_ROOT || 'https://backend-production-0858.up.railway.app',
 		APP_CONFIG_TEN_TRUONG: '',
 		APP_CONFIG_TIEN_TO_TRUONG: '',
 		APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH: '',
 		APP_CONFIG_GA_ID: '',
 		APP_CONFIG_SENTRY_DSN: '',
 		APP_CONFIG_ONE_SIGNAL_ID: '',
-		APP_CONFIG_GOOGLE_CLIENT_ID: '',
+		APP_CONFIG_GOOGLE_CLIENT_ID: process.env.APP_CONFIG_GOOGLE_CLIENT_ID || '479455851124-pg3d9fbatkdpo9d1klf6uehecdi73eua.apps.googleusercontent.com',
 		APP_CONFIG_PRIMARY_COLOR: '',
 		APP_CONFIG_HIGHLIGHT_COLOR: '',
 		APP_CONFIG_APP_VERSION: '',
