@@ -40,6 +40,11 @@ COPY src/simulations/ /simulations/
 # Install deps
 RUN yarn install --immutable
 
+# CACHEBUST: thay đổi mỗi lần cần force rebuild yarn build
+# Railway sẽ pass APP_CONFIG_BUILD_TIMESTAMP=<timestamp> qua build arg
+ARG APP_CONFIG_BUILD_TIMESTAMP
+RUN echo "Build: $APP_CONFIG_BUILD_TIMESTAMP"
+
 # Build React + Umi.js (bake env vars vào bundle)
 RUN yarn build
 
