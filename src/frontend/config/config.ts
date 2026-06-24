@@ -136,9 +136,9 @@ export default defineConfig({
 		APP_CONFIG_URL_TAP_CHI_KH: '',
 		APP_CONFIG_URL_VBCC: '',
 		GOOGLE_CLIENT_ID: '',
-		// Override bằng env vars thực (Railway build args / local .env)
+		// Override bằng env vars thực — chỉ override khi value truthy (skip empty string)
 		...Object.entries(process.env).reduce((result: Record<string, string>, [key, value]) => {
-			if ((key.startsWith('APP_CONFIG_') || key === 'GOOGLE_CLIENT_ID') && value !== undefined) {
+			if ((key.startsWith('APP_CONFIG_') || key === 'GOOGLE_CLIENT_ID') && value) {
 				return { ...result, [key]: value };
 			}
 			return result;
