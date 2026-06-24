@@ -1,25 +1,21 @@
-# Build context: repo root (để COPY được src/database/data vào image)
-# Railway service config:
-#   Root Directory: /
-#   Dockerfile Path: Dockerfile.railway
+# Build context: repo root — cho phép COPY src/database/data vào image
+# Railway config: Root Directory = /, Dockerfile Path = Dockerfile.railway
 
-FROM node:22-alpine AS deps
+FROM node:22-alpine
 WORKDIR /app
 RUN corepack enable
-COPY src/backend/package.json src/backend/yarn.lock src/backend/.yarnrc.yml ./
+
+# Copy backend source (bao gồm package.json, yarn.lock, .yarnrc.yml, src/, tsconfig, nest-cli.json)
+COPY src/backend/ .
+
+# Install all deps (bao gồm devDeps để build NestJS)
 RUN yarn install --immutable
 
-FROM deps AS builder
-COPY src/backend/ .
+# Build TypeScript → dist/
 RUN yarn build
 
-FROM node:22-alpine AS production
-WORKDIR /app
-RUN corepack enable
-COPY src/backend/package.json src/backend/yarn.lock src/backend/.yarnrc.yml ./
-RUN yarn install --immutable
-COPY --from=builder /app/dist ./dist
-# Bundle learning data (1.3MB) trực tiếp vào image — không cần volume
+# Bundle learning data (1.3MB) vào image
 COPY src/database/data ./data
+
 EXPOSE 3000
 CMD ["node", "dist/main"]
