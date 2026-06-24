@@ -102,14 +102,20 @@ export default defineConfig({
 	jsMinifier: 'terser',
 	exportStatic: {},
 
-	define: Object.entries(process.env).reduce((result, [key, value]) => {
-		if (key.startsWith('APP_CONFIG_') || key === 'GOOGLE_CLIENT_ID') {
-			return {
-				...result,
-				[key]: value,
-				// [key]: JSON.stringify(value),
-			};
-		}
-		return result;
-	}, {}),
+	define: {
+		// Default values đảm bảo esbuild luôn replace identifier (tránh ReferenceError)
+		APP_CONFIG_TEN_TRUONG: '',
+		APP_CONFIG_TIEN_TO_TRUONG: '',
+		APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH: '',
+		APP_CONFIG_GA_ID: '',
+		APP_CONFIG_IP_ROOT: '',
+		GOOGLE_CLIENT_ID: '',
+		// Override bằng env vars thực (Railway build args / local .env)
+		...Object.entries(process.env).reduce((result: Record<string, string>, [key, value]) => {
+			if ((key.startsWith('APP_CONFIG_') || key === 'GOOGLE_CLIENT_ID') && value !== undefined) {
+				return { ...result, [key]: value };
+			}
+			return result;
+		}, {}),
+	},
 });
