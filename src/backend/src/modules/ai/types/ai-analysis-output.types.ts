@@ -33,7 +33,14 @@ export type AiRenderBlock =
 export type AiReference = {
   id: string;
   title: string;
+  text: string;
+  topic?: string;
   source?: string;
+  metadata?: object;
+  score?: number;
+  vectorScore?: number;
+  keywordScore?: number;
+  retrievalType?: 'vector' | 'keyword' | 'hybrid';
 };
 
 export type AiAnalysisOutput = {

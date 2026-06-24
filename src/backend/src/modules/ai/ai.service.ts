@@ -5,6 +5,7 @@ import { TheoryChunkService } from '../learning/theory-chunk/theory-chunk.servic
 import { AnalyzeRequestDto } from './dto/analyze-request.dto';
 import { ChatRequestDto } from './dto/chat-request.dto';
 import { LlmService } from './llm.service';
+import { RagRetrievalService } from './rag-retrieval.service';
 import {
   AiAnalysisOutput,
   AiAnswer,
@@ -21,6 +22,27 @@ type TheoryChunk = Awaited<
   ReturnType<TheoryChunkService['findByTopic']>
 >[number];
 
+type RagContextChunk = {
+  id: string;
+  title?: string;
+  text: string;
+};
+
+interface GuidanceStep {
+  id: string;
+  title: string;
+  description: string;
+  targetEquipment?: string;
+  condition?: unknown;
+}
+
+interface ExperimentSpec {
+  name: string;
+  roomType: 'physics' | 'chemistry' | 'math';
+  explanation: string;
+  objects: Array<{ modelName: string; properties: Record<string, unknown> }>;
+}
+
 @Injectable()
 export class AiService {
   constructor(
@@ -28,7 +50,8 @@ export class AiService {
     private readonly simulationTemplateService: SimulationTemplateService,
     private readonly theoryChunkService: TheoryChunkService,
     private readonly llmService: LlmService,
-  ) { }
+    private readonly ragRetrievalService: RagRetrievalService,
+  ) {}
 
   async analyze(request: AnalyzeRequestDto): Promise<AiAnalysisOutput> {
     const message = request.message.trim();
@@ -42,8 +65,8 @@ export class AiService {
     const selectedPattern = this.selectPattern(message, target, patterns);
     const simulationTemplate = selectedPattern?.simulationId
       ? await this.simulationTemplateService.findById(
-        selectedPattern.simulationId,
-      )
+          selectedPattern.simulationId,
+        )
       : undefined;
     const ragChunks = await this.findRelevantTheoryChunks(
       message,
@@ -83,7 +106,10 @@ export class AiService {
       },
       answer,
       simulation,
-      render_blocks: this.buildRenderBlocks(answer.steps.length > 0, simulation),
+      render_blocks: this.buildRenderBlocks(
+        answer.steps.length > 0,
+        simulation,
+      ),
       references: this.toReferences(ragChunks),
     };
   }
@@ -94,43 +120,72 @@ export class AiService {
     const grade = request.grade ?? 11;
     const topic = this.detectTopic(message);
     const intent = this.detectIntent(message);
-    const ragChunks = await this.findRelevantTheoryChunks(message, topic);
+    const ragChunks = await this.ragRetrievalService.retrieveTheoryChunks({
+      message,
+      subject,
+      grade,
+      topic,
+      simulationId: request.simulationId,
+    });
     const patterns = await this.findPatternsForTopic(topic, message);
     const selectedPattern = this.selectPattern(
       message,
       this.extractTarget(message),
       patterns,
     );
-    const simulationTemplate = selectedPattern?.simulationId
-      ? await this.simulationTemplateService.findById(
-        selectedPattern.simulationId,
-      )
-      : undefined;
+    const simulationTemplate = request.simulationId
+      ? await this.simulationTemplateService.findById(request.simulationId)
+      : selectedPattern?.simulationId
+        ? await this.simulationTemplateService.findById(
+            selectedPattern.simulationId,
+          )
+        : undefined;
     const llmAnswer = await this.generateLlmResponse({
       message,
       topic,
       subject,
       grade,
       intent,
+      sessionId: request.session_id,
+      simulationId: request.simulationId,
+      simulationTitle: simulationTemplate?.title,
       context: request.context ?? [],
       ragChunks,
       selectedPattern,
-      allowGeneralKnowledge: true,
+      allowGeneralKnowledge: false,
     });
+
+    const answer =
+      llmAnswer ??
+      this.buildLocalChatFallback(message, topic, ragChunks, selectedPattern);
+    const debug = this.shouldIncludeChatDebug()
+      ? {
+          debug: {
+            retrievalTopK: 5,
+            referenceCount: ragChunks.length,
+            hasVectorResults: ragChunks.some(
+              (reference) => reference.vectorScore !== undefined,
+            ),
+            hasKeywordResults: ragChunks.some(
+              (reference) => reference.keywordScore !== undefined,
+            ),
+          },
+        }
+      : {};
 
     return {
       intent,
       subject,
       grade,
       topic,
-      answer:
-        llmAnswer ??
-        this.buildLocalChatFallback(message, topic, ragChunks, selectedPattern),
+      session_id: request.session_id,
+      answer,
       used_llm: Boolean(llmAnswer),
       simulation: simulationTemplate
         ? this.buildSimulation(simulationTemplate, [])
         : undefined,
-      references: this.toReferences(ragChunks),
+      references: ragChunks,
+      ...debug,
     };
   }
 
@@ -211,13 +266,7 @@ export class AiService {
     }
 
     if (
-      this.hasAny(normalized, [
-        'van toc',
-        'gia toc',
-        'vmax',
-        'amax',
-        'xva',
-      ])
+      this.hasAny(normalized, ['van toc', 'gia toc', 'vmax', 'amax', 'xva'])
     ) {
       return 'shm_kinematics';
     }
@@ -389,8 +438,7 @@ export class AiService {
 
     if (target.includes('x')) {
       return (
-        this.findPatternByIds(patterns, ['SHM_POSITION_AT_TIME']) ??
-        patterns[0]
+        this.findPatternByIds(patterns, ['SHM_POSITION_AT_TIME']) ?? patterns[0]
       );
     }
 
@@ -416,8 +464,7 @@ export class AiService {
 
     if (target.includes('resonance_condition')) {
       return (
-        this.findPatternByIds(patterns, ['RESONANCE_CONDITION']) ??
-        patterns[0]
+        this.findPatternByIds(patterns, ['RESONANCE_CONDITION']) ?? patterns[0]
       );
     }
 
@@ -448,7 +495,7 @@ export class AiService {
       const period = (2 * Math.PI) / omegaNumeric.value;
 
       return {
-        short_answer: `Chu kÃ¬ dao Ä‘á»™ng lÃ  T = ${this.formatNumber(period)} s.`,
+        short_answer: `Chu kÃ¬ dao Ä‘á»™ng lÃ  T = ${this.formatNumber(period)} s.`,
         steps: [
           `Tá»« phÆ°Æ¡ng trÃ¬nh dao Ä‘á»™ng, ta xÃ¡c Ä‘á»‹nh Ä‘Æ°á»£c omega = ${omega.value} rad/s.`,
           'Ãp dá»¥ng cÃ´ng thá»©c T = 2Ï€ / omega.',
@@ -465,7 +512,7 @@ export class AiService {
       const frequency = omegaNumeric.value / (2 * Math.PI);
 
       return {
-        short_answer: `Táº§n sá»‘ dao Ä‘á»™ng lÃ  f = ${this.formatNumber(
+        short_answer: `Táº§n sá»‘ dao Ä‘á»™ng lÃ  f = ${this.formatNumber(
           frequency,
         )} Hz.`,
         steps: [
@@ -478,16 +525,17 @@ export class AiService {
 
     if (pattern) {
       return {
-        short_answer: `Dáº¡ng bÃ i: ${pattern.name}. ${pattern.mainFormula ?? ''}`,
+        short_answer: `Dáº¡ng bÃ i: ${pattern.name}. ${pattern.mainFormula ?? ''}`,
         steps: [
-          `Dáº¡ng bÃ i phÃ¹ há»£p: ${pattern.name}.`,
+          `Dáº¡ng bÃ i phÃ¹ há»£p: ${pattern.name}.`,
           `CÃ´ng thá»©c hoáº·c hÆ°á»›ng xá»­ lÃ­ chÃ­nh: ${pattern.mainFormula ?? 'giáº£i thÃ­ch khÃ¡i niá»‡m'}.`,
         ],
       };
     }
 
     return {
-      short_answer: 'Xin lá»—i, há»‡ thá»‘ng chÆ°a tÃ¬m tháº¥y dá»¯ liá»‡u phÃ¹ há»£p cho cÃ¢u há»i nÃ y. Vui lÃ²ng thá»­ diá»…n Ä‘áº¡t láº¡i hoáº·c há»i cÃ¢u khÃ¡c.',
+      short_answer:
+        'Xin lá»—i, há»‡ thá»‘ng chÆ°a tÃ¬m tháº¥y dá»¯ liá»‡u phÃ¹ há»£p cho cÃ¢u há»i nÃ y. Vui lÃ²ng thá»­ diá»…n Ä‘áº¡t láº¡i hoáº·c há»i cÃ¢u khÃ¡c.',
       steps: [],
     };
   }
@@ -504,12 +552,14 @@ export class AiService {
       value: string | number;
       unit?: string;
     }[] = Array.isArray(template.defaultParameters)
-        ? template.defaultParameters
-        : Object.entries(template.defaultParameters ?? {}).map(([key, value]) => ({
-          key,
-          label: key,
-          value: value as string | number,
-        }));
+      ? template.defaultParameters
+      : Object.entries(template.defaultParameters ?? {}).map(
+          ([key, value]) => ({
+            key,
+            label: key,
+            value: value as string | number,
+          }),
+        );
     const params = defaultParameters.map((parameter) => {
       const extracted =
         given.find((item) => item.key === `${parameter.key}_numeric`) ??
@@ -611,8 +661,11 @@ export class AiService {
     subject: string;
     grade: number;
     intent: AiIntent;
+    sessionId?: string;
+    simulationId?: string;
+    simulationTitle?: string;
     context: { role: 'user' | 'assistant'; content: string }[];
-    ragChunks: TheoryChunk[];
+    ragChunks: RagContextChunk[];
     selectedPattern?: ProblemPattern;
     allowGeneralKnowledge: boolean;
   }) {
@@ -625,44 +678,58 @@ export class AiService {
         .slice(0, 5)
         .map(
           (chunk, index) =>
-            `[${index + 1}] ${chunk.title ?? chunk.id}: ${chunk.text}`,
+            `[${index + 1}]\ntitle: ${chunk.title ?? chunk.id}\ntext: ${chunk.text}`,
         )
         .join('\n');
       const patternText = payload.selectedPattern
-        ? `Dáº¡ng bÃ i: ${payload.selectedPattern.name}; cÃ´ng thá»©c/hÆ°á»›ng xá»­ lÃ­: ${payload.selectedPattern.mainFormula ?? 'khÃ¡i niá»‡m'
-        }; má»¥c tiÃªu: ${payload.selectedPattern.target?.join(', ')}`
-        : 'ChÆ°a nháº­n diá»‡n cháº¯c dáº¡ng bÃ i tá»« dataset.';
+        ? `PATTERN: ${payload.selectedPattern.name}
+FORMULA: ${payload.selectedPattern.mainFormula ?? 'khái niệm'}
+TARGET: ${payload.selectedPattern.target?.join(', ')}`
+        : '';
       const generalKnowledgeRule = payload.allowGeneralKnowledge
-        ? 'Náº¿u tÃ i liá»‡u ná»™i bá»™ khÃ´ng Ä‘á»§, Ä‘Æ°á»£c dÃ¹ng kiáº¿n thá»©c Váº­t lÃ­ 11 phá»• thÃ´ng, nhÆ°ng hÃ£y nÃ³i rÃµ lÃ  Ä‘ang suy luáº­n ngoÃ i dá»¯ liá»‡u ná»™i bá»™.'
-        : 'Chá»‰ dÃ¹ng tÃ i liá»‡u ná»™i bá»™; náº¿u thiáº¿u dá»¯ liá»‡u thÃ¬ nÃ³i chÆ°a Ä‘á»§ cÄƒn cá»©.';
+        ? 'Nếu tài liệu nội bộ không đủ, được dùng kiến thức Vật lí 11 phổ thông, nhưng hãy nói rõ là đang suy luận ngoài dữ liệu nội bộ.'
+        : 'Không suy đoán hoặc bịa thêm khi tài liệu không đủ; hãy nói rõ: "Mình chưa có đủ dữ liệu trong tài liệu hiện tại."';
+      const context = payload.context
+        .slice(-6)
+        .map((item) => `${item.role}: ${item.content}`)
+        .join('\n');
+      const userPrompt = [
+        `SUBJECT: ${payload.subject}`,
+        `GRADE: ${payload.grade}`,
+        `TOPIC: ${payload.topic}`,
+        `SIMULATION_ID: ${payload.simulationId ?? 'none'}`,
+        payload.simulationTitle
+          ? `SIMULATION_TITLE: ${payload.simulationTitle}`
+          : '',
+        `INTENT: ${payload.intent}`,
+        patternText,
+        'REFERENCES:',
+        references || '(Không có theory chunk phù hợp.)',
+        'CONTEXT:',
+        context || '(Không có ngữ cảnh trước đó.)',
+        'QUESTION:',
+        payload.message,
+      ]
+        .filter(Boolean)
+        .join('\n\n');
 
       const response = await this.llmService.complete([
         {
           role: 'system',
           content: [
-            'Báº¡n lÃ  trá»£ lÃ½ há»c táº­p cho há»c sinh lá»›p 11, chá»§ Ä‘á» chÃ­nh lÃ  ChÆ°Æ¡ng 1: Dao Ä‘á»™ng.',
-            'Æ¯u tiÃªn tráº£ lá»i theo dá»¯ liá»‡u ná»™i bá»™ vÃ  dáº¡ng bÃ i Ä‘Ã£ nháº­n diá»‡n.',
+            'Bạn là trợ lý AI trong phòng thí nghiệm mô phỏng khoa học THPT.',
+            'Trả lời bằng tiếng Việt tự nhiên, ngắn gọn, dễ hiểu; câu trả lời phù hợp một sidebar, khoảng 4–6 câu.',
+            'Ưu tiên nội dung trong REFERENCES/theory chunks được cung cấp.',
             generalKnowledgeRule,
-            'KhÃ´ng bá»‹a nguá»“n, khÃ´ng Ä‘i quÃ¡ xa khá»i Váº­t lÃ­ 11.',
-            'Giá»ng giáº£i thÃ­ch vui, dá»… hiá»ƒu, cÃ³ vÃ­ dá»¥ trá»±c quan ngáº¯n; váº«n giá»¯ cÃ´ng thá»©c chÃ­nh xÃ¡c.',
-            'KhÃ´ng dÃ¹ng block LaTeX kiá»ƒu \\[...\\] hoáº·c \\(...\\); hÃ£y viáº¿t cÃ´ng thá»©c báº±ng plain text/Unicode, vÃ­ dá»¥ v = Â±Ï‰âˆš(AÂ² - xÂ²).',
-            'Náº¿u lÃ  bÃ i tÃ­nh, trÃ¬nh bÃ y ngáº¯n theo: nháº­n dáº¡ng dá»¯ kiá»‡n, cÃ´ng thá»©c, thay sá»‘, káº¿t luáº­n.',
+            'Không bịa nguồn hoặc chi tiết không có căn cứ. Có thể nhắc [1], [2] khi phù hợp, nhưng không cần trích dẫn hình thức.',
+            'Không dùng LaTeX dưới bất kỳ dạng nào, gồm $$...$$, \\[...\\], \\(...\\). Dùng công thức plain text/Unicode, ví dụ T = 2*pi/ω, x = A*cos(ωt + φ), T = 2*pi*sqrt(l/g), A².',
+            'Nếu có SIMULATION_ID, liên hệ với mô phỏng và gợi ý một thao tác cụ thể khi phù hợp.',
           ].join('\n'),
         },
         {
           role: 'user',
-          content: [
-            `MÃ´n: ${payload.subject}, lá»›p: ${payload.grade}`,
-            `Intent: ${payload.intent}`,
-            `Topic: ${payload.topic}`,
-            patternText,
-            references
-              ? `TÃ i liá»‡u ná»™i bá»™:\n${references}`
-              : 'TÃ i liá»‡u ná»™i bá»™: chÆ°a tÃ¬m tháº¥y chunk phÃ¹ há»£p.',
-            `CÃ¢u há»i cá»§a há»c sinh: ${payload.message}`,
-          ].join('\n\n'),
+          content: userPrompt,
         },
-        ...payload.context.slice(-6),
       ]);
 
       return this.cleanMathText(response);
@@ -674,35 +741,40 @@ export class AiService {
   private buildLocalChatFallback(
     message: string,
     topic: string,
-    ragChunks: TheoryChunk[],
+    ragChunks: RagContextChunk[],
     selectedPattern?: ProblemPattern,
   ) {
     if (ragChunks.length > 0) {
       const chunk = ragChunks[0];
 
       return [
-        `MÃ¬nh tÃ¬m tháº¥y pháº§n liÃªn quan trong dá»¯ liá»‡u chÆ°Æ¡ng 1: ${chunk.title ?? chunk.id}.`,
-        chunk.text,
+        `Dựa trên tài liệu hiện có, ${chunk.title ?? chunk.id} cho biết:`,
+        this.truncateForFallback(chunk.text),
         selectedPattern
-          ? `Dáº¡ng gáº§n nháº¥t lÃ : ${selectedPattern.name}.`
-          : 'Báº¡n cÃ³ thá»ƒ há»i cá»¥ thá»ƒ hÆ¡n Ä‘á»ƒ mÃ¬nh chá»n Ä‘Ãºng dáº¡ng bÃ i.',
+          ? `Dáº¡ng gáº§n nháº¥t lÃ : ${selectedPattern.name}.`
+          : 'Báº¡n cÃ³ thá»ƒ há»i cá»¥ thá»ƒ hÆ¡n Ä‘á»ƒ mÃ¬nh chá»n Ä‘Ãºng dáº¡ng bÃ i.',
       ].join('\n\n');
     }
 
     return [
-      'Xin lá»—i, há»‡ thá»‘ng chÆ°a tÃ¬m tháº¥y dá»¯ liá»‡u phÃ¹ há»£p cho cÃ¢u há»i nÃ y.',
-      `CÃ¢u há»i: ${message}`,
-      `Chá»§ Ä‘á» dá»± Ä‘oÃ¡n: ${topic}.`,
-      'Vui lÃ²ng thá»­ diá»…n Ä‘áº¡t láº¡i hoáº·c há»i má»™t cÃ¢u khÃ¡c.',
+      'Mình chưa tìm thấy đủ dữ liệu trong tài liệu hiện tại để trả lời chắc chắn.',
+      'Bạn có thể hỏi lại với chủ đề cụ thể hơn hoặc cung cấp thêm dữ kiện.',
     ].join('\n\n');
   }
 
   private toReferences(chunks: TheoryChunk[]) {
-    return chunks.map((chunk) => ({
-      id: chunk.id,
-      title: chunk.title ?? chunk.id,
-      source: chunk.source?.sourceName,
-    }));
+    return chunks.map((chunk) => {
+      const source = chunk.source?.sourceName ?? chunk.source?.fileName;
+
+      return {
+        id: chunk.id,
+        title: chunk.title ?? chunk.id,
+        text: chunk.text,
+        topic: chunk.topic,
+        ...(source ? { source } : {}),
+        ...(chunk.metadata ? { metadata: chunk.metadata } : {}),
+      };
+    });
   }
 
   private findPatternByIds(patterns: ProblemPattern[], ids: string[]) {
@@ -792,15 +864,28 @@ export class AiService {
     return Number(value.toFixed(3)).toString().replace('.', ',');
   }
 
-  async chatRaw(request: { message: string; subject?: string; grade?: number }) {
+  async chatRaw(request: {
+    message: string;
+    subject?: string;
+    grade?: number;
+  }) {
     const msg = request.message.trim();
     const subject = request.subject ?? 'physics';
     const grade = request.grade ?? 11;
     const topic = this.detectTopic(msg);
     const intent = this.detectIntent(msg);
-    const ragChunks = await this.findRelevantTheoryChunks(msg, topic);
+    const ragChunks = await this.ragRetrievalService.retrieveTheoryChunks({
+      message: msg,
+      subject,
+      grade,
+      topic,
+    });
     const patterns = await this.findPatternsForTopic(topic, msg);
-    const selectedPattern = this.selectPattern(msg, this.extractTarget(msg), patterns);
+    const selectedPattern = this.selectPattern(
+      msg,
+      this.extractTarget(msg),
+      patterns,
+    );
 
     const llmAnswer = await this.generateLlmResponse({
       message: msg,
@@ -817,115 +902,198 @@ export class AiService {
     return {
       intent,
       topic,
-      answer: llmAnswer ?? this.buildLocalChatFallback(msg, topic, ragChunks, selectedPattern),
+      answer:
+        llmAnswer ??
+        this.buildLocalChatFallback(msg, topic, ragChunks, selectedPattern),
       used_llm: Boolean(llmAnswer),
     };
   }
 
-async generateGuidance(sceneGraph?: { roomType?: string; objects?: Array<{ modelName: string; properties?: Record<string, unknown> }> }) {
+  async generateGuidance(sceneGraph?: {
+    roomType?: string;
+    objects?: Array<{
+      modelName: string;
+      properties?: Record<string, unknown>;
+    }>;
+  }) {
     if (!sceneGraph?.objects?.length) {
-      return { text: 'Chao ban! Hay tao mot thi nghiem voi cac dung cu de bat dau.', steps: [] };
+      return {
+        text: 'Chao ban! Hay tao mot thi nghiem voi cac dung cu de bat dau.',
+        steps: [],
+      };
     }
     if (this.llmService.isConfigured()) {
       try {
-        const equipDesc = sceneGraph.objects.map((o) => {
-          const p = o.properties || {};
-          const d: string[] = [];
-          if (p.length) d.push('dai ' + p.length + 'm');
-          if (p.mass) d.push('nang ' + p.mass + 'kg');
-          if (p.stiffness) d.push('do cung ' + p.stiffness + 'N/m');
-          if (p.symbol) d.push('ky hieu ' + p.symbol);
-          if (p.volume) d.push(p.volume + 'ml');
-          return '- ' + o.modelName + (d.length ? ' (' + d.join(', ') + ')' : '');
-        }).join('\n');
-        const subj = sceneGraph.roomType === 'chemistry' ? 'Hoa hoc' : sceneGraph.roomType === 'math' ? 'Toan hoc' : 'Vat ly';
+        const equipDesc = sceneGraph.objects
+          .map((o) => {
+            const p = o.properties || {};
+            const propStr = (v: unknown): string =>
+              typeof v === 'string' || typeof v === 'number' ? String(v) : '';
+            const d: string[] = [];
+            if (propStr(p.length)) d.push('dai ' + propStr(p.length) + 'm');
+            if (propStr(p.mass)) d.push('nang ' + propStr(p.mass) + 'kg');
+            if (propStr(p.stiffness))
+              d.push('do cung ' + propStr(p.stiffness) + 'N/m');
+            if (propStr(p.symbol)) d.push('ky hieu ' + propStr(p.symbol));
+            if (propStr(p.volume)) d.push(propStr(p.volume) + 'ml');
+            return (
+              '- ' + o.modelName + (d.length ? ' (' + d.join(', ') + ')' : '')
+            );
+          })
+          .join('\n');
+        const subj =
+          sceneGraph.roomType === 'chemistry'
+            ? 'Hoa hoc'
+            : sceneGraph.roomType === 'math'
+              ? 'Toan hoc'
+              : 'Vat ly';
         const response = await this.llmService.complete([
-          { role: 'user', content: [
-            'Ban la tro ly huong dan thi nghiem. Dung cu hien co:',
-            equipDesc, 'Mon: ' + subj,
-            'Tao 3-5 buoc huong dan. Tra ve CHI JSON: { "steps": [{ "id":"...", "title":"...", "description":"...", "targetEquipment":"..." }] }',
-          ].join('\n') },
+          {
+            role: 'user',
+            content: [
+              'Ban la tro ly huong dan thi nghiem. Dung cu hien co:',
+              equipDesc,
+              'Mon: ' + subj,
+              'Tao 3-5 buoc huong dan. Tra ve CHI JSON: { "steps": [{ "id":"...", "title":"...", "description":"...", "targetEquipment":"..." }] }',
+            ].join('\n'),
+          },
         ]);
         if (response) {
           const cleaned = response.replace(/```json|```/g, '').trim();
           const match = cleaned.match(/\{[\s\S]*\}/);
           if (match) {
-            const parsed = JSON.parse(match[0]);
+            const parsed = JSON.parse(match[0]) as {
+              steps?: GuidanceStep[];
+            };
             return {
               text: 'Chao ban! Hay lam theo huong dan ben duoi.',
-              steps: (parsed.steps || []).map((s: any, i: number) => ({
-                id: s.id || 'step_' + (i+1), title: s.title || '', description: s.description || '',
-                targetEquipment: s.targetEquipment, condition: s.condition || null,
+              steps: (parsed.steps || []).map((s: GuidanceStep, i: number) => ({
+                id: s.id || 'step_' + (i + 1),
+                title: s.title || '',
+                description: s.description || '',
+                targetEquipment: s.targetEquipment,
+                condition: s.condition || null,
               })),
             };
           }
         }
-      } catch { /* fallback */ }
+      } catch {
+        /* fallback */
+      }
     }
-    const names = sceneGraph.objects.map((o: any) => o.modelName);
-    return { text: 'Phong thi nghiem co: ' + names.join(', ') + '. Bat dau kham pha nhe.', steps: [{ id:'explore', title:'Kham pha dung cu', description:'Keo tha va kham pha tung dung cu.' }, { id:'play', title:'Bam Play', description:'Nhan Play de xem mo phong.' }] };
+    const names = sceneGraph.objects.map(
+      (o: { modelName: string; properties?: Record<string, unknown> }) =>
+        o.modelName,
+    );
+    return {
+      text:
+        'Phong thi nghiem co: ' + names.join(', ') + '. Bat dau kham pha nhe.',
+      steps: [
+        {
+          id: 'explore',
+          title: 'Kham pha dung cu',
+          description: 'Keo tha va kham pha tung dung cu.',
+        },
+        {
+          id: 'play',
+          title: 'Bam Play',
+          description: 'Nhan Play de xem mo phong.',
+        },
+      ],
+    };
   }
 
   async generateExperiment(message: string) {
     if (!this.llmService.isConfigured()) {
       return {
-        name: 'ThÃ­ nghiá»‡m má»›i',
+        name: 'Thí nghiệm mới',
         roomType: 'physics',
-        explanation: 'LLM chÆ°a Ä‘Æ°á»£c cáº¥u hÃ¬nh. Vui lÃ²ng táº¡o thá»§ cÃ´ng.',
-        objects: [] as Array<{ modelName: string; properties: Record<string, unknown> }>,
+        explanation: 'LLM chưa được cấu hình. Vui lòng tạo thủ công.',
+        objects: [] as Array<{
+          modelName: string;
+          properties: Record<string, unknown>;
+        }>,
       };
     }
 
     const equipmentList = [
-      'Váº­t lÃ½: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
-      'HÃ³a há»c: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
-      'ToÃ¡n há»c: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
+      'Vật lý: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
+      'Hóa học: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
+      'Toán học: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
     ].join('\n');
 
     try {
       const response = await this.llmService.complete([
-        { role: 'system', content: `Báº¡n lÃ  trá»£ lÃ½ thiáº¿t káº¿ thÃ­ nghiá»‡m 3D cho há»c sinh lá»›p 11. 
-Dá»¥ng cá»¥ cÃ³ sáºµn:\n${equipmentList}\n
-Dá»±a trÃªn mÃ´ táº£ cá»§a há»c sinh, hÃ£y chá»n dá»¥ng cá»¥ vÃ  thÃ´ng sá»‘ phÃ¹ há»£p.
-Tráº£ vá» CHá»ˆ JSON (khÃ´ng markdown, khÃ´ng giáº£i thÃ­ch):
+        {
+          role: 'system',
+          content: `Bạn là trợ lý thiết kế thí nghiệm 3D cho học sinh lớp 11. 
+Dụng cụ có sẵn:\n${equipmentList}\n
+Dựa trên mô tả của học sinh, hãy chọn dụng cụ và thông số phù hợp.
+Trả về CHỈ JSON (không markdown, không giải thích):
 {
-  "name": "tÃªn thÃ­ nghiá»‡m",
+  "name": "tên thí nghiệm",
   "roomType": "physics|chemistry|math",
-  "explanation": "giáº£i thÃ­ch ngáº¯n 1-2 cÃ¢u",
+  "explanation": "giải thích ngắn 1-2 câu",
   "objects": [
-    { "modelName": "tÃªn dá»¥ng cá»¥", "properties": { "key": value } }
+    { "modelName": "tên dụng cụ", "properties": { "key": value } }
   ]
-}` },
+}`,
+        },
         { role: 'user', content: message },
       ]);
 
       const cleaned = (response || '').replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(cleaned);
+      const parsed = JSON.parse(cleaned) as ExperimentSpec;
       return {
-        name: parsed.name || 'ThÃ­ nghiá»‡m má»›i',
+        name: parsed.name || 'Thí nghiệm mới',
         roomType: parsed.roomType || 'physics',
         explanation: parsed.explanation || '',
-        objects: (parsed.objects || []).map((obj: any) => ({
-          modelName: obj.modelName,
-          properties: obj.properties || {},
-        })),
+        objects: (parsed.objects || []).map(
+          (obj: {
+            modelName: string;
+            properties: Record<string, unknown>;
+          }) => ({
+            modelName: obj.modelName,
+            properties: obj.properties || {},
+          }),
+        ),
       };
     } catch {
       return {
-        name: 'ThÃ­ nghiá»‡m má»›i',
+        name: 'Thí nghiệm mới',
         roomType: 'physics',
-        explanation: 'KhÃ´ng thá»ƒ táº¡o tá»± Ä‘á»™ng, vui lÃ²ng thá»­ láº¡i hoáº·c táº¡o thá»§ cÃ´ng.',
+        explanation:
+          'Không thể tạo tự động, vui lòng thử lại hoặc tạo thủ công.',
         objects: [],
       };
     }
   }
 
-  private cleanMathText(value?: string) {
-    return String(value ?? '').replace(
-      /\\\[((?:.|\n)*?)\\\]|\\\(((?:.|\n)*?)\\\)/g,
-      (_match, blockFormula, inlineFormula) =>
-        this.simplifyLatexFormula(blockFormula || inlineFormula),
+  private shouldIncludeChatDebug() {
+    return (
+      process.env.NODE_ENV !== 'production' || process.env.AI_DEBUG === 'true'
     );
+  }
+
+  private truncateForFallback(value: string, maxLength = 600) {
+    const normalized = value.trim();
+    return normalized.length <= maxLength
+      ? normalized
+      : `${normalized.slice(0, maxLength).trimEnd()}…`;
+  }
+
+  private cleanMathText(value?: string) {
+    return String(value ?? '')
+      .replace(
+        /\$\$([\s\S]*?)\$\$|\\\[([\s\S]*?)\\\]|\\\(([\s\S]*?)\\\)|\$([^$\n]+)\$/g,
+        (_match, blockFormula, squareFormula, inlineFormula, dollarFormula) =>
+          this.simplifyLatexFormula(
+            String(
+              blockFormula || squareFormula || inlineFormula || dollarFormula,
+            ),
+          ),
+      )
+      .trim();
   }
 
   private simplifyLatexFormula(value: string) {

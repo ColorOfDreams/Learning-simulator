@@ -1,0 +1,815 @@
+[
+  {
+    "id": "SIM_PHY11_SHM_BASIC_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "title": "Mô phỏng dao động điều hòa cơ bản",
+    "engine": "threejs",
+    "sceneType": "spring_mass_shm",
+    "parameterSchema": [
+      {
+        "key": "amplitude",
+        "required": false
+      },
+      {
+        "key": "omega",
+        "required": false
+      },
+      {
+        "key": "phase",
+        "required": false
+      },
+      {
+        "key": "time",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "amplitude": null,
+      "omega": null,
+      "phase": null,
+      "time": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_SHM_KINEMATICS_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_kinematics",
+    "title": "Mô phỏng li độ, vận tốc, gia tốc trong dao động điều hòa",
+    "engine": "threejs",
+    "sceneType": "shm_vectors",
+    "parameterSchema": [
+      {
+        "key": "amplitude",
+        "required": false
+      },
+      {
+        "key": "omega",
+        "required": false
+      },
+      {
+        "key": "phase",
+        "required": false
+      },
+      {
+        "key": "showVelocity",
+        "required": false
+      },
+      {
+        "key": "showAcceleration",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "amplitude": null,
+      "omega": null,
+      "phase": null,
+      "showVelocity": null,
+      "showAcceleration": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_SHM_ENERGY_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_energy",
+    "title": "Mô phỏng chuyển hóa động năng, thế năng và cơ năng",
+    "engine": "threejs",
+    "sceneType": "shm_energy_bars",
+    "parameterSchema": [
+      {
+        "key": "mass",
+        "required": false
+      },
+      {
+        "key": "omega",
+        "required": false
+      },
+      {
+        "key": "amplitude",
+        "required": false
+      },
+      {
+        "key": "position",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "mass": null,
+      "omega": null,
+      "amplitude": null,
+      "position": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_SPRING_OSCILLATOR_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_energy",
+    "title": "Mô phỏng con lắc lò xo",
+    "engine": "threejs",
+    "sceneType": "spring_oscillator",
+    "parameterSchema": [
+      {
+        "key": "mass",
+        "required": false
+      },
+      {
+        "key": "springConstant",
+        "required": false
+      },
+      {
+        "key": "amplitude",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "mass": null,
+      "springConstant": null,
+      "amplitude": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_RESONANCE_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "resonance",
+    "title": "Mô phỏng dao động cưỡng bức và cộng hưởng",
+    "engine": "threejs",
+    "sceneType": "forced_resonance",
+    "parameterSchema": [
+      {
+        "key": "naturalFrequency",
+        "required": false
+      },
+      {
+        "key": "drivingFrequency",
+        "required": false
+      },
+      {
+        "key": "damping",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "naturalFrequency": null,
+      "drivingFrequency": null,
+      "damping": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_WAVE_PROPAGATION_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "mechanical_wave",
+    "title": "Mô phỏng sóng cơ lan truyền",
+    "engine": "threejs",
+    "sceneType": "wave_propagation",
+    "parameterSchema": [
+      {
+        "key": "amplitude",
+        "required": false
+      },
+      {
+        "key": "wavelength",
+        "required": false
+      },
+      {
+        "key": "frequency",
+        "required": false
+      },
+      {
+        "key": "speed",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "amplitude": null,
+      "wavelength": null,
+      "frequency": null,
+      "speed": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_SOUND_WAVE_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "sound_wave",
+    "title": "Mô phỏng sóng âm và dao động kí",
+    "engine": "threejs",
+    "sceneType": "sound_wave_oscilloscope",
+    "parameterSchema": [
+      {
+        "key": "frequency",
+        "required": false
+      },
+      {
+        "key": "amplitude",
+        "required": false
+      },
+      {
+        "key": "timeScale",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "frequency": null,
+      "amplitude": null,
+      "timeScale": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_WAVE_INTERFERENCE_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "wave_interference",
+    "title": "Mô phỏng giao thoa sóng",
+    "engine": "threejs",
+    "sceneType": "wave_interference",
+    "parameterSchema": [
+      {
+        "key": "wavelength",
+        "required": false
+      },
+      {
+        "key": "sourceDistance",
+        "required": false
+      },
+      {
+        "key": "phaseDifference",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "wavelength": null,
+      "sourceDistance": null,
+      "phaseDifference": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_STANDING_WAVE_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "standing_wave",
+    "title": "Mô phỏng sóng dừng",
+    "engine": "threejs",
+    "sceneType": "standing_wave",
+    "parameterSchema": [
+      {
+        "key": "length",
+        "required": false
+      },
+      {
+        "key": "frequency",
+        "required": false
+      },
+      {
+        "key": "mode",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "length": null,
+      "frequency": null,
+      "mode": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_ELECTROMAGNETIC_WAVE_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electromagnetic_wave",
+    "title": "Mô phỏng sóng điện từ",
+    "engine": "threejs",
+    "sceneType": "em_wave",
+    "parameterSchema": [
+      {
+        "key": "frequency",
+        "required": false
+      },
+      {
+        "key": "wavelength",
+        "required": false
+      },
+      {
+        "key": "showElectricField",
+        "required": false
+      },
+      {
+        "key": "showMagneticField",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "frequency": null,
+      "wavelength": null,
+      "showElectricField": null,
+      "showMagneticField": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_COULOMB_FORCE_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_field",
+    "title": "Mô phỏng lực Coulomb giữa hai điện tích",
+    "engine": "threejs",
+    "sceneType": "coulomb_force",
+    "parameterSchema": [
+      {
+        "key": "q1",
+        "required": false
+      },
+      {
+        "key": "q2",
+        "required": false
+      },
+      {
+        "key": "distance",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "q1": null,
+      "q2": null,
+      "distance": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_ELECTRIC_FIELD_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_field",
+    "title": "Mô phỏng điện trường và đường sức điện",
+    "engine": "threejs",
+    "sceneType": "electric_field_lines",
+    "parameterSchema": [
+      {
+        "key": "charges",
+        "required": false
+      },
+      {
+        "key": "testCharge",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "charges": null,
+      "testCharge": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_UNIFORM_E_FIELD_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "uniform_electric_field",
+    "title": "Mô phỏng điện trường đều giữa hai bản tích điện",
+    "engine": "threejs",
+    "sceneType": "uniform_electric_field",
+    "parameterSchema": [
+      {
+        "key": "voltage",
+        "required": false
+      },
+      {
+        "key": "plateDistance",
+        "required": false
+      },
+      {
+        "key": "testCharge",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "voltage": null,
+      "plateDistance": null,
+      "testCharge": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_ELECTRIC_POTENTIAL_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_potential",
+    "title": "Mô phỏng điện thế, hiệu điện thế và công của lực điện",
+    "engine": "threejs",
+    "sceneType": "electric_potential",
+    "parameterSchema": [
+      {
+        "key": "charge",
+        "required": false
+      },
+      {
+        "key": "potentialDifference",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "charge": null,
+      "potentialDifference": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_CAPACITOR_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "capacitor",
+    "title": "Mô phỏng tụ điện phẳng",
+    "engine": "threejs",
+    "sceneType": "capacitor",
+    "parameterSchema": [
+      {
+        "key": "capacitance",
+        "required": false
+      },
+      {
+        "key": "voltage",
+        "required": false
+      },
+      {
+        "key": "charge",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "capacitance": null,
+      "voltage": null,
+      "charge": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_OHMS_LAW_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "ohms_law",
+    "title": "Mô phỏng định luật Ôm",
+    "engine": "threejs",
+    "sceneType": "ohms_law_circuit",
+    "parameterSchema": [
+      {
+        "key": "voltage",
+        "required": false
+      },
+      {
+        "key": "resistance",
+        "required": false
+      },
+      {
+        "key": "current",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "voltage": null,
+      "resistance": null,
+      "current": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_RESISTOR_NETWORK_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_circuit",
+    "title": "Mô phỏng mạch điện trở nối tiếp/song song",
+    "engine": "threejs",
+    "sceneType": "resistor_network",
+    "parameterSchema": [
+      {
+        "key": "resistors",
+        "required": false
+      },
+      {
+        "key": "connectionType",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "resistors": null,
+      "connectionType": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_ELECTRIC_SOURCE_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_source",
+    "title": "Mô phỏng nguồn điện có điện trở trong",
+    "engine": "threejs",
+    "sceneType": "electric_source_internal_resistance",
+    "parameterSchema": [
+      {
+        "key": "emf",
+        "required": false
+      },
+      {
+        "key": "internalResistance",
+        "required": false
+      },
+      {
+        "key": "loadResistance",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "emf": null,
+      "internalResistance": null,
+      "loadResistance": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "SIM_PHY11_ELECTRIC_POWER_3D",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_power_energy",
+    "title": "Mô phỏng năng lượng và công suất điện",
+    "engine": "threejs",
+    "sceneType": "electric_power",
+    "parameterSchema": [
+      {
+        "key": "voltage",
+        "required": false
+      },
+      {
+        "key": "current",
+        "required": false
+      },
+      {
+        "key": "time",
+        "required": false
+      }
+    ],
+    "defaultState": {
+      "voltage": null,
+      "current": null,
+      "time": null
+    },
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_parameter",
+      "highlight_key_concept",
+      "show_formula_overlay"
+    ],
+    "outputs": [
+      "simulationState",
+      "simulationCommands"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  }
+]
