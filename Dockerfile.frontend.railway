@@ -14,6 +14,11 @@ COPY src/simulations/ /simulations/
 # Install deps
 RUN yarn install --immutable
 
+# Railway passes service env vars as Docker build ARGs
+# Phải khai báo ARG để Umi.js define có thể bake vào bundle
+ARG APP_CONFIG_IP_ROOT
+ENV APP_CONFIG_IP_ROOT=$APP_CONFIG_IP_ROOT
+
 # Build React + Umi.js
 RUN yarn build
 
