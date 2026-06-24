@@ -20,7 +20,7 @@ export default defineConfig({
 			syncWebAssembly: true,
 		});
 	},
-	title: `AI Thực chiến - ${APP_CONFIG_TEN_TRUONG.toUpperCase()}`,
+	title: `Scilab - ${APP_CONFIG_TEN_TRUONG.toUpperCase()}`,
 	metas: [
 		{
 			name: 'keywords',
