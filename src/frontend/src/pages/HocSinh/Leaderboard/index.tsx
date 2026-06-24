@@ -1,26 +1,33 @@
-import React, { useState } from 'react';
+import { getLeaderboard } from '@/services/base/api';
+import React, { useEffect, useState } from 'react';
+import { useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
 import './index.less';
 
-// ── Data ──
-const TABS = ['Lớp tôi', 'Khối 11', 'Toàn cầu'];
-
-const PODIUM = [
-	{ rank: 2, name: 'Mai L.', xp: '2.980 XP', height: 96, labelColor: '#cdcbd6' },
-	{ rank: 1, name: 'Sơn O.', xp: '3.420 XP', height: 140, labelColor: '#fff', crown: true },
-	{ rank: 3, name: 'Ravi P.', xp: '2.610 XP', height: 76, labelColor: '#d8b89a' },
-];
-
-const ROWS = [
-	{ rank: 4, name: 'Đức K.', level: 9, week: '+180 tuần', xp: '2.310 XP', me: false },
-	{ rank: 5, name: 'Linh F.', level: 8, week: '+150 tuần', xp: '1.640 XP', me: false },
-	{ rank: 6, name: 'Bạn · Học Sinh', level: 7, week: '+220 tuần', xp: '1.240 XP', me: true },
-	{ rank: 7, name: 'Hoàng B.', level: 7, week: '+90 tuần', xp: '1.180 XP', me: false },
-	{ rank: 8, name: 'Ivy C.', level: 7, week: '+70 tuần', xp: '1.090 XP', me: false },
-];
+const TABS = ['Toàn trường'];
 
 const Leaderboard: React.FC = () => {
 	const [activeTab, setActiveTab] = useState(0);
+	const [players, setPlayers] = useState<any[]>([]);
+	const { initialState } = useModel('@@initialState');
+	const currentUserId = (initialState?.currentUser as any)?.id;
+
+	useEffect(() => {
+		getLeaderboard(10).then(res => {
+			const data = res.data?.data ?? res.data ?? [];
+			setPlayers(Array.isArray(data) ? data : []);
+		}).catch(() => {});
+	}, []);
+
+	const getInitials = (p: any) =>
+		[(p.firstName?.[0] ?? ''), (p.lastName?.[0] ?? '')].join('').toUpperCase() || '?';
+	const getDisplayName = (p: any) =>
+		[p.firstName, p.lastName].filter(Boolean).join(' ') || 'Học sinh';
+
+	const podiumOrder = players.length >= 3
+		? [players[1], players[0], players[2]]
+		: players;
+	const rows = players.slice(3);
 
 	return (
 		<StudentLayout>
@@ -61,85 +68,70 @@ const Leaderboard: React.FC = () => {
 						<div className='stu-leader__spark stu-leader__spark--3' />
 
 						<div className='stu-leader__podium'>
-							{PODIUM.map((p, idx) => (
-								<div
-									key={p.rank}
-									className={`stu-leader__podium-col stu-leader__podium-col--r${p.rank}`}
-									style={{ animationDelay: `${0.15 + (3 - p.rank) * 0.15}s` }}
-								>
-									{p.crown && <div className='stu-leader__crown-emoji'>👑</div>}
-
-									<div className={`stu-leader__podium-avatar-wrap`}>
-										<div
-											className='stu-leader__podium-avatar'
-											style={{
-												border:
-													p.rank === 1
-														? '3px solid oklch(0.8 0.14 85)'
-														: p.rank === 2
-															? '3px solid oklch(0.78 0.02 250)'
-															: '3px solid oklch(0.65 0.11 55)',
-												boxShadow:
-													p.rank === 1
-														? '0 6px 18px -6px oklch(0.8 0.14 85 / 0.8)'
-														: p.rank === 2
-															? '0 6px 18px -6px oklch(0.78 0.02 250 / 0.8)'
-															: '0 6px 18px -6px oklch(0.65 0.11 55 / 0.8)',
-											}}
-										/>
-										<div
-											className='stu-leader__podium-badge'
-											style={{
-												background:
-													p.rank === 1
-														? 'oklch(0.8 0.14 85)'
-														: p.rank === 2
-															? 'oklch(0.78 0.02 250)'
-															: 'oklch(0.65 0.11 55)',
-											}}
-										>
-											{p.rank}
+							{podiumOrder.map((p, idx) => {
+								const realRank = idx === 0 ? 2 : idx === 1 ? 1 : 3;
+								const heights = [96, 140, 76];
+								const borderColors = ['oklch(0.78 0.02 250)', 'oklch(0.8 0.14 85)', 'oklch(0.65 0.11 55)'];
+								const badgeBgs = ['oklch(0.78 0.02 250)', 'oklch(0.8 0.14 85)', 'oklch(0.65 0.11 55)'];
+								return (
+									<div
+										key={p.id}
+										className={`stu-leader__podium-col stu-leader__podium-col--r${realRank}`}
+										style={{ animationDelay: `${0.15 + (3 - realRank) * 0.15}s` }}
+									>
+										{realRank === 1 && <div className='stu-leader__crown-emoji'>👑</div>}
+										<div className='stu-leader__podium-avatar-wrap'>
+											<div
+												className='stu-leader__podium-avatar'
+												style={{ border: `3px solid ${borderColors[idx]}`, boxShadow: `0 6px 18px -6px ${borderColors[idx]} / 0.8)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: '#fff', background: '#5a5852' }}
+											>
+												{p.picture
+													? <img src={p.picture} alt='' style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+													: getInitials(p)}
+											</div>
+											<div className='stu-leader__podium-badge' style={{ background: badgeBgs[idx] }}>{realRank}</div>
+										</div>
+										<div className={`stu-leader__podium-name ${realRank === 1 ? 'stu-leader__podium-name--bold' : ''}`}>
+											{getDisplayName(p)}
+										</div>
+										<div className='stu-leader__podium-xp'>{(p.xp ?? 0).toLocaleString('vi-VN')} XP</div>
+										<div className={`stu-leader__podium-bar stu-leader__podium-bar--r${realRank}`} style={{ height: `${heights[idx]}px` }}>
+											<span>{realRank}</span>
+											{realRank === 1 && <div className='stu-leader__podium-shine' />}
 										</div>
 									</div>
-
-									<div className={`stu-leader__podium-name ${p.rank === 1 ? 'stu-leader__podium-name--bold' : ''}`}>
-										{p.name}
-									</div>
-									<div className='stu-leader__podium-xp'>{p.xp}</div>
-
-									{/* Tower Block */}
-									<div
-										className={`stu-leader__podium-bar stu-leader__podium-bar--r${p.rank}`}
-										style={{ height: `${p.height}px` }}
-									>
-										<span style={{ color: p.labelColor }}>{p.rank}</span>
-										{p.rank === 1 && <div className='stu-leader__podium-shine' />}
-									</div>
-								</div>
-							))}
+								);
+							})}
 						</div>
 					</div>
 
 					{/* Ranked Rows */}
 					<div className='stu-leader__rows'>
-						{ROWS.map((r, idx) => (
-							<div
-								key={r.rank}
-								className={`stu-leader__row ${r.me ? 'stu-leader__row--me' : ''}`}
-								style={{ animationDelay: `${(idx * 0.08).toFixed(2)}s` }}
-							>
-								<div className={`stu-leader__row-rank ${r.me ? 'stu-leader__row-rank--me' : ''}`}>{r.rank}</div>
-								<div className='stu-leader__row-avatar' />
-								<div className='stu-leader__row-info'>
-									<div className={`stu-leader__row-name ${r.me ? 'stu-leader__row-name--me' : ''}`}>{r.name}</div>
-									<div className={`stu-leader__row-level ${r.me ? 'stu-leader__row-level--me' : ''}`}>
-										Level {r.level}
+						{rows.map((r, idx) => {
+							const rank = idx + 4;
+							const isMe = r.id === currentUserId;
+							return (
+								<div
+									key={r.id}
+									className={`stu-leader__row ${isMe ? 'stu-leader__row--me' : ''}`}
+									style={{ animationDelay: `${(idx * 0.08).toFixed(2)}s` }}
+								>
+									<div className={`stu-leader__row-rank ${isMe ? 'stu-leader__row-rank--me' : ''}`}>{rank}</div>
+									<div className='stu-leader__row-avatar' style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, background: '#ccc', borderRadius: '50%', color: '#fff' }}>
+										{r.picture ? <img src={r.picture} alt='' style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} /> : getInitials(r)}
 									</div>
+									<div className='stu-leader__row-info'>
+										<div className={`stu-leader__row-name ${isMe ? 'stu-leader__row-name--me' : ''}`}>{isMe ? `${getDisplayName(r)} (Bạn)` : getDisplayName(r)}</div>
+										<div className={`stu-leader__row-level ${isMe ? 'stu-leader__row-level--me' : ''}`}>Level {r.level ?? 1}</div>
+									</div>
+									<div className='stu-leader__row-week' />
+									<div className={`stu-leader__row-xp ${isMe ? 'stu-leader__row-xp--me' : ''}`}>{(r.xp ?? 0).toLocaleString('vi-VN')} XP</div>
 								</div>
-								<div className='stu-leader__row-week'>{r.week}</div>
-								<div className={`stu-leader__row-xp ${r.me ? 'stu-leader__row-xp--me' : ''}`}>{r.xp}</div>
-							</div>
-						))}
+							);
+						})}
+						{players.length === 0 && (
+							<div style={{ textAlign: 'center', padding: '32px', color: '#888' }}>Chưa có dữ liệu xếp hạng.</div>
+						)}
 					</div>
 				</div>
 			</div>

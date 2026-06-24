@@ -57,11 +57,14 @@ const Login: React.FC = () => {
 			scopes = payload.scopes ?? [];
 		} catch {}
 
+		let userRole = 'student';
 		try {
 			const info = await getUserInfo();
+			const user = info.data?.data || info.data;
+			userRole = user?.role ?? 'student';
 			setInitialState({
 				...initialState,
-				currentUser: info.data?.data || info.data,
+				currentUser: user,
 				authorizedPermissions: [{ scopes, rsname: currentRole, rsid: currentRole }],
 			});
 		} catch {
@@ -72,7 +75,7 @@ const Login: React.FC = () => {
 		}
 
 		message.success(mode === 'register' ? 'Đăng ký thành công' : 'Đăng nhập thành công');
-		history.push('/dashboard');
+		history.push(userRole === 'student' ? '/hoc-sinh' : '/dashboard');
 	};
 
 	const handleEmailAuth = async (values: any) => {

@@ -1,4 +1,6 @@
+import { getLeaderboard, getMyLabs, getUserStats } from '@/services/base/api';
 import React, { useEffect, useState } from 'react';
+import { useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
 import './index.less';
 
@@ -105,6 +107,50 @@ const LockIcon = () => (
 );
 
 const Progress: React.FC = () => {
+	const [stats, setStats] = useState<any>(null);
+	const [labData, setLabData] = useState<{ inProgress: any[]; completed: any[] }>({ inProgress: [], completed: [] });
+	const [rank, setRank] = useState<number>(0);
+	const { initialState } = useModel('@@initialState');
+	const currentUserId = (initialState?.currentUser as any)?.id;
+
+	useEffect(() => {
+		getUserStats().then(res => setStats(res.data?.data || res.data)).catch(() => {});
+		getMyLabs().then(res => {
+			const d = res.data?.data ?? res.data ?? {};
+			setLabData({ inProgress: d.inProgress ?? [], completed: d.completed ?? [] });
+		}).catch(() => {});
+		getLeaderboard(50).then(res => {
+			const list: any[] = res.data?.data ?? res.data ?? [];
+			const idx = list.findIndex((p: any) => p.id === currentUserId);
+			setRank(idx >= 0 ? idx + 1 : 0);
+		}).catch(() => {});
+	}, [currentUserId]);
+
+	const xp = stats?.xp ?? 0;
+	const level = stats?.level ?? 1;
+	const streak = stats?.streak ?? 0;
+	const maxStreak = stats?.maxStreak ?? 0;
+	const levelTitle = stats?.levelTitle ?? 'Học sinh mới';
+	const nextThreshold = level * level * 100;
+	const xpToNextLevel = Math.max(0, nextThreshold - xp);
+	const pct = Math.min(100, Math.round((xp / nextThreshold) * 100));
+	const circumference = 402;
+	const dashOffset = circumference - (circumference * pct) / 100;
+
+	const totalLabs = labData.inProgress.length + labData.completed.length;
+	const subjectSet = new Set([...labData.inProgress, ...labData.completed].map((l: any) => l.subject));
+	const subjectCount = subjectSet.size;
+
+	const avgScore = (subject: string) => {
+		const done = labData.completed.filter((l: any) => l.subject === subject);
+		if (!done.length) return 0;
+		return Math.round(done.reduce((s: number, l: any) => s + (l.score ?? 0), 0) / done.length);
+	};
+	const chemPct = avgScore('chem');
+	const mathPct = avgScore('math');
+	const physicsPct = avgScore('physics');
+	const avgMastery = subjectCount > 0 ? Math.round((chemPct + mathPct + physicsPct) / 3) : 0;
+
 	return (
 		<StudentLayout>
 			<div className='stu-progress scl'>
@@ -123,25 +169,24 @@ const Progress: React.FC = () => {
 							<div className='stu-progress__hero-left'>
 								<div className='stu-progress__hero-subtitle'>TIẾN TRÌNH CỦA BẠN</div>
 								<div className='stu-progress__hero-identity'>
-									<div className='stu-progress__hero-level'>Lv.7</div>
+									<div className='stu-progress__hero-level'>Lv.{level}</div>
 									<div className='stu-progress__hero-rank-name'>
-										Học sinh
+										{levelTitle.split(' ').slice(0, -1).join(' ')}
 										<br />
-										Tập sự
+										{levelTitle.split(' ').slice(-1)[0]}
 									</div>
 								</div>
 
 								<div className='stu-progress__hero-xp-section'>
 									<div className='stu-progress__hero-xp-labels'>
-										<span>1.240 XP</span>
-										<span>1.500 → Lv.8</span>
+										<span>{xp.toLocaleString('vi-VN')} XP</span>
+										<span>{nextThreshold.toLocaleString('vi-VN')} → Lv.{level + 1}</span>
 									</div>
 									<div className='stu-progress__hero-xp-track'>
-										<div className='stu-progress__hero-xp-fill' style={{ width: '82%' }} />
+										<div className='stu-progress__hero-xp-fill' style={{ width: `${pct}%` }} />
 									</div>
 									<div className='stu-progress__hero-hint'>
-										Chỉ còn <span style={{ color: '#cfccdd', fontWeight: 600 }}>260 XP</span> để lên cấp tiếp theo —
-										khoảng 2 bài lab nữa.
+										Chỉ còn <span style={{ color: '#cfccdd', fontWeight: 600 }}>{xpToNextLevel.toLocaleString('vi-VN')} XP</span> để lên cấp tiếp theo.
 									</div>
 								</div>
 							</div>
@@ -159,7 +204,7 @@ const Progress: React.FC = () => {
 										strokeWidth='13'
 										strokeLinecap='round'
 										strokeDasharray='402'
-										strokeDashoffset='72.4'
+										strokeDashoffset={dashOffset}
 										transform='rotate(-90 77 77)'
 										className='stu-progress__gauge-fill'
 									/>
@@ -172,10 +217,10 @@ const Progress: React.FC = () => {
 								</svg>
 								<div className='stu-progress__gauge-text'>
 									<div className='stu-progress__gauge-number'>
-										<CountUp end={82} />
+										<CountUp end={pct} />
 										<span>%</span>
 									</div>
-									<div className='stu-progress__gauge-sub'>LÊN LV.8</div>
+									<div className='stu-progress__gauge-sub'>LÊN LV.{level + 1}</div>
 								</div>
 							</div>
 						</div>
@@ -185,29 +230,27 @@ const Progress: React.FC = () => {
 							<div className='stu-progress__hero-stat'>
 								<div className='stu-progress__hero-stat-lbl'>TỔNG XP</div>
 								<div className='stu-progress__hero-stat-val'>
-									<CountUp end={1240} isComma />
-									<span className='stu-progress__hero-stat-plus'>+180</span>
+									<CountUp end={xp} isComma />
 								</div>
 							</div>
 							<div className='stu-progress__hero-stat'>
 								<div className='stu-progress__hero-stat-lbl'>CHUỖI NGÀY</div>
 								<div className='stu-progress__hero-stat-val'>
-									<CountUp end={5} />
-									<span className='stu-progress__hero-stat-sub'>kỷ lục 9</span>
+									<CountUp end={streak} />
+									<span className='stu-progress__hero-stat-sub'>kỷ lục {maxStreak}</span>
 								</div>
 							</div>
 							<div className='stu-progress__hero-stat'>
 								<div className='stu-progress__hero-stat-lbl'>SỐ BÀI LAB</div>
 								<div className='stu-progress__hero-stat-val'>
-									<CountUp end={18} />
-									<span className='stu-progress__hero-stat-sub'>3 môn</span>
+									<CountUp end={totalLabs} />
+									<span className='stu-progress__hero-stat-sub'>{subjectCount || 0} môn</span>
 								</div>
 							</div>
 							<div className='stu-progress__hero-stat'>
 								<div className='stu-progress__hero-stat-lbl'>HẠNG LỚP</div>
 								<div className='stu-progress__hero-stat-val'>
-									<span>#4</span>
-									<span className='stu-progress__hero-stat-plus'>↑2</span>
+									<span>{rank ? `#${rank}` : '--'}</span>
 								</div>
 							</div>
 						</div>
@@ -219,7 +262,7 @@ const Progress: React.FC = () => {
 						<div className='stu-progress__chart-box stu-progress__chart-box--wide'>
 							<div className='stu-progress__chart-header'>
 								<span className='stu-progress__chart-title'>XP trong 6 tuần qua</span>
-								<span className='stu-progress__chart-badge'>Tuần này +180</span>
+								<span className='stu-progress__chart-badge'>Tổng {xp.toLocaleString('vi-VN')} XP</span>
 							</div>
 							<div className='stu-progress__xp-chart'>
 								<div className='stu-progress__xp-axis-y' />
@@ -261,19 +304,19 @@ const Progress: React.FC = () => {
 						<div className='stu-progress__chart-box'>
 							<div className='stu-progress__chart-header'>
 								<span className='stu-progress__chart-title'>Mức độ thành thạo</span>
-								<span className='stu-progress__chart-desc'>trung bình 72%</span>
+								<span className='stu-progress__chart-desc'>trung bình {avgMastery}%</span>
 							</div>
 
 							<div className='stu-progress__mastery-list'>
 								<div className='stu-progress__mastery-row'>
 									<div className='stu-progress__mastery-info'>
 										<span>Hóa học</span>
-										<strong>84%</strong>
+										<strong>{chemPct}%</strong>
 									</div>
 									<div className='stu-progress__mastery-track'>
 										<div
 											className='stu-progress__mastery-fill stu-progress__mastery-fill--chem'
-											style={{ width: '84%' }}
+											style={{ width: `${chemPct}%` }}
 										/>
 									</div>
 								</div>
@@ -281,12 +324,12 @@ const Progress: React.FC = () => {
 								<div className='stu-progress__mastery-row'>
 									<div className='stu-progress__mastery-info'>
 										<span>Toán học</span>
-										<strong>72%</strong>
+										<strong>{mathPct}%</strong>
 									</div>
 									<div className='stu-progress__mastery-track'>
 										<div
 											className='stu-progress__mastery-fill stu-progress__mastery-fill--math'
-											style={{ width: '72%' }}
+											style={{ width: `${mathPct}%` }}
 										/>
 									</div>
 								</div>
@@ -294,12 +337,12 @@ const Progress: React.FC = () => {
 								<div className='stu-progress__mastery-row'>
 									<div className='stu-progress__mastery-info'>
 										<span>Vật lý</span>
-										<strong>60%</strong>
+										<strong>{physicsPct}%</strong>
 									</div>
 									<div className='stu-progress__mastery-track'>
 										<div
 											className='stu-progress__mastery-fill stu-progress__mastery-fill--physics'
-											style={{ width: '60%' }}
+											style={{ width: `${physicsPct}%` }}
 										/>
 									</div>
 								</div>

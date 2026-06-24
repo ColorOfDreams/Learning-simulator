@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { history, useLocation } from 'umi';
+import { history, useLocation, useModel } from 'umi';
+import { useAuthActions } from '@/hooks/useAuthActions';
 import './index.less';
 
 interface StudentLayoutProps {
@@ -115,6 +116,11 @@ const NAV_ITEMS: NavItem[] = [
 
 const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) => {
 	const location = useLocation();
+	const { initialState } = useModel('@@initialState');
+	const user = initialState?.currentUser;
+	const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || 'Học sinh';
+	const initials = [user?.firstName?.[0], user?.lastName?.[0]].filter(Boolean).join('').toUpperCase() || 'HS';
+	const levelLabel = `Lớp ${user?.grade ?? 11} · Level ${user?.level ?? 1}`;
 
 	const [theme, setTheme] = useState<'light' | 'dark'>(() => {
 		try {
@@ -143,6 +149,8 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 		if (path === '/hoc-sinh') return location.pathname === '/hoc-sinh';
 		return location.pathname.startsWith(path);
 	};
+
+	const { dangXuat } = useAuthActions();
 
 	const handleNav = (path: string) => {
 		if (path === '#') return;
@@ -207,6 +215,23 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 
 					{/* Bottom */}
 					<div className='stu-sidebar__bottom'>
+						<div className='stu-sidebar__nav-item stu-sidebar__nav-item--logout' onClick={dangXuat}>
+							<svg
+								width='18'
+								height='18'
+								viewBox='0 0 24 24'
+								fill='none'
+								stroke='currentColor'
+								strokeWidth='1.8'
+								strokeLinecap='round'
+								strokeLinejoin='round'
+							>
+								<path d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4' />
+								<polyline points='16 17 21 12 16 7' />
+								<line x1='21' y1='12' x2='9' y2='12' />
+							</svg>
+							Đăng xuất
+						</div>
 						<div className='stu-sidebar__nav-item stu-sidebar__nav-item--settings' onClick={toggleTheme}>
 							<svg
 								width='18'
@@ -226,10 +251,13 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 						</div>
 
 						<div className='stu-sidebar__user' onClick={() => handleNav('/hoc-sinh/profile')}>
-							<div className='stu-sidebar__user-avatar'>AR</div>
+							{user?.picture
+								? <img src={user.picture} alt={fullName} className='stu-sidebar__user-avatar stu-sidebar__user-avatar--img' style={{ borderRadius: '50%', objectFit: 'cover', width: 32, height: 32 }} />
+								: <div className='stu-sidebar__user-avatar'>{initials}</div>
+							}
 							<div className='stu-sidebar__user-info'>
-								<div className='stu-sidebar__user-name'>Alex Rivera</div>
-								<div className='stu-sidebar__user-meta'>Lớp 11 · Level 7</div>
+								<div className='stu-sidebar__user-name'>{fullName}</div>
+								<div className='stu-sidebar__user-meta'>{levelLabel}</div>
 							</div>
 							<svg
 								width='15'
@@ -245,6 +273,8 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 								<path d='M9 6l6 6-6 6' />
 							</svg>
 						</div>
+
+						
 					</div>
 				</aside>
 			)}

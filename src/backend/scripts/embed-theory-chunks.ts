@@ -49,6 +49,8 @@ async function main() {
         continue;
       }
 
+      await new Promise((r) => setTimeout(r, 250));
+
       try {
         const vector = await embeddingService.embedText(chunk.text);
 

@@ -62,7 +62,8 @@ export class EmbeddingService {
       body: JSON.stringify({
         model: this.model,
         input: texts,
-        dimensions: this.dimension,
+        // OpenAI supports controlling output dimensions; Mistral and others do not
+        ...(baseUrl.includes('openai.com') ? { dimensions: this.dimension } : {}),
       }),
     });
 

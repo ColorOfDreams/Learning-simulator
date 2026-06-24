@@ -51,7 +51,7 @@ export class AiService {
     const selectedPattern = this.selectPattern(message, target, patterns);
 
     if (!selectedPattern) {
-      return this.runSearchAssistant(message, subject);
+      return this.runSearchAssistant(message, subject, request.context);
     }
 
     const simulationTemplate = selectedPattern?.simulationId
@@ -813,14 +813,15 @@ export class AiService {
           `Giữ câu trả lời súc tích dưới 4-5 câu để hiển thị vừa vặn trong khung chat nhỏ ở thanh sidebar bên phải.`
         ].join('\n');
       } else {
+        const subjectLabel = payload.subject === 'chem' ? 'Hóa học' : payload.subject === 'math' ? 'Toán học' : 'Vật lý';
         systemPromptContent = [
-          'Bạn là trợ lý học tập cho học sinh lớp 11, chủ đề chính là Chương 1: Dao động.',
+          `Bạn là trợ lý học tập AI cho học sinh THPT, hỗ trợ môn ${subjectLabel} lớp ${payload.grade}.`,
           'Ưu tiên trả lời theo dữ liệu nội bộ và dạng bài đã nhận diện.',
           generalKnowledgeRule,
-          'Không bịa nguồn, không đi quá xa khỏi Vật lí 11.',
-          'Giọng giải thích vui, dễ hiểu, có ví dụ trực quan ngắn; vẫn giữ công thức chính xác.',
-          'Không dùng block LaTeX kiểu \\[...\\] hoặc \\(...\\); hãy viết công thức bằng plain text/Unicode, ví dụ v = ±ω√(A² - x²).',
-          'Nếu là bài tính, trình bày ngắn theo: nhận dạng dữ kiện, công thức, thay số, kết luận.',
+          'Không bịa nguồn hoặc suy đoán ngoài phạm vi kiến thức phổ thông.',
+          'Giọng giải thích ngắn gọn, dễ hiểu, có ví dụ trực quan; giữ công thức chính xác.',
+          'Không dùng block LaTeX kiểu \\[...\\] hoặc \\(...\\); viết công thức bằng plain text/Unicode.',
+          'Nếu là bài tính, trình bày ngắn: nhận dạng dữ kiện → công thức → thay số → kết luận.',
         ].join('\n');
       }
 
@@ -1028,7 +1029,7 @@ export class AiService {
       .trim();
   }
 
-  private async runSearchAssistant(message: string, initialSubject?: string): Promise<AiAnalysisOutput> {
+  private async runSearchAssistant(message: string, initialSubject?: string, context?: { role: 'user' | 'assistant'; content: string }[]): Promise<AiAnalysisOutput> {
     let isLlm = this.llmService.isConfigured();
     
     let isRelated = true;
@@ -1041,53 +1042,93 @@ export class AiService {
 
     if (isLlm) {
       const systemPrompt = [
-        'Bạn là trợ lý học tập AI chuyên phân tích yêu cầu học sinh và tìm kiếm mô phỏng tương thích trong kho 20 mô phỏng ảo:',
+        'Bạn là trợ lý học tập AI chuyên phân tích yêu cầu học sinh và tìm kiếm mô phỏng tương thích trong kho 51 mô phỏng ảo:',
+        '--- Hóa học ---',
         '- SIM-01: Điều chế ethyl acetate (phản ứng ester hóa) (Môn: chem, topic: esterification)',
-        '- SIM-02: Chuyển động ném xiên (Môn: physics, topic: projectile)',
         '- SIM-03: Phản ứng xà phòng hóa chất béo (Môn: chem, topic: saponification)',
         '- SIM-04: Glucose tác dụng với Cu(OH)₂ (Môn: chem, topic: glucose_cuoh2)',
-        '- SIM-05: Phản ứng tráng bạc của glucose (Môn: chem, topic: silver_mirror)',
-        '- SIM-06: Phản ứng màu của tinh bột với iodine (Môn: chem, topic: starch_iodine)',
-        '- SIM-07: Phản ứng màu biuret của protein (Môn: chem, topic: biuret_protein)',
-        '- SIM-08: Đồ thị hàm số bậc hai (Môn: math, topic: quadratic)',
-        '- SIM-08: Sodium tác dụng với nước (Môn: chem, topic: sodium_water) -> Lưu ý: Nếu liên quan đến Sodium/Natri tác dụng với nước thì là môn chem, topic: sodium_water.',
-        '- SIM-09: Đinh sắt tác dụng với dung dịch CuSO₄ (Môn: chem, topic: iron_copper_sulfate)',
-        '- SIM-10: Nhôm tác dụng với dung dịch NaOH (Môn: chem, topic: aluminum_sodium_hydroxide)',
-        '- SIM-11: Phản ứng nhiệt nhôm (Al + Fe₂O₃) (Môn: chem, topic: aluminothermic)',
-        '- SIM-12: Điều chế Fe(OH)₂ và Fe(OH)₃ (Môn: chem, topic: iron_hydroxides)',
-        '- SIM-13: Điện phân dung dịch CuSO₄ (Môn: chem, topic: electrolysis_cuso4)',
-        '- SIM-14: Ăn mòn điện hóa học (pin Zn – Cu) (Môn: chem, topic: electrochemical_corrosion)',
-        '- SIM-15: Thí nghiệm bắn phá lá vàng (Rutherford) (Môn: chem, topic: gold_foil_experiment)',
+        '- SIM-05: Chuẩn độ Acid - Base (Môn: chem, topic: acid_base_titration)',
+        '- SIM-06: Đồng tác dụng với dung dịch HNO₃ đặc (Môn: chem, topic: copper_hno3)',
+        '- SIM-07: Ammonia tác dụng với HCl đặc - Khói trắng (Môn: chem, topic: ammonia_hcl)',
+        '- SIM-08: Sodium tác dụng với nước (Môn: chem, topic: sodium_water)',
+        '- SIM-09: H₂SO₄ đặc tác dụng với đường Saccharose (Môn: chem, topic: h2so4_sucrose)',
+        '- SIM-10: Ethylene tác dụng với nước Bromine (Môn: chem, topic: ethylene_bromine)',
+        '- SIM-11: Acetylene tác dụng với dung dịch AgNO₃/NH₃ (Môn: chem, topic: acetylene_agno3)',
+        '- SIM-12: Ethanol tác dụng với kim loại Sodium (Môn: chem, topic: ethanol_sodium)',
+        '- SIM-13: Phenol tác dụng với nước Bromine (Môn: chem, topic: phenol_bromine)',
+        '- SIM-14: Glycerol tác dụng với Cu(OH)₂ (Môn: chem, topic: glycerol_cuoh2)',
+        '- SIM-15: Tính chất hóa học của Acetic Acid (Môn: chem, topic: acetic_acid)',
+        '--- Toán ---',
+        '- SIM-08_math: Đồ thị hàm số bậc hai (Môn: math, topic: quadratic)',
         '- SIM-16: Ném xiên và vòm cổng parabol (Môn: math, topic: projectile-arch)',
         '- SIM-17: Miền nghiệm hệ bất phương trình (Môn: math, topic: inequality)',
         '- SIM-18: Hệ thức lượng tam giác cột cờ (Môn: math, topic: triangulation)',
         '- SIM-19: Định nghĩa Elip ghim đinh (Môn: math, topic: conic)',
         '- SIM-20: Thống kê số liệu mẫu và biểu đồ (Môn: math, topic: statistics)',
+        '--- Vật lý ---',
+        '- SIM-02: Chuyển động ném xiên (Môn: physics, topic: projectile)',
+        '- SIM-22: Sự rơi tự do (Môn: physics, topic: free_fall)',
         '- SIM-21: Chuyển động thẳng đều & biến đổi đều (Môn: physics, topic: kinematics)',
+        '- SIM-23: Chuyển động ném ngang (Môn: physics, topic: horizontal_projectile)',
+        '- SIM-24: Định luật II Newton – xe lăn (Môn: physics, topic: newton2)',
+        '- SIM-25: Vật trượt trên mặt phẳng nghiêng (Môn: physics, topic: inclined_plane)',
+        '- SIM-26: Con lắc lò xo nằm ngang (Môn: physics, topic: spring_pendulum)',
+        '- SIM-27: Con lắc đơn dao động (Môn: physics, topic: simple_pendulum)',
+        '- SIM-28: Chuyển động tròn đều (Môn: physics, topic: circular_motion)',
+        '- SIM-29: Va chạm 1D – bảo toàn động lượng (Môn: physics, topic: collision)',
+        '- SIM-30: Bảo toàn cơ năng (Môn: physics, topic: mechanical_energy)',
+        '- SIM-31: Định luật Boyle – đẳng nhiệt (Môn: physics, topic: boyle)',
+        '- SIM-32: Định luật Charles – đẳng áp (Môn: physics, topic: charles)',
+        '- SIM-33: Thuyết động học phân tử chất khí (Môn: physics, topic: kinetic_theory)',
+        '- SIM-34: Sự chuyển thể của chất (Môn: physics, topic: phase_transition)',
+        '- SIM-35: Lực từ tác dụng lên dây dẫn (Môn: physics, topic: magnetic_force)',
+        '- SIM-36: Lực Lorentz (Môn: physics, topic: lorentz_force)',
+        '- SIM-37: Hiện tượng cảm ứng điện từ (Môn: physics, topic: electromagnetic_induction)',
+        '- SIM-38: Máy phát điện xoay chiều (Môn: physics, topic: ac_generator)',
+        '- SIM-39: Phóng xạ & chu kỳ bán rã (Môn: physics, topic: radioactive_decay)',
+        '- SIM-40: Phản ứng phân hạch & nhiệt hạch (Môn: physics, topic: nuclear_reaction)',
+        '- SIM-41: Năng lượng liên kết riêng (Môn: physics, topic: binding_energy)',
+        '- SIM-42: Dao động điều hòa (Môn: physics, topic: simple_harmonic_motion)',
+        '- SIM-43: Dao động tắt dần (Môn: physics, topic: damped_oscillation)',
+        '- SIM-44: Hiện tượng cộng hưởng (Môn: physics, topic: resonance)',
+        '- SIM-45: Sóng ngang truyền trên dây (Môn: physics, topic: transverse_wave)',
+        '- SIM-46: Sóng dừng (Môn: physics, topic: standing_wave)',
+        '- SIM-47: Giao thoa sóng nước (Môn: physics, topic: wave_interference)',
+        '- SIM-48: Định luật Coulomb & Lực tương tác (Môn: physics, topic: coulomb)',
+        '- SIM-49: Điện trường & Đường sức điện (Môn: physics, topic: electric_field)',
+        '- SIM-50: Định luật Ohm cho đoạn mạch (Môn: physics, topic: ohm_segment)',
+        '- SIM-51: Mạch ghép điện trở nối tiếp/song song (Môn: physics, topic: resistor_circuit)',
+        '- SIM-52: Định luật Ohm cho toàn mạch (Môn: physics, topic: ohm_full)',
         '',
         'Nhiệm vụ của bạn là:',
         '1. Đánh giá câu hỏi/yêu cầu của học sinh:',
-        '- Nếu câu hỏi/yêu cầu hoàn toàn KHÔNG liên quan đến Toán, Lý, Hóa hay khoa học tự nhiên cấp THPT (ví dụ: thời tiết, nấu ăn thường ngày, địa lý, chính trị, thể thao giải trí, kể chuyện cười, đùa cợt, đời sống xã hội...): Hãy trả lời khéo léo và từ chối lịch sự bằng tiếng Việt, hướng dẫn học sinh quay lại chủ đề học tập khoa học. Set "is_related": false, "simulation_id": null.',
-        '- Nếu liên quan đến khoa học/Toán/Lý/Hóa nhưng KHÔNG có mô phỏng nào phù hợp trong danh sách 21 mô phỏng trên: Giải thích ngắn gọn lý thuyết/khái niệm đó một cách súc tích, dễ hiểu bằng tiếng Việt (2-4 câu), đồng thời thông báo khéo léo rằng hệ thống chưa có mô phỏng tương tác cho chủ đề này và hẹn gặp lại ở các phiên bản sau, hoặc gợi ý các bài học liên quan có sẵn trong kho. Set "is_related": true, "has_simulation": false, "simulation_id": null.',
-        '- Nếu liên quan và có thể liên kết trực tiếp với 1 trong 21 mô phỏng trên: Giải thích kiến thức hoặc trả lời yêu cầu bằng tiếng Việt một cách tự nhiên, sinh động (2-4 câu), giới thiệu mô phỏng đó và khuyên học sinh nhấp nút trải nghiệm mô phỏng bên dưới để hiểu bài sâu sắc hơn. Set "is_related": true, "has_simulation": true, "simulation_id": "SIM-XX" tương ứng.',
+        '- Nếu câu hỏi/yêu cầu hoàn toàn KHÔNG liên quan đến Toán, Lý, Hóa hay khoa học tự nhiên cấp THPT: Từ chối lịch sự và hướng dẫn học sinh quay lại chủ đề học tập. Set "is_related": false, "simulation_id": null.',
+        '- Nếu liên quan đến khoa học nhưng KHÔNG có mô phỏng phù hợp trong danh sách trên: Giải thích ngắn gọn lý thuyết (2-4 câu) và thông báo chưa có mô phỏng cho chủ đề này. Set "is_related": true, "has_simulation": false, "simulation_id": null.',
+        '- Nếu có thể liên kết với 1 mô phỏng trong danh sách: Giải thích kiến thức (2-4 câu) và giới thiệu mô phỏng. Set "is_related": true, "has_simulation": true, "simulation_id": "SIM-XX" tương ứng.',
         '',
-        '2. Hãy trả về kết quả dưới dạng JSON duy nhất với cấu trúc sau:',
+        'QUY TẮC BẮT BUỘC: KHÔNG được viết mã "SIM-XX" trong trường short_answer. Chỉ dùng tên đầy đủ của mô phỏng.',
+        '',
+        '2. Trả về JSON duy nhất với cấu trúc sau:',
         '{',
         '  "is_related": boolean,',
         '  "has_simulation": boolean,',
-        '  "simulation_id": "SIM-01" | "SIM-02" | ... | "SIM-21" | null,',
+        '  "simulation_id": "SIM-01" | ... | "SIM-52" | null,',
         '  "subject": "physics" | "math" | "chem",',
         '  "topic": string,',
-        '  "short_answer": "Lời giải thích tự nhiên, thân thiện bằng tiếng Việt. Sử dụng Unicode cho công thức nếu cần. Tránh dấu LaTeX block.",',
+        '  "short_answer": "Lời giải thích tự nhiên bằng tiếng Việt. Unicode cho công thức. Không dùng LaTeX block. Không viết mã SIM-XX.",',
         '  "confidence": number',
         '}',
         '',
-        'KHÔNG được viết thêm bất kỳ từ ngữ nào ngoài block JSON. Hãy chắc chắn JSON hợp lệ.'
+        'KHÔNG viết bất kỳ nội dung nào ngoài block JSON. Đảm bảo JSON hợp lệ.'
       ].join('\n');
 
       try {
+        const contextMessages = (context ?? [])
+          .slice(-4)
+          .map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }));
         const responseText = await this.llmService.complete([
           { role: 'system', content: systemPrompt },
+          ...contextMessages,
           { role: 'user', content: `Yêu cầu của học sinh: "${message}"` }
         ]);
 
@@ -1115,15 +1156,16 @@ export class AiService {
         'xap phong', 'chat beo', 'sapon', 'fat', 'ethyl', 'ester', 'axit axetic', 'ethanol',
         'glucose', 'cu(oh)2', 'dong', 'glucozo', 'phuc', 'trang bac', 'trang guong', 'agno3',
         'tollens', 'bac nitrat', 'tinh bot', 'iodine', 'i-ot', 'iot', 'biuret', 'protein',
-        'long trang trung', 'peptit', 'sodium', 'natri', 'nuoc', 'kim loai kiem', 'dinh sat',
-        'sat', 'cuso4', 'fecuso4', 'nhom', 'naoh', 'alnaoh', 'nhiet nhom', 'tecmit', 'fe2o3',
-        'fe(oh)2', 'fe(oh)3', 'dien phan', 'an mon', 'dien hoa', 'pin', 'zn', 'cu', 'zn-cu',
-        'rutherford', 'la vang', 'ban pha', 'alpha', 'hat nhan', 'bac hai', 'parabol', 'phuong trinh',
-        'nghiem', 'dinh', 'nem xien', 'vom', 'vom cong', 'cong parabol', 'quy dao vom', 'mien nghiem',
-        'bat phuong trinh', 'he bat phuong trinh', 'he thuc luong', 'cot co', 'tam giac cot co',
-        'do chieu cao', 'elip', 'ghim dinh', 'duong conic', 'tieu diem', 'thong ke', 'so lieu mau',
-        'bieu do hop', 'box plot', 'quy dao', 'van toc', 'gia toc', 'chu ky', 'chu ki', 'tan so',
-        'bien do', 'li do', 'toa do', 'vi tri', 'cuc dai', 'co nang', 'dong nang', 'the nang', 'cong huong'
+        'long trang trung', 'peptit', 'sodium', 'natri', 'nuoc', 'kim loai kiem',
+        'bac hai', 'parabol', 'phuong trinh', 'nghiem', 'dinh', 'nem xien', 'vom', 'vom cong',
+        'cong parabol', 'quy dao vom', 'mien nghiem', 'bat phuong trinh', 'he bat phuong trinh',
+        'he thuc luong', 'cot co', 'tam giac cot co', 'do chieu cao', 'elip', 'ghim dinh',
+        'duong conic', 'tieu diem', 'thong ke', 'so lieu mau', 'bieu do hop', 'box plot',
+        'quy dao', 'van toc', 'gia toc', 'chu ky', 'chu ki', 'tan so', 'bien do', 'li do',
+        'toa do', 'vi tri', 'cuc dai', 'co nang', 'dong nang', 'the nang', 'cong huong',
+        'chuan do', 'acid base', 'axit bazo', 'hno3', 'dong tac dung', 'ammonia', 'nh3', 'hcl',
+        'khoi trang', 'h2so4', 'duong', 'saccharose', 'ethylene', 'brom', 'acetylene', 'axetilen',
+        'phenol', 'glycerol', 'glycerin', 'acetic', 'roi tu do', 'free fall'
       ]);
 
       if (isOutofScope) {
@@ -1211,43 +1253,41 @@ export class AiService {
     if (/glucose.*cu\(oh\)2|dong.*glucozo|phuc.*dong|cu\(oh\)2/.test(normalizedText)) {
       return { simId: 'SIM-04', subject: 'chem', topic: 'glucose_cuoh2', title: 'Glucose tác dụng với Cu(OH)₂' };
     }
-    if (/trang bac|trang guong|agno3|tollens|bac nitrat/.test(normalizedText)) {
-      return { simId: 'SIM-05', subject: 'chem', topic: 'silver_mirror', title: 'Phản ứng tráng bạc của glucose' };
+    if (/sodium.*nuoc|natri.*nuoc|na \+ h2o/.test(normalizedText)) {
+      return { simId: 'SIM-08', subject: 'chem', topic: 'sodium_water', title: 'Sodium tác dụng với nước' };
     }
-    if (/tinh bot|iodine|i-ot|iot/.test(normalizedText)) {
-      return { simId: 'SIM-06', subject: 'chem', topic: 'starch_iodine', title: 'Phản ứng màu của tinh bột với iodine' };
+    if (/chuan do|titer|chuan do axit|chuan do bazo/.test(normalizedText)) {
+      return { simId: 'SIM-05', subject: 'chem', topic: 'acid_base_titration', title: 'Chuẩn độ Acid - Base' };
     }
-    if (/biuret|protein|long trang trung|peptit/.test(normalizedText)) {
-      return { simId: 'SIM-07', subject: 'chem', topic: 'biuret_protein', title: 'Phản ứng màu biuret của protein' };
+    if (/dong.*hno3|hno3.*dong|khi mau nau|no2.*dong|cu.*hno3/.test(normalizedText)) {
+      return { simId: 'SIM-06', subject: 'chem', topic: 'copper_hno3', title: 'Đồng tác dụng với dung dịch HNO₃ đặc' };
     }
-    if (/sodium|natri|nuoc|kim loai kiem/.test(normalizedText)) {
-      if (/natri|sodium|nuoc|kiem|hoa/.test(normalizedText)) {
-        return { simId: 'SIM-08', subject: 'chem', topic: 'sodium_water', title: 'Sodium tác dụng với nước' };
-      }
+    if (/ammonia.*hcl|nho3.*hcl|khoi trang|nh3.*hcl/.test(normalizedText)) {
+      return { simId: 'SIM-07', subject: 'chem', topic: 'ammonia_hcl', title: 'Ammonia tác dụng với HCl đặc (Khói trắng)' };
     }
-    if (/dinh sat|sat.*cuso4|fecuso4/.test(normalizedText)) {
-      return { simId: 'SIM-09', subject: 'chem', topic: 'iron_copper_sulfate', title: 'Đinh sắt tác dụng với dung dịch CuSO₄' };
+    if (/h2so4.*duong|duong.*h2so4|saccharose.*h2so4|than hoa duong/.test(normalizedText)) {
+      return { simId: 'SIM-09', subject: 'chem', topic: 'h2so4_sucrose', title: 'H₂SO₄ đặc tác dụng với đường (Saccharose)' };
     }
-    if (/nhom.*naoh|alnaoh|nhom tan/.test(normalizedText)) {
-      return { simId: 'SIM-10', subject: 'chem', topic: 'aluminum_sodium_hydroxide', title: 'Nhôm tác dụng với dung dịch NaOH' };
+    if (/ethylene.*brom|brom.*ethylene|nuoc brom.*c2h4|mat mau brom/.test(normalizedText)) {
+      return { simId: 'SIM-10', subject: 'chem', topic: 'ethylene_bromine', title: 'Ethylene tác dụng với nước Bromine' };
     }
-    if (/nhiet nhom|tecmit|fe2o3|al \+ fe2o3/.test(normalizedText)) {
-      return { simId: 'SIM-11', subject: 'chem', topic: 'aluminothermic', title: 'Phản ứng nhiệt nhôm (Al + Fe₂O₃)' };
+    if (/acetylene.*agno3|c2h2.*agno3|ket tua vang|agno3.*nh3/.test(normalizedText)) {
+      return { simId: 'SIM-11', subject: 'chem', topic: 'acetylene_agno3', title: 'Acetylene tác dụng với dung dịch AgNO₃/NH₃' };
     }
-    if (/fe\(oh\)2|fe\(oh\)3|sat hydroxide/.test(normalizedText)) {
-      return { simId: 'SIM-12', subject: 'chem', topic: 'iron_hydroxides', title: 'Điều chế Fe(OH)₂ và Fe(OH)₃' };
+    if (/ethanol.*sodium|ruou.*natri|c2h5oh.*na|sodium.*ethanol/.test(normalizedText)) {
+      return { simId: 'SIM-12', subject: 'chem', topic: 'ethanol_sodium', title: 'Ethanol tác dụng với kim loại Sodium' };
     }
-    if (/dien phan.*cuso4|cuso4 dien phan/.test(normalizedText)) {
-      return { simId: 'SIM-13', subject: 'chem', topic: 'electrolysis_cuso4', title: 'Điện phân dung dịch CuSO₄' };
+    if (/\bphenol\b|c6h5oh/.test(normalizedText)) {
+      return { simId: 'SIM-13', subject: 'chem', topic: 'phenol_bromine', title: 'Phenol tác dụng với nước Bromine' };
     }
-    if (/an mon.*dien hoa|pin.*zn.*cu|zn-cu/.test(normalizedText)) {
-      return { simId: 'SIM-14', subject: 'chem', topic: 'electrochemical_corrosion', title: 'Ăn mòn điện hóa học (pin Zn – Cu)' };
+    if (/glycerol.*cu\(oh\)2|glycerin.*dong|dung dich xanh lam.*glycerol/.test(normalizedText)) {
+      return { simId: 'SIM-14', subject: 'chem', topic: 'glycerol_cuoh2', title: 'Glycerol tác dụng với Cu(OH)₂' };
     }
-    if (/rutherford|la vang|ban pha|alpha|hat nhan/.test(normalizedText)) {
-      return { simId: 'SIM-15', subject: 'chem', topic: 'gold_foil_experiment', title: 'Thí nghiệm bắn phá lá vàng (Rutherford)' };
+    if (/acetic acid|axit axetic|ch3cooh|giam an|tinh chat.*axit axetic/.test(normalizedText)) {
+      return { simId: 'SIM-15', subject: 'chem', topic: 'acetic_acid', title: 'Tính chất hóa học của Acetic Acid' };
     }
-    if (/chuan do|axit|bazo|ph\b|hoa/.test(normalizedText)) {
-      return { simId: 'SIM-01', subject: 'chem', topic: 'esterification', title: 'Điều chế ethyl acetate (phản ứng ester hóa)' };
+    if (/roi tu do|free fall|gia toc roi|g = 9\.?8/.test(normalizedText)) {
+      return { simId: 'SIM-22', subject: 'physics', topic: 'free_fall', title: 'Sự rơi tự do' };
     }
     if (/bac hai|parabol|phuong trinh|nghiem|dinh/.test(normalizedText)) {
       return { simId: 'SIM-08', subject: 'math', topic: 'quadratic', title: 'Đồ thị hàm số bậc hai' };
@@ -1267,11 +1307,101 @@ export class AiService {
     if (/thong ke|so lieu mau|bieu do hop|box plot/.test(normalizedText)) {
       return { simId: 'SIM-20', subject: 'math', topic: 'statistics', title: 'Thống kê số liệu mẫu và biểu đồ' };
     }
-    if (/thang deu|bien doi deu|kinematics|chuyen dong thang|gia toc|van toc dau/.test(normalizedText)) {
+    if (/thang deu|bien doi deu|kinematics|chuyen dong thang/.test(normalizedText)) {
       return { simId: 'SIM-21', subject: 'physics', topic: 'kinematics', title: 'Chuyển động thẳng đều & biến đổi đều' };
     }
-    if (/nem xien|quy dao|van toc dau|goc nem/.test(normalizedText)) {
+    if (/nem ngang|nem theo phuong ngang/.test(normalizedText)) {
+      return { simId: 'SIM-23', subject: 'physics', topic: 'horizontal_projectile', title: 'Chuyển động ném ngang' };
+    }
+    if (/nem xien|quy dao|goc nem/.test(normalizedText)) {
       return { simId: 'SIM-02', subject: 'physics', topic: 'projectile', title: 'Chuyển động ném xiên' };
+    }
+    if (/dinh luat 2 newton|dinh luat ii newton|xe lan|f ?= ?ma/.test(normalizedText)) {
+      return { simId: 'SIM-24', subject: 'physics', topic: 'newton2', title: 'Định luật II Newton (Xe lăn)' };
+    }
+    if (/mat phang nghieng|vat truot|truot nghieng/.test(normalizedText)) {
+      return { simId: 'SIM-25', subject: 'physics', topic: 'inclined_plane', title: 'Vật trượt trên mặt phẳng nghiêng' };
+    }
+    if (/lo xo|con lac lo xo|spring/.test(normalizedText)) {
+      return { simId: 'SIM-26', subject: 'physics', topic: 'spring_pendulum', title: 'Con lắc lò xo nằm ngang' };
+    }
+    if (/con lac don|pendulum|chu ki con lac|dao dong con lac/.test(normalizedText)) {
+      return { simId: 'SIM-27', subject: 'physics', topic: 'simple_pendulum', title: 'Con lắc đơn dao động' };
+    }
+    if (/tron deu|chuyen dong tron|luc huong tam/.test(normalizedText)) {
+      return { simId: 'SIM-28', subject: 'physics', topic: 'circular_motion', title: 'Chuyển động tròn đều' };
+    }
+    if (/va cham|dong luong|bao toan dong luong/.test(normalizedText)) {
+      return { simId: 'SIM-29', subject: 'physics', topic: 'collision', title: 'Va chạm 1D — bảo toàn động lượng' };
+    }
+    if (/bao toan co nang|co nang|the nang|dong nang/.test(normalizedText)) {
+      return { simId: 'SIM-30', subject: 'physics', topic: 'mechanical_energy', title: 'Bảo toàn cơ năng' };
+    }
+    if (/boyle|dang nhiet|p1v1|ap suat.*the tich|the tich.*ap suat/.test(normalizedText)) {
+      return { simId: 'SIM-31', subject: 'physics', topic: 'boyle', title: 'Định luật Boyle (đẳng nhiệt)' };
+    }
+    if (/charles|dang ap|v1.*t1|v\/t.*hang so|the tich.*nhiet do/.test(normalizedText)) {
+      return { simId: 'SIM-32', subject: 'physics', topic: 'charles', title: 'Định luật Charles (đẳng áp)' };
+    }
+    if (/dong hoc phan tu|khi li tuong|phan tu khi/.test(normalizedText)) {
+      return { simId: 'SIM-33', subject: 'physics', topic: 'kinetic_theory', title: 'Thuyết động học phân tử chất khí' };
+    }
+    if (/chuyen the|nong chay|bay hoi|dong dac|ngung tu/.test(normalizedText)) {
+      return { simId: 'SIM-34', subject: 'physics', topic: 'phase_transition', title: 'Sự chuyển thể của chất' };
+    }
+    if (/luc tu.*day dan|ampere.*luc|day dan.*tu truong/.test(normalizedText)) {
+      return { simId: 'SIM-35', subject: 'physics', topic: 'magnetic_force', title: 'Lực từ tác dụng lên dây dẫn' };
+    }
+    if (/lorentz|hat mang dien.*tu truong/.test(normalizedText)) {
+      return { simId: 'SIM-36', subject: 'physics', topic: 'lorentz_force', title: 'Lực Lorentz' };
+    }
+    if (/cam ung dien tu|tu thong|suat dien dong/.test(normalizedText)) {
+      return { simId: 'SIM-37', subject: 'physics', topic: 'electromagnetic_induction', title: 'Hiện tượng cảm ứng điện từ' };
+    }
+    if (/may phat dien|dong dien xoay chieu|ac generator/.test(normalizedText)) {
+      return { simId: 'SIM-38', subject: 'physics', topic: 'ac_generator', title: 'Máy phát điện xoay chiều' };
+    }
+    if (/phong xa|ban ra|chu ky ban ra|phan ra/.test(normalizedText)) {
+      return { simId: 'SIM-39', subject: 'physics', topic: 'radioactive_decay', title: 'Phóng xạ & chu kỳ bán rã' };
+    }
+    if (/phan hach|nhiet hach|han nhan|nang luong hat nhan/.test(normalizedText)) {
+      return { simId: 'SIM-40', subject: 'physics', topic: 'nuclear_reaction', title: 'Phản ứng phân hạch & nhiệt hạch' };
+    }
+    if (/nang luong lien ket|do hut khoi/.test(normalizedText)) {
+      return { simId: 'SIM-41', subject: 'physics', topic: 'binding_energy', title: 'Năng lượng liên kết riêng' };
+    }
+    if (/dao dong dieu hoa|shm|x ?= ?a.*cos/.test(normalizedText)) {
+      return { simId: 'SIM-42', subject: 'physics', topic: 'simple_harmonic_motion', title: 'Dao động điều hòa' };
+    }
+    if (/dao dong tat dan|tat dan/.test(normalizedText)) {
+      return { simId: 'SIM-43', subject: 'physics', topic: 'damped_oscillation', title: 'Dao động tắt dần' };
+    }
+    if (/cong huong|resonance|dao dong cong huong/.test(normalizedText)) {
+      return { simId: 'SIM-44', subject: 'physics', topic: 'resonance', title: 'Hiện tượng cộng hưởng' };
+    }
+    if (/song ngang|truyen tren day|song co hoc/.test(normalizedText)) {
+      return { simId: 'SIM-45', subject: 'physics', topic: 'transverse_wave', title: 'Sóng ngang truyền trên dây' };
+    }
+    if (/song dung|nut song|bung song/.test(normalizedText)) {
+      return { simId: 'SIM-46', subject: 'physics', topic: 'standing_wave', title: 'Sóng dừng' };
+    }
+    if (/giao thoa song|interference|van giao thoa/.test(normalizedText)) {
+      return { simId: 'SIM-47', subject: 'physics', topic: 'wave_interference', title: 'Giao thoa sóng nước' };
+    }
+    if (/coulomb|luc dien|dien tich|f ?= ?k.*q/.test(normalizedText)) {
+      return { simId: 'SIM-48', subject: 'physics', topic: 'coulomb', title: 'Định luật Coulomb & Lực tương tác' };
+    }
+    if (/dien truong|duong suc dien|e ?= ?f.*q/.test(normalizedText)) {
+      return { simId: 'SIM-49', subject: 'physics', topic: 'electric_field', title: 'Điện trường & Đường sức điện' };
+    }
+    if (/ohm.*doan mach|u ?= ?i\*?r|dinh luat ohm/.test(normalizedText)) {
+      return { simId: 'SIM-50', subject: 'physics', topic: 'ohm_segment', title: 'Định luật Ohm cho đoạn mạch' };
+    }
+    if (/mach ghep|noi tiep.*song song|song song.*noi tiep|dien tro ghep/.test(normalizedText)) {
+      return { simId: 'SIM-51', subject: 'physics', topic: 'resistor_circuit', title: 'Mạch ghép điện trở (Nối tiếp / Song song)' };
+    }
+    if (/toan mach|suat dien dong.*dien tro trong|e ?= ?i.*r\+r/.test(normalizedText)) {
+      return { simId: 'SIM-52', subject: 'physics', topic: 'ohm_full', title: 'Định luật Ohm cho toàn mạch' };
     }
     return null;
   }
@@ -1292,24 +1422,55 @@ const SIMULATIONS_METADATA: Record<string, { title: string; subject: 'math' | 'p
   'SIM-02': { title: 'Chuyển động ném xiên', subject: 'physics', topic: 'projectile' },
   'SIM-03': { title: 'Phản ứng xà phòng hóa chất béo', subject: 'chem', topic: 'saponification' },
   'SIM-04': { title: 'Glucose tác dụng với Cu(OH)₂', subject: 'chem', topic: 'glucose_cuoh2' },
-  'SIM-05': { title: 'Phản ứng tráng bạc của glucose', subject: 'chem', topic: 'silver_mirror' },
-  'SIM-06': { title: 'Phản ứng màu của tinh bột với iodine', subject: 'chem', topic: 'starch_iodine' },
-  'SIM-07': { title: 'Phản ứng màu biuret của protein', subject: 'chem', topic: 'biuret_protein' },
+  'SIM-05': { title: 'Chuẩn độ Acid - Base', subject: 'chem', topic: 'acid_base_titration' },
+  'SIM-06': { title: 'Đồng tác dụng với dung dịch HNO₃ đặc', subject: 'chem', topic: 'copper_hno3' },
+  'SIM-07': { title: 'Ammonia tác dụng với HCl đặc (Khói trắng)', subject: 'chem', topic: 'ammonia_hcl' },
   'SIM-08_chem': { title: 'Sodium tác dụng với nước', subject: 'chem', topic: 'sodium_water' },
   'SIM-08_math': { title: 'Đồ thị hàm số bậc hai', subject: 'math', topic: 'quadratic' },
-  'SIM-09': { title: 'Đinh sắt tác dụng với dung dịch CuSO₄', subject: 'chem', topic: 'iron_copper_sulfate' },
-  'SIM-10': { title: 'Nhôm tác dụng với dung dịch NaOH', subject: 'chem', topic: 'aluminum_sodium_hydroxide' },
-  'SIM-11': { title: 'Phản ứng nhiệt nhôm (Al + Fe₂O₃)', subject: 'chem', topic: 'aluminothermic' },
-  'SIM-12': { title: 'Điều chế Fe(OH)₂ và Fe(OH)₃', subject: 'chem', topic: 'iron_hydroxides' },
-  'SIM-13': { title: 'Điện phân dung dịch CuSO₄', subject: 'chem', topic: 'electrolysis_cuso4' },
-  'SIM-14': { title: 'Ăn mòn điện hóa học (pin Zn – Cu)', subject: 'chem', topic: 'electrochemical_corrosion' },
-  'SIM-15': { title: 'Thí nghiệm bắn phá lá vàng (Rutherford)', subject: 'chem', topic: 'gold_foil_experiment' },
+  'SIM-09': { title: 'H₂SO₄ đặc tác dụng với đường (Saccharose)', subject: 'chem', topic: 'h2so4_sucrose' },
+  'SIM-10': { title: 'Ethylene tác dụng với nước Bromine', subject: 'chem', topic: 'ethylene_bromine' },
+  'SIM-11': { title: 'Acetylene tác dụng với dung dịch AgNO₃/NH₃', subject: 'chem', topic: 'acetylene_agno3' },
+  'SIM-12': { title: 'Ethanol tác dụng với kim loại Sodium', subject: 'chem', topic: 'ethanol_sodium' },
+  'SIM-13': { title: 'Phenol tác dụng với nước Bromine', subject: 'chem', topic: 'phenol_bromine' },
+  'SIM-14': { title: 'Glycerol tác dụng với Cu(OH)₂', subject: 'chem', topic: 'glycerol_cuoh2' },
+  'SIM-15': { title: 'Tính chất hóa học của Acetic Acid', subject: 'chem', topic: 'acetic_acid' },
+  'SIM-22': { title: 'Sự rơi tự do', subject: 'physics', topic: 'free_fall' },
   'SIM-16': { title: 'Ném xiên và vòm cổng parabol', subject: 'math', topic: 'projectile-arch' },
   'SIM-17': { title: 'Miền nghiệm hệ bất phương trình', subject: 'math', topic: 'inequality' },
   'SIM-18': { title: 'Hệ thức lượng tam giác cột cờ', subject: 'math', topic: 'triangulation' },
   'SIM-19': { title: 'Định nghĩa Elip ghim đinh', subject: 'math', topic: 'conic' },
   'SIM-20': { title: 'Thống kê số liệu mẫu và biểu đồ', subject: 'math', topic: 'statistics' },
-  'SIM-21': { title: 'Chuyển động thẳng đều & biến đổi đều', subject: 'physics', topic: 'kinematics' }
+  'SIM-21': { title: 'Chuyển động thẳng đều & biến đổi đều', subject: 'physics', topic: 'kinematics' },
+  'SIM-23': { title: 'Chuyển động ném ngang', subject: 'physics', topic: 'horizontal_projectile' },
+  'SIM-24': { title: 'Định luật II Newton (Xe lăn)', subject: 'physics', topic: 'newton2' },
+  'SIM-25': { title: 'Vật trượt trên mặt phẳng nghiêng', subject: 'physics', topic: 'inclined_plane' },
+  'SIM-26': { title: 'Con lắc lò xo nằm ngang', subject: 'physics', topic: 'spring_pendulum' },
+  'SIM-27': { title: 'Con lắc đơn dao động', subject: 'physics', topic: 'simple_pendulum' },
+  'SIM-28': { title: 'Chuyển động tròn đều', subject: 'physics', topic: 'circular_motion' },
+  'SIM-29': { title: 'Va chạm 1D — bảo toàn động lượng', subject: 'physics', topic: 'collision' },
+  'SIM-30': { title: 'Bảo toàn cơ năng', subject: 'physics', topic: 'mechanical_energy' },
+  'SIM-31': { title: 'Định luật Boyle (đẳng nhiệt)', subject: 'physics', topic: 'boyle' },
+  'SIM-32': { title: 'Định luật Charles (đẳng áp)', subject: 'physics', topic: 'charles' },
+  'SIM-33': { title: 'Thuyết động học phân tử chất khí', subject: 'physics', topic: 'kinetic_theory' },
+  'SIM-34': { title: 'Sự chuyển thể của chất', subject: 'physics', topic: 'phase_transition' },
+  'SIM-35': { title: 'Lực từ tác dụng lên dây dẫn', subject: 'physics', topic: 'magnetic_force' },
+  'SIM-36': { title: 'Lực Lorentz', subject: 'physics', topic: 'lorentz_force' },
+  'SIM-37': { title: 'Hiện tượng cảm ứng điện từ', subject: 'physics', topic: 'electromagnetic_induction' },
+  'SIM-38': { title: 'Máy phát điện xoay chiều', subject: 'physics', topic: 'ac_generator' },
+  'SIM-39': { title: 'Phóng xạ & chu kỳ bán rã', subject: 'physics', topic: 'radioactive_decay' },
+  'SIM-40': { title: 'Phản ứng phân hạch & nhiệt hạch', subject: 'physics', topic: 'nuclear_reaction' },
+  'SIM-41': { title: 'Năng lượng liên kết riêng', subject: 'physics', topic: 'binding_energy' },
+  'SIM-42': { title: 'Dao động điều hòa', subject: 'physics', topic: 'simple_harmonic_motion' },
+  'SIM-43': { title: 'Dao động tắt dần', subject: 'physics', topic: 'damped_oscillation' },
+  'SIM-44': { title: 'Hiện tượng cộng hưởng', subject: 'physics', topic: 'resonance' },
+  'SIM-45': { title: 'Sóng ngang truyền trên dây', subject: 'physics', topic: 'transverse_wave' },
+  'SIM-46': { title: 'Sóng dừng', subject: 'physics', topic: 'standing_wave' },
+  'SIM-47': { title: 'Giao thoa sóng nước', subject: 'physics', topic: 'wave_interference' },
+  'SIM-48': { title: 'Định luật Coulomb & Lực tương tác', subject: 'physics', topic: 'coulomb' },
+  'SIM-49': { title: 'Điện trường & Đường sức điện', subject: 'physics', topic: 'electric_field' },
+  'SIM-50': { title: 'Định luật Ohm cho đoạn mạch', subject: 'physics', topic: 'ohm_segment' },
+  'SIM-51': { title: 'Mạch ghép điện trở (Nối tiếp / Song song)', subject: 'physics', topic: 'resistor_circuit' },
+  'SIM-52': { title: 'Định luật Ohm cho toàn mạch', subject: 'physics', topic: 'ohm_full' },
 };
 
 function getSimulationMetadata(simId: string, subject?: string): { title: string; subject: 'math' | 'physics' | 'chem'; topic: string } | undefined {

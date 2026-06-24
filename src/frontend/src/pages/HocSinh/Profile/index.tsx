@@ -1,9 +1,14 @@
 import React from 'react';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
 import './index.less';
 
 const HocSinhProfile: React.FC = () => {
+	const { initialState } = useModel('@@initialState');
+	const user = initialState?.currentUser;
+	const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || 'Học sinh';
+	const initials = [user?.firstName?.[0], user?.lastName?.[0]].filter(Boolean).join('').toUpperCase() || 'HS';
+
 	const handleBack = () => {
 		history.push('/hoc-sinh');
 	};
@@ -47,15 +52,18 @@ const HocSinhProfile: React.FC = () => {
 					<div className='stu-profile__identity'>
 						<div className='stu-profile__user-box'>
 							<div className='stu-profile__avatar-wrapper'>
-								<div className='stu-profile__avatar'>AR</div>
-								<div className='stu-profile__level-badge'>7</div>
+								{user?.picture
+									? <img src={user.picture} alt={fullName} className='stu-profile__avatar' style={{ borderRadius: '50%', objectFit: 'cover', width: '100%', height: '100%' }} />
+									: <div className='stu-profile__avatar'>{initials}</div>
+								}
+								<div className='stu-profile__level-badge'>{user?.level ?? 1}</div>
 							</div>
 							<div className='stu-profile__name-wrapper'>
-								<div className='stu-profile__name'>Alex Rivera</div>
+								<div className='stu-profile__name'>{fullName}</div>
 								<div className='stu-profile__meta-list'>
-									<span className='stu-profile__username'>@alex.rivera</span>
+									<span className='stu-profile__username'>{user?.email ? `@${user.email.split('@')[0]}` : ''}</span>
 									<span className='stu-profile__role-tag'>Nhà khoa học tập sự</span>
-									<span className='stu-profile__school-tag'>Lớp 11 · THPT Tây Hồ</span>
+									<span className='stu-profile__school-tag'>Lớp {user?.grade ?? 11}</span>
 								</div>
 							</div>
 						</div>
