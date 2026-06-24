@@ -1,9 +1,19 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsArray, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsIn,
+  IsInt,
+  IsOptional,
+  IsString,
+  Min,
+  ValidateNested,
+} from 'class-validator';
 
 export class ChatMessageDto {
   @ApiProperty({ example: 'user' })
   @IsString()
+  @IsIn(['user', 'assistant'])
   role: 'user' | 'assistant';
 
   @ApiProperty({ example: 'Vì sao vận tốc cực đại ở vị trí cân bằng?' })
@@ -29,7 +39,12 @@ export class ChatRequestDto {
   @Min(1)
   grade?: number;
 
-  @ApiPropertyOptional({ example: 'SIM-01' })
+  @ApiPropertyOptional({ example: 'sess_abc123' })
+  @IsOptional()
+  @IsString()
+  session_id?: string;
+
+  @ApiPropertyOptional({ example: 'SIM_PHY11_PENDULUM_BASIC_3D' })
   @IsOptional()
   @IsString()
   simulationId?: string;
@@ -37,5 +52,7 @@ export class ChatRequestDto {
   @ApiPropertyOptional({ type: [ChatMessageDto] })
   @IsOptional()
   @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ChatMessageDto)
   context?: ChatMessageDto[];
 }

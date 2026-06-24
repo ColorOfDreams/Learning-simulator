@@ -25,6 +25,12 @@ export class TheoryChunkEntity {
   @Column({ type: 'varchar' })
   chapter!: string;
 
+  @Column({ name: 'lesson_id', type: 'varchar', nullable: true })
+  lessonId?: string;
+
+  @Column({ name: 'lesson_title', type: 'varchar', nullable: true })
+  lessonTitle?: string;
+
   @Column({ type: 'varchar' })
   topic!: string;
 
@@ -37,6 +43,21 @@ export class TheoryChunkEntity {
   @Column({ type: 'text' })
   text!: string;
 
+  @Column('vector', { length: 1536, nullable: true })
+  embedding?: number[];
+
+  @Column({ name: 'embedding_model', type: 'text', nullable: true })
+  embeddingModel?: string;
+
+  @Column({ name: 'embedding_version', type: 'text', nullable: true })
+  embeddingVersion?: string;
+
+  @Column({ name: 'content_hash', type: 'text', nullable: true })
+  contentHash?: string;
+
+  @Column({ name: 'embedded_at', type: 'timestamp', nullable: true })
+  embeddedAt?: Date;
+
   @Column({ type: 'jsonb', default: () => "'[]'::jsonb" })
   keywords!: string[];
 
@@ -45,6 +66,12 @@ export class TheoryChunkEntity {
 
   @Column({ type: 'jsonb', nullable: true })
   metadata?: TheoryMetadata;
+
+  @Column({ name: 'validation_status', type: 'varchar', nullable: true })
+  validationStatus?: string;
+
+  @Column({ name: 'source_data', type: 'jsonb', nullable: true })
+  sourceData?: any;
 
   @Column({ name: 'is_active', type: 'boolean', default: true })
   isActive!: boolean;
