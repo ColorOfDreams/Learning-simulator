@@ -43,7 +43,7 @@ export class TheoryChunkEntity {
   @Column({ type: 'text' })
   text!: string;
 
-  @Column('vector', { length: 1536, nullable: true })
+  @Column('vector', { length: 1024, nullable: true })
   embedding?: number[];
 
   @Column({ name: 'embedding_model', type: 'text', nullable: true })

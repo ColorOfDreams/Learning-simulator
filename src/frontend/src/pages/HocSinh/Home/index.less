@@ -94,10 +94,32 @@
 				background: @stu-gold;
 			}
 		}
+
+		&--streak {
+			background: linear-gradient(135deg, oklch(0.99 0.03 55), oklch(0.97 0.06 42));
+			border-color: oklch(0.78 0.16 48 / 0.38);
+			animation: flameBadgePulse 2.2s ease-in-out infinite;
+
+			span {
+				color: oklch(0.45 0.14 42);
+			}
+		}
+	}
+
+	&__flame {
+		flex: none;
+		animation: flicker 1.5s ease-in-out infinite;
+		transform-origin: 50% 90%;
+		filter: drop-shadow(0 0 5px oklch(0.85 0.22 55 / 0.7));
 	}
 
 	&__xp-bar {
-		min-width: 158px;
+		min-width: 164px;
+		background: @stu-bg-card;
+		border: 1px solid @stu-border;
+		border-radius: @stu-radius-pill;
+		padding: 7px 13px;
+		box-shadow: @stu-shadow-sm;
 	}
 
 	&__xp-labels {
@@ -109,15 +131,27 @@
 	}
 
 	&__xp-track {
-		height: 8px;
+		height: 7px;
 		border-radius: @stu-radius-pill;
 		background: @stu-text-segment-bg;
+		overflow: hidden;
 	}
 
 	&__xp-fill {
 		height: 100%;
 		border-radius: @stu-radius-pill;
-		background: linear-gradient(90deg, oklch(0.66 0.16 264), oklch(0.58 0.17 285));
+		background: linear-gradient(90deg, oklch(0.66 0.16 264), oklch(0.62 0.18 295));
+		transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		overflow: hidden;
+
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.32) 50%, transparent 100%);
+			animation: xpShimmer 2.6s ease-in-out infinite;
+		}
 	}
 
 	// ── Hero AI Bar ──
@@ -693,5 +727,49 @@
 	}
 	100% {
 		transform: rotate(360deg);
+	}
+}
+
+@keyframes xpShimmer {
+	0% {
+		transform: translateX(-120%);
+	}
+	60%,
+	100% {
+		transform: translateX(220%);
+	}
+}
+
+@keyframes flicker {
+	0%,
+	100% {
+		transform: scaleX(1) scaleY(1) rotate(-1deg);
+		opacity: 1;
+	}
+	20% {
+		transform: scaleX(0.93) scaleY(1.07) rotate(1.5deg);
+		opacity: 0.9;
+	}
+	40% {
+		transform: scaleX(1.05) scaleY(0.95) rotate(-0.5deg);
+		opacity: 0.95;
+	}
+	60% {
+		transform: scaleX(0.96) scaleY(1.04) rotate(1.2deg);
+		opacity: 0.88;
+	}
+	80% {
+		transform: scaleX(1.02) scaleY(0.98) rotate(-1.5deg);
+		opacity: 0.93;
+	}
+}
+
+@keyframes flameBadgePulse {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 oklch(0.82 0.2 55 / 0.18), @stu-shadow-sm;
+	}
+	50% {
+		box-shadow: 0 0 14px 3px oklch(0.82 0.2 55 / 0.28), @stu-shadow-sm;
 	}
 }

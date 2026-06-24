@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-backend:
+    name: Build backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+          cache-dependency-path: src/backend/yarn.lock
+
+      - name: Install dependencies
+        run: cd src/backend && yarn install --immutable
+
+      - name: Build NestJS
+        run: cd src/backend && yarn build
+
+  build-frontend:
+    name: Build frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+          cache-dependency-path: src/frontend/yarn.lock
+
+      - name: Install dependencies
+        run: cd src/frontend && yarn install --immutable
+
+      - name: Build React app
+        run: cd src/frontend && yarn build
+        env:
+          # Dùng placeholder khi build trên CI — Railway sẽ inject URL thật lúc deploy
+          APP_CONFIG_IP_ROOT: https://placeholder.up.railway.app

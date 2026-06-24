@@ -1,6 +1,6 @@
 import { analyzeAiPrompt } from '@/services/ai/api';
 import React, { useCallback, useMemo, useState } from 'react';
-import { history } from 'umi';
+import { history, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
 import './index.less';
 
@@ -698,6 +698,8 @@ const FILTERS = [
 ];
 
 const HocSinhHome: React.FC = () => {
+	const { initialState } = useModel('@@initialState');
+	const user = initialState?.currentUser;
 	const [heroInput, setHeroInput] = useState('');
 	const [grade, setGrade] = useState(() => {
 		const saved = localStorage.getItem('selected_grade');
@@ -752,13 +754,18 @@ const HocSinhHome: React.FC = () => {
 			const prompt = (customPrompt || heroInput).trim();
 			if (!prompt) return;
 
+			const contextForApi = chatMessages.slice(-6).map(m => ({
+				role: (m.role === 'ai' ? 'assistant' : 'user') as 'user' | 'assistant',
+				content: m.text,
+			}));
+
 			// Add user message
 			setChatMessages((prev) => [...prev, { role: 'user', text: prompt }]);
 			setHeroInput('');
 			setAiLoading(true);
 
 			try {
-				const res = await analyzeAiPrompt({ message: prompt });
+				const res = await analyzeAiPrompt({ message: prompt, context: contextForApi });
 				const data = res?.data?.data;
 
 				let text =
@@ -806,7 +813,7 @@ const HocSinhHome: React.FC = () => {
 				setAiLoading(false);
 			}
 		},
-		[heroInput],
+		[heroInput, chatMessages],
 	);
 
 	const handleHeroKey = useCallback(
@@ -833,27 +840,53 @@ const HocSinhHome: React.FC = () => {
 					{/* Header */}
 					<div className='stu-home__header'>
 						<div>
-							<div className='stu-home__welcome'>Chào mừng trở lại, Alex</div>
+							<div className='stu-home__welcome'>Chào mừng trở lại, {user?.firstName || 'bạn'}</div>
 							<div className='stu-home__subtitle'>Sẵn sàng cho thí nghiệm hôm nay?</div>
 						</div>
 						<div className='stu-home__badges'>
 							<div className='stu-home__badge'>
 								<div className='stu-home__badge-dot stu-home__badge-dot--level' />
-								<span>Level 7</span>
+								<span>Level {user?.level ?? 1}</span>
 							</div>
-							<div className='stu-home__badge'>
-								<div className='stu-home__badge-dot stu-home__badge-dot--streak' />
-								<span>5 ngày liên tiếp</span>
+							<div className='stu-home__badge stu-home__badge--streak'>
+								<svg
+									className='stu-home__flame'
+									width='16'
+									height='16'
+									viewBox='0 0 24 24'
+									xmlns='http://www.w3.org/2000/svg'
+								>
+									<defs>
+										<linearGradient id='flameGrad' x1='0.5' y1='0' x2='0.5' y2='1'>
+											<stop offset='0%' stopColor='oklch(0.92 0.2 80)' />
+											<stop offset='55%' stopColor='oklch(0.76 0.22 48)' />
+											<stop offset='100%' stopColor='oklch(0.6 0.2 30)' />
+										</linearGradient>
+									</defs>
+									<path
+										d='M12 2c1.5 3-1.5 5 0 8 1 2 4 2 4 5a4 4 0 0 1-8 0c0-2 1-3 1-4-2 1-3 3-3 5a6 6 0 0 0 12 0c0-5-6-6-6-14Z'
+										fill='url(#flameGrad)'
+									/>
+								</svg>
+								<span>{user?.streak ?? 0} ngày liên tiếp</span>
 							</div>
-							<div className='stu-home__xp-bar'>
-								<div className='stu-home__xp-labels'>
-									<span>XP</span>
-									<span>1.240 / 1.500</span>
-								</div>
-								<div className='stu-home__xp-track'>
-									<div className='stu-home__xp-fill' style={{ width: '82%' }} />
-								</div>
-							</div>
+							{(() => {
+								const xp = user?.xp ?? 0;
+								const lvl = user?.level ?? 1;
+								const nextThreshold = lvl * lvl * 100;
+								const pct = Math.min(100, Math.round((xp / nextThreshold) * 100));
+								return (
+									<div className='stu-home__xp-bar'>
+										<div className='stu-home__xp-labels'>
+											<span>XP</span>
+											<span>{xp.toLocaleString('vi-VN')} / {nextThreshold.toLocaleString('vi-VN')}</span>
+										</div>
+										<div className='stu-home__xp-track'>
+											<div className='stu-home__xp-fill' style={{ width: `${pct}%` }} />
+										</div>
+									</div>
+								);
+							})()}
 						</div>
 					</div>
 

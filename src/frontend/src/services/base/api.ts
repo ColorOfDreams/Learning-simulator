@@ -7,6 +7,41 @@ export async function getUserInfo() {
 	return axios.get(`${ip3}/users/me`);
 }
 
+export async function getUserStats() {
+	return axios.get(`${ip3}/users/me/stats`);
+}
+
+export async function completeActivity(xpEarned: number) {
+	return axios.post(`${ip3}/users/me/complete-activity`, { xpEarned });
+}
+
+export async function getLeaderboard(limit = 10) {
+	return axios.get(`${ip3}/users/leaderboard`, { params: { limit } });
+}
+
+export async function openLabSession(payload: {
+	simulationId: string;
+	simulationTitle?: string;
+	subject: string;
+}) {
+	return axios.post(`${ip3}/users/me/labs/open`, payload);
+}
+
+export async function completeLabSession(payload: {
+	simulationId: string;
+	simulationTitle?: string;
+	subject: string;
+	score: number;
+	totalQuestions: number;
+	correctAnswers: number;
+}) {
+	return axios.post(`${ip3}/users/me/labs/complete`, payload);
+}
+
+export async function getMyLabs() {
+	return axios.get(`${ip3}/users/me/labs`);
+}
+
 export async function adminlogin(payload: { username?: string; password?: string }) {
 	return axios.post(`${ip3}/auth/login`, { ...payload, platform: 'Web' });
 }

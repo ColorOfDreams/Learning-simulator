@@ -1,4 +1,5 @@
 import { chatWithAiPrompt, generateAiQuiz } from '@/services/ai/api';
+import { completeActivity, completeLabSession, getUserInfo, openLabSession } from '@/services/base/api';
 import GenericChemSimulation from '@simulations/chemistry/GenericChemSimulation';
 import EsterSimulation from '@simulations/chemistry/SIM-01-ester';
 import SoapSimulation from '@simulations/chemistry/SIM-03-soap';
@@ -35,8 +36,8 @@ import EFieldSimulation from '@simulations/physics/SIM-49-efield';
 import OhmSimulation from '@simulations/physics/SIM-50-ohm';
 import ResistorsSimulation from '@simulations/physics/SIM-51-resistors';
 import FullCircuitSimulation from '@simulations/physics/SIM-52-fullcircuit';
-import React, { useCallback, useMemo, useState } from 'react';
-import { history, useLocation } from 'umi';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { history, useLocation, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
 
 // Math 10 Simulations
@@ -1385,6 +1386,8 @@ const Workspace: React.FC = () => {
 	});
 	const [chatInput, setChatInput] = useState('');
 
+	const { initialState, setInitialState } = useModel('@@initialState');
+
 	// Dynamic AI Quiz
 	type DynQuestion = { q: string; opts: Array<{ k: string; t: string }>; correct: string; explanation: string };
 	const [dynQuizState, setDynQuizState] = useState<'setup' | 'loading' | 'active' | 'done'>('setup');
@@ -1393,6 +1396,47 @@ const Workspace: React.FC = () => {
 	const [dynCurrent, setDynCurrent] = useState(0);
 	const [dynAnswers, setDynAnswers] = useState<Record<number, string>>({});
 	const [dynUsedLlm, setDynUsedLlm] = useState(false);
+	const xpAwardedRef = useRef(false);
+
+	const openedLabRef = useRef<string | null>(null);
+	useEffect(() => {
+		if (simId && simId !== 'default' && openedLabRef.current !== simId) {
+			openedLabRef.current = simId;
+			openLabSession({
+				simulationId: simId,
+				simulationTitle: (meta as any)?.title,
+				subject,
+			}).catch(() => {});
+		}
+	}, [simId]);
+
+	useEffect(() => {
+		if (dynQuizState === 'done' && dynQuestions.length > 0 && !xpAwardedRef.current) {
+			xpAwardedRef.current = true;
+			const correct = dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length;
+			const pct = dynQuestions.length > 0 ? Math.round((correct / dynQuestions.length) * 100) : 0;
+			const xpEarned = correct * 10;
+			completeLabSession({
+				simulationId: simId || 'default',
+				simulationTitle: (meta as any)?.title,
+				subject,
+				score: pct,
+				totalQuestions: dynQuestions.length,
+				correctAnswers: correct,
+			}).catch(() => {});
+			if (xpEarned > 0) {
+				completeActivity(xpEarned).then(() => {
+					getUserInfo().then(res => {
+						const user = res.data?.data || res.data;
+						setInitialState((s: any) => ({ ...s, currentUser: user }));
+					});
+				}).catch(() => {});
+			}
+		}
+		if (dynQuizState !== 'done') {
+			xpAwardedRef.current = false;
+		}
+	}, [dynQuizState]);
 
 	const startDynQuiz = useCallback(async () => {
 		setDynQuizState('loading');

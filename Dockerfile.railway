@@ -1,0 +1,25 @@
+# Build context: repo root (để COPY được src/database/data vào image)
+# Railway service config:
+#   Root Directory: /
+#   Dockerfile Path: Dockerfile.railway
+
+FROM node:22-alpine AS deps
+WORKDIR /app
+RUN corepack enable
+COPY src/backend/package.json src/backend/yarn.lock src/backend/.yarnrc.yml ./
+RUN yarn install --immutable
+
+FROM deps AS builder
+COPY src/backend/ .
+RUN yarn build
+
+FROM node:22-alpine AS production
+WORKDIR /app
+RUN corepack enable
+COPY src/backend/package.json src/backend/yarn.lock src/backend/.yarnrc.yml ./
+RUN yarn install --immutable
+COPY --from=builder /app/dist ./dist
+# Bundle learning data (1.3MB) trực tiếp vào image — không cần volume
+COPY src/database/data ./data
+EXPOSE 3000
+CMD ["node", "dist/main"]

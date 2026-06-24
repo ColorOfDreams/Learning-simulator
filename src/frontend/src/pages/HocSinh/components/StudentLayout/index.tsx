@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { history, useLocation } from 'umi';
+import { history, useLocation, useModel } from 'umi';
 import './index.less';
 
 interface StudentLayoutProps {
@@ -115,6 +115,11 @@ const NAV_ITEMS: NavItem[] = [
 
 const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) => {
 	const location = useLocation();
+	const { initialState } = useModel('@@initialState');
+	const user = initialState?.currentUser;
+	const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || 'Học sinh';
+	const initials = [user?.firstName?.[0], user?.lastName?.[0]].filter(Boolean).join('').toUpperCase() || 'HS';
+	const levelLabel = `Lớp ${user?.grade ?? 11} · Level ${user?.level ?? 1}`;
 
 	const [theme, setTheme] = useState<'light' | 'dark'>(() => {
 		try {
@@ -226,10 +231,13 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 						</div>
 
 						<div className='stu-sidebar__user' onClick={() => handleNav('/hoc-sinh/profile')}>
-							<div className='stu-sidebar__user-avatar'>AR</div>
+							{user?.picture
+								? <img src={user.picture} alt={fullName} className='stu-sidebar__user-avatar stu-sidebar__user-avatar--img' style={{ borderRadius: '50%', objectFit: 'cover', width: 32, height: 32 }} />
+								: <div className='stu-sidebar__user-avatar'>{initials}</div>
+							}
 							<div className='stu-sidebar__user-info'>
-								<div className='stu-sidebar__user-name'>Alex Rivera</div>
-								<div className='stu-sidebar__user-meta'>Lớp 11 · Level 7</div>
+								<div className='stu-sidebar__user-name'>{fullName}</div>
+								<div className='stu-sidebar__user-meta'>{levelLabel}</div>
 							</div>
 							<svg
 								width='15'
