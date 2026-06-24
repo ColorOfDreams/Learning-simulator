@@ -16,7 +16,7 @@ RUN yarn install --immutable
 
 # Railway passes service env vars as Docker build ARGs
 ARG APP_CONFIG_IP_ROOT
-ARG APP_CONFIG_GOOGLE_CLIENT_ID
+ARG APP_CONFIG_GOOGLE_CLIENT_ID=479455851124-pg3d9fbatkdpo9d1klf6uehecdi73eua.apps.googleusercontent.com
 ARG APP_CONFIG_TEN_TRUONG
 ARG APP_CONFIG_TIEN_TO_TRUONG
 ARG APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH
