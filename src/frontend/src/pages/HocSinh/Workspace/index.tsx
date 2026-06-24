@@ -436,6 +436,12 @@ const LAB_INITIAL_CHATS: Record<string, ChatMessage[]> = {
 	],
 };
 
+const RIGHT_CHAT_CHIPS: Record<SubjectKey, string[]> = {
+	physics: ['Giải thích hiện tượng', 'Công thức cần dùng?', 'Thử đổi tham số nào?'],
+	math: ['Giải từng bước', 'Ý nghĩa đồ thị?', 'Kiểm tra đáp án'],
+	chem: ['Vì sao đổi màu?', 'Điểm tương đương là gì?', 'Cách tính nồng độ?'],
+};
+
 // ── Quiz data ──
 export const LAB_QUIZZES = {
 	'SIM-01': {
@@ -1386,7 +1392,7 @@ const Workspace: React.FC = () => {
 	});
 	const [chatInput, setChatInput] = useState('');
 
-	const { initialState, setInitialState } = useModel('@@initialState');
+	const { setInitialState } = useModel('@@initialState');
 
 	// Dynamic AI Quiz
 	type DynQuestion = { q: string; opts: Array<{ k: string; t: string }>; correct: string; explanation: string };
@@ -1515,8 +1521,8 @@ const Workspace: React.FC = () => {
 	}, [mA, mB, mC]);
 
 	// ── Chat ──
-	const sendChat = useCallback(async () => {
-		const t = chatInput.trim();
+	const sendChat = useCallback(async (presetText?: string) => {
+		const t = (presetText ?? chatInput).trim();
 		if (!t) return;
 
 		const currentHistory = chats[metaKey] || [];
@@ -7111,28 +7117,32 @@ const Workspace: React.FC = () => {
 
 					{/* RIGHT: AI Tutor + Quiz */}
 					<div className='stu-ws__right'>
+						<div className='stu-ws__right-bubbles' aria-hidden='true'>
+							<span />
+							<span />
+							<span />
+							<span />
+							<span />
+							<span />
+						</div>
+
 						{/* Tutor header */}
 						<div className='stu-ws__tutor-header'>
 							<div className='stu-ws__tutor-icon'>
-								<svg
-									width='16'
-									height='16'
-									viewBox='0 0 24 24'
-									fill='none'
-									stroke='#fff'
-									strokeWidth='1.8'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-								>
-									<path d='M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10ZM12 3v2M12 19v2M3 12h2M19 12h2' />
-								</svg>
+								<span className='stu-ws__tutor-core' />
+								<span className='stu-ws__tutor-spark' />
 							</div>
-							<span className='stu-ws__tutor-name'>{meta.tutor}</span>
-							<div className='stu-ws__tutor-live' />
+							<div className='stu-ws__tutor-copy'>
+								<span className='stu-ws__tutor-name'>Trợ lý AI</span>
+								<div className='stu-ws__tutor-status'>
+									<span className='stu-ws__tutor-live' />
+									<span>Đang trực tuyến</span>
+								</div>
+							</div>
 						</div>
 
 						{/* Tabs Header */}
-						<div className='stu-ws__right-tabs'>
+						<div className={`stu-ws__right-tabs stu-ws__right-tabs--${activeRightTab}`}>
 							<div
 								className={`stu-ws__right-tab ${activeRightTab === 'chat' ? 'stu-ws__right-tab--active' : ''}`}
 								onClick={() => setActiveRightTab('chat')}
@@ -7145,47 +7155,62 @@ const Workspace: React.FC = () => {
 							>
 								AI Quiz
 							</div>
+							<span className='stu-ws__right-tab-indicator' />
 						</div>
 
 						{activeRightTab === 'chat' ? (
-							<>
+							<div className='stu-ws__chat-shell'>
 								{/* Chat messages */}
 								<div className='stu-ws__chat scl'>
 									{(chats[metaKey] || []).map((m, i) => (
 										<div
 											key={i}
-											className={`stu-ws__chat-msg ${m.role === 'user' ? 'stu-ws__chat-msg--user' : 'stu-ws__chat-msg--ai'}`}
+											className={`stu-ws__chat-row ${m.role === 'user' ? 'stu-ws__chat-row--user' : 'stu-ws__chat-row--ai'}`}
 										>
-											{m.text}
+											{m.role === 'ai' && <span className='stu-ws__chat-avatar'>AI</span>}
+											<div className={`stu-ws__chat-msg ${m.role === 'user' ? 'stu-ws__chat-msg--user' : 'stu-ws__chat-msg--ai'}`}>
+												{m.text}
+											</div>
 										</div>
 									))}
 								</div>
 
 								{/* Chat input */}
-								<div className='stu-ws__chat-input-row'>
-									<input
-										className='stu-ws__chat-input'
-										value={chatInput}
-										onChange={(e) => setChatInput(e.target.value)}
-										onKeyDown={(e) => e.key === 'Enter' && sendChat()}
-										placeholder='Đặt câu hỏi…'
-									/>
-									<div className='stu-ws__chat-send' onClick={sendChat}>
-										<svg
-											width='18'
-											height='18'
-											viewBox='0 0 24 24'
-											fill='none'
-											stroke='#fff'
-											strokeWidth='2'
-											strokeLinecap='round'
-											strokeLinejoin='round'
-										>
-											<path d='M5 12h14M13 6l6 6-6 6' />
-										</svg>
+								<div className='stu-ws__chat-composer'>
+									{(chats[metaKey] || []).length <= 1 && (
+										<div className='stu-ws__chat-chips'>
+											{RIGHT_CHAT_CHIPS[subject].map((chip) => (
+												<button key={chip} type='button' onClick={() => sendChat(chip)}>
+													{chip}
+												</button>
+											))}
+										</div>
+									)}
+									<div className='stu-ws__chat-input-row'>
+										<input
+											className='stu-ws__chat-input'
+											value={chatInput}
+											onChange={(e) => setChatInput(e.target.value)}
+											onKeyDown={(e) => e.key === 'Enter' && sendChat()}
+											placeholder='Đặt câu hỏi…'
+										/>
+										<div className='stu-ws__chat-send' onClick={() => sendChat()}>
+											<svg
+												width='18'
+												height='18'
+												viewBox='0 0 24 24'
+												fill='none'
+												stroke='#fff'
+												strokeWidth='2'
+												strokeLinecap='round'
+												strokeLinejoin='round'
+											>
+												<path d='M5 12h14M13 6l6 6-6 6' />
+											</svg>
+										</div>
 									</div>
 								</div>
-							</>
+							</div>
 						) : (
 							/* Dynamic AI Quiz Panel */
 							<div className='stu-ws__quiz-tab-content'>
@@ -7226,6 +7251,7 @@ const Workspace: React.FC = () => {
 									(() => {
 										const q = dynQuestions[dynCurrent];
 										const picked = dynAnswers[dynCurrent];
+										const progressPct = `${Math.round(((picked ? dynCurrent + 1 : dynCurrent) / dynQuestions.length) * 100)}%`;
 										return (
 											<div className='stu-ws__quiz'>
 												<div className='stu-ws__quiz-header'>
@@ -7252,6 +7278,9 @@ const Workspace: React.FC = () => {
 															</div>
 														)}
 													</div>
+												</div>
+												<div className='stu-ws__quiz-progress'>
+													<span style={{ width: progressPct }} />
 												</div>
 												<div className='dqz-nav-dots'>
 													{dynQuestions.map((_, i) => (
@@ -7351,7 +7380,12 @@ const Workspace: React.FC = () => {
 														)}
 													</div>
 												</div>
-												<div className='dqz-results__score'>
+												<div
+													className='dqz-results__score'
+													style={{
+														background: `conic-gradient(var(--right-accent) ${pct}%, var(--right-border) 0)`,
+													}}
+												>
 													<div className='dqz-results__pct'>{pct}%</div>
 													<div className='dqz-results__sub'>
 														{totalCorrect}/{dynQuestions.length} câu đúng
