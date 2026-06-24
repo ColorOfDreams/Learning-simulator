@@ -12,7 +12,7 @@ COPY src/backend/ .
 RUN yarn install --immutable
 
 # Build TypeScript → dist/
-RUN yarn build
+RUN yarn build && echo "=== dist contents ===" && ls -la dist/ && echo "=== dist/main.js ===" && ls dist/main.js
 
 # Bundle learning data (1.3MB) vào image
 COPY src/database/data ./data
