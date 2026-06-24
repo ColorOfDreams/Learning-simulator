@@ -170,7 +170,7 @@
 		width: 300px;
 		flex: none;
 		border-right: 1px solid @stu-border;
-		background: #ffffff;
+		background: @stu-bg-sidebar;
 		padding: 20px 16px 22px;
 		overflow-y: auto;
 		display: flex;
@@ -254,8 +254,14 @@
 
 		.stu-ws__symbol-row {
 			&:hover {
-				background: #f6f7fc;
+				background: @stu-text-segment-bg;
 			}
+		}
+
+		.stu-ws__symbol-bubble {
+			background: @stu-bg-card !important;
+			border: 1px solid @stu-border !important;
+			color: @stu-physics !important;
 		}
 	}
 
@@ -349,18 +355,18 @@
 		border-radius: 12px;
 		padding: 14px 16px;
 		margin-bottom: 8px;
-		background: #f6f7fc;
-		border: 1px solid #ebedf6;
+		background: @stu-bg-panel;
+		border: 1px solid @stu-border;
 		box-shadow: none;
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
-		color: #2b2f45;
+		color: @stu-text-primary;
 		text-align: center;
 
-		.katex {
+		div, .katex, .katex * {
 			font-size: 16px !important;
-			color: #2b2f45;
+			color: @stu-text-primary !important;
 		}
 	}
 
@@ -1371,3 +1377,64 @@
 		text-align: center;
 	}
 }
+
+// ── Dark Mode Overrides for Workspace Left Panel ──
+.stu-root[data-theme='dark'] {
+	.stu-ws__left {
+		background: var(--bg-sidebar);
+
+		.stu-ws__section-label {
+			color: var(--text-heading) !important;
+		}
+
+		span[style*="color: '#4a4f63'"],
+		span[style*="color: #4a4f63"],
+		span[style*="color: '#2b2f45'"],
+		span[style*="color: #2b2f45"],
+		span[style*="color: '#5a5f73'"],
+		span[style*="color: #5a5f73"],
+		span[style*="color: '#2d3748'"],
+		span[style*="color: #2d3748"] {
+			color: var(--text-secondary) !important;
+		}
+
+		.stu-ws__param span,
+		.stu-ws__param-row span,
+		.stu-ws__param-val,
+		.stu-ws__formula-box,
+		.stu-ws__formula-box div,
+		.stu-ws__symbols-list span,
+		.stu-ws__symbol-row span,
+		.stu-ws__symbol-item span {
+			color: var(--text-secondary) !important;
+		}
+
+		.stu-ws__param-val,
+		.stu-ws__formula-box div {
+			color: var(--text) !important;
+		}
+
+		.stu-ws__symbol-bubble {
+			background: var(--bg-card) !important;
+			border-color: var(--border) !important;
+			color: var(--text) !important;
+		}
+
+		.stu-ws__formula-box {
+			background: var(--bg-card) !important;
+			border-color: var(--border) !important;
+			color: var(--text) !important;
+		}
+
+		div[style*="background: '#eef3ff'"],
+		div[style*="background: #eef3ff"],
+		div[style*="background: '#f3eefb'"],
+		div[style*="background: #f3eefb"],
+		div[style*="background: '#f0fdf4'"],
+		div[style*="background: #f0fdf4"] {
+			background: var(--bg) !important;
+			border: 1px solid var(--border-light) !important;
+		}
+	}
+}
+

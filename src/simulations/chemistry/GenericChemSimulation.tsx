@@ -176,39 +176,36 @@ const EXPERIMENTS_CONFIG: Record<string, ExperimentDef> = {
   'SIM-04': {
     id: 'SIM-04',
     setup: [
-      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'Ống nghiệm' },
-      { type: 'bottle', id: 'naoh', label: 'NaOH 10%', color: 0xffffff, op: 0.5 },
-      { type: 'bottle', id: 'cuso4', label: 'CuSO₄ 5%', color: 0x2e86de, op: 0.85, cap: 0x2a5a9a },
-      { type: 'bottle', id: 'glu', label: 'Glucose 5%', color: 0xeaf2f0, op: 0.5, cap: 0x4a8a5a },
-      { type: 'lampstand', x: 4.5, z: -0.4 }
+      { type: 'rack', x: -2.4, z: 0.5, n: 3 },
+      { type: 'tube', id: 'tube1', label: 'HCl (acid)' },
+      { type: 'tube', id: 'tube2', label: 'Nước cất' },
+      { type: 'tube', id: 'tube3', label: 'NaOH (base)' },
+      { type: 'bottle', id: 'hcl', label: 'HCl', color: 0xdde9f2, op: 0.45, cap: 0xc2a23a },
+      { type: 'bottle', id: 'water', label: 'Nước cất', color: 0xdde9f2, op: 0.4 },
+      { type: 'bottle', id: 'naoh', label: 'NaOH', color: 0xdde9f2, op: 0.45 },
+      { type: 'bottle', id: 'ind', label: 'Chỉ thị\nvạn năng', color: 0xcde0b8, op: 0.7, fs: 32, cap: 0x6a8a3a }
     ],
     steps: [
-      { text: 'Rót 1 ml dung dịch NaOH 10% vào ống nghiệm.', type: 'pour', src: 'naoh', dst: 'tube', pour: { level: 0.18, color: 0xe0ecf4, opacity: 0.5 } },
-      { text: 'Nhỏ vài giọt CuSO₄ 5% — xuất hiện kết tủa xanh Cu(OH)₂.', type: 'pour', src: 'cuso4', dst: 'tube', pour: { level: 0.26, color: 0x9fc8e8, opacity: 0.7 }, fx: 'precip_blue' },
-      { text: 'Thêm 2 ml dung dịch glucose 5%.', type: 'pour', src: 'glu', dst: 'tube', pour: { level: 0.42 } },
-      { text: 'Nhấp vào ống nghiệm để lắc đều.', type: 'shake', id: 'tube', fx: 'dissolve_blue' },
-      { text: 'Kéo ống nghiệm sang giá đỡ trên đèn cồn.', type: 'move', src: 'tube', dst: 'stand' },
-      { text: 'Nhấp đèn cồn để đun nóng phần trên ống nghiệm.', type: 'click', id: 'lamp', fx: 'boil' },
-      { text: 'Quan sát: kết tủa đỏ gạch Cu₂O xuất hiện!', type: 'click', id: 'tube', fx: 'precip_red' }
+      { text: 'Rót dung dịch HCl vào ống 1.', type: 'pour', src: 'hcl', dst: 'tube1', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.45 } },
+      { text: 'Rót nước cất vào ống 2.', type: 'pour', src: 'water', dst: 'tube2', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.4 } },
+      { text: 'Rót dung dịch NaOH vào ống 3.', type: 'pour', src: 'naoh', dst: 'tube3', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.45 } },
+      { text: 'Nhỏ chất chỉ thị vào ống 1 — môi trường acid hóa đỏ.', type: 'pour', src: 'ind', dst: 'tube1', pour: { level: 0.5 }, fx: 'ind_acid' },
+      { text: 'Nhỏ chất chỉ thị vào ống 2 — môi trường trung tính màu lục.', type: 'pour', src: 'ind', dst: 'tube2', pour: { level: 0.5 }, fx: 'ind_neutral' },
+      { text: 'Nhỏ chất chỉ thị vào ống 3 — môi trường base hóa xanh tím.', type: 'pour', src: 'ind', dst: 'tube3', pour: { level: 0.5 }, fx: 'ind_base' }
     ]
   },
   'SIM-05': {
     id: 'SIM-05',
     setup: [
-      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'Ống nghiệm' },
-      { type: 'bottle', id: 'agno3', label: 'AgNO₃ 1%', color: 0xffffff, op: 0.5, cap: 0x8a8a92 },
-      { type: 'bottle', id: 'nh3', label: 'NH₃ 5%', color: 0xe6f0ea, op: 0.45 },
-      { type: 'bottle', id: 'glu', label: 'Glucose 5%', color: 0xeaf2f0, op: 0.5, cap: 0x4a8a5a },
-      { type: 'bath', x: 4.6, z: 0.3 }
+      { type: 'beaker', id: 'beaker', x: 0, z: 0.3, r: 1.0, h: 2.0 },
+      { type: 'bottle', id: 'hcl', label: 'HCl', color: 0xdde9f2, op: 0.45, cap: 0xc2a23a },
+      { type: 'bottle', id: 'pp', label: 'Phenol-\nphthalein', color: 0xf2e6ee, op: 0.5, fs: 30, cap: 0xc05a8a },
+      { type: 'bottle', id: 'naoh', label: 'NaOH', color: 0xdde9f2, op: 0.45 }
     ],
     steps: [
-      { text: 'Rót 1 ml dung dịch AgNO₃ 1% vào ống nghiệm sạch.', type: 'pour', src: 'agno3', dst: 'tube', pour: { level: 0.18, color: 0xe2ecf2, opacity: 0.5 } },
-      { text: 'Nhỏ từ từ dung dịch NH₃ — kết tủa xuất hiện rồi tan hết.', type: 'pour', src: 'nh3', dst: 'tube', pour: { level: 0.28 }, fx: 'precip_nh3_tan' },
-      { text: 'Thêm 1 ml dung dịch glucose 5%.', type: 'pour', src: 'glu', dst: 'tube', pour: { level: 0.42 } },
-      { text: 'Đặt ống nghiệm vào cốc nước nóng (không lắc!).', type: 'move', src: 'tube', dst: 'bath', moveOffset: { y: 0.3, dx: -0.1, rotZ: 0.18 } },
-      { text: 'Quan sát: lớp bạc sáng như gương bám lên thành ống!', type: 'click', id: 'tube', fx: 'silver_mirror' }
+      { text: 'Rót dung dịch HCl cần chuẩn độ vào bình.', type: 'pour', src: 'hcl', dst: 'beaker', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.45 } },
+      { text: 'Nhỏ vài giọt phenolphthalein (dung dịch vẫn không màu).', type: 'pour', src: 'pp', dst: 'beaker', pour: { level: 0.5 } },
+      { text: 'Nhỏ từ từ NaOH đến khi dung dịch chuyển hồng nhạt bền.', type: 'pour', src: 'naoh', dst: 'beaker', pour: { level: 0.62 }, fx: 'titration_end' }
     ]
   },
   'SIM-06': {
@@ -216,154 +213,122 @@ const EXPERIMENTS_CONFIG: Record<string, ExperimentDef> = {
     setup: [
       { type: 'rack', x: -2.2, z: 0.5, n: 1 },
       { type: 'tube', id: 'tube', label: 'Ống nghiệm' },
-      { type: 'bottle', id: 'starch', label: 'Hồ tinh bột', color: 0xedf1f2, op: 0.8 },
-      { type: 'bottle', id: 'i2', label: 'Dung dịch I₂', color: 0x9a5a18, op: 0.85, cap: 0x6a3a10 },
-      { type: 'lampstand', x: 4.5, z: -0.4 }
+      { type: 'bottle', id: 'hno3', label: 'HNO₃ đặc', color: 0xeef0d8, op: 0.55, cap: 0xc24a3a },
+      { type: 'dish_chips', id: 'cu', label: 'Mảnh đồng (Cu)', x: -4.8, z: 1.7 }
     ],
     steps: [
-      { text: 'Rót 2 ml hồ tinh bột vào ống nghiệm.', type: 'pour', src: 'starch', dst: 'tube', pour: { level: 0.32, color: 0xedf1f0, opacity: 0.8 } },
-      { text: 'Nhỏ vài giọt dung dịch iodine vào — màu xanh tím xuất hiện!', type: 'pour', src: 'i2', dst: 'tube', pour: { level: 0.38, color: 0x35307d, opacity: 0.9 } },
-      { text: 'Kéo ống nghiệm sang giá đỡ trên đèn cồn.', type: 'move', src: 'tube', dst: 'stand' },
-      { text: 'Nhấp đèn cồn để đun nóng — màu xanh tím biến mất!', type: 'click', id: 'lamp', fx: 'starch_fade' },
-      { text: 'Quan sát: để nguội dung dịch — màu xanh tím hiện trở lại!', type: 'click', id: 'tube', fx: 'starch_cool' }
+      { text: 'Thả mảnh đồng vào ống nghiệm.', type: 'drop', src: 'cu', dst: 'tube', dropOffset: { y: 0.16, scale: 0.85 } },
+      { text: 'Rót HNO₃ đặc vào ống. Làm trong tủ hút, lùi lại quan sát!', type: 'pour', src: 'hno3', dst: 'tube', pour: { level: 0.5, color: 0xeef0d8, opacity: 0.5 }, fx: 'cu_hno3_react' }
     ]
   },
   'SIM-07': {
     id: 'SIM-07',
     setup: [
-      { type: 'rack', x: -1.6, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'Ống nghiệm' },
-      { type: 'bottle', id: 'egg', label: 'Lòng trắng\ntrứng', color: 0xf3ecc8, op: 0.6, fs: 32, cap: 0xd6c25a },
-      { type: 'bottle', id: 'naoh', label: 'NaOH 30%', color: 0xffffff, op: 0.5 },
-      { type: 'bottle', id: 'cuso4', label: 'CuSO₄ 2%', color: 0x2e86de, op: 0.85, cap: 0x2a5a9a }
+      { type: 'beaker', id: 'jar1', x: -1.6, z: 0.4, r: 0.85, h: 1.8 },
+      { type: 'beaker', id: 'jar2', x: 1.6, z: 0.4, r: 0.85, h: 1.8 },
+      { type: 'bottle', id: 'nh3', label: 'NH₃ đặc', color: 0xe6f0ea, op: 0.45 },
+      { type: 'bottle', id: 'hcl', label: 'HCl đặc', color: 0xeef0d8, op: 0.5, cap: 0xc24a3a }
     ],
     steps: [
-      { text: 'Rót 1 ml dung dịch lòng trắng trứng vào ống nghiệm.', type: 'pour', src: 'egg', dst: 'tube', pour: { level: 0.25, color: 0xf2ecca, opacity: 0.6 } },
-      { text: 'Thêm 1 ml dung dịch NaOH 30%.', type: 'pour', src: 'naoh', dst: 'tube', pour: { level: 0.4, color: 0xeeeccc, opacity: 0.55 } },
-      { text: 'Nhỏ vài giọt dung dịch CuSO₄ 2%.', type: 'pour', src: 'cuso4', dst: 'tube', pour: { level: 0.46, color: 0xc5d4e2, opacity: 0.65 } },
-      { text: 'Nhấp vào ống nghiệm để lắc đều — màu tím xuất hiện!', type: 'shake', id: 'tube', fx: 'biuret_violet' }
-    ]
-  },
-  'SIM-08': {
-    id: 'SIM-08',
-    setup: [
-      { type: 'basin', id: 'basin', x: 0, z: 0.4 },
-      { type: 'bottle', id: 'pp', label: 'Phenol-\nphthalein', color: 0xf2e6ee, op: 0.5, fs: 30, cap: 0xc05a8a },
-      { type: 'dish_sodium', id: 'na', label: 'Mẩu sodium (Na)', x: -4.8, z: 1.7 }
-    ],
-    steps: [
-      { text: 'Nhỏ vài giọt phenolphthalein vào chậu nước.', type: 'pour', src: 'pp', dst: 'basin', pour: { level: 0.62, color: 0xbfe2f0, opacity: 0.5 } },
-      { text: 'Gắp mẩu Na thả vào chậu nước. Lùi lại quan sát!', type: 'drop', src: 'na', dst: 'basin', fx: 'na_dance' },
-      { text: 'Quan sát: nước chuyển màu hồng do môi trường kiềm tạo thành.', type: 'click', id: 'basin', fx: 'basin_sparkle' }
+      { text: 'Rót dung dịch NH₃ đặc vào lọ thứ nhất.', type: 'pour', src: 'nh3', dst: 'jar1', pour: { level: 0.35, color: 0xe6f0ea, opacity: 0.5 }, fx: 'nh3_vapor' },
+      { text: 'Rót dung dịch HCl đặc vào lọ thứ hai.', type: 'pour', src: 'hcl', dst: 'jar2', pour: { level: 0.35, color: 0xeef0d8, opacity: 0.55 }, fx: 'hcl_vapor' },
+      { text: 'Đưa miệng hai lọ lại gần nhau — khói trắng xuất hiện giữa hai lọ!', type: 'wait', id: 'jar1', fx: 'smoke_puff' }
     ]
   },
   'SIM-09': {
     id: 'SIM-09',
     setup: [
-      { type: 'rack', x: -1.6, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'Ống nghiệm' },
-      { type: 'bottle', id: 'cuso4', label: 'CuSO₄', color: 0x2e86de, op: 0.85, cap: 0x2a5a9a },
-      { type: 'dish_nail', id: 'nail', label: 'Đinh sắt (Fe)', x: -4.8, z: 1.7 }
+      { type: 'beaker', id: 'beaker', x: 0, z: 0.3, r: 1.0, h: 2.4 },
+      { type: 'bottle', id: 'sugar', label: 'Đường\n(saccharose)', color: 0xf4f4ee, op: 1.0, powder: true, fs: 30, cap: 0xd6c25a },
+      { type: 'bottle', id: 'h2so4', label: 'H₂SO₄ đặc', color: 0xf0ead0, op: 0.6, cap: 0xc24a3a }
     ],
     steps: [
-      { text: 'Rót dung dịch CuSO₄ màu xanh vào ống nghiệm.', type: 'pour', src: 'cuso4', dst: 'tube', pour: { level: 0.5, color: 0x2e86de, opacity: 0.85 } },
-      { text: 'Thả đinh sắt vào ống nghiệm.', type: 'drop', src: 'nail', dst: 'tube', dropOffset: { y: 0.18, rotZ: 0.1 } },
-      { text: 'Quan sát: lớp đồng đỏ bám vào đinh, màu xanh nhạt dần!', type: 'click', id: 'tube', fx: 'nail_coat' }
+      { text: 'Cho đường trắng vào cốc.', type: 'pour', src: 'sugar', dst: 'beaker', pour: { level: 0.3, color: 0xf4f4ee, opacity: 1.0 } },
+      { text: 'Rót H₂SO₄ đặc vào cốc, lùi lại quan sát!', type: 'pour', src: 'h2so4', dst: 'beaker', pour: { level: 0.38, color: 0xe8dcae, opacity: 0.8 }, fx: 'sugar_carbon' }
     ]
   },
   'SIM-10': {
     id: 'SIM-10',
     setup: [
-      { type: 'rack', x: -1.6, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'Ống nghiệm' },
-      { type: 'bottle', id: 'naoh', label: 'NaOH đặc', color: 0xffffff, op: 0.5 },
-      { type: 'dish_chips', id: 'al', label: 'Mảnh nhôm (Al)', x: -4.8, z: 1.7 }
+      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
+      { type: 'tube', id: 'tube', label: 'Nước bromine' },
+      { type: 'bottle', id: 'brom', label: 'Nước\nbromine', color: 0xe88a2a, op: 0.8, fs: 32, cap: 0x9a5a18 },
+      { type: 'bottle', id: 'c2h4', label: 'Khí C₂H₄', color: 0xdde9f2, op: 0.35, cap: 0x6a8a3a }
     ],
     steps: [
-      { text: 'Rót 2 ml dung dịch NaOH đặc vào ống nghiệm.', type: 'pour', src: 'naoh', dst: 'tube', pour: { level: 0.4, color: 0xe0ecf4, opacity: 0.5 } },
-      { text: 'Thả vài mảnh nhôm vào ống nghiệm.', type: 'drop', src: 'al', dst: 'tube', dropOffset: { y: 0.16, scale: 0.8 } },
-      { text: 'Quan sát: khí thoát ra mạnh, mảnh nhôm tan dần!', type: 'click', id: 'tube', fx: 'al_react' }
+      { text: 'Rót nước bromine màu vàng cam vào ống nghiệm.', type: 'pour', src: 'brom', dst: 'tube', pour: { level: 0.5, color: 0xe88a2a, opacity: 0.8 } },
+      { text: 'Sục khí ethylene vào ống — màu vàng cam nhạt dần rồi mất hẳn!', type: 'pour', src: 'c2h4', dst: 'tube', pour: { level: 0.52 }, fx: 'ethylene_bleach' }
     ]
   },
   'SIM-11': {
     id: 'SIM-11',
     setup: [
-      { type: 'tray_sand', x: 0, z: 0.4 },
-      { type: 'crucible', id: 'crucible', x: 0, z: 0.4 },
-      { type: 'bottle', id: 'fe2o3', label: 'Bột Fe₂O₃', color: 0x8a3b22, op: 1.0, powder: true, cap: 0x6a2a18 },
-      { type: 'bottle', id: 'alp', label: 'Bột Al', color: 0xb8bcc4, op: 1.0, powder: true, cap: 0x7a8088 },
-      { type: 'dish_mg', id: 'mg', label: 'Dải băng Mg', x: -4.8, z: 1.7 }
+      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
+      { type: 'tube', id: 'tube', label: 'AgNO₃/NH₃' },
+      { type: 'bottle', id: 'tollens', label: 'AgNO₃\n/NH₃', color: 0xdde9f2, op: 0.45, fs: 32, cap: 0x8a8a92 },
+      { type: 'bottle', id: 'c2h2', label: 'Khí C₂H₂', color: 0xdde9f2, op: 0.35, cap: 0x6a8a3a }
     ],
     steps: [
-      { text: 'Đổ bột Fe₂O₃ (màu nâu đỏ) vào chén sứ.', type: 'pour', src: 'fe2o3', dst: 'crucible', pour: { level: 0.45, color: 0x8a3b22, opacity: 1.0 } },
-      { text: 'Đổ tiếp bột Al và trộn đều hỗn hợp tecmit.', type: 'pour', src: 'alp', dst: 'crucible', pour: { level: 0.8, color: 0x77564a, opacity: 1.0 } },
-      { text: 'Cắm dải băng Mg vào giữa hỗn hợp làm mồi.', type: 'drop', src: 'mg', dst: 'crucible', dropOffset: { x: 0.05, y: 0.55, rotZ: 0.12 } },
-      { text: 'Nhấp vào chén sứ để châm lửa dải Mg. Lùi xa quan sát!', type: 'click', id: 'crucible', fx: 'thermite_ignite' },
-      { text: 'Quan sát: sắt nóng chảy sáng rực chảy xuống khay cát!', type: 'click', id: 'crucible', fx: 'thermite_flow' }
+      { text: 'Rót dung dịch AgNO₃ trong NH₃ vào ống nghiệm.', type: 'pour', src: 'tollens', dst: 'tube', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.45 } },
+      { text: 'Sục khí acetylene vào ống — kết tủa vàng nhạt xuất hiện!', type: 'pour', src: 'c2h2', dst: 'tube', pour: { level: 0.5 }, fx: 'acetylene_ppt' }
     ]
   },
   'SIM-12': {
     id: 'SIM-12',
     setup: [
-      { type: 'rack', x: -1.8, z: 0.5, n: 2 },
-      { type: 'tube', id: 'tube1', label: 'Ống 1: FeCl₂' },
-      { type: 'tube', id: 'tube2', label: 'Ống 2: FeCl₃' },
-      { type: 'bottle', id: 'fecl2', label: 'FeCl₂', color: 0xb9dcc4, op: 0.6, cap: 0x4a8a5a },
-      { type: 'bottle', id: 'fecl3', label: 'FeCl₃', color: 0xc78a32, op: 0.75, cap: 0x9a6a20 },
-      { type: 'bottle', id: 'naoh', label: 'NaOH', color: 0xffffff, op: 0.5 }
+      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
+      { type: 'tube', id: 'tube', label: 'Ethanol khan' },
+      { type: 'bottle', id: 'etoh', label: 'C₂H₅OH\nkhan', color: 0xe8f0f8, op: 0.5, fs: 32 },
+      { type: 'dish_sodium', id: 'na', label: 'Mẩu sodium (Na)', x: -4.8, z: 1.7 }
     ],
     steps: [
-      { text: 'Rót dung dịch FeCl₂ vào ống nghiệm 1.', type: 'pour', src: 'fecl2', dst: 'tube1', pour: { level: 0.35, color: 0xb9dcc4, opacity: 0.55 } },
-      { text: 'Rót dung dịch FeCl₃ vào ống nghiệm 2.', type: 'pour', src: 'fecl3', dst: 'tube2', pour: { level: 0.35, color: 0xc78a32, opacity: 0.7 } },
-      { text: 'Nhỏ dung dịch NaOH vào ống 1 — kết tủa trắng xanh xuất hiện!', type: 'pour', src: 'naoh', dst: 'tube1', pour: { level: 0.48 }, fx: 'feoh2_ppt' },
-      { text: 'Nhỏ dung dịch NaOH vào ống 2 — kết tủa nâu đỏ xuất hiện!', type: 'pour', src: 'naoh', dst: 'tube2', pour: { level: 0.48 }, fx: 'feoh3_ppt' },
-      { text: 'Để ống 1 ngoài không khí — kết tủa chuyển dần sang màu nâu đỏ!', type: 'click', id: 'tube1', fx: 'feoh2_oxidize' }
+      { text: 'Rót ethanol khan vào ống nghiệm.', type: 'pour', src: 'etoh', dst: 'tube', pour: { level: 0.5, color: 0xe4eef6, opacity: 0.5 } },
+      { text: 'Thả mẩu sodium nhỏ vào ống nghiệm.', type: 'drop', src: 'na', dst: 'tube', dropOffset: { y: 0.2 } },
+      { text: 'Quan sát: bọt khí H₂ thoát ra đều, mẩu Na tan dần.', type: 'wait', id: 'tube', fx: 'etoh_na_react' }
     ]
   },
   'SIM-13': {
     id: 'SIM-13',
     setup: [
-      { type: 'electrolysis_cell', id: 'cell', x: 0, z: 0.4 },
-      { type: 'power_supply', id: 'power', x: 4.4, z: -0.3 },
-      { type: 'bottle', id: 'cuso4', label: 'CuSO₄', color: 0x2e86de, op: 0.85, cap: 0x2a5a9a }
+      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
+      { type: 'tube', id: 'tube', label: 'Dung dịch phenol' },
+      { type: 'bottle', id: 'phenol', label: 'Phenol', color: 0xdde9f2, op: 0.45 },
+      { type: 'bottle', id: 'brom', label: 'Nước\nbromine', color: 0xe88a2a, op: 0.8, fs: 32, cap: 0x9a5a18 }
     ],
     steps: [
-      { text: 'Rót dung dịch CuSO₄ vào bình điện phân.', type: 'pour', src: 'cuso4', dst: 'cell', pour: { level: 0.55, color: 0x2e86de, opacity: 0.85 } },
-      { text: 'Nhấp nút đỏ trên nguồn điện để bắt đầu điện phân.', type: 'click', id: 'power', fx: 'electrolysis_start' },
-      { text: 'Quan sát: Cu đỏ bám vào cathode, khí O₂ sủi ở anode!', type: 'click', id: 'cell', fx: 'electrolysis_observe' }
+      { text: 'Rót dung dịch phenol vào ống nghiệm.', type: 'pour', src: 'phenol', dst: 'tube', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.45 } },
+      { text: 'Nhỏ nước bromine vào — kết tủa trắng xuất hiện ngay, nước brom mất màu!', type: 'pour', src: 'brom', dst: 'tube', pour: { level: 0.52 }, fx: 'phenol_ppt' }
     ]
   },
   'SIM-14': {
     id: 'SIM-14',
     setup: [
-      { type: 'beaker', id: 'cell', x: 0, z: 0.4, r: 1.25, h: 2.4 },
-      { type: 'zinc_copper_strips', id: 'strips', x: 0, z: 0.4 },
-      { type: 'switch', id: 'switch', x: 4.2, z: 0.8 },
-      { type: 'bottle', id: 'h2so4', label: 'H₂SO₄ loãng', color: 0xeef2e0, op: 0.5, cap: 0xc24a3a }
+      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
+      { type: 'tube', id: 'tube', label: 'Ống nghiệm' },
+      { type: 'bottle', id: 'naoh', label: 'NaOH', color: 0xdde9f2, op: 0.45 },
+      { type: 'bottle', id: 'cuso4', label: 'CuSO₄', color: 0x2e86de, op: 0.85, cap: 0x2a5a9a },
+      { type: 'bottle', id: 'gly', label: 'Glycerol', color: 0xeaf2f0, op: 0.55, cap: 0x4a8a5a }
     ],
     steps: [
-      { text: 'Rót dung dịch H₂SO₄ loãng vào cốc chứa 2 thanh Zn, Cu.', type: 'pour', src: 'h2so4', dst: 'cell', pour: { level: 0.5, color: 0xdfe8e2, opacity: 0.5 } },
-      { text: 'Quan sát: bọt khí H₂ chỉ thoát ra ở thanh Zn (ăn mòn hóa học).', type: 'click', id: 'cell', fx: 'zinc_bubbles' },
-      { text: 'Nhấp công tắc để nối thanh Zn với thanh Cu bằng dây dẫn.', type: 'click', id: 'switch', fx: 'switch_on' },
-      { text: 'Quan sát: đèn sáng, khí H₂ thoát ra mạnh ở thanh Cu!', type: 'click', id: 'cell', fx: 'copper_bubbles' }
+      { text: 'Rót dung dịch NaOH vào ống nghiệm.', type: 'pour', src: 'naoh', dst: 'tube', pour: { level: 0.2, color: 0xe0ecf4, opacity: 0.5 } },
+      { text: 'Nhỏ CuSO₄ vào — xuất hiện kết tủa xanh Cu(OH)₂.', type: 'pour', src: 'cuso4', dst: 'tube', pour: { level: 0.28, color: 0x9fc8e8, opacity: 0.7 }, fx: 'gly_precip' },
+      { text: 'Thêm glycerol vào ống.', type: 'pour', src: 'gly', dst: 'tube', pour: { level: 0.42 } },
+      { text: 'Nhấp vào ống nghiệm để lắc đều — kết tủa tan tạo dung dịch xanh lam thẫm!', type: 'shake', id: 'tube', fx: 'gly_dissolve' }
     ]
   },
   'SIM-15': {
     id: 'SIM-15',
     setup: [
-      { type: 'rutherford_screen', x: 0, z: 0.4 },
-      { type: 'rutherford_holder', id: 'holder', x: 0, z: 0.4 },
-      { type: 'rutherford_source', id: 'source', x: -5.3, z: 0.4 },
-      { type: 'rutherford_scope', id: 'scope', x: 5.1, z: 2.3 },
-      { type: 'dish_foil', id: 'foil', label: 'Lá vàng (Au) siêu mỏng', x: -2.3, z: 2.9 }
+      { type: 'rack', x: -2.0, z: 0.5, n: 2 },
+      { type: 'tube', id: 'tube1', label: 'Ống 1: + quỳ' },
+      { type: 'tube', id: 'tube2', label: 'Ống 2: + đá vôi' },
+      { type: 'bottle', id: 'acid', label: 'CH₃COOH', color: 0xeef2e6, op: 0.5, cap: 0x8a4a4a },
+      { type: 'dish_nail', id: 'marble', label: 'Đá vôi CaCO₃', x: -4.8, z: 1.7 }
     ],
     steps: [
-      { text: 'Kéo lá vàng siêu mỏng gắn vào giá đỡ ở tâm màn.', type: 'drop', src: 'foil', dst: 'holder', dropOffset: { x: 0, y: 1.25, z: 0 } },
-      { text: 'Nhấp vào nguồn phóng xạ để mở khe chắn, bắn chùm hạt α.', type: 'click', id: 'source', fx: 'rutherford_shoot' },
-      { text: 'Quan sát màn huỳnh quang: hầu hết hạt α đi thẳng xuyên qua lá vàng!', type: 'click', id: 'holder', fx: 'rutherford_observe_straight' },
-      { text: 'Quan sát kỹ: một số ít hạt bị lệch hướng, cá biệt có hạt bật ngược trở lại!', type: 'click', id: 'holder', fx: 'rutherford_observe_deviated' },
-      { text: 'Nhấp vào kính hiển vi để phóng to, xem điều gì xảy ra bên trong lá vàng.', type: 'click', id: 'scope', fx: 'rutherford_zoom' },
-      { text: 'Quan sát mô hình: hạt α chỉ bật ngược khi va đúng hạt nhân nguyên tử.', type: 'click', id: 'holder', fx: 'rutherford_model_finish' }
+      { text: 'Rót acetic acid vào ống 1 (đã nhỏ sẵn quỳ tím) — quỳ hóa đỏ.', type: 'pour', src: 'acid', dst: 'tube1', pour: { level: 0.45, color: 0xeaf0e4, opacity: 0.5 }, fx: 'acid_litmus' },
+      { text: 'Thả viên đá vôi vào ống 2.', type: 'drop', src: 'marble', dst: 'tube2', dropOffset: { y: 0.18, scale: 0.85 } },
+      { text: 'Rót acetic acid vào ống 2 — sủi bọt khí CO₂!', type: 'pour', src: 'acid', dst: 'tube2', pour: { level: 0.5, color: 0xeaf0e4, opacity: 0.5 }, fx: 'acid_caco3' }
     ]
   }
 };
@@ -1182,45 +1147,85 @@ export default function GenericChemSimulation({
         addTween(coat.material, { opacity: 0.9 }, 6.0);
         Effects.tint(beaker, { color: 0xa8cce4, opacity: 0.6, dur: 6.5 });
         await delaySeconds(3.0);
-      } else if (step.fx === 'zinc_bubbles') {
-        objMapRef.current['cell'].userData.znBub = Effects.bubblesAt(sceneRef.current!, new THREE.Vector3(-0.85, 0.4, 0.4), 1.15, { rate: 14, r: 0.12 });
-      } else if (step.fx === 'switch_on') {
-        const wire = objMapRef.current['cell'].userData.wire;
-        const bulb = objMapRef.current['cell'].userData.bulb;
-        wire.visible = true;
-        bulb.material.emissive.setHex(0xffc830);
-        bulb.material.color.setHex(0xffe080);
-        if (objMapRef.current['cell'].userData.znBub) {
-          objMapRef.current['cell'].userData.znBub.stop();
+      } else if (step.fx === 'ind_acid') {
+        await Effects.tint(objMapRef.current['tube1'], { color: 0xe0392b, opacity: 0.8, dur: 1.0 });
+      } else if (step.fx === 'ind_neutral') {
+        await Effects.tint(objMapRef.current['tube2'], { color: 0x4caf50, opacity: 0.7, dur: 1.0 });
+      } else if (step.fx === 'ind_base') {
+        await Effects.tint(objMapRef.current['tube3'], { color: 0x3a4ec0, opacity: 0.8, dur: 1.0 });
+      } else if (step.fx === 'titration_end') {
+        await Effects.tint(beaker, { color: 0xef6aa8, opacity: 0.7, dur: 2.0 });
+        Effects.sparkle(beaker, new THREE.Vector3(0, 2.2, 0), { dur: 1.5 });
+      } else if (step.fx === 'cu_hno3_react') {
+        const cu = objMapRef.current['cu'];
+        const chips = cu.userData.itemMesh;
+        Effects.bubbles(tube, { dur: 5.0, rate: 26, r: 0.05, color: 0xb05a2a, speed: 1.6 });
+        Effects.steam(tube, new THREE.Vector3(0, 3.4, 0), { dur: 5.0, rate: 4, size: 0.45, dark: true });
+        Effects.bubblesAt(sceneRef.current!, () => tube.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(0, 3.4, 0)), 6.5, { rate: 8, r: 0.25, speed: 1.2, color: 0xa85228, dur: 5.0 });
+        await Effects.tint(tube, { color: 0x2e86de, opacity: 0.8, dur: 4.0 });
+        await addTweenPromise(chips.scale, { x: 0.1, y: 0.1, z: 0.1 }, 4.0);
+        chips.visible = false;
+      } else if (step.fx === 'nh3_vapor') {
+        Effects.steam(objMapRef.current['jar1'], new THREE.Vector3(0, 1.9, 0), { dur: 15.0, rate: 1.5, size: 0.3 });
+      } else if (step.fx === 'hcl_vapor') {
+        Effects.steam(objMapRef.current['jar2'], new THREE.Vector3(0, 1.9, 0), { dur: 15.0, rate: 1.5, size: 0.3 });
+      } else if (step.fx === 'smoke_puff') {
+        const jar1 = objMapRef.current['jar1'];
+        const jar2 = objMapRef.current['jar2'];
+        const home1 = jar1.userData.initHome;
+        const home2 = jar2.userData.initHome;
+        await Promise.all([
+          addTweenPromise(jar1.position, { x: -0.6 }, 1.2),
+          addTweenPromise(jar2.position, { x: 0.6 }, 1.2)
+        ]);
+        const mid = new THREE.Vector3(0, 2.2, 0.4);
+        for (let i = 0; i < 5; i++) {
+          Effects.steam(sceneRef.current!, mid.clone().add(new THREE.Vector3((Math.random() - 0.5) * 0.8, (Math.random() - 0.5) * 0.3, 0)), { rate: 8, size: 0.6, dur: 1.5 });
+          await delaySeconds(0.35);
         }
-        Effects.bubblesAt(sceneRef.current!, new THREE.Vector3(0.85, 0.4, 0.4), 1.15, { rate: 30, r: 0.12, dur: 8.0 });
-        await delaySeconds(1.5);
-      } else if (step.fx === 'copper_bubbles') {
-        const wire = objMapRef.current['cell'].userData.wire;
-        Effects.sparkle(wire, new THREE.Vector3(0, 3.9, 0.4), { dur: 1.5 });
-      } else if (step.fx === 'rutherford_shoot') {
-        const beam = alphaBeam(sceneRef.current!, objMapRef.current['cell'] as any); // cast cell as board
-        objMapRef.current['cell'].userData.beam = beam;
-        await delaySeconds(3.2);
-      } else if (step.fx === 'rutherford_observe_deviated') {
-        const b = objMapRef.current['cell'].userData.beam;
-        if (b) {
-          for (const f of ['small', 'big', 'small', 'back', 'big', 'small', 'back', 'big', 'small', 'back']) {
-            b.spawn(f);
-            await delaySeconds(0.45);
-          }
-        }
-      } else if (step.fx === 'rutherford_zoom') {
-        const b = objMapRef.current['cell'].userData.beam;
-        if (b) b.stop();
-        const model = buildAtomModel();
-        model.position.set(0, 5.1, 0.9);
-        model.scale.setScalar(0.01);
-        sceneRef.current!.add(model);
-        objMapRef.current['atom_model'] = model;
-        Effects.sparkle(model, new THREE.Vector3(0, 0, 0), { dur: 2.0, rate: 9 });
-        await addTweenPromise(model.scale, { x: 1, y: 1, z: 1 }, 0.9, { ease: 'backOut' });
-        await delaySeconds(2.2);
+        await delaySeconds(1.0);
+        await Promise.all([
+          addTweenPromise(jar1.position, { x: home1.x, y: home1.y, z: home1.z }, 1.0),
+          addTweenPromise(jar2.position, { x: home2.x, y: home2.y, z: home2.z }, 1.0)
+        ]);
+        jar1.userData.home = { ...home1 };
+        jar2.userData.home = { ...home2 };
+      } else if (step.fx === 'sugar_carbon') {
+        const col = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.78, 0.85, 1.0, 16),
+          new THREE.MeshStandardMaterial({ color: 0x141414, roughness: 1.0 })
+        );
+        col.position.set(0, 0.5, 0);
+        col.scale.set(1, 0.01, 1);
+        beaker.add(col);
+        Effects.steam(beaker, new THREE.Vector3(0, 2.6, 0), { dur: 5.0, rate: 5, size: 0.6, dark: true, rise: 1.4 });
+        Effects.bubbles(beaker, { dur: 3.0, rate: 10, r: 0.05, color: 0x222222 });
+        await addTweenPromise(col.scale, { y: 3.4 }, 4.0, { ease: 'quadOut' });
+        await delaySeconds(1.0);
+      } else if (step.fx === 'ethylene_bleach') {
+        Effects.bubbles(tube, { dur: 4.0, rate: 16, r: 0.045 });
+        await Effects.tint(tube, { color: 0xdde9f2, opacity: 0.4, dur: 3.5 });
+      } else if (step.fx === 'acetylene_ppt') {
+        Effects.bubbles(tube, { dur: 2.0, rate: 12, r: 0.04 });
+        await Effects.precip(tube, { color: 0xf0e0a0, tint: 0.55 });
+      } else if (step.fx === 'etoh_na_react') {
+        const na = objMapRef.current['na'];
+        const ball = na.userData.itemMesh;
+        Effects.bubbles(tube, { dur: 5.0, rate: 18, r: 0.045, speed: 1.4 });
+        await addTweenPromise(ball.scale, { x: 0.08, y: 0.08, z: 0.08 }, 4.5);
+        ball.visible = false;
+      } else if (step.fx === 'phenol_ppt') {
+        await Effects.precip(tube, { color: 0xf4f4f4, tint: 0.5, dur: 1.6 });
+      } else if (step.fx === 'gly_precip') {
+        await Effects.precip(tube, { color: 0x3f9be0, tint: 0.5 });
+      } else if (step.fx === 'gly_dissolve') {
+        await Effects.dissolvePile(tube, { color: 0x1f4fc8, opacity: 0.85, dur: 1.5 });
+      } else if (step.fx === 'acid_litmus') {
+        await Effects.tint(objMapRef.current['tube1'], { color: 0xe0392b, opacity: 0.65, dur: 1.2 });
+      } else if (step.fx === 'acid_caco3') {
+        Effects.bubbles(objMapRef.current['tube2'], { dur: 5.0, rate: 30, r: 0.05, speed: 1.6 });
+        Effects.steam(objMapRef.current['tube2'], new THREE.Vector3(0, 3.5, 0), { dur: 4.0, rate: 2, size: 0.3 });
+        await delaySeconds(2.5);
       }
     }
 
@@ -2136,7 +2141,7 @@ export default function GenericChemSimulation({
   );
 }
 
-// Special Alpha particles emitter for Rutherford experiment
+/* Special Alpha particles emitter for Rutherford experiment
 const _UP = new THREE.Vector3(0, 1, 0);
 function alphaBeam(ctxScene: THREE.Scene, counter: any) {
   const C = new THREE.Vector3(0, 2.0, 0.4);
@@ -2239,8 +2244,9 @@ function alphaBeam(ctxScene: THREE.Scene, counter: any) {
   };
   return e;
 }
+*/
 
-// Special Rutherford Atomic model visualizer
+/* Special Rutherford Atomic model visualizer
 function buildAtomModel() {
   const g = new THREE.Group();
   g.name = 'atom-model-mesh';
@@ -2315,6 +2321,7 @@ function buildAtomModel() {
 
   return g;
 }
+*/
 
 function makeStrip(color: number, w = 0.34, h = 2.5) {
   const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.07), MAT.metal(color));

@@ -43,14 +43,14 @@ const ALL_LABS: LabItem[] = [
 	},
 	{
 		id: 3,
-		title: 'Glucose tác dụng với Cu(OH)₂',
+		title: 'Độ pH và Chất chỉ thị',
 		subject: 'chem',
-		level: 'Trung bình',
-		mins: '~12 phút',
-		xp: '+80 XP',
+		level: 'Cơ bản',
+		mins: '~10 phút',
+		xp: '+60 XP',
 		locked: false,
 		simId: 'SIM-04',
-		grade: 12,
+		grade: 11,
 	},
 	{
 		id: 4,
@@ -86,12 +86,123 @@ const ALL_LABS: LabItem[] = [
 	},
 	{
 		id: 7,
-		title: 'Định luật Ohm',
+		title: 'Định luật Ohm cho đoạn mạch',
 		subject: 'physics',
-		level: 'Khóa',
-		mins: 'Đạt Lv.8',
-		xp: '',
-		locked: true,
+		level: 'Cơ bản',
+		mins: '~10 phút',
+		xp: '+60 XP',
+		locked: false,
+		simId: 'SIM-50',
+		grade: 11,
+	},
+	{
+		id: 45,
+		title: 'Dao động điều hòa',
+		subject: 'physics',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+80 XP',
+		locked: false,
+		simId: 'SIM-42',
+		grade: 11,
+	},
+	{
+		id: 46,
+		title: 'Dao động tắt dần',
+		subject: 'physics',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+80 XP',
+		locked: false,
+		simId: 'SIM-43',
+		grade: 11,
+	},
+	{
+		id: 47,
+		title: 'Hiện tượng cộng hưởng',
+		subject: 'physics',
+		level: 'Cơ bản',
+		mins: '~10 phút',
+		xp: '+70 XP',
+		locked: false,
+		simId: 'SIM-44',
+		grade: 11,
+	},
+	{
+		id: 48,
+		title: 'Sóng ngang truyền trên dây',
+		subject: 'physics',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+80 XP',
+		locked: false,
+		simId: 'SIM-45',
+		grade: 11,
+	},
+	{
+		id: 49,
+		title: 'Sóng dừng',
+		subject: 'physics',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+85 XP',
+		locked: false,
+		simId: 'SIM-46',
+		grade: 11,
+	},
+	{
+		id: 50,
+		title: 'Giao thoa sóng nước',
+		subject: 'physics',
+		level: 'Nâng cao',
+		mins: '~15 phút',
+		xp: '+100 XP',
+		locked: false,
+		simId: 'SIM-47',
+		grade: 11,
+	},
+	{
+		id: 51,
+		title: 'Định luật Coulomb & Lực tương tác',
+		subject: 'physics',
+		level: 'Cơ bản',
+		mins: '~10 phút',
+		xp: '+70 XP',
+		locked: false,
+		simId: 'SIM-48',
+		grade: 11,
+	},
+	{
+		id: 52,
+		title: 'Điện trường & Đường sức điện',
+		subject: 'physics',
+		level: 'Trung bình',
+		mins: '~15 phút',
+		xp: '+90 XP',
+		locked: false,
+		simId: 'SIM-49',
+		grade: 11,
+	},
+	{
+		id: 53,
+		title: 'Mạch ghép điện trở (Nối tiếp / Song song)',
+		subject: 'physics',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+80 XP',
+		locked: false,
+		simId: 'SIM-51',
+		grade: 11,
+	},
+	{
+		id: 54,
+		title: 'Định luật Ohm cho toàn mạch',
+		subject: 'physics',
+		level: 'Trung bình',
+		mins: '~15 phút',
+		xp: '+90 XP',
+		locked: false,
+		simId: 'SIM-52',
 		grade: 11,
 	},
 	{
@@ -206,124 +317,113 @@ const ALL_LABS: LabItem[] = [
 	},
 	{
 		id: 8,
-		title: 'Phản ứng tráng bạc của glucose',
+		title: 'Chuẩn độ Acid - Base',
 		subject: 'chem',
-		level: 'Cơ bản',
-		mins: '~10 phút',
-		xp: '+60 XP',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+80 XP',
 		locked: false,
 		simId: 'SIM-05',
-		grade: 12,
+		grade: 11,
 	},
 	{
 		id: 9,
-		title: 'Phản ứng màu của tinh bột với iodine',
+		title: 'Đồng tác dụng với dung dịch HNO₃ đặc',
 		subject: 'chem',
-		level: 'Cơ bản',
-		mins: '~8 phút',
-		xp: '+60 XP',
+		level: 'Trung bình',
+		mins: '~10 phút',
+		xp: '+80 XP',
 		locked: false,
 		simId: 'SIM-06',
-		grade: 12,
+		grade: 11,
 	},
 	{
 		id: 10,
-		title: 'Phản ứng màu biuret của protein',
+		title: 'Ammonia tác dụng với HCl đặc (Khói trắng)',
 		subject: 'chem',
 		level: 'Cơ bản',
 		mins: '~8 phút',
 		xp: '+60 XP',
 		locked: false,
 		simId: 'SIM-07',
-		grade: 12,
+		grade: 11,
 	},
 	{
-		id: 11,
-		title: 'Sodium tác dụng với nước',
+		id: 12,
+		title: 'H₂SO₄ đặc tác dụng với đường (Saccharose)',
 		subject: 'chem',
 		level: 'Trung bình',
 		mins: '~10 phút',
 		xp: '+80 XP',
 		locked: false,
-		simId: 'SIM-08',
-		grade: 12,
+		simId: 'SIM-09',
+		grade: 11,
 	},
 	{
-		id: 12,
-		title: 'Đinh sắt tác dụng với dung dịch CuSO₄',
+		id: 13,
+		title: 'Ethylene tác dụng với nước Bromine',
 		subject: 'chem',
 		level: 'Cơ bản',
 		mins: '~8 phút',
 		xp: '+60 XP',
 		locked: false,
-		simId: 'SIM-09',
-		grade: 12,
+		simId: 'SIM-10',
+		grade: 11,
 	},
 	{
-		id: 13,
-		title: 'Nhôm tác dụng với dung dịch NaOH',
+		id: 14,
+		title: 'Acetylene tác dụng với dung dịch AgNO₃/NH₃',
 		subject: 'chem',
 		level: 'Trung bình',
 		mins: '~10 phút',
 		xp: '+80 XP',
 		locked: false,
-		simId: 'SIM-10',
-		grade: 12,
-	},
-	{
-		id: 14,
-		title: 'Phản ứng nhiệt nhôm (Al + Fe₂O₃)',
-		subject: 'chem',
-		level: 'Nâng cao',
-		mins: '~15 phút',
-		xp: '+120 XP',
-		locked: false,
 		simId: 'SIM-11',
-		grade: 12,
+		grade: 11,
 	},
 	{
 		id: 15,
-		title: 'Điều chế Fe(OH)₂ và Fe(OH)₃',
+		title: 'Ethanol tác dụng với kim loại Sodium',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~10 phút',
+		xp: '+70 XP',
+		locked: false,
+		simId: 'SIM-12',
+		grade: 11,
+	},
+	{
+		id: 16,
+		title: 'Phenol tác dụng với nước Bromine',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+85 XP',
+		locked: false,
+		simId: 'SIM-13',
+		grade: 11,
+	},
+	{
+		id: 17,
+		title: 'Glycerol tác dụng với Cu(OH)₂',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~10 phút',
+		xp: '+70 XP',
+		locked: false,
+		simId: 'SIM-14',
+		grade: 11,
+	},
+	{
+		id: 18,
+		title: 'Tính chất hóa học của Acetic Acid',
 		subject: 'chem',
 		level: 'Trung bình',
 		mins: '~12 phút',
 		xp: '+80 XP',
 		locked: false,
-		simId: 'SIM-12',
-		grade: 12,
-	},
-	{
-		id: 16,
-		title: 'Điện phân dung dịch CuSO₄',
-		subject: 'chem',
-		level: 'Nâng cao',
-		mins: '~15 phút',
-		xp: '+120 XP',
-		locked: false,
-		simId: 'SIM-13',
-		grade: 12,
-	},
-	{
-		id: 17,
-		title: 'Ăn mòn điện hóa học (pin Zn – Cu)',
-		subject: 'chem',
-		level: 'Trung bình',
-		mins: '~15 phút',
-		xp: '+120 XP',
-		locked: false,
-		simId: 'SIM-14',
-		grade: 12,
-	},
-	{
-		id: 18,
-		title: 'Thí nghiệm bắn phá lá vàng (Rutherford, 1911)',
-		subject: 'chem',
-		level: 'Nâng cao',
-		mins: '~18 phút',
-		xp: '+150 XP',
-		locked: false,
 		simId: 'SIM-15',
-		grade: 10,
+		grade: 11,
 	},
 	{
 		id: 19,
@@ -599,8 +699,21 @@ const FILTERS = [
 
 const HocSinhHome: React.FC = () => {
 	const [heroInput, setHeroInput] = useState('');
-	const [grade, setGrade] = useState(12);
-	const [filter, setFilter] = useState('all');
+	const [grade, setGrade] = useState(() => {
+		const saved = localStorage.getItem('selected_grade');
+		return saved ? parseInt(saved, 10) : 12;
+	});
+	const [filter, setFilter] = useState(() => {
+		return localStorage.getItem('selected_filter') || 'all';
+	});
+
+	React.useEffect(() => {
+		localStorage.setItem('selected_grade', String(grade));
+	}, [grade]);
+
+	React.useEffect(() => {
+		localStorage.setItem('selected_filter', filter);
+	}, [filter]);
 
 	// AI Assistant States
 	const [aiLoading, setAiLoading] = useState(false);
@@ -621,7 +734,16 @@ const HocSinhHome: React.FC = () => {
 
 	const openWorkspace = useCallback((subject: string, simId?: string) => {
 		let path = `/hoc-sinh/workspace?subject=${subject}`;
-		if (simId) path += `&sim=${simId}`;
+		if (simId) {
+			path += `&sim=${simId}`;
+			const matchedLab = ALL_LABS.find((l) => l.simId === simId);
+			if (matchedLab) {
+				setGrade(matchedLab.grade);
+				setFilter(matchedLab.subject);
+				localStorage.setItem('selected_grade', String(matchedLab.grade));
+				localStorage.setItem('selected_filter', matchedLab.subject);
+			}
+		}
 		history.push(path);
 	}, []);
 

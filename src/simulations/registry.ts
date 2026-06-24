@@ -25,6 +25,17 @@ import ACGenSimulation from './physics/SIM-38-acgen'
 import RadioactiveSimulation from './physics/SIM-39-radioactive'
 import NuclearSimulation from './physics/SIM-40-nuclear'
 import BindingEnergySimulation from './physics/SIM-41-bindingenergy'
+import ShmSimulation from './physics/SIM-42-shm'
+import DampedSimulation from './physics/SIM-43-damped'
+import ResonanceSimulation from './physics/SIM-44-resonance'
+import WaveSimulation from './physics/SIM-45-wave'
+import StandingSimulation from './physics/SIM-46-standing'
+import InterferenceSimulation from './physics/SIM-47-interference'
+import CoulombSimulation from './physics/SIM-48-coulomb'
+import EFieldSimulation from './physics/SIM-49-efield'
+import OhmSimulation from './physics/SIM-50-ohm'
+import ResistorsSimulation from './physics/SIM-51-resistors'
+import FullCircuitSimulation from './physics/SIM-52-fullcircuit'
 
 
 // Math 10 simulations
@@ -91,6 +102,17 @@ registerSimulation('SIM-38', ACGenSimulation)
 registerSimulation('SIM-39', RadioactiveSimulation)
 registerSimulation('SIM-40', NuclearSimulation)
 registerSimulation('SIM-41', BindingEnergySimulation)
+registerSimulation('SIM-42', ShmSimulation)
+registerSimulation('SIM-43', DampedSimulation)
+registerSimulation('SIM-44', ResonanceSimulation)
+registerSimulation('SIM-45', WaveSimulation)
+registerSimulation('SIM-46', StandingSimulation)
+registerSimulation('SIM-47', InterferenceSimulation)
+registerSimulation('SIM-48', CoulombSimulation)
+registerSimulation('SIM-49', EFieldSimulation)
+registerSimulation('SIM-50', OhmSimulation)
+registerSimulation('SIM-51', ResistorsSimulation)
+registerSimulation('SIM-52', FullCircuitSimulation)
 
 
 

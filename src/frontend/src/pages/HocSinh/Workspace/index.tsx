@@ -24,6 +24,17 @@ import ACGenSimulation from '@simulations/physics/SIM-38-acgen';
 import RadioactiveSimulation from '@simulations/physics/SIM-39-radioactive';
 import NuclearSimulation from '@simulations/physics/SIM-40-nuclear';
 import BindingEnergySimulation from '@simulations/physics/SIM-41-bindingenergy';
+import ShmSimulation from '@simulations/physics/SIM-42-shm';
+import DampedSimulation from '@simulations/physics/SIM-43-damped';
+import ResonanceSimulation from '@simulations/physics/SIM-44-resonance';
+import WaveSimulation from '@simulations/physics/SIM-45-wave';
+import StandingSimulation from '@simulations/physics/SIM-46-standing';
+import InterferenceSimulation from '@simulations/physics/SIM-47-interference';
+import CoulombSimulation from '@simulations/physics/SIM-48-coulomb';
+import EFieldSimulation from '@simulations/physics/SIM-49-efield';
+import OhmSimulation from '@simulations/physics/SIM-50-ohm';
+import ResistorsSimulation from '@simulations/physics/SIM-51-resistors';
+import FullCircuitSimulation from '@simulations/physics/SIM-52-fullcircuit';
 import React, { useCallback, useMemo, useState } from 'react';
 import { history, useLocation } from 'umi';
 import StudentLayout from '../components/StudentLayout';
@@ -61,65 +72,70 @@ const LAB_META = {
 		className: 'chem',
 	},
 	'SIM-04': {
-		label: 'Hóa học',
-		title: 'Glucose tác dụng với Cu(OH)₂',
+		label: 'Hóa học 11',
+		title: 'Độ pH và Chất chỉ thị',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
 	'SIM-05': {
-		label: 'Hóa học',
-		title: 'Phản ứng tráng bạc của glucose',
+		label: 'Hóa học 11',
+		title: 'Chuẩn độ Acid - Base',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
 	'SIM-06': {
-		label: 'Hóa học',
-		title: 'Phản ứng màu của tinh bột với iodine',
+		label: 'Hóa học 11',
+		title: 'Đồng tác dụng với dung dịch HNO₃ đặc',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
 	'SIM-07': {
-		label: 'Hóa học',
-		title: 'Phản ứng màu biuret của protein',
+		label: 'Hóa học 11',
+		title: 'Ammonia tác dụng với HCl đặc (Khói trắng)',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-08': { label: 'Hóa học', title: 'Sodium tác dụng với nước', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'SIM-08': { label: 'Toán', title: 'Đồ thị hàm số bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'SIM-09': {
-		label: 'Hóa học',
-		title: 'Đinh sắt tác dụng với dung dịch CuSO₄',
+		label: 'Hóa học 11',
+		title: 'H₂SO₄ đặc tác dụng với đường (Saccharose)',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
 	'SIM-10': {
-		label: 'Hóa học',
-		title: 'Nhôm tác dụng với dung dịch NaOH',
+		label: 'Hóa học 11',
+		title: 'Ethylene tác dụng với nước Bromine',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
 	'SIM-11': {
-		label: 'Hóa học',
-		title: 'Phản ứng nhiệt nhôm (Al + Fe₂O₃)',
+		label: 'Hóa học 11',
+		title: 'Acetylene tác dụng với dung dịch AgNO₃/NH₃',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
 	'SIM-12': {
-		label: 'Hóa học',
-		title: 'Điều chế Fe(OH)₂ và Fe(OH)₃',
+		label: 'Hóa học 11',
+		title: 'Ethanol tác dụng với kim loại Sodium',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-13': { label: 'Hóa học', title: 'Điện phân dung dịch CuSO₄', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'SIM-13': {
+		label: 'Hóa học 11',
+		title: 'Phenol tác dụng với nước Bromine',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
 	'SIM-14': {
-		label: 'Hóa học',
-		title: 'Ăn mòn điện hóa học (pin Zn – Cu)',
+		label: 'Hóa học 11',
+		title: 'Glycerol tác dụng với Cu(OH)₂',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
 	'SIM-15': {
-		label: 'Hóa học 10',
-		title: 'Thí nghiệm bắn phá lá vàng (Rutherford, 1911)',
-		tutor: 'Trợ lý hạt nhân AI',
+		label: 'Hóa học 11',
+		title: 'Tính chất hóa học của Acetic Acid',
+		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
 	'SIM-02': { label: 'Vật lý', title: 'Chuyển động ném xiên', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
@@ -154,6 +170,17 @@ const LAB_META = {
 	'SIM-39': { label: 'Vật lý', title: 'Phóng xạ & chu kỳ bán rã', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-40': { label: 'Vật lý', title: 'Phản ứng phân hạch & nhiệt hạch', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-41': { label: 'Vật lý', title: 'Năng lượng liên kết riêng', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-42': { label: 'Vật lý 11', title: 'Dao động điều hòa', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-43': { label: 'Vật lý 11', title: 'Dao động tắt dần', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-44': { label: 'Vật lý 11', title: 'Hiện tượng cộng hưởng', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-45': { label: 'Vật lý 11', title: 'Sóng ngang truyền trên dây', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-46': { label: 'Vật lý 11', title: 'Sóng dừng', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-47': { label: 'Vật lý 11', title: 'Giao thoa sóng nước', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-48': { label: 'Vật lý 11', title: 'Định luật Coulomb & Lực tương tác', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-49': { label: 'Vật lý 11', title: 'Điện trường & Đường sức điện', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-50': { label: 'Vật lý 11', title: 'Định luật Ohm cho đoạn mạch', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-51': { label: 'Vật lý 11', title: 'Mạch ghép điện trở (Nối tiếp / Song song)', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-52': { label: 'Vật lý 11', title: 'Định luật Ohm cho toàn mạch', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-08-math': { label: 'Toán', title: 'Đồ thị hàm số bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'SIM-16': { label: 'Toán', title: 'Ném xiên và vòm cổng parabol', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'SIM-17': { label: 'Toán', title: 'Miền nghiệm hệ bất phương trình', tutor: 'Trợ lý Toán AI', className: 'math' },
@@ -186,46 +213,68 @@ const LAB_INITIAL_CHATS: Record<string, ChatMessage[]> = {
 	'SIM-04': [
 		{
 			role: 'ai',
-			text: 'Chào bạn! Trong phản ứng với Cu(OH)₂ ở nhiệt độ thường, glucose thể hiện tính chất của hợp chất nào?',
+			text: 'Chào mừng bạn đến với thí nghiệm độ pH và chất chỉ thị màu! Bạn có biết chất chỉ thị vạn năng sẽ hóa màu gì trong dung dịch HCl không?',
 		},
 	],
 	'SIM-05': [
-		{ role: 'ai', text: 'Chào bạn! Glucose có thể tham gia phản ứng tráng bạc là nhờ nhóm chức nào trong phân tử?' },
+		{
+			role: 'ai',
+			text: 'Chào bạn! Trong chuẩn độ acid-base, tại sao ta lại thêm phenolphthalein vào dung dịch acid trước khi nhỏ NaOH?',
+		},
 	],
 	'SIM-06': [
 		{
 			role: 'ai',
-			text: 'Chào bạn! Phản ứng màu giữa tinh bột và iodine có phải phản ứng hóa học tạo liên kết mới không?',
+			text: 'Chào bạn! Phản ứng giữa đồng và HNO₃ đặc tạo ra khí có màu gì và công thức hóa học là gì?',
 		},
 	],
-	'SIM-07': [{ role: 'ai', text: 'Chào bạn! Những peptide hoặc protein nào có khả năng cho phản ứng màu biuret?' }],
+	'SIM-07': [
+		{
+			role: 'ai',
+			text: 'Chào bạn! Tại sao khi đưa miệng hai lọ chứa NH₃ đặc và HCl đặc lại gần nhau lại xuất hiện khói trắng?',
+		},
+	],
 	'SIM-08': [{ role: 'ai', text: 'Chào bạn! Kim loại kiềm sodium phản ứng với nước tạo ra dung dịch gì và khí gì?' }],
 	'SIM-09': [
-		{ role: 'ai', text: 'Chào bạn! Thí nghiệm sắt tác dụng với đồng(II) sulfate minh họa cho loại phản ứng nào?' },
+		{
+			role: 'ai',
+			text: 'Chào bạn! Axit sulfuric đặc có tính chất đặc trưng nào khiến đường saccharose bị hóa than đen và phồng lên?',
+		},
 	],
-	'SIM-10': [{ role: 'ai', text: 'Chào bạn! Nhôm có phải kim loại phản ứng trực tiếp với dung dịch kiềm NaOH không?' }],
+	'SIM-10': [
+		{
+			role: 'ai',
+			text: 'Chào bạn! Ethylene phản ứng cộng với nước bromine làm mất màu vàng cam nhờ liên kết nào trong phân tử?',
+		},
+	],
 	'SIM-11': [
-		{ role: 'ai', text: 'Chào bạn! Phản ứng nhiệt nhôm là phản ứng tỏa nhiệt cực mạnh dùng để làm gì trong thực tế?' },
+		{
+			role: 'ai',
+			text: 'Chào bạn! Acetylene tác dụng với dung dịch AgNO₃ trong NH₃ sinh ra chất kết tủa màu gì?',
+		},
 	],
 	'SIM-12': [
-		{ role: 'ai', text: 'Chào bạn! Tại sao Fe(OH)₂ màu trắng xanh lại chuyển sang màu nâu đỏ khi để ngoài không khí?' },
+		{
+			role: 'ai',
+			text: 'Chào bạn! Ethanol tác dụng với mẩu sodium giải phóng bọt khí gì?',
+		},
 	],
 	'SIM-13': [
 		{
 			role: 'ai',
-			text: 'Chào bạn! Khi điện phân dung dịch CuSO₄ bằng điện cực trơ, ion nào sẽ nhận electron ở cathode?',
+			text: 'Chào bạn! Phenol phản ứng với nước bromine tạo kết tủa trắng nhờ nhóm -OH hoạt hóa vòng benzen ở các vị trí nào?',
 		},
 	],
 	'SIM-14': [
 		{
 			role: 'ai',
-			text: 'Chào bạn! Trong pin điện hóa Zn-Cu nhúng trong H₂SO₄ loãng, kim loại nào đóng vai trò anode (cực âm) và bị ăn mòn?',
+			text: 'Chào bạn! Glycerol có thể hòa tan kết tủa xanh Cu(OH)₂ ở nhiệt độ thường là nhờ đặc điểm cấu tạo nào?',
 		},
 	],
 	'SIM-15': [
 		{
 			role: 'ai',
-			text: 'Chào bạn! Thí nghiệm bắn phá lá vàng của Rutherford đã chứng minh điều gì về cấu tạo nguyên tử?',
+			text: 'Chào bạn! Axit acetic phản ứng với đá vôi (CaCO₃) giải phóng khí gì?',
 		},
 	],
 	default_physics: [
@@ -309,6 +358,39 @@ const LAB_INITIAL_CHATS: Record<string, ChatMessage[]> = {
 	'SIM-41': [
 		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng năng lượng liên kết riêng! Hạt nhân bền vững nhất nằm trong vùng số khối A bằng bao nhiêu?' }
 	],
+	'SIM-42': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Dao động điều hòa! Hãy quan sát li độ, vận tốc và gia tốc biến đổi điều hòa theo thời gian.' }
+	],
+	'SIM-43': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Dao động tắt dần! Hãy điều chỉnh hệ số lực cản b để thấy biên độ giảm dần theo thời gian.' }
+	],
+	'SIM-44': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Hiện tượng cộng hưởng! Biên độ dao động sẽ đạt cực đại khi tần số lực cưỡng bức tiến gần tới tần số riêng.' }
+	],
+	'SIM-45': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Sóng ngang truyền trên dây! Hãy quan sát các phần tử môi trường dao động vuông góc với phương truyền sóng.' }
+	],
+	'SIM-46': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Sóng dừng! Sóng dừng được hình thành từ sự giao thoa giữa sóng tới và sóng phản xạ, tạo ra các nút và bụng sóng.' }
+	],
+	'SIM-47': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Giao thoa sóng nước! Hãy quan sát hình ảnh các cực đại và cực tiểu giao thoa đan xen nhau.' }
+	],
+	'SIM-48': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật Coulomb! Lực tương tác tĩnh điện giữa hai điện tích tỉ lệ nghịch với bình phương khoảng cách.' }
+	],
+	'SIM-49': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Điện trường & Đường sức điện! Hãy di chuyển các điện tích để quan sát sự thay đổi của đường sức điện trường.' }
+	],
+	'SIM-50': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật Ohm cho đoạn mạch! Cường độ dòng điện chạy qua dây dẫn tỉ lệ thuận với hiệu điện thế.' }
+	],
+	'SIM-51': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Mạch ghép điện trở! Hãy so sánh điện trở tương đương khi mắc nối tiếp và mắc song song.' }
+	],
+	'SIM-52': [
+		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật Ohm cho toàn mạch! Cường độ dòng điện phụ thuộc vào suất điện động E và tổng điện trở R + r.' }
+	],
 	default_math: [
 		{
 			role: 'ai',
@@ -374,40 +456,40 @@ export const LAB_QUIZZES = {
 		correct: 'b',
 	},
 	'SIM-04': {
-		q: 'Phản ứng của glucose với Cu(OH)₂ ở nhiệt độ thường chứng minh glucose có cấu tạo nào?',
+		q: 'Chất chỉ thị vạn năng chuyển sang màu gì trong môi trường axit mạnh (pH < 3)?',
 		opts: [
-			{ k: 'a', t: 'Có nhiều nhóm hydroxy (–OH) kề nhau' },
-			{ k: 'b', t: 'Có nhóm chức aldehyde (–CHO)' },
-			{ k: 'c', t: 'Có liên kết ester' },
+			{ k: 'a', t: 'Màu đỏ' },
+			{ k: 'b', t: 'Màu xanh' },
+			{ k: 'c', t: 'Màu lục' },
 		],
 		correct: 'a',
 	},
 	'SIM-05': {
-		q: 'Nhóm chức nào của glucose chịu trách nhiệm cho phản ứng tráng bạc?',
+		q: 'Trong quá trình chuẩn độ HCl bằng dung dịch NaOH với chỉ thị phenolphthalein, điểm tương đương đạt được khi dung dịch:',
 		opts: [
-			{ k: 'a', t: 'Nhóm aldehyde (–CHO)' },
-			{ k: 'b', t: 'Nhóm hydroxy (–OH)' },
-			{ k: 'c', t: 'Nhóm carboxylic (–COOH)' },
+			{ k: 'a', t: 'Chuyển sang màu đỏ sẫm' },
+			{ k: 'b', t: 'Chuyển sang màu hồng nhạt bền trong khoảng 30 giây' },
+			{ k: 'c', t: 'Mất màu hoàn toàn' },
 		],
-		correct: 'a',
+		correct: 'b',
 	},
 	'SIM-06': {
-		q: 'Tại sao khi đun nóng ống nghiệm chứa hồ tinh bột và iodine thì dung dịch lại mất màu?',
+		q: 'Khí màu nâu đỏ sinh ra khi cho đồng tác dụng với HNO₃ đặc là gì?',
 		opts: [
-			{ k: 'a', t: 'Iodine bị thăng hoa bay ra ngoài hoàn toàn' },
-			{ k: 'b', t: 'Cấu trúc xoắn duỗi ra, giải phóng các phân tử iodine' },
-			{ k: 'c', t: 'Iodine phản ứng tạo chất mới không màu' },
+			{ k: 'a', t: 'Khí NO' },
+			{ k: 'b', t: 'Khí NO₂' },
+			{ k: 'c', t: 'Khí N₂O' },
 		],
 		correct: 'b',
 	},
 	'SIM-07': {
-		q: 'Chất nào sau đây KHÔNG cho phản ứng màu biuret với Cu(OH)₂ trong môi trường kiềm?',
+		q: 'Khói trắng sinh ra khi đưa miệng hai lọ đựng NH₃ đặc và HCl đặc lại gần nhau là chất nào?',
 		opts: [
-			{ k: 'a', t: 'Lòng trắng trứng (albumin)' },
-			{ k: 'b', t: 'Dipeptide Gly-Ala' },
-			{ k: 'c', t: 'Tripeptide Gly-Ala-Val' },
+			{ k: 'a', t: 'Ammonium chloride (NH₄Cl)' },
+			{ k: 'b', t: 'Khí nitrogen (N₂)' },
+			{ k: 'c', t: 'Ammonium nitrate (NH₄NO₃)' },
 		],
-		correct: 'b',
+		correct: 'a',
 	},
 	'SIM-08': {
 		q: 'Hiện tượng nào sau đây KHÔNG xảy ra khi cho mẩu sodium nhỏ vào chậu nước có phenolphthalein?',
@@ -419,67 +501,67 @@ export const LAB_QUIZZES = {
 		correct: 'a',
 	},
 	'SIM-09': {
-		q: 'Bản chất của phản ứng giữa đinh sắt và dung dịch CuSO₄ là gì?',
+		q: 'Đường saccharose bị hóa than đen khi gặp H₂SO₄ đặc là do axit này có tính chất đặc trưng nào?',
 		opts: [
-			{ k: 'a', t: 'Phản ứng trao đổi ion' },
-			{ k: 'b', t: 'Phản ứng oxi hóa - khử, Fe khử Cu²⁺' },
-			{ k: 'c', t: 'Phản ứng phân hủy' },
+			{ k: 'a', t: 'Tính axit mạnh' },
+			{ k: 'b', t: 'Tính oxi hóa cực mạnh' },
+			{ k: 'c', t: 'Tính háo nước mạnh' },
 		],
-		correct: 'b',
+		correct: 'c',
 	},
 	'SIM-10': {
-		q: 'Tại sao không dùng các xô chậu bằng nhôm để đựng dung dịch kiềm?',
+		q: 'Ethylene có thể làm mất màu dung dịch nước bromine là do cấu tạo phân tử ethylene có:',
 		opts: [
-			{ k: 'a', t: 'Vì nhôm phản ứng trực tiếp với khí oxi trong kiềm' },
-			{ k: 'b', t: 'Vì dung dịch kiềm hòa tan lớp màng bảo vệ Al₂O₃ và sau đó ăn mòn nhôm' },
-			{ k: 'c', t: 'Vì nhôm bị oxi hóa tạo thành muối không tan gây hỏng chậu' },
+			{ k: 'a', t: 'Liên kết đôi kém bền dễ tham gia phản ứng cộng' },
+			{ k: 'b', t: 'Nhóm chức aldehyde' },
+			{ k: 'c', t: 'Nhiều liên kết đơn bền vững' },
 		],
-		correct: 'b',
+		correct: 'a',
 	},
 	'SIM-11': {
-		q: 'Trong phản ứng nhiệt nhôm giữa Al và Fe₂O₃, vai trò của Al là gì?',
+		q: 'Sản phẩm kết tủa vàng nhạt thu được khi sục khí acetylene vào dung dịch AgNO₃/NH₃ có công thức là:',
 		opts: [
-			{ k: 'a', t: 'Chất oxi hóa' },
-			{ k: 'b', t: 'Chất khử' },
-			{ k: 'c', t: 'Chất xúc tác' },
+			{ k: 'a', t: 'AgC' },
+			{ k: 'b', t: 'Ag₂C₂' },
+			{ k: 'c', t: 'AgC₂' },
 		],
 		correct: 'b',
 	},
 	'SIM-12': {
-		q: 'Phản ứng chuyển màu của Fe(OH)₂ ngoài không khí ẩm thuộc loại phản ứng nào?',
+		q: 'Khi cho sodium vào ethanol khan, sản phẩm khí sinh ra là:',
 		opts: [
-			{ k: 'a', t: 'Phản ứng trao đổi' },
-			{ k: 'b', t: 'Phản ứng oxi hóa - khử, Fe(II) bị oxi hóa lên Fe(III)' },
-			{ k: 'c', t: 'Phản ứng phân hủy' },
+			{ k: 'a', t: 'Khí hydrogen (H₂)' },
+			{ k: 'b', t: 'Khí oxygen (O₂)' },
+			{ k: 'c', t: 'Khí carbon dioxide (CO₂)' },
 		],
-		correct: 'b',
+		correct: 'a',
 	},
 	'SIM-13': {
-		q: 'Sản phẩm thu được ở anode (cực dương) khi điện phân dung dịch CuSO₄ với điện cực trơ là gì?',
+		q: 'Khi nhỏ nước bromine vào dung dịch phenol, xuất hiện kết tủa màu gì?',
 		opts: [
-			{ k: 'a', t: 'Kim loại Cu' },
-			{ k: 'b', t: 'Khí O₂ và ion H⁺' },
-			{ k: 'c', t: 'Khí SO₂' },
+			{ k: 'a', t: 'Kết tủa trắng' },
+			{ k: 'b', t: 'Kết tủa vàng' },
+			{ k: 'c', t: 'Kết tủa đỏ' },
 		],
-		correct: 'b',
+		correct: 'a',
 	},
 	'SIM-14': {
-		q: 'Khi nối hai thanh Zn và Cu bằng dây dẫn trong cốc chứa dung dịch H₂SO₄ loãng, electron di chuyển như thế nào?',
+		q: 'Glycerol hòa tan được Cu(OH)₂ tạo thành dung dịch màu gì?',
 		opts: [
-			{ k: 'a', t: 'Từ thanh Cu sang thanh Zn qua dây dẫn' },
-			{ k: 'b', t: 'Từ thanh Zn sang thanh Cu qua dây dẫn' },
-			{ k: 'c', t: 'Không có sự di chuyển electron qua dây dẫn' },
+			{ k: 'a', t: 'Xanh lam thẫm' },
+			{ k: 'b', t: 'Đỏ gạch' },
+			{ k: 'c', t: 'Tím' },
 		],
-		correct: 'b',
+		correct: 'a',
 	},
 	'SIM-15': {
-		q: 'Tại sao phần lớn các hạt alpha lại xuyên thẳng qua lá vàng mà không bị lệch hướng?',
+		q: 'Khi cho axit acetic tác dụng với đá vôi (CaCO₃), khí sinh ra làm đục nước vôi trong là khí nào?',
 		opts: [
-			{ k: 'a', t: 'Vì hạt alpha không mang điện tích' },
-			{ k: 'b', t: 'Vì lá vàng rất mỏng và nguyên tử có cấu tạo chủ yếu là không gian rỗng' },
-			{ k: 'c', t: 'Vì hạt nhân nguyên tử vàng mang điện tích âm' },
+			{ k: 'a', t: 'Khí CO₂' },
+			{ k: 'b', t: 'Khí H₂' },
+			{ k: 'c', t: 'Khí SO₂' },
 		],
-		correct: 'b',
+		correct: 'a',
 	},
 	default_physics: {
 		q: 'Bỏ qua sức cản không khí, góc ném nào cho tầm xa tối đa?',
@@ -687,6 +769,105 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'a'
 	},
+	'SIM-42': {
+		q: 'Trong dao động điều hòa, li độ biến thiên trễ pha hơn vận tốc một góc bao nhiêu?',
+		opts: [
+			{ k: 'a', t: 'pi' },
+			{ k: 'b', t: 'pi/2' },
+			{ k: 'c', t: 'pi/4' }
+		],
+		correct: 'b'
+	},
+	'SIM-43': {
+		q: 'Nguyên nhân chính gây ra sự dao động tắt dần của một hệ cơ học trong môi trường là:',
+		opts: [
+			{ k: 'a', t: 'Lực cản và lực ma sát của môi trường làm tiêu hao cơ năng' },
+			{ k: 'b', t: 'Khối lượng vật quá lớn' },
+			{ k: 'c', t: 'Gia tốc trọng trường thay đổi' }
+		],
+		correct: 'a'
+	},
+	'SIM-44': {
+		q: 'Hiện tượng cộng hưởng cơ xảy ra khi:',
+		opts: [
+			{ k: 'a', t: 'Tần số của ngoại lực tuần hoàn bằng tần số dao động riêng của hệ' },
+			{ k: 'b', t: 'Biên độ ngoại lực cực đại' },
+			{ k: 'c', t: 'Hệ dao động tắt dần hoàn toàn' }
+		],
+		correct: 'a'
+	},
+	'SIM-45': {
+		q: 'Bước sóng là quãng đường mà sóng truyền đi được trong:',
+		opts: [
+			{ k: 'a', t: 'Một chu kỳ dao động của sóng' },
+			{ k: 'b', t: 'Một giây' },
+			{ k: 'c', t: 'Một nửa chu kỳ' }
+		],
+		correct: 'a'
+	},
+	'SIM-46': {
+		q: 'Trên một sợi dây có sóng dừng ổn định, khoảng cách giữa hai nút sóng liên tiếp bằng:',
+		opts: [
+			{ k: 'a', t: 'Một bước sóng (lambda)' },
+			{ k: 'b', t: 'Một nửa bước sóng (lambda/2)' },
+			{ k: 'c', t: 'Một phần tư bước sóng (lambda/4)' }
+		],
+		correct: 'b'
+	},
+	'SIM-47': {
+		q: 'Điều kiện để hai nguồn sóng gặp nhau giao thoa tạo thành các vân cực đại, cực tiểu ổn định là hai nguồn phải:',
+		opts: [
+			{ k: 'a', t: 'Cùng tần số, cùng biên độ' },
+			{ k: 'b', t: 'Kết hợp (cùng tần số và hiệu số pha không đổi theo thời gian)' },
+			{ k: 'c', t: 'Cùng pha và cùng vận tốc truyền' }
+		],
+		correct: 'b'
+	},
+	'SIM-48': {
+		q: 'Nếu khoảng cách giữa hai điện tích điểm tăng lên gấp đôi thì lực tương tác tĩnh điện giữa chúng thay đổi thế nào?',
+		opts: [
+			{ k: 'a', t: 'Giảm đi 4 lần' },
+			{ k: 'b', t: 'Tăng lên 2 lần' },
+			{ k: 'c', t: 'Giảm đi 2 lần' }
+		],
+		correct: 'a'
+	},
+	'SIM-49': {
+		q: 'Đặc điểm nào sau đây KHÔNG đúng với đường sức điện của điện trường tĩnh?',
+		opts: [
+			{ k: 'a', t: 'Là các đường cong không khép kín, xuất phát từ điện tích dương và kết thúc ở điện tích âm' },
+			{ k: 'b', t: 'Có thể cắt nhau tại các điểm có điện trường mạnh' },
+			{ k: 'c', t: 'Nơi nào điện trường mạnh thì đường sức vẽ dày' }
+		],
+		correct: 'b'
+	},
+	'SIM-50': {
+		q: 'Định luật Ohm cho đoạn mạch có điện trở R phát biểu rằng cường độ dòng điện I tỉ lệ thuận với hiệu điện thế U theo hệ thức:',
+		opts: [
+			{ k: 'a', t: 'I = U / R' },
+			{ k: 'b', t: 'I = U * R' },
+			{ k: 'c', t: 'I = R / U' }
+		],
+		correct: 'a'
+	},
+	'SIM-51': {
+		q: 'Khi mắc song song hai điện trở R1 và R2, điện trở tương đương R_tđ có đặc điểm:',
+		opts: [
+			{ k: 'a', t: 'R_tđ lớn hơn tổng R1 + R2' },
+			{ k: 'b', t: 'R_tđ luôn nhỏ hơn cả R1 và R2' },
+			{ k: 'c', t: 'R_tđ bằng trung bình cộng R1 và R2' }
+		],
+		correct: 'b'
+	},
+	'SIM-52': {
+		q: 'Định luật Ohm cho toàn mạch xác định cường độ dòng điện trong mạch kín gồm suất điện động E, điện trở trong r và điện trở ngoài R là:',
+		opts: [
+			{ k: 'a', t: 'I = E / (R + r)' },
+			{ k: 'b', t: 'I = E / R + r' },
+			{ k: 'c', t: 'I = (E - r) / R' }
+		],
+		correct: 'a'
+	},
 	default_math: {
 		q: 'Nghiệm của y = x² − 2x − 3 là?',
 		opts: [
@@ -771,33 +952,26 @@ const LAB_CHEM_STEPS = {
 		{ n: 6, title: 'Quan sát xà phòng', sub: 'Lớp xà phòng rắn màu trắng nổi lên trên' },
 	],
 	'SIM-04': [
-		{ n: 1, title: 'Thêm NaOH', sub: 'Rót 1 ml dung dịch NaOH 10%' },
-		{ n: 2, title: 'Thêm CuSO₄', sub: 'Nhỏ vài giọt CuSO₄ 5% tạo kết tủa xanh' },
-		{ n: 3, title: 'Thêm Glucose', sub: 'Thêm 2 ml dung dịch glucose 5%' },
-		{ n: 4, title: 'Lắc ống nghiệm', sub: 'Nhấp ống nghiệm để lắc đều hòa tan kết tủa' },
-		{ n: 5, title: 'Lắp ống nghiệm', sub: 'Kéo ống nghiệm lên giá đỡ đèn cồn' },
-		{ n: 6, title: 'Đun nóng nhẹ', sub: 'Châm lửa đèn cồn để đun nóng phần trên' },
-		{ n: 7, title: 'Quan sát kết tủa', sub: 'Kết tủa đỏ gạch Cu₂O xuất hiện' },
+		{ n: 1, title: 'Thêm dung dịch HCl', sub: 'Rót dung dịch HCl vào ống 1' },
+		{ n: 2, title: 'Thêm nước cất', sub: 'Rót nước cất vào ống 2' },
+		{ n: 3, title: 'Thêm dung dịch NaOH', sub: 'Rót dung dịch NaOH vào ống 3' },
+		{ n: 4, title: 'Nhỏ chất chỉ thị ống 1', sub: 'Môi trường acid làm chỉ thị vạn năng hóa đỏ' },
+		{ n: 5, title: 'Nhỏ chất chỉ thị ống 2', sub: 'Môi trường trung tính làm chỉ thị vạn năng hóa lục' },
+		{ n: 6, title: 'Nhỏ chất chỉ thị ống 3', sub: 'Môi trường base làm chỉ thị vạn năng hóa xanh tím' },
 	],
 	'SIM-05': [
-		{ n: 1, title: 'Thêm AgNO₃', sub: 'Rót 1 ml dung dịch AgNO₃ 1% vào ống nghiệm' },
-		{ n: 2, title: 'Thêm NH₃', sub: 'Nhỏ từ từ NH₃ tạo phức tan' },
-		{ n: 3, title: 'Thêm Glucose', sub: 'Rót tiếp 1 ml dung dịch glucose 5%' },
-		{ n: 4, title: 'Cách thủy', sub: 'Đặt ống nghiệm vào cốc nước nóng' },
-		{ n: 5, title: 'Quan sát tráng bạc', sub: 'Lớp bạc sáng bám lên thành ống' },
+		{ n: 1, title: 'Thêm dung dịch HCl', sub: 'Rót dung dịch HCl cần chuẩn độ vào bình' },
+		{ n: 2, title: 'Thêm phenolphthalein', sub: 'Nhỏ vài giọt chất chỉ thị phenolphthalein (không màu)' },
+		{ n: 3, title: 'Chuẩn độ bằng NaOH', sub: 'Nhỏ từ từ dung dịch NaOH từ buret đến khi dung dịch hóa hồng nhạt' },
 	],
 	'SIM-06': [
-		{ n: 1, title: 'Thêm tinh bột', sub: 'Rót 2 ml hồ tinh bột vào ống nghiệm' },
-		{ n: 2, title: 'Thêm iodine', sub: 'Nhỏ vài giọt dung dịch iodine' },
-		{ n: 3, title: 'Lắp ống nghiệm', sub: 'Kéo ống nghiệm lên giá đỡ đèn cồn' },
-		{ n: 4, title: 'Đun nóng', sub: 'Châm lửa đèn cồn để đun nhẹ' },
-		{ n: 5, title: 'Để nguội', sub: 'Tắt đèn để nguội và quan sát màu sắc' },
+		{ n: 1, title: 'Thả mảnh đồng', sub: 'Thả mảnh đồng (Cu) vào ống nghiệm' },
+		{ n: 2, title: 'Rót HNO₃ đặc', sub: 'Rót dung dịch HNO₃ đặc vào ống nghiệm, xuất hiện khí màu nâu đỏ' },
 	],
 	'SIM-07': [
-		{ n: 1, title: 'Lòng trắng trứng', sub: 'Rót 1 ml dung dịch lòng trắng trứng' },
-		{ n: 2, title: 'Thêm NaOH', sub: 'Thêm 1 ml dung dịch NaOH 30%' },
-		{ n: 3, title: 'Thêm CuSO₄', sub: 'Nhỏ vài giọt dung dịch CuSO₄ 2%' },
-		{ n: 4, title: 'Lắc đều', sub: 'Nhấp ống nghiệm lắc đều tạo màu tím' },
+		{ n: 1, title: 'Rót dung dịch NH₃', sub: 'Rót dung dịch NH₃ đặc vào lọ thứ nhất' },
+		{ n: 2, title: 'Rót dung dịch HCl', sub: 'Rót dung dịch HCl đặc vào lọ thứ hai' },
+		{ n: 3, title: 'Đưa lại gần nhau', sub: 'Đưa miệng hai lọ lại gần nhau, khói trắng ammonium chloride xuất hiện' },
 	],
 	'SIM-08': [
 		{ n: 1, title: 'Phenolphthalein', sub: 'Nhỏ vài giọt phenolphthalein vào chậu nước' },
@@ -805,47 +979,36 @@ const LAB_CHEM_STEPS = {
 		{ n: 3, title: 'Quan sát màu hồng', sub: 'Dung dịch chuyển hồng do tạo base' },
 	],
 	'SIM-09': [
-		{ n: 1, title: 'Thêm CuSO₄', sub: 'Rót dung dịch CuSO₄ màu xanh vào ống nghiệm' },
-		{ n: 2, title: 'Thả đinh sắt', sub: 'Thả đinh sắt vào ống nghiệm CuSO₄' },
-		{ n: 3, title: 'Quan sát đinh', sub: 'Lớp đồng đỏ bám trên đinh sắt' },
+		{ n: 1, title: 'Cho đường vào cốc', sub: 'Cho đường cát trắng (saccharose) vào cốc thủy tinh' },
+		{ n: 2, title: 'Thêm H₂SO₄ đặc', sub: 'Rót axit H₂SO₄ đặc vào cốc, đường hóa than đen và phồng lên' },
 	],
 	'SIM-10': [
-		{ n: 1, title: 'Thêm NaOH', sub: 'Rót 2 ml dung dịch NaOH đặc vào ống' },
-		{ n: 2, title: 'Thả mảnh Al', sub: 'Thả vài mảnh nhôm vào ống nghiệm' },
-		{ n: 3, title: 'Quan sát khí', sub: 'Khí thoát ra mạnh, nhôm tan dần' },
+		{ n: 1, title: 'Rót nước bromine', sub: 'Rót dung dịch nước bromine màu vàng cam vào ống nghiệm' },
+		{ n: 2, title: 'Sục khí ethylene', sub: 'Sục khí ethylene (C₂H₄) vào ống nghiệm, màu vàng cam nhạt dần rồi mất hẳn' },
 	],
 	'SIM-11': [
-		{ n: 1, title: 'Thêm Fe₂O₃', sub: 'Đổ bột Fe₂O₃ vào chén sứ' },
-		{ n: 2, title: 'Thêm Al', sub: 'Đổ tiếp bột Al và trộn đều tecmit' },
-		{ n: 3, title: 'Cắm dải Mg', sub: 'Cắm dải băng Mg làm mồi lửa' },
-		{ n: 4, title: 'Châm lửa Mg', sub: 'Nhấp chén sứ để châm lửa dải Mg' },
-		{ n: 5, title: 'Quan sát sắt lỏng', sub: 'Sắt nóng chảy chảy xuống khay cát' },
+		{ n: 1, title: 'Rót dung dịch AgNO₃', sub: 'Rót dung dịch AgNO₃ trong NH₃ vào ống nghiệm' },
+		{ n: 2, title: 'Sục khí acetylene', sub: 'Sục khí acetylene (C₂H₂) vào ống nghiệm, xuất hiện kết tủa vàng nhạt' },
 	],
 	'SIM-12': [
-		{ n: 1, title: 'Rót FeCl₂', sub: 'Rót dung dịch FeCl₂ vào ống 1' },
-		{ n: 2, title: 'Rót FeCl₃', sub: 'Rót dung dịch FeCl₃ vào ống 2' },
-		{ n: 3, title: 'Thêm NaOH vào ống 1', sub: 'Tạo kết tủa trắng xanh Fe(OH)₂' },
-		{ n: 4, title: 'Thêm NaOH vào ống 2', sub: 'Tạo kết tủa nâu đỏ Fe(OH)₃' },
-		{ n: 5, title: 'Để ngoài không khí', sub: 'Kết tủa trắng xanh hóa nâu đỏ dần' },
+		{ n: 1, title: 'Rót ethanol', sub: 'Rót ethanol khan vào ống nghiệm' },
+		{ n: 2, title: 'Thả mẩu sodium', sub: 'Thả một mẩu sodium nhỏ vào ống nghiệm' },
+		{ n: 3, title: 'Quan sát bọt khí', sub: 'Mẩu sodium tan dần và giải phóng nhiều bọt khí hydrogen' },
 	],
 	'SIM-13': [
-		{ n: 1, title: 'Rót CuSO₄', sub: 'Rót dung dịch CuSO₄ vào bình điện phân' },
-		{ n: 2, title: 'Mở nguồn điện', sub: 'Nhấp nút đỏ trên nguồn điện' },
-		{ n: 3, title: 'Quan sát điện cực', sub: 'Cu bám cực âm, O₂ sủi cực dương' },
+		{ n: 1, title: 'Rót dung dịch phenol', sub: 'Rót dung dịch phenol vào ống nghiệm' },
+		{ n: 2, title: 'Thêm nước bromine', sub: 'Nhỏ dung dịch nước bromine vào ống nghiệm, xuất hiện kết tủa trắng lập tức' },
 	],
 	'SIM-14': [
-		{ n: 1, title: 'Thêm H₂SO₄', sub: 'Rót dung dịch H₂SO₄ loãng vào cốc' },
-		{ n: 2, title: 'Chưa nối dây', sub: 'Bọt khí chỉ thoát ra ở thanh Zn' },
-		{ n: 3, title: 'Bật công tắc', sub: 'Nối hai thanh Zn và Cu bằng dây dẫn' },
-		{ n: 4, title: 'Quan sát điện hóa', sub: 'Đèn sáng, khí thoát ra ở thanh Cu' },
+		{ n: 1, title: 'Rót dung dịch NaOH', sub: 'Rót dung dịch NaOH vào ống nghiệm' },
+		{ n: 2, title: 'Tạo kết tủa Cu(OH)₂', sub: 'Nhỏ dung dịch CuSO₄ vào tạo kết tủa xanh Cu(OH)₂' },
+		{ n: 3, title: 'Thêm glycerol', sub: 'Thêm dung dịch glycerol vào ống nghiệm' },
+		{ n: 4, title: 'Lắc đều ống nghiệm', sub: 'Nhấp ống nghiệm lắc đều, kết tủa tan tạo dung dịch xanh lam thẫm' },
 	],
 	'SIM-15': [
-		{ n: 1, title: 'Gắn lá vàng', sub: 'Kéo lá vàng gắn vào giá đỡ tâm màn' },
-		{ n: 2, title: 'Bắn hạt alpha', sub: 'Nhấp nguồn phóng xạ bắn chùm hạt α' },
-		{ n: 3, title: 'Hạt đi thẳng', sub: 'Hầu hết hạt α đi thẳng qua lá vàng' },
-		{ n: 4, title: 'Hạt lệch hướng', sub: 'Một số ít hạt bị lệch hoặc bật ngược' },
-		{ n: 5, title: 'Kính hiển vi', sub: 'Nhấp kính hiển vi để phóng to nguyên tử' },
-		{ n: 6, title: 'Xem va chạm', sub: 'Hạt α phản xạ khi chạm hạt nhân nguyên tử' },
+		{ n: 1, title: 'Thí nghiệm với quỳ', sub: 'Rót dung dịch acetic acid vào ống 1 (có quỳ tím hóa đỏ)' },
+		{ n: 2, title: 'Thả đá vôi', sub: 'Thả mảnh đá vôi (CaCO₃) vào ống 2' },
+		{ n: 3, title: 'Thêm axit vào ống 2', sub: 'Rót dung dịch acetic acid vào ống 2, phản ứng sủi bọt khí CO₂' },
 	],
 };
 
@@ -859,27 +1022,27 @@ const getChemObservations = (simId: string, chemStep: number) => {
 			];
 		case 'SIM-04':
 			return [
-				{ key: 1, label: 'Xuất hiện kết tủa xanh Cu(OH)₂', active: chemStep >= 3 },
-				{ key: 2, label: 'Dung dịch xanh lam thẫm phức glucose-đồng', active: chemStep >= 5 },
-				{ key: 3, label: 'Kết tủa đỏ gạch Cu₂O khi đun nóng', active: chemStep >= 7 },
+				{ key: 1, label: 'Ống 1 (acid): Hóa đỏ', active: chemStep >= 5 },
+				{ key: 2, label: 'Ống 2 (neutral): Hóa lục', active: chemStep >= 6 },
+				{ key: 3, label: 'Ống 3 (base): Hóa xanh tím', active: chemStep >= 7 },
 			];
 		case 'SIM-05':
 			return [
-				{ key: 1, label: 'Tạo kết tủa rồi tan hết trong NH₃', active: chemStep >= 3 },
-				{ key: 2, label: 'Ống nghiệm đặt cách thủy nước nóng', active: chemStep >= 5 },
-				{ key: 3, label: 'Lớp bạc sáng bóng bám lên thành ống', active: chemStep >= 6 },
+				{ key: 1, label: 'Dung dịch HCl ban đầu không màu', active: chemStep >= 2 },
+				{ key: 2, label: 'Nhỏ NaOH từ buret xuống bình', active: chemStep >= 4 },
+				{ key: 3, label: 'Dung dịch chuyển hồng nhạt bền', active: chemStep >= 4 },
 			];
 		case 'SIM-06':
 			return [
-				{ key: 1, label: 'Hồ tinh bột chuyển màu xanh tím', active: chemStep >= 3 },
-				{ key: 2, label: 'Dung dịch mất màu khi đun nóng', active: chemStep >= 5 },
-				{ key: 3, label: 'Màu xanh tím hiện lại khi nguội', active: chemStep >= 6 },
+				{ key: 1, label: 'Đồng tan và dung dịch hóa xanh lam', active: chemStep >= 3 },
+				{ key: 2, label: 'Bọt khí thoát ra mãnh liệt', active: chemStep >= 3 },
+				{ key: 3, label: 'Sinh khí NO₂ màu nâu đỏ bốc lên', active: chemStep >= 3 },
 			];
 		case 'SIM-07':
 			return [
-				{ key: 1, label: 'Tạo kết tủa Cu(OH)₂ xanh lam', active: chemStep >= 4 },
-				{ key: 2, label: 'Lắc đều để chất phản ứng', active: chemStep >= 5 },
-				{ key: 3, label: 'Xuất hiện phức màu tím biuret đặc trưng', active: chemStep >= 5 },
+				{ key: 1, label: 'Rót NH₃ đặc bốc hơi nhẹ', active: chemStep >= 2 },
+				{ key: 2, label: 'Rót HCl đặc bốc hơi nhẹ', active: chemStep >= 3 },
+				{ key: 3, label: 'Khói trắng NH₄Cl dày đặc ở miệng lọ', active: chemStep >= 4 },
 			];
 		case 'SIM-08':
 			return [
@@ -889,45 +1052,45 @@ const getChemObservations = (simId: string, chemStep: number) => {
 			];
 		case 'SIM-09':
 			return [
-				{ key: 1, label: 'Đinh sắt ngập trong dung dịch CuSO₄', active: chemStep >= 3 },
-				{ key: 2, label: 'Lớp đồng đỏ bám phủ ngoài đinh', active: chemStep >= 4 },
-				{ key: 3, label: 'Màu xanh lam nhạt dần', active: chemStep >= 4 },
+				{ key: 1, label: 'Đường dần hóa đen do bị khử', active: chemStep >= 3 },
+				{ key: 2, label: 'Cột carbon phồng cao khỏi cốc', active: chemStep >= 3 },
+				{ key: 3, label: 'Khí mùi hắc (SO₂, CO₂) thoát ra', active: chemStep >= 3 },
 			];
 		case 'SIM-10':
 			return [
-				{ key: 1, label: 'Mảnh nhôm sủi bọt khí H₂ mạnh', active: chemStep >= 3 },
-				{ key: 2, label: 'Ống nghiệm tỏa nhiệt và sinh hơi nước', active: chemStep >= 3 },
-				{ key: 3, label: 'Mảnh nhôm tan hoàn toàn trong kiềm', active: chemStep >= 4 },
+				{ key: 1, label: 'Rót nước bromine màu vàng cam', active: chemStep >= 2 },
+				{ key: 2, label: 'Sục khí ethylene sủi bọt khí', active: chemStep >= 3 },
+				{ key: 3, label: 'Dung dịch bị mất màu vàng cam', active: chemStep >= 3 },
 			];
 		case 'SIM-11':
 			return [
-				{ key: 1, label: 'Dải Mg làm mồi cháy sáng chói', active: chemStep >= 5 },
-				{ key: 2, label: 'Phản ứng tỏa nhiệt mạnh sinh tia lửa', active: chemStep >= 5 },
-				{ key: 3, label: 'Sắt nóng chảy sáng rực chảy xuống cát', active: chemStep >= 6 },
+				{ key: 1, label: 'Dung dịch AgNO₃/NH₃ trong suốt', active: chemStep >= 2 },
+				{ key: 2, label: 'Sục khí acetylene sủi bọt khí', active: chemStep >= 3 },
+				{ key: 3, label: 'Xuất hiện kết tủa vàng nhạt Ag₂C₂', active: chemStep >= 3 },
 			];
 		case 'SIM-12':
 			return [
-				{ key: 1, label: 'Ống 1: Kết tủa trắng xanh Fe(OH)₂', active: chemStep >= 4 },
-				{ key: 2, label: 'Ống 2: Kết tủa nâu đỏ Fe(OH)₃', active: chemStep >= 5 },
-				{ key: 3, label: 'Ống 1: Kết tủa chuyển nâu đỏ ngoài O₂', active: chemStep >= 6 },
+				{ key: 1, label: 'Thả mẩu sodium vào ống nghiệm', active: chemStep >= 3 },
+				{ key: 2, label: 'Sủi bọt khí H₂ xung quanh mẩu Na', active: chemStep >= 3 },
+				{ key: 3, label: 'Mẩu sodium tan dần rồi biến mất', active: chemStep >= 4 },
 			];
 		case 'SIM-13':
 			return [
-				{ key: 1, label: 'Cathode (cực âm): Đồng đỏ bám vào', active: chemStep >= 3 },
-				{ key: 2, label: 'Anode (cực dương): Khí O₂ sủi bọt', active: chemStep >= 3 },
-				{ key: 3, label: 'Màu xanh của CuSO₄ nhạt dần', active: chemStep >= 3 },
+				{ key: 1, label: 'Dung dịch phenol ban đầu trong suốt', active: chemStep >= 2 },
+				{ key: 2, label: 'Xuất hiện kết tủa trắng đục lập tức', active: chemStep >= 3 },
+				{ key: 3, label: 'Nước bromine bị mất màu', active: chemStep >= 3 },
 			];
 		case 'SIM-14':
 			return [
-				{ key: 1, label: 'Chưa nối dây: Khí chỉ sủi ở thanh Zn', active: chemStep >= 2 },
-				{ key: 2, label: 'Nối dây: Đèn LED sáng lên', active: chemStep >= 4 },
-				{ key: 3, label: 'Nối dây: Khí thoát ra mạnh ở thanh Cu', active: chemStep >= 4 },
+				{ key: 1, label: 'Xuất hiện kết tủa xanh Cu(OH)₂', active: chemStep >= 3 },
+				{ key: 2, label: 'Thêm dung dịch glycerol', active: chemStep >= 4 },
+				{ key: 3, label: 'Kết tủa tan tạo dung dịch xanh lam thẫm', active: chemStep >= 5 },
 			];
 		case 'SIM-15':
 			return [
-				{ key: 1, label: 'Chùm hạt alpha bắn phá lá vàng', active: chemStep >= 3 },
-				{ key: 2, label: 'Hầu hết chớp sáng thẳng hàng', active: chemStep >= 4 },
-				{ key: 3, label: 'Hạt lệch hướng hoặc bật ngược va hạt nhân', active: chemStep >= 5 },
+				{ key: 1, label: 'Ống 1: Quỳ tím hóa đỏ do tính acid', active: chemStep >= 2 },
+				{ key: 2, label: 'Ống 2: Viên đá vôi CaCO₃ tan dần', active: chemStep >= 4 },
+				{ key: 3, label: 'Ống 2: Sủi bọt khí CO₂ mạnh mẽ', active: chemStep >= 4 },
 			];
 		default:
 			return [
@@ -1003,6 +1166,17 @@ const Workspace: React.FC = () => {
 		'SIM-39',
 		'SIM-40',
 		'SIM-41',
+		'SIM-42',
+		'SIM-43',
+		'SIM-44',
+		'SIM-45',
+		'SIM-46',
+		'SIM-47',
+		'SIM-48',
+		'SIM-49',
+		'SIM-50',
+		'SIM-51',
+		'SIM-52',
 	].includes(simId)
 		? simId === 'SIM-08' && subject === 'math'
 			? 'SIM-08-math'
@@ -1112,6 +1286,56 @@ const Workspace: React.FC = () => {
 
 	// SIM-41 Binding Energy
 	const [bindingEnergyA, setBindingEnergyA] = useState(56);
+
+	// SIM-42 SHM
+	const [shmA, setShmA] = useState(2.0);
+	const [shmW, setShmW] = useState(2.0);
+
+	// SIM-43 Damped
+	const [dampedA, setDampedA] = useState(3.0);
+	const [dampedW, setDampedW] = useState(2.0);
+	const [dampedB, setDampedB] = useState(0.1);
+
+	// SIM-44 Resonance
+	const [resonanceW0, setResonanceW0] = useState(3.0);
+	const [resonanceW, setResonanceW] = useState(2.0);
+	const [resonanceA0, setResonanceA0] = useState(1.0);
+
+	// SIM-45 Wave
+	const [waveA, setWaveA] = useState(0.8);
+	const [waveF, setWaveF] = useState(1.5);
+	const [waveV, setWaveV] = useState(3.0);
+
+	// SIM-46 Standing
+	const [standingF, setStandingF] = useState(2);
+	const [standingA, setStandingA] = useState(0.8);
+
+	// SIM-47 Interference
+	const [interfF, setInterfF] = useState(2.0);
+	const [interfD, setInterfD] = useState(4.0);
+
+	// SIM-48 Coulomb
+	const [coulombQ1, setCoulombQ1] = useState(2.0);
+	const [coulombQ2, setCoulombQ2] = useState(-2.0);
+	const [coulombR, setCoulombR] = useState(3.0);
+
+	// SIM-49 EField
+	const [efieldQ1, setEfieldQ1] = useState(3.0);
+	const [efieldQ2, setEfieldQ2] = useState(-3.0);
+
+	// SIM-50 Ohm
+	const [ohmU, setOhmU] = useState(6.0);
+	const [ohmR, setOhmR] = useState(10.0);
+
+	// SIM-51 Resistors
+	const [resistorsR1, setResistorsR1] = useState(10.0);
+	const [resistorsR2, setResistorsR2] = useState(20.0);
+	const [resistorsMode, setResistorsMode] = useState<'series' | 'parallel'>('series');
+
+	// SIM-52 Full Circuit
+	const [fullCircuitE, setFullCircuitE] = useState(9.0);
+	const [fullCircuitR, setFullCircuitR] = useState(8.0);
+	const [fullCircuitr, setFullCircuitr] = useState(2.0);
 
 	// Math params
 	const [mA, setMA] = useState(1);
@@ -1384,6 +1608,45 @@ const Workspace: React.FC = () => {
 				setNuclearType(0);
 			} else if (simId === 'SIM-41') {
 				setBindingEnergyA(56);
+			} else if (simId === 'SIM-42') {
+				setShmA(2.0);
+				setShmW(2.0);
+			} else if (simId === 'SIM-43') {
+				setDampedA(3.0);
+				setDampedW(2.0);
+				setDampedB(0.1);
+			} else if (simId === 'SIM-44') {
+				setResonanceW0(3.0);
+				setResonanceW(2.0);
+				setResonanceA0(1.0);
+			} else if (simId === 'SIM-45') {
+				setWaveA(0.8);
+				setWaveF(1.5);
+				setWaveV(3.0);
+			} else if (simId === 'SIM-46') {
+				setStandingF(2);
+				setStandingA(0.8);
+			} else if (simId === 'SIM-47') {
+				setInterfF(2.0);
+				setInterfD(4.0);
+			} else if (simId === 'SIM-48') {
+				setCoulombQ1(2.0);
+				setCoulombQ2(-2.0);
+				setCoulombR(3.0);
+			} else if (simId === 'SIM-49') {
+				setEfieldQ1(3.0);
+				setEfieldQ2(-3.0);
+			} else if (simId === 'SIM-50') {
+				setOhmU(6.0);
+				setOhmR(10.0);
+			} else if (simId === 'SIM-51') {
+				setResistorsR1(10.0);
+				setResistorsR2(20.0);
+				setResistorsMode('series');
+			} else if (simId === 'SIM-52') {
+				setFullCircuitE(9.0);
+				setFullCircuitR(8.0);
+				setFullCircuitr(2.0);
 			} else {
 				setPhAngle(45);
 				setPhVel(20);
@@ -4083,6 +4346,1333 @@ const Workspace: React.FC = () => {
 											))}
 										</div>
 									</>
+								) : simId === 'SIM-42' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Biên độ (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{shmA.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>cm</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={5.0}
+												step={0.1}
+												value={shmA}
+												style={getTrackStyle(shmA, 1.0, 5.0, '#4f6ef7')}
+												onChange={(e) => setShmA(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Tần số góc (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{shmW.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={5.0}
+												step={0.1}
+												value={shmW}
+												style={getTrackStyle(shmW, 1.0, 5.0, '#6d54e8')}
+												onChange={(e) => setShmW(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('x = A\\,\\cos(\\omega\\,t + \\varphi)')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('v = x\' = -\\omega\\,A\\,\\sin(\\omega\\,t + \\varphi)')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div dangerouslySetInnerHTML={renderTex('a = v\' = -\\omega^2\\,A\\,\\cos(\\omega\\,t + \\varphi)')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Dao động điều hòa:</b> Li độ biến thiên điều hòa dạng sin/cos theo thời gian. Vận tốc biến thiên nhanh pha hơn li độ góc $\pi/2$. Gia tốc ngược pha so với li độ.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'x', desc: 'li độ dao động tức thời (cm)' },
+												{ sym: 'A', desc: 'biên độ dao động cực đại (cm)' },
+												{ sym: 'omega', desc: 'tần số góc của dao động (rad/s)' },
+												{ sym: 'v', desc: 'vận tốc tức thời của vật (cm/s)' },
+												{ sym: 'a', desc: 'gia tốc tức thời của vật (cm/s²)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'omega' ? <>&omega;</> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-43' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Biên độ đầu (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{dampedA.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>cm</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={5.0}
+												step={0.1}
+												value={dampedA}
+												style={getTrackStyle(dampedA, 1.0, 5.0, '#4f6ef7')}
+												onChange={(e) => setDampedA(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Tần số riêng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;<sub>0</sub></em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{dampedW.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={5.0}
+												step={0.1}
+												value={dampedW}
+												style={getTrackStyle(dampedW, 1.0, 5.0, '#6d54e8')}
+												onChange={(e) => setDampedW(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Hệ số lực cản (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>b</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{dampedB.toFixed(2)}
+												</span>
+											</div>
+											<input
+												type='range'
+												min={0.0}
+												max={0.5}
+												step={0.01}
+												value={dampedB}
+												style={getTrackStyle(dampedB, 0.0, 0.5, '#4f6ef7')}
+												onChange={(e) => setDampedB(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('x(t) = A\\,e^{-b\\,t}\\,\\cos(\\omega\\,t)')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('E(t) = E_0\\,e^{-2b\\,t}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Dao động tắt dần:</b> Lực cản môi trường làm tiêu hao cơ năng của hệ dưới dạng nhiệt năng, khiến biên độ dao động giảm dần theo quy luật hàm mũ.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'A', desc: 'biên độ ban đầu thả vật (cm)' },
+												{ sym: 'b', desc: 'hệ số cản của môi trường' },
+												{ sym: 'x', desc: 'li độ tức thời tại thời điểm t (cm)' },
+												{ sym: 'E', desc: 'cơ năng của hệ dao động (J)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-44' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Tần số góc riêng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;<sub>0</sub></em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{resonanceW0.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={5.0}
+												step={0.1}
+												value={resonanceW0}
+												style={getTrackStyle(resonanceW0, 1.0, 5.0, '#4f6ef7')}
+												onChange={(e) => setResonanceW0(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Tần số ngoại lực (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{resonanceW.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={5.0}
+												step={0.1}
+												value={resonanceW}
+												style={getTrackStyle(resonanceW, 1.0, 5.0, '#6d54e8')}
+												onChange={(e) => setResonanceW(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Biên độ lực cưỡng bức (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>F<sub>0</sub></em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{resonanceA0.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>N</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={0.5}
+												max={2.0}
+												step={0.1}
+												value={resonanceA0}
+												style={getTrackStyle(resonanceA0, 0.5, 2.0, '#4f6ef7')}
+												onChange={(e) => setResonanceA0(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('A_{cb} = \\frac{F_0}{\\sqrt{m^2(\\omega_0^2 - \\omega^2)^2 + b^2\\omega^2}}')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('\\omega \\approx \\omega_0 \\Rightarrow A_{cb} = A_{\\max}')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Hiện tượng cộng hưởng:</b> Biên độ dao động cưỡng bức đạt cực đại khi tần số góc của lực cưỡng bức $\omega$ trùng với tần số góc riêng $\omega_0$ của hệ.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'w0', desc: 'tần số góc dao động riêng (rad/s)' },
+												{ sym: 'w', desc: 'tần số góc lực cưỡng bức (rad/s)' },
+												{ sym: 'F0', desc: 'biên độ của lực cưỡng bức (N)' },
+												{ sym: 'Acb', desc: 'biên độ dao động cưỡng bức (cm)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'w0' ? <>&omega;<sub>0</sub></> : row.sym === 'w' ? <>&omega;</> : row.sym === 'F0' ? <>F<sub>0</sub></> : row.sym === 'Acb' ? <>A<sub>cb</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-45' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Biên độ nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{waveA.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>cm</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={0.2}
+												max={1.5}
+												step={0.1}
+												value={waveA}
+												style={getTrackStyle(waveA, 0.2, 1.5, '#4f6ef7')}
+												onChange={(e) => setWaveA(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Tần số sóng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>f</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{waveF.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>Hz</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={0.5}
+												max={3.0}
+												step={0.1}
+												value={waveF}
+												style={getTrackStyle(waveF, 0.5, 3.0, '#6d54e8')}
+												onChange={(e) => setWaveF(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Tốc độ truyền (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>v</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{waveV.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={5.0}
+												step={0.1}
+												value={waveV}
+												style={getTrackStyle(waveV, 1.0, 5.0, '#4f6ef7')}
+												onChange={(e) => setWaveV(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\lambda = \\frac{v}{f}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('u_M(t) = A\\,\\cos\\left(2\\pi f t - \\frac{2\\pi d}{\\lambda}\\right)')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Sóng ngang:</b> Các phần tử của môi trường dao động theo phương vuông góc với phương truyền sóng. Sóng truyền đi mang theo năng lượng và trạng thái dao động chứ các phần tử môi trường không di chuyển theo sóng.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'A', desc: 'biên độ dao động nguồn (cm)' },
+												{ sym: 'f', desc: 'tần số dao động nguồn (Hz)' },
+												{ sym: 'v', desc: 'tốc độ lan truyền sóng cơ (m/s)' },
+												{ sym: 'lambda', desc: 'bước sóng truyền trên dây (m)' },
+												{ sym: 'uM', desc: 'li độ phần tử tại điểm M (cm)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'lambda' ? <>&lambda;</> : row.sym === 'uM' ? <>u<sub>M</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-46' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Biên độ sóng nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{standingA.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>cm</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={0.2}
+												max={1.5}
+												step={0.1}
+												value={standingA}
+												style={getTrackStyle(standingA, 0.2, 1.5, '#4f6ef7')}
+												onChange={(e) => setStandingA(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Họa tần / Số bụng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>n</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{standingF}
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={6}
+												step={1}
+												value={standingF}
+												style={getTrackStyle(standingF, 1, 6, '#6d54e8')}
+												onChange={(e) => setStandingF(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('L = n\\,\\frac{\\lambda}{2}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('A_{bụng} = 2A \\quad \\vert \\quad A_{nút} = 0')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Sóng dừng:</b> Sóng dừng là sự giao thoa của sóng tới và sóng phản xạ trên sợi dây có giới hạn. Trên sợi dây xuất hiện các nút sóng cố định và các bụng sóng dao động với biên độ cực đại.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'L', desc: 'chiều dài sợi dây đàn hồi (m)' },
+												{ sym: 'n', desc: 'số bó sóng (bụng sóng) trên dây' },
+												{ sym: 'lambda', desc: 'bước sóng truyền trên dây (m)' },
+												{ sym: 'A', desc: 'biên độ sóng thành phần tới/phản xạ (cm)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'lambda' ? <>&lambda;</> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-47' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Tần số nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>f</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{interfF.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>Hz</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={4.0}
+												step={0.1}
+												value={interfF}
+												style={getTrackStyle(interfF, 1.0, 4.0, '#4f6ef7')}
+												onChange={(e) => setInterfF(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Khoảng cách nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>d</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{interfD.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>cm</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={2.0}
+												max={8.0}
+												step={0.2}
+												value={interfD}
+												style={getTrackStyle(interfD, 2.0, 8.0, '#6d54e8')}
+												onChange={(e) => setInterfD(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('d_2 - d_1 = k\\,\\lambda \\quad (\\text{Cực đại})')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('d_2 - d_1 = (k + 0.5)\\,\\lambda \\quad (\\text{Cực tiểu})')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Giao thoa sóng:</b> Sự gặp nhau của hai nguồn sóng kết hợp tạo ra mạng lưới các điểm cực đại (gặp nhau cùng pha, biên độ tăng gấp đôi) và các cực tiểu (ngược pha, triệt tiêu lẫn nhau).
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'd', desc: 'khoảng cách hai nguồn S1, S2 (cm)' },
+												{ sym: 'f', desc: 'tần số dao động của hai nguồn (Hz)' },
+												{ sym: 'lambda', desc: 'bước sóng lan truyền (cm)' },
+												{ sym: 'd1, d2', desc: 'khoảng cách từ điểm đo đến 2 nguồn' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'lambda' ? <>&lambda;</> : row.sym === 'd1, d2' ? <>d<sub>1,2</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-48' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Điện tích q₁
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{coulombQ1.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&mu;C</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={-5.0}
+												max={5.0}
+												step={0.5}
+												value={coulombQ1}
+												style={getTrackStyle(coulombQ1, -5.0, 5.0, '#4f6ef7')}
+												onChange={(e) => setCoulombQ1(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Điện tích q₂
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{coulombQ2.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&mu;C</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={-5.0}
+												max={5.0}
+												step={0.5}
+												value={coulombQ2}
+												style={getTrackStyle(coulombQ2, -5.0, 5.0, '#6d54e8')}
+												onChange={(e) => setCoulombQ2(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Khoảng cách (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>r</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{coulombR.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={6.0}
+												step={0.2}
+												value={coulombR}
+												style={getTrackStyle(coulombR, 1.0, 6.0, '#4f6ef7')}
+												onChange={(e) => setCoulombR(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('F = k\\,\\frac{|q_1\\,q_2|}{r^2}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('k = 9 \\times 10^9 \\text{ N.m}^2/\\text{C}^2')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Định luật Coulomb:</b> Lực tương tác tĩnh điện tỷ lệ thuận với tích độ lớn hai điện tích và tỷ lệ nghịch với bình phương khoảng cách giữa chúng. Hai điện tích cùng dấu đẩy nhau, trái dấu hút nhau.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'q1, q2', desc: 'trị số hai điện tích điểm (C)' },
+												{ sym: 'r', desc: 'khoảng cách hai điện tích (m)' },
+												{ sym: 'F', desc: 'lực tương tác Coulomb (N)' },
+												{ sym: 'k', desc: 'hằng số Coulomb tương tác trong chân không' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'q1, q2' ? <>q<sub>1,2</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-49' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Điện tích q₁
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{efieldQ1.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>nC</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={-5.0}
+												max={5.0}
+												step={0.5}
+												value={efieldQ1}
+												style={getTrackStyle(efieldQ1, -5.0, 5.0, '#4f6ef7')}
+												onChange={(e) => setEfieldQ1(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Điện tích q₂
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{efieldQ2.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>nC</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={-5.0}
+												max={5.0}
+												step={0.5}
+												value={efieldQ2}
+												style={getTrackStyle(efieldQ2, -5.0, 5.0, '#6d54e8')}
+												onChange={(e) => setEfieldQ2(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\vec{E} = k\\,\\frac{q}{r^2}\\,\\vec{r}_0')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('\\vec{E}_{tổng} = \\vec{E}_1 + \\vec{E}_2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Điện trường:</b> Là môi trường vật chất bao quanh các điện tích. Đường sức điện là đường vẽ mà tiếp tuyến tại mỗi điểm trùng với phương của vectơ cường độ điện trường. Chúng đi ra từ điện tích dương và đi vào điện tích âm.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'E', desc: 'vectơ cường độ điện trường (V/m)' },
+												{ sym: 'q', desc: 'điện tích sinh ra điện trường (C)' },
+												{ sym: 'r', desc: 'khoảng cách từ điện tích đến điểm khảo sát (m)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-50' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Hiệu điện thế (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>U</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{ohmU.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>V</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={12.0}
+												step={0.5}
+												value={ohmU}
+												style={getTrackStyle(ohmU, 1.0, 12.0, '#4f6ef7')}
+												onChange={(e) => setOhmU(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Điện trở (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>R</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{ohmR}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&Omega;</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={50}
+												step={1}
+												value={ohmR}
+												style={getTrackStyle(ohmR, 1, 50, '#6d54e8')}
+												onChange={(e) => setOhmR(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('I = \\frac{U}{R}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('P = U\\,I = I^2\\,R')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Định luật Ohm:</b> Cường độ dòng điện chạy qua dây dẫn tỷ lệ thuận với hiệu điện thế giữa hai đầu dây và tỷ lệ nghịch với điện trở của dây dẫn đó.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'I', desc: 'cường độ dòng điện trong mạch (A)' },
+												{ sym: 'U', desc: 'hiệu điện thế đoạn mạch (V)' },
+												{ sym: 'R', desc: 'điện trở của dây dẫn mang dòng (Ohm)' },
+												{ sym: 'P', desc: 'công suất tiêu thụ điện (W)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-51' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Điện trở R₁
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{resistorsR1}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&Omega;</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={50}
+												step={1}
+												value={resistorsR1}
+												style={getTrackStyle(resistorsR1, 1, 50, '#4f6ef7')}
+												onChange={(e) => setResistorsR1(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Điện trở R₂
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{resistorsR2}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&Omega;</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={50}
+												step={1}
+												value={resistorsR2}
+												style={getTrackStyle(resistorsR2, 1, 50, '#6d54e8')}
+												onChange={(e) => setResistorsR2(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Kiểu ghép mạch</span>
+										</div>
+										<div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+											<button
+												style={{
+													flex: 1,
+													padding: '8px 12px',
+													borderRadius: '8px',
+													border: '1px solid #4f6ef7',
+													background: resistorsMode === 'series' ? '#4f6ef7' : '#fff',
+													color: resistorsMode === 'series' ? '#fff' : '#4f6ef7',
+													fontWeight: 600,
+													cursor: 'pointer',
+													transition: 'all 0.2s',
+												}}
+												onClick={() => setResistorsMode('series')}
+											>
+												Nối tiếp
+											</button>
+											<button
+												style={{
+													flex: 1,
+													padding: '8px 12px',
+													borderRadius: '8px',
+													border: '1px solid #6d54e8',
+													background: resistorsMode === 'parallel' ? '#6d54e8' : '#fff',
+													color: resistorsMode === 'parallel' ? '#fff' : '#6d54e8',
+													fontWeight: 600,
+													cursor: 'pointer',
+													transition: 'all 0.2s',
+												}}
+												onClick={() => setResistorsMode('parallel')}
+											>
+												Song song
+											</button>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											{resistorsMode === 'series' ? (
+												<>
+													<div dangerouslySetInnerHTML={renderTex('R_{tđ} = R_1 + R_2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+													<div dangerouslySetInnerHTML={renderTex('I = I_1 = I_2 \\quad \\vert \\quad U = U_1 + U_2')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+												</>
+											) : (
+												<>
+													<div dangerouslySetInnerHTML={renderTex('\\frac{1}{R_{tđ}} = \\frac{1}{R_1} + \\frac{1}{R_2}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+													<div dangerouslySetInnerHTML={renderTex('U = U_1 = U_2 \\quad \\vert \\quad I = I_1 + I_2')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+												</>
+											)}
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Lưu ý:</b> Khi mắc nối tiếp, điện trở tương đương tăng lên. Khi mắc song song, điện trở tương đương luôn nhỏ hơn các điện trở thành phần.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'R1, R2', desc: 'các điện trở thành phần (Ohm)' },
+												{ sym: 'Rtd', desc: 'điện trở tương đương của mạch (Ohm)' },
+												{ sym: 'I', desc: 'cường độ dòng điện chạy qua mạch chính (A)' },
+												{ sym: 'U', desc: 'hiệu điện thế đặt vào hai đầu mạch (V)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'R1, R2' ? <>R<sub>1,2</sub></> : row.sym === 'Rtd' ? <>R<sub>tđ</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
+								) : simId === 'SIM-52' ? (
+									<>
+										<div className='stu-ws__section-label'>
+											<div className='stu-ws__section-label-bar' />
+											<span>Thông số</span>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Suất điện động nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&Epsilon;</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{fullCircuitE.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>V</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1.0}
+												max={15.0}
+												step={0.5}
+												value={fullCircuitE}
+												style={getTrackStyle(fullCircuitE, 1.0, 15.0, '#4f6ef7')}
+												onChange={(e) => setFullCircuitE(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Điện trở ngoài (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>R</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{fullCircuitR}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&Omega;</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={30}
+												step={1}
+												value={fullCircuitR}
+												style={getTrackStyle(fullCircuitR, 1, 30, '#6d54e8')}
+												onChange={(e) => setFullCircuitR(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param'>
+											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
+													Điện trở trong (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>r</em>)
+												</span>
+												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+													{fullCircuitr.toFixed(1)}
+													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&Omega;</span>
+												</span>
+											</div>
+											<input
+												type='range'
+												min={0.1}
+												max={5.0}
+												step={0.1}
+												value={fullCircuitr}
+												style={getTrackStyle(fullCircuitr, 0.1, 5.0, '#4f6ef7')}
+												onChange={(e) => setFullCircuitr(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('I = \\frac{\\mathcal{E}}{R + r}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
+											<div dangerouslySetInnerHTML={renderTex('U_{N} = I\\,R = \\mathcal{E} - I\\,r')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div dangerouslySetInnerHTML={renderTex('H = \\frac{U_N}{\\mathcal{E}} = \\frac{R}{R + r}')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+												💡 <b>Định luật Ohm toàn mạch:</b> Cường độ dòng điện trong mạch điện kín tỷ lệ thuận với suất điện động của nguồn điện và tỷ lệ nghịch với điện trở toàn phần của mạch.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+											{[
+												{ sym: 'E', desc: 'suất điện động của nguồn điện (V)' },
+												{ sym: 'r', desc: 'điện trở trong của nguồn điện (Ohm)' },
+												{ sym: 'R', desc: 'điện trở ngoài tương đương (Ohm)' },
+												{ sym: 'I', desc: 'cường độ dòng điện mạch chính (A)' },
+												{ sym: 'UN', desc: 'hiệu điện thế hai cực nguồn điện (V)' },
+											].map((row, idx) => (
+												<div
+													key={idx}
+													className='stu-ws__symbol-row'
+													style={{
+														display: 'grid',
+														gridTemplateColumns: '32px 1fr',
+														alignItems: 'center',
+														gap: '10px',
+														padding: '4px 6px',
+														borderRadius: '8px',
+													}}
+												>
+													<span
+														className='stu-ws__symbol-bubble'
+														style={{
+															width: '26px',
+															height: '26px',
+															borderRadius: '50%',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#4f6ef7',
+															background: '#fff',
+															border: '1px solid #e0e2ee',
+														}}
+													>
+														{row.sym === 'E' ? <>&Epsilon;</> : row.sym === 'UN' ? <>U<sub>N</sub></> : row.sym}
+													</span>
+													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
+												</div>
+											))}
+										</div>
+									</>
 								) : (
 									<>
 										<div className='stu-ws__section-label'>
@@ -5119,6 +6709,188 @@ const Workspace: React.FC = () => {
 											topic: 'bindingenergy',
 											parameters: [
 												{ key: 'A', value: bindingEnergyA, unit: '', label: 'Số khối A' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-42' ? (
+									<ShmSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-42',
+											subject: 'physics',
+											topic: 'shm',
+											parameters: [
+												{ key: 'A', value: shmA, unit: 'cm', label: 'Biên độ' },
+												{ key: 'omega', value: shmW, unit: 'rad/s', label: 'Tần số góc' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-43' ? (
+									<DampedSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-43',
+											subject: 'physics',
+											topic: 'damped',
+											parameters: [
+												{ key: 'A', value: dampedA, unit: 'cm', label: 'Biên độ đầu' },
+												{ key: 'omega', value: dampedW, unit: 'rad/s', label: 'Tần số riêng' },
+												{ key: 'b', value: dampedB, unit: '', label: 'Hệ số cản' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-44' ? (
+									<ResonanceSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-44',
+											subject: 'physics',
+											topic: 'resonance',
+											parameters: [
+												{ key: 'omega0', value: resonanceW0, unit: 'rad/s', label: 'Tần số riêng' },
+												{ key: 'omega', value: resonanceW, unit: 'rad/s', label: 'Tần số lực' },
+												{ key: 'F0', value: resonanceA0, unit: 'N', label: 'Biên độ lực' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-45' ? (
+									<WaveSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-45',
+											subject: 'physics',
+											topic: 'wave',
+											parameters: [
+												{ key: 'A', value: waveA, unit: 'cm', label: 'Biên độ' },
+												{ key: 'f', value: waveF, unit: 'Hz', label: 'Tần số' },
+												{ key: 'v', value: waveV, unit: 'm/s', label: 'Tốc độ sóng' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-46' ? (
+									<StandingSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-46',
+											subject: 'physics',
+											topic: 'standing',
+											parameters: [
+												{ key: 'n', value: standingF, unit: '', label: 'Số bụng' },
+												{ key: 'A', value: standingA, unit: 'cm', label: 'Biên độ nguồn' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-47' ? (
+									<InterferenceSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-47',
+											subject: 'physics',
+											topic: 'interference',
+											parameters: [
+												{ key: 'f', value: interfF, unit: 'Hz', label: 'Tần số' },
+												{ key: 'd', value: interfD, unit: 'cm', label: 'Khoảng cách' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-48' ? (
+									<CoulombSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-48',
+											subject: 'physics',
+											topic: 'coulomb',
+											parameters: [
+												{ key: 'q1', value: coulombQ1, unit: 'μC', label: 'Điện tích q1' },
+												{ key: 'q2', value: coulombQ2, unit: 'μC', label: 'Điện tích q2' },
+												{ key: 'r', value: coulombR, unit: 'm', label: 'Khoảng cách r' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-49' ? (
+									<EFieldSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-49',
+											subject: 'physics',
+											topic: 'efield',
+											parameters: [
+												{ key: 'q1', value: efieldQ1, unit: 'nC', label: 'Điện tích q1' },
+												{ key: 'q2', value: efieldQ2, unit: 'nC', label: 'Điện tích q2' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-50' ? (
+									<OhmSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-50',
+											subject: 'physics',
+											topic: 'ohm',
+											parameters: [
+												{ key: 'U', value: ohmU, unit: 'V', label: 'Hiệu điện thế' },
+												{ key: 'R', value: ohmR, unit: 'Ω', label: 'Điện trở R' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-51' ? (
+									<ResistorsSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-51',
+											subject: 'physics',
+											topic: 'resistors',
+											parameters: [
+												{ key: 'R1', value: resistorsR1, unit: 'Ω', label: 'Điện trở R1' },
+												{ key: 'R2', value: resistorsR2, unit: 'Ω', label: 'Điện trở R2' },
+												{ key: 'mode', value: resistorsMode === 'series' ? 0 : 1, unit: '', label: 'Kiểu mắc' },
+											],
+										}}
+										isPlaying={isPhPlaying}
+										isSlow={isPhSlow}
+										resetKey={physResetKey}
+									/>
+								) : simId === 'SIM-52' ? (
+									<FullCircuitSimulation
+										key={physResetKey}
+										config={{
+											simulation_id: 'SIM-52',
+											subject: 'physics',
+											topic: 'fullcircuit',
+											parameters: [
+												{ key: 'E', value: fullCircuitE, unit: 'V', label: 'Suất điện động E' },
+												{ key: 'R', value: fullCircuitR, unit: 'Ω', label: 'Điện trở ngoài R' },
+												{ key: 'r', value: fullCircuitr, unit: 'Ω', label: 'Điện trở trong r' },
 											],
 										}}
 										isPlaying={isPhPlaying}
