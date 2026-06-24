@@ -5,17 +5,17 @@ FROM node:22-alpine
 WORKDIR /app
 RUN corepack enable
 
-# Copy backend source (bao gồm package.json, yarn.lock, .yarnrc.yml, src/, tsconfig, nest-cli.json)
+# Copy backend source
 COPY src/backend/ .
 
 # Install all deps (bao gồm devDeps để build NestJS)
 RUN yarn install --immutable
 
-# Build TypeScript → dist/
-RUN yarn build && echo "=== dist contents ===" && ls -la dist/ && echo "=== dist/main.js ===" && ls dist/main.js
+# Build TypeScript → dist/ (NestJS output: dist/src/main.js do tsconfig không có rootDir)
+RUN yarn build
 
 # Bundle learning data (1.3MB) vào image
 COPY src/database/data ./data
 
 EXPOSE 3000
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main"]
