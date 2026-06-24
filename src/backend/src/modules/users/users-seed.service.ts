@@ -149,6 +149,7 @@ export class UsersSeedService implements OnApplicationBootstrap {
     await this.seedAdmin();
     await this.seedTeacher();
     await this.seedStudents();
+    await this.seedOwner();
   }
 
   private async seedAdmin() {
@@ -187,6 +188,19 @@ export class UsersSeedService implements OnApplicationBootstrap {
       lastName: 'Mẫu',
       role: UserRole.TEACHER,
     });
+  }
+
+  private async seedOwner() {
+    const existing = await this.usersService.findByEmail('vanhung71388@gmail.com');
+    if (!existing) return;
+    await this.usersService.update(existing.id, {
+      xp: 3800,
+      level: 7,
+      streak: 10,
+      maxStreak: 18,
+      lastActiveDate: new Date(),
+    });
+    await this.seedLabSessions(existing.id);
   }
 
   private async seedStudents() {
