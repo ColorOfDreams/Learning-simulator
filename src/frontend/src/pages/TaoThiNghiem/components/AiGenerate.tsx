@@ -31,7 +31,7 @@ const AiGenerate: React.FC<Props> = ({ onAccept, onSwitchToManual, submitting })
     const objects = (result.objects || []).map((obj: any) => ({
       id: `${obj.modelName}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       modelName: obj.modelName,
-      position: [Math.random() * 4 - 2, layDungCu(obj.modelName)?.viTriY || 0.5, Math.random() * 2 - 1] as [number, number, number],
+      position: [0, 5, 0] as [number, number, number],
       rotation: [0, 0, 0], scale: [1, 1, 1],
       properties: obj.properties || {},
     }));

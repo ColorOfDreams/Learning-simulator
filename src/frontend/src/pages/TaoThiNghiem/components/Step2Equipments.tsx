@@ -44,11 +44,12 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
 
   const filtered = useMemo(() => {
     const roomToMon: Record<string, string> = { physics: 'vat-ly', chemistry: 'hoa-hoc', math: 'toan-hoc' };
-    const monFilter = roomToMon[data.roomType || 'physics'] || 'vat-ly';
+    const monToRoom: Record<string, 'physics' | 'chemistry' | 'math'> = { 'vat-ly': 'physics', 'hoa-hoc': 'chemistry', 'toan-hoc': 'math' };
+    const expectedSubject = data.roomType || 'physics';
     const tatCa = layTatCa().map((d) => ({
       id: d.maDungCu,
       name: d.tenDungCu,
-      subject: d.monHoc,
+      subject: monToRoom[d.monHoc] || 'physics',
       grade: d.lop,
       chapter: d.chuong,
       chapterName: d.chuong,
@@ -59,7 +60,7 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
       initialY: d.viTriY,
     } as EquipmentDef));
     return tatCa.filter((eq) => {
-      if (eq.subject !== monFilter) return false;
+      if (eq.subject !== expectedSubject) return false;
       if (grade && eq.grade !== grade) return false;
       if (chapter && eq.chapter !== chapter) return false;
       if (topic && eq.topic !== topic) return false;
@@ -94,7 +95,7 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
     const y = INITIAL_Y[modelName] || 0;
     const newObj: Scene.Object = {
       id: `${modelName}_${Date.now()}`, modelName,
-      position: [Math.random() * 4 - 2, y, Math.random() * 2 - 1] as [number, number, number],
+      position: [0, 5, 0] as [number, number, number],
       rotation: [0, 0, 0], scale: [1, 1, 1],
       properties: modelName === 'WoodenBlock' ? { color: '#feca57' } : modelName === 'Beaker' ? { liquidVolume: 200 } : {},
     };
@@ -107,7 +108,7 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
     const y = INITIAL_Y[chemPicker.type] || 0.1;
     const newObj: Scene.Object = {
       id, modelName: chemPicker.type,
-      position: [Math.random() * 4 - 2, y, Math.random() * 2 - 1] as [number, number, number],
+      position: [0, 5, 0] as [number, number, number],
       rotation: [0, 0, 0], scale: [1, 1, 1],
       properties: { symbol: chem.symbol, color: chem.color, mass: chem.atomicMass },
     };
@@ -129,7 +130,7 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
       newObjects.push({
         id: `${eq.id}_${Date.now()}`,
         modelName: eq.id,
-        position: [Math.random() * 4 - 2, y, Math.random() * 2 - 1] as [number, number, number],
+        position: [0, 5, 0] as [number, number, number],
         rotation: [0, 0, 0], scale: [1, 1, 1],
         properties: eq.id === 'WoodenBlock' ? { color: '#feca57' } : eq.id === 'Beaker' ? { liquidVolume: 200 } : {},
       });

@@ -1,39 +1,32 @@
 import React from 'react';
-import { MeshTransmissionMaterial } from '@react-three/drei';
-
-const presetThuyTinh = {
-  backside: true,
-  samples: 8,
-  thickness: 0.25,
-  chromaticAberration: 0.03,
-  anisotropy: 0.15,
-  clearcoat: 1,
-  attenuationDistance: 0.5,
-  attenuationColor: '#ffffff',
-  ior: 1.47,
-  roughness: 0.08,
-} as const;
+import * as THREE from 'three';
 
 export const VatLieuThuyTinh: React.FC<{
   mau?: string;
   day?: number;
   doNham?: number;
 }> = ({ mau = '#d4edff', day = 0.25, doNham = 0.08 }) => (
-  <MeshTransmissionMaterial
-    {...presetThuyTinh}
+  <meshStandardMaterial
     color={mau}
-    thickness={day}
-    roughness={doNham}
+    transparent={true}
+    opacity={0.25}
+    roughness={0.3}
+    metalness={0.1}
+    envMapIntensity={0}
+    side={THREE.DoubleSide}
+    depthWrite={false}
   />
 );
 
 export const VatLieuThuyTinhMong: React.FC<{ mau?: string }> = ({ mau = '#e8f4ff' }) => (
-  <MeshTransmissionMaterial
-    {...presetThuyTinh}
+  <meshStandardMaterial
     color={mau}
-    thickness={0.015}
-    roughness={0.06}
-    clearcoat={0.5}
-    samples={6}
+    transparent={true}
+    opacity={0.15}
+    roughness={0.2}
+    metalness={0.05}
+    envMapIntensity={0}
+    side={THREE.DoubleSide}
+    depthWrite={false}
   />
 );

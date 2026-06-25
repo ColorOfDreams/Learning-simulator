@@ -27,7 +27,7 @@ export default function useSimulationModel() {
       const newObj: Scene.Object = {
         id: `${modelName}_${Date.now()}`,
         modelName,
-        position: [Math.random() * 4 - 2, getInitialY(modelName), Math.random() * 4 - 2] as [number, number, number],
+        position: [0, 5, 0] as [number, number, number],
         rotation: [0, 0, 0] as [number, number, number],
         scale: [1, 1, 1] as [number, number, number],
         properties: modelName === 'WoodenBlock' ? { color: '#feca57' } : { liquidVolume: 200 },

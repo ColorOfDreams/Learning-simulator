@@ -31,8 +31,8 @@ const ConLacDon: React.FC<Props> = ({ doiTuong, dangChay = false, capNhatViTri, 
       const daGan = tatCa.some((o: any) => {
         const mn = o.maDungCu || o.modelName;
         return mn === 'Stand' &&
-          Math.abs(o.viTri?.[0] ?? o.position?.[0] + 1.6 - doiTuong.viTri?.[0] ?? doiTuong.position?.[0]) < 0.25 &&
-          Math.abs((o.viTri?.[1] ?? o.position?.[1]) + 2.0 - ((doiTuong.viTri?.[1] ?? doiTuong.position?.[1]) + chieuDai / 2)) < 0.25;
+          Math.abs((o.viTri?.[0] ?? o.position?.[0] ?? 0) + 1.6 - ((doiTuong.viTri?.[0] ?? doiTuong.position?.[0] ?? 0))) < 0.25 &&
+          Math.abs(((o.viTri?.[1] ?? o.position?.[1] ?? 0)) + 2.0 - (((doiTuong.viTri?.[1] ?? doiTuong.position?.[1] ?? 0)) + chieuDai / 2)) < 0.25;
       });
       if (!daGan) { thoiGianRef.current = 0; vetRef.current = []; return; }
       let activeDamping = 0;
@@ -60,7 +60,6 @@ const ConLacDon: React.FC<Props> = ({ doiTuong, dangChay = false, capNhatViTri, 
     }
   });
 
-  const pos = doiTuong.viTri || doiTuong.position;
   const snapPoints = getSnapPointsForModel('SimplePendulum', normalizeProps());
 
   return (

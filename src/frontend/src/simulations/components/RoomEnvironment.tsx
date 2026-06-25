@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from '@react-three/drei';
 
 interface RoomEnvironmentProps {
   roomType: 'physics' | 'chemistry' | 'math';
@@ -7,10 +8,10 @@ interface RoomEnvironmentProps {
 const RoomEnvironment: React.FC<RoomEnvironmentProps> = ({ roomType }) => {
   const renderChemistryRoom = () => (
     <group>
-      {/* Tường gạch men trắng sáng */}
+      {/* Tường gạch men trắng sáng -> đổi thành tối */}
       <mesh position={[0, 5, -8]} receiveShadow>
         <boxGeometry args={[40, 15, 0.5]} />
-        <meshStandardMaterial color="#f8fafc" roughness={0.15} metalness={0.05} />
+        <meshStandardMaterial color="#1e293b" roughness={0.15} metalness={0.05} />
       </mesh>
 
       {/* Bảng trắng lớn có viền nhôm */}
@@ -30,13 +31,13 @@ const RoomEnvironment: React.FC<RoomEnvironmentProps> = ({ roomType }) => {
       {/* Tường bên trái - tủ đựng hóa chất */}
       <mesh position={[-10, 3, 0]} receiveShadow>
         <boxGeometry args={[0.5, 8, 16]} />
-        <meshStandardMaterial color="#f1f5f9" roughness={0.2} />
+        <meshStandardMaterial color="#334155" roughness={0.2} />
       </mesh>
 
       {/* Mặt bàn thí nghiệm - đá granite xám sáng chống axit */}
       <mesh receiveShadow castShadow position={[0, -1, 0]}>
         <boxGeometry args={[18, 0.6, 8]} />
-        <meshStandardMaterial color="#64748b" roughness={0.15} metalness={0.3} />
+        <meshStandardMaterial color="#0f172a" roughness={0.9} metalness={0.0} />
       </mesh>
 
       {/* Viền bàn - inox */}
@@ -65,22 +66,16 @@ const RoomEnvironment: React.FC<RoomEnvironmentProps> = ({ roomType }) => {
         <meshStandardMaterial color="#cbd5e1" metalness={0.9} roughness={0.1} />
       </mesh>
 
-      {/* Đèn UV / ánh sáng trên bàn */}
-      <mesh position={[0, 2.5, 0]}>
-        <boxGeometry args={[8, 0.15, 0.4]} />
-        <meshStandardMaterial color="#fefefe" emissive="#ffffff" emissiveIntensity={0.3} />
-      </mesh>
-
       {/* Kệ để dụng cụ phía sau */}
       <mesh position={[0, 0.3, -6]} receiveShadow castShadow>
         <boxGeometry args={[16, 0.15, 1.5]} />
-        <meshStandardMaterial color="#cbd5e1" roughness={0.2} metalness={0.3} />
+        <meshStandardMaterial color="#334155" roughness={0.2} metalness={0.3} />
       </mesh>
 
       {/* Sàn gạch men trắng xám */}
       <mesh receiveShadow position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[40, 40]} />
-        <meshStandardMaterial color="#f1f5f9" roughness={0.3} metalness={0.05} />
+        <meshStandardMaterial color="#0f172a" roughness={0.9} metalness={0.0} />
       </mesh>
     </group>
   );
@@ -150,11 +145,43 @@ const RoomEnvironment: React.FC<RoomEnvironmentProps> = ({ roomType }) => {
     </group>
   );
 
+  const shelfLabel = roomType === 'physics' ? 'KỆ VẬT LÝ' : roomType === 'math' ? 'KỆ TOÁN HỌC' : 'KỆ HÓA CHẤT';
+
+  const renderCommonShelf = () => (
+    <group position={[0, -0.6, -2]}>
+      {/* Mặt kệ gỗ */}
+      <mesh position={[0, 1.4, 0]} receiveShadow castShadow>
+        <boxGeometry args={[12, 0.1, 1.2]} />
+        <meshStandardMaterial color="#8b5a2b" roughness={0.8} />
+      </mesh>
+      {/* Chân kệ */}
+      <mesh position={[-5.5, 0.7, 0]} receiveShadow castShadow>
+        <boxGeometry args={[0.2, 1.4, 1.2]} />
+        <meshStandardMaterial color="#8b5a2b" roughness={0.8} />
+      </mesh>
+      <mesh position={[5.5, 0.7, 0]} receiveShadow castShadow>
+        <boxGeometry args={[0.2, 1.4, 1.2]} />
+        <meshStandardMaterial color="#8b5a2b" roughness={0.8} />
+      </mesh>
+      {/* Bảng tên kệ */}
+      <group position={[0, 2.0, 0]}>
+        <mesh>
+          <planeGeometry args={[4, 0.6]} />
+          <meshStandardMaterial color="#f8fafc" />
+        </mesh>
+        <Text position={[0, 0, 0.01]} fontSize={0.3} color="#1e3a8a" anchorX="center" anchorY="middle">
+          {shelfLabel}
+        </Text>
+      </group>
+    </group>
+  );
+
   return (
     <>
       {roomType === 'chemistry' && renderChemistryRoom()}
       {roomType === 'physics' && renderPhysicsRoom()}
       {roomType === 'math' && renderMathRoom()}
+      {renderCommonShelf()}
     </>
   );
 };

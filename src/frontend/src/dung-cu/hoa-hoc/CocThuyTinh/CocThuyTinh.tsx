@@ -1,7 +1,8 @@
 import React from 'react';
+import * as THREE from 'three';
 import { Text } from '@react-three/drei';
 import DoiTuongKeoTha from '@/simulations/engine/DraggablePhysicsObject';
-import { VatLieuThuyTinh, VatLieuThuyTinhMong } from '@/dung-cu/dung-chung/VatLieuThuyTinh';
+import { VatLieuThuyTinh } from '@/dung-cu/dung-chung/VatLieuThuyTinh';
 
 interface Props { doiTuong: Scene.Object; dangChay?: boolean; capNhatViTri?: (id: string, viTri: [number, number, number]) => void; doThiScene?: Scene.IRecord | null; }
 
@@ -15,22 +16,26 @@ const CocThuyTinh: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiS
       dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene}>
       <group position={[0, 0.1, 0]}>
         <mesh castShadow>
-          <cylinderGeometry args={[0.39, 0.39, 1.2, 64]} />
+          <latheGeometry args={[
+            [
+              new THREE.Vector2(0, -0.6),
+              new THREE.Vector2(0.39, -0.6),
+              new THREE.Vector2(0.39, 0.6),
+              new THREE.Vector2(0.37, 0.6),
+              new THREE.Vector2(0.37, -0.56),
+              new THREE.Vector2(0, -0.56)
+            ],
+            64
+          ]} />
           <VatLieuThuyTinh />
         </mesh>
-        <mesh>
-          <cylinderGeometry args={[0.37, 0.37, 1.14, 64]} />
-          <VatLieuThuyTinhMong />
-        </mesh>
-        <mesh position={[0, -0.6, 0]}>
-          <cylinderGeometry args={[0.4, 0.4, 0.04, 64]} />
-          <VatLieuThuyTinh mau="#c8dff8" doNham={0.12} />
-        </mesh>
+        {/* Lip / Torus for smooth rim */}
         <mesh position={[0, 0.6, 0]}>
-          <torusGeometry args={[0.39, 0.016, 16, 64]} />
+          <torusGeometry args={[0.38, 0.01, 16, 64]} />
           <VatLieuThuyTinh doNham={0.1} />
         </mesh>
-        <mesh position={[0, 0.605, 0.37]} rotation={[0.2, 0, 0]}>
+        {/* Spout */}
+        <mesh position={[0, 0.605, 0.38]} rotation={[0.2, 0, 0]}>
           <boxGeometry args={[0.07, 0.025, 0.03]} />
           <VatLieuThuyTinh mau="#cce4ff" day={0.02} doNham={0.1} />
         </mesh>

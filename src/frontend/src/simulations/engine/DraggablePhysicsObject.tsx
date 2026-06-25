@@ -72,7 +72,15 @@ const resolveCollisions = (
 ): [number, number, number] => {
   let [x, y, z] = pos;
   const hy = half[1];
-  const tableY = -0.6 + hy;
+  const hx = half[0];
+  const hz = half[2];
+
+  let floorY = -0.6;
+  if (x + hx > -6 && x - hx < 6 && z + hz > -2.6 && z - hz < -1.4) {
+    floorY = 0.85;
+  }
+  
+  const tableY = floorY + hy;
   y = Math.max(tableY, y);
   x = Math.max(-9.5, Math.min(9.5, x));
   z = Math.max(-4.5, Math.min(4.5, z));

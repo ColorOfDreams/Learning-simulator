@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useState, useCallback } from 'react';
+import React, { Suspense, useMemo, useState, useCallback, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import RoomEnvironment from '@/dung-cu/dung-chung/PhongThiNghiem';
@@ -41,18 +41,34 @@ const SceneObjects = React.memo(({
   onUpdatePosition?: (id: string, pos: [number, number, number]) => void;
   sceneGraph: Scene.IRecord | null;
 }) => {
-  const adapted = useMemo(() => objects.map((obj) => {
-    const mn = obj.modelName || (obj as any).maDungCu;
-    const pos = [...(obj.position || (obj as any).viTri || [0, 5, 0])] as [number, number, number];
-    if (pos[1] === 5) pos[1] = getInitialY(mn);
-    return {
-      ...obj,
-      modelName: mn,
-      position: pos,
-      viTri: pos,
-      thuocTinh: normalizeThuocTinh(obj),
-    };
-  }), [objects]);
+  useEffect(() => {
+    if (!onUpdatePosition) return;
+    let shelfX = -4.5;
+    objects.forEach((obj) => {
+      const pos = [...(obj.position || (obj as any).viTri || [0, 5, 0])] as [number, number, number];
+      if (pos[1] === 5) {
+        const mn = obj.modelName || (obj as any).maDungCu;
+        onUpdatePosition(obj.id, [shelfX, getInitialY(mn) + 1.45, -2]);
+      }
+      if (pos[1] === 5 || pos[1] > 2) {
+        shelfX += 1.2;
+      }
+    });
+  }, [objects, onUpdatePosition]);
+
+  const adapted = useMemo(() => {
+    return objects.map((obj) => {
+      const mn = obj.modelName || (obj as any).maDungCu;
+      const pos = [...(obj.position || (obj as any).viTri || [0, 5, 0])] as [number, number, number];
+      return {
+        ...obj,
+        modelName: mn,
+        position: pos,
+        viTri: pos,
+        thuocTinh: normalizeThuocTinh(obj),
+      };
+    });
+  }, [objects]);
 
   return (
     <>
@@ -135,17 +151,13 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
   }), [hoveredObjectId, isDragging, selectedEquipmentId, snapTargetId, rotationAxis, heSoTatDan, handleSelectEquipment]);
 
   return (
-    <div style={{ width: '100%', height: '100%', background: '#f0f2f5' }}>
-      <Canvas shadows camera={{ position: [0, 5, 10], fov: 50 }}>
+    <div style={{ width: '100%', height: '100%', background: '#0f172a' }}>
+      <Canvas dpr={[1, 1.5]} camera={{ position: [0, 5, 10], fov: 50 }}>
         <InteractionContext.Provider value={interaction}>
-          <color attach="background" args={['#f0f2f5']} />
-          <ambientLight intensity={0.5} />
-          <directionalLight castShadow position={[10, 20, 10]} intensity={1.0}
-            shadow-mapSize={2048} shadow-camera-near={0.5} shadow-camera-far={50}
-            shadow-camera-left={-15} shadow-camera-right={15}
-            shadow-camera-top={15} shadow-camera-bottom={-15} />
-          <spotLight position={[0, 8, 0]} intensity={0.4} angle={Math.PI / 4} penumbra={0.5} castShadow />
-          <Environment preset="warehouse" />
+          <color attach="background" args={['#0f172a']} />
+          <ambientLight intensity={0.8} />
+          <directionalLight position={[10, 20, 10]} intensity={0.5} />
+          <Environment preset="warehouse" backgroundBlurriness={0.5} />
 
           {sceneGraph && (
             <>

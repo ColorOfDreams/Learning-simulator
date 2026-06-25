@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, InputNumber, Popconfirm } from 'antd';
+import { Button, InputNumber, Popconfirm, Switch } from 'antd';
 import {
   CloseOutlined, SettingOutlined, PlayCircleOutlined, PauseCircleOutlined,
   FieldTimeOutlined, UndoOutlined, DeleteOutlined, RotateRightOutlined,
@@ -101,6 +101,14 @@ const EquipmentDetail: React.FC<Props> = ({ objectId, sceneGraph, isPlaying, onC
               <input type="color" value={val} onChange={(e) => onUpdateProperty(object.id, key, e.target.value)} />
               <span>{val}</span>
             </div>
+          </div>
+        );
+      }
+      if (tt.loai === 'bat-tat') {
+        return (
+          <div className="ed-prop" key={key}>
+            <label>{tt.nhan}</label>
+            <Switch size="small" checked={!!val} onChange={(c) => onUpdateProperty(object.id, key, c)} />
           </div>
         );
       }

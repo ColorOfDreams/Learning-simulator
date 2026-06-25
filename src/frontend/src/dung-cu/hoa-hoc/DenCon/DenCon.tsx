@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import DoiTuongKeoTha from '@/simulations/engine/DraggablePhysicsObject';
 import NutBam from '@/dung-cu/dung-chung/NutBam';
+import { VatLieuThuyTinh } from '@/dung-cu/dung-chung/VatLieuThuyTinh';
 
 interface Props { doiTuong: Scene.Object; dangChay?: boolean; capNhatViTri?: (id: string, viTri: [number, number, number]) => void; doThiScene?: Scene.IRecord | null; }
 
@@ -10,61 +11,118 @@ const DenCon: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiScene 
   const trongRef = useRef<THREE.Group>(null);
   const giuaRef = useRef<THREE.Group>(null);
   const ngoaiRef = useRef<THREE.Group>(null);
-  const dangChayLua = dangChay; // lửa chạy khi isPlaying
 
-  useFrame(() => {
-    if (!dangChayLua) return;
-    const nhapNhay = (ref: THREE.Group | null, bienDo: number) => {
+  const khoiRefs = useRef<(THREE.Mesh | null)[]>([]);
+
+  const batDen = doiTuong.thuocTinh?.batDen ?? doiTuong.properties?.batDen ?? false;
+  const kichThuocLua = doiTuong.thuocTinh?.kichThuocLua ?? doiTuong.properties?.kichThuocLua ?? 1;
+
+  const dangChayLua = batDen;
+
+  useFrame((state) => {
+    if (!dangChayLua) {
+      // Hide smoke when off
+      khoiRefs.current.forEach(k => { if (k) k.visible = false; });
+      return;
+    }
+    
+    const t = state.clock.elapsedTime * 15;
+    const nhapNhay = (ref: THREE.Group | null, bienDo: number, offset: number) => {
       if (!ref) return;
-      ref.scale.setScalar(0.85 + Math.random() * bienDo);
-      ref.position.y += (Math.random() - 0.5) * 0.02;
+      const noise = Math.sin(t + offset) * 0.5 + Math.sin(t * 0.7 + offset) * 0.5;
+      ref.scale.set(
+        kichThuocLua * (0.95 + noise * bienDo * 0.3),
+        kichThuocLua * (0.9 + noise * bienDo),
+        kichThuocLua * (0.95 + noise * bienDo * 0.3)
+      );
+      ref.position.y = noise * 0.01;
     };
-    nhapNhay(trongRef.current, 0.3);
-    nhapNhay(giuaRef.current, 0.25);
-    nhapNhay(ngoaiRef.current, 0.35);
+    nhapNhay(trongRef.current, 0.2, 0);
+    nhapNhay(giuaRef.current, 0.15, 2);
+    nhapNhay(ngoaiRef.current, 0.25, 4);
+
+    // Smoke animation
+    khoiRefs.current.forEach((khoi, i) => {
+      if (!khoi) return;
+      khoi.visible = true;
+      khoi.position.y += 0.015 * kichThuocLua;
+      khoi.position.x += Math.sin(t * 0.5 + i) * 0.005;
+      
+      const mat = khoi.material as THREE.MeshStandardMaterial;
+      if (mat) mat.opacity = Math.max(0, mat.opacity - 0.01);
+      
+      khoi.scale.setScalar(khoi.scale.x * 0.98);
+      
+      if (khoi.position.y > 0.4 * kichThuocLua) {
+        khoi.position.y = 0.15;
+        khoi.position.x = (Math.random() - 0.5) * 0.05;
+        khoi.scale.setScalar(1 + Math.random() * 0.5);
+        if (mat) mat.opacity = 0.4;
+      }
+    });
   });
 
+  // Tạo điểm cho thân bình thủy tinh
+  const points = useMemo(() => {
+    const pts = [];
+    pts.push(new THREE.Vector2(0, 0)); // Tâm đáy
+    pts.push(new THREE.Vector2(0.35, 0)); // Rìa đáy
+    pts.push(new THREE.Vector2(0.35, 0.1)); // Bo lên
+    pts.push(new THREE.Vector2(0.15, 0.5)); // Thu nhỏ lên cổ bình
+    pts.push(new THREE.Vector2(0.12, 0.55)); // Cổ bình thẳng
+    pts.push(new THREE.Vector2(0.12, 0.65)); // Miệng bình
+    return pts;
+  }, []);
+
   return (
-    <DoiTuongKeoTha doiTuong={doiTuong} nhan="Đèn Cồn Bunsen" kichThuocVaCham={[0.3, 0.9, 0.3]}
+    <DoiTuongKeoTha doiTuong={doiTuong} nhan="Đèn Cồn" kichThuocVaCham={[0.8, 0.8, 0.8]}
       dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene}>
-      <group>
-        <mesh castShadow position={[0, -0.85, 0]}>
-          <cylinderGeometry args={[0.26, 0.28, 0.06, 32]} />
-          <meshStandardMaterial color="#4a4a4a" roughness={0.7} metalness={0.6} />
+      <group position={[0, -0.4, 0]}>
+        {/* Thân bình thủy tinh */}
+        <mesh>
+          <latheGeometry args={[points, 32]} />
+          <VatLieuThuyTinh />
         </mesh>
-        <mesh castShadow position={[0, -0.8, 0]}>
-          <cylinderGeometry args={[0.25, 0.25, 0.08, 32]} />
-          <meshStandardMaterial color="#5a5a5a" roughness={0.5} metalness={0.7} />
+
+        {/* Nước cồn màu xanh nhạt bên trong */}
+        <mesh position={[0, 0.2, 0]}>
+          <cylinderGeometry args={[0.22, 0.33, 0.38, 32]} />
+          <meshPhysicalMaterial color="#3b82f6" transparent opacity={0.6} roughness={0.1} />
         </mesh>
-        <mesh castShadow position={[0, -0.1, 0]}>
-          <cylinderGeometry args={[0.06, 0.06, 1.5, 24]} />
-          <meshPhysicalMaterial color="#c4a44a" roughness={0.25} metalness={0.9} clearcoat={0.2} />
+
+        {/* Nắp kim loại (vặn) */}
+        <mesh position={[0, 0.68, 0]}>
+          <cylinderGeometry args={[0.13, 0.13, 0.1, 32]} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.4} metalness={0.8} />
         </mesh>
-        <mesh castShadow position={[0, -0.75, 0]}>
-          <torusGeometry args={[0.09, 0.025, 8, 32]} />
-          <meshPhysicalMaterial color="#b89a40" roughness={0.2} metalness={0.9} />
+
+        {/* Sợi bấc (wick) */}
+        <mesh position={[0, 0.78, 0]}>
+          <cylinderGeometry args={[0.04, 0.04, 0.15, 16]} />
+          <meshStandardMaterial color="#fef08a" roughness={0.9} />
         </mesh>
-        {[0, 1, 2, 3].map((i) => {
-          const angle = (i / 4) * Math.PI * 2;
-          return (
-            <mesh key={i} position={[Math.cos(angle) * 0.09, -0.75, Math.sin(angle) * 0.09]}>
-              <boxGeometry args={[0.03, 0.06, 0.01]} />
-              <meshStandardMaterial color="#1a1a1a" />
-            </mesh>
-          );
-        })}
-        <mesh castShadow position={[0.09, -0.71, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[0.03, 0.03, 0.15, 16]} />
-          <meshPhysicalMaterial color="#8a7a3a" roughness={0.3} metalness={0.7} />
+
+        {/* Nút giả lập (để trang trí, ví dụ núm vặn nhỏ bên cạnh) */}
+        <mesh position={[0.13, 0.68, 0]} rotation={[0, 0, Math.PI / 2]}>
+          <cylinderGeometry args={[0.04, 0.04, 0.05, 16]} />
+          <meshStandardMaterial color="#94a3b8" roughness={0.5} metalness={0.7} />
         </mesh>
-        <NutBam viTri={[0.24, -0.71, 0.06]} kichThuoc={0.025}
-          mau="#333" mauKhiBam="#111" khiBam={() => {}} />
+
+        {/* Lửa và Khói */}
         {dangChayLua && (
-          <group position={[0, 0.74, 0]}>
-            <group ref={trongRef}><mesh><coneGeometry args={[0.02, 0.25, 12]} /><meshStandardMaterial color="#0066ff" emissive="#0044cc" emissiveIntensity={1.2} transparent opacity={0.85} /></mesh></group>
-            <group ref={giuaRef}><mesh><coneGeometry args={[0.04, 0.22, 14]} /><meshStandardMaterial color="#3399ff" emissive="#1166cc" emissiveIntensity={0.8} transparent opacity={0.6} /></mesh></group>
-            <group ref={ngoaiRef}><mesh><coneGeometry args={[0.06, 0.32, 16]} /><meshStandardMaterial color="#ff8800" emissive="#cc5500" emissiveIntensity={0.6} transparent opacity={0.7} /></mesh></group>
-            <mesh position={[0, 0.18, 0]}><coneGeometry args={[0.055, 0.08, 16]} /><meshStandardMaterial color="#ffcc00" emissive="#ff8800" emissiveIntensity={0.4} transparent opacity={0.5} /></mesh>
+          <group position={[0, 0.85, 0]}>
+            {/* Lửa */}
+            <group ref={trongRef} position={[0, 0.05, 0]}><mesh><sphereGeometry args={[0.025, 16, 16]} /><meshStandardMaterial color="#0066ff" emissive="#0044cc" emissiveIntensity={2} transparent opacity={0.9} /></mesh></group>
+            <group ref={giuaRef} position={[0, 0.1, 0]}><mesh><coneGeometry args={[0.035, 0.2, 16]} /><meshStandardMaterial color="#ffcc00" emissive="#ffaa00" emissiveIntensity={1.5} transparent opacity={0.8} /></mesh></group>
+            <group ref={ngoaiRef} position={[0, 0.12, 0]}><mesh><coneGeometry args={[0.05, 0.28, 16]} /><meshStandardMaterial color="#ff6600" emissive="#cc3300" emissiveIntensity={1} transparent opacity={0.6} /></mesh></group>
+            
+            {/* Khói */}
+            {[0, 1, 2, 3, 4].map(i => (
+              <mesh key={i} ref={el => { khoiRefs.current[i] = el; }} position={[0, 0.2 + i * 0.05, 0]}>
+                <sphereGeometry args={[0.03, 8, 8]} />
+                <meshStandardMaterial color="#444444" transparent opacity={0.4} depthWrite={false} />
+              </mesh>
+            ))}
           </group>
         )}
       </group>

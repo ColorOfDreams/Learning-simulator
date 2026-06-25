@@ -8,6 +8,14 @@ declare module Scene {
     rotation: [number, number, number];
     scale: [number, number, number];
     properties: Record<string, any>;
+    
+    // Vietnamese properties
+    maDungCu?: string;
+    viTri?: [number, number, number];
+    gocXoay?: [number, number, number];
+    tiLe?: [number, number, number];
+    thuocTinh?: Record<string, any>;
+    nhan?: string;
   }
 
   export interface IRecord {
@@ -20,5 +28,12 @@ declare module Scene {
       temperature?: number;
     };
     objects: Object[];
+    
+    // Vietnamese properties
+    doiTuong?: Object[];
+    moiTruong?: {
+      trongLuc?: number;
+      nhietDo?: number;
+    };
   }
 }
