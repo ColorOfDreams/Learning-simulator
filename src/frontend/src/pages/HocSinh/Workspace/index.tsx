@@ -2680,7 +2680,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12.5px', color: '#4a4f63', lineHeight: '1.55', fontWeight: 400 }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Lưu ý:</b> Gia tốc rơi tự do{' '}
 												<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>g</em> không phụ thuộc vào
 												khối lượng của vật thả rơi. Khi bỏ qua sức cản không khí, các vật rơi tự do từ cùng độ cao sẽ
@@ -3088,7 +3088,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Lưu ý:</b> Gia tốc xe tỉ lệ thuận với hợp lực kéo và tỉ lệ nghịch với khối lượng xe. Xe sẽ
 												đứng yên hoặc chuyển động thẳng đều nếu lực kéo F &le; F_ms.
 											</div>
@@ -3536,7 +3536,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Lưu ý:</b> Bỏ qua ma sát, tổng cơ năng của con lắc lò xo luôn được bảo toàn. Động năng
 												biến đổi tuần hoàn ngược pha với thế năng đàn hồi.
 											</div>
@@ -3998,7 +3998,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Lưu ý:</b> Lực hướng tâm F_ht vuông góc với vector vận tốc, chỉ đóng vai trò uốn cong quỹ
 												đạo của vật thành hình tròn mà không làm thay đổi tốc độ dài.
 											</div>
@@ -4503,7 +4503,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Lưu ý:</b> Khi quả cầu trượt không ma sát trên dốc cong, động năng và thế năng chuyển hóa
 												qua lại lẫn nhau nhưng cơ năng toàn phần luôn không đổi.
 											</div>
@@ -4787,7 +4787,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Định luật Charles:</b> Đối với một lượng khí nhất định ở áp suất không đổi, thể tích tỉ lệ
 												thuận với nhiệt độ tuyệt đối. Khi đun nóng khí, thể tích của nó tăng lên đẩy piston ra.
 											</div>
@@ -4963,7 +4963,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Động học phân tử:</b> Áp suất khí sinh ra do va chạm của các phân tử lên thành bình. Khi
 												nhiệt độ tăng, các phân tử chuyển động nhanh hơn, va chạm mạnh hơn sinh ra áp suất lớn hơn.
 											</div>
@@ -5103,7 +5103,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Sự chuyển thể:</b> Trong suốt quá trình nóng chảy hoặc sôi, nhiệt độ của chất không thay
 												đổi. Nhiệt năng hấp thụ được dùng hoàn toàn để phá vỡ liên kết cấu trúc tinh thể hoặc liên kết
 												lỏng.
@@ -5326,7 +5326,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Lực Laplace:</b> Chiều của lực từ tác dụng lên dây dẫn mang dòng điện đặt trong từ trường
 												được xác định bằng quy tắc bàn tay trái. Đảo chiều dòng điện hoặc từ trường sẽ đảo chiều lực từ.
 											</div>
@@ -5592,7 +5592,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Lực Lorentz:</b> Lực từ tác dụng lên hạt mang điện chuyển động trong từ trường đều. Do lực
 												Lorentz luôn vuông góc với vận tốc, nó đóng vai trò lực hướng tâm khiến hạt chuyển động tròn.
 											</div>
@@ -5728,7 +5728,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Định luật Faraday:</b> Suất điện động cảm ứng tỷ lệ thuận với tốc độ biến thiên từ thông
 												qua mạch kín. Tốc độ đưa nam châm vào/ra càng nhanh thì cường độ dòng điện cảm ứng sinh ra càng
 												lớn.
@@ -5958,7 +5958,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Máy phát điện xoay chiều:</b> Hoạt động dựa trên hiện tượng cảm ứng điện từ. Khi cuộn dây
 												quay đều trong từ trường, từ thông qua nó biến thiên sinh ra suất điện động hình sin cảm ứng.
 											</div>
@@ -6148,7 +6148,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Định luật phóng xạ:</b> Số lượng hạt nhân chưa phân rã giảm theo hàm mũ theo thời gian.
 												Sau mỗi chu kỳ bán rã T, số lượng hạt nhân chưa phân rã còn lại giảm đi một nửa.
 											</div>
@@ -6278,7 +6278,7 @@ const Workspace: React.FC = () => {
 															margin: '14px 0 10px',
 														}}
 													/>
-													<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+													<div className='stu-ws__formula-note'>
 														💡 <b>Phản ứng phân hạch:</b> Hạt nhân nặng (như Uranium-235) hấp thụ một neutron chậm rồi
 														vỡ thành 2 hạt nhân nhẹ hơn kèm theo giải phóng năng lượng lớn và vài neutron. Các neutron
 														mới có thể tiếp tục kích hoạt phản ứng dây chuyền.
@@ -6299,7 +6299,7 @@ const Workspace: React.FC = () => {
 															margin: '14px 0 10px',
 														}}
 													/>
-													<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+													<div className='stu-ws__formula-note'>
 														💡 <b>Phản ứng nhiệt hạch:</b> Là sự kết hợp giữa 2 hạt nhân rất nhẹ (như Deuterium và
 														Tritium) dưới nhiệt độ và áp suất cực lớn tạo thành hạt nhân Heli nặng hơn và tỏa nhiệt
 														lượng khổng lồ.
@@ -6436,7 +6436,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Năng lượng liên kết riêng:</b>{' '}
 												{
 													'Là năng lượng liên kết tính trên một nucleon. Hạt nhân bền vững nhất ở vùng số khối trung bình (50 < A < 80, ví dụ Fe-56) với năng lượng liên kết riêng lớn nhất (xấp xỉ 8.8 MeV).'
@@ -6850,7 +6850,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12.5px', color: '#4a4f63', lineHeight: '1.55', fontWeight: 400 }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Dao động tắt dần:</b> Lực cản môi trường làm tiêu hao cơ năng của hệ dưới dạng nhiệt năng,
 												khiến biên độ dao động giảm dần theo quy luật hàm mũ.
 											</div>
@@ -7327,7 +7327,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Sóng ngang:</b> Các phần tử của môi trường dao động theo phương vuông góc với phương
 												truyền sóng. Sóng truyền đi mang theo năng lượng và trạng thái dao động chứ các phần tử môi
 												trường không di chuyển theo sóng.
@@ -7505,7 +7505,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Sóng dừng:</b> Sóng dừng là sự giao thoa của sóng tới và sóng phản xạ trên sợi dây có giới
 												hạn. Trên sợi dây xuất hiện các nút sóng cố định và các bụng sóng dao động với biên độ cực đại.
 											</div>
@@ -7685,7 +7685,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Giao thoa sóng:</b> Sự gặp nhau của hai nguồn sóng kết hợp tạo ra mạng lưới các điểm cực
 												đại (gặp nhau cùng pha, biên độ tăng gấp đôi) và các cực tiểu (ngược pha, triệt tiêu lẫn nhau).
 											</div>
@@ -7911,7 +7911,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Định luật Coulomb:</b> Lực tương tác tĩnh điện tỷ lệ thuận với tích độ lớn hai điện tích
 												và tỷ lệ nghịch với bình phương khoảng cách giữa chúng. Hai điện tích cùng dấu đẩy nhau, trái
 												dấu hút nhau.
@@ -8092,7 +8092,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Điện trường:</b> Là môi trường vật chất bao quanh các điện tích. Đường sức điện là đường
 												vẽ mà tiếp tuyến tại mỗi điểm trùng với phương của vectơ cường độ điện trường. Chúng đi ra từ
 												điện tích dương và đi vào điện tích âm.
@@ -8270,7 +8270,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Định luật Ohm:</b> Cường độ dòng điện chạy qua dây dẫn tỷ lệ thuận với hiệu điện thế giữa
 												hai đầu dây và tỷ lệ nghịch với điện trở của dây dẫn đó.
 											</div>
@@ -8498,7 +8498,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Lưu ý:</b> Khi mắc nối tiếp, điện trở tương đương tăng lên. Khi mắc song song, điện trở
 												tương đương luôn nhỏ hơn các điện trở thành phần.
 											</div>
@@ -8735,7 +8735,7 @@ const Workspace: React.FC = () => {
 													margin: '14px 0 10px',
 												}}
 											/>
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
+											<div className='stu-ws__formula-note'>
 												💡 <b>Định luật Ohm toàn mạch:</b> Cường độ dòng điện trong mạch điện kín tỷ lệ thuận với suất
 												điện động của nguồn điện và tỷ lệ nghịch với điện trở toàn phần của mạch.
 											</div>
