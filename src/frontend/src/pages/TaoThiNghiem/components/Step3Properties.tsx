@@ -103,7 +103,7 @@ const Step3Properties: React.FC<Props> = ({ data, onChange, onBack }) => {
       props.push(
         <div className="s3-prop" key="vol">
           <label>Thể tích (ml)</label>
-          <InputNumber min={0} max={500} step={10} value={obj.properties?.liquidVolume ?? 200}
+          <InputNumber min={0} max={500} step={10} value={obj.properties?.liquidVolume ?? 0}
             onChange={(v) => updateProp(obj.id, 'liquidVolume', v)} style={{ width: '100%' }} />
         </div>
       );

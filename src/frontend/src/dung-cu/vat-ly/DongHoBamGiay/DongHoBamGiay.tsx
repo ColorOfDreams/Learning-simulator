@@ -16,12 +16,19 @@ const DongHoBamGiay: React.FC<Props> = ({ doiTuong, dangChay = false, capNhatViT
   const dangChayDongHo = thuocTinh.dangChay ?? thuocTinh.running ?? false;
   const thoiGianDaTroi = thuocTinh.thoiGian ?? thuocTinh.elapsed ?? 0;
 
+  const textRef = React.useRef<any>(null);
+
   useFrame((_, delta) => {
     if (dangChay && dangChayDongHo) {
       const props = doiTuong.thuocTinh || doiTuong.properties;
       const cur = (props?.thoiGian || props?.elapsed || 0) as number;
-      if (doiTuong.thuocTinh) doiTuong.thuocTinh.thoiGian = cur + delta;
-      else if (doiTuong.properties) doiTuong.properties.elapsed = cur + delta;
+      const newTime = cur + delta;
+      if (doiTuong.thuocTinh) doiTuong.thuocTinh.thoiGian = newTime;
+      else if (doiTuong.properties) doiTuong.properties.elapsed = newTime;
+      
+      if (textRef.current) {
+        textRef.current.text = `${newTime.toFixed(2)}s`;
+      }
     }
   });
 
@@ -68,8 +75,8 @@ const DongHoBamGiay: React.FC<Props> = ({ doiTuong, dangChay = false, capNhatViT
           <boxGeometry args={[0.22, 0.04, 0.35]} />
           <meshStandardMaterial color="#0f172a" roughness={0.05} />
         </mesh>
-        <Text position={[0, 0.13, 0.01]} fontSize={0.08} color="#22d3ee"
-          anchorX="center" anchorY="middle" fontWeight="bold">
+        <Text ref={textRef} position={[0, 0.13, 0.01]} fontSize={0.08} color="#22d3ee"
+          anchorX="center" anchorY="middle" font="https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf">
           {thoiGianDaTroi.toFixed(2)}s
         </Text>
         <NutBam viTri={[0.08, -0.05, 0.26]} kichThuoc={0.025}

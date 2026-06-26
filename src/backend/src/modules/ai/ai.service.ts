@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ProblemPatternService } from '../learning/problem-pattern/problem-pattern.service';
 import { SimulationTemplateService } from '../learning/simulation-template/simulation-template.service';
 import { TheoryChunkService } from '../learning/theory-chunk/theory-chunk.service';
@@ -1013,6 +1013,7 @@ TARGET: ${payload.selectedPattern.target?.join(', ')}`
           modelName: string;
           properties: Record<string, unknown>;
         }>,
+        steps: [] as Array<any>,
       };
     }
 
@@ -1028,7 +1029,7 @@ TARGET: ${payload.selectedPattern.target?.join(', ')}`
           role: 'system',
           content: `Bạn là trợ lý thiết kế thí nghiệm 3D cho học sinh lớp 11. 
 Dụng cụ có sẵn:\n${equipmentList}\n
-Dựa trên mô tả của học sinh, hãy chọn dụng cụ và thông số phù hợp.
+Dựa trên mô tả của học sinh, hãy chọn dụng cụ và thông số phù hợp. Đồng thời, tự động tạo các bước hướng dẫn thực hành (steps).
 Trả về CHỈ JSON (không markdown, không giải thích):
 {
   "name": "tên thí nghiệm",
@@ -1036,6 +1037,14 @@ Trả về CHỈ JSON (không markdown, không giải thích):
   "explanation": "giải thích ngắn 1-2 câu",
   "objects": [
     { "modelName": "tên dụng cụ", "properties": { "key": value } }
+  ],
+  "steps": [
+    { 
+      "id": "step_1", 
+      "title": "Tiêu đề bước", 
+      "description": "Mô tả chi tiết thao tác", 
+      "expectedAction": { "type": "drag_and_drop", "sourceModel": "tên model kéo", "targetModel": "tên model đích" } 
+    }
   ]
 }`,
         },
@@ -1043,7 +1052,7 @@ Trả về CHỈ JSON (không markdown, không giải thích):
       ]);
 
       const cleaned = (response || '').replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(cleaned) as ExperimentSpec;
+      const parsed = JSON.parse(cleaned) as ExperimentSpec & { steps?: any[] };
       return {
         name: parsed.name || 'Thí nghiệm mới',
         roomType: parsed.roomType || 'physics',
@@ -1057,6 +1066,7 @@ Trả về CHỈ JSON (không markdown, không giải thích):
             properties: obj.properties || {},
           }),
         ),
+        steps: parsed.steps || [],
       };
     } catch {
       return {
@@ -1065,6 +1075,7 @@ Trả về CHỈ JSON (không markdown, không giải thích):
         explanation:
           'Không thể tạo tự động, vui lòng thử lại hoặc tạo thủ công.',
         objects: [],
+        steps: [],
       };
     }
   }

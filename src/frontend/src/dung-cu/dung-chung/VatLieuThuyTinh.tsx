@@ -5,28 +5,32 @@ export const VatLieuThuyTinh: React.FC<{
   mau?: string;
   day?: number;
   doNham?: number;
-}> = ({ mau = '#d4edff', day = 0.25, doNham = 0.08 }) => (
-  <meshStandardMaterial
+}> = ({ mau = '#ffffff', day = 0.05, doNham = 0.05 }) => (
+  <meshPhysicalMaterial
     color={mau}
-    transparent={true}
-    opacity={0.25}
-    roughness={0.3}
+    opacity={0.3}
     metalness={0.1}
-    envMapIntensity={0}
+    roughness={doNham}
+    clearcoat={1}
+    clearcoatRoughness={0.1}
+    envMapIntensity={1.0}
     side={THREE.DoubleSide}
+    transparent={true}
     depthWrite={false}
   />
 );
 
-export const VatLieuThuyTinhMong: React.FC<{ mau?: string }> = ({ mau = '#e8f4ff' }) => (
-  <meshStandardMaterial
+export const VatLieuThuyTinhMong: React.FC<{ mau?: string }> = ({ mau = '#ffffff' }) => (
+  <meshPhysicalMaterial
     color={mau}
-    transparent={true}
-    opacity={0.15}
-    roughness={0.2}
-    metalness={0.05}
-    envMapIntensity={0}
+    opacity={0.2}
+    metalness={0.1}
+    roughness={0.02}
+    clearcoat={1}
+    clearcoatRoughness={0.1}
+    envMapIntensity={1.0}
     side={THREE.DoubleSide}
+    transparent={true}
     depthWrite={false}
   />
 );

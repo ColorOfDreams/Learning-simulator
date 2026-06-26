@@ -1,4 +1,5 @@
 import React, { Suspense, useMemo, useState, useCallback, useEffect } from 'react';
+import { useModel } from '@umijs/max';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import RoomEnvironment from '@/dung-cu/dung-chung/PhongThiNghiem';
@@ -7,7 +8,9 @@ import ConnectionLines from './ConnectionLines';
 import InteractionEffects from './InteractionEffects';
 import InteractionGuideSystem from './InteractionGuideSystem';
 import EquipmentHighlighter from './EquipmentHighlighter';
+import { SnapIndicator } from './SnapIndicator';
 import { layDungCu } from '@/dung-cu/thanh-ghi';
+import { getEquipmentConfig } from './EquipmentRegistry';
 
 const COMPONENT_MAP: Record<string, React.FC<any>> = {};
 
@@ -21,16 +24,8 @@ const getComponent = (modelName: string): React.FC<any> | undefined => {
   return undefined;
 };
 
-const getInitialY = (modelName: string): number => {
-  const def = layDungCu(modelName);
-  if (def) return def.viTriY;
-  return 0;
-};
-
 function normalizeThuocTinh(obj: Scene.Object): Record<string, any> {
-  const tt: Record<string, any> = { ...(obj as any).thuocTinh, ...obj.properties };
-  if ((obj as any).thuocTinh) return (obj as any).thuocTinh;
-  return obj.properties || {};
+  return { ...(obj as any).thuocTinh, ...obj.properties };
 }
 
 const SceneObjects = React.memo(({
@@ -48,7 +43,7 @@ const SceneObjects = React.memo(({
       const pos = [...(obj.position || (obj as any).viTri || [0, 5, 0])] as [number, number, number];
       if (pos[1] === 5) {
         const mn = obj.modelName || (obj as any).maDungCu;
-        onUpdatePosition(obj.id, [shelfX, getInitialY(mn) + 1.45, -2]);
+        onUpdatePosition(obj.id, [shelfX, getEquipmentConfig(mn).initY + 1.45, -2]);
       }
       if (pos[1] === 5 || pos[1] > 2) {
         shelfX += 1.2;
@@ -138,17 +133,38 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
     return found;
   }, [sceneGraph?.objects]);
 
+  const { currentStepIndex, setStep: setCurrentStepIndex, updateObjectProperty, updateAllProperties, checkRuleAndAdvance } = useModel('useSimulationModel');
+
   const handleSelectEquipment = useCallback((id: string | null) => {
     setInternalSelectedId(id);
     onSelectEquipment?.(id);
   }, [onSelectEquipment]);
 
+  const [pouringAction, setPouringAction] = useState<{ sourceId: string, targetId: string, startTime: number, sourcePos?: [number, number, number] } | null>(null);
+
+  useEffect(() => {
+    if (pouringAction) {
+      const timer = setTimeout(() => {
+        setPouringAction(null);
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [pouringAction]);
+
+  const [isDraggingPourable, setIsDraggingPourable] = useState<string | null>(null);
+
   const interaction = useMemo(() => ({
     hoveredObjectId, setHoveredObjectId, isDragging, setIsDragging,
     selectedEquipmentId, snapTargetId, setSnapTargetId,
     rotationAxis, setRotationAxis, heSoTatDan,
+    currentStepIndex, setCurrentStepIndex,
+    pouringAction, setPouringAction,
+    updateObjectProperty,
+    updateAllProperties,
+    checkRuleAndAdvance,
     setSelectedEquipmentId: handleSelectEquipment,
-  }), [hoveredObjectId, isDragging, selectedEquipmentId, snapTargetId, rotationAxis, heSoTatDan, handleSelectEquipment]);
+    isDraggingPourable, setIsDraggingPourable,
+  }), [hoveredObjectId, isDragging, selectedEquipmentId, snapTargetId, rotationAxis, heSoTatDan, currentStepIndex, setCurrentStepIndex, pouringAction, updateObjectProperty, updateAllProperties, checkRuleAndAdvance, handleSelectEquipment, isDraggingPourable]);
 
   return (
     <div style={{ width: '100%', height: '100%', background: '#0f172a' }}>
@@ -169,6 +185,7 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
                   onUpdatePosition={onUpdatePosition}
                   sceneGraph={sceneGraph}
                 />
+                <SnapIndicator />
                 <ConnectionLines
                   objects={sceneGraph.objects || []}
                   hoveredObjectId={hoveredObjectId}
@@ -181,7 +198,11 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
             </>
           )}
 
-          <InteractionGuideSystem visible={!!showGuide} onDismiss={onDismissGuide || (() => {})} />
+          <InteractionGuideSystem 
+            visible={(sceneGraph?.steps?.length ?? 0) > 0} 
+            onDismiss={onDismissGuide || (() => {})} 
+            sceneGraph={sceneGraph} 
+          />
           {highlightedObjectId && sceneGraph && (
             <EquipmentHighlighter
               objectId={highlightedObjectId}
@@ -198,17 +219,16 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
               objects={sceneGraph.objects || []}
             />
           )}
-          {!hoveredObjectId && !isDragging && (
-            <OrbitControls
-              makeDefault
-              minPolarAngle={0}
-              maxPolarAngle={Math.PI / 2.1}
-              minDistance={3}
-              maxDistance={14}
-              enableDamping
-              dampingFactor={0.1}
-            />
-          )}
+          <OrbitControls
+            makeDefault
+            enabled={!hoveredObjectId && !isDragging}
+            minPolarAngle={0}
+            maxPolarAngle={Math.PI / 2.1}
+            minDistance={3}
+            maxDistance={14}
+            enableDamping
+            dampingFactor={0.1}
+          />
         </InteractionContext.Provider>
       </Canvas>
     </div>

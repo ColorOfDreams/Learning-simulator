@@ -12,6 +12,15 @@ export interface InteractionState {
   rotationAxis: 'x' | 'y' | 'z' | null;
   setRotationAxis: (axis: 'x' | 'y' | 'z' | null) => void;
   heSoTatDan: number;
+  currentStepIndex: number;
+  setCurrentStepIndex: (index: number) => void;
+  pouringAction: { sourceId: string, targetId: string, startTime: number, sourcePos?: [number, number, number] } | null;
+  setPouringAction: (action: { sourceId: string, targetId: string, startTime: number, sourcePos?: [number, number, number] } | null) => void;
+  updateObjectProperty?: (id: string, key: string, value: any) => void;
+  updateAllProperties?: (id: string, props: Record<string, any>) => void;
+  checkRuleAndAdvance?: (actionType: string, sourceId?: string, targetId?: string) => void;
+  isDraggingPourable: string | null;
+  setIsDraggingPourable?: (val: string | null) => void;
 }
 
 export const InteractionContext = createContext<InteractionState>({
@@ -21,6 +30,10 @@ export const InteractionContext = createContext<InteractionState>({
   snapTargetId: null, setSnapTargetId: () => {},
   rotationAxis: null, setRotationAxis: () => {},
   heSoTatDan: 0,
+  currentStepIndex: 0, setCurrentStepIndex: () => {},
+  pouringAction: null, setPouringAction: () => {},
+  updateObjectProperty: undefined,
+  isDraggingPourable: null, setIsDraggingPourable: () => {},
 });
 
 export const useInteraction = () => useContext(InteractionContext);

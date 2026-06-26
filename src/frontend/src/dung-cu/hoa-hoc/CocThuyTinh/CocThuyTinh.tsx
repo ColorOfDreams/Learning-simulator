@@ -1,6 +1,6 @@
 import React from 'react';
 import * as THREE from 'three';
-import { Text } from '@react-three/drei';
+import { Text, Sparkles } from '@react-three/drei';
 import DoiTuongKeoTha from '@/simulations/engine/DraggablePhysicsObject';
 import { VatLieuThuyTinh } from '@/dung-cu/dung-chung/VatLieuThuyTinh';
 
@@ -10,6 +10,8 @@ const CocThuyTinh: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiS
   const theTich = doiTuong.thuocTinh?.theTich || doiTuong.properties?.liquidVolume || 0;
   const chieuCaoChatLong = Math.min((theTich / 500) * 1.0, 1.0);
   const mauChatLong = doiTuong.thuocTinh?.mauChatLong || doiTuong.properties?.liquidColor || '#00a8ff';
+  const effect = doiTuong.properties?.reactionEffect;
+  const precipitateColor = doiTuong.properties?.precipitateColor || '#ffffff';
 
   return (
     <DoiTuongKeoTha doiTuong={doiTuong} nhan="Cốc Thủy Tinh 500ml" kichThuocVaCham={[0.4, 0.65, 0.4]}
@@ -52,10 +54,25 @@ const CocThuyTinh: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiS
           );
         })}
         {chieuCaoChatLong > 0 && (
-          <mesh position={[0, -0.57 + chieuCaoChatLong / 2, 0]}>
-            <cylinderGeometry args={[0.37, 0.37, chieuCaoChatLong, 64]} />
-            <meshPhysicalMaterial color={mauChatLong} transparent opacity={0.75} roughness={0.08} metalness={0.1} />
-          </mesh>
+          <group position={[0, -0.57 + chieuCaoChatLong / 2, 0]}>
+            <mesh>
+              <cylinderGeometry args={[0.37, 0.37, chieuCaoChatLong, 64]} />
+              <meshPhysicalMaterial color={mauChatLong} transparent opacity={0.75} roughness={0.08} metalness={0.1} />
+            </mesh>
+            
+            {/* Bubbles */}
+            {effect === 'bubble' && (
+              <Sparkles count={50} scale={[0.6, chieuCaoChatLong, 0.6]} size={4} speed={0.8} opacity={0.6} color="#ffffff" />
+            )}
+            
+            {/* Precipitate */}
+            {effect === 'precipitate' && (
+              <mesh position={[0, -chieuCaoChatLong / 2 + 0.05, 0]}>
+                <cylinderGeometry args={[0.36, 0.36, 0.1, 64]} />
+                <meshStandardMaterial color={precipitateColor} roughness={0.9} />
+              </mesh>
+            )}
+          </group>
         )}
       </group>
     </DoiTuongKeoTha>

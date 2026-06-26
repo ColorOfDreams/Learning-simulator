@@ -14,11 +14,11 @@ const RoomEnvironment: React.FC<RoomEnvironmentProps> = ({ roomType }) => {
         <meshStandardMaterial color="#1e293b" roughness={0.15} metalness={0.05} />
       </mesh>
 
-      {/* Bảng trắng lớn có viền nhôm */}
+      {/* Bảng đen (thay cho bảng trắng) */}
       <group position={[0, 5, -7.7]}>
         <mesh receiveShadow>
           <planeGeometry args={[14, 7]} />
-          <meshStandardMaterial color="#ffffff" roughness={0.3} />
+          <meshStandardMaterial color="#0f172a" roughness={0.8} />
         </mesh>
         {[[0, 3.6], [0, -3.6], [-7.1, 0], [7.1, 0]].map(([x, y], i) => (
           <mesh key={i} position={[x, y, 0.1]}>
@@ -84,7 +84,7 @@ const RoomEnvironment: React.FC<RoomEnvironmentProps> = ({ roomType }) => {
     <group>
       <mesh position={[0, 5, -8]} receiveShadow>
         <boxGeometry args={[40, 15, 0.5]} />
-        <meshStandardMaterial color="#e2e8f0" roughness={0.7} />
+        <meshStandardMaterial color="#334155" roughness={0.8} />
       </mesh>
       <group position={[0, 5, -7.7]}>
         <mesh receiveShadow>
@@ -100,7 +100,7 @@ const RoomEnvironment: React.FC<RoomEnvironmentProps> = ({ roomType }) => {
       </group>
       <mesh receiveShadow castShadow position={[0, -1, 0]}>
         <boxGeometry args={[20, 0.4, 10]} />
-        <meshStandardMaterial color="#e2e8f0" roughness={0.5} />
+        <meshStandardMaterial color="#64748b" roughness={0.7} />
       </mesh>
       {[[-9, -4], [9, -4], [-9, 4], [9, 4]].map(([x, z], i) => (
         <mesh key={i} receiveShadow castShadow position={[x, -1.7, z]}>
@@ -119,18 +119,18 @@ const RoomEnvironment: React.FC<RoomEnvironmentProps> = ({ roomType }) => {
     <group>
       <mesh position={[0, 5, -8]} receiveShadow>
         <boxGeometry args={[40, 15, 0.5]} />
-        <meshStandardMaterial color="#e0f2fe" roughness={0.7} />
+        <meshStandardMaterial color="#1e293b" roughness={0.8} />
       </mesh>
       <group position={[0, 5, -7.5]}>
         <mesh receiveShadow>
           <planeGeometry args={[18, 8]} />
-          <meshStandardMaterial color="#ffffff" roughness={0.1} metalness={0.3} transparent opacity={0.6} />
+          <meshStandardMaterial color="#0f172a" roughness={0.6} metalness={0.1} />
         </mesh>
         <gridHelper args={[18, 18, '#3b82f6', '#93c5fd']} rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 0.01]} />
       </group>
       <mesh receiveShadow castShadow position={[0, -1, 0]}>
         <boxGeometry args={[22, 0.15, 12]} />
-        <meshStandardMaterial color="#ffffff" roughness={0.05} metalness={0.2} transparent opacity={0.5} />
+        <meshStandardMaterial color="#334155" roughness={0.7} metalness={0.1} />
       </mesh>
       {[[-10, -5], [10, -5], [-10, 5], [10, 5]].map(([x, z], i) => (
         <mesh key={i} receiveShadow castShadow position={[x, -1.75, z]}>

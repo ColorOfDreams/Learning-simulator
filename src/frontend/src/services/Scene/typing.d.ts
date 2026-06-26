@@ -18,6 +18,18 @@ declare module Scene {
     nhan?: string;
   }
 
+  export interface Step {
+    id: string;
+    title: string;
+    description: string;
+    expectedAction?: {
+      type: 'drag_and_drop' | 'click' | 'wait';
+      sourceModel?: string;
+      targetModel?: string;
+      targetId?: string; // Optional if we want to snap to a specific instance
+    };
+  }
+
   export interface IRecord {
     id?: string;
     name?: string;
@@ -28,6 +40,7 @@ declare module Scene {
       temperature?: number;
     };
     objects: Object[];
+    steps?: Step[];
     
     // Vietnamese properties
     doiTuong?: Object[];

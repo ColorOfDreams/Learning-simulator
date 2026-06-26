@@ -3,14 +3,9 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useInteraction } from './InteractionContext';
+import { processPouring } from '@/dung-cu/hoa-hoc/dung-cu-hoa-hoc';
 
-export interface SnapPoint {
-  id: string;
-  position: [number, number, number];
-  type: string;
-  label: string;
-  connectsTo: string[];
-}
+import { getEquipmentConfig, SnapPoint } from './EquipmentRegistry';
 
 interface Props {
   object?: Scene.Object;
@@ -34,41 +29,15 @@ interface Props {
 
 let globalDraggingId: string | null = null;
 
-const getModel = (obj: any) => obj.modelName || obj.maDungCu || '';
+const getModel = (obj: any) => obj.modelName || obj.maDungCu || obj.loai || '';
 const getPos = (obj: any): [number, number, number] => [...(obj.position || obj.viTri || [0, 5, 0])] as [number, number, number];
 
-const getCollider = (modelName: string, props?: any): [number, number, number] => {
-  const map: Record<string, [number, number, number]> = {
-    WoodenBlock: [0.75, 0.75, 0.75],
-    Beaker: [0.5, 1.0, 0.5],
-    Stand: [1.0, 2.5, 1.0],
-    SimplePendulum: [0.5, (props?.length || 2) / 2, 0.5],
-    SpringPendulum: [0.5, (2 + ((props?.mass || 1) * 9.8) / (props?.stiffness || 50)) / 2, 0.5],
-    Spring: [0.3, (props?.length || 2) / 2, 0.3],
-    MassBlock: [0.4, 0.4, 0.4],
-    Stopwatch: [0.15, 0.1, 0.25],
-    Ruler: [0.5, 0.05, 0.05],
-    Protractor: [0.3, 0.3, 0.05],
-    Dashpot: [0.3, 1.0, 0.3],
-    DrivingMotor: [0.4, 0.3, 0.3],
-    EnergyMeter: [0.3, 0.2, 0.05],
-  };
-  return map[modelName] ?? [0.5, 0.5, 0.5];
-};
 
-const getInitY = (modelName: string) => {
-  const map: Record<string, number> = {
-    WoodenBlock: 0.15, Beaker: 0.4, Stand: 1.9,
-    SimplePendulum: 1.5, SpringPendulum: 1.5, Spring: 1.5,
-    MassBlock: 0.2, Stopwatch: 0.1, Ruler: 0.05, Protractor: 0.05,
-    Dashpot: 0.5, DrivingMotor: 0.2, EnergyMeter: 0.05,
-  };
-  return map[modelName] ?? 0;
-};
 
 const resolveCollisions = (
   pos: [number, number, number], half: [number, number, number],
   excludeId: string, objects: Scene.Object[],
+  ignoreId?: string | null
 ): [number, number, number] => {
   let [x, y, z] = pos;
   const hy = half[1];
@@ -79,7 +48,7 @@ const resolveCollisions = (
   if (x + hx > -6 && x - hx < 6 && z + hz > -2.6 && z - hz < -1.4) {
     floorY = 0.85;
   }
-  
+
   const tableY = floorY + hy;
   y = Math.max(tableY, y);
   x = Math.max(-9.5, Math.min(9.5, x));
@@ -88,10 +57,10 @@ const resolveCollisions = (
   for (let pass = 0; pass < 3; pass++) {
     let hit = false;
     for (const obj of objects) {
-      if (obj.id === excludeId) continue;
-      const oh = getCollider(getModel(obj), obj.properties);
+      if (obj.id === excludeId || obj.id === ignoreId) continue;
+      const oh = getEquipmentConfig(getModel(obj)).getCollider(obj.properties);
       const op = getPos(obj);
-      if (op[1] === 5) op[1] = getInitY(getModel(obj));
+      if (op[1] === 5) op[1] = getEquipmentConfig(getModel(obj)).initY;
 
       const dx = x - op[0], dy = y - op[1], dz = z - op[2];
       const px = (half[0] + oh[0]) - Math.abs(dx);
@@ -120,7 +89,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
   const isPlaying = props.isPlaying ?? props.dangChay ?? false;
   const onUpdatePosition = props.onUpdatePosition ?? props.capNhatViTri;
   const sceneGraph = props.sceneGraph ?? props.doThiScene ?? null;
-  const snapPoints = props.snapPoints ?? props.diemSnap;
+  const snapPoints = props.snapPoints ?? props.diemSnap ?? getEquipmentConfig(getModel(object)).getSnapPoints(object.properties);
   const forceKinematic = props.isKinematic ?? props.coDinh;
   const { children } = props;
   const groupRef = useRef<THREE.Group>(null);
@@ -132,12 +101,14 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
   const pointerStart = useRef({ x: 0, y: 0 });
   const rotStartRef = useRef({ x: 0, y: 0 });
   const snapTargetRef = useRef<string | null>(null);
+  const pourTargetRef = useRef<string | null>(null);
+  const lastPourRef = useRef<string | null>(null);
 
   const { camera, raycaster } = useThree();
-  const { setHoveredObjectId, setIsDragging, setSelectedEquipmentId, selectedEquipmentId, setSnapTargetId, rotationAxis } = useInteraction();
+  const { setHoveredObjectId, setIsDragging, setSelectedEquipmentId, selectedEquipmentId, setSnapTargetId, rotationAxis, setPouringAction, updateObjectProperty, updateAllProperties, checkRuleAndAdvance, isDraggingPourable, setIsDraggingPourable } = useInteraction();
 
-  const half = colliderArgs ?? getCollider(object.modelName, object.properties);
-  const kinematic = forceKinematic ?? ['Stand', 'SimplePendulum', 'SpringPendulum', 'Spring', 'Dashpot', 'DrivingMotor'].includes(object.modelName);
+  const half = colliderArgs ?? getEquipmentConfig(object.modelName).getCollider(object.properties);
+  const kinematic = forceKinematic ?? getEquipmentConfig(object.modelName).tags.includes('kinematic');
   const allObjects = sceneGraph?.objects || [];
 
   useEffect(() => {
@@ -149,7 +120,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
   const findSnapTarget = useCallback((targetX: number, targetY: number, targetZ: number): [number, number, number] | null => {
     snapTargetRef.current = null;
     if (!snapPoints?.length) return null;
-    let bestDist = 1.5;
+    let bestDist = 3.0; // Increased distance for easier snapping
     let bestPos: [number, number, number] | null = null;
 
     for (const sp of snapPoints) {
@@ -159,25 +130,44 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
 
       for (const other of allObjects) {
         if (other.id === object.id) continue;
-        const otherModel = (other as any).modelName || (other as any).maDungCu || '';
-        const otherSnaps = getSnapPointsForModel(otherModel, other.properties);
+        const otherModel = getModel(other);
+        const otherSnaps = getEquipmentConfig(otherModel).getSnapPoints(other.properties);
         if (!otherSnaps?.length) continue;
 
-        const op = [...(other.position || (other as any).viTri || [0, 5, 0])] as [number, number, number];
-        if (op[1] === 5) op[1] = getInitY(otherModel);
+        const op = getPos(other);
+        if (op[1] === 5) op[1] = getEquipmentConfig(otherModel).initY;
 
         for (const os of otherSnaps) {
           if (!sp.connectsTo.includes(os.type) && !os.connectsTo.includes(sp.type)) continue;
+          
           const ox = op[0] + os.position[0], oy = op[1] + os.position[1], oz = op[2] + os.position[2];
-          const dist = Math.sqrt((worldX - ox) ** 2 + (worldY - oy) ** 2 + (worldZ - oz) ** 2);
-          if (dist < bestDist) {
-            bestDist = dist;
-            snapTargetRef.current = other.id;
-            const t = Math.max(0, Math.min(1, (1.5 - dist) / 0.7));
+          
+          // 2.5D Mode: Calculate distance primarily based on X and Z (horizontal desk plane)
+          const dist2D = Math.sqrt((worldX - ox) ** 2 + (worldZ - oz) ** 2);
+          
+          if (dist2D < bestDist) {
+            bestDist = dist2D;
+            
+            const isPourable = getEquipmentConfig(getModel(object)).tags.includes('pourable');
+            const isContainer = getEquipmentConfig(otherModel).tags.includes('container');
+            
+            if (isPourable && isContainer) {
+              pourTargetRef.current = other.id;
+              snapTargetRef.current = null;
+            } else {
+              snapTargetRef.current = other.id;
+              pourTargetRef.current = null;
+            }
+
+            const t = Math.max(0, Math.min(1, (3.0 - dist2D) / 2.0));
             const pullX = targetX + (ox - sp.position[0] - targetX) * t;
             const pullY = targetY + (oy - sp.position[1] - targetY) * t;
             const pullZ = targetZ + (oz - sp.position[2] - targetZ) * t;
-            if (dist < 1.2) {
+            
+            if (pourTargetRef.current) {
+              // Hover above the container to pour (shifted left because of 45-deg tilt)
+              bestPos = [ox - sp.position[0] - 0.25, oy - sp.position[1] + 0.5, oz - sp.position[2]];
+            } else if (dist2D < 1.5) {
               bestPos = [ox - sp.position[0], oy - sp.position[1], oz - sp.position[2]];
             } else {
               bestPos = [pullX, pullY, pullZ];
@@ -187,7 +177,9 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
       }
     }
     return bestPos;
-  }, [snapPoints, allObjects, object.id]);
+  }, [snapPoints, allObjects, object.id, object.modelName, updateObjectProperty, setPouringAction]);
+
+
 
   const onPointerDown = useCallback((e: any) => {
     if (globalDraggingId) return;
@@ -197,23 +189,27 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
     globalDraggingId = object.id;
     setDragging(true);
     setIsDragging(true);
+    
+    // Check if pourable
+    if (setIsDraggingPourable && getEquipmentConfig(getModel(object)).tags.includes('pourable')) {
+      setIsDraggingPourable(object.id);
+    }
+
     pointerStart.current = { x: e.clientX, y: e.clientY };
     rotStartRef.current = { x: e.clientX, y: e.clientY };
     velRef.current = { x: 0, y: 0, z: 0 };
 
-    const normal = new THREE.Vector3();
-    camera.getWorldDirection(normal);
-    normal.negate();
+    const normal = new THREE.Vector3(0, 1, 0); // 2.5D Mode: Raycast against Horizontal desk plane (Y=0)
     const cp = groupRef.current ? groupRef.current.position : new THREE.Vector3(...object.position);
+    // Force the interaction plane to Y = cp.y (lock Y instead of Z)
     planeRef.current.setFromNormalAndCoplanarPoint(normal, cp);
 
     const intersection = new THREE.Vector3();
     if (raycaster.ray.intersectPlane(planeRef.current, intersection)) {
       offsetRef.current = { x: cp.x - intersection.x, y: cp.y - intersection.y, z: cp.z - intersection.z };
     }
-  }, [camera, raycaster, object, setIsDragging]);
+  }, [raycaster, object, setIsDragging, setIsDraggingPourable]);
 
-  // Separate rotation via pointer events (screen coords — does not interfere with 3D drag)
   const onPointerMove = useCallback((e: any) => {
     if (!dragging || !rotationAxis || selectedEquipmentId !== object.id) return;
     e.stopPropagation();
@@ -241,20 +237,20 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
     if (globalDraggingId !== object.id) return;
     if (e.button !== 0) return;
     e.stopPropagation();
-    try { e.target.releasePointerCapture(e.pointerId); } catch {}
+    try { e.target.releasePointerCapture(e.pointerId); } catch { }
     globalDraggingId = null;
     setDragging(false);
     setIsDragging(false);
+    if (setIsDraggingPourable) setIsDraggingPourable(null);
 
     const dx = e.clientX - pointerStart.current.x;
     const dy = e.clientY - pointerStart.current.y;
+    const isClick = Math.abs(dx) < 4 && Math.abs(dy) < 4;
 
-    // Click detection (not a drag)
-    if (Math.abs(dx) < 4 && Math.abs(dy) < 4) {
+    if (isClick) {
       setSelectedEquipmentId(selectedEquipmentId === object.id ? null : object.id);
     }
 
-    // Save rotation if we were in rotation mode
     if (rotationAxis && selectedEquipmentId === object.id && groupRef.current) {
       const rot = [
         groupRef.current.rotation.x,
@@ -263,11 +259,29 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
       ] as [number, number, number];
       (object as any).rotation = rot;
       onUpdatePosition?.(object.id, rot as unknown as [number, number, number]);
-    } else {
-      // Normal drag — save position
+    } else if (!isClick) {
       onUpdatePosition?.(object.id, posRef.current);
+      if (snapTargetRef.current && updateObjectProperty) {
+        updateObjectProperty(object.id, 'attachedTo', snapTargetRef.current);
+        if (checkRuleAndAdvance) checkRuleAndAdvance('drag_and_drop', object.id, snapTargetRef.current);
+      } else if (pourTargetRef.current && updateObjectProperty && updateAllProperties) {
+        // If released while pouring, trigger pour action once
+        const targetObj = allObjects.find(o => o.id === pourTargetRef.current);
+        const targetProps = targetObj ? { ...(targetObj as any).thuocTinh, ...targetObj.properties } : {};
+        const sourceProps = { ...(object as any).thuocTinh, ...object.properties };
+        
+        const mixedProps = processPouring(sourceProps, targetProps);
+        updateAllProperties(pourTargetRef.current, mixedProps);
+        
+        updateObjectProperty(object.id, 'chemicalLevel', 0);
+        updateObjectProperty(object.id, 'liquidVolume', 0);
+        updateObjectProperty(object.id, 'theTich', 0);
+        if (checkRuleAndAdvance) checkRuleAndAdvance('pour', object.id, pourTargetRef.current);
+      } else if (updateObjectProperty) {
+        updateObjectProperty(object.id, 'attachedTo', null);
+      }
     }
-  }, [object, rotationAxis, selectedEquipmentId, onUpdatePosition, setIsDragging, setSelectedEquipmentId]);
+  }, [object, rotationAxis, selectedEquipmentId, onUpdatePosition, setIsDragging, setSelectedEquipmentId, updateObjectProperty, checkRuleAndAdvance]);
 
   useFrame((state, delta) => {
     if (!groupRef.current) return;
@@ -281,21 +295,41 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
       const intersection = new THREE.Vector3();
       if (ray.intersectPlane(planeRef.current, intersection)) {
         let tx = intersection.x + offsetRef.current.x;
-        let ty = intersection.y + offsetRef.current.y;
         let tz = intersection.z + offsetRef.current.z;
+        // Start at floor height, let resolveCollisions push it up if needed
+        let ty = -10; 
 
         const snapped = findSnapTarget(tx, ty, tz);
         if (snapped) { tx = snapped[0]; ty = snapped[1]; tz = snapped[2]; }
 
+        if (snapTargetRef.current !== lastPourRef.current) {
+          // just to avoid another ref, we don't track snap state here since it doesn't cause infinite object creation
+        }
+
+        if (pourTargetRef.current !== lastPourRef.current) {
+          lastPourRef.current = pourTargetRef.current;
+          if (pourTargetRef.current && setPouringAction) {
+            setPouringAction({ sourceId: object.id, targetId: pourTargetRef.current, startTime: performance.now(), sourcePos: posRef.current });
+          } else if (!pourTargetRef.current && setPouringAction) {
+            setPouringAction(null);
+          }
+        }
+
         setSnapTargetId(snapTargetRef.current);
 
-        const resolved = resolveCollisions([tx, ty, tz], half, object.id, allObjects);
+        const targetIdToIgnore = snapTargetRef.current || pourTargetRef.current;
+        const resolved = resolveCollisions([tx, ty, tz], half, object.id, allObjects, targetIdToIgnore);
         posRef.current = resolved;
         groupRef.current.position.set(resolved[0], resolved[1], resolved[2]);
       }
     } else {
-      if (snapTargetRef.current) {
+      if (snapTargetRef.current || pourTargetRef.current) {
         snapTargetRef.current = null;
+        if (pourTargetRef.current) {
+          pourTargetRef.current = null;
+          if (lastPourRef.current && setPouringAction) setPouringAction(null);
+          lastPourRef.current = null;
+        }
         setSnapTargetId(null);
       }
       if (isPlaying && !kinematic) {
@@ -309,7 +343,14 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
       }
     }
 
-    groupRef.current.rotation.set(object.rotation[0], object.rotation[1], object.rotation[2]);
+    const rot = object.rotation || (object as any).gocXoay || [0, 0, 0];
+    
+    // Auto tilt if pouring
+    if (dragging && pourTargetRef.current) {
+      groupRef.current.rotation.set(rot[0], rot[1], rot[2] - Math.PI / 4);
+    } else {
+      groupRef.current.rotation.set(rot[0], rot[1], rot[2]);
+    }
   });
 
   return (
@@ -318,16 +359,13 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
         onPointerEnter={() => setHoveredObjectId(object.id)}
-        onPointerLeave={() => { if (!dragging) setHoveredObjectId(null); }}
+        onPointerLeave={(e) => { 
+          if (!dragging) setHoveredObjectId(null);
+        }}
       >
         {children}
-        {dragging && (
-          <mesh>
-            <boxGeometry args={[half[0] * 2 + 0.1, half[1] * 2 + 0.1, half[2] * 2 + 0.1]} />
-            <meshBasicMaterial color="#3b82f6" wireframe transparent opacity={0.3} />
-          </mesh>
-        )}
         <Html position={[0, half[1] + 0.3, 0]} center distanceFactor={10} zIndexRange={[100, 0]}>
           <div style={{
             background: 'rgba(0,0,0,0.75)', color: '#fff', padding: '4px 10px',

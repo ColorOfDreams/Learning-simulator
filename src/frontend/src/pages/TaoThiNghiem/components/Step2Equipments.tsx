@@ -97,7 +97,7 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
       id: `${modelName}_${Date.now()}`, modelName,
       position: [0, 5, 0] as [number, number, number],
       rotation: [0, 0, 0], scale: [1, 1, 1],
-      properties: modelName === 'WoodenBlock' ? { color: '#feca57' } : modelName === 'Beaker' ? { liquidVolume: 200 } : {},
+      properties: modelName === 'WoodenBlock' ? { color: '#feca57' } : {},
     };
     onChange({ ...data, objects: [...(data.objects || []), newObj] });
   };
@@ -132,7 +132,7 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
         modelName: eq.id,
         position: [0, 5, 0] as [number, number, number],
         rotation: [0, 0, 0], scale: [1, 1, 1],
-        properties: eq.id === 'WoodenBlock' ? { color: '#feca57' } : eq.id === 'Beaker' ? { liquidVolume: 200 } : {},
+        properties: eq.id === 'WoodenBlock' ? { color: '#feca57' } : {},
       });
     }
     onChange({ ...data, objects: newObjects });

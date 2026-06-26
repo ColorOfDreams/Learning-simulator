@@ -13,7 +13,7 @@ const ThiNghiem: React.FC = () => {
   const id = searchParams.get('id');
   const { getByIdModel } = useInitModel<Scene.IRecord>('scene');
   const [loading, setLoading] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<string | null>(null);
   const [rotationAxis, setRotationAxis] = useState<'x' | 'y' | 'z' | null>(null);

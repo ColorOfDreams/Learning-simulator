@@ -47,6 +47,8 @@ const ChatSidebar: React.FC<Props> = ({ collapsed, onToggle, subject }) => {
     if (listRef.current) listRef.current.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, logs, loading]);
 
+  const { currentStepIndex } = useModel('useSimulationModel');
+
   const handleSend = () => {
     if (loading) { stopGenerating(); return; }
     const t = inputValue.trim();
@@ -173,7 +175,7 @@ const ChatSidebar: React.FC<Props> = ({ collapsed, onToggle, subject }) => {
           {messages.map((msg) => (
             <div key={msg.id} className={`cs-msg-row ${msg.sender === 'user' ? 'user' : ''}`}>
               {msg.sender === 'guidance' ? (
-                <GuidanceCard steps={msg.metadata?.steps as any[]} />
+                <GuidanceCard steps={msg.metadata?.steps as any[]} currentStepIndex={currentStepIndex} />
               ) : (
                 <div className={`cs-bubble ${msg.sender}`}>
                   <div className="cs-bubble-avatar">{msg.sender === 'user' ? <UserOutlined /> : <RobotOutlined />}</div>

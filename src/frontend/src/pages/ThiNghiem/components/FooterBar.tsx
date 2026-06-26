@@ -37,13 +37,6 @@ const FooterBar: React.FC<Props> = ({
           onClick={onToggleSidebar}
           style={!sidebarCollapsed ? { color: '#134D8B' } : undefined} />
       </Tooltip>
-
-      <Tooltip title={isPlaying ? 'Tạm dừng' : 'Bắt đầu'}>
-        <Button type="text" size="large"
-          icon={isPlaying ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
-          onClick={onTogglePlay}
-          style={{ color: isPlaying ? '#ff4d4f' : '#52c41a' }} />
-      </Tooltip>
     </div>
   </div>
 );

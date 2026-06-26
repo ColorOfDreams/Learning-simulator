@@ -49,6 +49,7 @@ import '@/dung-cu/hoa-hoc/OngSinhHan';
 import '@/dung-cu/hoa-hoc/CoiChay';
 import '@/dung-cu/hoa-hoc/ChatRan';
 import '@/dung-cu/hoa-hoc/ChatLong';
+import '@/dung-cu/hoa-hoc/NuocCat';
 import '@/dung-cu/hoa-hoc/ChatKhi';
 import '@/dung-cu/hoa-hoc/BangTuanHoan';
 import '@/dung-cu/toan-hoc/MatPhangToaDo';
