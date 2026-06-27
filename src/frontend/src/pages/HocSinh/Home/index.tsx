@@ -1,4 +1,5 @@
 import { analyzeAiPrompt } from '@/services/ai/api';
+import { getSceneAll } from '@/services/base/api';
 import React, { useCallback, useMemo, useState } from 'react';
 import { history, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
@@ -6,7 +7,7 @@ import './index.less';
 
 // ── Types ──
 interface LabItem {
-	id: number;
+	id: number | string;
 	title: string;
 	subject: 'physics' | 'math' | 'chem';
 	level: string;
@@ -1007,6 +1008,29 @@ const HocSinhHome: React.FC = () => {
 	// AI Assistant States
 	const [aiLoading, setAiLoading] = useState(false);
 	const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+	const [dynamicLabs, setDynamicLabs] = useState<LabItem[]>([]);
+
+	React.useEffect(() => {
+		getSceneAll()
+			.then((res) => {
+				const scenes = res.data?.data || res.data || [];
+				if (Array.isArray(scenes)) {
+					const mapped: LabItem[] = scenes.map((s: any) => ({
+						id: s.id,
+						title: s.name || 'Thí nghiệm tùy chỉnh',
+						subject: s.roomType === 'chemistry' ? 'chem' : s.roomType,
+						level: 'Trung bình',
+						mins: '~15 phút',
+						xp: '+100 XP',
+						locked: false,
+						simId: s.id,
+						grade: 12, // Default grade for custom scenes
+					}));
+					setDynamicLabs(mapped);
+				}
+			})
+			.catch((err) => console.error('Fetch scenes error:', err));
+	}, []);
 
 	// Auto-scroll chat to bottom
 	React.useEffect(() => {
@@ -1016,9 +1040,11 @@ const HocSinhHome: React.FC = () => {
 		}
 	}, [chatMessages, aiLoading]);
 
+	const combinedLabs = useMemo(() => [...ALL_LABS, ...dynamicLabs], [dynamicLabs]);
+
 	const filteredLabs = useMemo(
-		() => ALL_LABS.filter((l) => l.grade === grade && (filter === 'all' || l.subject === filter)),
-		[grade, filter],
+		() => combinedLabs.filter((l) => l.grade === grade && (filter === 'all' || l.subject === filter)),
+		[grade, filter, combinedLabs],
 	);
 
 	React.useEffect(() => {
@@ -1053,6 +1079,9 @@ const HocSinhHome: React.FC = () => {
 				setFilter(matchedLab.subject);
 				localStorage.setItem('selected_grade', String(matchedLab.grade));
 				localStorage.setItem('selected_filter', matchedLab.subject);
+			} else {
+				// Dynamic lab, open sandbox viewer
+				path = `/thi-nghiem?id=${simId}&role=student`;
 			}
 		}
 		history.push(path);

@@ -93,3 +93,8 @@ export async function updateSetting(id: string, payload: { key: ESettingKey; val
 export async function createSetting(payload: { key: ESettingKey; value: any }, ip?: string) {
 	return axios.post(`${ip ?? ip3}/setting`, payload);
 }
+
+// Scene API
+export async function getSceneAll() {
+	return axios.get(`${ip3}/scene/all`);
+}
