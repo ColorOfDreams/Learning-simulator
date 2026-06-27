@@ -1,0 +1,260 @@
+{
+  "generated_at": "2026-06-27T10:11:40.727Z",
+  "source": "smoke",
+  "ai_method": "analyze",
+  "llm_enabled": false,
+  "summary": {
+    "total_cases": 18,
+    "evaluated_cases": 0,
+    "skipped_cases": 18,
+    "numeric_cases": 0,
+    "conceptual_cases": 0,
+    "mixed_cases": 0,
+    "numeric_accuracy": 0,
+    "avg_concept_coverage": 0,
+    "avg_rule_based_score": 0,
+    "avg_correctness": 0,
+    "avg_groundedness": 0,
+    "avg_completeness": 0,
+    "avg_clarity": 0,
+    "avg_citation_usage": 0,
+    "avg_final_answer_score": 0,
+    "hallucination_rate": 0
+  },
+  "cases": [
+    {
+      "case_id": "RAG_SMOKE_001",
+      "question": "Dao động cơ là gì? Cho biết đặc điểm chuyển động quanh vị trí cân bằng.",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_002",
+      "question": "Phương trình dao động điều hòa x = A cos(omega t + phi) có ý nghĩa như thế nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_003",
+      "question": "Trong phương trình x = A cos(omega t + phi), A, omega và phi là các đại lượng gì?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_004",
+      "question": "Biên độ dao động điều hòa được định nghĩa như thế nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_005",
+      "question": "Chu kì dao động là gì và đơn vị của chu kì là gì?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_006",
+      "question": "Tần số dao động là gì? Tần số liên hệ với chu kì theo công thức nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_007",
+      "question": "Tần số góc omega liên hệ với chu kì T và tần số f như thế nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_008",
+      "question": "Pha ban đầu trong dao động điều hòa cho biết điều gì?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_009",
+      "question": "Độ lệch pha giữa hai dao động cùng chu kì được hiểu như thế nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_010",
+      "question": "Từ x = A cos(omega t + phi), phương trình vận tốc của vật dao động điều hòa là gì?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_011",
+      "question": "Gia tốc trong dao động điều hòa liên hệ với li độ x theo công thức nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_012",
+      "question": "Con lắc lò xo có chu kì dao động phụ thuộc vào khối lượng và độ cứng như thế nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_013",
+      "question": "Với con lắc đơn góc nhỏ, thế năng trọng trường được mô tả như thế nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_014",
+      "question": "Động năng của vật dao động điều hòa phụ thuộc vào li độ x như thế nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_015",
+      "question": "Thế năng của vật dao động điều hòa được tính theo li độ x bằng công thức nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_016",
+      "question": "Cơ năng trong dao động điều hòa có biểu thức và tính chất bảo toàn như thế nào?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_017",
+      "question": "Dao động tắt dần là gì và nguyên nhân nào làm biên độ giảm dần?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "RAG_SMOKE_018",
+      "question": "Hiện tượng cộng hưởng xảy ra khi nào trong dao động cưỡng bức?",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    }
+  ]
+}

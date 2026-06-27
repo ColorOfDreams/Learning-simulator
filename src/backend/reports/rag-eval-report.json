@@ -1,0 +1,2476 @@
+{
+  "generated_at": "2026-06-27T10:11:05.137Z",
+  "diagnostics": {
+    "vectorEnabled": true,
+    "embeddingConfigured": true,
+    "embeddingBaseUrl": "https://api.openai.com/v1",
+    "embeddingEndpoint": "https://api.openai.com/v1/embeddings",
+    "embeddingModel": "text-embedding-3-small",
+    "embeddingDimension": 1536,
+    "embeddingApiKeyPresent": true,
+    "hasGlobalFetch": true,
+    "pgvectorExtensionEnabled": true,
+    "theoryChunksTotal": 674,
+    "theoryChunksWithEmbedding": 674,
+    "theoryChunksMissingEmbedding": 0,
+    "embeddingDimensionsInDb": [
+      1536
+    ],
+    "embeddingIndexCount": 0,
+    "casesWithHybridResults": 6,
+    "casesWithVectorResults": 18,
+    "casesFallbackKeywordOnly": 0
+  },
+  "summary": {
+    "total_cases": 18,
+    "evaluated_cases": 18,
+    "skipped_cases": 0,
+    "baseline_hit_at_1": 0.16666666666666666,
+    "baseline_hit_at_3": 0.3333333333333333,
+    "baseline_hit_at_5": 0.3333333333333333,
+    "baseline_recall_at_5": 0.2222222222222222,
+    "baseline_precision_at_5": 0.06666666666666667,
+    "baseline_mrr": 0.25,
+    "hit_at_1": 0.16666666666666666,
+    "hit_at_3": 0.5,
+    "hit_at_5": 0.6666666666666666,
+    "recall_at_5": 0.6388888888888888,
+    "precision_at_5": 0.17777777777777778,
+    "mrr": 0.3537037037037037,
+    "delta_hit_at_1": 0,
+    "delta_hit_at_3": 0.16666666666666669,
+    "delta_hit_at_5": 0.3333333333333333,
+    "delta_recall_at_5": 0.41666666666666663,
+    "delta_precision_at_5": 0.11111111111111112,
+    "delta_mrr": 0.10370370370370369
+  },
+  "cases": [
+    {
+      "case_id": "RAG_SMOKE_001",
+      "question": "Dao động cơ là gì? Cho biết đặc điểm chuyển động quanh vị trí cân bằng.",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "oscillation",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L01_003"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_003",
+        "TH_PHY11_C01_L01_004",
+        "TH_PHY11_C01_L01_001",
+        "TH_PHY11_C01_L01_005",
+        "TH_PHY11_C01_L01_008"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_003",
+          "title": "1.2. Dao động cơ",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_004",
+          "title": "2.1. Đồ thị của dao động điều hòa",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_001",
+          "title": "Bài 1: Dao động điều hòa",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5333333333333333,
+          "keywordScore": 0.5333333333333333,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_005",
+          "title": "Hình 1.2",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.3333333333333333,
+          "keywordScore": 0.3333333333333333,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_008",
+          "title": "Bài tập 2: Đọc đồ thị li độ – thời gian",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.3333333333333333,
+          "keywordScore": 0.3333333333333333,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 1,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 1,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L01_003"
+        ],
+        "firstRelevantRank": 1
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_003",
+        "TH_PHY11_C01_L01_001",
+        "TH_PHY11_C01_L01_012",
+        "TH_PHY11_C01_L01_015",
+        "TH_PHY11_C01_L01_013"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_003",
+          "title": "1.2. Dao động cơ",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6412607299045613,
+          "vectorScore": 0.6327920843171928,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "hybrid"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_001",
+          "title": "Bài 1: Dao động điều hòa",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5832375493612775,
+          "vectorScore": 0.5998722880372589,
+          "keywordScore": 0.5333333333333333,
+          "retrievalType": "hybrid"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_012",
+          "title": "4.2. Dao động của pít-tông",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5189037360307232,
+          "vectorScore": 0.5189037360307232,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_015",
+          "title": "4.4. Thí nghiệm minh họa mối liên hệ với chuyển động tròn đều",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5140935667330422,
+          "vectorScore": 0.5140935667330422,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_013",
+          "title": "Hình 1.5",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.4994512648877891,
+          "vectorScore": 0.4994512648877891,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 1,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 1,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L01_003"
+        ],
+        "firstRelevantRank": 1
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_002",
+      "question": "Phương trình dao động điều hòa x = A cos(omega t + phi) có ý nghĩa như thế nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "simple_harmonic_motion",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L01_006"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L01_006",
+        "TH_PHY11_C01_L01_014",
+        "TH_PHY11_C01_L02_001",
+        "TH_PHY11_C01_L01_007"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.7692307692307693,
+          "keywordScore": 0.7692307692307693,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_006",
+          "title": "2.2. Phương trình của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6923076923076923,
+          "keywordScore": 0.6923076923076923,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6923076923076923,
+          "keywordScore": 0.6923076923076923,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_001",
+          "title": "Bài 2: Mô tả dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6153846153846154,
+          "keywordScore": 0.6153846153846154,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_007",
+          "title": "Bài tập 1: Xác định các đại lượng từ phương trình dao động",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5384615384615384,
+          "keywordScore": 0.5384615384615384,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 0.5,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L01_006"
+        ],
+        "firstRelevantRank": 2
+      },
+      "retrieved_chunk_ids": [
+        "th_shm_002",
+        "TH_PHY11_C01_L04_004",
+        "TH_PHY11_C01_L04_003",
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L01_014"
+      ],
+      "top_chunks": [
+        {
+          "id": "th_shm_002",
+          "title": "Phương trình dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "Vật lí 11",
+          "score": 0.811323642564679,
+          "vectorScore": 0.811323642564679,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L04_004",
+          "title": "Câu 1",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai4_sgkvatli_11.md",
+          "score": 0.7169991226173937,
+          "vectorScore": 0.7169991226173937,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L04_003",
+          "title": "Giải",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai4_sgkvatli_11.md",
+          "score": 0.7168799780331079,
+          "vectorScore": 0.7168799780331079,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6953639054438647,
+          "vectorScore": 0.6707416175148966,
+          "keywordScore": 0.7692307692307693,
+          "retrievalType": "hybrid"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6923076923076923,
+          "keywordScore": 0.6923076923076923,
+          "retrievalType": "keyword"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_003",
+      "question": "Trong phương trình x = A cos(omega t + phi), A, omega và phi là các đại lượng gì?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "simple_harmonic_motion",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L01_006",
+        "TH_PHY11_C01_L02_003"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_006",
+        "TH_PHY11_C01_L01_014"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_006",
+          "title": "2.2. Phương trình của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5,
+          "keywordScore": 0.5,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5,
+          "keywordScore": 0.5,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 1,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 0.5,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 1,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L01_006"
+        ],
+        "firstRelevantRank": 1
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L04_003",
+        "th_shm_002",
+        "TH_PHY11_C01_L04_004",
+        "TH_PHY11_C01_L04_002",
+        "TH_PHY11_C01_L02_020"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L04_003",
+          "title": "Giải",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai4_sgkvatli_11.md",
+          "score": 0.6857316035648494,
+          "vectorScore": 0.6857316035648494,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "th_shm_002",
+          "title": "Phương trình dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "Vật lí 11",
+          "score": 0.6803207832465964,
+          "vectorScore": 0.6803207832465964,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L04_004",
+          "title": "Câu 1",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai4_sgkvatli_11.md",
+          "score": 0.6503712822162938,
+          "vectorScore": 0.6503712822162938,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L04_002",
+          "title": "Ví dụ 1",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai4_sgkvatli_11.md",
+          "score": 0.5941205855434513,
+          "vectorScore": 0.5941205855434513,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_020",
+          "title": "Giải",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.5901464697501186,
+          "vectorScore": 0.5901464697501186,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_004",
+      "question": "Biên độ dao động điều hòa được định nghĩa như thế nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "simple_harmonic_motion",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L02_003"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_010",
+        "TH_PHY11_C01_L01_006",
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L01_007",
+        "TH_PHY11_C01_L01_014"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_010",
+          "title": "4.1. Quan sát dao động điều hòa bằng cảm biến",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.75,
+          "keywordScore": 0.75,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_006",
+          "title": "2.2. Phương trình của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_007",
+          "title": "Bài tập 1: Xác định các đại lượng từ phương trình dao động",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5833333333333334,
+          "keywordScore": 0.5833333333333334,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5833333333333334,
+          "keywordScore": 0.5833333333333334,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_010",
+        "TH_PHY11_C01_L01_006",
+        "th_shm_001",
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L02_004"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_010",
+          "title": "4.1. Quan sát dao động điều hòa bằng cảm biến",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.75,
+          "keywordScore": 0.75,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_006",
+          "title": "2.2. Phương trình của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "th_shm_001",
+          "title": "Khái niệm dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "Vật lí 11",
+          "score": 0.652971108332075,
+          "vectorScore": 0.652971108332075,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6281440978712218,
+          "vectorScore": 0.6153032416060735,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "hybrid"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_004",
+          "title": "Câu hỏi",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.5974721791003436,
+          "vectorScore": 0.5974721791003436,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_005",
+      "question": "Chu kì dao động là gì và đơn vị của chu kì là gì?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "simple_harmonic_motion",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L02_003",
+        "TH_PHY11_C01_L02_029"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_014",
+        "TH_PHY11_C01_L01_017"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.8181818181818182,
+          "keywordScore": 0.8181818181818182,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.8181818181818182,
+          "keywordScore": 0.8181818181818182,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_014",
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L02_029",
+        "TH_PHY11_C01_L02_003",
+        "TH_PHY11_C02_L10_002"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.8181818181818182,
+          "keywordScore": 0.8181818181818182,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5563526134760889,
+          "vectorScore": 0.4690762119075125,
+          "keywordScore": 0.8181818181818182,
+          "retrievalType": "hybrid"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_029",
+          "title": "Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.5446242452251472,
+          "vectorScore": 0.5446242452251472,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_003",
+          "title": "Các đại lượng đặc trưng",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.5219946649415781,
+          "vectorScore": 0.5219946649415781,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C02_L10_002",
+          "title": "1. Giới thiệu dao động kí điện tử",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong2_bai10_sgkvatli_11.md",
+          "score": 0.5109155185366282,
+          "vectorScore": 0.5109155185366282,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.4,
+        "reciprocalRank": 0.3333333333333333,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L02_029",
+          "TH_PHY11_C01_L02_003"
+        ],
+        "firstRelevantRank": 3
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_006",
+      "question": "Tần số dao động là gì? Tần số liên hệ với chu kì theo công thức nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "simple_harmonic_motion",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L02_003",
+        "TH_PHY11_C01_L02_029"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_014",
+        "TH_PHY11_C01_L02_003",
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L01_006",
+        "TH_PHY11_C01_L02_004"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_003",
+          "title": "Các đại lượng đặc trưng",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6,
+          "keywordScore": 0.6,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5333333333333333,
+          "keywordScore": 0.5333333333333333,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_006",
+          "title": "2.2. Phương trình của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.4666666666666667,
+          "keywordScore": 0.4666666666666667,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_004",
+          "title": "Câu hỏi",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.4666666666666667,
+          "keywordScore": 0.4666666666666667,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 0.5,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 0.5,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L02_003"
+        ],
+        "firstRelevantRank": 2
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_014",
+        "TH_PHY11_C01_L02_029",
+        "TH_PHY11_C02_L10_002",
+        "TH_PHY11_C01_L02_005",
+        "TH_PHY11_C01_L02_003"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_029",
+          "title": "Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6534623735300508,
+          "vectorScore": 0.6534623735300508,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C02_L10_002",
+          "title": "1. Giới thiệu dao động kí điện tử",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong2_bai10_sgkvatli_11.md",
+          "score": 0.6531137050828454,
+          "vectorScore": 0.6531137050828454,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_005",
+          "title": "Hình 2.1",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6218719909054848,
+          "vectorScore": 0.6218719909054848,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_003",
+          "title": "Các đại lượng đặc trưng",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.609678007858648,
+          "vectorScore": 0.6129040104781973,
+          "keywordScore": 0.6,
+          "retrievalType": "hybrid"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.4,
+        "reciprocalRank": 0.5,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L02_029",
+          "TH_PHY11_C01_L02_003"
+        ],
+        "firstRelevantRank": 2
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_007",
+      "question": "Tần số góc omega liên hệ với chu kì T và tần số f như thế nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "simple_harmonic_motion",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L02_029"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_014",
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L02_003",
+        "TH_PHY11_C01_L01_006",
+        "TH_PHY11_C01_L02_004"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.8461538461538461,
+          "keywordScore": 0.8461538461538461,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6923076923076923,
+          "keywordScore": 0.6923076923076923,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_003",
+          "title": "Các đại lượng đặc trưng",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6153846153846154,
+          "keywordScore": 0.6153846153846154,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_006",
+          "title": "2.2. Phương trình của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5384615384615384,
+          "keywordScore": 0.5384615384615384,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_004",
+          "title": "Câu hỏi",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.38461538461538464,
+          "keywordScore": 0.38461538461538464,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_014",
+        "th_shm_003",
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L02_029",
+        "TH_PHY11_C01_L02_005"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.8461538461538461,
+          "keywordScore": 0.8461538461538461,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "th_shm_003",
+          "title": "Chu kì và tần số góc",
+          "topic": "simple_harmonic_motion",
+          "source": "Vật lí 11",
+          "score": 0.7084882254939088,
+          "vectorScore": 0.7084882254939088,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6923076923076923,
+          "keywordScore": 0.6923076923076923,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_029",
+          "title": "Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6371174629146122,
+          "vectorScore": 0.6371174629146122,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_005",
+          "title": "Hình 2.1",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.5469706245837663,
+          "vectorScore": 0.5469706245837663,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 0.25,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L02_029"
+        ],
+        "firstRelevantRank": 4
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_008",
+      "question": "Pha ban đầu trong dao động điều hòa cho biết điều gì?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "simple_harmonic_motion",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L02_008"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_006",
+        "TH_PHY11_C01_L01_014",
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L01_007",
+        "TH_PHY11_C01_L01_010"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_006",
+          "title": "2.2. Phương trình của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.8181818181818182,
+          "keywordScore": 0.8181818181818182,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.7272727272727273,
+          "keywordScore": 0.7272727272727273,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.7272727272727273,
+          "keywordScore": 0.7272727272727273,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_007",
+          "title": "Bài tập 1: Xác định các đại lượng từ phương trình dao động",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6363636363636364,
+          "keywordScore": 0.6363636363636364,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_010",
+          "title": "4.1. Quan sát dao động điều hòa bằng cảm biến",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5454545454545454,
+          "keywordScore": 0.5454545454545454,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_006",
+        "TH_PHY11_C01_L01_014",
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L01_007",
+        "TH_PHY11_C01_L02_030"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_006",
+          "title": "2.2. Phương trình của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.8181818181818182,
+          "keywordScore": 0.8181818181818182,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.7272727272727273,
+          "keywordScore": 0.7272727272727273,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.7272727272727273,
+          "keywordScore": 0.7272727272727273,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_007",
+          "title": "Bài tập 1: Xác định các đại lượng từ phương trình dao động",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6363636363636364,
+          "keywordScore": 0.6363636363636364,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_030",
+          "title": "Em có thể",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6220225128939215,
+          "vectorScore": 0.6220225128939215,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_009",
+      "question": "Độ lệch pha giữa hai dao động cùng chu kì được hiểu như thế nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "simple_harmonic_motion",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L02_012"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_006",
+        "TH_PHY11_C01_L01_007"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_006",
+          "title": "2.2. Phương trình của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.4,
+          "keywordScore": 0.4,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_007",
+          "title": "Bài tập 1: Xác định các đại lượng từ phương trình dao động",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.26666666666666666,
+          "keywordScore": 0.26666666666666666,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L02_013",
+        "TH_PHY11_C01_L02_012",
+        "TH_PHY11_C01_L02_028",
+        "TH_PHY11_C01_L02_030",
+        "TH_PHY11_C01_L02_027"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L02_013",
+          "title": "Câu hỏi",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.7368425003243386,
+          "vectorScore": 0.7368425003243386,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_012",
+          "title": "2.2. Độ lệch pha giữa hai dao động cùng chu kì",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.7090467135375385,
+          "vectorScore": 0.7090467135375385,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_028",
+          "title": "Câu 2",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6766782098903659,
+          "vectorScore": 0.6766782098903659,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_030",
+          "title": "Em có thể",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6738344653061419,
+          "vectorScore": 0.6738344653061419,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_027",
+          "title": "Câu 1",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6695993525093126,
+          "vectorScore": 0.6695993525093126,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 0.5,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L02_012"
+        ],
+        "firstRelevantRank": 2
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_010",
+      "question": "Từ x = A cos(omega t + phi), phương trình vận tốc của vật dao động điều hòa là gì?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "shm_kinematics",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L03_004"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L02_005",
+        "TH_PHY11_C01_L01_007",
+        "TH_PHY11_C01_L02_002",
+        "TH_PHY11_C01_L02_003",
+        "TH_PHY11_C01_L01_009"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L02_005",
+          "title": "Hình 2.1",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_007",
+          "title": "Bài tập 1: Xác định các đại lượng từ phương trình dao động",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6,
+          "keywordScore": 0.6,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_002",
+          "title": "1. Các đại lượng đặc trưng của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.5333333333333333,
+          "keywordScore": 0.5333333333333333,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_003",
+          "title": "Các đại lượng đặc trưng",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.4666666666666667,
+          "keywordScore": 0.4666666666666667,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_009",
+          "title": "Hình 1.3",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.26666666666666666,
+          "keywordScore": 0.26666666666666666,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L03_011",
+        "TH_PHY11_C01_L04_011",
+        "TH_PHY11_C01_L02_005",
+        "TH_PHY11_C01_L03_004",
+        "TH_PHY11_C01_L03_021"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L03_011",
+          "title": "2.1. Phương trình gia tốc",
+          "topic": "shm_kinematics",
+          "source": "chuong1_bai3_sgkvatli_11.md",
+          "score": 0.6973189228544743,
+          "vectorScore": 0.6973189228544743,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L04_011",
+          "title": "Ví dụ 3",
+          "topic": "shm_kinematics",
+          "source": "chuong1_bai4_sgkvatli_11.md",
+          "score": 0.6886799646894589,
+          "vectorScore": 0.6886799646894589,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_005",
+          "title": "Hình 2.1",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L03_004",
+          "title": "1.1. Phương trình của vận tốc",
+          "topic": "shm_kinematics",
+          "source": "chuong1_bai3_sgkvatli_11.md",
+          "score": 0.660333548293914,
+          "vectorScore": 0.660333548293914,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L03_021",
+          "title": "Em đã học",
+          "topic": "shm_kinematics",
+          "source": "chuong1_bai3_sgkvatli_11.md",
+          "score": 0.660155424388059,
+          "vectorScore": 0.660155424388059,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 0.25,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L03_004"
+        ],
+        "firstRelevantRank": 4
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_011",
+      "question": "Gia tốc trong dao động điều hòa liên hệ với li độ x theo công thức nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "shm_kinematics",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L03_011"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_005",
+        "TH_PHY11_C01_L01_010",
+        "TH_PHY11_C01_L01_003",
+        "TH_PHY11_C01_L01_008",
+        "TH_PHY11_C01_L01_009"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_005",
+          "title": "Hình 1.2",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5625,
+          "keywordScore": 0.5625,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_010",
+          "title": "4.1. Quan sát dao động điều hòa bằng cảm biến",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5625,
+          "keywordScore": 0.5625,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_003",
+          "title": "1.2. Dao động cơ",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5,
+          "keywordScore": 0.5,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_008",
+          "title": "Bài tập 2: Đọc đồ thị li độ – thời gian",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5,
+          "keywordScore": 0.5,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_009",
+          "title": "Hình 1.3",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.25,
+          "keywordScore": 0.25,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L03_021",
+        "TH_PHY11_C01_L03_001",
+        "TH_PHY11_C01_L03_002",
+        "TH_PHY11_C01_L03_010",
+        "TH_PHY11_C01_L04_011"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L03_021",
+          "title": "Em đã học",
+          "topic": "shm_kinematics",
+          "source": "chuong1_bai3_sgkvatli_11.md",
+          "score": 0.6106755844686319,
+          "vectorScore": 0.6106755844686319,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L03_001",
+          "title": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa",
+          "topic": "shm_kinematics",
+          "source": "chuong1_bai3_sgkvatli_11.md",
+          "score": 0.600542960471594,
+          "vectorScore": 0.600542960471594,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L03_002",
+          "title": "1. Vận tốc của vật dao động điều hòa",
+          "topic": "shm_kinematics",
+          "source": "chuong1_bai3_sgkvatli_11.md",
+          "score": 0.5859700935109196,
+          "vectorScore": 0.5859700935109196,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L03_010",
+          "title": "2. Gia tốc của vật dao động điều hòa",
+          "topic": "shm_kinematics",
+          "source": "chuong1_bai3_sgkvatli_11.md",
+          "score": 0.582474100860504,
+          "vectorScore": 0.582474100860504,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L04_011",
+          "title": "Ví dụ 3",
+          "topic": "shm_kinematics",
+          "source": "chuong1_bai4_sgkvatli_11.md",
+          "score": 0.5808747818374025,
+          "vectorScore": 0.5808747818374025,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_012",
+      "question": "Con lắc lò xo có chu kì dao động phụ thuộc vào khối lượng và độ cứng như thế nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "shm_energy",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L05_013"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_002",
+        "TH_PHY11_C01_L01_003",
+        "TH_PHY11_C01_L01_004",
+        "TH_PHY11_C01_L01_005",
+        "TH_PHY11_C01_L01_008"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_002",
+          "title": "1.1. Thí nghiệm",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6,
+          "keywordScore": 0.6,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_003",
+          "title": "1.2. Dao động cơ",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.55,
+          "keywordScore": 0.55,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_004",
+          "title": "2.1. Đồ thị của dao động điều hòa",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5,
+          "keywordScore": 0.5,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_005",
+          "title": "Hình 1.2",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.45,
+          "keywordScore": 0.45,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_008",
+          "title": "Bài tập 2: Đọc đồ thị li độ – thời gian",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.35,
+          "keywordScore": 0.35,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L07_010",
+        "TH_PHY11_C01_L05_024",
+        "TH_PHY11_C01_L05_022",
+        "TH_PHY11_C01_L05_020",
+        "TH_PHY11_C01_L05_013"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L07_010",
+          "title": "Ví dụ 3",
+          "topic": "shm_energy",
+          "source": "chuong1_bai7_sgkvatli_11.md",
+          "score": 0.6837746863250993,
+          "vectorScore": 0.6837746863250993,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_024",
+          "title": "Câu 2",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6823922738096682,
+          "vectorScore": 0.6823922738096682,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_022",
+          "title": "Câu 1",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6820518944165571,
+          "vectorScore": 0.6820518944165571,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_020",
+          "title": "Câu hỏi",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6639627044808165,
+          "vectorScore": 0.6639627044808165,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_013",
+          "title": "4.1. Con lắc lò xo",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6601500032265213,
+          "vectorScore": 0.6601500032265213,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 0.2,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L05_013"
+        ],
+        "firstRelevantRank": 5
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_013",
+      "question": "Với con lắc đơn góc nhỏ, thế năng trọng trường được mô tả như thế nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "shm_energy",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L05_016"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_010",
+        "TH_PHY11_C01_L02_005",
+        "TH_PHY11_C01_L01_014",
+        "TH_PHY11_C01_L01_015",
+        "TH_PHY11_C01_L02_006"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_010",
+          "title": "4.1. Quan sát dao động điều hòa bằng cảm biến",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6,
+          "keywordScore": 0.6,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_005",
+          "title": "Hình 2.1",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6,
+          "keywordScore": 0.6,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_014",
+          "title": "4.3. Mối liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.4666666666666667,
+          "keywordScore": 0.4666666666666667,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_015",
+          "title": "4.4. Thí nghiệm minh họa mối liên hệ với chuyển động tròn đều",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.4666666666666667,
+          "keywordScore": 0.4666666666666667,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_006",
+          "title": "Hình 2.1",
+          "topic": "oscillation",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.26666666666666666,
+          "keywordScore": 0.26666666666666666,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L07_002",
+        "TH_PHY11_C01_L05_016",
+        "TH_PHY11_C01_L05_024",
+        "TH_PHY11_C01_L01_010",
+        "TH_PHY11_C01_L02_005"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L07_002",
+          "title": "Ví dụ 1",
+          "topic": "shm_energy",
+          "source": "chuong1_bai7_sgkvatli_11.md",
+          "score": 0.6654237003189846,
+          "vectorScore": 0.6654237003189846,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_016",
+          "title": "4.2. Con lắc đơn",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6543684942714875,
+          "vectorScore": 0.6543684942714875,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_024",
+          "title": "Câu 2",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6001065179443318,
+          "vectorScore": 0.6001065179443318,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_010",
+          "title": "4.1. Quan sát dao động điều hòa bằng cảm biến",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6,
+          "keywordScore": 0.6,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L02_005",
+          "title": "Hình 2.1",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai2_sgkvatli_11.md",
+          "score": 0.6,
+          "keywordScore": 0.6,
+          "retrievalType": "keyword"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 0.5,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L05_016"
+        ],
+        "firstRelevantRank": 2
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_014",
+      "question": "Động năng của vật dao động điều hòa phụ thuộc vào li độ x như thế nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "shm_energy",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L05_002",
+        "TH_PHY11_C01_L05_025"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_003",
+        "TH_PHY11_C01_L01_001",
+        "TH_PHY11_C01_L01_002",
+        "TH_PHY11_C01_L01_004",
+        "TH_PHY11_C01_L01_005"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_003",
+          "title": "1.2. Dao động cơ",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_001",
+          "title": "Bài 1: Dao động điều hòa",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5333333333333333,
+          "keywordScore": 0.5333333333333333,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_002",
+          "title": "1.1. Thí nghiệm",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5333333333333333,
+          "keywordScore": 0.5333333333333333,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_004",
+          "title": "2.1. Đồ thị của dao động điều hòa",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5333333333333333,
+          "keywordScore": 0.5333333333333333,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_005",
+          "title": "Hình 1.2",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5333333333333333,
+          "keywordScore": 0.5333333333333333,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L05_002",
+        "TH_PHY11_C01_L05_010",
+        "TH_PHY11_C01_L01_003",
+        "TH_PHY11_C01_L05_026",
+        "TH_PHY11_C01_L05_025"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L05_002",
+          "title": "1. Động năng",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.7150929055697585,
+          "vectorScore": 0.7150929055697585,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_010",
+          "title": "Hình 5.3",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6738407417651627,
+          "vectorScore": 0.6738407417651627,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_003",
+          "title": "1.2. Dao động cơ",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.6666666666666666,
+          "keywordScore": 0.6666666666666666,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_026",
+          "title": "Em có thể",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6376554646285919,
+          "vectorScore": 0.6376554646285919,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_025",
+          "title": "Em đã học",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6289646223055188,
+          "vectorScore": 0.6289646223055188,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 1,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.4,
+        "reciprocalRank": 1,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L05_002",
+          "TH_PHY11_C01_L05_025"
+        ],
+        "firstRelevantRank": 1
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_015",
+      "question": "Thế năng của vật dao động điều hòa được tính theo li độ x bằng công thức nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "shm_energy",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L05_004",
+        "TH_PHY11_C01_L05_025"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L05_001",
+        "TH_PHY11_C01_L05_004",
+        "TH_PHY11_C01_L05_005"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L05_001",
+          "title": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.5294117647058824,
+          "keywordScore": 0.5294117647058824,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_004",
+          "title": "2. Thế năng",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.5294117647058824,
+          "keywordScore": 0.5294117647058824,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_005",
+          "title": "\\frac{1}{2}m\\omega^2A^2",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.47058823529411764,
+          "keywordScore": 0.47058823529411764,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 0.5,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 0.5,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L05_004"
+        ],
+        "firstRelevantRank": 2
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L05_002",
+        "TH_PHY11_C01_L05_010",
+        "TH_PHY11_C01_L07_025",
+        "TH_PHY11_C01_L07_001",
+        "TH_PHY11_C01_L05_008"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L05_002",
+          "title": "1. Động năng",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6651985755669158,
+          "vectorScore": 0.6651985755669158,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_010",
+          "title": "Hình 5.3",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6480246365739852,
+          "vectorScore": 0.6480246365739852,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L07_025",
+          "title": "Em đã học",
+          "topic": "shm_energy",
+          "source": "chuong1_bai7_sgkvatli_11.md",
+          "score": 0.6447740121764937,
+          "vectorScore": 0.6447740121764937,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L07_001",
+          "title": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa",
+          "topic": "shm_energy",
+          "source": "chuong1_bai7_sgkvatli_11.md",
+          "score": 0.6278007979050894,
+          "vectorScore": 0.6278007979050894,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_008",
+          "title": "3. Cơ năng",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6151080383455884,
+          "vectorScore": 0.6151080383455884,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_016",
+      "question": "Cơ năng trong dao động điều hòa có biểu thức và tính chất bảo toàn như thế nào?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "shm_energy",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L05_008",
+        "TH_PHY11_C01_L05_025"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L01_001",
+        "TH_PHY11_C01_L01_003",
+        "TH_PHY11_C01_L01_012",
+        "TH_PHY11_C01_L01_013"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_017",
+          "title": "5. Em đã học",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.5294117647058824,
+          "keywordScore": 0.5294117647058824,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_001",
+          "title": "Bài 1: Dao động điều hòa",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.47058823529411764,
+          "keywordScore": 0.47058823529411764,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_003",
+          "title": "1.2. Dao động cơ",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.47058823529411764,
+          "keywordScore": 0.47058823529411764,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_012",
+          "title": "4.2. Dao động của pít-tông",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.35294117647058826,
+          "keywordScore": 0.35294117647058826,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_013",
+          "title": "Hình 1.5",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.29411764705882354,
+          "keywordScore": 0.29411764705882354,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L07_001",
+        "TH_PHY11_C01_L05_008",
+        "TH_PHY11_C01_L07_025",
+        "TH_PHY11_C01_L05_026",
+        "TH_PHY11_C01_L05_001"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L07_001",
+          "title": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa",
+          "topic": "shm_energy",
+          "source": "chuong1_bai7_sgkvatli_11.md",
+          "score": 0.6680316383727923,
+          "vectorScore": 0.6680316383727923,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_008",
+          "title": "3. Cơ năng",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.6122275115790494,
+          "vectorScore": 0.6122275115790494,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L07_025",
+          "title": "Em đã học",
+          "topic": "shm_energy",
+          "source": "chuong1_bai7_sgkvatli_11.md",
+          "score": 0.6050488391705791,
+          "vectorScore": 0.6050488391705791,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_026",
+          "title": "Em có thể",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.5966145314769313,
+          "vectorScore": 0.5966145314769313,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L05_001",
+          "title": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa",
+          "topic": "shm_energy",
+          "source": "chuong1_bai5_sgkvatli_11.md",
+          "score": 0.5958790650677415,
+          "vectorScore": 0.5958790650677415,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 0.5,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 0.5,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L05_008"
+        ],
+        "firstRelevantRank": 2
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_017",
+      "question": "Dao động tắt dần là gì và nguyên nhân nào làm biên độ giảm dần?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "damped_oscillation",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L06_021"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L01_001",
+        "TH_PHY11_C01_L01_006",
+        "TH_PHY11_C01_L01_003",
+        "TH_PHY11_C01_L01_005",
+        "TH_PHY11_C01_L01_004"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L01_001",
+          "title": "Bài 1: Dao động điều hòa",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.4666666666666667,
+          "keywordScore": 0.4666666666666667,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_006",
+          "title": "2.2. Phương trình của dao động điều hòa",
+          "topic": "simple_harmonic_motion",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.4666666666666667,
+          "keywordScore": 0.4666666666666667,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_003",
+          "title": "1.2. Dao động cơ",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.4,
+          "keywordScore": 0.4,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_005",
+          "title": "Hình 1.2",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.4,
+          "keywordScore": 0.4,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L01_004",
+          "title": "2.1. Đồ thị của dao động điều hòa",
+          "topic": "oscillation",
+          "source": "chuong1_bai1_sgkvatli_11.md",
+          "score": 0.3333333333333333,
+          "keywordScore": 0.3333333333333333,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 0,
+        "hitAt5": 0,
+        "recallAt5": 0,
+        "precisionAt5": 0,
+        "reciprocalRank": 0,
+        "matchedChunkIds": []
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L06_009",
+        "TH_PHY11_C01_L06_003",
+        "TH_PHY11_C01_L06_021",
+        "TH_PHY11_C01_L06_008",
+        "TH_PHY11_C01_L06_022"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L06_009",
+          "title": "Câu hỏi",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.5987839755159975,
+          "vectorScore": 0.5987839755159975,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L06_003",
+          "title": "Hình 6.1",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.5711827489754772,
+          "vectorScore": 0.5711827489754772,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L06_021",
+          "title": "Em đã học",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.5692165544138905,
+          "vectorScore": 0.5692165544138905,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L06_008",
+          "title": "Hình 6.2",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.5262947021809301,
+          "vectorScore": 0.5262947021809301,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L06_022",
+          "title": "Em có thể",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.49880210208854747,
+          "vectorScore": 0.49880210208854747,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 0,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 0.3333333333333333,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L06_021"
+        ],
+        "firstRelevantRank": 3
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_018",
+      "question": "Hiện tượng cộng hưởng xảy ra khi nào trong dao động cưỡng bức?",
+      "subject": "physics",
+      "grade": 11,
+      "topic": "damped_oscillation",
+      "expected_chunk_ids": [
+        "TH_PHY11_C01_L06_015",
+        "TH_PHY11_C01_L06_021"
+      ],
+      "baseline_retrieved_chunk_ids": [
+        "TH_PHY11_C01_L06_015",
+        "TH_PHY11_C01_L06_018",
+        "TH_PHY11_C01_L06_001"
+      ],
+      "baseline_top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L06_015",
+          "title": "3.1. Định nghĩa",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.7692307692307693,
+          "keywordScore": 0.7692307692307693,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L06_018",
+          "title": "3.3. Hiện tượng cộng hưởng trong đời sống",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.6923076923076923,
+          "keywordScore": 0.6923076923076923,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L06_001",
+          "title": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.6153846153846154,
+          "keywordScore": 0.6153846153846154,
+          "retrievalType": "keyword"
+        }
+      ],
+      "baseline_metrics": {
+        "skipped": false,
+        "hitAt1": 1,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 0.5,
+        "precisionAt5": 0.2,
+        "reciprocalRank": 1,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L06_015"
+        ],
+        "firstRelevantRank": 1
+      },
+      "retrieved_chunk_ids": [
+        "TH_PHY11_C01_L06_015",
+        "TH_PHY11_C01_L06_021",
+        "TH_PHY11_C01_L06_001",
+        "TH_PHY11_C01_L06_018",
+        "TH_PHY11_C01_L06_016"
+      ],
+      "top_chunks": [
+        {
+          "id": "TH_PHY11_C01_L06_015",
+          "title": "3.1. Định nghĩa",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.6473626693304949,
+          "vectorScore": 0.6067399693637369,
+          "keywordScore": 0.7692307692307693,
+          "retrievalType": "hybrid"
+        },
+        {
+          "id": "TH_PHY11_C01_L06_021",
+          "title": "Em đã học",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.6173050513608234,
+          "vectorScore": 0.6173050513608234,
+          "retrievalType": "vector"
+        },
+        {
+          "id": "TH_PHY11_C01_L06_001",
+          "title": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.6153846153846154,
+          "keywordScore": 0.6153846153846154,
+          "retrievalType": "keyword"
+        },
+        {
+          "id": "TH_PHY11_C01_L06_018",
+          "title": "3.3. Hiện tượng cộng hưởng trong đời sống",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.6056839563734817,
+          "vectorScore": 0.5768093777287447,
+          "keywordScore": 0.6923076923076923,
+          "retrievalType": "hybrid"
+        },
+        {
+          "id": "TH_PHY11_C01_L06_016",
+          "title": "Hình 6.4",
+          "topic": "damped_oscillation",
+          "source": "chuong1_bai6_sgkvatli_11.md",
+          "score": 0.5859901057746275,
+          "vectorScore": 0.5859901057746275,
+          "retrievalType": "vector"
+        }
+      ],
+      "metrics": {
+        "skipped": false,
+        "hitAt1": 1,
+        "hitAt3": 1,
+        "hitAt5": 1,
+        "recallAt5": 1,
+        "precisionAt5": 0.4,
+        "reciprocalRank": 1,
+        "matchedChunkIds": [
+          "TH_PHY11_C01_L06_015",
+          "TH_PHY11_C01_L06_021"
+        ],
+        "firstRelevantRank": 1
+      }
+    }
+  ]
+}

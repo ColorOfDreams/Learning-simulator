@@ -25,6 +25,7 @@ export type RetrieveTheoryChunksInput = {
   topic?: string;
   simulationId?: string;
   topK?: number;
+  disableVector?: boolean;
 };
 
 type VectorSearchRow = {
@@ -35,6 +36,23 @@ type VectorSearchRow = {
   source: unknown;
   metadata: unknown;
   vectorScore: number | string;
+};
+
+export type RagVectorDiagnostics = {
+  vectorEnabled: boolean;
+  embeddingConfigured: boolean;
+  embeddingBaseUrl: string;
+  embeddingEndpoint: string;
+  embeddingModel: string;
+  embeddingDimension: number;
+  embeddingApiKeyPresent: boolean;
+  hasGlobalFetch: boolean;
+  pgvectorExtensionEnabled: boolean;
+  theoryChunksTotal: number;
+  theoryChunksWithEmbedding: number;
+  theoryChunksMissingEmbedding: number;
+  embeddingDimensionsInDb: number[];
+  embeddingIndexCount: number;
 };
 
 @Injectable()
@@ -61,11 +79,19 @@ export class RagRetrievalService {
     const keywordResults = await this.keywordSearch(normalizedInput);
     let vectorResults: RagReference[] = [];
 
-    try {
-      vectorResults = await this.vectorSearch(normalizedInput);
-    } catch (error) {
-      const reason = error instanceof Error ? error.message : String(error);
-      this.logger.warn(`Vector retrieval fallback to keyword: ${reason}`);
+    if (!input.disableVector) {
+      try {
+        vectorResults = await this.vectorSearch(normalizedInput);
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        if (reason.includes('missing EMBEDDING_API_KEY')) {
+          this.logger.warn(reason);
+        } else {
+          this.logger.warn(`Vector retrieval fallback to keyword: ${reason}`);
+        }
+      }
+    } else {
+      this.logger.debug('Vector retrieval disabled for keyword-only baseline.');
     }
 
     const results = this.mergeAndRank(vectorResults, keywordResults, topK);
@@ -112,33 +138,103 @@ export class RagRetrievalService {
     embedding: number[],
     input: RetrieveTheoryChunksInput,
   ): Promise<VectorSearchRow[]> {
-    return (await this.dataSource.query(
-      `
-        SELECT
-          id,
-          title,
-          text,
-          topic,
-          source,
-          metadata,
-          1 - (embedding <=> $1::vector) AS "vectorScore"
-        FROM theory_chunks
-        WHERE embedding IS NOT NULL
-          AND is_active = true
-          AND ($2::text IS NULL OR subject = $2)
-          AND ($3::int IS NULL OR grade = $3)
-          AND ($4::text IS NULL OR topic = $4)
-        ORDER BY embedding <=> $1::vector
-        LIMIT $5
-      `,
-      [
-        toPgVector(embedding),
-        input.subject ?? null,
-        input.grade ?? null,
-        input.topic ?? null,
-        10,
-      ],
-    )) as VectorSearchRow[];
+    try {
+      return (await this.dataSource.query(
+        `
+          SELECT
+            id,
+            title,
+            text,
+            topic,
+            source,
+            metadata,
+            1 - (embedding <=> $1::vector) AS "vectorScore"
+          FROM theory_chunks
+          WHERE embedding IS NOT NULL
+            AND is_active = true
+            AND ($2::text IS NULL OR subject = $2)
+            AND ($3::int IS NULL OR grade = $3)
+            AND ($4::text IS NULL OR topic = $4)
+          ORDER BY embedding <=> $1::vector
+          LIMIT $5
+        `,
+        [
+          toPgVector(embedding),
+          input.subject ?? null,
+          input.grade ?? null,
+          input.topic ?? null,
+          10,
+        ],
+      )) as VectorSearchRow[];
+    } catch (error) {
+      throw new Error(`Vector SQL failed: ${this.formatDatabaseError(error)}`);
+    }
+  }
+
+  async getVectorDiagnostics(): Promise<RagVectorDiagnostics> {
+    const embeddingDiagnostics = this.embeddingService.getDiagnostics();
+    const [countRow] = (await this.dataSource.query(`
+      SELECT
+        COUNT(*)::int AS "theoryChunksTotal",
+        COUNT(embedding)::int AS "theoryChunksWithEmbedding",
+        (COUNT(*) - COUNT(embedding))::int AS "theoryChunksMissingEmbedding"
+      FROM theory_chunks
+    `)) as Array<{
+      theoryChunksTotal: number;
+      theoryChunksWithEmbedding: number;
+      theoryChunksMissingEmbedding: number;
+    }>;
+    const dimensionRows = (await this.dataSource.query(`
+      SELECT vector_dims(embedding)::int AS dimension
+      FROM theory_chunks
+      WHERE embedding IS NOT NULL
+      GROUP BY vector_dims(embedding)
+      ORDER BY dimension ASC
+    `)) as Array<{ dimension: number }>;
+    const [extensionRow] = (await this.dataSource.query(`
+      SELECT EXISTS (
+        SELECT 1 FROM pg_extension WHERE extname = 'vector'
+      ) AS enabled
+    `)) as Array<{ enabled: boolean }>;
+    const [indexRow] = (await this.dataSource.query(`
+      SELECT COUNT(*)::int AS count
+      FROM pg_indexes
+      WHERE tablename = 'theory_chunks'
+        AND indexdef ILIKE '%embedding%'
+    `)) as Array<{ count: number }>;
+
+    const embeddingDimensionsInDb = dimensionRows
+      .map((row) => Number(row.dimension))
+      .filter((value) => Number.isFinite(value));
+    const pgvectorExtensionEnabled = Boolean(extensionRow?.enabled);
+    const theoryChunksWithEmbedding =
+      Number(countRow?.theoryChunksWithEmbedding) || 0;
+    const dimensionMatches =
+      embeddingDimensionsInDb.length === 1 &&
+      embeddingDimensionsInDb[0] === embeddingDiagnostics.dimension;
+
+    return {
+      vectorEnabled:
+        embeddingDiagnostics.hasApiKey &&
+        embeddingDiagnostics.hasGlobalFetch &&
+        pgvectorExtensionEnabled &&
+        theoryChunksWithEmbedding > 0 &&
+        dimensionMatches,
+      embeddingConfigured: embeddingDiagnostics.hasApiKey,
+      embeddingBaseUrl: embeddingDiagnostics.baseUrl,
+      embeddingEndpoint: embeddingDiagnostics.endpoint,
+      embeddingModel: embeddingDiagnostics.model,
+      embeddingDimension: embeddingDiagnostics.dimension,
+      embeddingApiKeyPresent: embeddingDiagnostics.hasApiKey,
+      hasGlobalFetch: embeddingDiagnostics.hasGlobalFetch,
+      pgvectorExtensionEnabled,
+      theoryChunksTotal: Number(countRow?.theoryChunksTotal) || 0,
+      theoryChunksWithEmbedding,
+      theoryChunksMissingEmbedding:
+        Number(countRow?.theoryChunksMissingEmbedding) || 0,
+      embeddingDimensionsInDb,
+      embeddingIndexCount: Number(indexRow?.count) || 0,
+    };
   }
 
   private async keywordSearch(
@@ -279,5 +375,26 @@ export class RagRetrievalService {
     return value && typeof value === 'object' && !Array.isArray(value)
       ? (value as object)
       : undefined;
+  }
+
+  private formatDatabaseError(error: unknown) {
+    if (!(error instanceof Error)) {
+      return String(error);
+    }
+
+    const fields = error as Error & {
+      code?: string;
+      detail?: string;
+      hint?: string;
+    };
+    const parts = [
+      `name=${error.name}`,
+      `message=${error.message}`,
+      fields.code ? `code=${fields.code}` : '',
+      fields.detail ? `detail=${fields.detail}` : '',
+      fields.hint ? `hint=${fields.hint}` : '',
+    ].filter(Boolean);
+
+    return parts.join(' ');
   }
 }

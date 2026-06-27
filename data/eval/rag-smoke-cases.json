@@ -1,0 +1,182 @@
+[
+  {
+    "id": "RAG_SMOKE_001",
+    "question": "Dao động cơ là gì? Cho biết đặc điểm chuyển động quanh vị trí cân bằng.",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "oscillation",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L01_003"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_002",
+    "question": "Phương trình dao động điều hòa x = A cos(omega t + phi) có ý nghĩa như thế nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L01_006"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_003",
+    "question": "Trong phương trình x = A cos(omega t + phi), A, omega và phi là các đại lượng gì?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L01_006", "TH_PHY11_C01_L02_003"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_004",
+    "question": "Biên độ dao động điều hòa được định nghĩa như thế nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_005",
+    "question": "Chu kì dao động là gì và đơn vị của chu kì là gì?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003", "TH_PHY11_C01_L02_029"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_006",
+    "question": "Tần số dao động là gì? Tần số liên hệ với chu kì theo công thức nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003", "TH_PHY11_C01_L02_029"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_007",
+    "question": "Tần số góc omega liên hệ với chu kì T và tần số f như thế nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_029"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_008",
+    "question": "Pha ban đầu trong dao động điều hòa cho biết điều gì?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_008"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_009",
+    "question": "Độ lệch pha giữa hai dao động cùng chu kì được hiểu như thế nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_012"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_010",
+    "question": "Từ x = A cos(omega t + phi), phương trình vận tốc của vật dao động điều hòa là gì?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_kinematics",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L03_004"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_011",
+    "question": "Gia tốc trong dao động điều hòa liên hệ với li độ x theo công thức nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_kinematics",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L03_011"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_012",
+    "question": "Con lắc lò xo có chu kì dao động phụ thuộc vào khối lượng và độ cứng như thế nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_energy",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L05_013"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_013",
+    "question": "Với con lắc đơn góc nhỏ, thế năng trọng trường được mô tả như thế nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_energy",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L05_016"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_014",
+    "question": "Động năng của vật dao động điều hòa phụ thuộc vào li độ x như thế nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_energy",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L05_002", "TH_PHY11_C01_L05_025"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_015",
+    "question": "Thế năng của vật dao động điều hòa được tính theo li độ x bằng công thức nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_energy",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L05_004", "TH_PHY11_C01_L05_025"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_016",
+    "question": "Cơ năng trong dao động điều hòa có biểu thức và tính chất bảo toàn như thế nào?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_energy",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L05_008", "TH_PHY11_C01_L05_025"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_017",
+    "question": "Dao động tắt dần là gì và nguyên nhân nào làm biên độ giảm dần?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "damped_oscillation",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L06_021"]
+    }
+  },
+  {
+    "id": "RAG_SMOKE_018",
+    "question": "Hiện tượng cộng hưởng xảy ra khi nào trong dao động cưỡng bức?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "damped_oscillation",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C01_L06_015", "TH_PHY11_C01_L06_021"]
+    }
+  }
+]
