@@ -29,7 +29,7 @@ function normalizeThuocTinh(obj: Scene.Object): Record<string, any> {
 }
 
 const SceneObjects = React.memo(({
-  objects, isPlaying, interactionMode, onUpdatePosition, sceneGraph,
+  objects, isPlaying, onUpdatePosition, sceneGraph,
 }: {
   objects: Scene.Object[];
   isPlaying: boolean;
@@ -202,10 +202,10 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
             </>
           )}
 
-          <InteractionGuideSystem 
-            visible={(sceneGraph?.steps?.length ?? 0) > 0} 
-            onDismiss={onDismissGuide || (() => {})} 
-            sceneGraph={sceneGraph} 
+          <InteractionGuideSystem
+            visible={(sceneGraph?.steps?.length ?? 0) > 0}
+            onDismiss={onDismissGuide || (() => { })}
+            sceneGraph={sceneGraph}
           />
           {highlightedObjectId && sceneGraph && (
             <EquipmentHighlighter
