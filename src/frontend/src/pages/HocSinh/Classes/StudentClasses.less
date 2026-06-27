@@ -1,0 +1,82 @@
+.student-classes {
+  width: 100%;
+  padding: 32px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  text-align: left;
+
+  &__header {
+    margin-bottom: 40px;
+    
+    h2.ant-typography {
+      margin-bottom: 8px;
+      font-weight: 800;
+      font-size: 32px;
+      background: linear-gradient(90deg, #1677ff, #722ed1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    padding: 100px 0;
+  }
+
+  .classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .class-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+      border-color: #1677ff;
+    }
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+
+      h4.ant-typography {
+        margin: 0;
+        font-weight: 700;
+        font-size: 20px;
+        color: #1f1f1f;
+      }
+    }
+
+    &__desc {
+      color: #595959;
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &__meta {
+      display: flex;
+      justify-content: space-between;
+      color: #8c8c8c;
+      font-size: 13px;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 12px;
+      
+      strong {
+        color: #262626;
+      }
+    }
+  }
+}

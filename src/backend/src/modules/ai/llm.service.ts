@@ -25,8 +25,7 @@ export class LlmService {
       this.configService.get<string>('LLM_BASE_URL') ??
         'https://api.openai.com/v1',
     );
-    const model =
-      this.configService.get<string>('LLM_MODEL') ?? 'gpt-4o-mini';
+    const model = this.configService.get<string>('LLM_MODEL') ?? 'gpt-4o-mini';
     const temperature = Number(
       this.configService.get<string>('LLM_TEMPERATURE') ?? 0.45,
     );
@@ -50,7 +49,11 @@ export class LlmService {
 
     if (!response.ok) {
       const body = await response.text().catch(() => '');
-      if (response.status === 429 || body.includes('insufficient_quota') || body.includes('quota')) {
+      if (
+        response.status === 429 ||
+        body.includes('insufficient_quota') ||
+        body.includes('quota')
+      ) {
         return undefined;
       }
       if (response.status === 401 || response.status === 403) {

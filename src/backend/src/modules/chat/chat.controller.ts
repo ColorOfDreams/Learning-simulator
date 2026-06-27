@@ -12,7 +12,15 @@ export class ChatController {
   ) {}
 
   @Post('sessions')
-  createSession(@Body() body: { title?: string; subject?: string; sceneId?: string; userId?: string }) {
+  createSession(
+    @Body()
+    body: {
+      title?: string;
+      subject?: string;
+      sceneId?: string;
+      userId?: string;
+    },
+  ) {
     return this.chatService.createSession(body);
   }
 
@@ -47,7 +55,11 @@ export class ChatController {
     @Body() body: { message: string; subject?: string; grade?: number },
   ) {
     const [userMsg] = await Promise.all([
-      this.chatService.addMessage({ sessionId, role: 'user', content: body.message }),
+      this.chatService.addMessage({
+        sessionId,
+        role: 'user',
+        content: body.message,
+      }),
     ]);
 
     let aiResponse: string;
@@ -59,7 +71,11 @@ export class ChatController {
         grade: body.grade,
       });
       aiResponse = result.answer;
-      metadata = { intent: result.intent, topic: result.topic, used_llm: result.used_llm };
+      metadata = {
+        intent: result.intent,
+        topic: result.topic,
+        used_llm: result.used_llm,
+      };
     } catch {
       aiResponse = 'Xin lỗi, AI hiện không phản hồi. Vui lòng thử lại sau.';
     }
@@ -85,14 +101,19 @@ export class ChatController {
     @Body() body: { message: string; subject?: string },
   ) {
     const [userMsg] = await Promise.all([
-      this.chatService.addMessage({ sessionId, role: 'user', content: body.message }),
+      this.chatService.addMessage({
+        sessionId,
+        role: 'user',
+        content: body.message,
+      }),
     ]);
 
     const history = await this.chatService.getMessages(sessionId);
-    const context: { role: 'user' | 'assistant'; content: string }[] = history.map(m => ({
-      role: m.role === 'user' ? 'user' : 'assistant',
-      content: m.content
-    }));
+    const context: { role: 'user' | 'assistant'; content: string }[] =
+      history.map((m) => ({
+        role: m.role === 'user' ? 'user' : 'assistant',
+        content: m.content,
+      }));
 
     let aiResponse: string;
     let metadata: Record<string, unknown> | undefined;

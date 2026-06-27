@@ -84,7 +84,12 @@ export default [
 	// 	],
 	// },
 
-	// ─── GIAO DIỆN HỌC SINH ───
+	// ─── GIAO DIỆN HỌC SINH & LỚP HỌC ───
+	{
+		path: '/join',
+		component: './HocSinh/Classes/JoinClass',
+		layout: false,
+	},
 	{
 		path: '/hoc-sinh',
 		layout: false,
@@ -92,6 +97,10 @@ export default [
 			{
 				path: '/hoc-sinh',
 				component: './HocSinh/Home',
+			},
+			{
+				path: '/hoc-sinh/classes',
+				component: './HocSinh/Classes/StudentClasses',
 			},
 			{
 				path: '/hoc-sinh/my-labs',
@@ -113,7 +122,27 @@ export default [
 				path: '/hoc-sinh/profile',
 				component: './HocSinh/Profile',
 			},
+			{
+				path: '/hoc-sinh/classes/:id',
+				component: './HocSinh/Classes/StudentClassDetails',
+			},
 		],
+	},
+
+	// ─── GIAO DIỆN GIÁO VIÊN (LỚP HỌC) ───
+	{
+		path: '/giao-vien/classes',
+		name: 'Lớp học',
+		icon: 'TeamOutlined',
+		component: './GiaoVien/Classes/TeacherClasses',
+		access: 'accessFilter',
+		maChucNang: 'quanlythinghiem|tao',
+	},
+	{
+		path: '/giao-vien/classes/:id',
+		name: 'Chi tiết lớp',
+		hideInMenu: true,
+		component: './GiaoVien/Classes/TeacherClassDetails',
 	},
 
 	{

@@ -2,7 +2,8 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { generateAiQuiz } from '@/services/ai/api';
 import CelebrationOverlay from '@/components/CelebrationOverlay';
 import { completeActivity, completeLabSession, getUserInfo } from '@/services/base/api';
-import { useModel } from 'umi';
+import { submitAssignment } from '@/services/classrooms/api';
+import { useModel, useSearchParams } from 'umi';
 import '../../HocSinh/Workspace/index.less';
 
 export type DynQuestion = { q: string; opts: Array<{ k: string; t: string }>; correct: string; explanation: string };
@@ -25,6 +26,7 @@ const AiQuizTab: React.FC<Props> = ({ simId, subject = 'physics', title = 'Thí 
 	const [showCelebration, setShowCelebration] = useState(false);
 	const xpAwardedRef = useRef(false);
 	const { setInitialState } = useModel('@@initialState');
+	const [searchParams] = useSearchParams();
 
 	useEffect(() => {
 		if (dynQuizState === 'done' && dynQuestions.length > 0 && !xpAwardedRef.current) {
@@ -32,6 +34,14 @@ const AiQuizTab: React.FC<Props> = ({ simId, subject = 'physics', title = 'Thí 
 			const correct = dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length;
 			const pct = dynQuestions.length > 0 ? Math.round((correct / dynQuestions.length) * 100) : 0;
 			const xpEarned = correct * 10;
+			
+			// Submit assignment if doing a classroom assignment
+			const assignmentId = searchParams.get('assignmentId');
+			const memberId = searchParams.get('memberId');
+			if (assignmentId && memberId) {
+				submitAssignment(assignmentId, { memberId, score: pct }).catch(() => {});
+			}
+
 			completeLabSession({
 				simulationId: simId || 'default',
 				simulationTitle: title || 'Thí nghiệm tùy chỉnh',

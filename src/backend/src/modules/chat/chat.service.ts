@@ -13,23 +13,37 @@ export class ChatService {
     private readonly messageRepo: Repository<ChatMessageEntity>,
   ) {}
 
-  createSession(dto: { title?: string; subject?: string; sceneId?: string; userId?: string }) {
-    return this.sessionRepo.save(this.sessionRepo.create({
-      title: dto.title ?? 'Cuộc trò chuyện mới',
-      subject: dto.subject ?? 'physics',
-      sceneId: dto.sceneId,
-      userId: dto.userId,
-    }));
+  createSession(dto: {
+    title?: string;
+    subject?: string;
+    sceneId?: string;
+    userId?: string;
+  }) {
+    return this.sessionRepo.save(
+      this.sessionRepo.create({
+        title: dto.title ?? 'Cuộc trò chuyện mới',
+        subject: dto.subject ?? 'physics',
+        sceneId: dto.sceneId,
+        userId: dto.userId,
+      }),
+    );
   }
 
   async listSessions(userId?: string) {
     const where: any = {};
     if (userId) where.userId = userId;
-    return this.sessionRepo.find({ where, order: { updatedAt: 'DESC' }, take: 20 });
+    return this.sessionRepo.find({
+      where,
+      order: { updatedAt: 'DESC' },
+      take: 20,
+    });
   }
 
   async getSession(sessionId: string) {
-    return this.sessionRepo.findOne({ where: { id: sessionId }, relations: { messages: true } as any });
+    return this.sessionRepo.findOne({
+      where: { id: sessionId },
+      relations: { messages: true },
+    });
   }
 
   async getMessages(sessionId: string) {
@@ -40,7 +54,12 @@ export class ChatService {
     });
   }
 
-  addMessage(dto: { sessionId: string; role: 'user' | 'assistant' | 'guidance'; content: string; metadata?: Record<string, unknown> }) {
+  addMessage(dto: {
+    sessionId: string;
+    role: 'user' | 'assistant' | 'guidance';
+    content: string;
+    metadata?: Record<string, unknown>;
+  }) {
     const msg = this.messageRepo.create({
       sessionId: dto.sessionId,
       role: dto.role,

@@ -56,7 +56,9 @@ export class TheoryChunkService {
       return phraseMatches;
     }
 
-    const tokens = [...new Set(phrase.split(/\s+/).filter((token) => token.length >= 2))];
+    const tokens = [
+      ...new Set(phrase.split(/\s+/).filter((token) => token.length >= 2)),
+    ];
     const tokenMatches = await Promise.all(
       tokens.map((token) => this.searchByKeyword(token)),
     );

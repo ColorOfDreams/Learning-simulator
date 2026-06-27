@@ -112,7 +112,7 @@ export class RagRetrievalService {
     embedding: number[],
     input: RetrieveTheoryChunksInput,
   ): Promise<VectorSearchRow[]> {
-    return (await this.dataSource.query(
+    return await this.dataSource.query(
       `
         SELECT
           id,
@@ -138,7 +138,7 @@ export class RagRetrievalService {
         input.topic ?? null,
         10,
       ],
-    )) as VectorSearchRow[];
+    );
   }
 
   private async keywordSearch(
@@ -277,7 +277,7 @@ export class RagRetrievalService {
 
   private asMetadata(value: unknown): object | undefined {
     return value && typeof value === 'object' && !Array.isArray(value)
-      ? (value as object)
+      ? value
       : undefined;
   }
 }

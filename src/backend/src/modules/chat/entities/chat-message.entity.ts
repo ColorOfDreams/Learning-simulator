@@ -16,7 +16,9 @@ export class ChatMessageEntity extends BaseEntity {
   @Column({ type: 'jsonb', nullable: true })
   metadata?: Record<string, unknown>;
 
-  @ManyToOne(() => ChatSessionEntity, (session) => session.messages, { onDelete: 'CASCADE' })
+  @ManyToOne(() => ChatSessionEntity, (session) => session.messages, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'session_id' })
   session!: ChatSessionEntity;
 }

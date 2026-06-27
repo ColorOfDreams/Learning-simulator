@@ -20,7 +20,11 @@ export class AiTestCaseEntity {
   @Column({ name: 'source_learning_item_id', type: 'varchar', nullable: true })
   sourceLearningItemId?: string;
 
-  @Column({ name: 'evaluation_focus', type: 'jsonb', default: () => "'[]'::jsonb" })
+  @Column({
+    name: 'evaluation_focus',
+    type: 'jsonb',
+    default: () => "'[]'::jsonb",
+  })
   evaluationFocus: string[];
 
   @Column({ name: 'validation_status', type: 'varchar', nullable: true })
