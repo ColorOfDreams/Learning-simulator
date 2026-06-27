@@ -221,6 +221,18 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
     initY: 0,
     getSnapPoints: () => [],
     tags: [],
+  },
+  ParabolaGraph: {
+    getCollider: () => [3.0, 2.0, 0.2],
+    initY: 1.5,
+    getSnapPoints: () => [],
+    tags: ['kinematic'],
+  },
+  TrigWave: {
+    getCollider: () => [3.0, 2.0, 0.2],
+    initY: 1.5,
+    getSnapPoints: () => [],
+    tags: ['kinematic'],
   }
 };
 
