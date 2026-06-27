@@ -1,9 +1,9 @@
-import dayjs from './dayjs';
-import _ from 'lodash';
 import { removeHtmlTags, urlRegex } from '@/utils/utils';
+import type { Rule } from 'antd/es/form';
+import _ from 'lodash';
 import React from 'react';
 import { FormattedMessage } from 'umi';
-import type { Rule } from 'antd/es/form';
+import dayjs from './dayjs';
 
 const allCharacters =
 	'a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹýếẾ';
@@ -328,7 +328,7 @@ const createRules = () => {
 					const re = new RegExp(
 						'^[ 0-9a-z_\\-aàáạảãâầấậẩẫăằắặẳẵeèéẹẻẽêềếệểễiìíịỉĩoòóọỏõôồốộổỗơờớợởỡuùúụủũưừứựửữyỳýỵỷỹdđ]{1,100}$',
 					);
-	
+
 					value?.fileList?.map((item: any) => {
 						if (!re.test(item?.name?.split('.')?.[0])) callback('');
 					});

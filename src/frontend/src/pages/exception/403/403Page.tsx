@@ -15,7 +15,10 @@ const NotAccessible = () => {
 			history.replace('/dashboard');
 	}, [initialState?.authorizedPermissions]);
 
-	const onLogout = (): void => { localStorage.clear(); window.location.href = '/user/login'; };
+	const onLogout = (): void => {
+		localStorage.clear();
+		window.location.href = '/user/login';
+	};
 
 	return (
 		<>

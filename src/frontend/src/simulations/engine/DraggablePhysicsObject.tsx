@@ -25,6 +25,7 @@ interface Props {
   diemSnap?: SnapPoint[];
   isKinematic?: boolean;
   coDinh?: boolean;
+  interactionMode?: 'observe' | 'practice';
 }
 
 let globalDraggingId: string | null = null;
@@ -92,6 +93,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
   const sceneGraph = props.sceneGraph ?? props.doThiScene ?? null;
   const snapPoints = props.snapPoints ?? props.diemSnap ?? getEquipmentConfig(getModel(object)).getSnapPoints(object.properties);
   const forceKinematic = props.isKinematic ?? props.coDinh;
+  const interactionMode = props.interactionMode;
   const { children } = props;
   const groupRef = useRef<THREE.Group>(null);
   const [dragging, setDragging] = useState(false);
@@ -191,6 +193,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
   const startPosRef = useRef<[number, number, number]>([...object.position]);
 
   const onPointerDown = useCallback((e: any) => {
+    if (interactionMode === 'observe') return;
     if (globalDraggingId) return;
     if (e.button !== 0) return; // Only left-click — let right/middle pass to OrbitControls
     e.stopPropagation();

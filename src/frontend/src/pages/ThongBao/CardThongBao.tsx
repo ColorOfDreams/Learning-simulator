@@ -14,7 +14,6 @@ import { Button, DatePicker, Popconfirm, Segmented, Space } from 'antd';
 import { useState } from 'react';
 import { useModel } from 'umi';
 import news from '../../assets/new6.gif';
-import { kiemTraPhanVung } from '../../utils/constants';
 import Form from './components/Form';
 import CardFormThongBaoTuyChinh from './ThongBaoTuyChinh/CardForm';
 import ViewThongBao from './ViewThongBao/CardView';

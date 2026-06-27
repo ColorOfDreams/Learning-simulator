@@ -20,7 +20,7 @@ export default defineConfig({
 			syncWebAssembly: true,
 		});
 	},
-	title: `AI Thực chiến - ${APP_CONFIG_TEN_TRUONG.toUpperCase()}`,
+	title: `Scilab - ${APP_CONFIG_TEN_TRUONG.toUpperCase()}`,
 	metas: [
 		{
 			name: 'keywords',
@@ -33,19 +33,25 @@ export default defineConfig({
 		},
 		{ name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' },
 	],
-	links: [{ rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' }],
+	links: [
+		{ rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' },
+		{ rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css' },
+	],
 
-	headScripts: APP_CONFIG_GA_ID
-		? [
-			{ src: `https://www.googletagmanager.com/gtag/js?id=${APP_CONFIG_GA_ID}`, async: true },
-			{
-				content: `window.dataLayer = window.dataLayer || [];
-						function gtag(){dataLayer.push(arguments);}
-						gtag('js', new Date());
-						gtag('config', '${APP_CONFIG_GA_ID}');`,
-			},
-		]
-		: [],
+	headScripts: [
+		{ src: 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js' },
+		...(APP_CONFIG_GA_ID
+			? [
+					{ src: `https://www.googletagmanager.com/gtag/js?id=${APP_CONFIG_GA_ID}`, async: true },
+					{
+						content: `window.dataLayer = window.dataLayer || [];
+							function gtag(){dataLayer.push(arguments);}
+							gtag('js', new Date());
+							gtag('config', '${APP_CONFIG_GA_ID}');`,
+					},
+				]
+			: []),
+	],
 
 	antd: {
 		import: false,
@@ -89,19 +95,53 @@ export default defineConfig({
 
 	alias: {
 		'pdfjs-dist': require.resolve('@react-pdf-viewer/pdfjs-dist-signature'),
+		'@simulations': require('path').resolve(__dirname, '../../simulations'),
+		three: require('path').resolve(__dirname, '../node_modules/three'),
 	},
 
 	jsMinifier: 'terser',
 	exportStatic: {},
 
-	define: Object.entries(process.env).reduce((result, [key, value]) => {
-		if (key.startsWith('APP_CONFIG_') || key === 'GOOGLE_CLIENT_ID') {
-			return {
-				...result,
-				[key]: value,
-				// [key]: JSON.stringify(value),
-			};
-		}
-		return result;
-	}, {}),
+	define: {
+		// Defaults cho tất cả APP_CONFIG_* identifiers — esbuild sẽ replace tất cả,
+		// tránh ReferenceError khi env var không được set lúc build
+		APP_CONFIG_IP_ROOT: process.env.APP_CONFIG_IP_ROOT || 'https://backend-production-0858.up.railway.app',
+		APP_CONFIG_TEN_TRUONG: '',
+		APP_CONFIG_TIEN_TO_TRUONG: '',
+		APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH: '',
+		APP_CONFIG_GA_ID: '',
+		APP_CONFIG_SENTRY_DSN: '',
+		APP_CONFIG_ONE_SIGNAL_ID: '',
+		APP_CONFIG_GOOGLE_CLIENT_ID: process.env.APP_CONFIG_GOOGLE_CLIENT_ID || '479455851124-pg3d9fbatkdpo9d1klf6uehecdi73eua.apps.googleusercontent.com',
+		APP_CONFIG_PRIMARY_COLOR: '',
+		APP_CONFIG_HIGHLIGHT_COLOR: '',
+		APP_CONFIG_APP_VERSION: '',
+		APP_CONFIG_PHAN_QUYEN_URL: '',
+		APP_CONFIG_URL_LANDING: '',
+		APP_CONFIG_URL_CORE: '',
+		APP_CONFIG_URL_CAN_BO: '',
+		APP_CONFIG_URL_DAO_TAO: '',
+		APP_CONFIG_URL_TAI_CHINH: '',
+		APP_CONFIG_URL_KHAO_THI: '',
+		APP_CONFIG_URL_NHAN_SU: '',
+		APP_CONFIG_URL_CTSV: '',
+		APP_CONFIG_URL_QLKH: '',
+		APP_CONFIG_URL_QLVB: '',
+		APP_CONFIG_URL_QLND: '',
+		APP_CONFIG_URL_CSVC: '',
+		APP_CONFIG_URL_THU_VIEN: '',
+		APP_CONFIG_URL_CONNECT: '',
+		APP_CONFIG_URL_KY_SO: '',
+		APP_CONFIG_URL_VPS: '',
+		APP_CONFIG_URL_TAP_CHI_KH: '',
+		APP_CONFIG_URL_VBCC: '',
+		GOOGLE_CLIENT_ID: '',
+		// Override bằng env vars thực — chỉ override khi value truthy (skip empty string)
+		...Object.entries(process.env).reduce((result: Record<string, string>, [key, value]) => {
+			if ((key.startsWith('APP_CONFIG_') || key === 'GOOGLE_CLIENT_ID') && value) {
+				return { ...result, [key]: value };
+			}
+			return result;
+		}, {}),
+	},
 });

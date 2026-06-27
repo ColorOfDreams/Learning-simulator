@@ -1,30 +1,32 @@
-import { history, useModel } from 'umi';
-import React, { useEffect, useState } from 'react';
 import { Spin } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { history, useModel } from 'umi';
 
 export const unCheckPermissionPaths = ['/user/login', '/user/register', '/ai-demo'];
 
 const AuthBounder: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { initialState } = useModel('@@initialState');
-  const [isReady, setIsReady] = useState(false);
+	const { initialState } = useModel('@@initialState');
+	const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
-    const isUncheckPath = unCheckPermissionPaths.some((path) => window.location.pathname.includes(path));
-    
-    // Simple check: if not on uncheck path and no token/currentUser, redirect to login
-    const token = localStorage.getItem('access_token');
-    if (!isUncheckPath && (!token || token === 'undefined')) {
-      history.replace('/user/login');
-    } else {
-      setIsReady(true);
-    }
-  }, [initialState]);
+	useEffect(() => {
+		const isUncheckPath = unCheckPermissionPaths.some((path) => window.location.pathname.includes(path));
 
-  if (!isReady) {
-    return <Spin size="large" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }} />;
-  }
+		// Simple check: if not on uncheck path and no token/currentUser, redirect to login
+		const token = localStorage.getItem('access_token');
+		if (!isUncheckPath && (!token || token === 'undefined')) {
+			history.replace('/user/login');
+		} else {
+			setIsReady(true);
+		}
+	}, [initialState]);
 
-  return <>{children}</>;
+	if (!isReady) {
+		return (
+			<Spin size='large' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }} />
+		);
+	}
+
+	return <>{children}</>;
 };
 
 export default AuthBounder;

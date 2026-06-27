@@ -1,5 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsInt, IsOptional, IsString, Min, ValidateNested } from 'class-validator';
+import { ChatMessageDto } from './chat-request.dto';
 
 export class AnalyzeRequestDto {
   @ApiProperty({
@@ -19,4 +21,11 @@ export class AnalyzeRequestDto {
   @IsInt()
   @Min(1)
   grade?: number;
+
+  @ApiPropertyOptional({ type: [ChatMessageDto] })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ChatMessageDto)
+  context?: ChatMessageDto[];
 }

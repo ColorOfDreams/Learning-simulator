@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-backend:
+    name: Build backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable Corepack (yarn 4)
+        run: corepack enable
+
+      - name: Install dependencies
+        run: cd src/backend && yarn install --immutable
+
+      - name: Build NestJS
+        run: cd src/backend && yarn build
+
+  build-frontend:
+    name: Build frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable Corepack (yarn 4)
+        run: corepack enable
+
+      - name: Install dependencies
+        run: cd src/frontend && yarn install --immutable
+
+      - name: Build React app
+        run: cd src/frontend && yarn build
+        env:
+          APP_CONFIG_IP_ROOT: https://backend-production-0858.up.railway.app
+          APP_CONFIG_GOOGLE_CLIENT_ID: 479455851124-pg3d9fbatkdpo9d1klf6uehecdi73eua.apps.googleusercontent.com

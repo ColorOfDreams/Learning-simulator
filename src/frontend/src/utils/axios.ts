@@ -89,7 +89,6 @@ axios.interceptors.request.use(
 			config.headers.set('Accept-Language', getAcceptLanguage());
 		}
 
-
 		return config;
 	},
 	(error) => Promise.reject(error),

@@ -29,10 +29,11 @@ function normalizeThuocTinh(obj: Scene.Object): Record<string, any> {
 }
 
 const SceneObjects = React.memo(({
-  objects, isPlaying, onUpdatePosition, sceneGraph,
+  objects, isPlaying, interactionMode, onUpdatePosition, sceneGraph,
 }: {
   objects: Scene.Object[];
   isPlaying: boolean;
+  interactionMode?: 'observe' | 'practice';
   onUpdatePosition?: (id: string, pos: [number, number, number]) => void;
   sceneGraph: Scene.IRecord | null;
 }) => {
@@ -78,6 +79,7 @@ const SceneObjects = React.memo(({
               doiTuong={obj}
               isPlaying={isPlaying}
               dangChay={isPlaying}
+              interactionMode={interactionMode}
               onUpdatePosition={onUpdatePosition}
               capNhatViTri={onUpdatePosition}
               sceneGraph={sceneGraph}
@@ -93,6 +95,7 @@ const SceneObjects = React.memo(({
 interface Props {
   sceneGraph: Scene.IRecord | null;
   isPlaying: boolean;
+  interactionMode?: 'observe' | 'practice';
   onUpdatePosition?: (id: string, position: [number, number, number]) => void;
   showGuide?: boolean;
   onDismissGuide?: () => void;
@@ -105,7 +108,7 @@ interface Props {
   onSetRotationAxis?: (axis: 'x' | 'y' | 'z' | null) => void;
 }
 
-const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePosition, showGuide, onDismissGuide, highlightedObjectId, highlightLabel, highlightColor, selectedEquipmentId: externalSelectedId, onSelectEquipment, rotationAxis: externalRotationAxis, onSetRotationAxis }) => {
+const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, interactionMode, onUpdatePosition, showGuide, onDismissGuide, highlightedObjectId, highlightLabel, highlightColor, selectedEquipmentId: externalSelectedId, onSelectEquipment, rotationAxis: externalRotationAxis, onSetRotationAxis }) => {
   const [hoveredObjectId, setHoveredObjectId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [internalSelectedId, setInternalSelectedId] = useState<string | null>(null);
@@ -186,6 +189,7 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
                 <SceneObjects
                   objects={sceneGraph.objects || []}
                   isPlaying={isPlaying}
+                  interactionMode={interactionMode}
                   onUpdatePosition={onUpdatePosition}
                   sceneGraph={sceneGraph}
                 />
@@ -225,7 +229,7 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
           )}
           <OrbitControls
             makeDefault
-            enabled={!hoveredObjectId && !isDragging}
+            enabled={interactionMode === 'observe' || (!hoveredObjectId && !isDragging)}
             minPolarAngle={0}
             maxPolarAngle={Math.PI / 2.1}
             minDistance={3}

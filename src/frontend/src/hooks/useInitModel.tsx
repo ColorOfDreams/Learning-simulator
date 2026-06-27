@@ -105,12 +105,7 @@ const useInitModel = <T extends object>(
 		};
 
 		try {
-			const response = await getService(
-				payload,
-				path ?? 'page',
-				isAbsolutePath ?? false,
-				
-			);
+			const response = await getService(payload, path ?? 'page', isAbsolutePath ?? false);
 			const tempData: T[] = response?.data?.data?.result ?? [];
 			const tempTotal: number = response?.data?.data?.total ?? 0;
 
@@ -157,11 +152,7 @@ const useInitModel = <T extends object>(
 				select: selectParams?.join(' '),
 				...(otherQuery ?? {}),
 			};
-			const response = await getAllService(
-				payload,
-				pathParam,
-				
-			);
+			const response = await getAllService(payload, pathParam);
 			const data: T[] = response?.data?.data ?? [];
 			// if (sortParam) data.sort(sortParam);
 			if (isSetDanhSach !== false) setDanhSach(data);
@@ -188,10 +179,7 @@ const useInitModel = <T extends object>(
 		if (!id) return Promise.reject('Invalid id');
 		setLoading(true);
 		try {
-			const response = await getByIdService(
-				id,
-				
-			);
+			const response = await getByIdService(id);
 			if (isSetRecord !== false) setRecord(response?.data?.data ?? null);
 			return response?.data?.data;
 		} catch (er) {
@@ -209,12 +197,7 @@ const useInitModel = <T extends object>(
 		if (!conditionParam) return Promise.reject('condition is required');
 		setLoading(true);
 		try {
-			const response = await getService(
-				{ condition: conditionParam },
-				'one',
-				undefined,
-				
-			);
+			const response = await getService({ condition: conditionParam }, 'one', undefined);
 			setRecord(response?.data?.data ?? null);
 			return response?.data?.data;
 		} catch (er) {
@@ -235,10 +218,7 @@ const useInitModel = <T extends object>(
 		if (formSubmiting) Promise.reject('Form submiting');
 		setFormSubmiting(true);
 		try {
-			const res = await postService(
-				chuanHoaObject(payload),
-				
-			);
+			const res = await postService(chuanHoaObject(payload));
 			message.success(messageText ?? formatIntlMsg('global.message.themmoithanhcong'));
 			setLoading(false);
 			if (getData) getData();
@@ -265,11 +245,7 @@ const useInitModel = <T extends object>(
 		if (formSubmiting) return Promise.reject('Form submiting');
 		setFormSubmiting(true);
 		try {
-			const res = await putService(
-				id,
-				chuanHoaObject(payload),
-				
-			);
+			const res = await putService(id, chuanHoaObject(payload));
 			message.success(messageText ?? formatIntlMsg('global.message.luuthanhcong'));
 			setLoading(false);
 			if (getData) getData();
@@ -296,11 +272,7 @@ const useInitModel = <T extends object>(
 		if (formSubmiting) return Promise.reject('Form submiting');
 		setFormSubmiting(true);
 		try {
-			const res = await putManyService(
-				ids,
-				chuanHoaObject(payload),
-				
-			);
+			const res = await putManyService(ids, chuanHoaObject(payload));
 			message.success(messageText ?? formatIntlMsg('global.message.luuthanhcong'));
 			setLoading(false);
 			if (getData) getData();
@@ -322,11 +294,7 @@ const useInitModel = <T extends object>(
 	): Promise<any> => {
 		setLoading(true);
 		try {
-			const res = await deleteService(
-				id,
-				undefined,
-				
-			);
+			const res = await deleteService(id, undefined);
 			message.success(config?.messageText ?? formatIntlMsg('global.message.xoathanhcong'));
 
 			const maxPage = Math.ceil((total - 1) / limit) || 1;
@@ -354,11 +322,7 @@ const useInitModel = <T extends object>(
 		if (!ids.length) return;
 		setLoading(true);
 		try {
-			const res = await deleteManyService(
-				ids,
-				undefined,
-				
-			);
+			const res = await deleteManyService(ids, undefined);
 			message.success(formatIntlMsg('global.message.deletedcount', { count: ids.length }));
 
 			const maxPage = Math.ceil((total - ids.length) / limit) || 1;
@@ -412,10 +376,7 @@ const useInitModel = <T extends object>(
 		},
 	): Promise<TImportHeader[]> => {
 		try {
-			const res = await getImportHeaders(
-				query,
-				
-			);
+			const res = await getImportHeaders(query);
 			setImportHeaders(res.data?.data ?? []);
 			return res.data?.data ?? [];
 		} catch (err) {
@@ -433,10 +394,7 @@ const useInitModel = <T extends object>(
 		config?: { dataPartitionCode?: string | null | undefined },
 	): Promise<any> => {
 		try {
-			const res = await getImportTemplate(
-				params,
-				
-			);
+			const res = await getImportTemplate(params);
 			return res.data;
 		} catch (err) {
 			return Promise.reject(err);
@@ -454,10 +412,7 @@ const useInitModel = <T extends object>(
 		if (formSubmiting) return Promise.reject('Form submiting');
 		setFormSubmiting(true);
 		try {
-			const res = await postValidateImport(
-				{ rows: payload },
-				
-			);
+			const res = await postValidateImport({ rows: payload });
 			message.success(config?.messageText ?? formatIntlMsg('global.message.validated'));
 			return res.data?.data ?? [];
 		} catch (err) {
@@ -478,10 +433,7 @@ const useInitModel = <T extends object>(
 		if (formSubmiting) return Promise.reject('Form submiting');
 		setFormSubmiting(true);
 		try {
-			const res = await postExecuteImport(
-				{ rows: payload },
-				
-			);
+			const res = await postExecuteImport({ rows: payload });
 			message.success(config?.messageText ?? formatIntlMsg('global.message.imported'));
 			return res.data?.data ?? [];
 		} catch (err) {
@@ -511,10 +463,7 @@ const useInitModel = <T extends object>(
 		};
 
 		try {
-			const res = await getExportFields(
-				query,
-				
-			);
+			const res = await getExportFields(query);
 			const fields = genIdField(res.data?.data) ?? [];
 
 			return fields;

@@ -28,12 +28,16 @@ const AvatarDropdown = () => {
 	const lastNameChar = fullName.split(' ')?.at(-1)?.[0]?.toUpperCase();
 
 	const items: ItemType[] = [
-		...(fullName ? [{
-			key: 'name',
-			icon: <UserOutlined />,
-			label: fullName,
-		},
-		{ type: 'divider', key: 'divider' }] : []) as ItemType[],
+		...((fullName
+			? [
+					{
+						key: 'name',
+						icon: <UserOutlined />,
+						label: fullName,
+					},
+					{ type: 'divider', key: 'divider' },
+				]
+			: []) as ItemType[]),
 		{
 			key: 'logout',
 			icon: <LogoutOutlined />,

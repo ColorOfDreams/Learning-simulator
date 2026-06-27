@@ -69,8 +69,7 @@ const ModalFilter = () => {
 		}
 
 		const formatScalarValue = (item: any): string => {
-			if (item.value === null || item.value === undefined)
-					return '-';
+			if (item.value === null || item.value === undefined) return '-';
 
 			if (typeof item.valueLabel === 'string') return item.valueLabel;
 			if (typeof item.valueLabel === 'object' && item.valueLabel[String(item.value)])

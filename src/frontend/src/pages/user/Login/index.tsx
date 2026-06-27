@@ -1,10 +1,10 @@
-import { getUserInfo, verifyGoogleLogin, login as loginApi, register as registerApi } from '@/services/base/api';
+import { getUserInfo, login as loginApi, register as registerApi, verifyGoogleLogin } from '@/services/base/api';
+import { currentRole } from '@/utils/ip';
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { GoogleLogin, GoogleOAuthProvider, type CredentialResponse } from '@react-oauth/google';
 import { Button, Form, Input, message } from 'antd';
-import { MailOutlined, LockOutlined, UserOutlined} from '@ant-design/icons';
 import React, { useState } from 'react';
 import { history, useModel } from 'umi';
-import { currentRole } from '@/utils/ip';
 import styles from './index.less';
 
 const GOOGLE_CLIENT_ID =
@@ -27,7 +27,7 @@ const PARTICLES = Array.from({ length: 15 }, (_, i) => ({
 	delay: `${((i * 0.55) % 7).toFixed(1)}s`,
 	duration: `${9 + (i % 5)}s`,
 	size: `${2 + (i % 3)}px`,
-	drift: `${(i % 2 === 0 ? 1 : -1) * (15 + (i * 7) % 40)}px`,
+	drift: `${(i % 2 === 0 ? 1 : -1) * (15 + ((i * 7) % 40))}px`,
 }));
 
 const TWINKLES = [
@@ -57,26 +57,25 @@ const Login: React.FC = () => {
 			scopes = payload.scopes ?? [];
 		} catch {}
 
+		let userRole = 'student';
 		try {
 			const info = await getUserInfo();
+			const user = info.data?.data || info.data;
+			userRole = user?.role ?? 'student';
 			setInitialState({
 				...initialState,
-				currentUser: info.data?.data || info.data,
-				authorizedPermissions: [
-					{ scopes, rsname: currentRole, rsid: currentRole },
-				],
+				currentUser: user,
+				authorizedPermissions: [{ scopes, rsname: currentRole, rsid: currentRole }],
 			});
 		} catch {
 			setInitialState({
 				...initialState,
-				authorizedPermissions: [
-					{ scopes, rsname: currentRole, rsid: currentRole },
-				],
+				authorizedPermissions: [{ scopes, rsname: currentRole, rsid: currentRole }],
 			});
 		}
 
 		message.success(mode === 'register' ? 'Đăng ký thành công' : 'Đăng nhập thành công');
-		history.push('/dashboard');
+		history.push(userRole === 'student' ? '/hoc-sinh' : '/dashboard');
 	};
 
 	const handleEmailAuth = async (values: any) => {
@@ -144,13 +143,35 @@ const Login: React.FC = () => {
 
 			<div className={styles.particles}>
 				{PARTICLES.map((particle, index) => (
-					<div key={index} className={styles.particle} style={{ left: particle.left, width: particle.size, height: particle.size, animationDelay: particle.delay, animationDuration: particle.duration, '--drift': particle.drift } as React.CSSProperties} />
+					<div
+						key={index}
+						className={styles.particle}
+						style={
+							{
+								left: particle.left,
+								width: particle.size,
+								height: particle.size,
+								animationDelay: particle.delay,
+								animationDuration: particle.duration,
+								'--drift': particle.drift,
+							} as React.CSSProperties
+						}
+					/>
 				))}
 			</div>
 
 			<div className={styles.twinkles}>
 				{TWINKLES.map((twinkle, index) => (
-					<div key={index} className={styles.twinkle} style={{ top: twinkle.top, left: twinkle.left, animationDelay: twinkle.delay, animationDuration: twinkle.dur }} />
+					<div
+						key={index}
+						className={styles.twinkle}
+						style={{
+							top: twinkle.top,
+							left: twinkle.left,
+							animationDelay: twinkle.delay,
+							animationDuration: twinkle.dur,
+						}}
+					/>
 				))}
 			</div>
 
@@ -194,8 +215,8 @@ const Login: React.FC = () => {
 					</h1>
 
 					<p className={styles.heroSub}>
-						Trải nghiệm khoa học qua mô phỏng 3D tương tác, không cần thiết bị, không cần phòng lab thật.
-						Học hiệu quả hơn với AI hỗ trợ từng bước.
+						Trải nghiệm khoa học qua mô phỏng 3D tương tác, không cần thiết bị, không cần phòng lab thật. Học hiệu quả
+						hơn với AI hỗ trợ từng bước.
 					</p>
 
 					<div className={styles.featurePills}>
@@ -224,9 +245,7 @@ const Login: React.FC = () => {
 				<div className={styles.rightPanel}>
 					<div className={styles.loginCard}>
 						<div className={styles.cardHeader}>
-							<div className={styles.cardTitle}>
-								{mode === 'login' ? 'Bắt đầu học tập' : 'Đăng ký tài khoản'}
-							</div>
+							<div className={styles.cardTitle}>{mode === 'login' ? 'Bắt đầu học tập' : 'Đăng ký tài khoản'}</div>
 						</div>
 
 						<div className={styles.authModeSwitch}>
@@ -245,21 +264,21 @@ const Login: React.FC = () => {
 							</span>
 						</div>
 
-						<Form form={form} layout="vertical" onFinish={handleEmailAuth} className={styles.authForm}>
+						<Form form={form} layout='vertical' onFinish={handleEmailAuth} className={styles.authForm}>
 							{mode === 'register' && (
-								<Form.Item name="firstName">
-									<Input prefix={<UserOutlined />} placeholder="Họ và tên" size="large" className={styles.authInput} />
+								<Form.Item name='firstName'>
+									<Input prefix={<UserOutlined />} placeholder='Họ và tên' size='large' className={styles.authInput} />
 								</Form.Item>
 							)}
 
 							<Form.Item
-								name="email"
+								name='email'
 								rules={[
 									{ required: true, message: 'Vui lòng nhập email' },
 									{ type: 'email', message: 'Email không hợp lệ' },
 								]}
 							>
-								<Input prefix={<MailOutlined />} placeholder="Email" size="large" className={styles.authInput} />
+								<Input prefix={<MailOutlined />} placeholder='Email' size='large' className={styles.authInput} />
 							</Form.Item>
 
 							{/* {mode === 'register' && (
@@ -269,18 +288,23 @@ const Login: React.FC = () => {
 							)} */}
 
 							<Form.Item
-								name="password"
+								name='password'
 								rules={[
 									{ required: true, message: 'Vui lòng nhập mật khẩu' },
 									{ min: 6, message: 'Mật khẩu ít nhất 6 ký tự' },
 								]}
 							>
-								<Input.Password prefix={<LockOutlined />} placeholder="Mật khẩu" size="large" className={styles.authInput} />
+								<Input.Password
+									prefix={<LockOutlined />}
+									placeholder='Mật khẩu'
+									size='large'
+									className={styles.authInput}
+								/>
 							</Form.Item>
 
 							{mode === 'register' && (
 								<Form.Item
-									name="confirmPassword"
+									name='confirmPassword'
 									dependencies={['password']}
 									rules={[
 										{ required: true, message: 'Vui lòng xác nhận mật khẩu' },
@@ -292,12 +316,17 @@ const Login: React.FC = () => {
 										}),
 									]}
 								>
-									<Input.Password prefix={<LockOutlined />} placeholder="Xác nhận mật khẩu" size="large" className={styles.authInput} />
+									<Input.Password
+										prefix={<LockOutlined />}
+										placeholder='Xác nhận mật khẩu'
+										size='large'
+										className={styles.authInput}
+									/>
 								</Form.Item>
 							)}
 
 							<Form.Item style={{ marginBottom: 0 }}>
-								<Button type="primary" htmlType="submit" loading={loading} block size="large">
+								<Button type='primary' htmlType='submit' loading={loading} block size='large'>
 									{mode === 'login' ? 'Đăng nhập' : 'Đăng ký'}
 								</Button>
 							</Form.Item>
@@ -319,8 +348,8 @@ const Login: React.FC = () => {
 						</div>
 
 						<div className={styles.note}>
-							Bằng cách đăng nhập, bạn đồng ý với <a href="#">Điều khoản sử dụng</a> và{' '}
-							<a href="#">Chính sách bảo mật</a> của chúng tôi.
+							Bằng cách đăng nhập, bạn đồng ý với <a href='#'>Điều khoản sử dụng</a> và{' '}
+							<a href='#'>Chính sách bảo mật</a> của chúng tôi.
 						</div>
 					</div>
 				</div>

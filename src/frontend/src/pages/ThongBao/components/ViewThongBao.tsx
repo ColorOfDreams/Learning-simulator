@@ -1,9 +1,9 @@
 import { EModuleKey } from '@/services/base/constant';
 import { type ESourceTypeNotification, mapModuleKey } from '@/services/ThongBao/constant';
 import { type ThongBao } from '@/services/ThongBao/typing';
+import { formatDate, formatDateTime } from '@/utils/formatDate';
 import { currentRole } from '@/utils/ip';
 import { getNameFile } from '@/utils/utils';
-import { formatDate, formatDateTime } from '@/utils/formatDate';
 import { CalendarOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Col, Divider, Row } from 'antd';
 import { history } from 'umi';
@@ -76,8 +76,7 @@ const ViewThongBao = (props: { record?: ThongBao.IRecord; afterViewDetail?: () =
 
 				{record?.thoiGianHieuLuc ? (
 					<Col span={24}>
-						Hiệu lực thông báo:{' '}
-						<b style={{ color: 'red' }}>{formatDate(record?.thoiGianHieuLuc)}</b>{' '}
+						Hiệu lực thông báo: <b style={{ color: 'red' }}>{formatDate(record?.thoiGianHieuLuc)}</b>{' '}
 					</Col>
 				) : null}
 

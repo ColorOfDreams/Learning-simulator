@@ -41,4 +41,28 @@ export class UserEntity extends BaseEntity {
   @ApiProperty({ enum: UserRole, default: UserRole.STUDENT })
   @Column({ type: 'enum', enum: UserRole, default: UserRole.STUDENT })
   role!: UserRole;
+
+  @ApiProperty({ default: 0 })
+  @Column({ type: 'int', default: 0 })
+  xp!: number;
+
+  @ApiProperty({ default: 1 })
+  @Column({ type: 'int', default: 1 })
+  level!: number;
+
+  @ApiProperty({ nullable: true })
+  @Column({ type: 'int', default: 11, nullable: true })
+  grade!: number;
+
+  @ApiProperty({ default: 0 })
+  @Column({ type: 'int', default: 0 })
+  streak!: number;
+
+  @ApiProperty({ nullable: true })
+  @Column({ type: 'date', nullable: true })
+  lastActiveDate!: Date | null;
+
+  @ApiProperty({ default: 0 })
+  @Column({ type: 'int', default: 0 })
+  maxStreak!: number;
 }

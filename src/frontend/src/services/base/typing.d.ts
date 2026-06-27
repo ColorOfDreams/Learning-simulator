@@ -3,6 +3,7 @@ import type { EModuleKey, EScopeFile, ESettingKey, EStorageFile } from './consta
 
 declare module Login {
 	export interface IUser {
+		id?: string;
 		sub: string; // SsoId 'b323b6c8-2f1e-4a9b-941b-f1e466b9ba40';
 		ssoId: string;
 		email: string;
@@ -26,6 +27,12 @@ declare module Login {
 		firstName?: string;
 		lastName?: string;
 		picture?: string; // 'https://images2.thanhnien.vn/528068263637045248/2023/10/14/ronaldo-1697254043939678025874.jpeg';
+		role?: string;
+		xp?: number;
+		level?: number;
+		grade?: number;
+		streak?: number;
+		lastActiveDate?: string;
 	}
 
 	export interface IPermission {

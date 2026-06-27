@@ -1,9 +1,3 @@
-import {
-	oneSignalClient,
-	sentryDSN,
-} from './ip';
+import { oneSignalClient, sentryDSN } from './ip';
 
-export const excludedPaths = [
-	sentryDSN,
-	oneSignalClient,
-].filter(Boolean);
+export const excludedPaths = [sentryDSN, oneSignalClient].filter(Boolean);

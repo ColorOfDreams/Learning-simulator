@@ -1,0 +1,620 @@
+@import '../components/student-theme.less';
+
+.stu-profile {
+	flex: 1;
+	overflow-y: auto;
+	padding: 0 0 56px;
+	position: relative;
+	background:
+		radial-gradient(900px 540px at 12% 30%, oklch(0.66 0.16 264 / 0.09), transparent 60%),
+		radial-gradient(820px 520px at 100% 60%, oklch(0.6 0.18 350 / 0.08), transparent 58%), var(--app-bg);
+	.stu-scrollbar();
+
+	&__cover {
+		position: relative;
+		overflow: hidden;
+		height: 188px;
+		background: linear-gradient(125deg, #221f2b 0%, #1a1722 55%, #15111c 100%);
+		border-bottom: 1px solid #2e2b39;
+
+		&-glow1 {
+			position: absolute;
+			width: 320px;
+			height: 320px;
+			right: 6%;
+			top: -150px;
+			border-radius: 50%;
+			background: radial-gradient(circle, oklch(0.6 0.18 350 / 0.4), transparent 64%);
+			animation: pfOrb 9s ease-in-out infinite;
+		}
+
+		&-glow2 {
+			position: absolute;
+			width: 300px;
+			height: 300px;
+			left: 8%;
+			top: -120px;
+			border-radius: 50%;
+			background: radial-gradient(circle, oklch(0.62 0.16 264 / 0.4), transparent 64%);
+			animation: pfOrb 11s ease-in-out infinite reverse;
+		}
+
+		&-glow3 {
+			position: absolute;
+			width: 240px;
+			height: 240px;
+			left: 42%;
+			bottom: -160px;
+			border-radius: 50%;
+			background: radial-gradient(circle, oklch(0.58 0.12 195 / 0.28), transparent 64%);
+			animation: pfOrb 13s ease-in-out infinite;
+		}
+
+		&-grid {
+			position: absolute;
+			inset: 0;
+			background-image:
+				linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+				linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+			background-size: 30px 30px;
+			mask-image: radial-gradient(120% 120% at 70% 0%, #000, transparent 72%);
+			-webkit-mask-image: radial-gradient(120% 120% at 70% 0%, #000, transparent 72%);
+		}
+
+		&-back {
+			position: absolute;
+			top: 18px;
+			left: 44px;
+			display: flex;
+			align-items: center;
+			gap: 9px;
+			color: #cfccdd;
+			font-size: 12.5px;
+			font-family: @font-mono;
+			cursor: pointer;
+			animation: stu-fadeUp 0.4s both;
+		}
+	}
+
+	&__container {
+		max-width: 1020px;
+		margin: 0 auto;
+		padding: 0 44px;
+	}
+
+	&__identity {
+		position: relative;
+		margin-top: -44px;
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 24px;
+		flex-wrap: wrap;
+	}
+
+	&__user-box {
+		display: flex;
+		align-items: flex-end;
+		gap: 20px;
+	}
+
+	&__avatar-wrapper {
+		position: relative;
+		width: 120px;
+		height: 120px;
+		flex: none;
+		animation: lbPop 0.6s cubic-bezier(0.2, 0.7, 0.3, 1.5) both;
+	}
+
+	&__avatar {
+		width: 120px;
+		height: 120px;
+		border-radius: 50%;
+		background: linear-gradient(140deg, oklch(0.7 0.15 290), oklch(0.64 0.17 332));
+		border: 5px solid var(--app-bg);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 42px;
+		font-weight: 800;
+		color: #fff;
+		animation: pfGlow 3.4s ease-in-out infinite;
+	}
+
+	&__level-badge {
+		position: absolute;
+		bottom: 6px;
+		right: 6px;
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, oklch(0.72 0.15 70), oklch(0.62 0.15 60));
+		border: 3px solid var(--app-bg);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 11px;
+		font-weight: 800;
+		color: #fff;
+	}
+
+	&__name-wrapper {
+		padding-bottom: 8px;
+	}
+
+	&__name {
+		font-size: 27px;
+		font-weight: 800;
+		letter-spacing: -0.5px;
+		color: var(--text);
+	}
+
+	&__meta-list {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-top: 6px;
+		flex-wrap: wrap;
+	}
+
+	&__username {
+		font-size: 13px;
+		color: var(--muted);
+		font-family: @font-mono;
+	}
+
+	&__role-tag {
+		font-size: 12px;
+		padding: 3px 10px;
+		border-radius: 999px;
+		background: oklch(0.62 0.16 264 / 0.13);
+		color: oklch(0.5 0.16 264);
+		font-weight: 700;
+	}
+
+	&__school-tag {
+		font-size: 12px;
+		padding: 3px 10px;
+		border-radius: 999px;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		color: var(--muted);
+		font-weight: 600;
+	}
+
+	&__actions {
+		display: flex;
+		gap: 10px;
+		padding-bottom: 10px;
+		animation: stu-fadeUp 0.5s both;
+		animation-delay: 0.15s;
+	}
+
+	&__btn {
+		padding: 10px 18px;
+		border-radius: 11px;
+		font-size: 13.5px;
+		font-weight: 700;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: 7px;
+		transition:
+			background 0.15s,
+			border-color 0.15s,
+			color 0.15s,
+			transform 0.15s;
+
+		&--secondary {
+			border: 1px solid var(--border);
+			background: var(--bg);
+			color: var(--muted);
+
+			&:hover {
+				border-color: oklch(0.62 0.16 264 / 0.5);
+				color: oklch(0.5 0.16 264);
+			}
+		}
+
+		&--primary {
+			background: linear-gradient(135deg, oklch(0.62 0.16 264), oklch(0.55 0.17 282));
+			color: #fff;
+			border: none;
+			box-shadow: 0 5px 16px -6px oklch(0.62 0.16 264 / 0.7);
+
+			&:hover {
+				transform: translateY(-2px);
+			}
+		}
+	}
+
+	// ── Stats Row ──
+	&__stats {
+		display: flex;
+		gap: 15px;
+		flex-wrap: wrap;
+		margin-top: 26px;
+	}
+
+	&__stat-card {
+		flex: 1;
+		min-width: 128px;
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		background: var(--bg);
+		padding: 16px;
+		display: flex;
+		flex-direction: column;
+		gap: 11px;
+		box-shadow: @stu-shadow-sm;
+		animation: labCardIn 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+		transition:
+			transform 0.15s,
+			box-shadow 0.15s;
+
+		&:hover {
+			transform: translateY(-3px);
+		}
+
+		&--xp {
+			animation-delay: 0.2s;
+			&:hover {
+				box-shadow: 0 14px 28px -16px oklch(0.62 0.16 264 / 0.5);
+			}
+		}
+		&--streak {
+			animation-delay: 0.28s;
+			&:hover {
+				box-shadow: 0 14px 28px -16px oklch(0.72 0.15 70 / 0.5);
+			}
+		}
+		&--labs {
+			animation-delay: 0.36s;
+			&:hover {
+				box-shadow: 0 14px 28px -16px oklch(0.58 0.12 195 / 0.5);
+			}
+		}
+		&--rank {
+			animation-delay: 0.44s;
+			&:hover {
+				box-shadow: 0 14px 28px -16px oklch(0.6 0.18 350 / 0.5);
+			}
+		}
+
+		&-icon {
+			width: 34px;
+			height: 34px;
+			border-radius: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			&--xp {
+				background: oklch(0.62 0.16 264 / 0.14);
+				color: oklch(0.62 0.16 264);
+			}
+			&--streak {
+				background: oklch(0.72 0.15 70 / 0.14);
+				color: oklch(0.72 0.15 70);
+			}
+			&--labs {
+				background: oklch(0.58 0.12 195 / 0.14);
+				color: oklch(0.58 0.12 195);
+			}
+			&--rank {
+				background: oklch(0.6 0.18 350 / 0.14);
+				color: oklch(0.6 0.18 350);
+			}
+		}
+
+		&-val {
+			font-size: 23px;
+			font-weight: 800;
+			color: var(--text);
+			letter-spacing: -0.5px;
+		}
+
+		&-label {
+			font-size: 11.5px;
+			color: var(--muted);
+			margin-top: 2px;
+		}
+
+		&-footer {
+			font-size: 11px;
+			font-weight: 700;
+
+			&--xp {
+				color: oklch(0.462 0.16 264);
+			}
+			&--streak {
+				color: oklch(0.55 0.15 70);
+			}
+			&--labs {
+				color: oklch(0.44 0.12 195);
+			}
+			&--rank {
+				color: oklch(0.46 0.18 350);
+			}
+		}
+	}
+
+	// ── Body Columns ──
+	&__columns {
+		display: flex;
+		gap: 18px;
+		flex-wrap: wrap;
+		margin-top: 18px;
+		align-items: flex-start;
+	}
+
+	&__col-left {
+		flex: 1.3;
+		min-width: 320px;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	&__col-right {
+		flex: 1;
+		min-width: 300px;
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+	}
+
+	&__section-card {
+		border: 1px solid var(--border);
+		border-radius: 18px;
+		background: var(--bg);
+		padding: 22px;
+		box-shadow: @stu-shadow-md;
+		animation: stu-fadeUp 0.55s both;
+	}
+
+	&__section-title {
+		font-size: 14px;
+		font-weight: 700;
+		color: var(--text);
+		margin-bottom: 10px;
+	}
+
+	&__bio {
+		font-size: 13.5px;
+		color: var(--muted);
+		line-height: 1.6;
+	}
+
+	&__subjects-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 16px;
+
+		span:first-child {
+			font-size: 14px;
+			font-weight: 700;
+			color: var(--text);
+		}
+
+		span:last-child {
+			font-size: 11.5px;
+			color: var(--muted);
+			font-family: @font-mono;
+		}
+	}
+
+	&__subjects-list {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	&__subject-item {
+		display: flex;
+		flex-direction: column;
+		gap: 7px;
+	}
+
+	&__subject-info {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		span:first-child {
+			font-size: 13px;
+			color: var(--text);
+			font-weight: 600;
+		}
+
+		span:last-child {
+			font-family: @font-mono;
+			font-size: 12.5px;
+			color: var(--text);
+			font-weight: 700;
+		}
+	}
+
+	&__subject-track {
+		height: 9px;
+		border-radius: 6px;
+		background: var(--surface);
+		overflow: hidden;
+	}
+
+	&__subject-fill {
+		height: 100%;
+		border-radius: 6px;
+		transform-origin: left;
+		animation: labBar 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+		&--chem {
+			background: linear-gradient(90deg, oklch(0.6 0.18 350 / 0.7), oklch(0.6 0.18 350));
+			animation-delay: 0.45s;
+		}
+		&--math {
+			background: linear-gradient(90deg, oklch(0.58 0.12 195 / 0.7), oklch(0.58 0.12 195));
+			animation-delay: 0.55s;
+		}
+		&--physics {
+			background: linear-gradient(90deg, oklch(0.62 0.16 264 / 0.7), oklch(0.62 0.16 264));
+			animation-delay: 0.65s;
+		}
+	}
+
+	&__achievements-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 16px;
+
+		span {
+			font-size: 14px;
+			font-weight: 700;
+			color: var(--text);
+		}
+
+		a {
+			font-size: 11.5px;
+			color: oklch(0.5 0.16 264);
+			font-weight: 700;
+			cursor: pointer;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	&__achievements-grid {
+		display: flex;
+		gap: 10px;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+
+	&__achievement-badge {
+		flex: none;
+		width: 84px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		animation: pfPop 0.55s cubic-bezier(0.2, 0.7, 0.3, 1.5) both;
+
+		&-icon {
+			width: 54px;
+			height: 54px;
+			border-radius: 16px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 1px solid transparent;
+
+			&--chem {
+				background: oklch(0.6 0.18 350 / 0.14);
+				border-color: oklch(0.6 0.18 350 / 0.3);
+				color: oklch(0.6 0.18 350);
+			}
+			&--streak {
+				background: oklch(0.72 0.15 70 / 0.14);
+				border-color: oklch(0.72 0.15 70 / 0.3);
+				color: oklch(0.72 0.15 70);
+			}
+			&--learner {
+				background: oklch(0.62 0.16 264 / 0.14);
+				border-color: oklch(0.62 0.16 264 / 0.3);
+				color: oklch(0.62 0.16 264);
+			}
+			&--rank {
+				background: oklch(0.58 0.12 195 / 0.14);
+				border-color: oklch(0.58 0.12 195 / 0.3);
+				color: oklch(0.58 0.12 195);
+			}
+		}
+
+		&-title {
+			font-size: 10.5px;
+			color: var(--muted);
+			text-align: center;
+			line-height: 1.25;
+			font-weight: 600;
+		}
+	}
+
+	&__activity-list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__activity-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 13px;
+		animation: stu-fadeUp 0.5s both;
+	}
+
+	&__activity-timeline {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		flex: none;
+	}
+
+	&__activity-icon-wrapper {
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		&--chem {
+			background: oklch(0.6 0.18 350 / 0.14);
+			color: oklch(0.6 0.18 350);
+		}
+		&--learner {
+			background: oklch(0.62 0.16 264 / 0.14);
+			color: oklch(0.62 0.16 264);
+		}
+		&--level {
+			background: oklch(0.72 0.15 70 / 0.14);
+			color: oklch(0.72 0.15 70);
+		}
+		&--physics {
+			background: oklch(0.58 0.12 195 / 0.14);
+			color: oklch(0.58 0.12 195);
+		}
+	}
+
+	&__activity-line {
+		width: 2px;
+		flex: 1;
+		min-height: 22px;
+		background: var(--border);
+		margin-top: 4px;
+	}
+
+	&__activity-content {
+		padding-bottom: 16px;
+
+		&--last {
+			padding-bottom: 0;
+		}
+	}
+
+	&__activity-title {
+		font-size: 13.5px;
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	&__activity-meta {
+		font-size: 11.5px;
+		color: var(--muted);
+		margin-top: 2px;
+		font-family: @font-mono;
+	}
+}
