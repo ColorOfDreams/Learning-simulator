@@ -141,20 +141,20 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
   ChemicalSolid: {
     getCollider: () => defaultCollider,
     initY: 0,
-    getSnapPoints: () => [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['chemical', 'container'] }],
-    tags: [],
+    getSnapPoints: () => [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['container'] }],
+    tags: ['pourable'],
   },
   ChemicalLiquid: {
     getCollider: () => defaultCollider,
     initY: 0,
-    getSnapPoints: () => [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['chemical', 'container'] }],
+    getSnapPoints: () => [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['container'] }],
     tags: ['pourable'],
   },
   ChemicalGas: {
     getCollider: () => defaultCollider,
     initY: 0,
-    getSnapPoints: () => [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['chemical', 'container'] }],
-    tags: [],
+    getSnapPoints: () => [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['container'] }],
+    tags: ['pourable'],
   },
   TestTube: {
     getCollider: () => defaultCollider,
@@ -177,7 +177,7 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
   NuocCat: {
     getCollider: () => defaultCollider,
     initY: 0,
-    getSnapPoints: () => [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['chemical', 'container'] }],
+    getSnapPoints: () => [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['container'] }],
     tags: ['pourable'],
   },
   Burette: {

@@ -82,7 +82,7 @@ const EquipmentDetail: React.FC<Props> = ({ objectId, sceneGraph, isPlaying, onC
 
     return thuocTinh.map((tt) => {
       const key = tt.khoa;
-      const val = props[key] ?? tt.macDinh;
+      const val = props[key] !== undefined ? props[key] : tt.macDinh;
 
       if (tt.loai === 'so') {
         return (

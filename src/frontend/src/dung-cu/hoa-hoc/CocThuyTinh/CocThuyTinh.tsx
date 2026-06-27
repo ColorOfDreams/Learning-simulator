@@ -53,27 +53,56 @@ const CocThuyTinh: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiS
             </group>
           );
         })}
-        {chieuCaoChatLong > 0 && (
-          <group position={[0, -0.57 + chieuCaoChatLong / 2, 0]}>
-            <mesh>
-              <cylinderGeometry args={[0.37, 0.37, chieuCaoChatLong, 64]} />
-              <meshPhysicalMaterial color={mauChatLong} transparent opacity={0.75} roughness={0.08} metalness={0.1} />
-            </mesh>
-            
-            {/* Bubbles */}
-            {effect === 'bubble' && (
-              <Sparkles count={50} scale={[0.6, chieuCaoChatLong, 0.6]} size={4} speed={0.8} opacity={0.6} color="#ffffff" />
-            )}
-            
-            {/* Precipitate */}
-            {effect === 'precipitate' && (
-              <mesh position={[0, -chieuCaoChatLong / 2 + 0.05, 0]}>
-                <cylinderGeometry args={[0.36, 0.36, 0.1, 64]} />
-                <meshStandardMaterial color={precipitateColor} roughness={0.9} />
+        {chieuCaoChatLong > 0 && (() => {
+          const state = doiTuong.properties?.state || doiTuong.thuocTinh?.state || 'liquid';
+          if (state === 'solid') {
+            return (
+              <group position={[0, -0.57 + chieuCaoChatLong / 4, 0]}>
+                <mesh>
+                  <cylinderGeometry args={[0.3, 0.36, chieuCaoChatLong / 2, 64]} />
+                  <meshStandardMaterial color={mauChatLong} roughness={0.9} />
+                </mesh>
+                {effect === 'bubble' && (
+                  <Sparkles count={50} scale={[0.6, chieuCaoChatLong, 0.6]} size={4} speed={0.8} opacity={0.6} color="#ffffff" />
+                )}
+              </group>
+            );
+          } else if (state === 'gas') {
+            return (
+              <group position={[0, 0, 0]}>
+                <mesh>
+                  <cylinderGeometry args={[0.37, 0.37, 1.1, 64]} />
+                  <meshBasicMaterial color={mauChatLong} transparent opacity={0.6} depthWrite={false} />
+                </mesh>
+                {effect === 'bubble' && (
+                  <Sparkles count={50} scale={[0.6, 1.1, 0.6]} size={4} speed={0.8} opacity={0.6} color="#ffffff" />
+                )}
+              </group>
+            );
+          }
+
+          return (
+            <group position={[0, -0.57 + chieuCaoChatLong / 2, 0]}>
+              <mesh>
+                <cylinderGeometry args={[0.37, 0.37, chieuCaoChatLong, 64]} />
+                <meshPhysicalMaterial color={mauChatLong} transparent opacity={0.75} roughness={0.08} metalness={0.1} />
               </mesh>
-            )}
-          </group>
-        )}
+              
+              {/* Bubbles */}
+              {effect === 'bubble' && (
+                <Sparkles count={50} scale={[0.6, chieuCaoChatLong, 0.6]} size={4} speed={0.8} opacity={0.6} color="#ffffff" />
+              )}
+              
+              {/* Precipitate */}
+              {effect === 'precipitate' && (
+                <mesh position={[0, -chieuCaoChatLong / 2 + 0.05, 0]}>
+                  <cylinderGeometry args={[0.36, 0.36, 0.1, 64]} />
+                  <meshStandardMaterial color={precipitateColor} roughness={0.9} />
+                </mesh>
+              )}
+            </group>
+          );
+        })()}
       </group>
     </DoiTuongKeoTha>
   );

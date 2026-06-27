@@ -131,6 +131,7 @@ export const ALL_CHEMICALS: Chemical[] = [
   { symbol:'Lv', name:'Livermori', atomicNumber:116, atomicMass:293, state:'solid', color:'#c0c0c0', group:'kim-loai', groupLabel:'Kim loại', period:7, appearance:'Kim loại nhân tạo siêu nặng', density:12.9, meltingPoint:null as any, boilingPoint:null as any },
   { symbol:'Ts', name:'Tennessin', atomicNumber:117, atomicMass:294, state:'solid', color:'#c0c0c0', group:'halogen', groupLabel:'Halogen', period:7, appearance:'Phi kim nhân tạo siêu nặng', density:7.1, meltingPoint:null as any, boilingPoint:null as any },
   { symbol:'Og', name:'Oganesson', atomicNumber:118, atomicMass:294, state:'gas', color:'transparent', group:'khi-hiem', groupLabel:'Khí hiếm', period:7, appearance:'Khí hiếm nhân tạo siêu nặng', density:0.013, meltingPoint:null as any, boilingPoint:null as any },
+  { symbol:'PCl5', name:'Photpho pentaclorua', atomicNumber:0, atomicMass:208, state:'gas', color:'#ffffff', group:'khac', groupLabel:'Khác', period:0, appearance:'Khói trắng', density:0, meltingPoint:null as any, boilingPoint:null as any },
 ];
 
 export const REACTION_RULES: ReactionRule[] = [
@@ -139,6 +140,7 @@ export const REACTION_RULES: ReactionRule[] = [
   { id:'ca-water', reactants:['Ca','H2O'], products:['Ca(OH)2','H2'], effect:'bubble', description:'Ca + 2H2O → Ca(OH)2 + H2↑. Canxi tan chậm, sủi bọt, dung dịch đục' },
   { id:'fe-cuso4', reactants:['Fe','CuSO4'], products:['FeSO4','Cu'], effect:'color_change', newColor:'#a0d0a0', description:'Fe + CuSO4 → FeSO4 + Cu↓. Đinh sắt tan, đồng đỏ bám, dd xanh lam→xanh lục' },
   { id:'fe-hg', reactants:['Fe','Hg'], products:['Fe(Hg)'], effect:'color_change', newColor:'#9ca3af', description:'Fe + Hg → Fe(Hg). Thủy ngân bao phủ bề mặt sắt tạo hỗn hống' },
+  { id:'p-cl', reactants:['P','Cl'], products:['PCl5'], effect:'bubble', newColor:'#ffffff', description:'2P + 5Cl2 → 2PCl5. Photpho cháy sáng trong Clo tạo khói trắng PCl5' },
   { id:'fe-cl', reactants:['Fe','Cl'], products:['FeCl3'], effect:'color_change', newColor:'#b45309', description:'2Fe + 3Cl2 → 2FeCl3. Sắt cháy sáng trong Clo tạo khói màu nâu đỏ' },
   { id:'zn-cuso4', reactants:['Zn','CuSO4'], products:['ZnSO4','Cu'], effect:'color_change', newColor:'#e0e0e0', description:'Zn + CuSO4 → ZnSO4 + Cu↓. Kẽm tan, đồng bám, dd mất màu xanh' },
   { id:'cu-agno3', reactants:['Cu','AgNO3'], products:['Cu(NO3)2','Ag'], effect:'color_change', newColor:'#4444ff', description:'Cu + 2AgNO3 → Cu(NO3)2 + 2Ag↓. Đồng tan, bạc kết tinh, dd→xanh' },

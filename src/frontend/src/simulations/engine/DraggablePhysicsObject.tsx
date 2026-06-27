@@ -44,6 +44,9 @@ const resolveCollisions = (
   const hx = half[0];
   const hz = half[2];
 
+  x = Math.max(-9.5, Math.min(9.5, x));
+  z = Math.max(-2.5, Math.min(4.5, z));
+
   let floorY = -0.6;
   if (x + hx > -6 && x - hx < 6 && z + hz > -2.6 && z - hz < -1.4) {
     floorY = 0.85;
@@ -51,8 +54,6 @@ const resolveCollisions = (
 
   const tableY = floorY + hy;
   y = Math.max(tableY, y);
-  x = Math.max(-9.5, Math.min(9.5, x));
-  z = Math.max(-4.5, Math.min(4.5, z));
 
   for (let pass = 0; pass < 3; pass++) {
     let hit = false;
@@ -78,7 +79,7 @@ const resolveCollisions = (
   }
   y = Math.max(tableY, y);
   x = Math.max(-9.5, Math.min(9.5, x));
-  z = Math.max(-4.5, Math.min(4.5, z));
+  z = Math.max(-2.5, Math.min(4.5, z));
   return [x, y, z];
 };
 
@@ -105,7 +106,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
   const lastPourRef = useRef<string | null>(null);
 
   const { camera, raycaster } = useThree();
-  const { setHoveredObjectId, setIsDragging, setSelectedEquipmentId, selectedEquipmentId, setSnapTargetId, rotationAxis, setPouringAction, updateObjectProperty, updateAllProperties, checkRuleAndAdvance, isDraggingPourable, setIsDraggingPourable } = useInteraction();
+  const { setHoveredObjectId, setIsDragging, setSelectedEquipmentId, selectedEquipmentId, snapTargetId, setSnapTargetId, rotationAxis, pouringAction, setPouringAction, updateObjectProperty, updateAllProperties, checkRuleAndAdvance, isDraggingPourable, setIsDraggingPourable } = useInteraction();
 
   const half = colliderArgs ?? getEquipmentConfig(object.modelName).getCollider(object.properties);
   const kinematic = forceKinematic ?? getEquipmentConfig(object.modelName).tags.includes('kinematic');
@@ -120,7 +121,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
   const findSnapTarget = useCallback((targetX: number, targetY: number, targetZ: number): [number, number, number] | null => {
     snapTargetRef.current = null;
     if (!snapPoints?.length) return null;
-    let bestDist = 3.0; // Increased distance for easier snapping
+    let bestDist = 1.0; // Reduced distance so user has to drag it closer
     let bestPos: [number, number, number] | null = null;
 
     for (const sp of snapPoints) {
@@ -136,16 +137,20 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
 
         const op = getPos(other);
         if (op[1] === 5) op[1] = getEquipmentConfig(otherModel).initY;
+        
+        // Items on the shelf (Z = -2, or Y > 1.2) should not be interacted with
+        if (op[2] <= -1.5 || op[1] > 1.2) continue;
 
         for (const os of otherSnaps) {
           if (!sp.connectsTo.includes(os.type) && !os.connectsTo.includes(sp.type)) continue;
           
           const ox = op[0] + os.position[0], oy = op[1] + os.position[1], oz = op[2] + os.position[2];
           
-          // 2.5D Mode: Calculate distance primarily based on X and Z (horizontal desk plane)
+          // 2.5D Mode: Calculate distance primarily based on X and Z, but also factor in Y for pouring
           const dist2D = Math.sqrt((worldX - ox) ** 2 + (worldZ - oz) ** 2);
+          const distY = Math.abs(worldY - oy);
           
-          if (dist2D < bestDist) {
+          if (dist2D < bestDist && distY < 1.5) {
             bestDist = dist2D;
             
             const isPourable = getEquipmentConfig(getModel(object)).tags.includes('pourable');
@@ -166,7 +171,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
             
             if (pourTargetRef.current) {
               // Hover above the container to pour (shifted left because of 45-deg tilt)
-              bestPos = [ox - sp.position[0] - 0.25, oy - sp.position[1] + 0.5, oz - sp.position[2]];
+              bestPos = [ox - sp.position[0] - 0.2, oy - sp.position[1] + 1.0, oz - sp.position[2]];
             } else if (dist2D < 1.5) {
               bestPos = [ox - sp.position[0], oy - sp.position[1], oz - sp.position[2]];
             } else {
@@ -181,11 +186,13 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
 
 
 
+  const startPosRef = useRef<[number, number, number]>([...object.position]);
+
   const onPointerDown = useCallback((e: any) => {
     if (globalDraggingId) return;
     if (e.button !== 0) return; // Only left-click — let right/middle pass to OrbitControls
     e.stopPropagation();
-    e.target.setPointerCapture(e.pointerId);
+    try { e.target.setPointerCapture(e.pointerId); } catch { }
     globalDraggingId = object.id;
     setDragging(true);
     setIsDragging(true);
@@ -198,6 +205,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
     pointerStart.current = { x: e.clientX, y: e.clientY };
     rotStartRef.current = { x: e.clientX, y: e.clientY };
     velRef.current = { x: 0, y: 0, z: 0 };
+    startPosRef.current = [...posRef.current];
 
     const normal = new THREE.Vector3(0, 1, 0); // 2.5D Mode: Raycast against Horizontal desk plane (Y=0)
     const cp = groupRef.current ? groupRef.current.position : new THREE.Vector3(...object.position);
@@ -276,7 +284,15 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         updateObjectProperty(object.id, 'chemicalLevel', 0);
         updateObjectProperty(object.id, 'liquidVolume', 0);
         updateObjectProperty(object.id, 'theTich', 0);
+        updateObjectProperty(object.id, 'khoiLuong', 0);
         if (checkRuleAndAdvance) checkRuleAndAdvance('pour', object.id, pourTargetRef.current);
+
+        // Return the bottle to its original position
+        posRef.current = [...startPosRef.current];
+        if (groupRef.current) {
+          groupRef.current.position.set(startPosRef.current[0], startPosRef.current[1], startPosRef.current[2]);
+        }
+        onUpdatePosition?.(object.id, startPosRef.current);
       } else if (updateObjectProperty) {
         updateObjectProperty(object.id, 'attachedTo', null);
       }
@@ -296,23 +312,22 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
       if (ray.intersectPlane(planeRef.current, intersection)) {
         let tx = intersection.x + offsetRef.current.x;
         let tz = intersection.z + offsetRef.current.z;
-        // Start at floor height, let resolveCollisions push it up if needed
-        let ty = -10; 
+        let ty = -10; // Start at floor to let resolveCollisions push it up
 
-        const snapped = findSnapTarget(tx, ty, tz);
-        if (snapped) { tx = snapped[0]; ty = snapped[1]; tz = snapped[2]; }
-
-        if (snapTargetRef.current !== lastPourRef.current) {
-          // just to avoid another ref, we don't track snap state here since it doesn't cause infinite object creation
+        // First resolve to find the actual floor/desk height
+        const tempResolved = resolveCollisions([tx, ty, tz], half, object.id, allObjects, null);
+        
+        const snapped = findSnapTarget(tx, tempResolved[1], tz);
+        if (snapped) { 
+          tx = snapped[0]; 
+          ty = snapped[1]; 
+          tz = snapped[2]; 
+        } else {
+          ty = tempResolved[1];
         }
 
-        if (pourTargetRef.current !== lastPourRef.current) {
-          lastPourRef.current = pourTargetRef.current;
-          if (pourTargetRef.current && setPouringAction) {
-            setPouringAction({ sourceId: object.id, targetId: pourTargetRef.current, startTime: performance.now(), sourcePos: posRef.current });
-          } else if (!pourTargetRef.current && setPouringAction) {
-            setPouringAction(null);
-          }
+        if (snapTargetRef.current !== lastPourRef.current) {
+          // just to avoid another ref
         }
 
         setSnapTargetId(snapTargetRef.current);
@@ -321,6 +336,16 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         const resolved = resolveCollisions([tx, ty, tz], half, object.id, allObjects, targetIdToIgnore);
         posRef.current = resolved;
         groupRef.current.position.set(resolved[0], resolved[1], resolved[2]);
+
+        if (pourTargetRef.current !== lastPourRef.current) {
+          lastPourRef.current = pourTargetRef.current;
+          if (pourTargetRef.current && setPouringAction) {
+            // Wait for position to be resolved so sourcePos is accurate
+            setPouringAction({ sourceId: object.id, targetId: pourTargetRef.current, startTime: performance.now(), sourcePos: [...resolved] as [number, number, number] });
+          } else if (!pourTargetRef.current && setPouringAction) {
+            setPouringAction(null);
+          }
+        }
       }
     } else {
       if (snapTargetRef.current || pourTargetRef.current) {
@@ -366,15 +391,18 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         }}
       >
         {children}
-        <Html position={[0, half[1] + 0.3, 0]} center distanceFactor={10} zIndexRange={[100, 0]}>
-          <div style={{
-            background: 'rgba(0,0,0,0.75)', color: '#fff', padding: '4px 10px',
-            borderRadius: '6px', fontSize: '12px', userSelect: 'none', pointerEvents: 'none',
-            whiteSpace: 'nowrap', border: '1px solid rgba(255,255,255,0.2)',
-          }}>
-            {label}
-          </div>
-        </Html>
+        {/* Hide label if this object is being dragged, or if it's the target of a snap or pour action */}
+        {label && !(dragging || snapTargetId === object.id || pouringAction?.targetId === object.id) && (
+          <Html position={[0, half[1] + 0.3, 0]} center distanceFactor={10} zIndexRange={[100, 0]}>
+            <div style={{
+              background: 'rgba(0,0,0,0.75)', color: '#fff', padding: '4px 10px',
+              borderRadius: '6px', fontSize: '12px', userSelect: 'none', pointerEvents: 'none',
+              whiteSpace: 'nowrap', border: '1px solid rgba(255,255,255,0.2)',
+            }}>
+              {label}
+            </div>
+          </Html>
+        )}
       </group>
     </group>
   );
@@ -419,7 +447,7 @@ export function getSnapPointsForModel(modelName: string, properties?: any): Snap
     case 'ChemicalSolid':
     case 'ChemicalLiquid':
     case 'ChemicalGas':
-      return [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['chemical', 'container'] }];
+      return [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['container'] }];
     case 'Beaker':
     case 'TestTube':
     case 'ErlenmeyerFlask':
