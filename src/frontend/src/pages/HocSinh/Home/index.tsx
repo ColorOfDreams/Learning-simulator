@@ -19,6 +19,140 @@ interface LabItem {
 
 // ── Mock Data ──
 const ALL_LABS: LabItem[] = [
+	// ── Hóa học 10 ──
+	{
+		id: 201,
+		title: 'Thí nghiệm bắn phá lá vàng – Rutherford',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~10 phút',
+		xp: '+80 XP',
+		locked: false,
+		simId: 'CHEM10-01',
+		grade: 10,
+	},
+	{
+		id: 202,
+		title: 'Thử màu ngọn lửa của các kim loại',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~8 phút',
+		xp: '+60 XP',
+		locked: false,
+		simId: 'CHEM10-02',
+		grade: 10,
+	},
+	{
+		id: 203,
+		title: 'Kẽm tác dụng với dung dịch HCl',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~8 phút',
+		xp: '+55 XP',
+		locked: false,
+		simId: 'CHEM10-03',
+		grade: 10,
+	},
+	{
+		id: 204,
+		title: 'Đốt cháy dây magnesium trong không khí',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~8 phút',
+		xp: '+60 XP',
+		locked: false,
+		simId: 'CHEM10-04',
+		grade: 10,
+	},
+	{
+		id: 205,
+		title: 'Phản ứng tỏa nhiệt – tôi vôi (CaO + H₂O)',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~8 phút',
+		xp: '+60 XP',
+		locked: false,
+		simId: 'CHEM10-05',
+		grade: 10,
+	},
+	{
+		id: 206,
+		title: 'Phản ứng thu nhiệt (NH₄Cl + Ba(OH)₂)',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~8 phút',
+		xp: '+60 XP',
+		locked: false,
+		simId: 'CHEM10-06',
+		grade: 10,
+	},
+	{
+		id: 207,
+		title: 'Ảnh hưởng của nồng độ đến tốc độ phản ứng',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~10 phút',
+		xp: '+75 XP',
+		locked: false,
+		simId: 'CHEM10-07',
+		grade: 10,
+	},
+	{
+		id: 208,
+		title: 'Ảnh hưởng của chất xúc tác – phân hủy H₂O₂',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~10 phút',
+		xp: '+75 XP',
+		locked: false,
+		simId: 'CHEM10-08',
+		grade: 10,
+	},
+	{
+		id: 209,
+		title: 'Ảnh hưởng của diện tích bề mặt tiếp xúc',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~10 phút',
+		xp: '+75 XP',
+		locked: false,
+		simId: 'CHEM10-09',
+		grade: 10,
+	},
+	{
+		id: 210,
+		title: 'Nhận biết ion halide bằng dung dịch AgNO₃',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+85 XP',
+		locked: false,
+		simId: 'CHEM10-10',
+		grade: 10,
+	},
+	{
+		id: 211,
+		title: 'Tính tẩy màu của nước chlorine',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~8 phút',
+		xp: '+60 XP',
+		locked: false,
+		simId: 'CHEM10-11',
+		grade: 10,
+	},
+	{
+		id: 212,
+		title: 'Chlorine đẩy bromine ra khỏi muối bromide',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~10 phút',
+		xp: '+70 XP',
+		locked: false,
+		simId: 'CHEM10-12',
+		grade: 10,
+	},
+	// ── Hóa học 12 ──
 	{
 		id: 1,
 		title: 'Điều chế ethyl acetate (phản ứng ester hóa)',
@@ -27,7 +161,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~15 phút',
 		xp: '+120 XP',
 		locked: false,
-		simId: 'SIM-01',
+		simId: 'CHEM12-01',
 		grade: 12,
 	},
 	{
@@ -38,7 +172,128 @@ const ALL_LABS: LabItem[] = [
 		mins: '~8 phút',
 		xp: '+60 XP',
 		locked: false,
-		simId: 'SIM-03',
+		simId: 'CHEM12-02',
+		grade: 12,
+	},
+	{
+		id: 101,
+		title: 'Glucose tác dụng với Cu(OH)₂',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~10 phút',
+		xp: '+70 XP',
+		locked: false,
+		simId: 'CHEM12-03',
+		grade: 12,
+	},
+	{
+		id: 102,
+		title: 'Phản ứng tráng bạc của glucose',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+85 XP',
+		locked: false,
+		simId: 'CHEM12-04',
+		grade: 12,
+	},
+	{
+		id: 103,
+		title: 'Phản ứng màu của tinh bột với iodine',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~8 phút',
+		xp: '+60 XP',
+		locked: false,
+		simId: 'CHEM12-05',
+		grade: 12,
+	},
+	{
+		id: 104,
+		title: 'Phản ứng màu biuret của protein',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~8 phút',
+		xp: '+65 XP',
+		locked: false,
+		simId: 'CHEM12-06',
+		grade: 12,
+	},
+	{
+		id: 105,
+		title: 'Sodium tác dụng với nước',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~10 phút',
+		xp: '+80 XP',
+		locked: false,
+		simId: 'CHEM12-07',
+		grade: 12,
+	},
+	{
+		id: 106,
+		title: 'Đinh sắt tác dụng với dung dịch CuSO₄',
+		subject: 'chem',
+		level: 'Cơ bản',
+		mins: '~8 phút',
+		xp: '+65 XP',
+		locked: false,
+		simId: 'CHEM12-08',
+		grade: 12,
+	},
+	{
+		id: 107,
+		title: 'Nhôm tác dụng với dung dịch NaOH',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~10 phút',
+		xp: '+75 XP',
+		locked: false,
+		simId: 'CHEM12-09',
+		grade: 12,
+	},
+	{
+		id: 108,
+		title: 'Phản ứng nhiệt nhôm (Al + Fe₂O₃)',
+		subject: 'chem',
+		level: 'Nâng cao',
+		mins: '~12 phút',
+		xp: '+100 XP',
+		locked: false,
+		simId: 'CHEM12-10',
+		grade: 12,
+	},
+	{
+		id: 109,
+		title: 'Điều chế Fe(OH)₂ và Fe(OH)₃',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~10 phút',
+		xp: '+80 XP',
+		locked: false,
+		simId: 'CHEM12-11',
+		grade: 12,
+	},
+	{
+		id: 110,
+		title: 'Điện phân dung dịch CuSO₄',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+90 XP',
+		locked: false,
+		simId: 'CHEM12-12',
+		grade: 12,
+	},
+	{
+		id: 111,
+		title: 'Ăn mòn điện hóa học (pin Zn-Cu)',
+		subject: 'chem',
+		level: 'Trung bình',
+		mins: '~12 phút',
+		xp: '+90 XP',
+		locked: false,
+		simId: 'CHEM12-13',
 		grade: 12,
 	},
 	{
@@ -49,7 +304,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~10 phút',
 		xp: '+60 XP',
 		locked: false,
-		simId: 'SIM-04',
+		simId: 'CHEM11-01',
 		grade: 11,
 	},
 	{
@@ -323,7 +578,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~12 phút',
 		xp: '+80 XP',
 		locked: false,
-		simId: 'SIM-05',
+		simId: 'CHEM11-02',
 		grade: 11,
 	},
 	{
@@ -334,7 +589,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~10 phút',
 		xp: '+80 XP',
 		locked: false,
-		simId: 'SIM-06',
+		simId: 'CHEM11-03',
 		grade: 11,
 	},
 	{
@@ -345,7 +600,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~8 phút',
 		xp: '+60 XP',
 		locked: false,
-		simId: 'SIM-07',
+		simId: 'CHEM11-04',
 		grade: 11,
 	},
 	{
@@ -356,7 +611,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~10 phút',
 		xp: '+80 XP',
 		locked: false,
-		simId: 'SIM-09',
+		simId: 'CHEM11-05',
 		grade: 11,
 	},
 	{
@@ -367,7 +622,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~8 phút',
 		xp: '+60 XP',
 		locked: false,
-		simId: 'SIM-10',
+		simId: 'CHEM11-06',
 		grade: 11,
 	},
 	{
@@ -378,7 +633,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~10 phút',
 		xp: '+80 XP',
 		locked: false,
-		simId: 'SIM-11',
+		simId: 'CHEM11-07',
 		grade: 11,
 	},
 	{
@@ -389,7 +644,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~10 phút',
 		xp: '+70 XP',
 		locked: false,
-		simId: 'SIM-12',
+		simId: 'CHEM11-08',
 		grade: 11,
 	},
 	{
@@ -400,7 +655,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~12 phút',
 		xp: '+85 XP',
 		locked: false,
-		simId: 'SIM-13',
+		simId: 'CHEM11-09',
 		grade: 11,
 	},
 	{
@@ -411,7 +666,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~10 phút',
 		xp: '+70 XP',
 		locked: false,
-		simId: 'SIM-14',
+		simId: 'CHEM11-10',
 		grade: 11,
 	},
 	{
@@ -422,7 +677,7 @@ const ALL_LABS: LabItem[] = [
 		mins: '~12 phút',
 		xp: '+80 XP',
 		locked: false,
-		simId: 'SIM-15',
+		simId: 'CHEM11-11',
 		grade: 11,
 	},
 	{
@@ -697,15 +952,47 @@ const FILTERS = [
 	{ key: 'chem', label: 'Hóa học' },
 ];
 
+const HOME_SCROLL_RESTORE_KEY = 'hoc_sinh_home_scroll_restore';
+
+interface HomeScrollRestoreState {
+	scrollTop: number;
+	grade: number;
+	filter: string;
+}
+
+const readHomeScrollRestore = (): HomeScrollRestoreState | null => {
+	try {
+		const raw = sessionStorage.getItem(HOME_SCROLL_RESTORE_KEY);
+		if (!raw) return null;
+		const parsed = JSON.parse(raw) as Partial<HomeScrollRestoreState>;
+		if (typeof parsed.scrollTop !== 'number' || typeof parsed.grade !== 'number' || typeof parsed.filter !== 'string') {
+			sessionStorage.removeItem(HOME_SCROLL_RESTORE_KEY);
+			return null;
+		}
+		return {
+			scrollTop: parsed.scrollTop,
+			grade: parsed.grade,
+			filter: parsed.filter,
+		};
+	} catch {
+		sessionStorage.removeItem(HOME_SCROLL_RESTORE_KEY);
+		return null;
+	}
+};
+
 const HocSinhHome: React.FC = () => {
 	const { initialState } = useModel('@@initialState');
 	const user = initialState?.currentUser;
+	const homeScrollRef = React.useRef<HTMLDivElement | null>(null);
+	const restoredHomeState = useMemo(() => readHomeScrollRestore(), []);
 	const [heroInput, setHeroInput] = useState('');
 	const [grade, setGrade] = useState(() => {
+		if (restoredHomeState) return restoredHomeState.grade;
 		const saved = localStorage.getItem('selected_grade');
 		return saved ? parseInt(saved, 10) : 12;
 	});
 	const [filter, setFilter] = useState(() => {
+		if (restoredHomeState) return restoredHomeState.filter;
 		return localStorage.getItem('selected_filter') || 'all';
 	});
 
@@ -734,7 +1021,29 @@ const HocSinhHome: React.FC = () => {
 		[grade, filter],
 	);
 
+	React.useEffect(() => {
+		if (!restoredHomeState) return;
+		const frame = window.requestAnimationFrame(() => {
+			const el = homeScrollRef.current;
+			if (el) {
+				el.scrollTop = restoredHomeState.scrollTop;
+			}
+			sessionStorage.removeItem(HOME_SCROLL_RESTORE_KEY);
+		});
+		return () => window.cancelAnimationFrame(frame);
+	}, [restoredHomeState, filteredLabs.length]);
+
 	const openWorkspace = useCallback((subject: string, simId?: string) => {
+		const el = homeScrollRef.current;
+		sessionStorage.setItem(
+			HOME_SCROLL_RESTORE_KEY,
+			JSON.stringify({
+				scrollTop: el?.scrollTop ?? 0,
+				grade,
+				filter,
+			}),
+		);
+
 		let path = `/hoc-sinh/workspace?subject=${subject}`;
 		if (simId) {
 			path += `&sim=${simId}`;
@@ -747,7 +1056,7 @@ const HocSinhHome: React.FC = () => {
 			}
 		}
 		history.push(path);
-	}, []);
+	}, [filter, grade]);
 
 	const handleHeroRun = useCallback(
 		async (customPrompt?: string) => {
@@ -832,7 +1141,7 @@ const HocSinhHome: React.FC = () => {
 
 	return (
 		<StudentLayout>
-			<div className='stu-home scl'>
+			<div ref={homeScrollRef} className='stu-home scl'>
 				{/* Grid overlay */}
 				<div className='stu-home__grid-overlay' />
 

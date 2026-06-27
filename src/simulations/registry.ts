@@ -1,6 +1,5 @@
 import type { ComponentType } from 'react'
 import type { SimulationProps } from './types'
-import EsterSimulation from './chemistry/SIM-01-ester'
 import ProjectileSimulation from './physics/SIM-02-projectile'
 import KinematicsSimulation from './physics/SIM-21-kinematics'
 import FreefallSimulation from './physics/SIM-22-freefall'
@@ -12,7 +11,6 @@ import PendulumSimulation from './physics/SIM-27-pendulum'
 import CircularSimulation from './physics/SIM-28-circular'
 import CollisionSimulation from './physics/SIM-29-collision'
 import EnergySimulation from './physics/SIM-30-energy'
-import SoapSimulation from './chemistry/SIM-03-soap'
 import GenericChemSimulation from './chemistry/GenericChemSimulation'
 import BoyleSimulation from './physics/SIM-31-boyle'
 import CharlesSimulation from './physics/SIM-32-charles'
@@ -57,11 +55,53 @@ export function getSimulation(id: string): ComponentType<SimulationProps> | unde
 }
 
 // Register simulations
-registerSimulation('SIM-01', EsterSimulation)
+registerSimulation('SIM-01', GenericChemSimulation)
 registerSimulation('SIM-02', ProjectileSimulation)
-registerSimulation('SIM-03', SoapSimulation)
+registerSimulation('SIM-03', GenericChemSimulation)
 
-// Register dynamic chemistry simulations SIM-04 through SIM-15
+// Chemistry 10 experiments
+registerSimulation('CHEM10-01', GenericChemSimulation)
+registerSimulation('CHEM10-02', GenericChemSimulation)
+registerSimulation('CHEM10-03', GenericChemSimulation)
+registerSimulation('CHEM10-04', GenericChemSimulation)
+registerSimulation('CHEM10-05', GenericChemSimulation)
+registerSimulation('CHEM10-06', GenericChemSimulation)
+registerSimulation('CHEM10-07', GenericChemSimulation)
+registerSimulation('CHEM10-08', GenericChemSimulation)
+registerSimulation('CHEM10-09', GenericChemSimulation)
+registerSimulation('CHEM10-10', GenericChemSimulation)
+registerSimulation('CHEM10-11', GenericChemSimulation)
+registerSimulation('CHEM10-12', GenericChemSimulation)
+
+// Native Chemistry 12 experiments imported from hoa-hoc-12
+registerSimulation('CHEM12-01', GenericChemSimulation)
+registerSimulation('CHEM12-02', GenericChemSimulation)
+registerSimulation('CHEM12-03', GenericChemSimulation)
+registerSimulation('CHEM12-04', GenericChemSimulation)
+registerSimulation('CHEM12-05', GenericChemSimulation)
+registerSimulation('CHEM12-06', GenericChemSimulation)
+registerSimulation('CHEM12-07', GenericChemSimulation)
+registerSimulation('CHEM12-08', GenericChemSimulation)
+registerSimulation('CHEM12-09', GenericChemSimulation)
+registerSimulation('CHEM12-10', GenericChemSimulation)
+registerSimulation('CHEM12-11', GenericChemSimulation)
+registerSimulation('CHEM12-12', GenericChemSimulation)
+registerSimulation('CHEM12-13', GenericChemSimulation)
+
+// Chemistry 11 experiments
+registerSimulation('CHEM11-01', GenericChemSimulation)
+registerSimulation('CHEM11-02', GenericChemSimulation)
+registerSimulation('CHEM11-03', GenericChemSimulation)
+registerSimulation('CHEM11-04', GenericChemSimulation)
+registerSimulation('CHEM11-05', GenericChemSimulation)
+registerSimulation('CHEM11-06', GenericChemSimulation)
+registerSimulation('CHEM11-07', GenericChemSimulation)
+registerSimulation('CHEM11-08', GenericChemSimulation)
+registerSimulation('CHEM11-09', GenericChemSimulation)
+registerSimulation('CHEM11-10', GenericChemSimulation)
+registerSimulation('CHEM11-11', GenericChemSimulation)
+
+// Legacy Chemistry 11 aliases for old links/sessions
 registerSimulation('SIM-04', GenericChemSimulation)
 registerSimulation('SIM-05', GenericChemSimulation)
 registerSimulation('SIM-06', GenericChemSimulation)
@@ -113,7 +153,3 @@ registerSimulation('SIM-49', EFieldSimulation)
 registerSimulation('SIM-50', OhmSimulation)
 registerSimulation('SIM-51', ResistorsSimulation)
 registerSimulation('SIM-52', FullCircuitSimulation)
-
-
-
-
