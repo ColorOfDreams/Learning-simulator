@@ -1,5 +1,7 @@
 import { createContext, useContext } from 'react';
 
+export const dynamicOffsets: Record<string, [number, number, number]> = {};
+
 export interface InteractionState {
   hoveredObjectId: string | null;
   setHoveredObjectId: (id: string | null) => void;

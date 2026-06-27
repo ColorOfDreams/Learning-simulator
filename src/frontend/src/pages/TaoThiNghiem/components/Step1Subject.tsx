@@ -41,20 +41,29 @@ const Step1Subject: React.FC<Props> = ({ data, onChange }) => {
       </div>
 
       <Row gutter={16} className="s1-env">
-        <Col span={12}>
+        <Col span={roomType === 'physics' ? 8 : 12}>
           <label>Gia tốc trọng trường</label>
           <InputNumber size="large" min={0} max={100} step={0.1}
             value={data.environment?.gravity ?? 9.81}
             onChange={(v) => onChange({ environment: { ...data.environment, gravity: v ?? 9.81 } })}
             addonAfter="m/s²" style={{ width: '100%' }} />
         </Col>
-        <Col span={12}>
+        <Col span={roomType === 'physics' ? 8 : 12}>
           <label>Nhiệt độ phòng</label>
           <InputNumber size="large" min={-50} max={200} step={1}
             value={data.environment?.temperature ?? 25}
             onChange={(v) => onChange({ environment: { ...data.environment, temperature: v ?? 25 } })}
             addonAfter="°C" style={{ width: '100%' }} />
         </Col>
+        {roomType === 'physics' && (
+          <Col span={8}>
+            <label>Hệ số ma sát (Môi trường)</label>
+            <InputNumber size="large" min={0} max={10} step={0.01}
+              value={data.environment?.damping ?? 0.05}
+              onChange={(v) => onChange({ environment: { ...data.environment, damping: v ?? 0 } })}
+              style={{ width: '100%' }} />
+          </Col>
+        )}
       </Row>
     </div>
   );

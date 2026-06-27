@@ -138,8 +138,9 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         const op = getPos(other);
         if (op[1] === 5) op[1] = getEquipmentConfig(otherModel).initY;
         
-        // Items on the shelf (Z = -2, or Y > 1.2) should not be interacted with
-        if (op[2] <= -1.5 || op[1] > 1.2) continue;
+        // Items on the shelf (Z <= -1.5) should not be interacted with
+        // Removed op[1] > 1.2 because Stand and Burette have Y > 1.2 naturally
+        if (op[2] <= -1.5) continue;
 
         for (const os of otherSnaps) {
           if (!sp.connectsTo.includes(os.type) && !os.connectsTo.includes(sp.type)) continue;
@@ -150,7 +151,8 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
           const dist2D = Math.sqrt((worldX - ox) ** 2 + (worldZ - oz) ** 2);
           const distY = Math.abs(worldY - oy);
           
-          if (dist2D < bestDist && distY < 1.5) {
+          const isPouringRelated = sp.type === 'chemical' || os.type === 'chemical' || sp.type === 'container' || os.type === 'container';
+          if (dist2D < bestDist && (distY < 1.5 || !isPouringRelated)) {
             bestDist = dist2D;
             
             const isPourable = getEquipmentConfig(getModel(object)).tags.includes('pourable');
@@ -357,7 +359,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         }
         setSnapTargetId(null);
       }
-      if (isPlaying && !kinematic) {
+      if (isPlaying && !kinematic && !((object as any).thuocTinh?.attachedTo || object.properties?.attachedTo)) {
         let [x, y, z] = posRef.current;
         velRef.current.y -= 9.81 * delta;
         const py = y + velRef.current.y * delta;
@@ -365,6 +367,20 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         if (resolved[1] > py) velRef.current.y = 0;
         posRef.current = resolved;
         groupRef.current.position.set(resolved[0], resolved[1], resolved[2]);
+      } else {
+        const targetObjId = (object as any).thuocTinh?.attachedTo || object.properties?.attachedTo;
+        if (targetObjId) {
+          import('@/simulations/engine/InteractionContext').then(({ dynamicOffsets }) => {
+            const offset = dynamicOffsets[targetObjId];
+            if (offset && groupRef.current) {
+              groupRef.current.position.set(posRef.current[0] + offset[0], posRef.current[1] + offset[1], posRef.current[2] + offset[2]);
+            } else if (groupRef.current) {
+              groupRef.current.position.set(posRef.current[0], posRef.current[1], posRef.current[2]);
+            }
+          });
+        } else if (groupRef.current) {
+          groupRef.current.position.set(posRef.current[0], posRef.current[1], posRef.current[2]);
+        }
       }
     }
 
@@ -412,8 +428,8 @@ export function getSnapPointsForModel(modelName: string, properties?: any): Snap
   switch (modelName) {
     case 'Stand':
       return [
-        { id: 'clamp_right', position: [1.6, 2.0, 0], type: 'clamp', label: 'Kẹp phải', connectsTo: ['anchor', 'spring_top', 'dashpot_top'] },
-        { id: 'clamp_left', position: [-1.6, 2.0, 0], type: 'clamp', label: 'Kẹp trái', connectsTo: ['anchor', 'spring_top', 'dashpot_top'] },
+        { id: 'clamp_right', position: [1.6, 2.0, 0], type: 'clamp', label: 'Kẹp phải', connectsTo: [] },
+        { id: 'clamp_left', position: [-1.6, 2.0, 0], type: 'clamp', label: 'Kẹp trái', connectsTo: [] },
       ];
     case 'SimplePendulum': {
       const l = properties?.length || 2;
@@ -428,18 +444,18 @@ export function getSnapPointsForModel(modelName: string, properties?: any): Snap
     case 'Spring': {
       const l = properties?.length || 2;
       return [
-        { id: 'top', position: [0, l / 2, 0], type: 'spring_top', label: 'Đầu trên', connectsTo: ['clamp', 'hook'] },
+        { id: 'top', position: [0, l / 2, 0], type: 'spring_top', label: 'Đầu trên', connectsTo: ['clamp'] },
         { id: 'bottom', position: [0, -l / 2, 0], type: 'spring_bottom', label: 'Đầu dưới', connectsTo: ['hook', 'motor_output'] },
       ];
     }
     case 'MassBlock':
       return [
         { id: 'hook_top', position: [0, 0.2, 0], type: 'hook', label: 'Móc trên', connectsTo: ['spring_bottom', 'dashpot_bottom'] },
-        { id: 'hook_bottom', position: [0, -0.2, 0], type: 'hook', label: 'Móc dưới', connectsTo: ['spring_top'] },
+        { id: 'hook_bottom', position: [0, -0.2, 0], type: 'hook', label: 'Móc dưới', connectsTo: ['hook'] },
       ];
     case 'Dashpot':
       return [
-        { id: 'top', position: [0, 1.0, 0], type: 'dashpot_top', label: 'Đầu trên', connectsTo: ['clamp', 'hook'] },
+        { id: 'top', position: [0, 1.0, 0], type: 'dashpot_top', label: 'Đầu trên', connectsTo: ['clamp'] },
         { id: 'bottom', position: [0, -1.0, 0], type: 'dashpot_bottom', label: 'Đầu dưới', connectsTo: ['hook'] },
       ];
     case 'DrivingMotor':

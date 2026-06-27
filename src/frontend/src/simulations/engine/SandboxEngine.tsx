@@ -118,20 +118,24 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
 
   const heSoTatDan = useMemo(() => {
     const objs = sceneGraph?.objects || [];
-    let found = 0;
+    let dashpotDamping: number | null = null;
     for (const o of objs) {
       const mn = (o as any).modelName || (o as any).maDungCu;
       const nhan = (o as any).nhan || (o as any).tenDungCu;
       if (mn === 'Dashpot' || mn === 'BoGiamChan' || nhan === 'Bộ giảm chấn' || nhan === 'Giảm Chấn') {
-        let val = o.properties?.heSoTatDan ?? (o as any).thuocTinh?.heSoTatDan;
-        if (typeof val === 'string') val = parseFloat(val);
-        if (typeof val !== 'number' || isNaN(val)) val = 0.5;
-        found = val;
-        break;
+        const pos = (o as any).viTri || (o as any).position || [0, 5, 0];
+        if (pos[2] > -1.5) {
+          let val = o.properties?.heSoTatDan ?? (o as any).thuocTinh?.heSoTatDan;
+          if (typeof val === 'string') val = parseFloat(val);
+          if (typeof val !== 'number' || isNaN(val)) val = 0.5;
+          dashpotDamping = val;
+          break;
+        }
       }
     }
-    return found;
-  }, [sceneGraph?.objects]);
+    if (dashpotDamping !== null) return dashpotDamping;
+    return (sceneGraph as any)?.environment?.damping ?? 0.05;
+  }, [sceneGraph?.objects, (sceneGraph as any)?.environment?.damping]);
 
   const { currentStepIndex, setStep: setCurrentStepIndex, updateObjectProperty, updateAllProperties, checkRuleAndAdvance } = useModel('useSimulationModel');
 

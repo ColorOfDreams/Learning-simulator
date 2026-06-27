@@ -56,8 +56,8 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
     getCollider: () => [1.0, 2.5, 1.0],
     initY: 1.9,
     getSnapPoints: () => [
-      { id: 'clamp_right', position: [1.6, 2.0, 0], type: 'clamp', label: 'Kẹp phải', connectsTo: ['anchor', 'spring_top', 'dashpot_top'] },
-      { id: 'clamp_left', position: [-1.6, 2.0, 0], type: 'clamp', label: 'Kẹp trái', connectsTo: ['anchor', 'spring_top', 'dashpot_top'] },
+      { id: 'clamp_right', position: [1.6, 2.0, 0], type: 'clamp', label: 'Kẹp phải', connectsTo: [] },
+      { id: 'clamp_left', position: [-1.6, 2.0, 0], type: 'clamp', label: 'Kẹp trái', connectsTo: [] },
     ],
     tags: ['kinematic'],
   },
@@ -84,7 +84,7 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
     getSnapPoints: (props) => {
       const l = props?.length || 2;
       return [
-        { id: 'top', position: [0, l / 2, 0], type: 'spring_top', label: 'Đầu trên', connectsTo: ['clamp', 'hook'] },
+        { id: 'top', position: [0, l / 2, 0], type: 'spring_top', label: 'Đầu trên', connectsTo: ['clamp'] },
         { id: 'bottom', position: [0, -l / 2, 0], type: 'spring_bottom', label: 'Đầu dưới', connectsTo: ['hook', 'motor_output'] },
       ];
     },
@@ -95,7 +95,7 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
     initY: 0.2,
     getSnapPoints: () => [
       { id: 'hook_top', position: [0, 0.2, 0], type: 'hook', label: 'Móc trên', connectsTo: ['spring_bottom', 'dashpot_bottom'] },
-      { id: 'hook_bottom', position: [0, -0.2, 0], type: 'hook', label: 'Móc dưới', connectsTo: ['spring_top'] },
+      { id: 'hook_bottom', position: [0, -0.2, 0], type: 'hook', label: 'Móc dưới', connectsTo: ['hook'] },
     ],
     tags: [],
   },
@@ -121,7 +121,7 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
     getCollider: () => [0.3, 1.0, 0.3],
     initY: 0.5,
     getSnapPoints: () => [
-      { id: 'top', position: [0, 1.0, 0], type: 'dashpot_top', label: 'Đầu trên', connectsTo: ['clamp', 'hook'] },
+      { id: 'top', position: [0, 1.0, 0], type: 'dashpot_top', label: 'Đầu trên', connectsTo: ['clamp'] },
       { id: 'bottom', position: [0, -1.0, 0], type: 'dashpot_bottom', label: 'Đầu dưới', connectsTo: ['hook'] },
     ],
     tags: ['kinematic'],

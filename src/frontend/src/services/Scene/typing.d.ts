@@ -38,6 +38,7 @@ declare module Scene {
     environment: {
       gravity?: number;
       temperature?: number;
+      damping?: number;
     };
     objects: Object[];
     steps?: Step[];
@@ -47,6 +48,7 @@ declare module Scene {
     moiTruong?: {
       trongLuc?: number;
       nhietDo?: number;
+      heSoTatDan?: number;
     };
   }
 }
