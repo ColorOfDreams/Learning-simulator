@@ -7,6 +7,7 @@ import FooterBar from './components/FooterBar';
 import EquipmentDetail from './components/EquipmentDetail';
 import useInitModel from '@/hooks/useInitModel';
 import { Spin } from 'antd';
+import { openLabSession } from '@/services/base/api';
 
 const ThiNghiem: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -30,6 +31,11 @@ const ThiNghiem: React.FC = () => {
         if (data) {
           initScene(data as Scene.IRecord);
           openChatbot(data.roomType, data);
+          openLabSession({
+            simulationId: id,
+            simulationTitle: data.name,
+            subject: data.roomType,
+          }).catch(() => {});
         }
       }
       setLoading(false);
@@ -68,6 +74,8 @@ const ThiNghiem: React.FC = () => {
         collapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed((prev) => !prev)}
         subject={sceneGraph?.roomType}
+        simId={id || ''}
+        title={sceneGraph?.name}
       />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         <div style={{ flex: 1, position: 'relative' }}>

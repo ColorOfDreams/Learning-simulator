@@ -1,5 +1,6 @@
 import { analyzeAiPrompt } from '@/services/ai/api';
 import { getSceneAll } from '@/services/base/api';
+import { Pagination } from 'antd';
 import React, { useCallback, useMemo, useState } from 'react';
 import { history, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
@@ -1040,19 +1041,32 @@ const HocSinhHome: React.FC = () => {
 		}
 	}, [chatMessages, aiLoading]);
 
-	const combinedLabs = useMemo(() => [...ALL_LABS, ...dynamicLabs], [dynamicLabs]);
+	const combinedLabs = useMemo(() => [...dynamicLabs, ...ALL_LABS], [dynamicLabs]);
 
 	const filteredLabs = useMemo(
-		() => combinedLabs.filter((l) => l.grade === grade && (filter === 'all' || l.subject === filter)),
+		() => combinedLabs.filter((l) => (l.grade === grade || typeof l.id === 'string') && (filter === 'all' || l.subject === filter)),
 		[grade, filter, combinedLabs],
 	);
 
+	const [currentPage, setCurrentPage] = useState(1);
+
 	React.useEffect(() => {
-		if (!restoredHomeState) return;
+		setCurrentPage(1);
+	}, [grade, filter]);
+
+	const paginatedLabs = useMemo(() => {
+		const startIndex = (currentPage - 1) * 9;
+		return filteredLabs.slice(startIndex, startIndex + 9);
+	}, [filteredLabs, currentPage]);
+
+	const scrollRestored = React.useRef(false);
+	React.useEffect(() => {
+		if (!restoredHomeState || scrollRestored.current) return;
 		const frame = window.requestAnimationFrame(() => {
 			const el = homeScrollRef.current;
 			if (el) {
 				el.scrollTop = restoredHomeState.scrollTop;
+				scrollRestored.current = true;
 			}
 			sessionStorage.removeItem(HOME_SCROLL_RESTORE_KEY);
 		});
@@ -1402,7 +1416,7 @@ const HocSinhHome: React.FC = () => {
 
 					{/* Lab Grid */}
 					<div className='stu-home__grid'>
-						{filteredLabs.map((lab, idx) => (
+						{paginatedLabs.map((lab, idx) => (
 							<div
 								key={lab.id}
 								className='stu-home__card'
@@ -1444,6 +1458,19 @@ const HocSinhHome: React.FC = () => {
 							</div>
 						))}
 					</div>
+
+					{/* Pagination */}
+					{filteredLabs.length > 9 && (
+						<div style={{ display: 'flex', justifyContent: 'center', marginTop: '32px', marginBottom: '24px' }}>
+							<Pagination
+								current={currentPage}
+								pageSize={9}
+								total={filteredLabs.length}
+								onChange={(page) => setCurrentPage(page)}
+								showSizeChanger={false}
+							/>
+						</div>
+					)}
 				</div>
 			</div>
 		</StudentLayout>

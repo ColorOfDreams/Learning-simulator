@@ -97,6 +97,10 @@ const MyLabs: React.FC = () => {
 	}, []);
 
 	const openWorkspace = (subject: string, simulationId?: string) => {
+		if (simulationId && !simulationId.startsWith('SIM-')) {
+			history.push(`/thi-nghiem?id=${simulationId}`);
+			return;
+		}
 		history.push(`/hoc-sinh/workspace?subject=${subject}${simulationId ? `&sim=${simulationId}` : ''}`);
 	};
 

@@ -22,7 +22,15 @@ const FooterBar: React.FC<Props> = ({
     <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
       <Tooltip title="Quay lại">
         <Button type="text" size="large" icon={<ArrowLeftOutlined />}
-          onClick={() => history.push('/quan-ly-thi-nghiem')} />
+          onClick={() => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const role = urlParams.get('role');
+            if (role === 'student') {
+              history.push('/hoc-sinh');
+            } else {
+              history.push('/quan-ly-thi-nghiem');
+            }
+          }} />
       </Tooltip>
     </div>
 
