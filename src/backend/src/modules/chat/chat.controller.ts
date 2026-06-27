@@ -79,6 +79,46 @@ export class ChatController {
     return this.aiService.generateExperiment(body.message);
   }
 
+  @Post('sessions/:id/experiment-chat')
+  async experimentChat(
+    @Param('id') sessionId: string,
+    @Body() body: { message: string; subject?: string },
+  ) {
+    const [userMsg] = await Promise.all([
+      this.chatService.addMessage({ sessionId, role: 'user', content: body.message }),
+    ]);
+
+    const history = await this.chatService.getMessages(sessionId);
+    const context: { role: 'user' | 'assistant'; content: string }[] = history.map(m => ({
+      role: m.role === 'user' ? 'user' : 'assistant',
+      content: m.content
+    }));
+
+    let aiResponse: string;
+    let metadata: Record<string, unknown> | undefined;
+    try {
+      const result = await this.aiService.chatExperimentDesign({
+        message: body.message,
+        subject: body.subject,
+        context: context,
+      });
+      aiResponse = result.answer;
+      metadata = { experimentConfig: result.experimentConfig };
+    } catch (err) {
+      console.error(err);
+      aiResponse = 'Xin lỗi, AI hiện không phản hồi. Vui lòng thử lại sau.';
+    }
+
+    const aiMsg = await this.chatService.addMessage({
+      sessionId,
+      role: 'assistant',
+      content: aiResponse,
+      metadata,
+    });
+
+    return { userMessage: userMsg, aiMessage: aiMsg };
+  }
+
   @Post('sessions/:id/guidance')
   async getGuidance(
     @Param('id') sessionId: string,

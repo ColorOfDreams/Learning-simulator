@@ -14,4 +14,6 @@ export const chatSessionApi = {
   guidance: (id: string, sceneGraph: any) =>
     axios.post(`${ip3}/ai/chat/sessions/${id}/guidance`, { sceneGraph }),
   generateExperiment: (message: string) => axios.post(`${ip3}/ai/chat/generate-experiment`, { message }),
+  experimentChat: (id: string, message: string, subject?: string) => 
+    axios.post(`${ip3}/ai/chat/sessions/${id}/experiment-chat`, { message, subject }),
 };

@@ -1080,6 +1080,107 @@ Trả về CHỈ JSON (không markdown, không giải thích):
     }
   }
 
+  async chatExperimentDesign(payload: {
+    message: string;
+    subject?: string;
+    context?: { role: 'user' | 'assistant'; content: string }[];
+  }) {
+    if (!this.llmService.isConfigured()) {
+      return {
+        answer: 'LLM chưa được cấu hình. Vui lòng thử lại sau.',
+      };
+    }
+
+    const msg = payload.message.trim();
+    const subject = payload.subject ?? 'physics';
+    const topic = this.detectTopic(msg);
+
+    const ragChunks = await this.ragRetrievalService.retrieveTheoryChunks({
+      message: msg,
+      subject,
+      grade: 11,
+      topic,
+    });
+
+    const equipmentList = [
+      'Vật lý: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
+      'Hóa học: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
+      'Toán học: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
+    ].join('\n');
+
+    const references = ragChunks
+      .slice(0, 3)
+      .map((chunk, index) => `[${index + 1}] ${chunk.title ?? chunk.id}: ${chunk.text}`)
+      .join('\n');
+
+    const contextStr = (payload.context ?? [])
+      .slice(-6)
+      .map((item) => `${item.role}: ${item.content}`)
+      .join('\n');
+
+    const systemPrompt = `Bạn là trợ lý ảo thiết kế thí nghiệm 3D khoa học.
+MỤC TIÊU: Trò chuyện với người dùng để gợi ý và chốt cấu hình thí nghiệm.
+DỤNG CỤ CÓ SẴN:
+${equipmentList}
+
+LUẬT QUAN TRỌNG:
+1. LUÔN tham khảo lý thuyết sau (nếu có) để tư vấn chính xác:
+${references || '(Không có)'}
+2. Hỏi lại nếu người dùng chưa cung cấp đủ thông số hoặc dụng cụ. Gợi ý cụ thể dựa trên lý thuyết.
+3. NẾU ĐÃ ĐỦ DỮ KIỆN để tạo thí nghiệm (người dùng đồng ý cấu hình), hãy đính kèm JSON cấu hình vào cuối câu trả lời trong block \`\`\`json ... \`\`\`. Nếu chưa đủ, chỉ trả lời text.
+4. JSON CẤU HÌNH PHẢI CÓ ĐỊNH DẠNG SAU:
+\`\`\`json
+{
+  "name": "tên thí nghiệm",
+  "roomType": "physics|chemistry|math",
+  "objects": [ { "modelName": "tên dụng cụ", "properties": { "key": "value" } } ]
+}
+\`\`\``;
+
+    const userPrompt = `CONTEXT:
+${contextStr}
+
+QUESTION:
+${msg}`;
+
+    try {
+      const response = await this.llmService.complete([
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt },
+      ]);
+
+      const cleanedResponse = response || '';
+      
+      let answer = cleanedResponse;
+      let experimentConfig: any = undefined;
+
+      const jsonMatch = cleanedResponse.match(/```json([\s\S]*?)```/);
+      if (jsonMatch) {
+        try {
+          const parsed = JSON.parse(jsonMatch[1].trim());
+          experimentConfig = {
+            name: parsed.name || 'Thí nghiệm mới',
+            roomType: parsed.roomType || 'physics',
+            objects: (parsed.objects || []).map((obj: any) => ({
+              modelName: obj.modelName,
+              properties: obj.properties || {},
+            })),
+          };
+          answer = cleanedResponse.replace(jsonMatch[0], '').trim();
+        } catch (e) {}
+      }
+
+      return {
+        answer: answer || 'Cấu hình thí nghiệm đã sẵn sàng!',
+        experimentConfig,
+      };
+    } catch {
+      return {
+        answer: 'Xin lỗi, hệ thống AI đang gặp sự cố.',
+      };
+    }
+  }
+
   private shouldIncludeChatDebug() {
     return (
       process.env.NODE_ENV !== 'production' || process.env.AI_DEBUG === 'true'
