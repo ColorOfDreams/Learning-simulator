@@ -41,7 +41,7 @@
     "id": "lib_004",
     "subject": "physics",
     "topic": "newton_second_law",
-    "simulation_id": "SIM-03",
+    "simulation_id": "CHEM12-02",
     "title": "Định luật II Newton",
     "text": "Một vật có khối lượng 5 kg chịu tác dụng của lực F = 20 N. Tính gia tốc của vật.",
     "parameters": [
@@ -80,7 +80,7 @@
     "id": "lib_007",
     "subject": "chemistry",
     "topic": "acid_base",
-    "simulation_id": "SIM-06",
+    "simulation_id": "CHEM11-01",
     "title": "pH dung dịch HCl",
     "text": "Tính pH của dung dịch HCl 0.01 mol/L ở 25°C.",
     "parameters": [
@@ -91,7 +91,7 @@
     "id": "lib_008",
     "subject": "chemistry",
     "topic": "acid_base",
-    "simulation_id": "SIM-06",
+    "simulation_id": "CHEM11-02",
     "title": "Trung hòa axit-bazơ",
     "text": "Cần bao nhiêu mL NaOH 0.1 mol/L để trung hòa hoàn toàn 50 mL HCl 0.2 mol/L?",
     "parameters": [

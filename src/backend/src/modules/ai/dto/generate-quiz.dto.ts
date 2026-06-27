@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class GenerateQuizRequestDto {
-  @ApiProperty({ example: 'SIM-03' })
+  @ApiProperty({ example: 'CHEM12-02' })
   @IsString()
   simulationId: string;
 

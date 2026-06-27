@@ -182,7 +182,7 @@ export class AiService {
   }
 
   async generateQuiz(request: GenerateQuizRequestDto) {
-    const simulationId = request.simulationId;
+    const simulationId = normalizeSimulationId(request.simulationId);
     const subject = request.subject;
     const count = request.count;
 
@@ -1042,22 +1042,46 @@ export class AiService {
 
     if (isLlm) {
       const systemPrompt = [
-        'Bạn là trợ lý học tập AI chuyên phân tích yêu cầu học sinh và tìm kiếm mô phỏng tương thích trong kho 51 mô phỏng ảo:',
-        '--- Hóa học ---',
-        '- SIM-01: Điều chế ethyl acetate (phản ứng ester hóa) (Môn: chem, topic: esterification)',
-        '- SIM-03: Phản ứng xà phòng hóa chất béo (Môn: chem, topic: saponification)',
-        '- SIM-04: Glucose tác dụng với Cu(OH)₂ (Môn: chem, topic: glucose_cuoh2)',
-        '- SIM-05: Chuẩn độ Acid - Base (Môn: chem, topic: acid_base_titration)',
-        '- SIM-06: Đồng tác dụng với dung dịch HNO₃ đặc (Môn: chem, topic: copper_hno3)',
-        '- SIM-07: Ammonia tác dụng với HCl đặc - Khói trắng (Môn: chem, topic: ammonia_hcl)',
-        '- SIM-08: Sodium tác dụng với nước (Môn: chem, topic: sodium_water)',
-        '- SIM-09: H₂SO₄ đặc tác dụng với đường Saccharose (Môn: chem, topic: h2so4_sucrose)',
-        '- SIM-10: Ethylene tác dụng với nước Bromine (Môn: chem, topic: ethylene_bromine)',
-        '- SIM-11: Acetylene tác dụng với dung dịch AgNO₃/NH₃ (Môn: chem, topic: acetylene_agno3)',
-        '- SIM-12: Ethanol tác dụng với kim loại Sodium (Môn: chem, topic: ethanol_sodium)',
-        '- SIM-13: Phenol tác dụng với nước Bromine (Môn: chem, topic: phenol_bromine)',
-        '- SIM-14: Glycerol tác dụng với Cu(OH)₂ (Môn: chem, topic: glycerol_cuoh2)',
-        '- SIM-15: Tính chất hóa học của Acetic Acid (Môn: chem, topic: acetic_acid)',
+        'Bạn là trợ lý học tập AI chuyên phân tích yêu cầu học sinh và tìm kiếm mô phỏng tương thích trong kho 63 mô phỏng ảo:',
+        '--- Hóa học 10 ---',
+        '- CHEM10-01: Thí nghiệm bắn phá lá vàng – Rutherford (Môn: chem, topic: rutherford_experiment)',
+        '- CHEM10-02: Thử màu ngọn lửa của các kim loại (Na, K, Cu, Ca) (Môn: chem, topic: flame_test)',
+        '- CHEM10-03: Kẽm tác dụng với dung dịch HCl (Môn: chem, topic: zn_hcl)',
+        '- CHEM10-04: Đốt cháy dây magnesium trong không khí (Môn: chem, topic: mg_combustion)',
+        '- CHEM10-05: Phản ứng tỏa nhiệt – tôi vôi (CaO + H₂O) (Môn: chem, topic: quicklime)',
+        '- CHEM10-06: Phản ứng thu nhiệt (NH₄Cl + Ba(OH)₂) (Môn: chem, topic: endothermic)',
+        '- CHEM10-07: Ảnh hưởng của nồng độ đến tốc độ phản ứng (Môn: chem, topic: rate_concentration)',
+        '- CHEM10-08: Ảnh hưởng của chất xúc tác – phân hủy H₂O₂ (Môn: chem, topic: rate_catalyst)',
+        '- CHEM10-09: Ảnh hưởng của diện tích bề mặt tiếp xúc (Môn: chem, topic: rate_surface_area)',
+        '- CHEM10-10: Nhận biết ion halide bằng dung dịch AgNO₃ (Môn: chem, topic: halide_identification)',
+        '- CHEM10-11: Tính tẩy màu của nước chlorine (Môn: chem, topic: chlorine_bleaching)',
+        '- CHEM10-12: Chlorine đẩy bromine ra khỏi muối bromide (Môn: chem, topic: halogen_displacement)',
+        '--- Hóa học 11 ---',
+        '- CHEM11-01: Độ pH và chất chỉ thị (Môn: chem, topic: indicator_ph)',
+        '- CHEM11-02: Chuẩn độ Acid - Base (Môn: chem, topic: acid_base_titration)',
+        '- CHEM11-03: Đồng tác dụng với dung dịch HNO₃ đặc (Môn: chem, topic: copper_hno3)',
+        '- CHEM11-04: Ammonia tác dụng với HCl đặc tạo khói trắng (Môn: chem, topic: ammonia_hcl)',
+        '- CHEM11-05: H₂SO₄ đặc tác dụng với đường (Môn: chem, topic: h2so4_sucrose)',
+        '- CHEM11-06: Ethylene tác dụng với nước bromine (Môn: chem, topic: ethylene_bromine)',
+        '- CHEM11-07: Acetylene tác dụng với dung dịch AgNO₃/NH₃ (Môn: chem, topic: acetylene_agno3)',
+        '- CHEM11-08: Ethanol tác dụng với kim loại sodium (Môn: chem, topic: ethanol_sodium)',
+        '- CHEM11-09: Phenol tác dụng với nước bromine (Môn: chem, topic: phenol_bromine)',
+        '- CHEM11-10: Glycerol tác dụng với Cu(OH)₂ (Môn: chem, topic: glycerol_cuoh2)',
+        '- CHEM11-11: Tính chất hóa học của acetic acid (Môn: chem, topic: acetic_acid)',
+        '--- Hóa học 12 ---',
+        '- CHEM12-01: Điều chế ethyl acetate (phản ứng ester hóa) (Môn: chem, topic: esterification)',
+        '- CHEM12-02: Phản ứng xà phòng hóa chất béo (Môn: chem, topic: saponification)',
+        '- CHEM12-03: Glucose tác dụng với Cu(OH)₂ (Môn: chem, topic: glucose_cuoh2)',
+        '- CHEM12-04: Phản ứng tráng bạc của glucose (Môn: chem, topic: silver_mirror)',
+        '- CHEM12-05: Phản ứng màu của tinh bột với iodine (Môn: chem, topic: starch_iodine)',
+        '- CHEM12-06: Phản ứng màu biuret của protein (Môn: chem, topic: biuret_protein)',
+        '- CHEM12-07: Sodium tác dụng với nước (Môn: chem, topic: sodium_water)',
+        '- CHEM12-08: Đinh sắt tác dụng với dung dịch CuSO₄ (Môn: chem, topic: iron_cuso4)',
+        '- CHEM12-09: Nhôm tác dụng với dung dịch NaOH (Môn: chem, topic: aluminum_naoh)',
+        '- CHEM12-10: Phản ứng nhiệt nhôm (Môn: chem, topic: thermite)',
+        '- CHEM12-11: Điều chế Fe(OH)₂ và Fe(OH)₃ (Môn: chem, topic: iron_hydroxides)',
+        '- CHEM12-12: Điện phân dung dịch CuSO₄ (Môn: chem, topic: cuso4_electrolysis)',
+        '- CHEM12-13: Ăn mòn điện hóa học (pin Zn-Cu) (Môn: chem, topic: electrochemical_corrosion)',
         '--- Toán ---',
         '- SIM-08_math: Đồ thị hàm số bậc hai (Môn: math, topic: quadratic)',
         '- SIM-16: Ném xiên và vòm cổng parabol (Môn: math, topic: projectile-arch)',
@@ -1104,7 +1128,7 @@ export class AiService {
         '1. Đánh giá câu hỏi/yêu cầu của học sinh:',
         '- Nếu câu hỏi/yêu cầu hoàn toàn KHÔNG liên quan đến Toán, Lý, Hóa hay khoa học tự nhiên cấp THPT: Từ chối lịch sự và hướng dẫn học sinh quay lại chủ đề học tập. Set "is_related": false, "simulation_id": null.',
         '- Nếu liên quan đến khoa học nhưng KHÔNG có mô phỏng phù hợp trong danh sách trên: Giải thích ngắn gọn lý thuyết (2-4 câu) và thông báo chưa có mô phỏng cho chủ đề này. Set "is_related": true, "has_simulation": false, "simulation_id": null.',
-        '- Nếu có thể liên kết với 1 mô phỏng trong danh sách: Giải thích kiến thức (2-4 câu) và giới thiệu mô phỏng. Set "is_related": true, "has_simulation": true, "simulation_id": "SIM-XX" tương ứng.',
+        '- Nếu có thể liên kết với 1 mô phỏng trong danh sách: Giải thích kiến thức (2-4 câu) và giới thiệu mô phỏng. Set "is_related": true, "has_simulation": true, "simulation_id" tương ứng.',
         '',
         'QUY TẮC BẮT BUỘC: KHÔNG được viết mã "SIM-XX" trong trường short_answer. Chỉ dùng tên đầy đủ của mô phỏng.',
         '',
@@ -1112,7 +1136,7 @@ export class AiService {
         '{',
         '  "is_related": boolean,',
         '  "has_simulation": boolean,',
-        '  "simulation_id": "SIM-01" | ... | "SIM-52" | null,',
+        '  "simulation_id": "CHEM10-01" | ... | "CHEM10-12" | "CHEM11-01" | ... | "CHEM11-11" | "CHEM12-01" | ... | "CHEM12-13" | "SIM-02" | "SIM-08" | "SIM-16" | ... | "SIM-52" | null,',
         '  "subject": "physics" | "math" | "chem",',
         '  "topic": string,',
         '  "short_answer": "Lời giải thích tự nhiên bằng tiếng Việt. Unicode cho công thức. Không dùng LaTeX block. Không viết mã SIM-XX.",',
@@ -1157,12 +1181,15 @@ export class AiService {
         'glucose', 'cu(oh)2', 'dong', 'glucozo', 'phuc', 'trang bac', 'trang guong', 'agno3',
         'tollens', 'bac nitrat', 'tinh bot', 'iodine', 'i-ot', 'iot', 'biuret', 'protein',
         'long trang trung', 'peptit', 'sodium', 'natri', 'nuoc', 'kim loai kiem',
+        'dinh sat', 'cuso4', 'nhom', 'naoh', 'nhiet nhom', 'thermite', 'fe(oh)2', 'fe(oh)3',
+        'dien phan', 'an mon dien hoa', 'pin zn', 'pin cu',
         'bac hai', 'parabol', 'phuong trinh', 'nghiem', 'dinh', 'nem xien', 'vom', 'vom cong',
         'cong parabol', 'quy dao vom', 'mien nghiem', 'bat phuong trinh', 'he bat phuong trinh',
         'he thuc luong', 'cot co', 'tam giac cot co', 'do chieu cao', 'elip', 'ghim dinh',
         'duong conic', 'tieu diem', 'thong ke', 'so lieu mau', 'bieu do hop', 'box plot',
         'quy dao', 'van toc', 'gia toc', 'chu ky', 'chu ki', 'tan so', 'bien do', 'li do',
         'toa do', 'vi tri', 'cuc dai', 'co nang', 'dong nang', 'the nang', 'cong huong',
+        'ph', 'chi thi', 'chat chi thi', 'quy tim',
         'chuan do', 'acid base', 'axit bazo', 'hno3', 'dong tac dung', 'ammonia', 'nh3', 'hcl',
         'khoi trang', 'h2so4', 'duong', 'saccharose', 'ethylene', 'brom', 'acetylene', 'axetilen',
         'phenol', 'glycerol', 'glycerin', 'acetic', 'roi tu do', 'free fall'
@@ -1196,6 +1223,7 @@ export class AiService {
 
     let simulationObj: AiSimulation | undefined = undefined;
     if (simulationId) {
+      simulationId = normalizeSimulationId(simulationId);
       const meta = getSimulationMetadata(simulationId, subject);
       if (meta) {
         simulationObj = {
@@ -1244,47 +1272,114 @@ export class AiService {
   }
 
   private localRegexMatch(normalizedText: string): { simId: string; subject: 'math' | 'physics' | 'chem'; topic: string; title: string } | null {
-    if (/xa phong|chat beo|sapon|fat/.test(normalizedText)) {
-      return { simId: 'SIM-03', subject: 'chem', topic: 'saponification', title: 'Phản ứng xà phòng hóa chất béo' };
+    // Hóa học lớp 10
+    if (/rutherford|la vang|gold foil|hat alpha|ban pha|nguyen tu|nuclear model/.test(normalizedText)) {
+      return { simId: 'CHEM10-01', subject: 'chem', topic: 'rutherford_experiment', title: 'Thí nghiệm bắn phá lá vàng – Rutherford' };
     }
-    if (/ethyl|ester|axit axetic|ethanol/.test(normalizedText)) {
-      return { simId: 'SIM-01', subject: 'chem', topic: 'esterification', title: 'Điều chế ethyl acetate (phản ứng ester hóa)' };
+    if (/thu mau ngon lua|flame test|mau ngon lua|na.*k.*cu.*ca|kim loai.*lua|lua.*kim loai/.test(normalizedText)) {
+      return { simId: 'CHEM10-02', subject: 'chem', topic: 'flame_test', title: 'Thử màu ngọn lửa của các kim loại' };
     }
-    if (/glucose.*cu\(oh\)2|dong.*glucozo|phuc.*dong|cu\(oh\)2/.test(normalizedText)) {
-      return { simId: 'SIM-04', subject: 'chem', topic: 'glucose_cuoh2', title: 'Glucose tác dụng với Cu(OH)₂' };
+    if (/\bken\b.*hcl|zn.*hcl|hcl.*ken|zinc.*acid/.test(normalizedText)) {
+      return { simId: 'CHEM10-03', subject: 'chem', topic: 'zn_hcl', title: 'Kẽm tác dụng với dung dịch HCl' };
     }
-    if (/sodium.*nuoc|natri.*nuoc|na \+ h2o/.test(normalizedText)) {
-      return { simId: 'SIM-08', subject: 'chem', topic: 'sodium_water', title: 'Sodium tác dụng với nước' };
+    if (/dot chay.*magnesium|magnesium.*chay|mg.*chay|dot chay.*mage|mge.*chay/.test(normalizedText)) {
+      return { simId: 'CHEM10-04', subject: 'chem', topic: 'mg_combustion', title: 'Đốt cháy dây magnesium trong không khí' };
     }
-    if (/chuan do|titer|chuan do axit|chuan do bazo/.test(normalizedText)) {
-      return { simId: 'SIM-05', subject: 'chem', topic: 'acid_base_titration', title: 'Chuẩn độ Acid - Base' };
+    if (/toi voi|cao.*h2o|voi song|quicklime|phan ung toa nhiet.*voi/.test(normalizedText)) {
+      return { simId: 'CHEM10-05', subject: 'chem', topic: 'quicklime', title: 'Phản ứng tỏa nhiệt – tôi vôi (CaO + H₂O)' };
     }
-    if (/dong.*hno3|hno3.*dong|khi mau nau|no2.*dong|cu.*hno3/.test(normalizedText)) {
-      return { simId: 'SIM-06', subject: 'chem', topic: 'copper_hno3', title: 'Đồng tác dụng với dung dịch HNO₃ đặc' };
+    if (/nh4cl.*ba\(oh\)2|ba\(oh\)2.*nh4cl|phan ung thu nhiet|endothermic|hap thu nhiet/.test(normalizedText)) {
+      return { simId: 'CHEM10-06', subject: 'chem', topic: 'endothermic', title: 'Phản ứng thu nhiệt (NH₄Cl + Ba(OH)₂)' };
     }
-    if (/ammonia.*hcl|nho3.*hcl|khoi trang|nh3.*hcl/.test(normalizedText)) {
-      return { simId: 'SIM-07', subject: 'chem', topic: 'ammonia_hcl', title: 'Ammonia tác dụng với HCl đặc (Khói trắng)' };
+    if (/nong do.*toc do|toc do.*nong do|rate.*concentration|concentration.*rate/.test(normalizedText)) {
+      return { simId: 'CHEM10-07', subject: 'chem', topic: 'rate_concentration', title: 'Ảnh hưởng của nồng độ đến tốc độ phản ứng' };
     }
-    if (/h2so4.*duong|duong.*h2so4|saccharose.*h2so4|than hoa duong/.test(normalizedText)) {
-      return { simId: 'SIM-09', subject: 'chem', topic: 'h2so4_sucrose', title: 'H₂SO₄ đặc tác dụng với đường (Saccharose)' };
+    if (/xuc tac.*toc do|mno2.*h2o2|h2o2.*mno2|catalyst|chat xuc tac/.test(normalizedText)) {
+      return { simId: 'CHEM10-08', subject: 'chem', topic: 'rate_catalyst', title: 'Ảnh hưởng của chất xúc tác – phân hủy H₂O₂' };
     }
-    if (/ethylene.*brom|brom.*ethylene|nuoc brom.*c2h4|mat mau brom/.test(normalizedText)) {
-      return { simId: 'SIM-10', subject: 'chem', topic: 'ethylene_bromine', title: 'Ethylene tác dụng với nước Bromine' };
+    if (/dien tich be mat|surface area|bot.*da voi|da voi.*bot/.test(normalizedText)) {
+      return { simId: 'CHEM10-09', subject: 'chem', topic: 'rate_surface_area', title: 'Ảnh hưởng của diện tích bề mặt tiếp xúc' };
     }
-    if (/acetylene.*agno3|c2h2.*agno3|ket tua vang|agno3.*nh3/.test(normalizedText)) {
-      return { simId: 'SIM-11', subject: 'chem', topic: 'acetylene_agno3', title: 'Acetylene tác dụng với dung dịch AgNO₃/NH₃' };
+    if (/nhan biet.*halide|agno3.*halide|agcl|agbr|agi|ion halide/.test(normalizedText)) {
+      return { simId: 'CHEM10-10', subject: 'chem', topic: 'halide_identification', title: 'Nhận biết ion halide bằng dung dịch AgNO₃' };
+    }
+    if (/tay mau.*chlorine|chlorine.*tay mau|hclo.*tay|bleach.*chlor/.test(normalizedText)) {
+      return { simId: 'CHEM10-11', subject: 'chem', topic: 'chlorine_bleaching', title: 'Tính tẩy màu của nước chlorine' };
+    }
+    if (/chlorine.*bromine|cl2.*br2|halogen displacement|day bromine|day brom/.test(normalizedText)) {
+      return { simId: 'CHEM10-12', subject: 'chem', topic: 'halogen_displacement', title: 'Chlorine đẩy bromine ra khỏi muối bromide' };
     }
     if (/ethanol.*sodium|ruou.*natri|c2h5oh.*na|sodium.*ethanol/.test(normalizedText)) {
-      return { simId: 'SIM-12', subject: 'chem', topic: 'ethanol_sodium', title: 'Ethanol tác dụng với kim loại Sodium' };
+      return { simId: 'CHEM11-08', subject: 'chem', topic: 'ethanol_sodium', title: 'Ethanol tác dụng với kim loại Sodium' };
+    }
+    if (/\bph\b|chi thi|chat chi thi|quy tim|indicator/.test(normalizedText)) {
+      return { simId: 'CHEM11-01', subject: 'chem', topic: 'indicator_ph', title: 'Độ pH và chất chỉ thị' };
+    }
+    if (/xa phong|chat beo|sapon|fat/.test(normalizedText)) {
+      return { simId: 'CHEM12-02', subject: 'chem', topic: 'saponification', title: 'Phản ứng xà phòng hóa chất béo' };
+    }
+    if (/ethyl|ester|axit axetic|ethanol/.test(normalizedText)) {
+      return { simId: 'CHEM12-01', subject: 'chem', topic: 'esterification', title: 'Điều chế ethyl acetate (phản ứng ester hóa)' };
+    }
+    if (/glucose.*cu\(oh\)2|dong.*glucozo|phuc.*dong|cu\(oh\)2/.test(normalizedText)) {
+      return { simId: 'CHEM12-03', subject: 'chem', topic: 'glucose_cuoh2', title: 'Glucose tác dụng với Cu(OH)₂' };
+    }
+    if (/sodium.*nuoc|natri.*nuoc|na \+ h2o/.test(normalizedText)) {
+      return { simId: 'CHEM12-07', subject: 'chem', topic: 'sodium_water', title: 'Sodium tác dụng với nước' };
+    }
+    if (/chuan do|titer|chuan do axit|chuan do bazo/.test(normalizedText)) {
+      return { simId: 'CHEM11-02', subject: 'chem', topic: 'acid_base_titration', title: 'Chuẩn độ Acid - Base' };
+    }
+    if (/dong.*hno3|hno3.*dong|khi mau nau|no2.*dong|cu.*hno3/.test(normalizedText)) {
+      return { simId: 'CHEM11-03', subject: 'chem', topic: 'copper_hno3', title: 'Đồng tác dụng với dung dịch HNO₃ đặc' };
+    }
+    if (/ammonia.*hcl|nho3.*hcl|khoi trang|nh3.*hcl/.test(normalizedText)) {
+      return { simId: 'CHEM11-04', subject: 'chem', topic: 'ammonia_hcl', title: 'Ammonia tác dụng với HCl đặc (Khói trắng)' };
+    }
+    if (/h2so4.*duong|duong.*h2so4|saccharose.*h2so4|than hoa duong/.test(normalizedText)) {
+      return { simId: 'CHEM11-05', subject: 'chem', topic: 'h2so4_sucrose', title: 'H₂SO₄ đặc tác dụng với đường (Saccharose)' };
+    }
+    if (/ethylene.*brom|brom.*ethylene|nuoc brom.*c2h4|mat mau brom/.test(normalizedText)) {
+      return { simId: 'CHEM11-06', subject: 'chem', topic: 'ethylene_bromine', title: 'Ethylene tác dụng với nước Bromine' };
+    }
+    if (/acetylene.*agno3|c2h2.*agno3|ket tua vang|agno3.*nh3/.test(normalizedText)) {
+      return { simId: 'CHEM11-07', subject: 'chem', topic: 'acetylene_agno3', title: 'Acetylene tác dụng với dung dịch AgNO₃/NH₃' };
+    }
+    if (/trang bac|trang guong|tollens|agno3.*nh3|bac nitrat.*glucose/.test(normalizedText)) {
+      return { simId: 'CHEM12-04', subject: 'chem', topic: 'silver_mirror', title: 'Phản ứng tráng bạc của glucose' };
+    }
+    if (/tinh bot.*iodine|iodine.*tinh bot|iot.*tinh bot|i-ot.*tinh bot/.test(normalizedText)) {
+      return { simId: 'CHEM12-05', subject: 'chem', topic: 'starch_iodine', title: 'Phản ứng màu của tinh bột với iodine' };
+    }
+    if (/biuret|protein|long trang trung|peptit/.test(normalizedText)) {
+      return { simId: 'CHEM12-06', subject: 'chem', topic: 'biuret_protein', title: 'Phản ứng màu biuret của protein' };
+    }
+    if (/dinh sat.*cuso4|sat.*cuso4|fe.*cuso4/.test(normalizedText)) {
+      return { simId: 'CHEM12-08', subject: 'chem', topic: 'iron_cuso4', title: 'Đinh sắt tác dụng với dung dịch CuSO₄' };
+    }
+    if (/nhom.*naoh|al.*naoh|aluminium.*naoh|aluminum.*naoh/.test(normalizedText)) {
+      return { simId: 'CHEM12-09', subject: 'chem', topic: 'aluminum_naoh', title: 'Nhôm tác dụng với dung dịch NaOH' };
+    }
+    if (/nhiet nhom|thermite|al.*fe2o3|fe2o3.*al/.test(normalizedText)) {
+      return { simId: 'CHEM12-10', subject: 'chem', topic: 'thermite', title: 'Phản ứng nhiệt nhôm' };
+    }
+    if (/fe\(oh\)2|fe\(oh\)3|sat.*hydroxide|hidroxit sat/.test(normalizedText)) {
+      return { simId: 'CHEM12-11', subject: 'chem', topic: 'iron_hydroxides', title: 'Điều chế Fe(OH)₂ và Fe(OH)₃' };
+    }
+    if (/dien phan.*cuso4|cuso4.*dien phan/.test(normalizedText)) {
+      return { simId: 'CHEM12-12', subject: 'chem', topic: 'cuso4_electrolysis', title: 'Điện phân dung dịch CuSO₄' };
+    }
+    if (/an mon dien hoa|pin zn.*cu|zn.*cu|dien hoa hoc/.test(normalizedText)) {
+      return { simId: 'CHEM12-13', subject: 'chem', topic: 'electrochemical_corrosion', title: 'Ăn mòn điện hóa học (pin Zn-Cu)' };
     }
     if (/\bphenol\b|c6h5oh/.test(normalizedText)) {
-      return { simId: 'SIM-13', subject: 'chem', topic: 'phenol_bromine', title: 'Phenol tác dụng với nước Bromine' };
+      return { simId: 'CHEM11-09', subject: 'chem', topic: 'phenol_bromine', title: 'Phenol tác dụng với nước Bromine' };
     }
     if (/glycerol.*cu\(oh\)2|glycerin.*dong|dung dich xanh lam.*glycerol/.test(normalizedText)) {
-      return { simId: 'SIM-14', subject: 'chem', topic: 'glycerol_cuoh2', title: 'Glycerol tác dụng với Cu(OH)₂' };
+      return { simId: 'CHEM11-10', subject: 'chem', topic: 'glycerol_cuoh2', title: 'Glycerol tác dụng với Cu(OH)₂' };
     }
     if (/acetic acid|axit axetic|ch3cooh|giam an|tinh chat.*axit axetic/.test(normalizedText)) {
-      return { simId: 'SIM-15', subject: 'chem', topic: 'acetic_acid', title: 'Tính chất hóa học của Acetic Acid' };
+      return { simId: 'CHEM11-11', subject: 'chem', topic: 'acetic_acid', title: 'Tính chất hóa học của Acetic Acid' };
     }
     if (/roi tu do|free fall|gia toc roi|g = 9\.?8/.test(normalizedText)) {
       return { simId: 'SIM-22', subject: 'physics', topic: 'free_fall', title: 'Sự rơi tự do' };
@@ -1418,15 +1513,51 @@ export class AiService {
 }
 
 const SIMULATIONS_METADATA: Record<string, { title: string; subject: 'math' | 'physics' | 'chem'; topic: string }> = {
+  'CHEM10-01': { title: 'Thí nghiệm bắn phá lá vàng – Rutherford', subject: 'chem', topic: 'rutherford_experiment' },
+  'CHEM10-02': { title: 'Thử màu ngọn lửa của các kim loại', subject: 'chem', topic: 'flame_test' },
+  'CHEM10-03': { title: 'Kẽm tác dụng với dung dịch HCl', subject: 'chem', topic: 'zn_hcl' },
+  'CHEM10-04': { title: 'Đốt cháy dây magnesium trong không khí', subject: 'chem', topic: 'mg_combustion' },
+  'CHEM10-05': { title: 'Phản ứng tỏa nhiệt – tôi vôi (CaO + H₂O)', subject: 'chem', topic: 'quicklime' },
+  'CHEM10-06': { title: 'Phản ứng thu nhiệt (NH₄Cl + Ba(OH)₂)', subject: 'chem', topic: 'endothermic' },
+  'CHEM10-07': { title: 'Ảnh hưởng của nồng độ đến tốc độ phản ứng', subject: 'chem', topic: 'rate_concentration' },
+  'CHEM10-08': { title: 'Ảnh hưởng của chất xúc tác – phân hủy H₂O₂', subject: 'chem', topic: 'rate_catalyst' },
+  'CHEM10-09': { title: 'Ảnh hưởng của diện tích bề mặt tiếp xúc', subject: 'chem', topic: 'rate_surface_area' },
+  'CHEM10-10': { title: 'Nhận biết ion halide bằng dung dịch AgNO₃', subject: 'chem', topic: 'halide_identification' },
+  'CHEM10-11': { title: 'Tính tẩy màu của nước chlorine', subject: 'chem', topic: 'chlorine_bleaching' },
+  'CHEM10-12': { title: 'Chlorine đẩy bromine ra khỏi muối bromide', subject: 'chem', topic: 'halogen_displacement' },
+  'CHEM12-01': { title: 'Điều chế ethyl acetate (phản ứng ester hóa)', subject: 'chem', topic: 'esterification' },
+  'CHEM12-02': { title: 'Phản ứng xà phòng hóa chất béo', subject: 'chem', topic: 'saponification' },
+  'CHEM12-03': { title: 'Glucose tác dụng với Cu(OH)₂', subject: 'chem', topic: 'glucose_cuoh2' },
+  'CHEM12-04': { title: 'Phản ứng tráng bạc của glucose', subject: 'chem', topic: 'silver_mirror' },
+  'CHEM12-05': { title: 'Phản ứng màu của tinh bột với iodine', subject: 'chem', topic: 'starch_iodine' },
+  'CHEM12-06': { title: 'Phản ứng màu biuret của protein', subject: 'chem', topic: 'biuret_protein' },
+  'CHEM12-07': { title: 'Sodium tác dụng với nước', subject: 'chem', topic: 'sodium_water' },
+  'CHEM12-08': { title: 'Đinh sắt tác dụng với dung dịch CuSO₄', subject: 'chem', topic: 'iron_cuso4' },
+  'CHEM12-09': { title: 'Nhôm tác dụng với dung dịch NaOH', subject: 'chem', topic: 'aluminum_naoh' },
+  'CHEM12-10': { title: 'Phản ứng nhiệt nhôm', subject: 'chem', topic: 'thermite' },
+  'CHEM12-11': { title: 'Điều chế Fe(OH)₂ và Fe(OH)₃', subject: 'chem', topic: 'iron_hydroxides' },
+  'CHEM12-12': { title: 'Điện phân dung dịch CuSO₄', subject: 'chem', topic: 'cuso4_electrolysis' },
+  'CHEM12-13': { title: 'Ăn mòn điện hóa học (pin Zn-Cu)', subject: 'chem', topic: 'electrochemical_corrosion' },
   'SIM-01': { title: 'Điều chế ethyl acetate (phản ứng ester hóa)', subject: 'chem', topic: 'esterification' },
   'SIM-02': { title: 'Chuyển động ném xiên', subject: 'physics', topic: 'projectile' },
   'SIM-03': { title: 'Phản ứng xà phòng hóa chất béo', subject: 'chem', topic: 'saponification' },
-  'SIM-04': { title: 'Glucose tác dụng với Cu(OH)₂', subject: 'chem', topic: 'glucose_cuoh2' },
+  'CHEM11-01': { title: 'Độ pH và chất chỉ thị', subject: 'chem', topic: 'indicator_ph' },
+  'CHEM11-02': { title: 'Chuẩn độ Acid - Base', subject: 'chem', topic: 'acid_base_titration' },
+  'CHEM11-03': { title: 'Đồng tác dụng với dung dịch HNO₃ đặc', subject: 'chem', topic: 'copper_hno3' },
+  'CHEM11-04': { title: 'Ammonia tác dụng với HCl đặc (Khói trắng)', subject: 'chem', topic: 'ammonia_hcl' },
+  'SIM-08_chem': { title: 'Sodium tác dụng với nước', subject: 'chem', topic: 'sodium_water' },
+  'SIM-08_math': { title: 'Đồ thị hàm số bậc hai', subject: 'math', topic: 'quadratic' },
+  'CHEM11-05': { title: 'H₂SO₄ đặc tác dụng với đường (Saccharose)', subject: 'chem', topic: 'h2so4_sucrose' },
+  'CHEM11-06': { title: 'Ethylene tác dụng với nước Bromine', subject: 'chem', topic: 'ethylene_bromine' },
+  'CHEM11-07': { title: 'Acetylene tác dụng với dung dịch AgNO₃/NH₃', subject: 'chem', topic: 'acetylene_agno3' },
+  'CHEM11-08': { title: 'Ethanol tác dụng với kim loại Sodium', subject: 'chem', topic: 'ethanol_sodium' },
+  'CHEM11-09': { title: 'Phenol tác dụng với nước Bromine', subject: 'chem', topic: 'phenol_bromine' },
+  'CHEM11-10': { title: 'Glycerol tác dụng với Cu(OH)₂', subject: 'chem', topic: 'glycerol_cuoh2' },
+  'CHEM11-11': { title: 'Tính chất hóa học của Acetic Acid', subject: 'chem', topic: 'acetic_acid' },
+  'SIM-04': { title: 'Độ pH và chất chỉ thị', subject: 'chem', topic: 'indicator_ph' },
   'SIM-05': { title: 'Chuẩn độ Acid - Base', subject: 'chem', topic: 'acid_base_titration' },
   'SIM-06': { title: 'Đồng tác dụng với dung dịch HNO₃ đặc', subject: 'chem', topic: 'copper_hno3' },
   'SIM-07': { title: 'Ammonia tác dụng với HCl đặc (Khói trắng)', subject: 'chem', topic: 'ammonia_hcl' },
-  'SIM-08_chem': { title: 'Sodium tác dụng với nước', subject: 'chem', topic: 'sodium_water' },
-  'SIM-08_math': { title: 'Đồ thị hàm số bậc hai', subject: 'math', topic: 'quadratic' },
   'SIM-09': { title: 'H₂SO₄ đặc tác dụng với đường (Saccharose)', subject: 'chem', topic: 'h2so4_sucrose' },
   'SIM-10': { title: 'Ethylene tác dụng với nước Bromine', subject: 'chem', topic: 'ethylene_bromine' },
   'SIM-11': { title: 'Acetylene tác dụng với dung dịch AgNO₃/NH₃', subject: 'chem', topic: 'acetylene_agno3' },
@@ -1473,7 +1604,28 @@ const SIMULATIONS_METADATA: Record<string, { title: string; subject: 'math' | 'p
   'SIM-52': { title: 'Định luật Ohm cho toàn mạch', subject: 'physics', topic: 'ohm_full' },
 };
 
+const CHEM11_SIM_ALIASES: Record<string, string> = {
+  'SIM-01': 'CHEM12-01',
+  'SIM-03': 'CHEM12-02',
+  'SIM-04': 'CHEM11-01',
+  'SIM-05': 'CHEM11-02',
+  'SIM-06': 'CHEM11-03',
+  'SIM-07': 'CHEM11-04',
+  'SIM-09': 'CHEM11-05',
+  'SIM-10': 'CHEM11-06',
+  'SIM-11': 'CHEM11-07',
+  'SIM-12': 'CHEM11-08',
+  'SIM-13': 'CHEM11-09',
+  'SIM-14': 'CHEM11-10',
+  'SIM-15': 'CHEM11-11',
+};
+
+function normalizeSimulationId(simId: string): string {
+  return CHEM11_SIM_ALIASES[simId] || simId;
+}
+
 function getSimulationMetadata(simId: string, subject?: string): { title: string; subject: 'math' | 'physics' | 'chem'; topic: string } | undefined {
+  simId = normalizeSimulationId(simId);
   if (simId === 'SIM-08') {
     if (subject === 'math') {
       return SIMULATIONS_METADATA['SIM-08_math'];
@@ -1636,7 +1788,7 @@ const LOCAL_FALLBACK_QUESTIONS: Record<string, Array<{
       explanation: "Chuyển động thẳng đều có vận tốc không đổi theo thời gian, do đó gia tốc a = 0."
     }
   ],
-  'SIM-01': [
+  'CHEM12-01': [
     {
       q: "Trong phản ứng este hóa giữa axit axetic và ancol etylic, vai trò của axit sunfuric đặc (H2SO4 đặc) là gì?",
       opts: [

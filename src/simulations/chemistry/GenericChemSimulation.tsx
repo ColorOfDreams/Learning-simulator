@@ -3,6 +3,7 @@ import * as THREE from 'three';
 // @ts-ignore
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import type { SimulationProps } from '../types';
+import { CHEM_EXPERIMENT_ALIASES, EXPERIMENTS_CONFIG } from './experiments';
 
 // Easing helpers
 const Ease = {
@@ -53,9 +54,27 @@ function textTexture(text: string, opts: any = {}) {
   if (opts.border !== false) { g.lineWidth = 8; g.strokeStyle = opts.bd || '#3b82d6'; g.stroke(); }
   g.fillStyle = opts.fg || '#15293f';
   g.textAlign = 'center'; g.textBaseline = 'middle';
-  const lines = String(text).split('\n');
-  const fs = opts.fs || (lines.length > 1 ? 38 : 44);
+  const rawLines = String(text).split('\n');
+  const fs = opts.fs || (rawLines.length > 1 ? 38 : 44);
   g.font = `bold ${fs}px "Be Vietnam Pro","Segoe UI",sans-serif`;
+  const maxWidth = opts.maxWidth || c.width - 38;
+  const lines = rawLines.flatMap((line) => {
+    if (!opts.wrap || g.measureText(line).width <= maxWidth) return [line];
+    const words = line.split(' ');
+    const wrapped: string[] = [];
+    let current = '';
+    words.forEach((word) => {
+      const next = current ? `${current} ${word}` : word;
+      if (current && g.measureText(next).width > maxWidth) {
+        wrapped.push(current);
+        current = word;
+      } else {
+        current = next;
+      }
+    });
+    if (current) wrapped.push(current);
+    return wrapped;
+  });
   const lh = fs * 1.15, y0 = c.height / 2 - (lines.length - 1) * lh / 2;
   lines.forEach((ln, i) => g.fillText(ln, c.width / 2, y0 + i * lh));
   const tex = new THREE.CanvasTexture(c);
@@ -137,202 +156,6 @@ function getSmokeTex() {
   return _smokeTex;
 }
 
-// Declarative simulation settings
-interface StepConfig {
-  text: string;
-  type: 'pour' | 'drop' | 'move' | 'click' | 'shake' | 'wait';
-  src?: string;
-  dst?: string;
-  id?: string;
-  pour?: { level: number; color?: number; opacity?: number };
-  dropOffset?: { x?: number; y?: number; z?: number; rotZ?: number; scale?: number };
-  moveOffset?: { y?: number; dx?: number; rotZ?: number };
-  fx?: string;
-}
-
-interface SetupItem {
-  type: string;
-  id?: string;
-  x?: number;
-  z?: number;
-  n?: number;
-  label?: string;
-  color?: number;
-  op?: number;
-  cap?: number;
-  fs?: number;
-  powder?: boolean;
-  h?: number;
-  r?: number;
-}
-
-interface ExperimentDef {
-  id: string;
-  setup: SetupItem[];
-  steps: StepConfig[];
-}
-
-const EXPERIMENTS_CONFIG: Record<string, ExperimentDef> = {
-  'SIM-04': {
-    id: 'SIM-04',
-    setup: [
-      { type: 'rack', x: -2.4, z: 0.5, n: 3 },
-      { type: 'tube', id: 'tube1', label: 'HCl (acid)' },
-      { type: 'tube', id: 'tube2', label: 'Nước cất' },
-      { type: 'tube', id: 'tube3', label: 'NaOH (base)' },
-      { type: 'bottle', id: 'hcl', label: 'HCl', color: 0xdde9f2, op: 0.45, cap: 0xc2a23a },
-      { type: 'bottle', id: 'water', label: 'Nước cất', color: 0xdde9f2, op: 0.4 },
-      { type: 'bottle', id: 'naoh', label: 'NaOH', color: 0xdde9f2, op: 0.45 },
-      { type: 'bottle', id: 'ind', label: 'Chỉ thị\nvạn năng', color: 0xcde0b8, op: 0.7, fs: 32, cap: 0x6a8a3a }
-    ],
-    steps: [
-      { text: 'Rót dung dịch HCl vào ống 1.', type: 'pour', src: 'hcl', dst: 'tube1', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.45 } },
-      { text: 'Rót nước cất vào ống 2.', type: 'pour', src: 'water', dst: 'tube2', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.4 } },
-      { text: 'Rót dung dịch NaOH vào ống 3.', type: 'pour', src: 'naoh', dst: 'tube3', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.45 } },
-      { text: 'Nhỏ chất chỉ thị vào ống 1 — môi trường acid hóa đỏ.', type: 'pour', src: 'ind', dst: 'tube1', pour: { level: 0.5 }, fx: 'ind_acid' },
-      { text: 'Nhỏ chất chỉ thị vào ống 2 — môi trường trung tính màu lục.', type: 'pour', src: 'ind', dst: 'tube2', pour: { level: 0.5 }, fx: 'ind_neutral' },
-      { text: 'Nhỏ chất chỉ thị vào ống 3 — môi trường base hóa xanh tím.', type: 'pour', src: 'ind', dst: 'tube3', pour: { level: 0.5 }, fx: 'ind_base' }
-    ]
-  },
-  'SIM-05': {
-    id: 'SIM-05',
-    setup: [
-      { type: 'beaker', id: 'beaker', x: 0, z: 0.3, r: 1.0, h: 2.0 },
-      { type: 'bottle', id: 'hcl', label: 'HCl', color: 0xdde9f2, op: 0.45, cap: 0xc2a23a },
-      { type: 'bottle', id: 'pp', label: 'Phenol-\nphthalein', color: 0xf2e6ee, op: 0.5, fs: 30, cap: 0xc05a8a },
-      { type: 'bottle', id: 'naoh', label: 'NaOH', color: 0xdde9f2, op: 0.45 }
-    ],
-    steps: [
-      { text: 'Rót dung dịch HCl cần chuẩn độ vào bình.', type: 'pour', src: 'hcl', dst: 'beaker', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.45 } },
-      { text: 'Nhỏ vài giọt phenolphthalein (dung dịch vẫn không màu).', type: 'pour', src: 'pp', dst: 'beaker', pour: { level: 0.5 } },
-      { text: 'Nhỏ từ từ NaOH đến khi dung dịch chuyển hồng nhạt bền.', type: 'pour', src: 'naoh', dst: 'beaker', pour: { level: 0.62 }, fx: 'titration_end' }
-    ]
-  },
-  'SIM-06': {
-    id: 'SIM-06',
-    setup: [
-      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'Ống nghiệm' },
-      { type: 'bottle', id: 'hno3', label: 'HNO₃ đặc', color: 0xeef0d8, op: 0.55, cap: 0xc24a3a },
-      { type: 'dish_chips', id: 'cu', label: 'Mảnh đồng (Cu)', x: -4.8, z: 1.7 }
-    ],
-    steps: [
-      { text: 'Thả mảnh đồng vào ống nghiệm.', type: 'drop', src: 'cu', dst: 'tube', dropOffset: { y: 0.16, scale: 0.85 } },
-      { text: 'Rót HNO₃ đặc vào ống. Làm trong tủ hút, lùi lại quan sát!', type: 'pour', src: 'hno3', dst: 'tube', pour: { level: 0.5, color: 0xeef0d8, opacity: 0.5 }, fx: 'cu_hno3_react' }
-    ]
-  },
-  'SIM-07': {
-    id: 'SIM-07',
-    setup: [
-      { type: 'beaker', id: 'jar1', x: -1.6, z: 0.4, r: 0.85, h: 1.8 },
-      { type: 'beaker', id: 'jar2', x: 1.6, z: 0.4, r: 0.85, h: 1.8 },
-      { type: 'bottle', id: 'nh3', label: 'NH₃ đặc', color: 0xe6f0ea, op: 0.45 },
-      { type: 'bottle', id: 'hcl', label: 'HCl đặc', color: 0xeef0d8, op: 0.5, cap: 0xc24a3a }
-    ],
-    steps: [
-      { text: 'Rót dung dịch NH₃ đặc vào lọ thứ nhất.', type: 'pour', src: 'nh3', dst: 'jar1', pour: { level: 0.35, color: 0xe6f0ea, opacity: 0.5 }, fx: 'nh3_vapor' },
-      { text: 'Rót dung dịch HCl đặc vào lọ thứ hai.', type: 'pour', src: 'hcl', dst: 'jar2', pour: { level: 0.35, color: 0xeef0d8, opacity: 0.55 }, fx: 'hcl_vapor' },
-      { text: 'Đưa miệng hai lọ lại gần nhau — khói trắng xuất hiện giữa hai lọ!', type: 'wait', id: 'jar1', fx: 'smoke_puff' }
-    ]
-  },
-  'SIM-09': {
-    id: 'SIM-09',
-    setup: [
-      { type: 'beaker', id: 'beaker', x: 0, z: 0.3, r: 1.0, h: 2.4 },
-      { type: 'bottle', id: 'sugar', label: 'Đường\n(saccharose)', color: 0xf4f4ee, op: 1.0, powder: true, fs: 30, cap: 0xd6c25a },
-      { type: 'bottle', id: 'h2so4', label: 'H₂SO₄ đặc', color: 0xf0ead0, op: 0.6, cap: 0xc24a3a }
-    ],
-    steps: [
-      { text: 'Cho đường trắng vào cốc.', type: 'pour', src: 'sugar', dst: 'beaker', pour: { level: 0.3, color: 0xf4f4ee, opacity: 1.0 } },
-      { text: 'Rót H₂SO₄ đặc vào cốc, lùi lại quan sát!', type: 'pour', src: 'h2so4', dst: 'beaker', pour: { level: 0.38, color: 0xe8dcae, opacity: 0.8 }, fx: 'sugar_carbon' }
-    ]
-  },
-  'SIM-10': {
-    id: 'SIM-10',
-    setup: [
-      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'Nước bromine' },
-      { type: 'bottle', id: 'brom', label: 'Nước\nbromine', color: 0xe88a2a, op: 0.8, fs: 32, cap: 0x9a5a18 },
-      { type: 'bottle', id: 'c2h4', label: 'Khí C₂H₄', color: 0xdde9f2, op: 0.35, cap: 0x6a8a3a }
-    ],
-    steps: [
-      { text: 'Rót nước bromine màu vàng cam vào ống nghiệm.', type: 'pour', src: 'brom', dst: 'tube', pour: { level: 0.5, color: 0xe88a2a, opacity: 0.8 } },
-      { text: 'Sục khí ethylene vào ống — màu vàng cam nhạt dần rồi mất hẳn!', type: 'pour', src: 'c2h4', dst: 'tube', pour: { level: 0.52 }, fx: 'ethylene_bleach' }
-    ]
-  },
-  'SIM-11': {
-    id: 'SIM-11',
-    setup: [
-      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'AgNO₃/NH₃' },
-      { type: 'bottle', id: 'tollens', label: 'AgNO₃\n/NH₃', color: 0xdde9f2, op: 0.45, fs: 32, cap: 0x8a8a92 },
-      { type: 'bottle', id: 'c2h2', label: 'Khí C₂H₂', color: 0xdde9f2, op: 0.35, cap: 0x6a8a3a }
-    ],
-    steps: [
-      { text: 'Rót dung dịch AgNO₃ trong NH₃ vào ống nghiệm.', type: 'pour', src: 'tollens', dst: 'tube', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.45 } },
-      { text: 'Sục khí acetylene vào ống — kết tủa vàng nhạt xuất hiện!', type: 'pour', src: 'c2h2', dst: 'tube', pour: { level: 0.5 }, fx: 'acetylene_ppt' }
-    ]
-  },
-  'SIM-12': {
-    id: 'SIM-12',
-    setup: [
-      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'Ethanol khan' },
-      { type: 'bottle', id: 'etoh', label: 'C₂H₅OH\nkhan', color: 0xe8f0f8, op: 0.5, fs: 32 },
-      { type: 'dish_sodium', id: 'na', label: 'Mẩu sodium (Na)', x: -4.8, z: 1.7 }
-    ],
-    steps: [
-      { text: 'Rót ethanol khan vào ống nghiệm.', type: 'pour', src: 'etoh', dst: 'tube', pour: { level: 0.5, color: 0xe4eef6, opacity: 0.5 } },
-      { text: 'Thả mẩu sodium nhỏ vào ống nghiệm.', type: 'drop', src: 'na', dst: 'tube', dropOffset: { y: 0.2 } },
-      { text: 'Quan sát: bọt khí H₂ thoát ra đều, mẩu Na tan dần.', type: 'wait', id: 'tube', fx: 'etoh_na_react' }
-    ]
-  },
-  'SIM-13': {
-    id: 'SIM-13',
-    setup: [
-      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'Dung dịch phenol' },
-      { type: 'bottle', id: 'phenol', label: 'Phenol', color: 0xdde9f2, op: 0.45 },
-      { type: 'bottle', id: 'brom', label: 'Nước\nbromine', color: 0xe88a2a, op: 0.8, fs: 32, cap: 0x9a5a18 }
-    ],
-    steps: [
-      { text: 'Rót dung dịch phenol vào ống nghiệm.', type: 'pour', src: 'phenol', dst: 'tube', pour: { level: 0.45, color: 0xe2ecf2, opacity: 0.45 } },
-      { text: 'Nhỏ nước bromine vào — kết tủa trắng xuất hiện ngay, nước brom mất màu!', type: 'pour', src: 'brom', dst: 'tube', pour: { level: 0.52 }, fx: 'phenol_ppt' }
-    ]
-  },
-  'SIM-14': {
-    id: 'SIM-14',
-    setup: [
-      { type: 'rack', x: -2.2, z: 0.5, n: 1 },
-      { type: 'tube', id: 'tube', label: 'Ống nghiệm' },
-      { type: 'bottle', id: 'naoh', label: 'NaOH', color: 0xdde9f2, op: 0.45 },
-      { type: 'bottle', id: 'cuso4', label: 'CuSO₄', color: 0x2e86de, op: 0.85, cap: 0x2a5a9a },
-      { type: 'bottle', id: 'gly', label: 'Glycerol', color: 0xeaf2f0, op: 0.55, cap: 0x4a8a5a }
-    ],
-    steps: [
-      { text: 'Rót dung dịch NaOH vào ống nghiệm.', type: 'pour', src: 'naoh', dst: 'tube', pour: { level: 0.2, color: 0xe0ecf4, opacity: 0.5 } },
-      { text: 'Nhỏ CuSO₄ vào — xuất hiện kết tủa xanh Cu(OH)₂.', type: 'pour', src: 'cuso4', dst: 'tube', pour: { level: 0.28, color: 0x9fc8e8, opacity: 0.7 }, fx: 'gly_precip' },
-      { text: 'Thêm glycerol vào ống.', type: 'pour', src: 'gly', dst: 'tube', pour: { level: 0.42 } },
-      { text: 'Nhấp vào ống nghiệm để lắc đều — kết tủa tan tạo dung dịch xanh lam thẫm!', type: 'shake', id: 'tube', fx: 'gly_dissolve' }
-    ]
-  },
-  'SIM-15': {
-    id: 'SIM-15',
-    setup: [
-      { type: 'rack', x: -2.0, z: 0.5, n: 2 },
-      { type: 'tube', id: 'tube1', label: 'Ống 1: + quỳ' },
-      { type: 'tube', id: 'tube2', label: 'Ống 2: + đá vôi' },
-      { type: 'bottle', id: 'acid', label: 'CH₃COOH', color: 0xeef2e6, op: 0.5, cap: 0x8a4a4a },
-      { type: 'dish_nail', id: 'marble', label: 'Đá vôi CaCO₃', x: -4.8, z: 1.7 }
-    ],
-    steps: [
-      { text: 'Rót acetic acid vào ống 1 (đã nhỏ sẵn quỳ tím) — quỳ hóa đỏ.', type: 'pour', src: 'acid', dst: 'tube1', pour: { level: 0.45, color: 0xeaf0e4, opacity: 0.5 }, fx: 'acid_litmus' },
-      { text: 'Thả viên đá vôi vào ống 2.', type: 'drop', src: 'marble', dst: 'tube2', dropOffset: { y: 0.18, scale: 0.85 } },
-      { text: 'Rót acetic acid vào ống 2 — sủi bọt khí CO₂!', type: 'pour', src: 'acid', dst: 'tube2', pour: { level: 0.5, color: 0xeaf0e4, opacity: 0.5 }, fx: 'acid_caco3' }
-    ]
-  }
-};
-
 export default function GenericChemSimulation({
   config,
   currentStep = 1,
@@ -354,17 +177,20 @@ export default function GenericChemSimulation({
   const interactivesRef = useRef<THREE.Object3D[]>([]);
 
   // Local active simulation config
-  const simId = config.simulation_id;
-  const simDef = EXPERIMENTS_CONFIG[simId] || EXPERIMENTS_CONFIG['SIM-04'];
+  const requestedSimId = config.simulation_id;
+  const simId = CHEM_EXPERIMENT_ALIASES[requestedSimId] || requestedSimId;
+  const simDef = EXPERIMENTS_CONFIG[simId] || EXPERIMENTS_CONFIG['CHEM11-01'];
 
   const dragRef = useRef({
     obj: null as THREE.Object3D | null,
     moved: false,
     plane: new THREE.Plane(new THREE.Vector3(0, 1, 0), -1.7),
     downAt: new THREE.Vector2(),
+    lastNDC: new THREE.Vector2(),
   });
 
   const isBusyRef = useRef<boolean>(false);
+  const autoWaitStepRef = useRef<string>('');
   const currentStepRef = useRef<number>(currentStep);
   currentStepRef.current = currentStep;
 
@@ -893,7 +719,8 @@ export default function GenericChemSimulation({
       const dur = opts.dur || 5;
       const liq = basin.userData.liq;
       const topVal = liq ? liq.y0 + liq.level * liq.hMax : 0.65;
-      ball.position.set(0, topVal + 0.05, 0.4);
+      const basinWorld = basin.getWorldPosition(new THREE.Vector3());
+      ball.position.set(basinWorld.x, basinWorld.y + topVal + 0.05, basinWorld.z + 0.4);
 
       let t = 0;
       Effects.bubblesAt(sceneRef.current!, () => ball.position, topVal + 0.02, { rate: 24, r: 0.08, dur });
@@ -903,8 +730,8 @@ export default function GenericChemSimulation({
         ease: 'linear',
         onUpdate: (e: number) => {
           t = e * dur;
-          ball.position.x = Math.cos(t * 7.5) * 1.35;
-          ball.position.z = 0.4 + Math.sin(t * 5.2) * 0.95;
+          ball.position.x = basinWorld.x + Math.cos(t * 7.5) * 1.35;
+          ball.position.z = basinWorld.z + 0.4 + Math.sin(t * 5.2) * 0.95;
           ball.scale.setScalar(Math.max(0.01, 1 - e));
         }
       }).then(() => {
@@ -1028,19 +855,56 @@ export default function GenericChemSimulation({
 
     else if (step.type === 'drop' && step.src && step.dst) {
       const src = objMapRef.current[step.src];
+      const dst = objMapRef.current[step.dst];
       const aw = targetAnchorWorld(step.dst);
       const offset = step.dropOffset || {};
+      const item = src.userData.itemMesh as THREE.Object3D | undefined;
+      const home = src.userData.home;
+      const detachItem = Boolean(item) && offset.attach !== true;
 
       await addTweenPromise(src.position, { x: aw.x, y: aw.y + 1.6, z: aw.z }, 0.5);
       await addTweenPromise(src.position, { y: aw.y + (offset.y || 0.15) }, 0.3, { ease: 'quadIn' });
-      if (offset.rotZ != null) {
+      if (!detachItem && offset.rotZ != null) {
         await addTweenPromise(src.rotation, { z: offset.rotZ }, 0.25);
       }
-      if (offset.scale != null) {
+      if (!detachItem && offset.scale != null) {
         await addTweenPromise(src.scale, { x: offset.scale, y: offset.scale, z: offset.scale }, 0.25);
       }
 
-      src.userData.home = { x: src.position.x, y: src.position.y, z: src.position.z, rz: offset.rotZ || 0 };
+      if (detachItem) {
+        src.remove(item!);
+
+        if (step.dst === 'basin') {
+          const scene = sceneRef.current;
+          const liq = dst.userData.liq;
+          const topVal = liq ? liq.y0 + liq.level * liq.hMax : 0.65;
+          const dstWorld = dst.getWorldPosition(new THREE.Vector3());
+          scene?.add(item!);
+          item!.position.set(dstWorld.x + (offset.x || 0), dstWorld.y + topVal + 0.05, dstWorld.z + (offset.z || 0.4));
+        } else {
+          dst.add(item!);
+          item!.position.set(offset.x || 0, offset.y || 0.4, offset.z || 0);
+        }
+
+        item!.rotation.set(0, 0, offset.rotZ || 0);
+        if (offset.scale != null) {
+          item!.scale.setScalar(offset.scale);
+        }
+        item!.traverse((child) => {
+          const mesh = child as THREE.Mesh;
+          if (mesh.isMesh) {
+            mesh.renderOrder = 4;
+          }
+        });
+        item!.userData.detached = true;
+        item!.userData.basinId = step.dst;
+        await Promise.all([
+          addTweenPromise(src.position, { x: home.x, y: home.y, z: home.z }, 0.45),
+          addTweenPromise(src.rotation, { z: home.rz || 0 }, 0.25),
+        ]);
+      } else {
+        src.userData.home = { x: src.position.x, y: src.position.y, z: src.position.z, rz: offset.rotZ || 0 };
+      }
     }
 
     else if (step.type === 'click' && step.id) {
@@ -1076,6 +940,22 @@ export default function GenericChemSimulation({
 
       if (step.fx === 'precip_blue') {
         await Effects.precip(tube, { color: 0x3f9be0, tint: 0.5 });
+      } else if (step.fx === 'tube_bubbles') {
+        Effects.bubbles(tube, { dur: 1.0, rate: 8, r: 0.04 });
+        await delaySeconds(1.0);
+      } else if (step.fx === 'boil_tube') {
+        await Effects.boil(tube, 2.5);
+      } else if (step.fx === 'boil_beaker') {
+        await Effects.boil(beaker, 2.2);
+      } else if (step.fx === 'ester_layer') {
+        const lamp = objMapRef.current['lamp'];
+        if (lamp && lamp.userData.flame) lamp.userData.flame.visible = false;
+        await Effects.layer(tube, { color: 0xfbf3c0, h: 0.18, opacity: 0.85, dur: 1.6 });
+        Effects.sparkle(tube, new THREE.Vector3(0, 3.8, 0), { dur: 2.0 });
+      } else if (step.fx === 'soap_layer') {
+        const lamp = objMapRef.current['lamp'];
+        if (lamp && lamp.userData.flame) lamp.userData.flame.visible = false;
+        await Effects.layer(beaker, { color: 0xf6f3e4, h: 0.35, opacity: 0.95, dur: 2.0 });
       } else if (step.fx === 'dissolve_blue') {
         await Effects.dissolvePile(tube, { color: 0x1f4fc8, opacity: 0.8, dur: 1.4 });
       } else if (step.fx === 'precip_red') {
@@ -1115,6 +995,7 @@ export default function GenericChemSimulation({
       } else if (step.fx === 'nail_coat') {
         const nail = objMapRef.current['nail'];
         const coat = nail.userData.itemMesh.userData.coat;
+        coat.visible = true;
         await Promise.all([
           addTweenPromise(coat.material, { opacity: 0.9 }, 4.0),
           Effects.tint(tube, { color: 0xaed4dc, opacity: 0.6, dur: 4.0 })
@@ -1128,7 +1009,7 @@ export default function GenericChemSimulation({
         chips.visible = false;
       } else if (step.fx === 'thermite_ignite') {
         const crucible = objMapRef.current['crucible'];
-        const mg = objMapRef.current['mg'];
+        const mg = objMapRef.current['mg'].userData.itemMesh || objMapRef.current['mg'];
         Effects.sparkler(crucible, new THREE.Vector3(0, 1.3, 0), 1.7);
         await delaySeconds(1.7);
         mg.visible = false;
@@ -1147,6 +1028,20 @@ export default function GenericChemSimulation({
         addTween(coat.material, { opacity: 0.9 }, 6.0);
         Effects.tint(beaker, { color: 0xa8cce4, opacity: 0.6, dur: 6.5 });
         await delaySeconds(3.0);
+      } else if (step.fx === 'galvanic_cell') {
+        const cell = objMapRef.current['cell'];
+        const wire = cell.userData.wire;
+        const bulb = cell.userData.bulb;
+        if (wire) wire.visible = true;
+        if (bulb && bulb.material) {
+          bulb.material.emissive.setHex(0xffd24a);
+          bulb.material.color.setHex(0xfff0a0);
+        }
+        Effects.bubbles(cell, { dur: 3.0, rate: 12, r: 0.035, speed: 0.8 });
+        await Effects.tint(cell, { color: 0xd6e7ef, opacity: 0.55, dur: 2.0 });
+      } else if (step.fx === 'zn_bubbles') {
+        Effects.bubblesAt(sceneRef.current!, new THREE.Vector3(-0.85, 0.4, 0.4), 1.15, { rate: 14, r: 0.12, dur: 3.0 });
+        await delaySeconds(2.0);
       } else if (step.fx === 'ind_acid') {
         await Effects.tint(objMapRef.current['tube1'], { color: 0xe0392b, opacity: 0.8, dur: 1.0 });
       } else if (step.fx === 'ind_neutral') {
@@ -1226,6 +1121,221 @@ export default function GenericChemSimulation({
         Effects.bubbles(objMapRef.current['tube2'], { dur: 5.0, rate: 30, r: 0.05, speed: 1.6 });
         Effects.steam(objMapRef.current['tube2'], new THREE.Vector3(0, 3.5, 0), { dur: 4.0, rate: 2, size: 0.3 });
         await delaySeconds(2.5);
+
+      // ── Hóa học lớp 10 fx ──────────────────────────────────────────────
+
+      } else if (step.fx === 'rutherford_beam') {
+        const source = objMapRef.current['source'];
+        const counter = objMapRef.current['cell']?.userData?.coat;
+        if (!source) { await delaySeconds(1.0); }
+        else {
+          const hatch = source.userData.hatch as THREE.Mesh | undefined;
+          if (hatch) await addTweenPromise(hatch.position, { y: hatch.position.y + 0.62 }, 0.5);
+          const beam = alphaBeam(sceneRef.current!, counter);
+          source.userData.beam = beam;
+          emittersRef.current.push({ update: (dt: number) => beam.update(dt) });
+          await delaySeconds(5.0);
+        }
+
+      } else if (step.fx === 'atom_model') {
+        const source = objMapRef.current['source'];
+        if (source?.userData?.beam) source.userData.beam.stop();
+        const modelGrp = buildAtomModel();
+        modelGrp.scale.setScalar(0.01);
+        modelGrp.position.set(0, 5.1, 0.9);
+        sceneRef.current!.add(modelGrp);
+        objMapRef.current['atom_model'] = modelGrp;
+        if (modelGrp.userData.loop) updatablesRef.current.push(modelGrp.userData.loop);
+        Effects.sparkle(modelGrp, new THREE.Vector3(0, 0, 0), { dur: 2, rate: 9 });
+        await addTweenPromise(modelGrp.scale, { x: 1.8, y: 1.8, z: 1.8 }, 0.9, { ease: 'backOut' });
+        await delaySeconds(2.2);
+
+      } else if (step.fx === 'flame_yellow' || step.fx === 'flame_purple' || step.fx === 'flame_cyan' || step.fx === 'flame_red') {
+        const lamp = objMapRef.current['lamp'];
+        const flame = lamp?.userData?.flame as THREE.Group | undefined;
+        if (flame && flame.visible) {
+          const fOuter = flame.children[0] as THREE.Mesh;
+          const fLight = flame.children[2] as THREE.PointLight;
+          const targetHex = step.fx === 'flame_yellow' ? 0xffcf3a :
+                            step.fx === 'flame_purple' ? 0xb46ce0 :
+                            step.fx === 'flame_cyan'   ? 0x35d6a0 : 0xff6a3a;
+          const tc = new THREE.Color(targetHex);
+          const startC = (fOuter.material as THREE.MeshBasicMaterial).color.clone();
+          const proxy = { t: 0 };
+          await addTweenPromise(proxy, { t: 1 }, 2.4, {
+            onUpdate: (e: number) => {
+              const c = startC.clone().lerp(tc, e);
+              (fOuter.material as THREE.MeshBasicMaterial).color.copy(c);
+              if (fLight) fLight.color.copy(c);
+            }
+          });
+          if (step.fx === 'flame_red') {
+            await delaySeconds(0.5);
+            flame.visible = false;
+          }
+        } else {
+          await delaySeconds(2.4);
+        }
+
+      } else if (step.fx === 'flame_test_yellow' || step.fx === 'flame_test_purple' ||
+                 step.fx === 'flame_test_cyan'   || step.fx === 'flame_test_red') {
+        const wire = objMapRef.current['wire'];
+        const lamp  = objMapRef.current['lamp'];
+        const flame = lamp?.userData?.flame as THREE.Group | undefined;
+        if (!wire || !lamp) { await delaySeconds(3.0); }
+        else {
+          const lampWp = lamp.getWorldPosition(new THREE.Vector3());
+          const flameTipY = lampWp.y + 1.35;
+          const initHome  = wire.userData.initHome as { x: number; y: number; z: number };
+          const savedY    = wire.position.y;
+
+          // open bottle cap
+          const bottle = step.dst ? objMapRef.current[step.dst] : null;
+          const cap = bottle?.userData?.cap as THREE.Mesh | undefined;
+          if (cap) {
+            await Promise.all([
+              addTweenPromise(cap.position, { y: cap.position.y + 1.6 }, 0.22, { ease: 'quadOut' }),
+              addTweenPromise(cap.rotation, { z: 0.4 }, 0.22),
+            ]);
+          }
+
+          // dip into bottle
+          await addTweenPromise(wire.position, { y: savedY - 0.55 }, 0.3, { ease: 'quadIn' });
+          await addTweenPromise(wire.position, { y: savedY }, 0.28, { ease: 'quadOut' });
+
+          // close bottle cap while wire lifts
+          if (cap) {
+            addTween(cap.position, { y: 2.34 }, 0.28, { ease: 'quadIn' });
+            addTween(cap.rotation, { z: 0 }, 0.28);
+          }
+
+          // lift
+          await addTweenPromise(wire.position, { y: savedY + 2.5 }, 0.4, { ease: 'quadOut' });
+
+          // arc to above flame, then lower loop into flame
+          await addTweenPromise(wire.position, { x: lampWp.x, y: flameTipY + 1.2, z: lampWp.z }, 0.55);
+          await addTweenPromise(wire.position, { y: flameTipY - 0.15 }, 0.32, { ease: 'quadIn' });
+
+          // change flame color
+          if (flame && flame.visible) {
+            const fOuter = flame.children[0] as THREE.Mesh;
+            const fLight = flame.children[2] as THREE.PointLight;
+            const targetHex = step.fx === 'flame_test_yellow' ? 0xffcf3a :
+                              step.fx === 'flame_test_purple' ? 0xb46ce0 :
+                              step.fx === 'flame_test_cyan'   ? 0x35d6a0 : 0xff6a3a;
+            const tc = new THREE.Color(targetHex);
+            const startC = (fOuter.material as THREE.MeshBasicMaterial).color.clone();
+            const proxy2 = { t: 0 };
+            await addTweenPromise(proxy2, { t: 1 }, 1.8, {
+              onUpdate: (e: number) => {
+                const c = startC.clone().lerp(tc, e);
+                (fOuter.material as THREE.MeshBasicMaterial).color.copy(c);
+                if (fLight) fLight.color.copy(c);
+              }
+            });
+          }
+          await delaySeconds(0.6);
+
+          // return wire to initial home position
+          await addTweenPromise(wire.position, { y: flameTipY + 1.8 }, 0.3, { ease: 'quadOut' });
+          await addTweenPromise(wire.position, { x: initHome.x, y: initHome.y, z: initHome.z }, 0.7);
+          wire.userData.home = { x: initHome.x, y: initHome.y, z: initHome.z, rz: 0 };
+        }
+
+      } else if (step.fx === 'zn_dissolve') {
+        const zn = objMapRef.current['zn'];
+        const chips = zn?.userData?.itemMesh as THREE.Object3D | undefined;
+        Effects.bubbles(tube, { dur: 5.0, rate: 30, r: 0.05, speed: 1.7 });
+        Effects.steam(tube, new THREE.Vector3(0, 3.6, 0), { dur: 4.5, rate: 2, size: 0.3 });
+        if (chips) await addTweenPromise(chips.scale, { x: 0.1, y: 0.1, z: 0.1 }, 4.5);
+        if (chips) chips.visible = false;
+        await delaySeconds(0.5);
+
+      } else if (step.fx === 'mg_burn_flash') {
+        const mgDish = objMapRef.current['mg'];
+        const wp = mgDish ? mgDish.getWorldPosition(new THREE.Vector3()) : new THREE.Vector3(0, 3, 0);
+        const flashLight = new THREE.AmbientLight(0xffffff, 9.0);
+        sceneRef.current!.add(flashLight);
+        addTween(flashLight, { intensity: 0 }, 0.85, { ease: 'quadIn', onDone: () => sceneRef.current?.remove(flashLight) });
+        Effects.sparkler(mgDish || sceneRef.current!, new THREE.Vector3(0, 1.2, 0), 1.8);
+        const gLight = new THREE.PointLight(0xffffff, 5.5, 12);
+        gLight.position.copy(wp);
+        sceneRef.current!.add(gLight);
+        for (let s = 0; s < 6; s++) {
+          await delaySeconds(0.32);
+          Effects.sparks(wp.clone().add(new THREE.Vector3(0, 1.0, 0)), { count: 50, speed: 4.5, life: 0.9, size: 0.35, color: 0xffffff });
+        }
+        addTween(gLight, { intensity: 0 }, 1.2);
+        // hide entire Mg group (strip + clip base)
+        if (mgDish) mgDish.visible = false;
+        // small white ash cloud at tip of strip, fades out
+        const ashMat = new THREE.MeshStandardMaterial({ color: 0xf0f0f2, roughness: 1.0, transparent: true, opacity: 0.85 });
+        const ash = new THREE.Mesh(new THREE.SphereGeometry(0.12, 10, 8), ashMat);
+        ash.scale.set(1.4, 0.6, 1.4);
+        ash.position.copy(wp).add(new THREE.Vector3(0, 0.95, 0));
+        sceneRef.current!.add(ash);
+        await delaySeconds(0.8);
+        addTween(ashMat, { opacity: 0 }, 1.2, { onDone: () => sceneRef.current?.remove(ash) });
+
+      } else if (step.fx === 'quicklime_react') {
+        const gLight2 = new THREE.PointLight(0xffb060, 2.5, 10);
+        const bwp = beaker ? beaker.getWorldPosition(new THREE.Vector3()) : new THREE.Vector3(0, 1.5, 0);
+        gLight2.position.set(bwp.x, bwp.y + 2.0, bwp.z);
+        sceneRef.current!.add(gLight2);
+        Effects.bubbles(beaker, { dur: 4.0, rate: 12, r: 0.05 });
+        Effects.steam(beaker, new THREE.Vector3(0, 2.4, 0), { dur: 5.0, rate: 6, size: 0.6, rise: 1.4 });
+        await Effects.tint(beaker, { color: 0xeef0ee, opacity: 0.9, dur: 3.0 });
+        addTween(gLight2, { intensity: 0 }, 1.5);
+        await delaySeconds(1.0);
+
+      } else if (step.fx === 'endotherm_react') {
+        Effects.steam(beaker, new THREE.Vector3(0, 2.4, 0), { dur: 4.0, rate: 3, size: 0.45, rise: 0.9 });
+        await Effects.layer(beaker, { color: 0xdfeef4, h: 0.22, opacity: 0.65, dur: 1.5 });
+        await delaySeconds(1.2);
+
+      } else if (step.fx === 'rate_conc_react') {
+        const t1 = objMapRef.current['tube1'];
+        const t2 = objMapRef.current['tube2'];
+        await Promise.all([
+          Effects.tint(t1, { color: 0xe7e0c0, opacity: 0.95, dur: 1.4 }),
+          Effects.tint(t2, { color: 0xe7e0c0, opacity: 0.95, dur: 3.8 })
+        ]);
+
+      } else if (step.fx === 'h2o2_slow') {
+        Effects.bubbles(tube, { dur: 2.0, rate: 2, r: 0.03 });
+        await delaySeconds(0.6);
+
+      } else if (step.fx === 'rate_cat_burst') {
+        Effects.bubbles(tube, { dur: 5.0, rate: 42, r: 0.055, speed: 1.9 });
+        Effects.steam(tube, new THREE.Vector3(0, 3.5, 0), { dur: 4.5, rate: 2.5, size: 0.32 });
+        await delaySeconds(2.5);
+
+      } else if (step.fx === 'rate_surface_react') {
+        const t1b = objMapRef.current['tube1'];
+        const t2b = objMapRef.current['tube2'];
+        Effects.bubbles(t1b, { dur: 5.0, rate: 9, r: 0.045 });
+        Effects.bubbles(t2b, { dur: 5.0, rate: 44, r: 0.055, speed: 1.9 });
+        Effects.steam(t2b, new THREE.Vector3(0, 3.5, 0), { dur: 4.0, rate: 2, size: 0.3 });
+        await delaySeconds(2.5);
+
+      } else if (step.fx === 'halide_white') {
+        const t1c = objMapRef.current['tube1'];
+        await Effects.precip(t1c, { color: 0xf2f2f2, tint: 0.55 });
+
+      } else if (step.fx === 'halide_pale_yellow') {
+        const t2c = objMapRef.current['tube2'];
+        await Effects.precip(t2c, { color: 0xf0e6a8, tint: 0.55 });
+
+      } else if (step.fx === 'halide_yellow') {
+        const tube3 = objMapRef.current['tube3'];
+        await Effects.precip(tube3, { color: 0xf2d23a, tint: 0.6 });
+
+      } else if (step.fx === 'chlorine_decolor') {
+        await Effects.tint(tube, { color: 0xdde9f2, opacity: 0.4, dur: 3.0 });
+        Effects.sparkle(tube, new THREE.Vector3(0, 3.6, 0), { dur: 1.5 });
+
+      } else if (step.fx === 'halogen_orange') {
+        await Effects.tint(tube, { color: 0xe88a2a, opacity: 0.8, dur: 2.5 });
       }
     }
 
@@ -1246,6 +1356,20 @@ export default function GenericChemSimulation({
         o.userData.home = { ...ih };
       }
       o.visible = true;
+
+      const item = o.userData.itemMesh as THREE.Object3D | undefined;
+      const itemHome = o.userData.itemHome;
+      if (item && itemHome) {
+        if (item.parent !== o) {
+          item.parent?.remove(item);
+          o.add(item);
+        }
+        item.position.set(itemHome.x, itemHome.y, itemHome.z);
+        item.rotation.set(itemHome.rx || 0, itemHome.ry || 0, itemHome.rz || 0);
+        item.scale.setScalar(itemHome.scale || 1);
+        item.visible = true;
+        item.userData.detached = false;
+      }
 
       // Reset dynamic internal objects
       const liq = o.userData.liq;
@@ -1309,6 +1433,23 @@ export default function GenericChemSimulation({
       resetSimulation();
     }
   }, [currentStep]);
+
+  useEffect(() => {
+    const step = simDef.steps[currentStep - 1];
+    if (!step || step.type !== 'wait') return;
+
+    const autoKey = `${simId}:${currentStep}`;
+    if (autoWaitStepRef.current === autoKey) return;
+    autoWaitStepRef.current = autoKey;
+
+    const timer = window.setTimeout(() => {
+      if (currentStepRef.current === currentStep && !isBusyRef.current) {
+        executeStep(currentStep);
+      }
+    }, 350);
+
+    return () => window.clearTimeout(timer);
+  }, [currentStep, simId]);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -1376,16 +1517,29 @@ export default function GenericChemSimulation({
     const shelf = new THREE.Mesh(new THREE.BoxGeometry(21, 0.28, 2.1), new THREE.MeshStandardMaterial({ color: 0x9a6a3a, roughness: 0.7 }));
     shelf.position.set(0, 3.86, -3.05); scene.add(shelf);
     const placard = (text: string, x: number, z: number, w = 1.4) => {
+      const lines = String(text).split('\n');
+      const autoWidth = Math.min(4.2, Math.max(1.95, w, ...lines.map((line) => line.length * 0.17)));
+      const planeH = Math.max(0.68, autoWidth * (lines.length > 1 ? 0.34 : 0.28));
       const p = new THREE.Mesh(
-        new THREE.PlaneGeometry(w, w * 0.3),
-        new THREE.MeshBasicMaterial({ map: textTexture(text, { fs: 34, h: 78, w: 256, bd: '#88a7c5' }), transparent: true })
+        new THREE.PlaneGeometry(autoWidth, planeH),
+        new THREE.MeshBasicMaterial({
+          map: textTexture(text, {
+            fs: lines.length > 1 ? 50 : 56,
+            h: lines.length > 1 ? 174 : 146,
+            w: 768,
+            bd: '#88a7c5',
+            wrap: true,
+            maxWidth: 640,
+          }),
+          transparent: true,
+          side: THREE.DoubleSide,
+        })
       );
-      p.position.set(x, 0.16, z);
+      p.position.set(x, 0.18, z);
       p.rotation.x = -Math.PI / 2 + 0.5;
       scene.add(p);
+      return p;
     };
-    placard('KỆ HÓA CHẤT', 0, -3.4, 4.6);
-
     const registerObj = (id: string, o: THREE.Object3D, opts: any = {}) => {
       o.userData.id = id;
       o.userData.draggable = !!opts.draggable;
@@ -1423,12 +1577,14 @@ export default function GenericChemSimulation({
       g.add(bBody, bShoulder, bNeck, bCap, lbl);
       g.userData.dropColor = color;
       g.userData.powder = !!opts.powder;
+      g.userData.cap = bCap;
       g.userData.h = 2.5;
 
-      g.position.set(opts.x != null ? opts.x : shelfX, 4.05, -3.0);
+      g.position.set(opts.x != null ? opts.x : shelfX, opts.y ?? 4.05, opts.z ?? -3.0);
       if (opts.x == null) shelfX += 2.0;
 
       registerObj(id, g, { draggable: true });
+      addTarget(id, g, new THREE.Vector3(0, 3.5, 0));
     };
 
     let rackSlots: { x: number; z: number }[] = [];
@@ -1436,20 +1592,22 @@ export default function GenericChemSimulation({
     const addRack = (rx: number, rz: number, n: number) => {
       const g = new THREE.Group();
       const wood = MAT.plastic(0x8a5a30);
-      const base = new THREE.Mesh(new THREE.BoxGeometry(0.95 * n + 0.6, 0.22, 1.25), wood);
+      const spacing = n > 1 ? 2.05 : 0.95;
+      const rackWidth = spacing * Math.max(n - 1, 0) + 1.55;
+      const base = new THREE.Mesh(new THREE.BoxGeometry(rackWidth, 0.22, 1.25), wood);
       base.position.y = 0.11;
-      const back = new THREE.Mesh(new THREE.BoxGeometry(0.95 * n + 0.6, 1.5, 0.14), wood);
-      back.position.set(0, 0.97, -0.55);
-      const top = new THREE.Mesh(new THREE.BoxGeometry(0.95 * n + 0.6, 0.12, 0.9), wood);
-      top.position.set(0, 1.7, -0.12);
+      const back = new THREE.Mesh(new THREE.BoxGeometry(rackWidth, 1.5, 0.14), wood);
+      back.position.set(0, 0.97, -0.68);
+      const top = new THREE.Mesh(new THREE.BoxGeometry(rackWidth, 0.12, 0.16), wood);
+      top.position.set(0, 1.7, -0.58);
       g.add(base, back, top);
 
       for (let i = 0; i < n; i++) {
-        const hx = -(n - 1) * 0.475 + i * 0.95;
+        const hx = -(n - 1) * spacing / 2 + i * spacing;
         const ring = new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.055, 8, 18), wood);
-        ring.rotation.x = Math.PI / 2; ring.position.set(hx, 1.7, -0.12);
+        ring.rotation.x = Math.PI / 2; ring.position.set(hx, 1.7, 0.04);
         g.add(ring);
-        rackSlots.push({ x: rx + hx, z: rz - 0.12 });
+        rackSlots.push({ x: rx + hx, z: rz + 0.06 });
       }
       g.position.set(rx, 0, rz);
       scene.add(g);
@@ -1478,7 +1636,7 @@ export default function GenericChemSimulation({
 
       g.userData.mirror = mir;
       g.userData.h = 3.45;
-      g.position.set(slot.x, 0.22, slot.z);
+      g.position.set(slot.x, 0.32, slot.z);
 
       registerObj(id, g, { draggable: true, clickable: true });
       addTarget(id, g, new THREE.Vector3(0, 3.5, 0));
@@ -1529,24 +1687,24 @@ export default function GenericChemSimulation({
     const addLampStand = (lx = 4.5, lz = -0.4) => {
       const g = new THREE.Group();
       const metal = MAT.metal(0x6a727c);
-      const base = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.18, 1.6), metal);
-      base.position.set(0.9, 0.09, 0);
+      const base = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.18, 1.65), metal);
+      base.position.set(0, 0.09, 0);
       const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 5.2, 10), metal);
-      rod.position.set(1.7, 2.6, 0);
-      const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.9, 8), metal);
-      arm.rotation.z = Math.PI / 2; arm.position.set(0.85, 3.25, 0);
+      rod.position.set(1.0, 2.6, 0);
+      const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.95, 8), metal);
+      arm.rotation.z = Math.PI / 2; arm.position.set(0.45, 3.25, 0);
       const clamp = new THREE.Mesh(new THREE.TorusGeometry(0.48, 0.06, 8, 20), metal);
-      clamp.rotation.x = Math.PI / 2; clamp.position.set(0, 3.25, 0);
+      clamp.rotation.x = Math.PI / 2; clamp.position.set(-0.45, 3.25, 0);
       g.add(base, rod, arm, clamp);
       g.position.set(lx, 0, lz);
       scene.add(g);
       registerObj('standGroup', g, {});
-      addTarget('stand', g, new THREE.Vector3(0, 1.85, 0));
+      addTarget('stand', g, new THREE.Vector3(-0.45, 1.85, 0));
 
       const lamp = createLamp();
-      lamp.position.set(lx, 0, lz);
+      lamp.position.set(lx - 0.45, 0, lz);
       registerObj('lamp', lamp, { clickable: true });
-      placard('Đèn cồn + giá đỡ', lx + 0.2, lz + 1.6, 1.6);
+      placard('Đèn cồn\n+ giá đỡ', lx, lz + 1.7, 2.4);
     };
 
     const addBath = (bx = 4.6, bz = 0.3) => {
@@ -1565,17 +1723,26 @@ export default function GenericChemSimulation({
       addTarget('bath', b, new THREE.Vector3(0, 1.4, 0));
     };
 
-    const addDishItem = (id: string, itemMesh: THREE.Object3D, dx: number, dz: number, label?: string) => {
+    const addDishItem = (id: string, itemMesh: THREE.Object3D, dx: number, dz: number, label?: string, dy = 0) => {
       const g = new THREE.Group();
       const dish = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.52, 0.14, 24), MAT.plastic(0xf2f4f6));
       dish.position.y = 0.07; dish.castShadow = true;
       g.add(dish);
       itemMesh.position.y += 0.14;
       g.add(itemMesh);
-      g.position.set(dx, 0, dz);
+      g.position.set(dx, dy, dz);
       registerObj(id, g, { draggable: true });
-      if (label) placard(label, dx, dz + 1.0, 1.5);
+      if (label) { const lp = placard(label, dx, dz + 1.0, 1.5); if (dy) lp.position.y += dy; }
       g.userData.itemMesh = itemMesh;
+      g.userData.itemHome = {
+        x: itemMesh.position.x,
+        y: itemMesh.position.y,
+        z: itemMesh.position.z,
+        rx: itemMesh.rotation.x,
+        ry: itemMesh.rotation.y,
+        rz: itemMesh.rotation.z,
+        scale: itemMesh.scale.x,
+      };
       g.userData.h = 1;
     };
 
@@ -1625,7 +1792,7 @@ export default function GenericChemSimulation({
 
     const attachLiquid = (group: THREE.Group, bounds: { r: number; y0: number; hMax: number }) => {
       const geo = new THREE.CylinderGeometry(bounds.r, bounds.r * 0.86, 1, 24);
-      const mat = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.1, shininess: 95 });
+      const mat = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.1, shininess: 95, depthWrite: false });
       const mesh = new THREE.Mesh(geo, mat);
       mesh.visible = false; mesh.renderOrder = 1; group.add(mesh);
       const pileMat = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 10 });
@@ -1678,7 +1845,7 @@ export default function GenericChemSimulation({
       } else if (cmd.type === 'tube') {
         addTube(cmd.id!, { label: cmd.label });
       } else if (cmd.type === 'bottle') {
-        addBottle(cmd.id!, cmd.label!, cmd.color!, { op: cmd.op, cap: cmd.cap, fs: cmd.fs, powder: cmd.powder });
+        addBottle(cmd.id!, cmd.label!, cmd.color!, { op: cmd.op, cap: cmd.cap, fs: cmd.fs, powder: cmd.powder, x: cmd.x, y: cmd.y, z: cmd.z });
       } else if (cmd.type === 'beaker') {
         addBeaker(cmd.id!, cmd.x!, cmd.z!, { r: cmd.r, h: cmd.h, clickable: true });
       } else if (cmd.type === 'basin') {
@@ -1706,6 +1873,24 @@ export default function GenericChemSimulation({
         nail.userData.coat = coat;
 
         addDishItem(cmd.id!, nail, cmd.x!, cmd.z!, cmd.label);
+      } else if (cmd.type === 'dish_marble') {
+        const stones = new THREE.Group();
+        const stoneMat = new THREE.MeshStandardMaterial({ color: 0xe6e2d8, roughness: 0.92, metalness: 0.02 });
+        const darkMat = new THREE.MeshStandardMaterial({ color: 0xcfc8ba, roughness: 0.95, metalness: 0.02 });
+        const positions = [
+          { x: -0.18, y: 0.11, z: -0.04, s: [0.38, 0.22, 0.3], r: [0.2, 0.4, -0.15] },
+          { x: 0.16, y: 0.1, z: 0.08, s: [0.32, 0.2, 0.26], r: [-0.18, -0.25, 0.28] },
+          { x: 0.0, y: 0.2, z: -0.18, s: [0.25, 0.16, 0.22], r: [0.35, 0.1, 0.1] },
+        ];
+        positions.forEach((p, i) => {
+          const stone = new THREE.Mesh(new THREE.DodecahedronGeometry(0.5, 0), i === 1 ? darkMat : stoneMat);
+          stone.position.set(p.x, p.y, p.z);
+          stone.scale.set(p.s[0], p.s[1], p.s[2]);
+          stone.rotation.set(p.r[0], p.r[1], p.r[2]);
+          stone.castShadow = true;
+          stones.add(stone);
+        });
+        addDishItem(cmd.id!, stones, cmd.x!, cmd.z!, cmd.label);
       } else if (cmd.type === 'dish_chips') {
         const chips = new THREE.Group();
         for (let i = 0; i < 3; i++) {
@@ -1716,10 +1901,21 @@ export default function GenericChemSimulation({
         }
         addDishItem(cmd.id!, chips, cmd.x!, cmd.z!, cmd.label);
       } else if (cmd.type === 'dish_mg') {
-        const mg = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.85, 0.03), MAT.metal(0xe8eaf0));
-        mg.position.y = 0.42;
-        const mgGroup = new THREE.Group(); mgGroup.add(mg);
-        addDishItem(cmd.id!, mgGroup, cmd.x!, cmd.z!, cmd.label);
+        const g = new THREE.Group();
+        // thin metallic ribbon standing upright
+        const stripMat = new THREE.MeshStandardMaterial({ color: 0xd4d8e0, metalness: 0.88, roughness: 0.22 });
+        const strip = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.9, 0.022), stripMat);
+        strip.position.y = 0.5;
+        g.add(strip);
+        // small clip base
+        const clip = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.06, 0.18), MAT.metal(0x8a8e96));
+        clip.position.y = 0.03;
+        g.add(clip);
+        g.position.set(cmd.x!, 0, cmd.z!);
+        g.userData.itemMesh = strip;
+        g.userData.h = 1;
+        registerObj(cmd.id!, g, { draggable: true });
+        if (cmd.label) placard(cmd.label, cmd.x!, cmd.z! + 1.0, 1.5);
       } else if (cmd.type === 'dish_foil') {
         const foil = new THREE.Group();
         const sheet = new THREE.Mesh(new THREE.BoxGeometry(0.04, 1.3, 0.92),
@@ -1729,7 +1925,31 @@ export default function GenericChemSimulation({
         bar.position.y = 1.45;
         foil.add(sheet, bar);
 
-        addDishItem(cmd.id!, foil, cmd.x!, cmd.z!, cmd.label);
+        addDishItem(cmd.id!, foil, cmd.x!, cmd.z!, cmd.label, cmd.y ?? 0);
+      } else if (cmd.type === 'wire_loop') {
+        const g = new THREE.Group();
+        const handle = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.035, 0.035, 1.1, 8),
+          new THREE.MeshPhongMaterial({ color: 0xd0e8f0, transparent: true, opacity: 0.65 })
+        );
+        handle.position.y = 0.6;
+        const wireMesh = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.018, 0.018, 0.28, 6),
+          MAT.metal(0xc8c0b8)
+        );
+        wireMesh.position.y = 1.3;
+        const loop = new THREE.Mesh(
+          new THREE.TorusGeometry(0.055, 0.014, 6, 12),
+          MAT.metal(0xc8c0b8)
+        );
+        loop.position.y = 1.5;
+        loop.rotation.x = Math.PI / 2;
+        g.add(handle, wireMesh, loop);
+        g.position.set(cmd.x!, 0, cmd.z!);
+        g.userData.h = 1.6;
+        g.userData.initHome = { x: cmd.x!, y: 0, z: cmd.z! };
+        registerObj(cmd.id!, g, { draggable: true });
+        if (cmd.label) placard(cmd.label, cmd.x!, cmd.z! + 1.0, 1.5);
       } else if (cmd.type === 'electrolysis_cell') {
         // Special beaker with graphite electrodes
         addBeaker(cmd.id!, cmd.x!, cmd.z!, { r: 1.25, h: 2.4, clickable: true });
@@ -1793,8 +2013,9 @@ export default function GenericChemSimulation({
         const cu = makeStrip(0xc26a3a);
         cu.position.set(0.7, 0.15, 0); cu.rotation.z = -0.18;
         cell.add(cu);
-        placard('Zn', -1.3, 2.2, 0.5);
-        placard('Cu', 1.3, 2.2, 0.5);
+        const cellWorld = cell.getWorldPosition(new THREE.Vector3());
+        placard('Zn', cellWorld.x - 1.45, cellWorld.z + 1.85, 0.8);
+        placard('Cu', cellWorld.x + 1.05, cellWorld.z + 1.85, 0.8);
 
         // wires and bulb model
         const wireGrp = new THREE.Group();
@@ -1819,7 +2040,7 @@ export default function GenericChemSimulation({
         sw.position.set(cmd.x!, 0, cmd.z!);
         sw.userData.h = 0.9;
         registerObj(cmd.id!, sw, { clickable: true });
-        placard('Công tắc nối dây Zn–Cu', cmd.x!, cmd.z! + 0.7, 2.2);
+        placard('Công tắc\nZn-Cu', cmd.x! + 0.15, cmd.z! + 1.25, 2.0);
       } else if (cmd.type === 'tray_sand') {
         const tray = new THREE.Mesh(new THREE.BoxGeometry(4.6, 0.3, 3.2), MAT.plastic(0xd9c08a));
         tray.position.set(cmd.x!, 0.15, cmd.z!);
@@ -1833,12 +2054,12 @@ export default function GenericChemSimulation({
         cupBot.position.y = 0.06;
         cru.add(cup, cupBot);
         attachLiquid(cru, { r: 0.5, y0: 0.18, hMax: 0.6 });
-        cru.position.set(cmd.x!, 1.62, cmd.z!);
+        cru.position.set(cmd.x!, 0.32, cmd.z!);
         cru.userData.h = 1.1;
 
         registerObj(cmd.id!, cru, { clickable: true });
         addTarget(cmd.id!, cru, new THREE.Vector3(0, 1.05, 0));
-        placard('Chén sứ trên khay cát', cmd.x!, cmd.z! + 2.0, 2.0);
+        placard('Chén sứ', cmd.x! - 0.25, cmd.z! + 2.15, 1.5);
       } else if (cmd.type === 'rutherford_screen') {
         const R = 3.1, sh = 2.3;
         const gapA = THREE.MathUtils.degToRad(42);
@@ -1955,6 +2176,17 @@ export default function GenericChemSimulation({
       dragRef.current.moved = false;
       dragRef.current.downAt.set(e.clientX, e.clientY);
 
+      // For move steps use a camera-facing plane so the wire can reach shelf objects
+      const stepIdx = currentStepRef.current;
+      const curStep = simDef.steps[stepIdx - 1];
+      if ((curStep?.type === 'move' || curStep?.type === 'drop') && curStep.src === o.userData.id) {
+        const wp = o.getWorldPosition(new THREE.Vector3());
+        const normal = camera.position.clone().sub(wp).normalize();
+        dragRef.current.plane.setFromNormalAndCoplanarPoint(normal, wp);
+      } else {
+        dragRef.current.plane.set(new THREE.Vector3(0, 1, 0), -1.7);
+      }
+
       if (o.userData.draggable) {
         controls.enabled = false;
       }
@@ -1969,13 +2201,14 @@ export default function GenericChemSimulation({
       if (!drag.moved) return;
 
       const p = setPointer(e);
+      drag.lastNDC.copy(p);
       const raycaster = new THREE.Raycaster();
       raycaster.setFromCamera(p, camera);
       const intersectPos = new THREE.Vector3();
       if (raycaster.ray.intersectPlane(drag.plane, intersectPos)) {
-        drag.obj.position.x = THREE.MathUtils.clamp(intersectPos.x, -10.5, 10.5);
-        drag.obj.position.z = THREE.MathUtils.clamp(intersectPos.z, -4.3, 4.0);
-        drag.obj.position.y = 1.7;
+        drag.obj.position.x = THREE.MathUtils.clamp(intersectPos.x, -11.0, 11.0);
+        drag.obj.position.z = THREE.MathUtils.clamp(intersectPos.z, -6.0, 4.0);
+        drag.obj.position.y = THREE.MathUtils.clamp(intersectPos.y, 0, 9.0);
       }
     };
 
@@ -1991,7 +2224,11 @@ export default function GenericChemSimulation({
         if (o.userData.clickable) {
           const stepIdx = currentStepRef.current;
           const curStepItem = simDef.steps[stepIdx - 1];
-          if (curStepItem && curStepItem.type === 'click' && curStepItem.id === o.userData.id) {
+          if (
+            curStepItem &&
+            ['click', 'shake'].includes(curStepItem.type) &&
+            (!curStepItem.id || curStepItem.id === o.userData.id)
+          ) {
             executeStep(stepIdx);
           } else {
             playSound('err');
@@ -2001,7 +2238,7 @@ export default function GenericChemSimulation({
       }
 
       let best: TargetItem | null = null;
-      let bestD = 1.9;
+      let bestD = 2.2;
 
       for (const t of targetsRef.current) {
         if (t.id === o.userData.id) continue;
@@ -2141,7 +2378,6 @@ export default function GenericChemSimulation({
   );
 }
 
-/* Special Alpha particles emitter for Rutherford experiment
 const _UP = new THREE.Vector3(0, 1, 0);
 function alphaBeam(ctxScene: THREE.Scene, counter: any) {
   const C = new THREE.Vector3(0, 2.0, 0.4);
@@ -2244,9 +2480,7 @@ function alphaBeam(ctxScene: THREE.Scene, counter: any) {
   };
   return e;
 }
-*/
 
-/* Special Rutherford Atomic model visualizer
 function buildAtomModel() {
   const g = new THREE.Group();
   g.name = 'atom-model-mesh';
@@ -2321,7 +2555,6 @@ function buildAtomModel() {
 
   return g;
 }
-*/
 
 function makeStrip(color: number, w = 0.34, h = 2.5) {
   const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.07), MAT.metal(color));

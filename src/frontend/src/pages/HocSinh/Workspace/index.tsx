@@ -1,8 +1,6 @@
 import { chatWithAiPrompt, generateAiQuiz } from '@/services/ai/api';
 import { completeActivity, completeLabSession, getUserInfo, openLabSession } from '@/services/base/api';
 import GenericChemSimulation from '@simulations/chemistry/GenericChemSimulation';
-import EsterSimulation from '@simulations/chemistry/SIM-01-ester';
-import SoapSimulation from '@simulations/chemistry/SIM-03-soap';
 import ProjectileSimulation from '@simulations/physics/SIM-02-projectile';
 import KinematicsSimulation from '@simulations/physics/SIM-21-kinematics';
 import FreefallSimulation from '@simulations/physics/SIM-22-freefall';
@@ -66,82 +64,121 @@ const escapeHtml = (value: unknown) =>
 		.replace(/"/g, '&quot;')
 		.replace(/'/g, '&#39;');
 
+const CHEM_SIM_ALIASES: Record<string, string> = {
+	'SIM-01': 'CHEM12-01',
+	'SIM-03': 'CHEM12-02',
+	'SIM-04': 'CHEM11-01',
+	'SIM-05': 'CHEM11-02',
+	'SIM-06': 'CHEM11-03',
+	'SIM-07': 'CHEM11-04',
+	'SIM-09': 'CHEM11-05',
+	'SIM-10': 'CHEM11-06',
+	'SIM-11': 'CHEM11-07',
+	'SIM-12': 'CHEM11-08',
+	'SIM-13': 'CHEM11-09',
+	'SIM-14': 'CHEM11-10',
+	'SIM-15': 'CHEM11-11',
+};
+
+const normalizeLabSimId = (simId: string) => CHEM_SIM_ALIASES[simId] || simId;
+
+const CHEM10_META = {
+	'CHEM10-01': { label: 'Hóa học 10', title: 'Thí nghiệm bắn phá lá vàng – Rutherford', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-02': { label: 'Hóa học 10', title: 'Thử màu ngọn lửa của các kim loại', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-03': { label: 'Hóa học 10', title: 'Kẽm tác dụng với dung dịch HCl', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-04': { label: 'Hóa học 10', title: 'Đốt cháy dây magnesium trong không khí', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-05': { label: 'Hóa học 10', title: 'Phản ứng tỏa nhiệt – tôi vôi (CaO + H₂O)', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-06': { label: 'Hóa học 10', title: 'Phản ứng thu nhiệt (NH₄Cl + Ba(OH)₂)', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-07': { label: 'Hóa học 10', title: 'Ảnh hưởng của nồng độ đến tốc độ phản ứng', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-08': { label: 'Hóa học 10', title: 'Ảnh hưởng của chất xúc tác – phân hủy H₂O₂', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-09': { label: 'Hóa học 10', title: 'Ảnh hưởng của diện tích bề mặt tiếp xúc', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-10': { label: 'Hóa học 10', title: 'Nhận biết ion halide bằng dung dịch AgNO₃', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-11': { label: 'Hóa học 10', title: 'Tính tẩy màu của nước chlorine', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-12': { label: 'Hóa học 10', title: 'Chlorine đẩy bromine ra khỏi muối bromide', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+};
+
+const CHEM12_META = {
+	'CHEM12-01': { label: 'Hóa học 12', title: 'Điều chế ethyl acetate (phản ứng ester hóa)', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-02': { label: 'Hóa học 12', title: 'Phản ứng xà phòng hóa chất béo', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-03': { label: 'Hóa học 12', title: 'Glucose tác dụng với Cu(OH)₂', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-04': { label: 'Hóa học 12', title: 'Phản ứng tráng bạc của glucose', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-05': { label: 'Hóa học 12', title: 'Phản ứng màu của tinh bột với iodine', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-06': { label: 'Hóa học 12', title: 'Phản ứng màu biuret của protein', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-07': { label: 'Hóa học 12', title: 'Sodium tác dụng với nước', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-08': { label: 'Hóa học 12', title: 'Đinh sắt tác dụng với dung dịch CuSO₄', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-09': { label: 'Hóa học 12', title: 'Nhôm tác dụng với dung dịch NaOH', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-10': { label: 'Hóa học 12', title: 'Phản ứng nhiệt nhôm (Al + Fe₂O₃)', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-11': { label: 'Hóa học 12', title: 'Điều chế Fe(OH)₂ và Fe(OH)₃', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-12': { label: 'Hóa học 12', title: 'Điện phân dung dịch CuSO₄', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-13': { label: 'Hóa học 12', title: 'Ăn mòn điện hóa học (pin Zn-Cu)', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+};
+
 // ── Lab metadata ──
 const LAB_META = {
-	'SIM-01': {
-		label: 'Hóa học',
-		title: 'Điều chế ethyl acetate (phản ứng ester hóa)',
-		tutor: 'Trợ lý thí nghiệm AI',
-		className: 'chem',
-	},
-	'SIM-03': {
-		label: 'Hóa học',
-		title: 'Phản ứng xà phòng hóa chất béo',
-		tutor: 'Trợ lý thí nghiệm AI',
-		className: 'chem',
-	},
-	'SIM-04': {
+	...CHEM10_META,
+	...CHEM12_META,
+	'CHEM11-01': {
 		label: 'Hóa học 11',
 		title: 'Độ pH và Chất chỉ thị',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-05': {
+	'CHEM11-02': {
 		label: 'Hóa học 11',
 		title: 'Chuẩn độ Acid - Base',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-06': {
+	'CHEM11-03': {
 		label: 'Hóa học 11',
 		title: 'Đồng tác dụng với dung dịch HNO₃ đặc',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-07': {
+	'CHEM11-04': {
 		label: 'Hóa học 11',
 		title: 'Ammonia tác dụng với HCl đặc (Khói trắng)',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
 	'SIM-08': { label: 'Toán', title: 'Đồ thị hàm số bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'SIM-09': {
+	'CHEM11-05': {
 		label: 'Hóa học 11',
 		title: 'H₂SO₄ đặc tác dụng với đường (Saccharose)',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-10': {
+	'CHEM11-06': {
 		label: 'Hóa học 11',
 		title: 'Ethylene tác dụng với nước Bromine',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-11': {
+	'CHEM11-07': {
 		label: 'Hóa học 11',
 		title: 'Acetylene tác dụng với dung dịch AgNO₃/NH₃',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-12': {
+	'CHEM11-08': {
 		label: 'Hóa học 11',
 		title: 'Ethanol tác dụng với kim loại Sodium',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-13': {
+	'CHEM11-09': {
 		label: 'Hóa học 11',
 		title: 'Phenol tác dụng với nước Bromine',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-14': {
+	'CHEM11-10': {
 		label: 'Hóa học 11',
 		title: 'Glycerol tác dụng với Cu(OH)₂',
 		tutor: 'Trợ lý thí nghiệm AI',
 		className: 'chem',
 	},
-	'SIM-15': {
+	'CHEM11-11': {
 		label: 'Hóa học 11',
 		title: 'Tính chất hóa học của Acetic Acid',
 		tutor: 'Trợ lý thí nghiệm AI',
@@ -262,85 +299,98 @@ const LAB_META = {
 
 // ── Initial chat messages ──
 const LAB_INITIAL_CHATS: Record<string, ChatMessage[]> = {
-	'SIM-01': [
-		{
-			role: 'ai',
-			text: 'Chào mừng bạn đến với thí nghiệm điều chế ethyl acetate! H₂SO₄ đặc đóng vai trò gì trong phản ứng này?',
-		},
-	],
-	'SIM-03': [
-		{
-			role: 'ai',
-			text: 'Chào mừng bạn đến với thí nghiệm phản ứng xà phòng hóa chất béo! Phản ứng xà phòng hóa chất béo là phản ứng thủy phân ester trong môi trường kiềm hay axit?',
-		},
-	],
-	'SIM-04': [
+	'CHEM11-01': [
 		{
 			role: 'ai',
 			text: 'Chào mừng bạn đến với thí nghiệm độ pH và chất chỉ thị màu! Bạn có biết chất chỉ thị vạn năng sẽ hóa màu gì trong dung dịch HCl không?',
 		},
 	],
-	'SIM-05': [
+	'CHEM11-02': [
 		{
 			role: 'ai',
 			text: 'Chào bạn! Trong chuẩn độ acid-base, tại sao ta lại thêm phenolphthalein vào dung dịch acid trước khi nhỏ NaOH?',
 		},
 	],
-	'SIM-06': [
+	'CHEM11-03': [
 		{
 			role: 'ai',
 			text: 'Chào bạn! Phản ứng giữa đồng và HNO₃ đặc tạo ra khí có màu gì và công thức hóa học là gì?',
 		},
 	],
-	'SIM-07': [
+	'CHEM11-04': [
 		{
 			role: 'ai',
 			text: 'Chào bạn! Tại sao khi đưa miệng hai lọ chứa NH₃ đặc và HCl đặc lại gần nhau lại xuất hiện khói trắng?',
 		},
 	],
 	'SIM-08': [{ role: 'ai', text: 'Chào bạn! Kim loại kiềm sodium phản ứng với nước tạo ra dung dịch gì và khí gì?' }],
-	'SIM-09': [
+	'CHEM11-05': [
 		{
 			role: 'ai',
 			text: 'Chào bạn! Axit sulfuric đặc có tính chất đặc trưng nào khiến đường saccharose bị hóa than đen và phồng lên?',
 		},
 	],
-	'SIM-10': [
+	'CHEM11-06': [
 		{
 			role: 'ai',
 			text: 'Chào bạn! Ethylene phản ứng cộng với nước bromine làm mất màu vàng cam nhờ liên kết nào trong phân tử?',
 		},
 	],
-	'SIM-11': [
+	'CHEM11-07': [
 		{
 			role: 'ai',
 			text: 'Chào bạn! Acetylene tác dụng với dung dịch AgNO₃ trong NH₃ sinh ra chất kết tủa màu gì?',
 		},
 	],
-	'SIM-12': [
+	'CHEM11-08': [
 		{
 			role: 'ai',
 			text: 'Chào bạn! Ethanol tác dụng với mẩu sodium giải phóng bọt khí gì?',
 		},
 	],
-	'SIM-13': [
+	'CHEM11-09': [
 		{
 			role: 'ai',
 			text: 'Chào bạn! Phenol phản ứng với nước bromine tạo kết tủa trắng nhờ nhóm -OH hoạt hóa vòng benzen ở các vị trí nào?',
 		},
 	],
-	'SIM-14': [
+	'CHEM11-10': [
 		{
 			role: 'ai',
 			text: 'Chào bạn! Glycerol có thể hòa tan kết tủa xanh Cu(OH)₂ ở nhiệt độ thường là nhờ đặc điểm cấu tạo nào?',
 		},
 	],
-	'SIM-15': [
+	'CHEM11-11': [
 		{
 			role: 'ai',
 			text: 'Chào bạn! Axit acetic phản ứng với đá vôi (CaCO₃) giải phóng khí gì?',
 		},
 	],
+	'CHEM10-01': [{ role: 'ai', text: 'Chào bạn! Tại sao Rutherford bắn hạt α vào lá vàng lại thấy một số hạt bị bật ngược?' }],
+	'CHEM10-02': [{ role: 'ai', text: 'Chào bạn! Mỗi nguyên tố kim loại cho ngọn lửa màu khác nhau — điều gì tạo ra sự khác biệt đó?' }],
+	'CHEM10-03': [{ role: 'ai', text: 'Chào bạn! Trong phản ứng Zn + HCl, chất nào đóng vai trò chất khử và chất oxi hóa?' }],
+	'CHEM10-04': [{ role: 'ai', text: 'Chào bạn! Khi đốt Mg trong không khí, sản phẩm tạo thành là gì và có màu gì?' }],
+	'CHEM10-05': [{ role: 'ai', text: 'Chào bạn! Vì sao phản ứng tôi vôi tỏa nhiệt rất mạnh? Nhiệt lượng đó đến từ đâu?' }],
+	'CHEM10-06': [{ role: 'ai', text: 'Chào bạn! Phản ứng NH₄Cl + Ba(OH)₂ thu nhiệt — điều đó có nghĩa là gì với năng lượng hệ?' }],
+	'CHEM10-07': [{ role: 'ai', text: 'Chào bạn! Tại sao tăng nồng độ lại làm tốc độ phản ứng nhanh hơn?' }],
+	'CHEM10-08': [{ role: 'ai', text: 'Chào bạn! MnO₂ là chất xúc tác — sau phản ứng nó có bị tiêu hao không?' }],
+	'CHEM10-09': [{ role: 'ai', text: 'Chào bạn! Vì sao bột đá vôi phản ứng với HCl nhanh hơn cục đá vôi cùng khối lượng?' }],
+	'CHEM10-10': [{ role: 'ai', text: 'Chào bạn! AgCl, AgBr, AgI có màu khác nhau — bạn dự đoán màu của từng kết tủa?' }],
+	'CHEM10-11': [{ role: 'ai', text: 'Chào bạn! Tại sao nước chlorine lại có khả năng tẩy màu? Chất nào là tác nhân tẩy màu thực sự?' }],
+	'CHEM10-12': [{ role: 'ai', text: 'Chào bạn! Chlorine đẩy bromine ra khỏi NaBr vì lý do gì? Đây là loại phản ứng gì?' }],
+	'CHEM12-01': [{ role: 'ai', text: 'Chào bạn! H₂SO₄ đặc đóng vai trò gì khi điều chế ethyl acetate?' }],
+	'CHEM12-02': [{ role: 'ai', text: 'Chào bạn! Vì sao thêm NaCl bão hòa lại giúp xà phòng tách ra?' }],
+	'CHEM12-03': [{ role: 'ai', text: 'Chào bạn! Vì sao glucose tạo dung dịch xanh lam với Cu(OH)₂?' }],
+	'CHEM12-04': [{ role: 'ai', text: 'Chào bạn! Glucose khử ion bạc trong thuốc thử Tollens thành chất gì?' }],
+	'CHEM12-05': [{ role: 'ai', text: 'Chào bạn! Vì sao iodine làm hồ tinh bột chuyển xanh tím?' }],
+	'CHEM12-06': [{ role: 'ai', text: 'Chào bạn! Màu tím biuret cho biết protein có loại liên kết nào?' }],
+	'CHEM12-07': [{ role: 'ai', text: 'Chào bạn! Sodium tác dụng với nước tạo base nào và khí gì?' }],
+	'CHEM12-08': [{ role: 'ai', text: 'Chào bạn! Vì sao đồng đỏ bám lên đinh sắt trong dung dịch CuSO₄?' }],
+	'CHEM12-09': [{ role: 'ai', text: 'Chào bạn! Nhôm tan trong NaOH giải phóng khí gì?' }],
+	'CHEM12-10': [{ role: 'ai', text: 'Chào bạn! Trong phản ứng nhiệt nhôm, Al đóng vai trò chất gì?' }],
+	'CHEM12-11': [{ role: 'ai', text: 'Chào bạn! Fe(OH)₂ và Fe(OH)₃ khác nhau rõ nhất ở màu nào?' }],
+	'CHEM12-12': [{ role: 'ai', text: 'Chào bạn! Khi điện phân CuSO₄, đồng bám ở điện cực nào?' }],
+	'CHEM12-13': [{ role: 'ai', text: 'Chào bạn! Trong cặp Zn-Cu, kim loại nào bị ăn mòn trước?' }],
 	default_physics: [
 		{
 			role: 'ai',
@@ -597,7 +647,7 @@ const RIGHT_CHAT_CHIPS: Record<SubjectKey, string[]> = {
 
 // ── Quiz data ──
 export const LAB_QUIZZES = {
-	'SIM-01': {
+	'CHEM12-01': {
 		q: 'Vai trò chính của dung dịch H₂SO₄ đặc trong phản ứng ester hóa là gì?',
 		opts: [
 			{ k: 'a', t: 'Làm chất xúc tác' },
@@ -606,7 +656,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'c',
 	},
-	'SIM-03': {
+	'CHEM12-02': {
 		q: 'Vai trò chính của dung dịch NaCl bão hòa được thêm vào ở bước 5 là gì?',
 		opts: [
 			{ k: 'a', t: 'Làm chất xúc tác cho phản ứng' },
@@ -615,7 +665,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'b',
 	},
-	'SIM-04': {
+	'CHEM11-01': {
 		q: 'Chất chỉ thị vạn năng chuyển sang màu gì trong môi trường axit mạnh (pH < 3)?',
 		opts: [
 			{ k: 'a', t: 'Màu đỏ' },
@@ -624,7 +674,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'a',
 	},
-	'SIM-05': {
+	'CHEM11-02': {
 		q: 'Trong quá trình chuẩn độ HCl bằng dung dịch NaOH với chỉ thị phenolphthalein, điểm tương đương đạt được khi dung dịch:',
 		opts: [
 			{ k: 'a', t: 'Chuyển sang màu đỏ sẫm' },
@@ -633,7 +683,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'b',
 	},
-	'SIM-06': {
+	'CHEM11-03': {
 		q: 'Khí màu nâu đỏ sinh ra khi cho đồng tác dụng với HNO₃ đặc là gì?',
 		opts: [
 			{ k: 'a', t: 'Khí NO' },
@@ -642,7 +692,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'b',
 	},
-	'SIM-07': {
+	'CHEM11-04': {
 		q: 'Khói trắng sinh ra khi đưa miệng hai lọ đựng NH₃ đặc và HCl đặc lại gần nhau là chất nào?',
 		opts: [
 			{ k: 'a', t: 'Ammonium chloride (NH₄Cl)' },
@@ -660,7 +710,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'a',
 	},
-	'SIM-09': {
+	'CHEM11-05': {
 		q: 'Đường saccharose bị hóa than đen khi gặp H₂SO₄ đặc là do axit này có tính chất đặc trưng nào?',
 		opts: [
 			{ k: 'a', t: 'Tính axit mạnh' },
@@ -669,7 +719,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'c',
 	},
-	'SIM-10': {
+	'CHEM11-06': {
 		q: 'Ethylene có thể làm mất màu dung dịch nước bromine là do cấu tạo phân tử ethylene có:',
 		opts: [
 			{ k: 'a', t: 'Liên kết đôi kém bền dễ tham gia phản ứng cộng' },
@@ -678,7 +728,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'a',
 	},
-	'SIM-11': {
+	'CHEM11-07': {
 		q: 'Sản phẩm kết tủa vàng nhạt thu được khi sục khí acetylene vào dung dịch AgNO₃/NH₃ có công thức là:',
 		opts: [
 			{ k: 'a', t: 'AgC' },
@@ -687,7 +737,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'b',
 	},
-	'SIM-12': {
+	'CHEM11-08': {
 		q: 'Khi cho sodium vào ethanol khan, sản phẩm khí sinh ra là:',
 		opts: [
 			{ k: 'a', t: 'Khí hydrogen (H₂)' },
@@ -696,7 +746,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'a',
 	},
-	'SIM-13': {
+	'CHEM11-09': {
 		q: 'Khi nhỏ nước bromine vào dung dịch phenol, xuất hiện kết tủa màu gì?',
 		opts: [
 			{ k: 'a', t: 'Kết tủa trắng' },
@@ -705,7 +755,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'a',
 	},
-	'SIM-14': {
+	'CHEM11-10': {
 		q: 'Glycerol hòa tan được Cu(OH)₂ tạo thành dung dịch màu gì?',
 		opts: [
 			{ k: 'a', t: 'Xanh lam thẫm' },
@@ -714,7 +764,7 @@ export const LAB_QUIZZES = {
 		],
 		correct: 'a',
 	},
-	'SIM-15': {
+	'CHEM11-11': {
 		q: 'Khi cho axit acetic tác dụng với đá vôi (CaCO₃), khí sinh ra làm đục nước vôi trong là khí nào?',
 		opts: [
 			{ k: 'a', t: 'Khí CO₂' },
@@ -1093,25 +1143,163 @@ export const LAB_QUIZZES = {
 	},
 };
 
+const CHEM10_STEPS = {
+	'CHEM10-01': [
+		{ n: 1, title: 'Đặt lá vàng', sub: 'Kéo lá vàng (Au) mỏng vào giá đỡ tâm màn huỳnh quang' },
+		{ n: 2, title: 'Mở nguồn phóng xạ', sub: 'Nhấp vào nguồn để chiếu chùm hạt alpha (α)' },
+		{ n: 3, title: 'Phân tích kết quả', sub: 'Nhấp vào kính hiển vi để xây dựng mô hình nguyên tử' },
+	],
+	'CHEM10-02': [
+		{ n: 1, title: 'Châm đèn cồn', sub: 'Nhấp vào đèn cồn để tạo ngọn lửa' },
+		{ n: 2, title: 'Thử muối NaCl', sub: 'Kéo que Pt vào bình NaCl — que tự hơ lên lửa, ngọn lửa chuyển vàng (Na⁺)' },
+		{ n: 3, title: 'Thử muối KCl', sub: 'Kéo que Pt vào bình KCl — ngọn lửa chuyển tím (K⁺)' },
+		{ n: 4, title: 'Thử muối CuSO₄', sub: 'Kéo que Pt vào bình CuSO₄ — ngọn lửa chuyển lam-lục (Cu²⁺)' },
+		{ n: 5, title: 'Thử muối CaCl₂', sub: 'Kéo que Pt vào bình CaCl₂ — ngọn lửa chuyển đỏ cam (Ca²⁺)' },
+	],
+	'CHEM10-03': [
+		{ n: 1, title: 'Rót dung dịch HCl', sub: 'Rót HCl loãng vào ống nghiệm' },
+		{ n: 2, title: 'Thêm kẽm', sub: 'Thả mảnh Zn vào ống nghiệm, phản ứng sủi bọt H₂' },
+	],
+	'CHEM10-04': [
+		{ n: 1, title: 'Châm đèn cồn', sub: 'Nhấp vào đèn cồn để tạo ngọn lửa' },
+		{ n: 2, title: 'Đốt dây Mg', sub: 'Kéo dây Mg vào ngọn lửa – cháy sáng chói tạo MgO trắng' },
+	],
+	'CHEM10-05': [
+		{ n: 1, title: 'Thêm CaO', sub: 'Rót vôi sống (CaO) vào cốc thủy tinh' },
+		{ n: 2, title: 'Rót nước', sub: 'Rót nước vào cốc – phản ứng tỏa nhiệt mạnh, hơi bốc lên' },
+	],
+	'CHEM10-06': [
+		{ n: 1, title: 'Thêm Ba(OH)₂', sub: 'Đổ Ba(OH)₂ vào cốc thủy tinh' },
+		{ n: 2, title: 'Thêm NH₄Cl', sub: 'Thêm NH₄Cl – phản ứng thu nhiệt, nhiệt độ hạ xuống' },
+	],
+	'CHEM10-07': [
+		{ n: 1, title: 'Na₂S₂O₃ đặc vào ống 1', sub: 'Rót dung dịch sodium thiosulfate đặc' },
+		{ n: 2, title: 'Na₂S₂O₃ loãng vào ống 2', sub: 'Rót dung dịch sodium thiosulfate loãng' },
+		{ n: 3, title: 'H₂SO₄ vào ống 1', sub: 'Thêm H₂SO₄ – kết tủa S xuất hiện nhanh' },
+		{ n: 4, title: 'H₂SO₄ vào ống 2', sub: 'Thêm H₂SO₄ – kết tủa S xuất hiện chậm hơn' },
+	],
+	'CHEM10-08': [
+		{ n: 1, title: 'Rót H₂O₂', sub: 'Rót dung dịch H₂O₂ vào ống nghiệm – phân hủy chậm' },
+		{ n: 2, title: 'Thêm MnO₂', sub: 'Thêm chất xúc tác MnO₂ – bọt O₂ thoát ra mãnh liệt' },
+	],
+	'CHEM10-09': [
+		{ n: 1, title: 'Đá vôi cục vào ống 1', sub: 'Thả cục đá vôi (CaCO₃) vào ống nghiệm 1' },
+		{ n: 2, title: 'Bột CaCO₃ vào ống 2', sub: 'Cho bột CaCO₃ mịn vào ống nghiệm 2' },
+		{ n: 3, title: 'HCl vào ống 1', sub: 'Rót HCl vào ống 1 – bọt CO₂ thoát chậm' },
+		{ n: 4, title: 'HCl vào ống 2', sub: 'Rót HCl vào ống 2 – bọt CO₂ thoát nhanh hơn' },
+	],
+	'CHEM10-10': [
+		{ n: 1, title: 'NaCl vào ống 1', sub: 'Rót dung dịch NaCl vào ống nghiệm 1' },
+		{ n: 2, title: 'NaBr vào ống 2', sub: 'Rót dung dịch NaBr vào ống nghiệm 2' },
+		{ n: 3, title: 'NaI vào ống 3', sub: 'Rót dung dịch NaI vào ống nghiệm 3' },
+		{ n: 4, title: 'AgNO₃ vào ống 1', sub: 'Nhỏ AgNO₃ – kết tủa AgCl trắng' },
+		{ n: 5, title: 'AgNO₃ vào ống 2', sub: 'Nhỏ AgNO₃ – kết tủa AgBr vàng nhạt' },
+		{ n: 6, title: 'AgNO₃ vào ống 3', sub: 'Nhỏ AgNO₃ – kết tủa AgI vàng' },
+	],
+	'CHEM10-11': [
+		{ n: 1, title: 'Rót dung dịch màu', sub: 'Rót dung dịch màu tím (litmus) vào ống nghiệm' },
+		{ n: 2, title: 'Thêm nước chlorine', sub: 'Nhỏ nước chlorine – màu tím mất dần, dung dịch mất màu' },
+	],
+	'CHEM10-12': [
+		{ n: 1, title: 'Rót dung dịch NaBr', sub: 'Rót dung dịch NaBr vào ống nghiệm' },
+		{ n: 2, title: 'Thêm nước chlorine', sub: 'Nhỏ nước chlorine – dung dịch chuyển màu cam (Br₂ tự do)' },
+	],
+};
+
+const CHEM12_STEPS = {
+	'CHEM12-01': [
+		{ n: 1, title: 'Thêm ethanol', sub: 'Rót ethanol vào ống nghiệm' },
+		{ n: 2, title: 'Thêm acetic acid', sub: 'Rót tiếp CH₃COOH' },
+		{ n: 3, title: 'Thêm H₂SO₄ đặc', sub: 'Nhỏ xúc tác acid sulfuric đặc' },
+		{ n: 4, title: 'Lắp ống nghiệm', sub: 'Đưa ống nghiệm lên giá đỡ' },
+		{ n: 5, title: 'Đun nóng', sub: 'Châm đèn cồn và đun nhẹ' },
+		{ n: 6, title: 'Quan sát ester', sub: 'Lớp ester thơm nổi lên trên' },
+	],
+	'CHEM12-02': [
+		{ n: 1, title: 'Thêm dầu ăn', sub: 'Rót chất béo vào cốc thủy tinh' },
+		{ n: 2, title: 'Thêm NaOH', sub: 'Rót dung dịch NaOH 40%' },
+		{ n: 3, title: 'Đun nóng', sub: 'Châm đèn cồn để đun hỗn hợp' },
+		{ n: 4, title: 'Khuấy hỗn hợp', sub: 'Lắc/khuấy để phản ứng xảy ra đều' },
+		{ n: 5, title: 'Thêm NaCl', sub: 'Rót dung dịch NaCl bão hòa' },
+		{ n: 6, title: 'Tách xà phòng', sub: 'Lớp xà phòng trắng nổi lên' },
+	],
+	'CHEM12-03': [
+		{ n: 1, title: 'Thêm NaOH', sub: 'Tạo môi trường kiềm' },
+		{ n: 2, title: 'Thêm CuSO₄', sub: 'Tạo Cu(OH)₂ màu xanh' },
+		{ n: 3, title: 'Thêm glucose', sub: 'Hòa tan kết tủa Cu(OH)₂' },
+		{ n: 4, title: 'Lắc đều', sub: 'Tạo phức xanh lam' },
+		{ n: 5, title: 'Đưa lên giá đỡ', sub: 'Kéo ống nghiệm qua đèn cồn' },
+		{ n: 6, title: 'Đun nóng', sub: 'Khử Cu(II) khi đun' },
+		{ n: 7, title: 'Kết tủa đỏ gạch', sub: 'Xuất hiện Cu₂O đỏ gạch' },
+	],
+	'CHEM12-04': [
+		{ n: 1, title: 'Rót AgNO₃', sub: 'Chuẩn bị thuốc thử bạc' },
+		{ n: 2, title: 'Thêm NH₃', sub: 'Tạo thuốc thử Tollens' },
+		{ n: 3, title: 'Thêm glucose', sub: 'Cho chất khử vào ống nghiệm' },
+		{ n: 4, title: 'Đun cách thủy', sub: 'Làm nóng nhẹ trong bể nước' },
+		{ n: 5, title: 'Tráng bạc', sub: 'Bạc sáng bám lên thành ống' },
+	],
+	'CHEM12-05': [
+		{ n: 1, title: 'Rót hồ tinh bột', sub: 'Cho tinh bột vào ống nghiệm' },
+		{ n: 2, title: 'Nhỏ iodine', sub: 'Dung dịch chuyển xanh tím' },
+		{ n: 3, title: 'Đưa lên giá đỡ', sub: 'Kéo ống nghiệm qua đèn cồn' },
+		{ n: 4, title: 'Đun nóng', sub: 'Màu xanh tím nhạt dần' },
+		{ n: 5, title: 'Để nguội', sub: 'Màu xanh tím xuất hiện lại' },
+	],
+	'CHEM12-06': [
+		{ n: 1, title: 'Rót protein', sub: 'Cho dung dịch protein vào ống nghiệm' },
+		{ n: 2, title: 'Thêm NaOH', sub: 'Tạo môi trường kiềm' },
+		{ n: 3, title: 'Thêm CuSO₄', sub: 'Nhỏ vài giọt CuSO₄' },
+		{ n: 4, title: 'Màu biuret', sub: 'Lắc đều thấy màu tím' },
+	],
+	'CHEM12-07': [
+		{ n: 1, title: 'Rót nước', sub: 'Nước có phenolphthalein' },
+		{ n: 2, title: 'Thả sodium', sub: 'Thả mẩu Na vào nước' },
+		{ n: 3, title: 'Na chạy trên mặt nước', sub: 'Sủi khí H₂ và tỏa nhiệt' },
+		{ n: 4, title: 'Dung dịch hồng', sub: 'Tạo NaOH làm phenolphthalein hóa hồng' },
+	],
+	'CHEM12-08': [
+		{ n: 1, title: 'Rót CuSO₄', sub: 'Dung dịch màu xanh lam' },
+		{ n: 2, title: 'Thả đinh sắt', sub: 'Đưa Fe vào dung dịch CuSO₄' },
+		{ n: 3, title: 'Đồng bám đinh', sub: 'Cu màu đỏ bám lên đinh sắt' },
+	],
+	'CHEM12-09': [
+		{ n: 1, title: 'Rót NaOH', sub: 'Cho kiềm vào ống nghiệm' },
+		{ n: 2, title: 'Thả nhôm', sub: 'Cho mảnh Al vào dung dịch' },
+		{ n: 3, title: 'Sủi khí H₂', sub: 'Nhôm tan dần trong NaOH' },
+	],
+	'CHEM12-10': [
+		{ n: 1, title: 'Thêm Fe₂O₃', sub: 'Đổ bột nâu đỏ vào chén sứ' },
+		{ n: 2, title: 'Thêm bột Al', sub: 'Trộn hỗn hợp tecmit' },
+		{ n: 3, title: 'Cắm mồi Mg', sub: 'Đặt dải magnesium làm mồi' },
+		{ n: 4, title: 'Mồi phản ứng', sub: 'Phản ứng nhiệt nhôm tóe sáng' },
+		{ n: 5, title: 'Quan sát', sub: 'Sắt nóng chảy rơi xuống khay cát' },
+	],
+	'CHEM12-11': [
+		{ n: 1, title: 'Rót FeSO₄', sub: 'Ống 1 chứa ion Fe²⁺' },
+		{ n: 2, title: 'Rót FeCl₃', sub: 'Ống 2 chứa ion Fe³⁺' },
+		{ n: 3, title: 'Tạo Fe(OH)₂', sub: 'Kết tủa xanh trắng' },
+		{ n: 4, title: 'Tạo Fe(OH)₃', sub: 'Kết tủa nâu đỏ' },
+		{ n: 5, title: 'Oxi hóa', sub: 'Fe(OH)₂ chuyển nâu đỏ trong không khí' },
+	],
+	'CHEM12-12': [
+		{ n: 1, title: 'Rót CuSO₄', sub: 'Chuẩn bị bình điện phân' },
+		{ n: 2, title: 'Bật nguồn DC', sub: 'Dòng điện chạy qua dung dịch' },
+		{ n: 3, title: 'Quan sát điện cực', sub: 'Đồng bám ở cathode, có bọt khí' },
+	],
+	'CHEM12-13': [
+		{ n: 1, title: 'Rót điện li', sub: 'Nhúng hai thanh Zn và Cu' },
+		{ n: 2, title: 'Quan sát Zn', sub: 'Khí H₂ thoát ra ở thanh Zn' },
+		{ n: 3, title: 'Đóng mạch', sub: 'Nối mạch pin Zn-Cu' },
+		{ n: 4, title: 'Ăn mòn điện hóa', sub: 'Khí H₂ chuyển sang thanh Cu' },
+	],
+};
+
 // ── Chem steps ──
 const LAB_CHEM_STEPS = {
-	'SIM-01': [
-		{ n: 1, title: 'Thêm C₂H₅OH', sub: 'Rót 1 ml ethanol vào ống nghiệm' },
-		{ n: 2, title: 'Thêm CH₃COOH', sub: 'Rót tiếp 1 ml acetic acid' },
-		{ n: 3, title: 'Thêm H₂SO₄ đặc', sub: 'Nhỏ vài giọt axit làm xúc tác' },
-		{ n: 4, title: 'Lắp ống nghiệm', sub: 'Kéo ống nghiệm lên giá đỡ đèn cồn' },
-		{ n: 5, title: 'Đun nóng hỗn hợp', sub: 'Châm lửa đèn cồn để đun nhẹ' },
-		{ n: 6, title: 'Quan sát lớp ester', sub: 'Sản phẩm có mùi thơm nổi lên trên' },
-	],
-	'SIM-03': [
-		{ n: 1, title: 'Thêm dầu ăn', sub: 'Rót 1 ml dầu ăn vào cốc thủy tinh' },
-		{ n: 2, title: 'Thêm dung dịch NaOH', sub: 'Rót tiếp 3 ml dung dịch NaOH 40%' },
-		{ n: 3, title: 'Đun nóng hỗn hợp', sub: 'Châm lửa đèn cồn để đun sôi sủi bọt' },
-		{ n: 4, title: 'Khuấy đều bằng đũa', sub: 'Dùng đũa thủy tinh khuấy đều xoay tròn' },
-		{ n: 5, title: 'Thêm NaCl bão hòa', sub: 'Rót thêm 5 ml dung dịch NaCl bão hòa nóng' },
-		{ n: 6, title: 'Quan sát xà phòng', sub: 'Lớp xà phòng rắn màu trắng nổi lên trên' },
-	],
-	'SIM-04': [
+	...CHEM10_STEPS,
+	...CHEM12_STEPS,
+	'CHEM11-01': [
 		{ n: 1, title: 'Thêm dung dịch HCl', sub: 'Rót dung dịch HCl vào ống 1' },
 		{ n: 2, title: 'Thêm nước cất', sub: 'Rót nước cất vào ống 2' },
 		{ n: 3, title: 'Thêm dung dịch NaOH', sub: 'Rót dung dịch NaOH vào ống 3' },
@@ -1119,16 +1307,16 @@ const LAB_CHEM_STEPS = {
 		{ n: 5, title: 'Nhỏ chất chỉ thị ống 2', sub: 'Môi trường trung tính làm chỉ thị vạn năng hóa lục' },
 		{ n: 6, title: 'Nhỏ chất chỉ thị ống 3', sub: 'Môi trường base làm chỉ thị vạn năng hóa xanh tím' },
 	],
-	'SIM-05': [
+	'CHEM11-02': [
 		{ n: 1, title: 'Thêm dung dịch HCl', sub: 'Rót dung dịch HCl cần chuẩn độ vào bình' },
 		{ n: 2, title: 'Thêm phenolphthalein', sub: 'Nhỏ vài giọt chất chỉ thị phenolphthalein (không màu)' },
 		{ n: 3, title: 'Chuẩn độ bằng NaOH', sub: 'Nhỏ từ từ dung dịch NaOH từ buret đến khi dung dịch hóa hồng nhạt' },
 	],
-	'SIM-06': [
+	'CHEM11-03': [
 		{ n: 1, title: 'Thả mảnh đồng', sub: 'Thả mảnh đồng (Cu) vào ống nghiệm' },
 		{ n: 2, title: 'Rót HNO₃ đặc', sub: 'Rót dung dịch HNO₃ đặc vào ống nghiệm, xuất hiện khí màu nâu đỏ' },
 	],
-	'SIM-07': [
+	'CHEM11-04': [
 		{ n: 1, title: 'Rót dung dịch NH₃', sub: 'Rót dung dịch NH₃ đặc vào lọ thứ nhất' },
 		{ n: 2, title: 'Rót dung dịch HCl', sub: 'Rót dung dịch HCl đặc vào lọ thứ hai' },
 		{ n: 3, title: 'Đưa lại gần nhau', sub: 'Đưa miệng hai lọ lại gần nhau, khói trắng ammonium chloride xuất hiện' },
@@ -1138,11 +1326,11 @@ const LAB_CHEM_STEPS = {
 		{ n: 2, title: 'Thả Sodium', sub: 'Gắp mẩu Na thả vào chậu nước' },
 		{ n: 3, title: 'Quan sát màu hồng', sub: 'Dung dịch chuyển hồng do tạo base' },
 	],
-	'SIM-09': [
+	'CHEM11-05': [
 		{ n: 1, title: 'Cho đường vào cốc', sub: 'Cho đường cát trắng (saccharose) vào cốc thủy tinh' },
 		{ n: 2, title: 'Thêm H₂SO₄ đặc', sub: 'Rót axit H₂SO₄ đặc vào cốc, đường hóa than đen và phồng lên' },
 	],
-	'SIM-10': [
+	'CHEM11-06': [
 		{ n: 1, title: 'Rót nước bromine', sub: 'Rót dung dịch nước bromine màu vàng cam vào ống nghiệm' },
 		{
 			n: 2,
@@ -1150,16 +1338,16 @@ const LAB_CHEM_STEPS = {
 			sub: 'Sục khí ethylene (C₂H₄) vào ống nghiệm, màu vàng cam nhạt dần rồi mất hẳn',
 		},
 	],
-	'SIM-11': [
+	'CHEM11-07': [
 		{ n: 1, title: 'Rót dung dịch AgNO₃', sub: 'Rót dung dịch AgNO₃ trong NH₃ vào ống nghiệm' },
 		{ n: 2, title: 'Sục khí acetylene', sub: 'Sục khí acetylene (C₂H₂) vào ống nghiệm, xuất hiện kết tủa vàng nhạt' },
 	],
-	'SIM-12': [
+	'CHEM11-08': [
 		{ n: 1, title: 'Rót ethanol', sub: 'Rót ethanol khan vào ống nghiệm' },
 		{ n: 2, title: 'Thả mẩu sodium', sub: 'Thả một mẩu sodium nhỏ vào ống nghiệm' },
 		{ n: 3, title: 'Quan sát bọt khí', sub: 'Mẩu sodium tan dần và giải phóng nhiều bọt khí hydrogen' },
 	],
-	'SIM-13': [
+	'CHEM11-09': [
 		{ n: 1, title: 'Rót dung dịch phenol', sub: 'Rót dung dịch phenol vào ống nghiệm' },
 		{
 			n: 2,
@@ -1167,46 +1355,113 @@ const LAB_CHEM_STEPS = {
 			sub: 'Nhỏ dung dịch nước bromine vào ống nghiệm, xuất hiện kết tủa trắng lập tức',
 		},
 	],
-	'SIM-14': [
+	'CHEM11-10': [
 		{ n: 1, title: 'Rót dung dịch NaOH', sub: 'Rót dung dịch NaOH vào ống nghiệm' },
 		{ n: 2, title: 'Tạo kết tủa Cu(OH)₂', sub: 'Nhỏ dung dịch CuSO₄ vào tạo kết tủa xanh Cu(OH)₂' },
 		{ n: 3, title: 'Thêm glycerol', sub: 'Thêm dung dịch glycerol vào ống nghiệm' },
 		{ n: 4, title: 'Lắc đều ống nghiệm', sub: 'Nhấp ống nghiệm lắc đều, kết tủa tan tạo dung dịch xanh lam thẫm' },
 	],
-	'SIM-15': [
+	'CHEM11-11': [
 		{ n: 1, title: 'Thí nghiệm với quỳ', sub: 'Rót dung dịch acetic acid vào ống 1 (có quỳ tím hóa đỏ)' },
 		{ n: 2, title: 'Thả đá vôi', sub: 'Thả mảnh đá vôi (CaCO₃) vào ống 2' },
 		{ n: 3, title: 'Thêm axit vào ống 2', sub: 'Rót dung dịch acetic acid vào ống 2, phản ứng sủi bọt khí CO₂' },
 	],
 };
 
+const CHEM12_OBSERVATIONS: Record<string, Array<{ key: number; label: string; step: number }>> = {
+	'CHEM12-01': [
+		{ key: 1, label: 'Hỗn hợp ethanol, acetic acid và H₂SO₄ đặc trong ống nghiệm', step: 3 },
+		{ key: 2, label: 'Khi đun nhẹ, hỗn hợp sôi và bay hơi nhẹ', step: 5 },
+		{ key: 3, label: 'Lớp ester mùi thơm nổi lên trên', step: 6 },
+	],
+	'CHEM12-02': [
+		{ key: 1, label: 'Dầu ăn và NaOH tạo hỗn hợp đục khi đun', step: 3 },
+		{ key: 2, label: 'Hỗn hợp đặc dần khi khuấy', step: 4 },
+		{ key: 3, label: 'Thêm NaCl bão hòa làm xà phòng trắng nổi lên', step: 6 },
+	],
+	'CHEM12-03': [
+		{ key: 1, label: 'Tạo kết tủa Cu(OH)₂ màu xanh', step: 2 },
+		{ key: 2, label: 'Lắc với glucose tạo dung dịch xanh lam', step: 4 },
+		{ key: 3, label: 'Đun nóng xuất hiện kết tủa đỏ gạch Cu₂O', step: 7 },
+	],
+	'CHEM12-04': [
+		{ key: 1, label: 'NH₃ làm kết tủa bạc tan, tạo thuốc thử Tollens', step: 2 },
+		{ key: 2, label: 'Đun cách thủy ống nghiệm chứa glucose', step: 4 },
+		{ key: 3, label: 'Bạc kim loại bám sáng trên thành ống nghiệm', step: 5 },
+	],
+	'CHEM12-05': [
+		{ key: 1, label: 'Iodine làm hồ tinh bột chuyển xanh tím', step: 2 },
+		{ key: 2, label: 'Đun nóng làm màu xanh tím nhạt dần', step: 4 },
+		{ key: 3, label: 'Để nguội màu xanh tím xuất hiện lại', step: 5 },
+	],
+	'CHEM12-06': [
+		{ key: 1, label: 'Protein được đưa vào môi trường kiềm NaOH', step: 2 },
+		{ key: 2, label: 'Nhỏ CuSO₄ tạo phức với liên kết peptide', step: 3 },
+		{ key: 3, label: 'Dung dịch chuyển màu tím biuret', step: 4 },
+	],
+	'CHEM12-07': [
+		{ key: 1, label: 'Sodium chạy trên mặt nước và sủi khí H₂', step: 3 },
+		{ key: 2, label: 'Phản ứng tỏa nhiệt, mẩu Na nhỏ dần', step: 3 },
+		{ key: 3, label: 'Phenolphthalein chuyển hồng do tạo NaOH', step: 4 },
+	],
+	'CHEM12-08': [
+		{ key: 1, label: 'Dung dịch CuSO₄ ban đầu màu xanh lam', step: 1 },
+		{ key: 2, label: 'Đinh sắt được nhúng vào dung dịch CuSO₄', step: 2 },
+		{ key: 3, label: 'Đồng đỏ bám lên đinh, dung dịch nhạt màu', step: 3 },
+	],
+	'CHEM12-09': [
+		{ key: 1, label: 'Mảnh nhôm tiếp xúc dung dịch NaOH', step: 2 },
+		{ key: 2, label: 'Nhôm tan dần trong môi trường kiềm', step: 3 },
+		{ key: 3, label: 'Bọt khí H₂ thoát ra quanh mảnh nhôm', step: 3 },
+	],
+	'CHEM12-10': [
+		{ key: 1, label: 'Bột Fe₂O₃ và Al được trộn trong chén sứ', step: 2 },
+		{ key: 2, label: 'Dải Mg được đặt làm mồi phản ứng', step: 3 },
+		{ key: 3, label: 'Phản ứng nhiệt nhôm lóe sáng, tỏa nhiệt mạnh', step: 4 },
+	],
+	'CHEM12-11': [
+		{ key: 1, label: 'Ống Fe²⁺ tạo kết tủa Fe(OH)₂ xanh trắng', step: 3 },
+		{ key: 2, label: 'Ống Fe³⁺ tạo kết tủa Fe(OH)₃ nâu đỏ', step: 4 },
+		{ key: 3, label: 'Fe(OH)₂ bị oxi hóa dần thành màu nâu đỏ', step: 5 },
+	],
+	'CHEM12-12': [
+		{ key: 1, label: 'Dung dịch CuSO₄ màu xanh trong bình điện phân', step: 1 },
+		{ key: 2, label: 'Khi bật nguồn, ion chuyển động về các điện cực', step: 2 },
+		{ key: 3, label: 'Đồng bám ở cathode và có bọt khí tại điện cực', step: 3 },
+	],
+	'CHEM12-13': [
+		{ key: 1, label: 'Hai thanh Zn và Cu cùng nhúng trong dung dịch điện li', step: 1 },
+		{ key: 2, label: 'Trước khi nối dây, khí H₂ thoát ra ở thanh Zn', step: 2 },
+		{ key: 3, label: 'Sau khi nối dây, khí H₂ chuyển sang thoát ở thanh Cu', step: 4 },
+	],
+};
+
 const getChemObservations = (simId: string, chemStep: number) => {
+	const chem12 = CHEM12_OBSERVATIONS[simId];
+	if (chem12) {
+		return chem12.map((obs) => ({ key: obs.key, label: obs.label, active: chemStep >= obs.step }));
+	}
+
 	switch (simId) {
-		case 'SIM-03':
-			return [
-				{ key: 1, label: 'Dung dịch sôi sủi bọt tăm', active: chemStep >= 4 },
-				{ key: 2, label: 'Đũa khuấy đều hỗn hợp', active: chemStep >= 5 },
-				{ key: 3, label: 'Lớp bánh xà phòng nổi lên trên', active: chemStep >= 7 },
-			];
-		case 'SIM-04':
+		case 'CHEM11-01':
 			return [
 				{ key: 1, label: 'Ống 1 (acid): Hóa đỏ', active: chemStep >= 5 },
 				{ key: 2, label: 'Ống 2 (neutral): Hóa lục', active: chemStep >= 6 },
 				{ key: 3, label: 'Ống 3 (base): Hóa xanh tím', active: chemStep >= 7 },
 			];
-		case 'SIM-05':
+		case 'CHEM11-02':
 			return [
 				{ key: 1, label: 'Dung dịch HCl ban đầu không màu', active: chemStep >= 2 },
 				{ key: 2, label: 'Nhỏ NaOH từ buret xuống bình', active: chemStep >= 4 },
 				{ key: 3, label: 'Dung dịch chuyển hồng nhạt bền', active: chemStep >= 4 },
 			];
-		case 'SIM-06':
+		case 'CHEM11-03':
 			return [
 				{ key: 1, label: 'Đồng tan và dung dịch hóa xanh lam', active: chemStep >= 3 },
 				{ key: 2, label: 'Bọt khí thoát ra mãnh liệt', active: chemStep >= 3 },
 				{ key: 3, label: 'Sinh khí NO₂ màu nâu đỏ bốc lên', active: chemStep >= 3 },
 			];
-		case 'SIM-07':
+		case 'CHEM11-04':
 			return [
 				{ key: 1, label: 'Rót NH₃ đặc bốc hơi nhẹ', active: chemStep >= 2 },
 				{ key: 2, label: 'Rót HCl đặc bốc hơi nhẹ', active: chemStep >= 3 },
@@ -1218,47 +1473,119 @@ const getChemObservations = (simId: string, chemStep: number) => {
 				{ key: 2, label: 'Phản ứng sủi bọt khí H₂ và có khói', active: chemStep >= 3 },
 				{ key: 3, label: 'Nước hóa màu hồng do dung dịch kiềm', active: chemStep >= 4 },
 			];
-		case 'SIM-09':
+		case 'CHEM11-05':
 			return [
 				{ key: 1, label: 'Đường dần hóa đen do bị khử', active: chemStep >= 3 },
 				{ key: 2, label: 'Cột carbon phồng cao khỏi cốc', active: chemStep >= 3 },
 				{ key: 3, label: 'Khí mùi hắc (SO₂, CO₂) thoát ra', active: chemStep >= 3 },
 			];
-		case 'SIM-10':
+		case 'CHEM11-06':
 			return [
 				{ key: 1, label: 'Rót nước bromine màu vàng cam', active: chemStep >= 2 },
 				{ key: 2, label: 'Sục khí ethylene sủi bọt khí', active: chemStep >= 3 },
 				{ key: 3, label: 'Dung dịch bị mất màu vàng cam', active: chemStep >= 3 },
 			];
-		case 'SIM-11':
+		case 'CHEM11-07':
 			return [
 				{ key: 1, label: 'Dung dịch AgNO₃/NH₃ trong suốt', active: chemStep >= 2 },
 				{ key: 2, label: 'Sục khí acetylene sủi bọt khí', active: chemStep >= 3 },
 				{ key: 3, label: 'Xuất hiện kết tủa vàng nhạt Ag₂C₂', active: chemStep >= 3 },
 			];
-		case 'SIM-12':
+		case 'CHEM11-08':
 			return [
 				{ key: 1, label: 'Thả mẩu sodium vào ống nghiệm', active: chemStep >= 3 },
 				{ key: 2, label: 'Sủi bọt khí H₂ xung quanh mẩu Na', active: chemStep >= 3 },
 				{ key: 3, label: 'Mẩu sodium tan dần rồi biến mất', active: chemStep >= 4 },
 			];
-		case 'SIM-13':
+		case 'CHEM11-09':
 			return [
 				{ key: 1, label: 'Dung dịch phenol ban đầu trong suốt', active: chemStep >= 2 },
 				{ key: 2, label: 'Xuất hiện kết tủa trắng đục lập tức', active: chemStep >= 3 },
 				{ key: 3, label: 'Nước bromine bị mất màu', active: chemStep >= 3 },
 			];
-		case 'SIM-14':
+		case 'CHEM11-10':
 			return [
 				{ key: 1, label: 'Xuất hiện kết tủa xanh Cu(OH)₂', active: chemStep >= 3 },
 				{ key: 2, label: 'Thêm dung dịch glycerol', active: chemStep >= 4 },
 				{ key: 3, label: 'Kết tủa tan tạo dung dịch xanh lam thẫm', active: chemStep >= 5 },
 			];
-		case 'SIM-15':
+		case 'CHEM11-11':
 			return [
 				{ key: 1, label: 'Ống 1: Quỳ tím hóa đỏ do tính acid', active: chemStep >= 2 },
 				{ key: 2, label: 'Ống 2: Viên đá vôi CaCO₃ tan dần', active: chemStep >= 4 },
 				{ key: 3, label: 'Ống 2: Sủi bọt khí CO₂ mạnh mẽ', active: chemStep >= 4 },
+			];
+		case 'CHEM10-01':
+			return [
+				{ key: 1, label: 'Phần lớn hạt α đi thẳng qua lá vàng', active: chemStep >= 2 },
+				{ key: 2, label: 'Một số hạt bị lệch hướng nhẹ', active: chemStep >= 2 },
+				{ key: 3, label: 'Rất ít hạt bị bật ngược trở lại (< 1%)', active: chemStep >= 2 },
+			];
+		case 'CHEM10-02':
+			return [
+				{ key: 1, label: 'NaCl: ngọn lửa vàng tươi (Na⁺)', active: chemStep >= 3 },
+				{ key: 2, label: 'KCl: ngọn lửa tím nhạt (K⁺)', active: chemStep >= 4 },
+				{ key: 3, label: 'CuSO₄: ngọn lửa lam (Cu²⁺)', active: chemStep >= 5 },
+			];
+		case 'CHEM10-03':
+			return [
+				{ key: 1, label: 'Bọt khí H₂ thoát ra từ mảnh kẽm', active: chemStep >= 2 },
+				{ key: 2, label: 'Mảnh Zn tan dần trong dung dịch', active: chemStep >= 2 },
+				{ key: 3, label: 'Dung dịch ấm lên do phản ứng tỏa nhiệt', active: chemStep >= 2 },
+			];
+		case 'CHEM10-04':
+			return [
+				{ key: 1, label: 'Dây Mg bốc cháy với ánh sáng trắng chói', active: chemStep >= 2 },
+				{ key: 2, label: 'Tạo khói trắng MgO', active: chemStep >= 2 },
+				{ key: 3, label: 'Không thể nhìn trực tiếp vào ánh sáng', active: chemStep >= 2 },
+			];
+		case 'CHEM10-05':
+			return [
+				{ key: 1, label: 'Phản ứng tỏa nhiệt rất mạnh', active: chemStep >= 2 },
+				{ key: 2, label: 'Hơi nước bốc lên trên bề mặt', active: chemStep >= 2 },
+				{ key: 3, label: 'Tạo Ca(OH)₂ dạng bột (vôi tôi)', active: chemStep >= 2 },
+			];
+		case 'CHEM10-06':
+			return [
+				{ key: 1, label: 'Phản ứng thu nhiệt – nhiệt độ giảm xuống', active: chemStep >= 2 },
+				{ key: 2, label: 'Mùi khai của khí NH₃ thoát ra', active: chemStep >= 2 },
+				{ key: 3, label: 'Hơi ẩm ngưng tụ trên thành cốc (lạnh)', active: chemStep >= 2 },
+			];
+		case 'CHEM10-07':
+			return [
+				{ key: 1, label: 'Ống 1 (đặc): kết tủa S xuất hiện nhanh', active: chemStep >= 3 },
+				{ key: 2, label: 'Ống 2 (loãng): kết tủa S xuất hiện chậm', active: chemStep >= 4 },
+				{ key: 3, label: 'Nồng độ cao → tốc độ phản ứng lớn hơn', active: chemStep >= 4 },
+			];
+		case 'CHEM10-08':
+			return [
+				{ key: 1, label: 'H₂O₂ phân hủy chậm khi không có xúc tác', active: chemStep >= 1 },
+				{ key: 2, label: 'Thêm MnO₂: bọt O₂ thoát ra mãnh liệt', active: chemStep >= 2 },
+				{ key: 3, label: 'MnO₂ không bị tiêu hao sau phản ứng', active: chemStep >= 2 },
+			];
+		case 'CHEM10-09':
+			return [
+				{ key: 1, label: 'Ống 1 (cục): bọt CO₂ thoát ra chậm', active: chemStep >= 3 },
+				{ key: 2, label: 'Ống 2 (bột): bọt CO₂ thoát ra nhanh hơn', active: chemStep >= 4 },
+				{ key: 3, label: 'Diện tích tiếp xúc lớn hơn → phản ứng nhanh hơn', active: chemStep >= 4 },
+			];
+		case 'CHEM10-10':
+			return [
+				{ key: 1, label: 'Ống 1 (NaCl): kết tủa AgCl trắng', active: chemStep >= 4 },
+				{ key: 2, label: 'Ống 2 (NaBr): kết tủa AgBr vàng nhạt', active: chemStep >= 5 },
+				{ key: 3, label: 'Ống 3 (NaI): kết tủa AgI vàng', active: chemStep >= 6 },
+			];
+		case 'CHEM10-11':
+			return [
+				{ key: 1, label: 'Màu tím (litmus) nhạt dần khi thêm Cl₂', active: chemStep >= 2 },
+				{ key: 2, label: 'Dung dịch mất màu hoàn toàn', active: chemStep >= 2 },
+				{ key: 3, label: 'HClO (axit hypoclorơ) là tác nhân tẩy màu', active: chemStep >= 2 },
+			];
+		case 'CHEM10-12':
+			return [
+				{ key: 1, label: 'Dung dịch NaBr ban đầu không màu', active: chemStep >= 1 },
+				{ key: 2, label: 'Thêm Cl₂: dung dịch chuyển màu cam (Br₂)', active: chemStep >= 2 },
+				{ key: 3, label: 'Cl₂ hoạt động hơn Br₂ → đẩy Br ra', active: chemStep >= 2 },
 			];
 		default:
 			return [
@@ -1305,23 +1632,47 @@ const Workspace: React.FC = () => {
 	const location = useLocation();
 	const params = new URLSearchParams(location.search);
 	const subject = (params.get('subject') || 'physics') as SubjectKey;
-	const simId = params.get('sim') || (subject === 'chem' ? 'SIM-01' : subject === 'physics' ? 'SIM-02' : '');
+	const rawSimId = params.get('sim') || (subject === 'chem' ? 'CHEM12-01' : subject === 'physics' ? 'SIM-02' : '');
+	const simId = normalizeLabSimId(rawSimId);
 	const metaKey = [
-		'SIM-01',
+		'CHEM10-01',
+		'CHEM10-02',
+		'CHEM10-03',
+		'CHEM10-04',
+		'CHEM10-05',
+		'CHEM10-06',
+		'CHEM10-07',
+		'CHEM10-08',
+		'CHEM10-09',
+		'CHEM10-10',
+		'CHEM10-11',
+		'CHEM10-12',
+		'CHEM12-01',
+		'CHEM12-02',
+		'CHEM12-03',
+		'CHEM12-04',
+		'CHEM12-05',
+		'CHEM12-06',
+		'CHEM12-07',
+		'CHEM12-08',
+		'CHEM12-09',
+		'CHEM12-10',
+		'CHEM12-11',
+		'CHEM12-12',
+		'CHEM12-13',
 		'SIM-02',
-		'SIM-03',
-		'SIM-04',
-		'SIM-05',
-		'SIM-06',
-		'SIM-07',
+		'CHEM11-01',
+		'CHEM11-02',
+		'CHEM11-03',
+		'CHEM11-04',
 		'SIM-08',
-		'SIM-09',
-		'SIM-10',
-		'SIM-11',
-		'SIM-12',
-		'SIM-13',
-		'SIM-14',
-		'SIM-15',
+		'CHEM11-05',
+		'CHEM11-06',
+		'CHEM11-07',
+		'CHEM11-08',
+		'CHEM11-09',
+		'CHEM11-10',
+		'CHEM11-11',
 		'SIM-16',
 		'SIM-17',
 		'SIM-18',
@@ -2154,32 +2505,32 @@ const Workspace: React.FC = () => {
 								: simId === 'SIM-20'
 									? `\\text{Số trung bình } \\bar{x} = \\frac{\\sum x_i}{n} \\quad \\vert \\quad \\text{Độ lệch chuẩn } s = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n}}`
 									: `y = ${f(mA)}x^2 ${mB >= 0 ? '+' : '-'} ${Math.abs(f(mB))}x ${mC >= 0 ? '+' : '-'} ${Math.abs(f(mC))}`
-				: simId === 'SIM-03'
+				: simId === 'CHEM12-02'
 					? '\\text{(C}_{17}\\text{H}_{35}\\text{COO)}_3\\text{C}_3\\text{H}_5 + 3\\text{NaOH} \\xrightarrow{t^\\circ} 3\\text{C}_{17}\\text{H}_{35}\\text{COONa} + \\text{C}_3\\text{H}_5\\text{(OH)}_3'
-					: simId === 'SIM-04'
-						? '\\text{CuSO}_4 + 2\\text{NaOH} \\rightarrow \\text{Cu(OH)}_2\\downarrow + \\text{Na}_2\\text{SO}_4 \\quad \\vert \\quad 2\\text{C}_6\\text{H}_{12}\\text{O}_6 + \\text{Cu(OH)}_2 \\rightarrow \\text{(C}_6\\text{H}_{11}\\text{O}_6)_2\\text{Cu} + 2\\text{H}_2\\text{O}'
-						: simId === 'SIM-05'
-							? '\\text{CH}_2\\text{OH[CHOH]}_4\\text{CHO} + 2\\text{[Ag(NH}_3\\text{)}_2\\text{]OH} \\xrightarrow{t^\\circ} \\text{CH}_2\\text{OH[CHOH]}_4\\text{COONH}_4 + 2\\text{Ag}\\downarrow + 3\\text{NH}_3 + \\text{H}_2\\text{O}'
-							: simId === 'SIM-06'
-								? '\\text{Hồ tinh bột} + \\text{I}_2 \\rightleftharpoons \\text{Hợp chất màu xanh tím (mất màu khi đun)}'
-								: simId === 'SIM-07'
-									? '\\text{Protein} + \\text{Cu(OH)}_2 / \\text{OH}^- \\rightarrow \\text{Phức chất màu tím biuret đặc trưng}'
+					: simId === 'CHEM11-01'
+						? '\\text{pH} = -\\log[\\text{H}^+] \\quad \\vert \\quad \\text{Chất chỉ thị đổi màu theo môi trường acid/base}'
+						: simId === 'CHEM11-02'
+							? '\\text{HCl} + \\text{NaOH} \\rightarrow \\text{NaCl} + \\text{H}_2\\text{O} \\quad \\vert \\quad n_{\\text{acid}} = n_{\\text{base}}'
+							: simId === 'CHEM11-03'
+								? '\\text{Cu} + 4\\text{HNO}_3 \\rightarrow \\text{Cu(NO}_3\\text{)}_2 + 2\\text{NO}_2\\uparrow + 2\\text{H}_2\\text{O}'
+								: simId === 'CHEM11-04'
+									? '\\text{NH}_3 + \\text{HCl} \\rightarrow \\text{NH}_4\\text{Cl}\\downarrow \\quad \\text{(khói trắng)}'
 									: simId === 'SIM-08'
 										? '2\\text{Na} + 2\\text{H}_2\\text{O} \\rightarrow 2\\text{NaOH} + \\text{H}_2\\uparrow \\text{ (phản ứng tỏa nhiệt mạnh)}'
-										: simId === 'SIM-09'
-											? '\\text{Fe} + \\text{CuSO}_4 \\rightarrow \\text{FeSO}_4 + \\text{Cu}\\downarrow'
-											: simId === 'SIM-10'
-												? '2\\text{Al} + 2\\text{NaOH} + 6\\text{H}_2\\text{O} \\rightarrow 2\\text{Na[Al(OH)}_4\\text{]} + 3\\text{H}_2\\uparrow'
-												: simId === 'SIM-11'
-													? '2\\text{Al} + \\text{Fe}_2\\text{O}_3 \\xrightarrow{t^\\circ} \\text{Al}_2\\text{O}_3 + 2\\text{Fe} \\text{ (phản ứng nhiệt nhôm)}'
-													: simId === 'SIM-12'
-														? '\\text{FeCl}_2 + 2\\text{NaOH} \\rightarrow \\text{Fe(OH)}_2\\downarrow \\quad \\vert \\quad 4\\text{Fe(OH)}_2 + \\text{O}_2 + 2\\text{H}_2\\text{O} \\rightarrow 4\\text{Fe(OH)}_3'
-														: simId === 'SIM-13'
-															? '2\\text{CuSO}_4 + 2\\text{H}_2\\text{O} \\xrightarrow{\\text{điện phân}} 2\\text{Cu}\\downarrow + \\text{O}_2\\uparrow + 2\\text{H}_2\\text{SO}_4'
-															: simId === 'SIM-14'
-																? '\\text{Cực âm (Zn): Zn} \\rightarrow \\text{Zn}^{2+} + 2e \\quad \\vert \\quad \\text{Cực dương (Cu): 2H}^+ + 2e \\rightarrow \\text{H}_2\\uparrow'
-																: simId === 'SIM-15'
-																	? '\\text{Hạt } \\alpha = {^4_2}\\text{He}^{2+} \\quad \\vert \\quad \\text{Hầu hết đi thẳng, một số lệch/bật ngược}'
+										: simId === 'CHEM11-05'
+											? '\\text{C}_{12}\\text{H}_{22}\\text{O}_{11} \\xrightarrow{\\text{H}_2\\text{SO}_4\\,\\text{đặc}} 12\\text{C} + 11\\text{H}_2\\text{O}'
+											: simId === 'CHEM11-06'
+												? '\\text{CH}_2=\\text{CH}_2 + \\text{Br}_2 \\rightarrow \\text{CH}_2\\text{Br}-\\text{CH}_2\\text{Br}'
+												: simId === 'CHEM11-07'
+													? '\\text{HC}\\equiv\\text{CH} + 2\\text{[Ag(NH}_3\\text{)}_2\\text{]OH} \\rightarrow \\text{AgC}\\equiv\\text{CAg}\\downarrow + 4\\text{NH}_3 + 2\\text{H}_2\\text{O}'
+													: simId === 'CHEM11-08'
+														? '2\\text{C}_2\\text{H}_5\\text{OH} + 2\\text{Na} \\rightarrow 2\\text{C}_2\\text{H}_5\\text{ONa} + \\text{H}_2\\uparrow'
+														: simId === 'CHEM11-09'
+															? '\\text{C}_6\\text{H}_5\\text{OH} + 3\\text{Br}_2 \\rightarrow \\text{C}_6\\text{H}_2\\text{Br}_3\\text{OH}\\downarrow + 3\\text{HBr}'
+															: simId === 'CHEM11-10'
+																? '\\text{Glycerol} + \\text{Cu(OH)}_2 \\rightarrow \\text{phức đồng màu xanh lam}'
+																: simId === 'CHEM11-11'
+																	? '2\\text{CH}_3\\text{COOH} + \\text{CaCO}_3 \\rightarrow (\\text{CH}_3\\text{COO})_2\\text{Ca} + \\text{CO}_2\\uparrow + \\text{H}_2\\text{O}'
 																	: '\\text{CH}_3\\text{COOH} + \\text{C}_2\\text{H}_5\\text{OH} \\rightleftharpoons \\text{CH}_3\\text{COOC}_2\\text{H}_5 + \\text{H}_2\\text{O}';
 
 	const centerTitle =
@@ -9376,7 +9727,7 @@ const Workspace: React.FC = () => {
 							<>
 								<div className='stu-ws__section-label'>Các bước hướng dẫn</div>
 								<div className='stu-ws__steps'>
-									{(LAB_CHEM_STEPS[simId as keyof typeof LAB_CHEM_STEPS] || LAB_CHEM_STEPS['SIM-01']).map((st) => {
+									{(LAB_CHEM_STEPS[simId as keyof typeof LAB_CHEM_STEPS] || LAB_CHEM_STEPS['CHEM12-01']).map((st) => {
 										const done = st.n < chemStep;
 										const active = st.n === chemStep;
 										return (
@@ -9460,9 +9811,10 @@ const Workspace: React.FC = () => {
 							id={`sim-mount-${subject}`}
 							data-sim={subject}
 						>
-							<div className={`stu-ws__sim-pill stu-ws__sim-pill--${meta.className}`}>
-								{subject === 'physics' &&
-									(simId === 'SIM-21'
+							{subject !== 'chem' && (
+								<div className={`stu-ws__sim-pill stu-ws__sim-pill--${meta.className}`}>
+									{subject === 'physics' &&
+										(simId === 'SIM-21'
 										? `v₀ ${kinV0} m/s  ·  a ${kinA} m/s²`
 										: simId === 'SIM-22'
 											? `h ${freefallH} m  ·  g ${f(freefallG)} m/s²`
@@ -9505,8 +9857,8 @@ const Workspace: React.FC = () => {
 																													: simId === 'SIM-41'
 																														? `Số khối A ${bindingEnergyA}`
 																														: `θ ${phAngle}°  ·  v ${phVel} m/s  ·  g ${f(phGrav)}`)}
-								{subject === 'math' &&
-									(simId === 'SIM-08' || simId === 'SIM-08-math' || !simId
+									{subject === 'math' &&
+										(simId === 'SIM-08' || simId === 'SIM-08-math' || !simId
 										? `a ${f(mA)}  ·  b ${f(mB)}  ·  c ${f(mC)}`
 										: simId === 'SIM-16'
 											? `θ ${mAngle}°  ·  v₀ ${mVel} m/s`
@@ -9517,9 +9869,8 @@ const Workspace: React.FC = () => {
 													: simId === 'SIM-19'
 														? `Bút vẽ  ·  a ${conicA.toFixed(1)}  ·  c ${conicC.toFixed(1)}`
 														: `Thống kê mẫu số liệu`)}
-								{subject === 'chem' &&
-									`Đang tiến hành  ·  bước ${chemStep}/${(LAB_CHEM_STEPS[simId as keyof typeof LAB_CHEM_STEPS] || LAB_CHEM_STEPS['SIM-01']).length}`}
-							</div>
+								</div>
+							)}
 							{subject === 'physics' ? (
 								simId === 'SIM-21' ? (
 									<KinematicsSimulation
@@ -10073,40 +10424,16 @@ const Workspace: React.FC = () => {
 									/>
 								)
 							) : subject === 'chem' ? (
-								simId === 'SIM-03' ? (
-									<SoapSimulation
-										config={{
-											simulation_id: 'SIM-03',
-											subject: 'chemistry',
-											topic: 'saponification',
-											parameters: [],
-										}}
-										currentStep={chemStep}
-										onStepChange={(step: number) => setChemStep(step)}
-									/>
-								) : simId === 'SIM-01' ? (
-									<EsterSimulation
-										config={{
-											simulation_id: 'SIM-01',
-											subject: 'chemistry',
-											topic: 'esterification',
-											parameters: [],
-										}}
-										currentStep={chemStep}
-										onStepChange={(step: number) => setChemStep(step)}
-									/>
-								) : (
-									<GenericChemSimulation
-										config={{
-											simulation_id: simId || 'SIM-04',
-											subject: 'chemistry',
-											topic: 'generic',
-											parameters: [],
-										}}
-										currentStep={chemStep}
-										onStepChange={(step: number) => setChemStep(step)}
-									/>
-								)
+								<GenericChemSimulation
+									config={{
+										simulation_id: simId || 'CHEM11-01',
+										subject: 'chemistry',
+										topic: 'generic',
+										parameters: [],
+									}}
+									currentStep={chemStep}
+									onStepChange={(step: number) => setChemStep(step)}
+								/>
 							) : subject === 'math' ? (
 								simId === 'SIM-08' || simId === 'SIM-08-math' || !simId ? (
 									<QuadraticSimulation
