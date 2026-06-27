@@ -364,9 +364,88 @@
 		color: @stu-text-primary;
 		text-align: center;
 
-		div, .katex, .katex * {
+		> div:not([style*='line-height']):not(.stu-ws__formula-note) {
 			font-size: 16px !important;
 			color: @stu-text-primary !important;
+		}
+
+		.katex {
+			font-size: 16px !important;
+			line-height: 1.45 !important;
+			color: @stu-text-primary !important;
+		}
+
+		.katex * {
+			color: @stu-text-primary !important;
+		}
+
+		.katex .mfrac {
+			line-height: 1.2 !important;
+		}
+
+		.katex .vlist-t,
+		.katex .vlist-r,
+		.katex .vlist {
+			line-height: normal !important;
+		}
+	}
+
+	&__formula-note {
+		font-size: 12.5px !important;
+		font-weight: 400 !important;
+		line-height: 1.55 !important;
+		letter-spacing: 0 !important;
+		text-align: left !important;
+		color: #4a4f63 !important;
+
+		b {
+			font-size: 13px !important;
+			font-weight: 700 !important;
+			color: inherit !important;
+		}
+
+		.katex {
+			font-size: 1.12em !important;
+			line-height: 1 !important;
+			color: inherit !important;
+			vertical-align: -0.04em;
+		}
+
+		.katex * {
+			color: inherit !important;
+		}
+	}
+
+	&__left--physics {
+		.stu-ws__formula-box > div[style*='line-height'] {
+			font-size: 12.5px !important;
+			font-weight: 400 !important;
+			line-height: 1.52 !important;
+			letter-spacing: 0 !important;
+			text-align: left !important;
+		}
+
+		.stu-ws__formula-box > div[style*='line-height'] b {
+			font-size: 13px !important;
+			font-weight: 700 !important;
+		}
+
+		.stu-ws__formula-box > div[style*='line-height'] .katex {
+			font-size: 1.12em !important;
+			line-height: 1 !important;
+			vertical-align: -0.04em;
+		}
+
+		.stu-ws__formula-box > div:last-child[style*='background'] {
+			font-size: 13.5px !important;
+			font-weight: 500 !important;
+			line-height: 1.58 !important;
+			letter-spacing: 0 !important;
+			text-align: left !important;
+		}
+
+		.stu-ws__formula-box > div:last-child[style*='background'] b {
+			font-weight: 700 !important;
 		}
 	}
 
@@ -697,6 +776,16 @@
 		font-size: 14px;
 		color: @stu-text-body;
 		text-align: center;
+
+		.katex {
+			line-height: 1.45 !important;
+		}
+
+		.katex .vlist-t,
+		.katex .vlist-r,
+		.katex .vlist {
+			line-height: normal !important;
+		}
 	}
 
 	// ── RIGHT PANEL ──
@@ -955,7 +1044,7 @@
 		flex: 1;
 		overflow-y: auto;
 		.stu-scrollbar();
-		padding: 20px 18px 22px;
+		padding: 16px 18px 18px;
 		position: relative;
 		z-index: 1;
 		animation: stuRightViewIn 0.4s ease both;
@@ -1139,6 +1228,13 @@
 		flex-direction: column;
 		gap: 14px;
 		animation: stuRightMsgIn 0.4s ease both;
+
+		&--active {
+			min-height: auto;
+			padding: 18px 18px 16px;
+			border-radius: 22px;
+			gap: 12px;
+		}
 	}
 
 	&__quiz-header {
@@ -1148,23 +1244,28 @@
 	}
 
 	&__quiz-badge {
-		font-size: 10.5px;
+		min-width: 30px;
+		height: 30px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 11px;
 		font-weight: 800;
 		letter-spacing: 0.4px;
-		padding: 5px 11px;
-		border-radius: 8px;
+		padding: 0 10px;
+		border-radius: 9px;
 		background: var(--right-grad);
 		color: #fff;
 	}
 
 	&__quiz-count {
-		font-size: 12px;
-		font-weight: 600;
+		font-size: 13px;
+		font-weight: 700;
 		color: var(--right-muted);
 	}
 
 	&__quiz-progress {
-		height: 6px;
+		height: 5px;
 		border-radius: 6px;
 		background: var(--right-border);
 		overflow: hidden;
@@ -1179,10 +1280,10 @@
 	}
 
 	&__quiz-question {
-		font-size: 13.5px;
-		font-weight: 600;
+		font-size: 14px;
+		font-weight: 800;
 		color: var(--right-text);
-		line-height: 1.5;
+		line-height: 1.42;
 		text-wrap: pretty;
 	}
 
@@ -1196,12 +1297,13 @@
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		padding: 14px 15px;
+		min-height: 52px;
+		padding: 10px 12px;
 		border-radius: 15px;
-		font-size: 13.5px;
-		font-weight: 500;
+		font-size: 12.5px;
+		font-weight: 600;
 		cursor: pointer;
-		border: 1.6px solid var(--right-border);
+		border: 2px solid var(--right-border);
 		background: var(--right-card);
 		color: var(--right-text);
 		transition:
@@ -1247,15 +1349,23 @@
 		height: 30px;
 		border-radius: 50%;
 		flex: none;
-		border: 1.6px solid var(--right-border);
+		border: 2px solid var(--right-border);
 		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--right-muted);
+		font-size: 12.5px;
+		font-weight: 800;
+		background: var(--right-card);
 
 		&--correct {
 			border-color: var(--right-ok-border);
 			background: var(--right-ok);
+			color: #fff;
 
 			&::after {
-				content: '';
+				content: none;
 				position: absolute;
 				left: 9px;
 				top: 6px;
@@ -1270,10 +1380,11 @@
 		&--wrong {
 			border-color: var(--right-bad-border);
 			background: var(--right-bad);
+			color: #fff;
 
 			&::before,
 			&::after {
-				content: '';
+				content: none;
 				position: absolute;
 				left: 8px;
 				top: 13px;
@@ -1297,10 +1408,10 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 4px;
-		padding: 12px 14px;
-		border-radius: 14px;
-		font-size: 13px;
+		gap: 3px;
+		padding: 10px 12px;
+		border-radius: 12px;
+		font-size: 12.5px;
 		font-weight: 700;
 
 		&--correct {
@@ -1627,15 +1738,15 @@
 
 .dqz-nav-dots {
 	display: flex;
-	gap: 6px;
-	flex-wrap: wrap;
-	margin-bottom: 4px;
+	gap: 7px;
+	flex-wrap: nowrap;
+	margin: -6px 0 4px;
 }
 
 .dqz-nav-dot {
 	flex: 1;
 	min-width: 8px;
-	height: 5px;
+	height: 6px;
 	border-radius: 4px;
 	background: var(--right-border);
 	cursor: pointer;
@@ -1661,19 +1772,27 @@
 }
 
 .dqz-nav-btns {
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr auto;
 	align-items: center;
-	gap: 8px;
-	margin-top: 2px;
+	width: 100%;
+	gap: 10px;
+	margin-top: 0;
+	padding-top: 0;
 }
 
 .dqz-nav-btn {
-	padding: 12px 18px;
-	border-radius: 13px;
-	border: 1px solid var(--right-border);
-	background: var(--right-panel-soft);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 120px;
+	height: 40px;
+	padding: 0 18px;
+	border-radius: 14px;
+	border: 0;
+	background: #e8e6eb;
 	font-size: 12.5px;
-	font-weight: 700;
+	font-weight: 800;
 	color: var(--right-text);
 	cursor: pointer;
 	transition:
@@ -1681,12 +1800,18 @@
 		border-color 0.2s ease,
 		filter 0.2s ease;
 
+	&:first-child {
+		justify-self: start;
+	}
+
 	&:hover {
 		transform: translateY(-1px);
 		border-color: var(--right-accent);
 	}
 
 	&--primary {
+		grid-column: 2;
+		justify-self: end;
 		background: var(--right-grad);
 		border-color: transparent;
 		color: #fff;
@@ -1694,6 +1819,19 @@
 
 		&:hover {
 			filter: brightness(1.08);
+		}
+	}
+
+	&--disabled {
+		background: #e4e2e8;
+		color: #8f8a99;
+		box-shadow: none;
+		cursor: not-allowed;
+
+		&:hover {
+			transform: none;
+			border-color: transparent;
+			filter: none;
 		}
 	}
 }
@@ -1704,16 +1842,19 @@
 }
 
 .dqz-print-btn {
-	width: 28px;
-	height: 28px;
-	border-radius: 10px;
+	min-width: 68px;
+	height: 36px;
+	padding: 0 14px;
+	border-radius: 13px;
 	border: 1px solid var(--right-border);
 	background: var(--right-panel-soft);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	font-size: 14px;
+	font-size: 12.5px;
+	font-weight: 700;
+	color: var(--right-muted);
 	transition:
 		border-color 0.2s ease,
 		color 0.2s ease;
@@ -1811,13 +1952,33 @@
 	}
 }
 
-// Hidden print area — only visible when printing
+// Keep the print area mounted so the browser can render it before print preview.
 .stu-ws__print-area {
-	display: none;
+	position: fixed;
+	top: 0;
+	left: -10000px;
+	width: 210mm;
+	min-height: 297mm;
+	visibility: hidden;
+	pointer-events: none;
+	background: #fff;
+	color: #000;
+}
+
+@page {
+	margin: 18mm 16mm;
 }
 
 // ── @media print — clean exam worksheet ──
 @media print {
+	html,
+	body {
+		width: auto !important;
+		min-height: auto !important;
+		overflow: visible !important;
+		background: #fff !important;
+	}
+
 	// Hide everything except the print area
 	body * {
 		visibility: hidden !important;
@@ -1830,15 +1991,18 @@
 
 	.stu-ws__print-area {
 		display: block !important;
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		background: #fff;
-		color: #000;
-		font-family: 'Times New Roman', Times, serif;
-		padding: 24mm 20mm;
-		box-sizing: border-box;
+		position: absolute !important;
+		top: 0 !important;
+		left: 0 !important;
+		width: 100% !important;
+		min-height: auto !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		background: #fff !important;
+		color: #000 !important;
+		font-family: 'Times New Roman', Times, serif !important;
+		pointer-events: auto !important;
+		box-sizing: border-box !important;
 	}
 
 	.print-header {
@@ -1970,6 +2134,27 @@
 		border-color: var(--right-border);
 	}
 
+	.dqz-nav-btn--disabled {
+		background: #2a2d37 !important;
+		color: #a9adbc !important;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	.dqz-print-btn {
+		color: #b7bbca;
+	}
+
+	.stu-ws__quiz-opt {
+		background: #191b23;
+		border-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.stu-ws__quiz-radio {
+		background: #1f222c;
+		border-color: rgba(255, 255, 255, 0.12);
+		color: #b4b8c8;
+	}
+
 	.stu-ws__right-bubbles span {
 		background: var(--right-bubble);
 		border-color: var(--right-bubble-border);
@@ -2055,6 +2240,33 @@
 			box-shadow: none !important;
 		}
 
+		.stu-ws__formula-box > div[style*='line-height'] {
+			font-size: 12.5px !important;
+			font-weight: 400 !important;
+			line-height: 1.52 !important;
+			letter-spacing: 0 !important;
+			text-align: left !important;
+		}
+
+		.stu-ws__formula-box > div[style*='line-height'] b {
+			font-size: 13px !important;
+			font-weight: 700 !important;
+		}
+
+		.stu-ws__formula-box > div[style*='line-height'] .katex {
+			font-size: 1.12em !important;
+			line-height: 1 !important;
+			vertical-align: -0.04em;
+		}
+
+		.stu-ws__formula-note {
+			color: #d6dae8 !important;
+		}
+
+		.stu-ws__formula-note b {
+			color: #f1f2f7 !important;
+		}
+
 		.stu-ws__formula-box > div[style*='font-size: 16px'],
 		.stu-ws__formula-box > div[style*='font-size: 14.5px'],
 		.stu-ws__formula-box .katex,
@@ -2066,14 +2278,15 @@
 			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent) !important;
 		}
 
-		.stu-ws__formula-box > div:last-child {
+		.stu-ws__formula-box > div:last-child[style*='background'] {
 			background: #1d2029 !important;
 			border-color: rgba(255, 255, 255, 0.1) !important;
 			color: #d6dae8 !important;
 		}
 
-		.stu-ws__formula-box > div:last-child b {
+		.stu-ws__formula-box > div:last-child[style*='background'] b {
 			color: #f1f2f7 !important;
+			font-weight: 700 !important;
 		}
 
 		.stu-ws__symbol-row:hover {

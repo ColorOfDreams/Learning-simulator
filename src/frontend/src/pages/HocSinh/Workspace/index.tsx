@@ -58,6 +58,14 @@ interface ChatMessage {
 	text: string;
 }
 
+const escapeHtml = (value: unknown) =>
+	String(value ?? '')
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+
 // ── Lab metadata ──
 const LAB_META = {
 	'SIM-01': {
@@ -153,35 +161,90 @@ const LAB_META = {
 		className: 'physics',
 	},
 	'SIM-23': { label: 'Vật lý', title: 'Chuyển động ném ngang', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
-	'SIM-24': { label: 'Vật lý', title: 'Định luật II Newton (Xe lăn)', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
-	'SIM-25': { label: 'Vật lý', title: 'Vật trượt trên mặt phẳng nghiêng', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
+	'SIM-24': {
+		label: 'Vật lý',
+		title: 'Định luật II Newton (Xe lăn)',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'physics',
+	},
+	'SIM-25': {
+		label: 'Vật lý',
+		title: 'Vật trượt trên mặt phẳng nghiêng',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'physics',
+	},
 	'SIM-26': { label: 'Vật lý', title: 'Con lắc lò xo nằm ngang', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
 	'SIM-27': { label: 'Vật lý', title: 'Con lắc đơn dao động', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
 	'SIM-28': { label: 'Vật lý', title: 'Chuyển động tròn đều', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
-	'SIM-29': { label: 'Vật lý', title: 'Va chạm 1D — bảo toàn động lượng', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
+	'SIM-29': {
+		label: 'Vật lý',
+		title: 'Va chạm 1D — bảo toàn động lượng',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'physics',
+	},
 	'SIM-30': { label: 'Vật lý', title: 'Bảo toàn cơ năng', tutor: 'Trợ lý thí nghiệm AI', className: 'physics' },
 	'SIM-31': { label: 'Vật lý', title: 'Định luật Boyle (đẳng nhiệt)', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-32': { label: 'Vật lý', title: 'Định luật Charles (đẳng áp)', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
-	'SIM-33': { label: 'Vật lý', title: 'Thuyết động học phân tử chất khí', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-33': {
+		label: 'Vật lý',
+		title: 'Thuyết động học phân tử chất khí',
+		tutor: 'Trợ lý Vật lý AI',
+		className: 'physics',
+	},
 	'SIM-34': { label: 'Vật lý', title: 'Sự chuyển thể của chất', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-35': { label: 'Vật lý', title: 'Lực từ tác dụng lên dây dẫn', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-36': { label: 'Vật lý', title: 'Lực Lorentz', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-37': { label: 'Vật lý', title: 'Hiện tượng cảm ứng điện từ', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-38': { label: 'Vật lý', title: 'Máy phát điện xoay chiều', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-39': { label: 'Vật lý', title: 'Phóng xạ & chu kỳ bán rã', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
-	'SIM-40': { label: 'Vật lý', title: 'Phản ứng phân hạch & nhiệt hạch', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-40': {
+		label: 'Vật lý',
+		title: 'Phản ứng phân hạch & nhiệt hạch',
+		tutor: 'Trợ lý Vật lý AI',
+		className: 'physics',
+	},
 	'SIM-41': { label: 'Vật lý', title: 'Năng lượng liên kết riêng', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-42': { label: 'Vật lý 11', title: 'Dao động điều hòa', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-43': { label: 'Vật lý 11', title: 'Dao động tắt dần', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-44': { label: 'Vật lý 11', title: 'Hiện tượng cộng hưởng', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
-	'SIM-45': { label: 'Vật lý 11', title: 'Sóng ngang truyền trên dây', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-45': {
+		label: 'Vật lý 11',
+		title: 'Sóng ngang truyền trên dây',
+		tutor: 'Trợ lý Vật lý AI',
+		className: 'physics',
+	},
 	'SIM-46': { label: 'Vật lý 11', title: 'Sóng dừng', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
 	'SIM-47': { label: 'Vật lý 11', title: 'Giao thoa sóng nước', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
-	'SIM-48': { label: 'Vật lý 11', title: 'Định luật Coulomb & Lực tương tác', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
-	'SIM-49': { label: 'Vật lý 11', title: 'Điện trường & Đường sức điện', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
-	'SIM-50': { label: 'Vật lý 11', title: 'Định luật Ohm cho đoạn mạch', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
-	'SIM-51': { label: 'Vật lý 11', title: 'Mạch ghép điện trở (Nối tiếp / Song song)', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
-	'SIM-52': { label: 'Vật lý 11', title: 'Định luật Ohm cho toàn mạch', tutor: 'Trợ lý Vật lý AI', className: 'physics' },
+	'SIM-48': {
+		label: 'Vật lý 11',
+		title: 'Định luật Coulomb & Lực tương tác',
+		tutor: 'Trợ lý Vật lý AI',
+		className: 'physics',
+	},
+	'SIM-49': {
+		label: 'Vật lý 11',
+		title: 'Điện trường & Đường sức điện',
+		tutor: 'Trợ lý Vật lý AI',
+		className: 'physics',
+	},
+	'SIM-50': {
+		label: 'Vật lý 11',
+		title: 'Định luật Ohm cho đoạn mạch',
+		tutor: 'Trợ lý Vật lý AI',
+		className: 'physics',
+	},
+	'SIM-51': {
+		label: 'Vật lý 11',
+		title: 'Mạch ghép điện trở (Nối tiếp / Song song)',
+		tutor: 'Trợ lý Vật lý AI',
+		className: 'physics',
+	},
+	'SIM-52': {
+		label: 'Vật lý 11',
+		title: 'Định luật Ohm cho toàn mạch',
+		tutor: 'Trợ lý Vật lý AI',
+		className: 'physics',
+	},
 	'SIM-08-math': { label: 'Toán', title: 'Đồ thị hàm số bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'SIM-16': { label: 'Toán', title: 'Ném xiên và vòm cổng parabol', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'SIM-17': { label: 'Toán', title: 'Miền nghiệm hệ bất phương trình', tutor: 'Trợ lý Toán AI', className: 'math' },
@@ -303,94 +366,184 @@ const LAB_INITIAL_CHATS: Record<string, ChatMessage[]> = {
 		},
 	],
 	'SIM-23': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng thí nghiệm Ném ngang! Hãy điều chỉnh độ cao thả h và vận tốc đầu v₀ để quan sát tầm xa lý thuyết.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng thí nghiệm Ném ngang! Hãy điều chỉnh độ cao thả h và vận tốc đầu v₀ để quan sát tầm xa lý thuyết.',
+		},
 	],
 	'SIM-24': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật II Newton! Gia tốc xe thay đổi thế nào khi lực kéo F tăng hoặc khối lượng xe m tăng?' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng định luật II Newton! Gia tốc xe thay đổi thế nào khi lực kéo F tăng hoặc khối lượng xe m tăng?',
+		},
 	],
 	'SIM-25': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng chuyển động trên mặt phẳng nghiêng! Hãy điều chỉnh góc nghiêng alpha và hệ số ma sát mu.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng chuyển động trên mặt phẳng nghiêng! Hãy điều chỉnh góc nghiêng alpha và hệ số ma sát mu.',
+		},
 	],
 	'SIM-26': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng con lắc lò xo nằm ngang! Hãy thay đổi độ cứng lò xo k và khối lượng m để xem đồ thị năng lượng.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng con lắc lò xo nằm ngang! Hãy thay đổi độ cứng lò xo k và khối lượng m để xem đồ thị năng lượng.',
+		},
 	],
 	'SIM-27': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng con lắc đơn dao động! Tần số dao động có phụ thuộc vào khối lượng quả nặng không?' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng con lắc đơn dao động! Tần số dao động có phụ thuộc vào khối lượng quả nặng không?',
+		},
 	],
 	'SIM-28': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng chuyển động tròn đều! Lực hướng tâm và tốc độ dài thay đổi thế nào khi thay đổi bán kính r?' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng chuyển động tròn đều! Lực hướng tâm và tốc độ dài thay đổi thế nào khi thay đổi bán kính r?',
+		},
 	],
 	'SIM-29': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng va chạm 1D! Hãy thay đổi độ đàn hồi e để so sánh va chạm đàn hồi (e=1) và va chạm mềm (e=0).' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng va chạm 1D! Hãy thay đổi độ đàn hồi e để so sánh va chạm đàn hồi (e=1) và va chạm mềm (e=0).',
+		},
 	],
 	'SIM-30': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng bảo toàn cơ năng trên máng cong! Thế năng và động năng chuyển hóa thế nào khi vật chuyển động?' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng bảo toàn cơ năng trên máng cong! Thế năng và động năng chuyển hóa thế nào khi vật chuyển động?',
+		},
 	],
 	'SIM-31': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật Boyle! Hãy nén khí (giảm thể tích V) và quan sát áp suất p thay đổi thế nào nhé.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng định luật Boyle! Hãy nén khí (giảm thể tích V) và quan sát áp suất p thay đổi thế nào nhé.',
+		},
 	],
 	'SIM-32': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật Charles! Đun nóng khí (tăng nhiệt độ T) làm phân tử chuyển động nhanh hơn và đẩy piston ra thế nào?' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng định luật Charles! Đun nóng khí (tăng nhiệt độ T) làm phân tử chuyển động nhanh hơn và đẩy piston ra thế nào?',
+		},
 	],
 	'SIM-33': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng thuyết động học phân tử! Bạn sẽ thấy các phân tử va chạm hỗn loạn sinh ra áp suất. Hãy tăng T hoặc số hạt N để kiểm nghiệm.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng thuyết động học phân tử! Bạn sẽ thấy các phân tử va chạm hỗn loạn sinh ra áp suất. Hãy tăng T hoặc số hạt N để kiểm nghiệm.',
+		},
 	],
 	'SIM-34': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng sự chuyển thể! Trong quá trình nóng chảy hoặc hóa hơi, nhiệt độ của chất có thay đổi không?' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng sự chuyển thể! Trong quá trình nóng chảy hoặc hóa hơi, nhiệt độ của chất có thay đổi không?',
+		},
 	],
 	'SIM-35': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng lực từ Laplace! Dây dẫn mang dòng I đặt trong từ trường đều B sẽ chịu lực từ hướng nào? Hãy dùng quy tắc bàn tay trái.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng lực từ Laplace! Dây dẫn mang dòng I đặt trong từ trường đều B sẽ chịu lực từ hướng nào? Hãy dùng quy tắc bàn tay trái.',
+		},
 	],
 	'SIM-36': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng lực Lorentz! Lực Lorentz luôn vuông góc với vận tốc nên đóng vai trò lực hướng tâm làm điện tích chuyển động tròn.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng lực Lorentz! Lực Lorentz luôn vuông góc với vận tốc nên đóng vai trò lực hướng tâm làm điện tích chuyển động tròn.',
+		},
 	],
 	'SIM-37': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng cảm ứng điện từ Faraday! Khi di chuyển nam châm nhanh hay chậm, suất điện động cảm ứng sinh ra thế nào?' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng cảm ứng điện từ Faraday! Khi di chuyển nam châm nhanh hay chậm, suất điện động cảm ứng sinh ra thế nào?',
+		},
 	],
 	'SIM-38': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng máy phát điện xoay chiều! Suất điện động cảm ứng biến thiên hình sin do từ thông qua khung dây thay đổi.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng máy phát điện xoay chiều! Suất điện động cảm ứng biến thiên hình sin do từ thông qua khung dây thay đổi.',
+		},
 	],
 	'SIM-39': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng phân rã phóng xạ! Bạn nghĩ sau thời gian bằng đúng 1 chu kỳ bán rã T, số hạt nhân chưa phân rã còn lại bao nhiêu phần trăm?' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng phân rã phóng xạ! Bạn nghĩ sau thời gian bằng đúng 1 chu kỳ bán rã T, số hạt nhân chưa phân rã còn lại bao nhiêu phần trăm?',
+		},
 	],
 	'SIM-40': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng phản ứng hạt nhân! Hãy so sánh năng lượng tỏa ra của phản ứng phân hạch và phản ứng nhiệt hạch.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng phản ứng hạt nhân! Hãy so sánh năng lượng tỏa ra của phản ứng phân hạch và phản ứng nhiệt hạch.',
+		},
 	],
 	'SIM-41': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng năng lượng liên kết riêng! Hạt nhân bền vững nhất nằm trong vùng số khối A bằng bao nhiêu?' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng năng lượng liên kết riêng! Hạt nhân bền vững nhất nằm trong vùng số khối A bằng bao nhiêu?',
+		},
 	],
 	'SIM-42': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Dao động điều hòa! Hãy quan sát li độ, vận tốc và gia tốc biến đổi điều hòa theo thời gian.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng Dao động điều hòa! Hãy quan sát li độ, vận tốc và gia tốc biến đổi điều hòa theo thời gian.',
+		},
 	],
 	'SIM-43': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Dao động tắt dần! Hãy điều chỉnh hệ số lực cản b để thấy biên độ giảm dần theo thời gian.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng Dao động tắt dần! Hãy điều chỉnh hệ số lực cản b để thấy biên độ giảm dần theo thời gian.',
+		},
 	],
 	'SIM-44': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Hiện tượng cộng hưởng! Biên độ dao động sẽ đạt cực đại khi tần số lực cưỡng bức tiến gần tới tần số riêng.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng Hiện tượng cộng hưởng! Biên độ dao động sẽ đạt cực đại khi tần số lực cưỡng bức tiến gần tới tần số riêng.',
+		},
 	],
 	'SIM-45': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Sóng ngang truyền trên dây! Hãy quan sát các phần tử môi trường dao động vuông góc với phương truyền sóng.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng Sóng ngang truyền trên dây! Hãy quan sát các phần tử môi trường dao động vuông góc với phương truyền sóng.',
+		},
 	],
 	'SIM-46': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Sóng dừng! Sóng dừng được hình thành từ sự giao thoa giữa sóng tới và sóng phản xạ, tạo ra các nút và bụng sóng.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng Sóng dừng! Sóng dừng được hình thành từ sự giao thoa giữa sóng tới và sóng phản xạ, tạo ra các nút và bụng sóng.',
+		},
 	],
 	'SIM-47': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Giao thoa sóng nước! Hãy quan sát hình ảnh các cực đại và cực tiểu giao thoa đan xen nhau.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng Giao thoa sóng nước! Hãy quan sát hình ảnh các cực đại và cực tiểu giao thoa đan xen nhau.',
+		},
 	],
 	'SIM-48': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật Coulomb! Lực tương tác tĩnh điện giữa hai điện tích tỉ lệ nghịch với bình phương khoảng cách.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng định luật Coulomb! Lực tương tác tĩnh điện giữa hai điện tích tỉ lệ nghịch với bình phương khoảng cách.',
+		},
 	],
 	'SIM-49': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Điện trường & Đường sức điện! Hãy di chuyển các điện tích để quan sát sự thay đổi của đường sức điện trường.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng Điện trường & Đường sức điện! Hãy di chuyển các điện tích để quan sát sự thay đổi của đường sức điện trường.',
+		},
 	],
 	'SIM-50': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật Ohm cho đoạn mạch! Cường độ dòng điện chạy qua dây dẫn tỉ lệ thuận với hiệu điện thế.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng định luật Ohm cho đoạn mạch! Cường độ dòng điện chạy qua dây dẫn tỉ lệ thuận với hiệu điện thế.',
+		},
 	],
 	'SIM-51': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng Mạch ghép điện trở! Hãy so sánh điện trở tương đương khi mắc nối tiếp và mắc song song.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng Mạch ghép điện trở! Hãy so sánh điện trở tương đương khi mắc nối tiếp và mắc song song.',
+		},
 	],
 	'SIM-52': [
-		{ role: 'ai', text: 'Chào mừng bạn đến với mô phỏng định luật Ohm cho toàn mạch! Cường độ dòng điện phụ thuộc vào suất điện động E và tổng điện trở R + r.' }
+		{
+			role: 'ai',
+			text: 'Chào mừng bạn đến với mô phỏng định luật Ohm cho toàn mạch! Cường độ dòng điện phụ thuộc vào suất điện động E và tổng điện trở R + r.',
+		},
 	],
 	default_math: [
 		{
@@ -611,269 +764,269 @@ export const LAB_QUIZZES = {
 		opts: [
 			{ k: 'a', t: 'Chì phụ thuộc vào độ cao thả vật h' },
 			{ k: 'b', t: 'Chỉ phụ thuộc vào vận tốc đầu v₀' },
-			{ k: 'c', t: 'Phụ thuộc vào cả h và v₀' }
+			{ k: 'c', t: 'Phụ thuộc vào cả h và v₀' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-24': {
 		q: 'Theo định luật II Newton, gia tốc của vật tỉ lệ thuận với lực tác dụng và tỉ lệ nghịch với khối lượng của vật:',
 		opts: [
 			{ k: 'a', t: 'Đúng' },
-			{ k: 'b', t: 'Sai' }
+			{ k: 'b', t: 'Sai' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-25': {
 		q: 'Điều kiện để vật trượt xuống trên mặt phẳng nghiêng có góc nghiêng alpha và hệ số ma sát mu là:',
 		opts: [
 			{ k: 'a', t: 'tan(alpha) > mu' },
 			{ k: 'b', t: 'tan(alpha) < mu' },
-			{ k: 'c', t: 'sin(alpha) < mu' }
+			{ k: 'c', t: 'sin(alpha) < mu' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-26': {
 		q: 'Chu kỳ dao động điều hòa của con lắc lò xo nằm ngang phụ thuộc vào:',
 		opts: [
 			{ k: 'a', t: 'Độ cứng lò xo k và khối lượng m của vật' },
 			{ k: 'b', t: 'Gia tốc trọng trường g' },
-			{ k: 'c', t: 'Biên độ dao động A' }
+			{ k: 'c', t: 'Biên độ dao động A' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-27': {
 		q: 'Một con lắc đơn dao động điều hòa, nếu tăng chiều dài dây treo lên 4 lần thì chu kỳ dao động sẽ:',
 		opts: [
 			{ k: 'a', t: 'Tăng lên 2 lần' },
 			{ k: 'b', t: 'Giảm đi 2 lần' },
-			{ k: 'c', t: 'Tăng lên 4 lần' }
+			{ k: 'c', t: 'Tăng lên 4 lần' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-28': {
 		q: 'Lực hướng tâm trong chuyển động tròn đều có tác dụng gì?',
 		opts: [
 			{ k: 'a', t: 'Chỉ làm thay đổi hướng của vận tốc, giữ vật trên quỹ đạo tròn' },
 			{ k: 'b', t: 'Làm thay đổi tốc độ dài của vật' },
-			{ k: 'c', t: 'Làm vật chuyển động ra xa tâm' }
+			{ k: 'c', t: 'Làm vật chuyển động ra xa tâm' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-29': {
 		q: 'Trong va chạm mềm (e = 0) giữa hai vật chuyển động trên một đường thẳng, đại lượng nào sau đây được bảo toàn?',
 		opts: [
 			{ k: 'a', t: 'Chỉ động lượng' },
 			{ k: 'b', t: 'Chỉ động năng' },
-			{ k: 'c', t: 'Cả động lượng và động năng' }
+			{ k: 'c', t: 'Cả động lượng và động năng' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-30': {
 		q: 'Một vật trượt không ma sát từ đỉnh xuống chân máng cong, trong quá trình trượt có sự chuyển hóa năng lượng như thế nào?',
 		opts: [
 			{ k: 'a', t: 'Thế năng chuyển hóa thành động năng, cơ năng bảo toàn' },
 			{ k: 'b', t: 'Động năng chuyển hóa thành thế năng' },
-			{ k: 'c', t: 'Thế năng hao hụt do ma sát tỏa nhiệt' }
+			{ k: 'c', t: 'Thế năng hao hụt do ma sát tỏa nhiệt' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-31': {
 		q: 'Trong quá trình đẳng nhiệt của một lượng khí nhất định, nếu thể tích giảm đi một nửa thì áp suất thay đổi như thế nào?',
 		opts: [
 			{ k: 'a', t: 'Không thay đổi' },
 			{ k: 'b', t: 'Tăng lên gấp đôi' },
-			{ k: 'c', t: 'Giảm đi một nửa' }
+			{ k: 'c', t: 'Giảm đi một nửa' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-32': {
 		q: 'Định luật Charles phát biểu rằng đối với một lượng khí nhất định ở áp suất không đổi, thể tích khí:',
 		opts: [
 			{ k: 'a', t: 'Tỉ lệ thuận với nhiệt độ tuyệt đối T (Kelvin)' },
 			{ k: 'b', t: 'Tỉ lệ nghịch với nhiệt độ tuyệt đối T' },
-			{ k: 'c', t: 'Tỉ lệ thuận với nhiệt độ Celsius t' }
+			{ k: 'c', t: 'Tỉ lệ thuận với nhiệt độ Celsius t' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-33': {
 		q: 'Nhiệt độ tuyệt đối của một khối khí lý tưởng là đại lượng đặc trưng cho:',
 		opts: [
 			{ k: 'a', t: 'Khối lượng trung bình của các phân tử khí' },
 			{ k: 'b', t: 'Động năng tịnh tiến trung bình của các phân tử khí' },
-			{ k: 'c', t: 'Số lượng phân tử khí trong một đơn vị thể tích' }
+			{ k: 'c', t: 'Số lượng phân tử khí trong một đơn vị thể tích' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-34': {
 		q: 'Trong suốt thời gian đang nóng chảy hoặc đang sôi của một chất tinh khiết, nhiệt độ của nó:',
 		opts: [
 			{ k: 'a', t: 'Liên tục tăng do tiếp tục được cung cấp nhiệt lượng' },
 			{ k: 'b', t: 'Không đổi, nhiệt lượng dùng để phá vỡ liên kết cấu trúc' },
-			{ k: 'c', t: 'Giảm đi do tỏa nhiệt ra xung quanh' }
+			{ k: 'c', t: 'Giảm đi do tỏa nhiệt ra xung quanh' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-35': {
 		q: 'Một đoạn dây dẫn mang dòng điện nằm ngang đặt vuông góc với từ trường đều hướng thẳng đứng từ trên xuống. Lực từ tác dụng lên dây có hướng:',
 		opts: [
 			{ k: 'a', t: 'Song song với dòng điện' },
 			{ k: 'b', t: 'Theo phương ngang vuông góc với dòng điện (Left-Hand Rule)' },
-			{ k: 'c', t: 'Hướng thẳng đứng lên trên' }
+			{ k: 'c', t: 'Hướng thẳng đứng lên trên' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-36': {
 		q: 'Lực Lorentz tác dụng lên hạt mang điện chuyển động trong từ trường đều KHÔNG thực hiện công cơ học vì:',
 		opts: [
 			{ k: 'a', t: 'Độ lớn lực Lorentz luôn bằng không' },
 			{ k: 'b', t: 'Lực Lorentz luôn vuông góc với vector vận tốc của hạt' },
-			{ k: 'c', t: 'Hạt chuyển động thẳng đều' }
+			{ k: 'c', t: 'Hạt chuyển động thẳng đều' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-37': {
 		q: 'Theo định luật Lenz, dòng điện cảm ứng xuất hiện trong mạch kín có chiều sao cho từ trường cảm ứng do nó sinh ra:',
 		opts: [
 			{ k: 'a', t: 'Luôn cùng chiều với từ trường ban đầu' },
 			{ k: 'b', t: 'Chống lại sự biến thiên từ thông sinh ra nó' },
-			{ k: 'c', t: 'Luôn ngược chiều với từ trường ban đầu' }
+			{ k: 'c', t: 'Luôn ngược chiều với từ trường ban đầu' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-38': {
 		q: 'Nguyên tắc hoạt động của máy phát điện xoay chiều dựa trên hiện tượng vật lý nào?',
 		opts: [
 			{ k: 'a', t: 'Tự cảm' },
 			{ k: 'b', t: 'Cảm ứng điện từ' },
-			{ k: 'c', t: 'Cộng hưởng điện từ' }
+			{ k: 'c', t: 'Cộng hưởng điện từ' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-39': {
 		q: 'Sau 3 chu kỳ bán rã T, tỉ lệ số hạt nhân phóng xạ ban đầu chưa phân rã còn lại là bao nhiêu?',
 		opts: [
 			{ k: 'a', t: '1/3' },
 			{ k: 'b', t: '1/8' },
-			{ k: 'c', t: '1/6' }
+			{ k: 'c', t: '1/6' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-40': {
 		q: 'Phản ứng nhiệt hạch (sự kết hợp của các hạt nhân rất nhẹ) giải phóng năng lượng lớn và xảy ra chủ yếu ở:',
 		opts: [
 			{ k: 'a', t: 'Trong các lò phản ứng hạt nhân thương mại hiện nay' },
 			{ k: 'b', t: 'Trong lòng Mặt Trời và các ngôi sao' },
-			{ k: 'c', t: 'Ở điều kiện nhiệt độ phòng bình thường' }
+			{ k: 'c', t: 'Ở điều kiện nhiệt độ phòng bình thường' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-41': {
 		q: 'Đại lượng nào sau đây đặc trưng cho mức độ bền vững của một hạt nhân nguyên tử?',
 		opts: [
 			{ k: 'a', t: 'Năng lượng liên kết riêng (năng lượng liên kết trên mỗi nucleon)' },
 			{ k: 'b', t: 'Năng lượng liên kết toàn phần' },
-			{ k: 'c', t: 'Độ hụt khối lượng của hạt nhân' }
+			{ k: 'c', t: 'Độ hụt khối lượng của hạt nhân' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-42': {
 		q: 'Trong dao động điều hòa, li độ biến thiên trễ pha hơn vận tốc một góc bao nhiêu?',
 		opts: [
 			{ k: 'a', t: 'pi' },
 			{ k: 'b', t: 'pi/2' },
-			{ k: 'c', t: 'pi/4' }
+			{ k: 'c', t: 'pi/4' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-43': {
 		q: 'Nguyên nhân chính gây ra sự dao động tắt dần của một hệ cơ học trong môi trường là:',
 		opts: [
 			{ k: 'a', t: 'Lực cản và lực ma sát của môi trường làm tiêu hao cơ năng' },
 			{ k: 'b', t: 'Khối lượng vật quá lớn' },
-			{ k: 'c', t: 'Gia tốc trọng trường thay đổi' }
+			{ k: 'c', t: 'Gia tốc trọng trường thay đổi' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-44': {
 		q: 'Hiện tượng cộng hưởng cơ xảy ra khi:',
 		opts: [
 			{ k: 'a', t: 'Tần số của ngoại lực tuần hoàn bằng tần số dao động riêng của hệ' },
 			{ k: 'b', t: 'Biên độ ngoại lực cực đại' },
-			{ k: 'c', t: 'Hệ dao động tắt dần hoàn toàn' }
+			{ k: 'c', t: 'Hệ dao động tắt dần hoàn toàn' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-45': {
 		q: 'Bước sóng là quãng đường mà sóng truyền đi được trong:',
 		opts: [
 			{ k: 'a', t: 'Một chu kỳ dao động của sóng' },
 			{ k: 'b', t: 'Một giây' },
-			{ k: 'c', t: 'Một nửa chu kỳ' }
+			{ k: 'c', t: 'Một nửa chu kỳ' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-46': {
 		q: 'Trên một sợi dây có sóng dừng ổn định, khoảng cách giữa hai nút sóng liên tiếp bằng:',
 		opts: [
 			{ k: 'a', t: 'Một bước sóng (lambda)' },
 			{ k: 'b', t: 'Một nửa bước sóng (lambda/2)' },
-			{ k: 'c', t: 'Một phần tư bước sóng (lambda/4)' }
+			{ k: 'c', t: 'Một phần tư bước sóng (lambda/4)' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-47': {
 		q: 'Điều kiện để hai nguồn sóng gặp nhau giao thoa tạo thành các vân cực đại, cực tiểu ổn định là hai nguồn phải:',
 		opts: [
 			{ k: 'a', t: 'Cùng tần số, cùng biên độ' },
 			{ k: 'b', t: 'Kết hợp (cùng tần số và hiệu số pha không đổi theo thời gian)' },
-			{ k: 'c', t: 'Cùng pha và cùng vận tốc truyền' }
+			{ k: 'c', t: 'Cùng pha và cùng vận tốc truyền' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-48': {
 		q: 'Nếu khoảng cách giữa hai điện tích điểm tăng lên gấp đôi thì lực tương tác tĩnh điện giữa chúng thay đổi thế nào?',
 		opts: [
 			{ k: 'a', t: 'Giảm đi 4 lần' },
 			{ k: 'b', t: 'Tăng lên 2 lần' },
-			{ k: 'c', t: 'Giảm đi 2 lần' }
+			{ k: 'c', t: 'Giảm đi 2 lần' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-49': {
 		q: 'Đặc điểm nào sau đây KHÔNG đúng với đường sức điện của điện trường tĩnh?',
 		opts: [
 			{ k: 'a', t: 'Là các đường cong không khép kín, xuất phát từ điện tích dương và kết thúc ở điện tích âm' },
 			{ k: 'b', t: 'Có thể cắt nhau tại các điểm có điện trường mạnh' },
-			{ k: 'c', t: 'Nơi nào điện trường mạnh thì đường sức vẽ dày' }
+			{ k: 'c', t: 'Nơi nào điện trường mạnh thì đường sức vẽ dày' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-50': {
 		q: 'Định luật Ohm cho đoạn mạch có điện trở R phát biểu rằng cường độ dòng điện I tỉ lệ thuận với hiệu điện thế U theo hệ thức:',
 		opts: [
 			{ k: 'a', t: 'I = U / R' },
 			{ k: 'b', t: 'I = U * R' },
-			{ k: 'c', t: 'I = R / U' }
+			{ k: 'c', t: 'I = R / U' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	'SIM-51': {
 		q: 'Khi mắc song song hai điện trở R1 và R2, điện trở tương đương R_tđ có đặc điểm:',
 		opts: [
 			{ k: 'a', t: 'R_tđ lớn hơn tổng R1 + R2' },
 			{ k: 'b', t: 'R_tđ luôn nhỏ hơn cả R1 và R2' },
-			{ k: 'c', t: 'R_tđ bằng trung bình cộng R1 và R2' }
+			{ k: 'c', t: 'R_tđ bằng trung bình cộng R1 và R2' },
 		],
-		correct: 'b'
+		correct: 'b',
 	},
 	'SIM-52': {
 		q: 'Định luật Ohm cho toàn mạch xác định cường độ dòng điện trong mạch kín gồm suất điện động E, điện trở trong r và điện trở ngoài R là:',
 		opts: [
 			{ k: 'a', t: 'I = E / (R + r)' },
 			{ k: 'b', t: 'I = E / R + r' },
-			{ k: 'c', t: 'I = (E - r) / R' }
+			{ k: 'c', t: 'I = (E - r) / R' },
 		],
-		correct: 'a'
+		correct: 'a',
 	},
 	default_math: {
 		q: 'Nghiệm của y = x² − 2x − 3 là?',
@@ -991,7 +1144,11 @@ const LAB_CHEM_STEPS = {
 	],
 	'SIM-10': [
 		{ n: 1, title: 'Rót nước bromine', sub: 'Rót dung dịch nước bromine màu vàng cam vào ống nghiệm' },
-		{ n: 2, title: 'Sục khí ethylene', sub: 'Sục khí ethylene (C₂H₄) vào ống nghiệm, màu vàng cam nhạt dần rồi mất hẳn' },
+		{
+			n: 2,
+			title: 'Sục khí ethylene',
+			sub: 'Sục khí ethylene (C₂H₄) vào ống nghiệm, màu vàng cam nhạt dần rồi mất hẳn',
+		},
 	],
 	'SIM-11': [
 		{ n: 1, title: 'Rót dung dịch AgNO₃', sub: 'Rót dung dịch AgNO₃ trong NH₃ vào ống nghiệm' },
@@ -1004,7 +1161,11 @@ const LAB_CHEM_STEPS = {
 	],
 	'SIM-13': [
 		{ n: 1, title: 'Rót dung dịch phenol', sub: 'Rót dung dịch phenol vào ống nghiệm' },
-		{ n: 2, title: 'Thêm nước bromine', sub: 'Nhỏ dung dịch nước bromine vào ống nghiệm, xuất hiện kết tủa trắng lập tức' },
+		{
+			n: 2,
+			title: 'Thêm nước bromine',
+			sub: 'Nhỏ dung dịch nước bromine vào ống nghiệm, xuất hiện kết tủa trắng lập tức',
+		},
 	],
 	'SIM-14': [
 		{ n: 1, title: 'Rót dung dịch NaOH', sub: 'Rót dung dịch NaOH vào ống nghiệm' },
@@ -1118,6 +1279,20 @@ const renderTex = (tex: string) => {
 	}
 	return { __html: tex.replace(/[\\{}]/g, '') };
 };
+
+const renderRichText = (html: string) => ({
+	__html: html.replace(/\$(.+?)\$/g, (_, tex) => {
+		const normalizedTex = tex.replace(/\\frac/g, '\\dfrac');
+		if (typeof window !== 'undefined' && (window as any).katex) {
+			try {
+				return (window as any).katex.renderToString(normalizedTex, { throwOnError: false, displayMode: false });
+			} catch {
+				return normalizedTex.replace(/[\\{}]/g, '');
+			}
+		}
+		return normalizedTex.replace(/[\\{}]/g, '');
+	}),
+});
 
 const getTrackStyle = (val: number, min: number, max: number, accent: string) => {
 	const pct = ((val - min) / (max - min)) * 100;
@@ -1431,12 +1606,14 @@ const Workspace: React.FC = () => {
 				correctAnswers: correct,
 			}).catch(() => {});
 			if (xpEarned > 0) {
-				completeActivity(xpEarned).then(() => {
-					getUserInfo().then(res => {
-						const user = res.data?.data || res.data;
-						setInitialState((s: any) => ({ ...s, currentUser: user }));
-					});
-				}).catch(() => {});
+				completeActivity(xpEarned)
+					.then(() => {
+						getUserInfo().then((res) => {
+							const user = res.data?.data || res.data;
+							setInitialState((s: any) => ({ ...s, currentUser: user }));
+						});
+					})
+					.catch(() => {});
 			}
 		}
 		if (dynQuizState !== 'done') {
@@ -1478,11 +1655,177 @@ const Workspace: React.FC = () => {
 	const [printWithAnswers, setPrintWithAnswers] = useState(true);
 	const [showPrintMenu, setShowPrintMenu] = useState(false);
 
-	const triggerPrint = useCallback((withAnswers: boolean) => {
-		setPrintWithAnswers(withAnswers);
-		setShowPrintMenu(false);
-		setTimeout(() => window.print(), 50);
-	}, []);
+	const triggerPrint = useCallback(
+		(withAnswers: boolean) => {
+			setPrintWithAnswers(withAnswers);
+			setShowPrintMenu(false);
+
+			const questionsHtml =
+				dynQuestions.length === 0
+					? `<div class="print-empty">Chưa có câu hỏi để in. Hãy tạo bộ câu hỏi trước.</div>`
+					: dynQuestions
+							.map(
+								(q, i) => `
+								<section class="print-question">
+									<div class="print-q-text"><b>Câu ${i + 1}:</b> ${escapeHtml(q.q)}</div>
+									<div class="print-opts">
+										${q.opts
+											.map(
+												(o) => `
+													<div class="print-opt">
+														<b>${escapeHtml(o.k).toUpperCase()}.</b> ${escapeHtml(o.t)}
+													</div>
+												`,
+											)
+											.join('')}
+									</div>
+								</section>
+							`,
+							)
+							.join('');
+
+			const answersHtml =
+				withAnswers && dynQuestions.length > 0
+					? `
+					<section class="print-answer-key">
+						<h2>BẢNG ĐÁP ÁN</h2>
+						<div class="print-key-grid">
+							${dynQuestions
+								.map(
+									(q, i) => `
+										<div class="print-key-item">Câu ${i + 1}: <b>${escapeHtml(q.correct).toUpperCase()}</b></div>
+									`,
+								)
+								.join('')}
+						</div>
+					</section>
+				`
+					: '';
+
+			const printHtml = `
+			<!doctype html>
+			<html>
+				<head>
+					<meta charset="utf-8" />
+					<title>Đề trắc nghiệm ôn tập</title>
+					<style>
+						@page { margin: 18mm 16mm; }
+						* { box-sizing: border-box; }
+						body {
+							margin: 0;
+							background: #fff;
+							color: #000;
+							font-family: "Times New Roman", Times, serif;
+							font-size: 11pt;
+						}
+						.print-header {
+							text-align: center;
+							border-bottom: 2px solid #000;
+							padding-bottom: 10pt;
+							margin-bottom: 16pt;
+						}
+						.print-header h1 {
+							font-size: 16pt;
+							font-weight: 900;
+							text-transform: uppercase;
+							letter-spacing: 1px;
+							margin: 0 0 4pt;
+						}
+						.print-header p {
+							font-size: 11pt;
+							margin: 3pt 0;
+							color: #333;
+						}
+						.print-questions {
+							display: flex;
+							flex-direction: column;
+							gap: 18pt;
+						}
+						.print-question {
+							break-inside: avoid;
+							page-break-inside: avoid;
+						}
+						.print-q-text {
+							font-size: 11pt;
+							line-height: 1.5;
+							margin-bottom: 6pt;
+						}
+						.print-opts {
+							display: grid;
+							grid-template-columns: 1fr 1fr;
+							gap: 4pt 16pt;
+							padding-left: 12pt;
+						}
+						.print-opt {
+							font-size: 10.5pt;
+							line-height: 1.4;
+						}
+						.print-answer-key {
+							border-top: 2px solid #000;
+							margin-top: 22pt;
+							padding-top: 12pt;
+							break-before: avoid;
+						}
+						.print-answer-key h2 {
+							font-size: 13pt;
+							margin: 0 0 8pt;
+							text-align: center;
+						}
+						.print-key-grid {
+							display: grid;
+							grid-template-columns: repeat(5, 1fr);
+							gap: 6pt;
+						}
+						.print-key-item,
+						.print-empty {
+							font-size: 11pt;
+							line-height: 1.5;
+						}
+					</style>
+				</head>
+				<body>
+					<header class="print-header">
+						<h1>ĐỀ TRẮC NGHIỆM ÔN TẬP</h1>
+						<p>${escapeHtml(meta.label)} · ${escapeHtml(meta.title)}</p>
+						<p>Số câu: ${dynQuestions.length} · Thời gian: ${dynQuestions.length * 2} phút</p>
+					</header>
+					<main class="print-questions">${questionsHtml}</main>
+					${answersHtml}
+				</body>
+			</html>
+		`;
+
+			const iframe = document.createElement('iframe');
+			iframe.setAttribute('aria-hidden', 'true');
+			iframe.style.position = 'fixed';
+			iframe.style.left = '-10000px';
+			iframe.style.top = '0';
+			iframe.style.width = '210mm';
+			iframe.style.height = '297mm';
+			iframe.style.border = '0';
+			iframe.style.opacity = '0';
+			iframe.style.pointerEvents = 'none';
+
+			const cleanUp = () => {
+				setTimeout(() => iframe.remove(), 300);
+			};
+
+			iframe.onload = () => {
+				const printWindow = iframe.contentWindow;
+				if (!printWindow) {
+					cleanUp();
+					return;
+				}
+				printWindow.onafterprint = cleanUp;
+				printWindow.focus();
+				setTimeout(() => printWindow.print(), 80);
+			};
+
+			document.body.appendChild(iframe);
+			iframe.srcdoc = printHtml;
+		},
+		[dynQuestions, meta.label, meta.title],
+	);
 
 	const resetDynQuiz = useCallback(() => {
 		setDynQuizState('setup');
@@ -1521,64 +1864,67 @@ const Workspace: React.FC = () => {
 	}, [mA, mB, mC]);
 
 	// ── Chat ──
-	const sendChat = useCallback(async (presetText?: string) => {
-		const t = (presetText ?? chatInput).trim();
-		if (!t) return;
+	const sendChat = useCallback(
+		async (presetText?: string) => {
+			const t = (presetText ?? chatInput).trim();
+			if (!t) return;
 
-		const currentHistory = chats[metaKey] || [];
+			const currentHistory = chats[metaKey] || [];
 
-		setChats((prev) => ({
-			...prev,
-			[metaKey]: [
-				...currentHistory,
-				{ role: 'user' as const, text: t },
-				{ role: 'ai' as const, text: 'Trợ lý đang suy nghĩ...' },
-			],
-		}));
-		setChatInput('');
+			setChats((prev) => ({
+				...prev,
+				[metaKey]: [
+					...currentHistory,
+					{ role: 'user' as const, text: t },
+					{ role: 'ai' as const, text: 'Trợ lý đang suy nghĩ...' },
+				],
+			}));
+			setChatInput('');
 
-		const context = currentHistory.map((m) => ({
-			role: m.role === 'ai' ? ('assistant' as const) : ('user' as const),
-			content: m.text,
-		}));
+			const context = currentHistory.map((m) => ({
+				role: m.role === 'ai' ? ('assistant' as const) : ('user' as const),
+				content: m.text,
+			}));
 
-		try {
-			const gradeVal = subject === 'chem' ? 12 : subject === 'physics' ? 11 : 10;
-			const res = await chatWithAiPrompt({
-				message: t,
-				subject,
-				grade: gradeVal,
-				simulationId: simId,
-				context,
-			});
+			try {
+				const gradeVal = subject === 'chem' ? 12 : subject === 'physics' ? 11 : 10;
+				const res = await chatWithAiPrompt({
+					message: t,
+					subject,
+					grade: gradeVal,
+					simulationId: simId,
+					context,
+				});
 
-			const aiReply = res?.data?.data?.answer || 'Trợ lý không phản hồi. Vui lòng đặt câu hỏi khác.';
+				const aiReply = res?.data?.data?.answer || 'Trợ lý không phản hồi. Vui lòng đặt câu hỏi khác.';
 
-			setChats((prev) => {
-				const list = prev[metaKey] || [];
-				if (list.length > 0) {
-					const updated = [...list];
-					updated[updated.length - 1] = { role: 'ai' as const, text: aiReply };
-					return { ...prev, [metaKey]: updated };
-				}
-				return prev;
-			});
-		} catch (err) {
-			console.error('Chat error:', err);
-			setChats((prev) => {
-				const list = prev[metaKey] || [];
-				if (list.length > 0) {
-					const updated = [...list];
-					updated[updated.length - 1] = {
-						role: 'ai' as const,
-						text: 'Đã xảy ra lỗi kết nối với máy chủ AI. Vui lòng thử lại.',
-					};
-					return { ...prev, [metaKey]: updated };
-				}
-				return prev;
-			});
-		}
-	}, [chatInput, metaKey, chats, subject, simId]);
+				setChats((prev) => {
+					const list = prev[metaKey] || [];
+					if (list.length > 0) {
+						const updated = [...list];
+						updated[updated.length - 1] = { role: 'ai' as const, text: aiReply };
+						return { ...prev, [metaKey]: updated };
+					}
+					return prev;
+				});
+			} catch (err) {
+				console.error('Chat error:', err);
+				setChats((prev) => {
+					const list = prev[metaKey] || [];
+					if (list.length > 0) {
+						const updated = [...list];
+						updated[updated.length - 1] = {
+							role: 'ai' as const,
+							text: 'Đã xảy ra lỗi kết nối với máy chủ AI. Vui lòng thử lại.',
+						};
+						return { ...prev, [metaKey]: updated };
+					}
+					return prev;
+				});
+			}
+		},
+		[chatInput, metaKey, chats, subject, simId],
+	);
 
 	// ── Reset ──
 	const resetParams = useCallback(() => {
@@ -1768,7 +2114,7 @@ const Workspace: React.FC = () => {
 										: simId === 'SIM-28'
 											? 'v = \\omega\\,r \\quad \\vert \\quad a_{ht} = \\omega^2 r = \\frac{v^2}{r} \\quad \\vert \\quad F_{ht} = m\\,a_{ht}'
 											: simId === 'SIM-29'
-												? 'm_1 v_1 + m_2 v_2 = m_1 v_1\' + m_2 v_2\' \\quad \\vert \\quad e = \\frac{v_2\' - v_1\'}{v_1 - v_2}'
+												? "m_1 v_1 + m_2 v_2 = m_1 v_1' + m_2 v_2' \\quad \\vert \\quad e = \\frac{v_2' - v_1'}{v_1 - v_2}"
 												: simId === 'SIM-30'
 													? 'W = W_t + W_đ = mgh + \\frac{1}{2}\\,m\\,v^2 = \\text{const}'
 													: simId === 'SIM-31'
@@ -1922,10 +2268,7 @@ const Workspace: React.FC = () => {
 						<span className='stu-ws__breadcrumb-sep'>/</span>
 						<span className='stu-ws__breadcrumb-title'>{meta.title}</span>
 					</div>
-					<div className='stu-ws__live-badge'>
-						<div className='stu-ws__live-dot' />
-						Trực tiếp · cập nhật khi tương tác
-					</div>
+
 					<div className='stu-ws__subheader-actions'>
 						<div className='stu-ws__btn-secondary' onClick={handleGlobalReset}>
 							Đặt lại
@@ -1948,13 +2291,41 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param stu-ws__param--v0'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Vận tốc đầu (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>v<sub>0</sub></em>)
+													Vận tốc đầu (
+													<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>
+														v<sub>0</sub>
+													</em>
+													)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{kinV0}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -1968,13 +2339,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param stu-ws__param--a'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Gia tốc (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>a</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{kinA}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s²</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m/s²
+													</span>
 												</span>
 											</div>
 											<input
@@ -1993,9 +2388,21 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('v = v_0 + a\\,t')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('x = v_0\\,t + \\frac{1}{2}\\,a\\,t^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
+											<div
+												dangerouslySetInnerHTML={renderTex('v = v_0 + a\\,t')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('x = v_0\\,t + \\frac{1}{2}\\,a\\,t^2')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
 											<div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
 												<div
 													style={{
@@ -2009,9 +2416,24 @@ const Workspace: React.FC = () => {
 														transition: 'opacity 0.25s ease',
 													}}
 												>
-													<span style={{ width: '30px', textAlign: 'center', fontFamily: 'Newsreader,serif', fontStyle: 'italic', fontSize: '13px', color: '#3b5bdb', fontWeight: 600, flex: 'none' }}>a&gt;0</span>
+													<span
+														style={{
+															width: '30px',
+															textAlign: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#3b5bdb',
+															fontWeight: 600,
+															flex: 'none',
+														}}
+													>
+														a&gt;0
+													</span>
 													<span style={{ width: '1px', height: '12px', background: '#cdd8f5', flex: 'none' }}></span>
-													<span style={{ fontSize: '12px', color: '#4a4f63', fontWeight: kinA > 0 ? 600 : 400 }}>nhanh dần đều</span>
+													<span style={{ fontSize: '12px', color: '#4a4f63', fontWeight: kinA > 0 ? 600 : 400 }}>
+														nhanh dần đều
+													</span>
 												</div>
 												<div
 													style={{
@@ -2025,9 +2447,24 @@ const Workspace: React.FC = () => {
 														transition: 'opacity 0.25s ease',
 													}}
 												>
-													<span style={{ width: '30px', textAlign: 'center', fontFamily: 'Newsreader,serif', fontStyle: 'italic', fontSize: '13px', color: '#7048c4', fontWeight: 600, flex: 'none' }}>a&lt;0</span>
+													<span
+														style={{
+															width: '30px',
+															textAlign: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#7048c4',
+															fontWeight: 600,
+															flex: 'none',
+														}}
+													>
+														a&lt;0
+													</span>
 													<span style={{ width: '1px', height: '12px', background: '#ddd0f0', flex: 'none' }}></span>
-													<span style={{ fontSize: '12px', color: '#4a4f63', fontWeight: kinA < 0 ? 600 : 400 }}>chậm dần đều</span>
+													<span style={{ fontSize: '12px', color: '#4a4f63', fontWeight: kinA < 0 ? 600 : 400 }}>
+														chậm dần đều
+													</span>
 												</div>
 												<div
 													style={{
@@ -2041,9 +2478,24 @@ const Workspace: React.FC = () => {
 														transition: 'opacity 0.25s ease',
 													}}
 												>
-													<span style={{ width: '30px', textAlign: 'center', fontFamily: 'Newsreader,serif', fontStyle: 'italic', fontSize: '13px', color: '#16a34a', fontWeight: 600, flex: 'none' }}>a=0</span>
+													<span
+														style={{
+															width: '30px',
+															textAlign: 'center',
+															fontFamily: 'Newsreader,serif',
+															fontStyle: 'italic',
+															fontSize: '13px',
+															color: '#16a34a',
+															fontWeight: 600,
+															flex: 'none',
+														}}
+													>
+														a=0
+													</span>
 													<span style={{ width: '1px', height: '12px', background: '#bbf7d0', flex: 'none' }}></span>
-													<span style={{ fontSize: '12px', color: '#4a4f63', fontWeight: kinA === 0 ? 600 : 400 }}>thẳng đều</span>
+													<span style={{ fontSize: '12px', color: '#4a4f63', fontWeight: kinA === 0 ? 600 : 400 }}>
+														thẳng đều
+													</span>
 												</div>
 											</div>
 										</div>
@@ -2052,7 +2504,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'v0', desc: 'vận tốc ban đầu (m/s)' },
 												{ sym: 'a', desc: 'gia tốc (m/s²)' },
@@ -2090,7 +2552,13 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'v0' ? <>v<sub>0</sub></> : row.sym}
+														{row.sym === 'v0' ? (
+															<>
+																v<sub>0</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -2104,13 +2572,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param stu-ws__param--v0'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Độ cao thả (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>h</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{freefallH}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m
+													</span>
 												</span>
 											</div>
 											<input
@@ -2124,13 +2616,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param stu-ws__param--a'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Gia tốc rơi tự do (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>g</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{freefallG}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s²</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m/s²
+													</span>
 												</span>
 											</div>
 											<input
@@ -2149,11 +2665,26 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('v = g\\,t')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('h = \\frac{1}{2}\\,g\\,t^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lưu ý:</b> Gia tốc rơi tự do <em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>g</em> không phụ thuộc vào khối lượng của vật thả rơi. Khi bỏ qua sức cản không khí, các vật rơi tự do từ cùng độ cao sẽ chạm đất cùng lúc.
+											<div
+												dangerouslySetInnerHTML={renderTex('v = g\\,t')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('h = \\frac{1}{2}\\,g\\,t^2')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Lưu ý:</b> Gia tốc rơi tự do{' '}
+												<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>g</em> không phụ thuộc vào
+												khối lượng của vật thả rơi. Khi bỏ qua sức cản không khí, các vật rơi tự do từ cùng độ cao sẽ
+												chạm đất cùng lúc.
 											</div>
 										</div>
 
@@ -2161,7 +2692,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'h', desc: 'độ cao thả vật (m)' },
 												{ sym: 'g', desc: 'gia tốc rơi tự do (m/s²)' },
@@ -2212,13 +2753,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Độ cao ném (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>h</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{horizH}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m
+													</span>
 												</span>
 											</div>
 											<input
@@ -2232,13 +2797,41 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Vận tốc đầu (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>v<sub>0</sub></em>)
+													Vận tốc đầu (
+													<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>
+														v<sub>0</sub>
+													</em>
+													)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{horizV0}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -2257,19 +2850,46 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('y = h - \\frac{1}{2}\\,g\\,t^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('x = v_0\\,t \\quad \\vert \\quad L = v_0\\,\\sqrt{\\frac{2h}{g}}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lưu ý:</b> Thời gian rơi chỉ phụ thuộc độ cao $h$. Tầm xa toàn phần $L$ phụ thuộc đồng thời vào vận tốc ném đầu $v_0$ và độ cao $h$.
-											</div>
+											<div
+												dangerouslySetInnerHTML={renderTex('y = h - \\frac{1}{2}\\,g\\,t^2')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'x = v_0\\,t \\quad \\vert \\quad L = v_0\\,\\sqrt{\\frac{2h}{g}}',
+												)}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div
+												className='stu-ws__formula-note'
+												dangerouslySetInnerHTML={renderRichText(
+													'💡 <b>Lưu ý:</b> Thời gian rơi chỉ phụ thuộc độ cao $h$. Tầm xa toàn phần $L$ phụ thuộc đồng thời vào vận tốc ném đầu $v_0$ và độ cao $h$.',
+												)}
+											/>
 										</div>
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'h', desc: 'độ cao ném vật (m)' },
 												{ sym: 'v0', desc: 'vận tốc ban đầu (m/s)' },
@@ -2307,7 +2927,13 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'v0' ? <>v<sub>0</sub></> : row.sym}
+														{row.sym === 'v0' ? (
+															<>
+																v<sub>0</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -2321,13 +2947,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Lực kéo (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>F</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{newtonF}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>N</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														N
+													</span>
 												</span>
 											</div>
 											<input
@@ -2341,13 +2991,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Khối lượng xe (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>m</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{newtonM}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>kg</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														kg
+													</span>
 												</span>
 											</div>
 											<input
@@ -2361,11 +3035,25 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Hệ số ma sát (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&mu;</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{newtonMu}
 												</span>
 											</div>
@@ -2385,11 +3073,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('a = \\frac{F - F_{ms}}{m}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('F_{ms} = \\mu\\,m\\,g')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lưu ý:</b> Gia tốc xe tỉ lệ thuận với hợp lực kéo và tỉ lệ nghịch với khối lượng xe. Xe sẽ đứng yên hoặc chuyển động thẳng đều nếu lực kéo F &le; F_ms.
+											<div
+												dangerouslySetInnerHTML={renderTex('a = \\frac{F - F_{ms}}{m}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('F_{ms} = \\mu\\,m\\,g')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Lưu ý:</b> Gia tốc xe tỉ lệ thuận với hợp lực kéo và tỉ lệ nghịch với khối lượng xe. Xe sẽ
+												đứng yên hoặc chuyển động thẳng đều nếu lực kéo F &le; F_ms.
 											</div>
 										</div>
 
@@ -2397,7 +3098,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'F', desc: 'lực kéo tác dụng (N)' },
 												{ sym: 'm', desc: 'khối lượng xe lăn (kg)' },
@@ -2434,7 +3145,15 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'mu' ? <>&mu;</> : row.sym === 'Fms' ? <>F<sub>ms</sub></> : row.sym}
+														{row.sym === 'mu' ? (
+															<>&mu;</>
+														) : row.sym === 'Fms' ? (
+															<>
+																F<sub>ms</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -2448,11 +3167,25 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Góc nghiêng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&alpha;</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{inclineAlpha}°
 												</span>
 											</div>
@@ -2467,11 +3200,25 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Hệ số ma sát (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&mu;</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{inclineMu}
 												</span>
 											</div>
@@ -2486,13 +3233,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Khối lượng vật (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>m</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{inclineM}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>kg</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														kg
+													</span>
 												</span>
 											</div>
 											<input
@@ -2511,19 +3282,44 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('a = g\\,(\\sin\\alpha - \\mu\\,\\cos\\alpha)')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('F_{ms} = \\mu\\,m\\,g\\,\\cos\\alpha')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lưu ý:</b> Vật trượt xuống dốc khi góc nghiêng $\alpha$ đủ lớn thỏa mãn $\tan\alpha$ &gt; $\mu$. Nếu $\tan\alpha$ &le; $\mu$, vật đứng yên do lực ma sát tĩnh cân bằng thành phần trọng lực trượt.
-											</div>
+											<div
+												dangerouslySetInnerHTML={renderTex('a = g\\,(\\sin\\alpha - \\mu\\,\\cos\\alpha)')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('F_{ms} = \\mu\\,m\\,g\\,\\cos\\alpha')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div
+												className='stu-ws__formula-note'
+												dangerouslySetInnerHTML={renderRichText(
+													'💡 <b>Lưu ý:</b> Vật trượt xuống dốc khi góc nghiêng $\\alpha$ đủ lớn thỏa mãn $\\tan\\alpha$ &gt; $\\mu$. Nếu $\\tan\\alpha$ &le; $\\mu$, vật đứng yên do lực ma sát tĩnh cân bằng thành phần trọng lực trượt.',
+												)}
+											/>
 										</div>
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'alpha', desc: 'góc nghiêng của mặt dốc (°)' },
 												{ sym: 'mu', desc: 'hệ số ma sát trượt' },
@@ -2560,7 +3356,17 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'alpha' ? <>&alpha;</> : row.sym === 'mu' ? <>&mu;</> : row.sym === 'Fms' ? <>F<sub>ms</sub></> : row.sym}
+														{row.sym === 'alpha' ? (
+															<>&alpha;</>
+														) : row.sym === 'mu' ? (
+															<>&mu;</>
+														) : row.sym === 'Fms' ? (
+															<>
+																F<sub>ms</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -2574,13 +3380,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Độ cứng lò xo (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>k</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{springK}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>N/m</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														N/m
+													</span>
 												</span>
 											</div>
 											<input
@@ -2594,13 +3424,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Khối lượng vật (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>m</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{springM}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>kg</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														kg
+													</span>
 												</span>
 											</div>
 											<input
@@ -2614,13 +3468,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Biên độ nén/dãn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{springA}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m
+													</span>
 												</span>
 											</div>
 											<input
@@ -2639,12 +3517,28 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('W_t = \\frac{1}{2}\\,k\\,x^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('W_đ = \\frac{1}{2}\\,m\\,v^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div dangerouslySetInnerHTML={renderTex('W = W_t + W_đ = \\text{const}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lưu ý:</b> Bỏ qua ma sát, tổng cơ năng của con lắc lò xo luôn được bảo toàn. Động năng biến đổi tuần hoàn ngược pha với thế năng đàn hồi.
+											<div
+												dangerouslySetInnerHTML={renderTex('W_t = \\frac{1}{2}\\,k\\,x^2')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('W_đ = \\frac{1}{2}\\,m\\,v^2')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('W = W_t + W_đ = \\text{const}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Lưu ý:</b> Bỏ qua ma sát, tổng cơ năng của con lắc lò xo luôn được bảo toàn. Động năng
+												biến đổi tuần hoàn ngược pha với thế năng đàn hồi.
 											</div>
 										</div>
 
@@ -2652,7 +3546,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'k', desc: 'độ cứng của lò xo (N/m)' },
 												{ sym: 'm', desc: 'khối lượng vật nặng (kg)' },
@@ -2690,7 +3594,17 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'Wt' ? <>W<sub>t</sub></> : row.sym === 'Wd' ? <>W<sub>đ</sub></> : row.sym}
+														{row.sym === 'Wt' ? (
+															<>
+																W<sub>t</sub>
+															</>
+														) : row.sym === 'Wd' ? (
+															<>
+																W<sub>đ</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -2704,13 +3618,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Chiều dài dây (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>L</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{pendulumL}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m
+													</span>
 												</span>
 											</div>
 											<input
@@ -2724,11 +3662,29 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Góc lệch cực đại (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&theta;<sub>0</sub></em>)
+													Góc lệch cực đại (
+													<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>
+														&theta;<sub>0</sub>
+													</em>
+													)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{pendulumTh}°
 												</span>
 											</div>
@@ -2743,13 +3699,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Gia tốc (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>g</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{pendulumG}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s²</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m/s²
+													</span>
 												</span>
 											</div>
 											<input
@@ -2768,19 +3748,44 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('\\theta(t) = \\theta_0\\,\\cos(\\omega\\,t)')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('T = 2\\pi\\,\\sqrt{\\frac{L}{g}}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lưu ý:</b> Chu kỳ $T$ của con lắc đơn tỷ lệ thuận với căn bậc hai chiều dài dây $L$. Khối lượng vật nặng không làm thay đổi chu kỳ dao động của con lắc.
-											</div>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\theta(t) = \\theta_0\\,\\cos(\\omega\\,t)')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('T = 2\\pi\\,\\sqrt{\\frac{L}{g}}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div
+												className='stu-ws__formula-note'
+												dangerouslySetInnerHTML={renderRichText(
+													'💡 <b>Lưu ý:</b> Chu kỳ $T$ của con lắc đơn tỷ lệ thuận với căn bậc hai chiều dài dây $L$. Khối lượng vật nặng không làm thay đổi chu kỳ dao động của con lắc.',
+												)}
+											/>
 										</div>
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'L', desc: 'chiều dài dây treo con lắc (m)' },
 												{ sym: 'theta0', desc: 'góc lệch lớn nhất - biên độ góc (°)' },
@@ -2817,7 +3822,15 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'theta0' ? <>&theta;<sub>0</sub></> : row.sym === 'omega' ? <>&omega;</> : row.sym}
+														{row.sym === 'theta0' ? (
+															<>
+																&theta;<sub>0</sub>
+															</>
+														) : row.sym === 'omega' ? (
+															<>&omega;</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -2831,13 +3844,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Bán kính quỹ đạo (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>r</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{circularR}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m
+													</span>
 												</span>
 											</div>
 											<input
@@ -2851,13 +3888,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Tốc độ góc (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{circularW}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														rad/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -2871,13 +3932,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Khối lượng vật (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>m</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{circularM}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>kg</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														kg
+													</span>
 												</span>
 											</div>
 											<input
@@ -2896,11 +3981,26 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('v = \\omega\\,r \\quad \\vert \\quad a_{ht} = \\omega^2 r = \\frac{v^2}{r}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('F_{ht} = m\\,a_{ht}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lưu ý:</b> Lực hướng tâm F_ht vuông góc với vector vận tốc, chỉ đóng vai trò uốn cong quỹ đạo của vật thành hình tròn mà không làm thay đổi tốc độ dài.
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'v = \\omega\\,r \\quad \\vert \\quad a_{ht} = \\omega^2 r = \\frac{v^2}{r}',
+												)}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('F_{ht} = m\\,a_{ht}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Lưu ý:</b> Lực hướng tâm F_ht vuông góc với vector vận tốc, chỉ đóng vai trò uốn cong quỹ
+												đạo của vật thành hình tròn mà không làm thay đổi tốc độ dài.
 											</div>
 										</div>
 
@@ -2908,7 +4008,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'r', desc: 'bán kính quỹ đạo tròn (m)' },
 												{ sym: 'omega', desc: 'tốc độ góc (rad/s)' },
@@ -2945,7 +4055,15 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'omega' ? <>&omega;</> : row.sym === 'Fht' ? <>F<sub>ht</sub></> : row.sym}
+														{row.sym === 'omega' ? (
+															<>&omega;</>
+														) : row.sym === 'Fht' ? (
+															<>
+																F<sub>ht</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -2959,13 +4077,35 @@ const Workspace: React.FC = () => {
 											<span>Thông số xe 1 (Xanh)</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Khối lượng m₁
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Khối lượng m₁</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{collisionM1}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>kg</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														kg
+													</span>
 												</span>
 											</div>
 											<input
@@ -2979,13 +4119,35 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Vận tốc đầu v₁
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Vận tốc đầu v₁</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{collisionV1}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -3004,13 +4166,35 @@ const Workspace: React.FC = () => {
 											<span>Thông số xe 2 (Cam)</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Khối lượng m₂
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Khối lượng m₂</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{collisionM2}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>kg</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														kg
+													</span>
 												</span>
 											</div>
 											<input
@@ -3024,13 +4208,35 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Vận tốc đầu v₂
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Vận tốc đầu v₂</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{collisionV2}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -3049,11 +4255,23 @@ const Workspace: React.FC = () => {
 											<span>Đặc tính va chạm</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Hệ số đàn hồi (e)
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Hệ số đàn hồi (e)</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{collisionE}
 												</span>
 											</div>
@@ -3073,19 +4291,44 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('m_1 v_1 + m_2 v_2 = m_1 v_1\' + m_2 v_2\'')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('e = \\frac{v_2\' - v_1\'}{v_1 - v_2}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lưu ý:</b> Động lượng toàn phần luôn được bảo toàn. Động năng chỉ bảo toàn trong va chạm đàn hồi hoàn toàn ($e=1$). Trong va chạm mềm ($e=0$), động năng hao hụt lớn nhất.
-											</div>
+											<div
+												dangerouslySetInnerHTML={renderTex("m_1 v_1 + m_2 v_2 = m_1 v_1' + m_2 v_2'")}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex("e = \\frac{v_2' - v_1'}{v_1 - v_2}")}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div
+												className='stu-ws__formula-note'
+												dangerouslySetInnerHTML={renderRichText(
+													'💡 <b>Lưu ý:</b> Động lượng toàn phần luôn được bảo toàn. Động năng chỉ bảo toàn trong va chạm đàn hồi hoàn toàn ($e=1$). Trong va chạm mềm ($e=0$), động năng hao hụt lớn nhất.',
+												)}
+											/>
 										</div>
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'm1', desc: 'khối lượng xe xanh (kg)' },
 												{ sym: 'v1', desc: 'vận tốc ban đầu xe xanh (m/s)' },
@@ -3122,7 +4365,25 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'm1' ? <>m<sub>1</sub></> : row.sym === 'v1' ? <>v<sub>1</sub></> : row.sym === 'm2' ? <>m<sub>2</sub></> : row.sym === 'v2' ? <>v<sub>2</sub></> : row.sym}
+														{row.sym === 'm1' ? (
+															<>
+																m<sub>1</sub>
+															</>
+														) : row.sym === 'v1' ? (
+															<>
+																v<sub>1</sub>
+															</>
+														) : row.sym === 'm2' ? (
+															<>
+																m<sub>2</sub>
+															</>
+														) : row.sym === 'v2' ? (
+															<>
+																v<sub>2</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -3136,13 +4397,35 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Độ cao thả (h₀)
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Độ cao thả (h₀)</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{energyH0}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m
+													</span>
 												</span>
 											</div>
 											<input
@@ -3156,13 +4439,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Khối lượng vật (m)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{energyM}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>kg</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														kg
+													</span>
 												</span>
 											</div>
 											<input
@@ -3181,11 +4488,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('W = W_t + W_đ = mgh + \\frac{1}{2}\\,m\\,v^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('W = \\text{const}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lưu ý:</b> Khi quả cầu trượt không ma sát trên dốc cong, động năng và thế năng chuyển hóa qua lại lẫn nhau nhưng cơ năng toàn phần luôn không đổi.
+											<div
+												dangerouslySetInnerHTML={renderTex('W = W_t + W_đ = mgh + \\frac{1}{2}\\,m\\,v^2')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('W = \\text{const}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Lưu ý:</b> Khi quả cầu trượt không ma sát trên dốc cong, động năng và thế năng chuyển hóa
+												qua lại lẫn nhau nhưng cơ năng toàn phần luôn không đổi.
 											</div>
 										</div>
 
@@ -3193,7 +4513,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'h0', desc: 'độ cao thả cực đại (m)' },
 												{ sym: 'm', desc: 'khối lượng quả nặng (kg)' },
@@ -3231,7 +4561,21 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'h0' ? <>h<sub>0</sub></> : row.sym === 'Wt' ? <>W<sub>t</sub></> : row.sym === 'Wd' ? <>W<sub>đ</sub></> : row.sym}
+														{row.sym === 'h0' ? (
+															<>
+																h<sub>0</sub>
+															</>
+														) : row.sym === 'Wt' ? (
+															<>
+																W<sub>t</sub>
+															</>
+														) : row.sym === 'Wd' ? (
+															<>
+																W<sub>đ</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -3245,13 +4589,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Thể tích (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>V</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{boyleV}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>L</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														L
+													</span>
 												</span>
 											</div>
 											<input
@@ -3270,19 +4638,44 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('p\\,V = \\text{const}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('p_1\\,V_1 = p_2\\,V_2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Định luật Boyle:</b> Đối với một lượng khí nhất định ở nhiệt độ không đổi, áp suất tỉ lệ nghịch với thể tích khí. Khi nén khí (giảm $V$), áp suất $p$ sẽ tăng tương ứng.
-											</div>
+											<div
+												dangerouslySetInnerHTML={renderTex('p\\,V = \\text{const}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('p_1\\,V_1 = p_2\\,V_2')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div
+												className='stu-ws__formula-note'
+												dangerouslySetInnerHTML={renderRichText(
+													'💡 <b>Định luật Boyle:</b> Đối với một lượng khí nhất định ở nhiệt độ không đổi, áp suất tỉ lệ nghịch với thể tích khí. Khi nén khí (giảm $V$), áp suất $p$ sẽ tăng tương ứng.',
+												)}
+											/>
 										</div>
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'p', desc: 'áp suất lượng khí (atm)' },
 												{ sym: 'V', desc: 'thể tích khí (L)' },
@@ -3330,13 +4723,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Nhiệt độ (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>T</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{charlesT}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>K</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														K
+													</span>
 												</span>
 											</div>
 											<input
@@ -3355,11 +4772,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('\\frac{V}{T} = \\text{const}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('\\frac{V_1}{T_1} = \\frac{V_2}{T_2}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Định luật Charles:</b> Đối với một lượng khí nhất định ở áp suất không đổi, thể tích tỉ lệ thuận với nhiệt độ tuyệt đối. Khi đun nóng khí, thể tích của nó tăng lên đẩy piston ra.
+											<div
+												dangerouslySetInnerHTML={renderTex('\\frac{V}{T} = \\text{const}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\frac{V_1}{T_1} = \\frac{V_2}{T_2}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Định luật Charles:</b> Đối với một lượng khí nhất định ở áp suất không đổi, thể tích tỉ lệ
+												thuận với nhiệt độ tuyệt đối. Khi đun nóng khí, thể tích của nó tăng lên đẩy piston ra.
 											</div>
 										</div>
 
@@ -3367,7 +4797,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'V', desc: 'thể tích khí (L)' },
 												{ sym: 'T', desc: 'nhiệt độ tuyệt đối (K)' },
@@ -3415,13 +4855,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Nhiệt độ (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>T</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{kineticT}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>K</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														K
+													</span>
 												</span>
 											</div>
 											<input
@@ -3435,13 +4899,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Số hạt (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>N</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{kineticN}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>hạt</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														hạt
+													</span>
 												</span>
 											</div>
 											<input
@@ -3460,11 +4948,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('p = \\frac{1}{3}\\,\\frac{N}{V}\\,m\\,\\bar{v}^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('\\bar{E}_đ = \\frac{3}{2}\\,k\\,T')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Động học phân tử:</b> Áp suất khí sinh ra do va chạm của các phân tử lên thành bình. Khi nhiệt độ tăng, các phân tử chuyển động nhanh hơn, va chạm mạnh hơn sinh ra áp suất lớn hơn.
+											<div
+												dangerouslySetInnerHTML={renderTex('p = \\frac{1}{3}\\,\\frac{N}{V}\\,m\\,\\bar{v}^2')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\bar{E}_đ = \\frac{3}{2}\\,k\\,T')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Động học phân tử:</b> Áp suất khí sinh ra do va chạm của các phân tử lên thành bình. Khi
+												nhiệt độ tăng, các phân tử chuyển động nhanh hơn, va chạm mạnh hơn sinh ra áp suất lớn hơn.
 											</div>
 										</div>
 
@@ -3472,7 +4973,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'p', desc: 'áp suất chất khí (Pa)' },
 												{ sym: 'N', desc: 'tổng số phân tử khí' },
@@ -3508,7 +5019,13 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'Ed' ? <>E<sub>đ</sub></> : row.sym}
+														{row.sym === 'Ed' ? (
+															<>
+																E<sub>đ</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -3522,13 +5039,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Công suất nung (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>P</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{stateChangeP}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>W</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														W
+													</span>
 												</span>
 											</div>
 											<input
@@ -3547,11 +5088,25 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('Q = m\\,\\lambda \\quad (\\text{nóng chảy})')} style={{ fontSize: '14.5px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('Q = m\\,L \\quad (\\text{hóa hơi})')} style={{ fontSize: '14.5px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Sự chuyển thể:</b> Trong suốt quá trình nóng chảy hoặc sôi, nhiệt độ của chất không thay đổi. Nhiệt năng hấp thụ được dùng hoàn toàn để phá vỡ liên kết cấu trúc tinh thể hoặc liên kết lỏng.
+											<div
+												dangerouslySetInnerHTML={renderTex('Q = m\\,\\lambda \\quad (\\text{nóng chảy})')}
+												style={{ fontSize: '14.5px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('Q = m\\,L \\quad (\\text{hóa hơi})')}
+												style={{ fontSize: '14.5px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Sự chuyển thể:</b> Trong suốt quá trình nóng chảy hoặc sôi, nhiệt độ của chất không thay
+												đổi. Nhiệt năng hấp thụ được dùng hoàn toàn để phá vỡ liên kết cấu trúc tinh thể hoặc liên kết
+												lỏng.
 											</div>
 										</div>
 
@@ -3559,7 +5114,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'Q', desc: 'nhiệt lượng nhận vào (J)' },
 												{ sym: 'm', desc: 'khối lượng chất (kg)' },
@@ -3609,13 +5174,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Từ trường (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>B</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{magForceB.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>T</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														T
+													</span>
 												</span>
 											</div>
 											<input
@@ -3629,13 +5218,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Dòng điện (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>I</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{magForceI.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>A</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														A
+													</span>
 												</span>
 											</div>
 											<input
@@ -3649,13 +5262,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Chiều dài dây (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>L</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{magForceL.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m
+													</span>
 												</span>
 											</div>
 											<input
@@ -3674,11 +5311,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('F = B\\,I\\,L\\,\\sin\\theta')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('\\vec{F} \\perp (\\vec{B}, \\vec{I})')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lực Laplace:</b> Chiều của lực từ tác dụng lên dây dẫn mang dòng điện đặt trong từ trường được xác định bằng quy tắc bàn tay trái. Đảo chiều dòng điện hoặc từ trường sẽ đảo chiều lực từ.
+											<div
+												dangerouslySetInnerHTML={renderTex('F = B\\,I\\,L\\,\\sin\\theta')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\vec{F} \\perp (\\vec{B}, \\vec{I})')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Lực Laplace:</b> Chiều của lực từ tác dụng lên dây dẫn mang dòng điện đặt trong từ trường
+												được xác định bằng quy tắc bàn tay trái. Đảo chiều dòng điện hoặc từ trường sẽ đảo chiều lực từ.
 											</div>
 										</div>
 
@@ -3686,7 +5336,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'F', desc: 'lực từ tác dụng lên dây (N)' },
 												{ sym: 'B', desc: 'cảm ứng từ (T)' },
@@ -3736,13 +5396,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Từ trường (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>B</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{lorentzB.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>T</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														T
+													</span>
 												</span>
 											</div>
 											<input
@@ -3756,13 +5440,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Vận tốc (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>v</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{lorentzV.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -3776,13 +5484,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Điện tích (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>q</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{lorentzQ.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>C</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														C
+													</span>
 												</span>
 											</div>
 											<input
@@ -3796,13 +5528,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Khối lượng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>m</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{lorentzM.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>kg</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														kg
+													</span>
 												</span>
 											</div>
 											<input
@@ -3821,11 +5577,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('f = |q|\\,v\\,B\\,\\sin\\theta')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('R = \\frac{m\\,v}{|q|\\,B}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lực Lorentz:</b> Lực từ tác dụng lên hạt mang điện chuyển động trong từ trường đều. Do lực Lorentz luôn vuông góc với vận tốc, nó đóng vai trò lực hướng tâm khiến hạt chuyển động tròn.
+											<div
+												dangerouslySetInnerHTML={renderTex('f = |q|\\,v\\,B\\,\\sin\\theta')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('R = \\frac{m\\,v}{|q|\\,B}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Lực Lorentz:</b> Lực từ tác dụng lên hạt mang điện chuyển động trong từ trường đều. Do lực
+												Lorentz luôn vuông góc với vận tốc, nó đóng vai trò lực hướng tâm khiến hạt chuyển động tròn.
 											</div>
 										</div>
 
@@ -3833,7 +5602,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'f', desc: 'lực Lorentz tác dụng (N)' },
 												{ sym: 'q', desc: 'điện tích hạt chuyển động (C)' },
@@ -3884,13 +5663,38 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Tốc độ chuyển động (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>v</em>)
+													Tốc độ chuyển động (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>v</em>
+													)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{inductionSpd.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -3909,11 +5713,25 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('e_c = -\\frac{\\Delta\\Phi}{\\Delta t}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('\\Phi = B\\,S\\,\\cos\\alpha')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Định luật Faraday:</b> Suất điện động cảm ứng tỷ lệ thuận với tốc độ biến thiên từ thông qua mạch kín. Tốc độ đưa nam châm vào/ra càng nhanh thì cường độ dòng điện cảm ứng sinh ra càng lớn.
+											<div
+												dangerouslySetInnerHTML={renderTex('e_c = -\\frac{\\Delta\\Phi}{\\Delta t}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\Phi = B\\,S\\,\\cos\\alpha')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Định luật Faraday:</b> Suất điện động cảm ứng tỷ lệ thuận với tốc độ biến thiên từ thông
+												qua mạch kín. Tốc độ đưa nam châm vào/ra càng nhanh thì cường độ dòng điện cảm ứng sinh ra càng
+												lớn.
 											</div>
 										</div>
 
@@ -3921,7 +5739,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'Phi', desc: 'từ thông xuyên qua vòng dây (Wb)' },
 												{ sym: 'ec', desc: 'suất điện động cảm ứng sinh ra (V)' },
@@ -3956,7 +5784,15 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'Phi' ? <>&Phi;</> : row.sym === 'ec' ? <>e<sub>c</sub></> : row.sym}
+														{row.sym === 'Phi' ? (
+															<>&Phi;</>
+														) : row.sym === 'ec' ? (
+															<>
+																e<sub>c</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -3970,13 +5806,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Tốc độ quay (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{acGenW.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														rad/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -3990,13 +5850,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Từ trường (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>B</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{acGenB.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>T</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														T
+													</span>
 												</span>
 											</div>
 											<input
@@ -4010,13 +5894,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Số vòng dây (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>N</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{acGenN}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>vòng</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														vòng
+													</span>
 												</span>
 											</div>
 											<input
@@ -4035,11 +5943,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('e(t) = E_0\\,\\sin(\\omega\\,t)')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('E_0 = N\\,B\\,S\\,\\omega')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Máy phát điện xoay chiều:</b> Hoạt động dựa trên hiện tượng cảm ứng điện từ. Khi cuộn dây quay đều trong từ trường, từ thông qua nó biến thiên sinh ra suất điện động hình sin cảm ứng.
+											<div
+												dangerouslySetInnerHTML={renderTex('e(t) = E_0\\,\\sin(\\omega\\,t)')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('E_0 = N\\,B\\,S\\,\\omega')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Máy phát điện xoay chiều:</b> Hoạt động dựa trên hiện tượng cảm ứng điện từ. Khi cuộn dây
+												quay đều trong từ trường, từ thông qua nó biến thiên sinh ra suất điện động hình sin cảm ứng.
 											</div>
 										</div>
 
@@ -4047,7 +5968,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'e', desc: 'suất điện động tức thời (V)' },
 												{ sym: 'E0', desc: 'suất điện động cực đại (V)' },
@@ -4083,7 +6014,15 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'E0' ? <>E<sub>0</sub></> : row.sym === 'omega' ? <>&omega;</> : row.sym}
+														{row.sym === 'E0' ? (
+															<>
+																E<sub>0</sub>
+															</>
+														) : row.sym === 'omega' ? (
+															<>&omega;</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -4097,13 +6036,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Chu kỳ bán rã (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>T</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{radioactiveT.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														s
+													</span>
 												</span>
 											</div>
 											<input
@@ -4117,13 +6080,41 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Số hạt ban đầu (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>N<sub>0</sub></em>)
+													Số hạt ban đầu (
+													<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>
+														N<sub>0</sub>
+													</em>
+													)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{radioactiveN0}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>hạt</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														hạt
+													</span>
 												</span>
 											</div>
 											<input
@@ -4142,11 +6133,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('N(t) = N_0\\,2^{-\\frac{t}{T}}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('N(t) = N_0\\,e^{-\\lambda\\,t}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Định luật phóng xạ:</b> Số lượng hạt nhân chưa phân rã giảm theo hàm mũ theo thời gian. Sau mỗi chu kỳ bán rã T, số lượng hạt nhân chưa phân rã còn lại giảm đi một nửa.
+											<div
+												dangerouslySetInnerHTML={renderTex('N(t) = N_0\\,2^{-\\frac{t}{T}}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('N(t) = N_0\\,e^{-\\lambda\\,t}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Định luật phóng xạ:</b> Số lượng hạt nhân chưa phân rã giảm theo hàm mũ theo thời gian.
+												Sau mỗi chu kỳ bán rã T, số lượng hạt nhân chưa phân rã còn lại giảm đi một nửa.
 											</div>
 										</div>
 
@@ -4154,7 +6158,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'N0', desc: 'số hạt nhân phóng xạ ban đầu' },
 												{ sym: 'N', desc: 'số hạt nhân chưa phân rã tại thời điểm t' },
@@ -4190,7 +6204,15 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'N0' ? <>N<sub>0</sub></> : row.sym === 'lambda' ? <>&lambda;</> : row.sym}
+														{row.sym === 'N0' ? (
+															<>
+																N<sub>0</sub>
+															</>
+														) : row.sym === 'lambda' ? (
+															<>&lambda;</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -4245,18 +6267,42 @@ const Workspace: React.FC = () => {
 										<div className='stu-ws__formula-box'>
 											{nuclearType === 0 ? (
 												<>
-													<div dangerouslySetInnerHTML={renderTex('{^{235}_{92}}\\text{U} + n \\rightarrow X + Y + 3n')} style={{ fontSize: '14px', color: '#2b2f45', fontWeight: 500 }} />
-													<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-													<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-														💡 <b>Phản ứng phân hạch:</b> Hạt nhân nặng (như Uranium-235) hấp thụ một neutron chậm rồi vỡ thành 2 hạt nhân nhẹ hơn kèm theo giải phóng năng lượng lớn và vài neutron. Các neutron mới có thể tiếp tục kích hoạt phản ứng dây chuyền.
+													<div
+														dangerouslySetInnerHTML={renderTex('{^{235}_{92}}\\text{U} + n \\rightarrow X + Y + 3n')}
+														style={{ fontSize: '14px', color: '#2b2f45', fontWeight: 500 }}
+													/>
+													<div
+														style={{
+															height: '1px',
+															background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+															margin: '14px 0 10px',
+														}}
+													/>
+													<div className='stu-ws__formula-note'>
+														💡 <b>Phản ứng phân hạch:</b> Hạt nhân nặng (như Uranium-235) hấp thụ một neutron chậm rồi
+														vỡ thành 2 hạt nhân nhẹ hơn kèm theo giải phóng năng lượng lớn và vài neutron. Các neutron
+														mới có thể tiếp tục kích hoạt phản ứng dây chuyền.
 													</div>
 												</>
 											) : (
 												<>
-													<div dangerouslySetInnerHTML={renderTex('{^2_1}\\text{H} + {^3_1}\\text{H} \\rightarrow {^4_2}\\text{He} + n')} style={{ fontSize: '14px', color: '#2b2f45', fontWeight: 500 }} />
-													<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-													<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-														💡 <b>Phản ứng nhiệt hạch:</b> Là sự kết hợp giữa 2 hạt nhân rất nhẹ (như Deuterium và Tritium) dưới nhiệt độ và áp suất cực lớn tạo thành hạt nhân Heli nặng hơn và tỏa nhiệt lượng khổng lồ.
+													<div
+														dangerouslySetInnerHTML={renderTex(
+															'{^2_1}\\text{H} + {^3_1}\\text{H} \\rightarrow {^4_2}\\text{He} + n',
+														)}
+														style={{ fontSize: '14px', color: '#2b2f45', fontWeight: 500 }}
+													/>
+													<div
+														style={{
+															height: '1px',
+															background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+															margin: '14px 0 10px',
+														}}
+													/>
+													<div className='stu-ws__formula-note'>
+														💡 <b>Phản ứng nhiệt hạch:</b> Là sự kết hợp giữa 2 hạt nhân rất nhẹ (như Deuterium và
+														Tritium) dưới nhiệt độ và áp suất cực lớn tạo thành hạt nhân Heli nặng hơn và tỏa nhiệt
+														lượng khổng lồ.
 													</div>
 												</>
 											)}
@@ -4266,7 +6312,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'U-235', desc: 'hạt nhân nguyên liệu Uranium nặng' },
 												{ sym: 'n', desc: 'hạt neutron (không mang điện)' },
@@ -4316,13 +6372,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Số khối hạt nhân (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{bindingEnergyA}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>nucleon</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														nucleon
+													</span>
 												</span>
 											</div>
 											<input
@@ -4341,11 +6421,26 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('E_{lk} = \\Delta m\\,c^2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('E_{lkr} = \\frac{E_{lk}}{A}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Năng lượng liên kết riêng:</b> {"Là năng lượng liên kết tính trên một nucleon. Hạt nhân bền vững nhất ở vùng số khối trung bình (50 < A < 80, ví dụ Fe-56) với năng lượng liên kết riêng lớn nhất (xấp xỉ 8.8 MeV)."}
+											<div
+												dangerouslySetInnerHTML={renderTex('E_{lk} = \\Delta m\\,c^2')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('E_{lkr} = \\frac{E_{lk}}{A}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Năng lượng liên kết riêng:</b>{' '}
+												{
+													'Là năng lượng liên kết tính trên một nucleon. Hạt nhân bền vững nhất ở vùng số khối trung bình (50 < A < 80, ví dụ Fe-56) với năng lượng liên kết riêng lớn nhất (xấp xỉ 8.8 MeV).'
+												}
 											</div>
 										</div>
 
@@ -4353,7 +6448,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'Elk', desc: 'năng lượng liên kết toàn phần (MeV)' },
 												{ sym: 'Elkr', desc: 'năng lượng liên kết riêng (MeV/nucleon)' },
@@ -4389,7 +6494,19 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'Elk' ? <>E<sub>lk</sub></> : row.sym === 'Elkr' ? <>E<sub>lkr</sub></> : row.sym === 'dm' ? <>&Delta;m</> : row.sym}
+														{row.sym === 'Elk' ? (
+															<>
+																E<sub>lk</sub>
+															</>
+														) : row.sym === 'Elkr' ? (
+															<>
+																E<sub>lkr</sub>
+															</>
+														) : row.sym === 'dm' ? (
+															<>&Delta;m</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -4403,13 +6520,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Biên độ (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{shmA.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>cm</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														cm
+													</span>
 												</span>
 											</div>
 											<input
@@ -4423,13 +6564,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Tần số góc (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{shmW.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														rad/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -4448,20 +6613,48 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('x = A\\,\\cos(\\omega\\,t + \\varphi)')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('v = x\' = -\\omega\\,A\\,\\sin(\\omega\\,t + \\varphi)')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div dangerouslySetInnerHTML={renderTex('a = v\' = -\\omega^2\\,A\\,\\cos(\\omega\\,t + \\varphi)')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Dao động điều hòa:</b> Li độ biến thiên điều hòa dạng sin/cos theo thời gian. Vận tốc biến thiên nhanh pha hơn li độ góc $\pi/2$. Gia tốc ngược pha so với li độ.
-											</div>
+											<div
+												dangerouslySetInnerHTML={renderTex('x = A\\,\\cos(\\omega\\,t + \\varphi)')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex("v = x' = -\\omega\\,A\\,\\sin(\\omega\\,t + \\varphi)")}
+												style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex("a = v' = -\\omega^2\\,A\\,\\cos(\\omega\\,t + \\varphi)")}
+												style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div
+												className='stu-ws__formula-note'
+												dangerouslySetInnerHTML={renderRichText(
+													'💡 <b>Dao động điều hòa:</b> Li độ biến thiên điều hòa dạng $\\sin$ hoặc $\\cos$ theo thời gian. Vận tốc biến thiên nhanh pha hơn li độ góc $\\frac{\\pi}{2}$. Gia tốc ngược pha so với li độ.',
+												)}
+											/>
 										</div>
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'x', desc: 'li độ dao động tức thời (cm)' },
 												{ sym: 'A', desc: 'biên độ dao động cực đại (cm)' },
@@ -4512,13 +6705,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Biên độ đầu (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{dampedA.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>cm</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														cm
+													</span>
 												</span>
 											</div>
 											<input
@@ -4532,13 +6749,41 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Tần số riêng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;<sub>0</sub></em>)
+													Tần số riêng (
+													<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>
+														&omega;<sub>0</sub>
+													</em>
+													)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{dampedW.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														rad/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -4552,11 +6797,25 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Hệ số lực cản (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>b</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{dampedB.toFixed(2)}
 												</span>
 											</div>
@@ -4576,11 +6835,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('x(t) = A\\,e^{-b\\,t}\\,\\cos(\\omega\\,t)')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('E(t) = E_0\\,e^{-2b\\,t}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Dao động tắt dần:</b> Lực cản môi trường làm tiêu hao cơ năng của hệ dưới dạng nhiệt năng, khiến biên độ dao động giảm dần theo quy luật hàm mũ.
+											<div
+												dangerouslySetInnerHTML={renderTex('x(t) = A\\,e^{-b\\,t}\\,\\cos(\\omega\\,t)')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('E(t) = E_0\\,e^{-2b\\,t}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Dao động tắt dần:</b> Lực cản môi trường làm tiêu hao cơ năng của hệ dưới dạng nhiệt năng,
+												khiến biên độ dao động giảm dần theo quy luật hàm mũ.
 											</div>
 										</div>
 
@@ -4588,7 +6860,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'A', desc: 'biên độ ban đầu thả vật (cm)' },
 												{ sym: 'b', desc: 'hệ số cản của môi trường' },
@@ -4638,13 +6920,41 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Tần số góc riêng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;<sub>0</sub></em>)
+													Tần số góc riêng (
+													<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>
+														&omega;<sub>0</sub>
+													</em>
+													)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{resonanceW0.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														rad/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -4658,13 +6968,38 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Tần số ngoại lực (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;</em>)
+													Tần số ngoại lực (
+													<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&omega;</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{resonanceW.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>rad/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														rad/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -4678,13 +7013,41 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Biên độ lực cưỡng bức (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>F<sub>0</sub></em>)
+													Biên độ lực cưỡng bức (
+													<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>
+														F<sub>0</sub>
+													</em>
+													)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{resonanceA0.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>N</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														N
+													</span>
 												</span>
 											</div>
 											<input
@@ -4703,19 +7066,48 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('A_{cb} = \\frac{F_0}{\\sqrt{m^2(\\omega_0^2 - \\omega^2)^2 + b^2\\omega^2}}')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('\\omega \\approx \\omega_0 \\Rightarrow A_{cb} = A_{\\max}')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Hiện tượng cộng hưởng:</b> Biên độ dao động cưỡng bức đạt cực đại khi tần số góc của lực cưỡng bức $\omega$ trùng với tần số góc riêng $\omega_0$ của hệ.
-											</div>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'A_{cb} = \\frac{F_0}{\\sqrt{m^2(\\omega_0^2 - \\omega^2)^2 + b^2\\omega^2}}',
+												)}
+												style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\omega \\approx \\omega_0 \\Rightarrow A_{cb} = A_{\\max}',
+												)}
+												style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div
+												className='stu-ws__formula-note'
+												dangerouslySetInnerHTML={renderRichText(
+													'💡 <b>Hiện tượng cộng hưởng:</b> Biên độ dao động cưỡng bức đạt cực đại khi tần số góc của lực cưỡng bức $\\omega$ trùng với tần số góc riêng $\\omega_0$ của hệ.',
+												)}
+											/>
 										</div>
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'w0', desc: 'tần số góc dao động riêng (rad/s)' },
 												{ sym: 'w', desc: 'tần số góc lực cưỡng bức (rad/s)' },
@@ -4751,7 +7143,23 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'w0' ? <>&omega;<sub>0</sub></> : row.sym === 'w' ? <>&omega;</> : row.sym === 'F0' ? <>F<sub>0</sub></> : row.sym === 'Acb' ? <>A<sub>cb</sub></> : row.sym}
+														{row.sym === 'w0' ? (
+															<>
+																&omega;<sub>0</sub>
+															</>
+														) : row.sym === 'w' ? (
+															<>&omega;</>
+														) : row.sym === 'F0' ? (
+															<>
+																F<sub>0</sub>
+															</>
+														) : row.sym === 'Acb' ? (
+															<>
+																A<sub>cb</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -4765,13 +7173,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Biên độ nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{waveA.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>cm</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														cm
+													</span>
 												</span>
 											</div>
 											<input
@@ -4785,13 +7217,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Tần số sóng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>f</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{waveF.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>Hz</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														Hz
+													</span>
 												</span>
 											</div>
 											<input
@@ -4805,13 +7261,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Tốc độ truyền (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>v</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{waveV.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m/s</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m/s
+													</span>
 												</span>
 											</div>
 											<input
@@ -4830,11 +7310,27 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('\\lambda = \\frac{v}{f}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('u_M(t) = A\\,\\cos\\left(2\\pi f t - \\frac{2\\pi d}{\\lambda}\\right)')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Sóng ngang:</b> Các phần tử của môi trường dao động theo phương vuông góc với phương truyền sóng. Sóng truyền đi mang theo năng lượng và trạng thái dao động chứ các phần tử môi trường không di chuyển theo sóng.
+											<div
+												dangerouslySetInnerHTML={renderTex('\\lambda = \\frac{v}{f}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'u_M(t) = A\\,\\cos\\left(2\\pi f t - \\frac{2\\pi d}{\\lambda}\\right)',
+												)}
+												style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Sóng ngang:</b> Các phần tử của môi trường dao động theo phương vuông góc với phương
+												truyền sóng. Sóng truyền đi mang theo năng lượng và trạng thái dao động chứ các phần tử môi
+												trường không di chuyển theo sóng.
 											</div>
 										</div>
 
@@ -4842,7 +7338,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'A', desc: 'biên độ dao động nguồn (cm)' },
 												{ sym: 'f', desc: 'tần số dao động nguồn (Hz)' },
@@ -4879,7 +7385,15 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'lambda' ? <>&lambda;</> : row.sym === 'uM' ? <>u<sub>M</sub></> : row.sym}
+														{row.sym === 'lambda' ? (
+															<>&lambda;</>
+														) : row.sym === 'uM' ? (
+															<>
+																u<sub>M</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -4893,13 +7407,38 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Biên độ sóng nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>)
+													Biên độ sóng nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>A</em>
+													)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{standingA.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>cm</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														cm
+													</span>
 												</span>
 											</div>
 											<input
@@ -4913,11 +7452,25 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Họa tần / Số bụng (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>n</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{standingF}
 												</span>
 											</div>
@@ -4937,11 +7490,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('L = n\\,\\frac{\\lambda}{2}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('A_{bụng} = 2A \\quad \\vert \\quad A_{nút} = 0')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Sóng dừng:</b> Sóng dừng là sự giao thoa của sóng tới và sóng phản xạ trên sợi dây có giới hạn. Trên sợi dây xuất hiện các nút sóng cố định và các bụng sóng dao động với biên độ cực đại.
+											<div
+												dangerouslySetInnerHTML={renderTex('L = n\\,\\frac{\\lambda}{2}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('A_{bụng} = 2A \\quad \\vert \\quad A_{nút} = 0')}
+												style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Sóng dừng:</b> Sóng dừng là sự giao thoa của sóng tới và sóng phản xạ trên sợi dây có giới
+												hạn. Trên sợi dây xuất hiện các nút sóng cố định và các bụng sóng dao động với biên độ cực đại.
 											</div>
 										</div>
 
@@ -4949,7 +7515,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'L', desc: 'chiều dài sợi dây đàn hồi (m)' },
 												{ sym: 'n', desc: 'số bó sóng (bụng sóng) trên dây' },
@@ -4999,13 +7575,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Tần số nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>f</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{interfF.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>Hz</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														Hz
+													</span>
 												</span>
 											</div>
 											<input
@@ -5019,13 +7619,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Khoảng cách nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>d</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{interfD.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>cm</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														cm
+													</span>
 												</span>
 											</div>
 											<input
@@ -5044,11 +7668,26 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('d_2 - d_1 = k\\,\\lambda \\quad (\\text{Cực đại})')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('d_2 - d_1 = (k + 0.5)\\,\\lambda \\quad (\\text{Cực tiểu})')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Giao thoa sóng:</b> Sự gặp nhau của hai nguồn sóng kết hợp tạo ra mạng lưới các điểm cực đại (gặp nhau cùng pha, biên độ tăng gấp đôi) và các cực tiểu (ngược pha, triệt tiêu lẫn nhau).
+											<div
+												dangerouslySetInnerHTML={renderTex('d_2 - d_1 = k\\,\\lambda \\quad (\\text{Cực đại})')}
+												style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'd_2 - d_1 = (k + 0.5)\\,\\lambda \\quad (\\text{Cực tiểu})',
+												)}
+												style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Giao thoa sóng:</b> Sự gặp nhau của hai nguồn sóng kết hợp tạo ra mạng lưới các điểm cực
+												đại (gặp nhau cùng pha, biên độ tăng gấp đôi) và các cực tiểu (ngược pha, triệt tiêu lẫn nhau).
 											</div>
 										</div>
 
@@ -5056,7 +7695,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'd', desc: 'khoảng cách hai nguồn S1, S2 (cm)' },
 												{ sym: 'f', desc: 'tần số dao động của hai nguồn (Hz)' },
@@ -5092,7 +7741,15 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'lambda' ? <>&lambda;</> : row.sym === 'd1, d2' ? <>d<sub>1,2</sub></> : row.sym}
+														{row.sym === 'lambda' ? (
+															<>&lambda;</>
+														) : row.sym === 'd1, d2' ? (
+															<>
+																d<sub>1,2</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -5106,13 +7763,35 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Điện tích q₁
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Điện tích q₁</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{coulombQ1.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&mu;C</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														&mu;C
+													</span>
 												</span>
 											</div>
 											<input
@@ -5126,13 +7805,35 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Điện tích q₂
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Điện tích q₂</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{coulombQ2.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&mu;C</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														&mu;C
+													</span>
 												</span>
 											</div>
 											<input
@@ -5146,13 +7847,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Khoảng cách (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>r</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{coulombR.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>m</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														m
+													</span>
 												</span>
 											</div>
 											<input
@@ -5171,11 +7896,25 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('F = k\\,\\frac{|q_1\\,q_2|}{r^2}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('k = 9 \\times 10^9 \\text{ N.m}^2/\\text{C}^2')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Định luật Coulomb:</b> Lực tương tác tĩnh điện tỷ lệ thuận với tích độ lớn hai điện tích và tỷ lệ nghịch với bình phương khoảng cách giữa chúng. Hai điện tích cùng dấu đẩy nhau, trái dấu hút nhau.
+											<div
+												dangerouslySetInnerHTML={renderTex('F = k\\,\\frac{|q_1\\,q_2|}{r^2}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('k = 9 \\times 10^9 \\text{ N.m}^2/\\text{C}^2')}
+												style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Định luật Coulomb:</b> Lực tương tác tĩnh điện tỷ lệ thuận với tích độ lớn hai điện tích
+												và tỷ lệ nghịch với bình phương khoảng cách giữa chúng. Hai điện tích cùng dấu đẩy nhau, trái
+												dấu hút nhau.
 											</div>
 										</div>
 
@@ -5183,7 +7922,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'q1, q2', desc: 'trị số hai điện tích điểm (C)' },
 												{ sym: 'r', desc: 'khoảng cách hai điện tích (m)' },
@@ -5219,7 +7968,13 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'q1, q2' ? <>q<sub>1,2</sub></> : row.sym}
+														{row.sym === 'q1, q2' ? (
+															<>
+																q<sub>1,2</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -5233,13 +7988,35 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Điện tích q₁
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Điện tích q₁</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{efieldQ1.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>nC</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														nC
+													</span>
 												</span>
 											</div>
 											<input
@@ -5253,13 +8030,35 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Điện tích q₂
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Điện tích q₂</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{efieldQ2.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>nC</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														nC
+													</span>
 												</span>
 											</div>
 											<input
@@ -5278,11 +8077,25 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('\\vec{E} = k\\,\\frac{q}{r^2}\\,\\vec{r}_0')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('\\vec{E}_{tổng} = \\vec{E}_1 + \\vec{E}_2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Điện trường:</b> Là môi trường vật chất bao quanh các điện tích. Đường sức điện là đường vẽ mà tiếp tuyến tại mỗi điểm trùng với phương của vectơ cường độ điện trường. Chúng đi ra từ điện tích dương và đi vào điện tích âm.
+											<div
+												dangerouslySetInnerHTML={renderTex('\\vec{E} = k\\,\\frac{q}{r^2}\\,\\vec{r}_0')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\vec{E}_{tổng} = \\vec{E}_1 + \\vec{E}_2')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Điện trường:</b> Là môi trường vật chất bao quanh các điện tích. Đường sức điện là đường
+												vẽ mà tiếp tuyến tại mỗi điểm trùng với phương của vectơ cường độ điện trường. Chúng đi ra từ
+												điện tích dương và đi vào điện tích âm.
 											</div>
 										</div>
 
@@ -5290,7 +8103,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'E', desc: 'vectơ cường độ điện trường (V/m)' },
 												{ sym: 'q', desc: 'điện tích sinh ra điện trường (C)' },
@@ -5339,13 +8162,37 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Hiệu điện thế (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>U</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{ohmU.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>V</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														V
+													</span>
 												</span>
 											</div>
 											<input
@@ -5359,13 +8206,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Điện trở (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>R</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{ohmR}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&Omega;</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														&Omega;
+													</span>
 												</span>
 											</div>
 											<input
@@ -5384,11 +8255,24 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('I = \\frac{U}{R}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('P = U\\,I = I^2\\,R')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Định luật Ohm:</b> Cường độ dòng điện chạy qua dây dẫn tỷ lệ thuận với hiệu điện thế giữa hai đầu dây và tỷ lệ nghịch với điện trở của dây dẫn đó.
+											<div
+												dangerouslySetInnerHTML={renderTex('I = \\frac{U}{R}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('P = U\\,I = I^2\\,R')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Định luật Ohm:</b> Cường độ dòng điện chạy qua dây dẫn tỷ lệ thuận với hiệu điện thế giữa
+												hai đầu dây và tỷ lệ nghịch với điện trở của dây dẫn đó.
 											</div>
 										</div>
 
@@ -5396,7 +8280,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'I', desc: 'cường độ dòng điện trong mạch (A)' },
 												{ sym: 'U', desc: 'hiệu điện thế đoạn mạch (V)' },
@@ -5446,13 +8340,35 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Điện trở R₁
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Điện trở R₁</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{resistorsR1}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&Omega;</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														&Omega;
+													</span>
 												</span>
 											</div>
 											<input
@@ -5466,13 +8382,35 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
-												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Điện trở R₂
-												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
+												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>Điện trở R₂</span>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{resistorsR2}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&Omega;</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														&Omega;
+													</span>
 												</span>
 											</div>
 											<input
@@ -5532,18 +8470,37 @@ const Workspace: React.FC = () => {
 										<div className='stu-ws__formula-box'>
 											{resistorsMode === 'series' ? (
 												<>
-													<div dangerouslySetInnerHTML={renderTex('R_{tđ} = R_1 + R_2')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-													<div dangerouslySetInnerHTML={renderTex('I = I_1 = I_2 \\quad \\vert \\quad U = U_1 + U_2')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+													<div
+														dangerouslySetInnerHTML={renderTex('R_{tđ} = R_1 + R_2')}
+														style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+													/>
+													<div
+														dangerouslySetInnerHTML={renderTex('I = I_1 = I_2 \\quad \\vert \\quad U = U_1 + U_2')}
+														style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+													/>
 												</>
 											) : (
 												<>
-													<div dangerouslySetInnerHTML={renderTex('\\frac{1}{R_{tđ}} = \\frac{1}{R_1} + \\frac{1}{R_2}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-													<div dangerouslySetInnerHTML={renderTex('U = U_1 = U_2 \\quad \\vert \\quad I = I_1 + I_2')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
+													<div
+														dangerouslySetInnerHTML={renderTex('\\frac{1}{R_{tđ}} = \\frac{1}{R_1} + \\frac{1}{R_2}')}
+														style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+													/>
+													<div
+														dangerouslySetInnerHTML={renderTex('U = U_1 = U_2 \\quad \\vert \\quad I = I_1 + I_2')}
+														style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+													/>
 												</>
 											)}
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Lưu ý:</b> Khi mắc nối tiếp, điện trở tương đương tăng lên. Khi mắc song song, điện trở tương đương luôn nhỏ hơn các điện trở thành phần.
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Lưu ý:</b> Khi mắc nối tiếp, điện trở tương đương tăng lên. Khi mắc song song, điện trở
+												tương đương luôn nhỏ hơn các điện trở thành phần.
 											</div>
 										</div>
 
@@ -5551,7 +8508,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'R1, R2', desc: 'các điện trở thành phần (Ohm)' },
 												{ sym: 'Rtd', desc: 'điện trở tương đương của mạch (Ohm)' },
@@ -5587,7 +8554,17 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'R1, R2' ? <>R<sub>1,2</sub></> : row.sym === 'Rtd' ? <>R<sub>tđ</sub></> : row.sym}
+														{row.sym === 'R1, R2' ? (
+															<>
+																R<sub>1,2</sub>
+															</>
+														) : row.sym === 'Rtd' ? (
+															<>
+																R<sub>tđ</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -5601,13 +8578,38 @@ const Workspace: React.FC = () => {
 											<span>Thông số</span>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
-													Suất điện động nguồn (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&Epsilon;</em>)
+													Suất điện động nguồn (
+													<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>&Epsilon;</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{fullCircuitE.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>V</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														V
+													</span>
 												</span>
 											</div>
 											<input
@@ -5621,13 +8623,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Điện trở ngoài (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>R</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{fullCircuitR}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&Omega;</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														&Omega;
+													</span>
 												</span>
 											</div>
 											<input
@@ -5641,13 +8667,37 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 										<div className='stu-ws__param'>
-											<div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '2px' }}>
+											<div
+												style={{
+													display: 'flex',
+													alignItems: 'baseline',
+													justifyContent: 'space-between',
+													marginBottom: '2px',
+												}}
+											>
 												<span style={{ fontSize: '13.5px', color: '#4a4f63', fontWeight: 500 }}>
 													Điện trở trong (<em style={{ fontFamily: 'Newsreader,serif', fontStyle: 'italic' }}>r</em>)
 												</span>
-												<span style={{ fontFamily: 'Newsreader,serif', fontSize: '15px', fontWeight: 600, color: '#2b2f45' }}>
+												<span
+													style={{
+														fontFamily: 'Newsreader,serif',
+														fontSize: '15px',
+														fontWeight: 600,
+														color: '#2b2f45',
+													}}
+												>
 													{fullCircuitr.toFixed(1)}
-													<span style={{ fontFamily: "'Be Vietnam Pro'", fontSize: '11px', fontWeight: 500, color: '#9094a8', marginLeft: '4px' }}>&Omega;</span>
+													<span
+														style={{
+															fontFamily: "'Be Vietnam Pro'",
+															fontSize: '11px',
+															fontWeight: 500,
+															color: '#9094a8',
+															marginLeft: '4px',
+														}}
+													>
+														&Omega;
+													</span>
 												</span>
 											</div>
 											<input
@@ -5666,12 +8716,28 @@ const Workspace: React.FC = () => {
 											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('I = \\frac{\\mathcal{E}}{R + r}')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }} />
-											<div dangerouslySetInnerHTML={renderTex('U_{N} = I\\,R = \\mathcal{E} - I\\,r')} style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div dangerouslySetInnerHTML={renderTex('H = \\frac{U_N}{\\mathcal{E}} = \\frac{R}{R + r}')} style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }} />
-											<div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)', margin: '14px 0 10px' }} />
-											<div style={{ fontSize: '12px', color: '#4a4f63', lineHeight: '1.5' }}>
-												💡 <b>Định luật Ohm toàn mạch:</b> Cường độ dòng điện trong mạch điện kín tỷ lệ thuận với suất điện động của nguồn điện và tỷ lệ nghịch với điện trở toàn phần của mạch.
+											<div
+												dangerouslySetInnerHTML={renderTex('I = \\frac{\\mathcal{E}}{R + r}')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('U_{N} = I\\,R = \\mathcal{E} - I\\,r')}
+												style={{ fontSize: '16px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('H = \\frac{U_N}{\\mathcal{E}} = \\frac{R}{R + r}')}
+												style={{ fontSize: '15px', color: '#2b2f45', fontWeight: 500, marginTop: '6px' }}
+											/>
+											<div
+												style={{
+													height: '1px',
+													background: 'linear-gradient(90deg,transparent,#e1e3ee,transparent)',
+													margin: '14px 0 10px',
+												}}
+											/>
+											<div className='stu-ws__formula-note'>
+												💡 <b>Định luật Ohm toàn mạch:</b> Cường độ dòng điện trong mạch điện kín tỷ lệ thuận với suất
+												điện động của nguồn điện và tỷ lệ nghịch với điện trở toàn phần của mạch.
 											</div>
 										</div>
 
@@ -5679,7 +8745,17 @@ const Workspace: React.FC = () => {
 											<div className='stu-ws__section-label-bar' />
 											<span>Ký hiệu</span>
 										</div>
-										<div className='stu-ws__symbols-list' style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'transparent', border: 'none', padding: 0 }}>
+										<div
+											className='stu-ws__symbols-list'
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '2px',
+												background: 'transparent',
+												border: 'none',
+												padding: 0,
+											}}
+										>
 											{[
 												{ sym: 'E', desc: 'suất điện động của nguồn điện (V)' },
 												{ sym: 'r', desc: 'điện trở trong của nguồn điện (Ohm)' },
@@ -5716,7 +8792,15 @@ const Workspace: React.FC = () => {
 															border: '1px solid #e0e2ee',
 														}}
 													>
-														{row.sym === 'E' ? <>&Epsilon;</> : row.sym === 'UN' ? <>U<sub>N</sub></> : row.sym}
+														{row.sym === 'E' ? (
+															<>&Epsilon;</>
+														) : row.sym === 'UN' ? (
+															<>
+																U<sub>N</sub>
+															</>
+														) : (
+															row.sym
+														)}
 													</span>
 													<span style={{ fontSize: '12.5px', color: '#5a5f73' }}>{row.desc}</span>
 												</div>
@@ -5731,7 +8815,9 @@ const Workspace: React.FC = () => {
 										</div>
 										<div className='stu-ws__param stu-ws__param--v0'>
 											<div className='stu-ws__param-row'>
-												<span>Góc ném (<span dangerouslySetInnerHTML={renderTex('\\theta')} />)</span>
+												<span>
+													Góc ném (<span dangerouslySetInnerHTML={renderTex('\\theta')} />)
+												</span>
 												<span className='stu-ws__param-val'>{phAngle}°</span>
 											</div>
 											<input
@@ -5746,7 +8832,9 @@ const Workspace: React.FC = () => {
 										</div>
 										<div className='stu-ws__param stu-ws__param--v0'>
 											<div className='stu-ws__param-row'>
-												<span>Vận tốc ban đầu (<span dangerouslySetInnerHTML={renderTex('v_0')} />)</span>
+												<span>
+													Vận tốc ban đầu (<span dangerouslySetInnerHTML={renderTex('v_0')} />)
+												</span>
 												<span className='stu-ws__param-val'>{phVel} m/s</span>
 											</div>
 											<input
@@ -5761,7 +8849,9 @@ const Workspace: React.FC = () => {
 										</div>
 										<div className='stu-ws__param stu-ws__param--a'>
 											<div className='stu-ws__param-row'>
-												<span>Gia tốc trọng trường (<span dangerouslySetInnerHTML={renderTex('g')} />)</span>
+												<span>
+													Gia tốc trọng trường (<span dangerouslySetInnerHTML={renderTex('g')} />)
+												</span>
 												<span className='stu-ws__param-val'>{f(phGrav)} m/s²</span>
 											</div>
 											<input
@@ -5793,9 +8883,18 @@ const Workspace: React.FC = () => {
 										</div>
 										<div className='stu-ws__formula-box'>
 											<div dangerouslySetInnerHTML={renderTex('v_x = v_0 \\cos\\theta')} />
-											<div dangerouslySetInnerHTML={renderTex('v_y = v_0 \\sin\\theta - g\\,t')} style={{ marginTop: '6px' }} />
-											<div dangerouslySetInnerHTML={renderTex('L = \\frac{v_0^2 \\sin(2\\theta)}{g}')} style={{ marginTop: '6px' }} />
-											<div dangerouslySetInnerHTML={renderTex('H = \\frac{v_0^2 \\sin^2\\theta}{2g}')} style={{ marginTop: '6px' }} />
+											<div
+												dangerouslySetInnerHTML={renderTex('v_y = v_0 \\sin\\theta - g\\,t')}
+												style={{ marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('L = \\frac{v_0^2 \\sin(2\\theta)}{g}')}
+												style={{ marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('H = \\frac{v_0^2 \\sin^2\\theta}{2g}')}
+												style={{ marginTop: '6px' }}
+											/>
 										</div>
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
@@ -5848,7 +8947,10 @@ const Workspace: React.FC = () => {
 								{/* SIM-08 or default_math: Quadratic Graph */}
 								{(simId === 'SIM-08' || simId === 'SIM-08-math' || !simId) && (
 									<>
-										<div className='stu-ws__formula-box' dangerouslySetInnerHTML={renderTex('y = a\\,x^2 + b\\,x + c')} />
+										<div
+											className='stu-ws__formula-box'
+											dangerouslySetInnerHTML={renderTex('y = a\\,x^2 + b\\,x + c')}
+										/>
 										<div className='stu-ws__param stu-ws__param--v0'>
 											<div className='stu-ws__param-row'>
 												<span>a</span>
@@ -5902,12 +9004,17 @@ const Workspace: React.FC = () => {
 									<>
 										<div className='stu-ws__formula-box'>
 											<div dangerouslySetInnerHTML={renderTex('x(t) = 2 + v_0 \\cos\\alpha\\,t')} />
-											<div dangerouslySetInnerHTML={renderTex('y(t) = v_0 \\sin\\alpha\\,t - \\frac{1}{2}\\,g\\,t^2')} style={{ marginTop: '6px' }} />
+											<div
+												dangerouslySetInnerHTML={renderTex('y(t) = v_0 \\sin\\alpha\\,t - \\frac{1}{2}\\,g\\,t^2')}
+												style={{ marginTop: '6px' }}
+											/>
 											<div className='stu-ws__formula-hint'>Cổng: y = -0.25 (x - 8)^2 + 9</div>
 										</div>
 										<div className='stu-ws__param stu-ws__param--v0'>
 											<div className='stu-ws__param-row'>
-												<span>Góc ném (<span dangerouslySetInnerHTML={renderTex('\\alpha')} />)</span>
+												<span>
+													Góc ném (<span dangerouslySetInnerHTML={renderTex('\\alpha')} />)
+												</span>
 												<span className='stu-ws__param-val'>{mAngle}°</span>
 											</div>
 											<input
@@ -5922,7 +9029,9 @@ const Workspace: React.FC = () => {
 										</div>
 										<div className='stu-ws__param stu-ws__param--v0'>
 											<div className='stu-ws__param-row'>
-												<span>Vận tốc đầu (<span dangerouslySetInnerHTML={renderTex('v_0')} />)</span>
+												<span>
+													Vận tốc đầu (<span dangerouslySetInnerHTML={renderTex('v_0')} />)
+												</span>
 												<span className='stu-ws__param-val'>{mVel} m/s</span>
 											</div>
 											<input
@@ -5937,7 +9046,9 @@ const Workspace: React.FC = () => {
 										</div>
 										<div className='stu-ws__param stu-ws__param--a'>
 											<div className='stu-ws__param-row'>
-												<span>Gia tốc (<span dangerouslySetInnerHTML={renderTex('g')} />)</span>
+												<span>
+													Gia tốc (<span dangerouslySetInnerHTML={renderTex('g')} />)
+												</span>
 												<span className='stu-ws__param-val'>{f(mGrav)} m/s²</span>
 											</div>
 											<input
@@ -5973,7 +9084,10 @@ const Workspace: React.FC = () => {
 									<>
 										<div className='stu-ws__formula-box'>
 											<div dangerouslySetInnerHTML={renderTex('d_1: A_1 x + B_1 y \\le C_1')} />
-											<div dangerouslySetInnerHTML={renderTex('d_2: A_2 x + B_2 y \\le C_2')} style={{ marginTop: '6px' }} />
+											<div
+												dangerouslySetInnerHTML={renderTex('d_2: A_2 x + B_2 y \\le C_2')}
+												style={{ marginTop: '6px' }}
+											/>
 										</div>
 										<div style={{ fontSize: '12px', fontWeight: 'bold', color: '#4f6ef7', marginBottom: '4px' }}>
 											Bất phương trình 1:
@@ -6212,7 +9326,10 @@ const Workspace: React.FC = () => {
 									<>
 										<div className='stu-ws__formula-box'>
 											<div dangerouslySetInnerHTML={renderTex('\\bar{x} = \\frac{\\sum x_i}{n}')} />
-											<div dangerouslySetInnerHTML={renderTex('s = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n}}')} style={{ marginTop: '6px' }} />
+											<div
+												dangerouslySetInnerHTML={renderTex('s = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n}}')}
+												style={{ marginTop: '6px' }}
+											/>
 										</div>
 										<div
 											style={{
@@ -6598,9 +9715,7 @@ const Workspace: React.FC = () => {
 											simulation_id: 'SIM-31',
 											subject: 'physics',
 											topic: 'boyle',
-											parameters: [
-												{ key: 'V', value: boyleV, unit: 'L', label: 'Thể tích' },
-											],
+											parameters: [{ key: 'V', value: boyleV, unit: 'L', label: 'Thể tích' }],
 										}}
 										isPlaying={isPhPlaying}
 										isSlow={isPhSlow}
@@ -6613,9 +9728,7 @@ const Workspace: React.FC = () => {
 											simulation_id: 'SIM-32',
 											subject: 'physics',
 											topic: 'charles',
-											parameters: [
-												{ key: 'T', value: charlesT, unit: 'K', label: 'Nhiệt độ' },
-											],
+											parameters: [{ key: 'T', value: charlesT, unit: 'K', label: 'Nhiệt độ' }],
 										}}
 										isPlaying={isPhPlaying}
 										isSlow={isPhSlow}
@@ -6644,9 +9757,7 @@ const Workspace: React.FC = () => {
 											simulation_id: 'SIM-34',
 											subject: 'physics',
 											topic: 'statechange',
-											parameters: [
-												{ key: 'P', value: stateChangeP, unit: 'W', label: 'Công suất nung' },
-											],
+											parameters: [{ key: 'P', value: stateChangeP, unit: 'W', label: 'Công suất nung' }],
 										}}
 										isPlaying={isPhPlaying}
 										isSlow={isPhSlow}
@@ -6694,9 +9805,7 @@ const Workspace: React.FC = () => {
 											simulation_id: 'SIM-37',
 											subject: 'physics',
 											topic: 'induction',
-											parameters: [
-												{ key: 'spd', value: inductionSpd, unit: 'm/s', label: 'Tốc độ nam châm' },
-											],
+											parameters: [{ key: 'spd', value: inductionSpd, unit: 'm/s', label: 'Tốc độ nam châm' }],
 										}}
 										isPlaying={isPhPlaying}
 										isSlow={isPhSlow}
@@ -6742,9 +9851,7 @@ const Workspace: React.FC = () => {
 											simulation_id: 'SIM-40',
 											subject: 'physics',
 											topic: 'nuclear',
-											parameters: [
-												{ key: 'type', value: nuclearType, unit: '', label: 'Loại phản ứng' },
-											],
+											parameters: [{ key: 'type', value: nuclearType, unit: '', label: 'Loại phản ứng' }],
 										}}
 										isPlaying={isPhPlaying}
 										isSlow={isPhSlow}
@@ -6757,9 +9864,7 @@ const Workspace: React.FC = () => {
 											simulation_id: 'SIM-41',
 											subject: 'physics',
 											topic: 'bindingenergy',
-											parameters: [
-												{ key: 'A', value: bindingEnergyA, unit: '', label: 'Số khối A' },
-											],
+											parameters: [{ key: 'A', value: bindingEnergyA, unit: '', label: 'Số khối A' }],
 										}}
 										isPlaying={isPhPlaying}
 										isSlow={isPhSlow}
@@ -7168,7 +10273,9 @@ const Workspace: React.FC = () => {
 											className={`stu-ws__chat-row ${m.role === 'user' ? 'stu-ws__chat-row--user' : 'stu-ws__chat-row--ai'}`}
 										>
 											{m.role === 'ai' && <span className='stu-ws__chat-avatar'>AI</span>}
-											<div className={`stu-ws__chat-msg ${m.role === 'user' ? 'stu-ws__chat-msg--user' : 'stu-ws__chat-msg--ai'}`}>
+											<div
+												className={`stu-ws__chat-msg ${m.role === 'user' ? 'stu-ws__chat-msg--user' : 'stu-ws__chat-msg--ai'}`}
+											>
 												{m.text}
 											</div>
 										</div>
@@ -7253,9 +10360,14 @@ const Workspace: React.FC = () => {
 										const picked = dynAnswers[dynCurrent];
 										const progressPct = `${Math.round(((picked ? dynCurrent + 1 : dynCurrent) / dynQuestions.length) * 100)}%`;
 										return (
-											<div className='stu-ws__quiz'>
+											<div className='stu-ws__quiz stu-ws__quiz--active'>
 												<div className='stu-ws__quiz-header'>
-													<span className='stu-ws__quiz-badge'>{dynUsedLlm ? '🤖 AI' : '📚 Quiz'}</span>
+													<span
+														className='stu-ws__quiz-badge'
+														title={dynUsedLlm ? 'Câu hỏi tạo bởi AI' : 'Câu hỏi mẫu'}
+													>
+														AI
+													</span>
 													<span className='stu-ws__quiz-count'>
 														Câu {dynCurrent + 1}/{dynQuestions.length}
 													</span>
@@ -7265,7 +10377,7 @@ const Workspace: React.FC = () => {
 															onClick={() => setShowPrintMenu((v) => !v)}
 															title='In / Xuất PDF'
 														>
-															🖨️
+															In đề
 														</div>
 														{showPrintMenu && (
 															<div className='dqz-print-menu'>
@@ -7309,10 +10421,10 @@ const Workspace: React.FC = () => {
 															>
 																<div
 																	className={`stu-ws__quiz-radio ${isCorrect && picked ? 'stu-ws__quiz-radio--correct' : ''} ${isSel && !isCorrect ? 'stu-ws__quiz-radio--wrong' : ''}`}
-																/>
-																<span>
-																	<b>{o.k.toUpperCase()}.</b> {o.t}
-																</span>
+																>
+																	{o.k.toUpperCase()}
+																</div>
+																<span>{o.t}</span>
 															</div>
 														);
 													})}
@@ -7323,7 +10435,15 @@ const Workspace: React.FC = () => {
 													>
 														{picked === q.correct ? '✓ Chính xác!' : '✗ Chưa đúng.'}
 														{q.explanation && (
-															<span style={{ display: 'block', fontWeight: 400, marginTop: 4, fontSize: 12 }}>
+															<span
+																style={{
+																	display: 'block',
+																	fontWeight: 400,
+																	marginTop: 3,
+																	fontSize: 11.5,
+																	lineHeight: 1.45,
+																}}
+															>
 																{q.explanation}
 															</span>
 														)}
@@ -7335,16 +10455,18 @@ const Workspace: React.FC = () => {
 															← Trước
 														</div>
 													)}
-													<div style={{ flex: 1 }} />
 													{dynCurrent < dynQuestions.length - 1 ? (
 														<div
-															className='dqz-nav-btn dqz-nav-btn--primary'
-															onClick={() => setDynCurrent((c) => c + 1)}
+															className={`dqz-nav-btn dqz-nav-btn--primary ${!picked ? 'dqz-nav-btn--disabled' : ''}`}
+															onClick={() => picked && setDynCurrent((c) => c + 1)}
 														>
 															Tiếp →
 														</div>
 													) : (
-														<div className='dqz-nav-btn dqz-nav-btn--primary' onClick={() => setDynQuizState('done')}>
+														<div
+															className={`dqz-nav-btn dqz-nav-btn--primary ${!picked ? 'dqz-nav-btn--disabled' : ''}`}
+															onClick={() => picked && setDynQuizState('done')}
+														>
 															Xem kết quả
 														</div>
 													)}
@@ -7421,20 +10543,24 @@ const Workspace: React.FC = () => {
 										</p>
 									</div>
 									<div className='print-questions'>
-										{dynQuestions.map((q, i) => (
-											<div key={i} className='print-question'>
-												<div className='print-q-text'>
-													<b>Câu {i + 1}:</b> {q.q}
+										{dynQuestions.length === 0 ? (
+											<div className='print-empty'>Chưa có câu hỏi để in. Hãy tạo bộ câu hỏi trước.</div>
+										) : (
+											dynQuestions.map((q, i) => (
+												<div key={i} className='print-question'>
+													<div className='print-q-text'>
+														<b>Câu {i + 1}:</b> {q.q}
+													</div>
+													<div className='print-opts'>
+														{q.opts.map((o) => (
+															<div key={o.k} className='print-opt'>
+																<b>{o.k.toUpperCase()}.</b> {o.t}
+															</div>
+														))}
+													</div>
 												</div>
-												<div className='print-opts'>
-													{q.opts.map((o) => (
-														<div key={o.k} className='print-opt'>
-															<b>{o.k.toUpperCase()}.</b> {o.t}
-														</div>
-													))}
-												</div>
-											</div>
-										))}
+											))
+										)}
 									</div>
 									{dynQuestions.length > 0 && printWithAnswers && (
 										<div className='print-answer-key'>
