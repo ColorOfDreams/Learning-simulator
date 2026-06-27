@@ -36,6 +36,7 @@ declare module Ai {
     message: string;
     subject?: string;
     grade?: number;
+    context?: { role: 'user' | 'assistant'; content: string }[];
   };
 }
 
