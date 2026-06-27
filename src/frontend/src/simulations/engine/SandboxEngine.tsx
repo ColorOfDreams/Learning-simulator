@@ -33,7 +33,6 @@ const SceneObjects = React.memo(({
 }: {
   objects: Scene.Object[];
   isPlaying: boolean;
-  interactionMode?: 'observe' | 'practice';
   onUpdatePosition?: (id: string, pos: [number, number, number]) => void;
   sceneGraph: Scene.IRecord | null;
 }) => {
@@ -79,7 +78,6 @@ const SceneObjects = React.memo(({
               doiTuong={obj}
               isPlaying={isPlaying}
               dangChay={isPlaying}
-              interactionMode={interactionMode}
               onUpdatePosition={onUpdatePosition}
               capNhatViTri={onUpdatePosition}
               sceneGraph={sceneGraph}
@@ -95,7 +93,6 @@ const SceneObjects = React.memo(({
 interface Props {
   sceneGraph: Scene.IRecord | null;
   isPlaying: boolean;
-  interactionMode?: 'observe' | 'practice';
   onUpdatePosition?: (id: string, position: [number, number, number]) => void;
   showGuide?: boolean;
   onDismissGuide?: () => void;
@@ -108,7 +105,7 @@ interface Props {
   onSetRotationAxis?: (axis: 'x' | 'y' | 'z' | null) => void;
 }
 
-const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, interactionMode, onUpdatePosition, showGuide, onDismissGuide, highlightedObjectId, highlightLabel, highlightColor, selectedEquipmentId: externalSelectedId, onSelectEquipment, rotationAxis: externalRotationAxis, onSetRotationAxis }) => {
+const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePosition, showGuide, onDismissGuide, highlightedObjectId, highlightLabel, highlightColor, selectedEquipmentId: externalSelectedId, onSelectEquipment, rotationAxis: externalRotationAxis, onSetRotationAxis }) => {
   const [hoveredObjectId, setHoveredObjectId] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [internalSelectedId, setInternalSelectedId] = useState<string | null>(null);
@@ -189,7 +186,6 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, interactionMode
                 <SceneObjects
                   objects={sceneGraph.objects || []}
                   isPlaying={isPlaying}
-                  interactionMode={interactionMode}
                   onUpdatePosition={onUpdatePosition}
                   sceneGraph={sceneGraph}
                 />
@@ -229,7 +225,7 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, interactionMode
           )}
           <OrbitControls
             makeDefault
-            enabled={interactionMode === 'observe' || (!hoveredObjectId && !isDragging)}
+            enabled={!hoveredObjectId && !isDragging}
             minPolarAngle={0}
             maxPolarAngle={Math.PI / 2.1}
             minDistance={3}
