@@ -6,7 +6,19 @@
     "grade": 11,
     "topic": "oscillation",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L01_003"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L01_003"],
+      "answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "dao động cơ",
+          "chuyển động qua lại",
+          "quanh vị trí cân bằng",
+          {
+            "label": "lặp đi lặp lại",
+            "anyOf": ["lặp đi lặp lại", "tuần hoàn", "trở lại vị trí cũ"]
+          }
+        ]
+      }
     }
   },
   {
@@ -16,7 +28,23 @@
     "grade": 11,
     "topic": "simple_harmonic_motion",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L01_006"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L01_006", "th_shm_002"],
+      "answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          {
+            "label": "x là li độ",
+            "anyOf": ["x là li độ", "li độ x", "x cho biết vị trí", "phương trình dao động điều hòa x"]
+          },
+          "A là biên độ",
+          "omega là tần số góc",
+          "phi là pha ban đầu",
+          {
+            "label": "omega t + phi là pha dao động",
+            "anyOf": ["omega t + phi là pha dao động", "ωt + φ", "pha theo thời gian"]
+          }
+        ]
+      }
     }
   },
   {
@@ -26,7 +54,11 @@
     "grade": 11,
     "topic": "simple_harmonic_motion",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L01_006", "TH_PHY11_C01_L02_003"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L01_006", "TH_PHY11_C01_L02_003", "th_shm_002"],
+      "answer": {
+        "type": "conceptual",
+        "required_concepts": ["A là biên độ", "omega là tần số góc", "phi là pha ban đầu"]
+      }
     }
   },
   {
@@ -36,7 +68,22 @@
     "grade": 11,
     "topic": "simple_harmonic_motion",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003"],
+      "answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "biên độ",
+          {
+            "label": "li độ cực đại",
+            "anyOf": ["li độ cực đại", "độ dịch chuyển cực đại", "x_max"]
+          },
+          {
+            "label": "độ lệch lớn nhất",
+            "anyOf": ["độ lệch lớn nhất", "độ lớn tối đa", "độ lớn của dao động", "khoảng cách tối đa"]
+          },
+          "vị trí cân bằng"
+        ]
+      }
     }
   },
   {
@@ -46,7 +93,32 @@
     "grade": 11,
     "topic": "simple_harmonic_motion",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003", "TH_PHY11_C01_L02_029"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003", "TH_PHY11_C01_L02_029"],
+      "answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          {
+            "label": "chu kì",
+            "anyOf": ["chu kì", "chu kỳ", "T"]
+          },
+          {
+            "label": "thời gian thực hiện một dao động toàn phần",
+            "anyOf": [
+              "thời gian thực hiện một dao động toàn phần",
+              "thời gian để vật thực hiện một dao động",
+              "khoảng thời gian để vật thực hiện một dao động"
+            ]
+          },
+          {
+            "label": "đơn vị giây",
+            "anyOf": ["đơn vị giây", "đơn vị là giây", "giây (s)"]
+          },
+          {
+            "label": "kí hiệu T",
+            "anyOf": ["kí hiệu T", "chu kì (T)", "chu kỳ (T)"]
+          }
+        ]
+      }
     }
   },
   {
@@ -56,7 +128,22 @@
     "grade": 11,
     "topic": "simple_harmonic_motion",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003", "TH_PHY11_C01_L02_029"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003", "TH_PHY11_C01_L02_029"],
+      "answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "tần số",
+          {
+            "label": "số dao động trong một giây",
+            "anyOf": ["số dao động trong một giây", "số dao động mà vật thực hiện được trong một giây"]
+          },
+          "f = 1/T",
+          {
+            "label": "đơn vị Hz",
+            "anyOf": ["đơn vị Hz", "đơn vị là héc", "Hz", "héc"]
+          }
+        ]
+      }
     }
   },
   {
@@ -66,7 +153,17 @@
     "grade": 11,
     "topic": "simple_harmonic_motion",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_029"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_029"],
+      "answer": {
+        "type": "mixed",
+        "required_concepts": [
+          { "label": "omega", "anyOf": ["omega", "ω"] },
+          "tần số góc",
+          { "label": "ω = 2π/T", "anyOf": ["ω = 2π/T", "omega = 2pi/T", "ω=2π/T"] },
+          { "label": "ω = 2πf", "anyOf": ["ω = 2πf", "omega = 2pi f", "ω=2πf"] },
+          "rad/s"
+        ]
+      }
     }
   },
   {
@@ -76,7 +173,19 @@
     "grade": 11,
     "topic": "simple_harmonic_motion",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_008"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_008"],
+      "answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "pha ban đầu",
+          { "label": "trạng thái ban đầu", "anyOf": ["trạng thái ban đầu", "thời điểm bắt đầu quan sát"] },
+          { "label": "thời điểm t = 0", "anyOf": ["thời điểm t = 0", "t=0", "ban đầu"] },
+          {
+            "label": "vị trí hoặc chiều chuyển động ban đầu",
+            "anyOf": ["vị trí hoặc chiều chuyển động ban đầu", "vị trí của vật", "hướng di chuyển", "vị trí và hướng chuyển động"]
+          }
+        ]
+      }
     }
   },
   {
@@ -86,7 +195,16 @@
     "grade": 11,
     "topic": "simple_harmonic_motion",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_012"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L02_012"],
+      "answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "độ lệch pha",
+          { "label": "hiệu pha", "anyOf": ["hiệu pha", "chênh lệch về pha", "khác biệt về pha", "lấy hiệu giữa hai pha"] },
+          { "label": "hai dao động cùng chu kì", "anyOf": ["hai dao động cùng chu kì", "hai dao động cùng chu kỳ", "cùng chu kì"] },
+          { "label": "sớm pha hoặc trễ pha", "anyOf": ["sớm pha hoặc trễ pha", "sớm hoặc trễ pha", "sớm hoặc trễ pha nhau"] }
+        ]
+      }
     }
   },
   {
@@ -96,7 +214,16 @@
     "grade": 11,
     "topic": "shm_kinematics",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L03_004"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L03_004"],
+      "answer": {
+        "type": "mixed",
+        "required_concepts": [
+          { "label": "v = x'", "anyOf": ["v = x'", "v=x'", "vận tốc là đạo hàm", "tính đạo hàm của x"] },
+          { "label": "v = -ωA sin(ωt + φ)", "anyOf": ["v = -ωA sin(ωt + φ)", "v=-ωA sin(ωt+φ)", "v = -omega A sin(omega t + phi)"] },
+          "vận tốc",
+          { "label": "đạo hàm của li độ theo thời gian", "anyOf": ["đạo hàm của li độ theo thời gian", "phương trình vận tốc"] }
+        ]
+      }
     }
   },
   {
@@ -106,7 +233,16 @@
     "grade": 11,
     "topic": "shm_kinematics",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L03_011"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L03_011"],
+      "answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "gia tốc",
+          { "label": "li độ x", "anyOf": ["li độ x", "li độ"] },
+          { "label": "a = -ω²x", "anyOf": ["a = -ω²x", "a=-ω^2x", "a = -omega^2 x", "a=-ω²x"] },
+          { "label": "ngược chiều với li độ", "anyOf": ["ngược chiều với li độ", "trái dấu với li độ", "hướng về vị trí cân bằng"] }
+        ]
+      }
     }
   },
   {
@@ -116,7 +252,18 @@
     "grade": 11,
     "topic": "shm_energy",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L05_013"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L05_013"],
+      "answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "con lắc lò xo",
+          { "label": "khối lượng m", "anyOf": ["khối lượng m", "m là khối lượng", "m là khối lượng vật nặng"] },
+          { "label": "độ cứng k", "anyOf": ["độ cứng k", "k là độ cứng", "k là độ cứng của lò xo"] },
+          { "label": "T = 2π√(m/k)", "anyOf": ["T = 2π√(m/k)", "T=2π√(m/k)", "T = 2pi sqrt(m/k)", "T=2pi sqrt(m/k)"] },
+          { "label": "m tăng thì T tăng", "anyOf": ["m tăng thì T tăng", "chu kỳ tăng khi khối lượng tăng", "chu kì tăng khi khối lượng tăng"] },
+          { "label": "k tăng thì T giảm", "anyOf": ["k tăng thì T giảm", "giảm khi độ cứng tăng", "chu kì giảm khi độ cứng tăng"] }
+        ]
+      }
     }
   },
   {
@@ -126,7 +273,17 @@
     "grade": 11,
     "topic": "shm_energy",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L05_016"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L05_016"],
+      "answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "con lắc đơn",
+          { "label": "góc nhỏ", "anyOf": ["góc nhỏ", "góc α nhỏ", "góc lệch nhỏ"] },
+          "thế năng trọng trường",
+          { "label": "phụ thuộc vào độ cao", "anyOf": ["phụ thuộc vào độ cao", "mgh", "độ cao", "vị trí khác với vị trí cân bằng"] },
+          { "label": "xấp xỉ bậc hai", "anyOf": ["xấp xỉ bậc hai", "tỉ lệ với bình phương", "gần đúng bậc hai", "xấp xỉ thành", "α^2", "alpha^2"] }
+        ]
+      }
     }
   },
   {
@@ -136,7 +293,17 @@
     "grade": 11,
     "topic": "shm_energy",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L05_002", "TH_PHY11_C01_L05_025"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L05_002", "TH_PHY11_C01_L05_025"],
+      "answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "động năng",
+          { "label": "li độ x", "anyOf": ["li độ x", "li độ"] },
+          { "label": "Wđ = 1/2 k(A² - x²)", "anyOf": ["Wđ = 1/2 k(A² - x²)", "Wd = 1/2 k(A^2 - x^2)", "W_đ = (1/2)mω²(A² - x²)", "Wđ=1/2k(A^2-x^2)"] },
+          { "label": "cực đại tại vị trí cân bằng", "anyOf": ["cực đại tại vị trí cân bằng", "vị trí cân bằng, động năng đạt", "x = 0"] },
+          { "label": "bằng 0 ở biên", "anyOf": ["bằng 0 ở biên", "vị trí biên, động năng bằng 0", "x = ±A"] }
+        ]
+      }
     }
   },
   {
@@ -146,7 +313,17 @@
     "grade": 11,
     "topic": "shm_energy",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L05_004", "TH_PHY11_C01_L05_025"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L05_004", "TH_PHY11_C01_L05_025", "TH_PHY11_C01_L05_013"],
+      "answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "thế năng",
+          { "label": "li độ x", "anyOf": ["li độ x", "li độ"] },
+          { "label": "Wt = 1/2 kx²", "anyOf": ["Wt = 1/2 kx²", "W_t = (1/2)kx^2", "Wt=1/2kx^2", "thế năng = 1/2 k x^2"] },
+          { "label": "k là độ cứng", "anyOf": ["k là độ cứng", "độ cứng k"] },
+          { "label": "cực đại ở biên", "anyOf": ["cực đại ở biên", "lớn nhất ở biên", "x = ±A"] }
+        ]
+      }
     }
   },
   {
@@ -156,7 +333,17 @@
     "grade": 11,
     "topic": "shm_energy",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L05_008", "TH_PHY11_C01_L05_025"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L05_008", "TH_PHY11_C01_L05_025", "th_shm_004"],
+      "answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "cơ năng",
+          { "label": "W = 1/2 kA²", "anyOf": ["W = 1/2 kA²", "W=1/2kA^2", "W = 1/2 m ω² A²", "W=1/2mω²A²", "cơ năng = 1/2 k A^2"] },
+          { "label": "tổng động năng và thế năng", "anyOf": ["tổng động năng và thế năng", "tổng của động năng", "tổng động năng (W_đ) và thế năng (W_t)", "W = W_đ + W_t"] },
+          "bảo toàn",
+          { "label": "không đổi nếu bỏ qua ma sát", "anyOf": ["không đổi nếu bỏ qua ma sát", "không đổi theo thời gian", "không đổi"] }
+        ]
+      }
     }
   },
   {
@@ -166,7 +353,17 @@
     "grade": 11,
     "topic": "damped_oscillation",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L06_021"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L06_021"],
+      "answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "dao động tắt dần",
+          "biên độ giảm dần",
+          { "label": "lực cản", "anyOf": ["lực cản", "lực cản của môi trường"] },
+          "ma sát",
+          { "label": "năng lượng giảm", "anyOf": ["năng lượng giảm", "cơ năng bị tiêu hao", "tiêu hao"] }
+        ]
+      }
     }
   },
   {
@@ -176,7 +373,17 @@
     "grade": 11,
     "topic": "damped_oscillation",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L06_015", "TH_PHY11_C01_L06_021"]
+      "relevant_chunk_ids": ["TH_PHY11_C01_L06_015", "TH_PHY11_C01_L06_021"],
+      "answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "cộng hưởng",
+          "dao động cưỡng bức",
+          { "label": "tần số lực cưỡng bức", "anyOf": ["tần số lực cưỡng bức", "tần số của lực cưỡng bức", "tần số ngoại lực"] },
+          "tần số riêng",
+          { "label": "biên độ đạt cực đại", "anyOf": ["biên độ đạt cực đại", "biên độ cực đại", "biên độ lớn nhất", "biên độ dao động cưỡng bức tăng đến giá trị cực đại"] }
+        ]
+      }
     }
   }
 ]

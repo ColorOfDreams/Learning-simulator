@@ -75,7 +75,7 @@ const RAG_SUGGESTED_FIXES: Record<RagErrorType, string> = {
 
 const ANSWER_SUGGESTED_FIXES: Record<AnswerErrorType, string> = {
   numeric_wrong: 'Improve calculation prompt and numeric extraction checks',
-  missing_required_concepts: 'Improve prompt answer format and required concept coverage',
+  missing_required_concepts: 'Improve answer generation or required concept coverage',
   answer_empty: 'Check AI method fallback and answer extraction',
   low_groundedness: 'Require answer to cite and use retrieved context',
   hallucination: 'Constrain answer to references and reject unsupported claims',

@@ -49,6 +49,17 @@ export class ChatRequestDto {
   @IsString()
   simulationId?: string;
 
+  @ApiPropertyOptional({ example: 'grade_11' })
+  @IsOptional()
+  @IsString()
+  student_level?: string;
+
+  @ApiPropertyOptional({ example: 'short_clear', enum: ['short_clear', 'step_by_step', 'exam_focused'] })
+  @IsOptional()
+  @IsString()
+  @IsIn(['short_clear', 'step_by_step', 'exam_focused'])
+  preferred_style?: 'short_clear' | 'step_by_step' | 'exam_focused';
+
   @ApiPropertyOptional({ type: [ChatMessageDto] })
   @IsOptional()
   @IsArray()

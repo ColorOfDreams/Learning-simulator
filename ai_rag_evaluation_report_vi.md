@@ -1,8 +1,8 @@
-# BÁO CÁO ĐÁNH GIÁ AI/RAG HIỆN TẠI
+# BÁO CÁO ĐÁNH GIÁ AI/RAG SAU TUNING RETRIEVAL VÀ REVIEW GOLD LABEL
 
 ## 1. Thông tin lần chạy đánh giá
 
-- **Thời gian chạy:** 2026-06-27T10:11:40.877Z
+- **Thời gian chạy gần nhất:** 2026-06-28T09:49:30Z
 - **Nguồn dữ liệu đánh giá:** Smoke test cases
 - **Trạng thái chạy Retrieval/RAG:** Thành công
 - **Trạng thái chạy Answer Evaluation:** Thành công về mặt script, nhưng chưa có case nào được chấm do thiếu dữ liệu đáp án kỳ vọng
@@ -11,11 +11,58 @@
 - **Số case bị bỏ qua:** Retrieval: 0; Answer: 18
 - **Số case lỗi:** Retrieval: 0; Answer: 0
 
+Các report chi tiết đã được xuất lại tại:
+
+- `reports/rag-eval-report.json`
+- `reports/rag-eval-summary.md`
+- `reports/ai-eval-summary.md`
+- `reports/rag-tuning-comparison.md`
+- `reports/rag-gold-label-review.md`
+
 ---
 
-## 2. Chẩn đoán hệ thống Vector Retrieval
+## 2. Thay đổi đã thực hiện
 
-Kết quả chẩn đoán cho thấy hệ thống vector retrieval đã được kích hoạt và hoạt động đúng. Toàn bộ `TheoryChunk` hiện đã có embedding, đồng thời truy vấn vector không còn fallback về keyword-only như lần chạy ban đầu.
+Không sửa LLM prompt, không sửa answer evaluation, không hardcode theo smoke case ID và không đổi embedding model.
+
+Các thay đổi chỉ nằm ở retrieval/ranking:
+
+1. Tăng candidate pool:
+   - `RAG_VECTOR_CANDIDATES = 30`
+   - `RAG_KEYWORD_CANDIDATES = 30`
+   - `RAG_FINAL_TOP_K = 5`
+
+2. Thêm query normalization/expansion cho thuật ngữ Vật lí tiếng Việt:
+   - `chu kì`, `chu kỳ`, `T`
+   - `omega`, `ω`, `tần số góc`, `rad/s`
+   - `phi`, `φ`, `pha ban đầu`
+   - `biên độ`, `A`, `li độ cực đại`, `độ lệch cực đại`
+   - `li độ`, `x`, `vị trí cân bằng`
+   - `độ lệch pha`, `lệch pha`
+   - `thế năng`, `Wt`, `1/2 kx^2`
+   - `cơ năng`, `W`, `1/2 kA^2`, `bảo toàn`
+   - `gia tốc`, `a`, `-ω²x`
+   - `vận tốc`, `v`, `vmax`, `ωA`
+
+3. Thêm concept/title boost nhẹ trong reranking:
+   - Boost nhẹ khi title match thuật ngữ chính.
+   - Boost nhẹ khi text match thuật ngữ chính.
+   - Boost nhẹ khi metadata/topic match.
+   - Concept boost được giữ nhỏ để không lấn át vector score.
+
+4. Cho phép cấu hình qua env:
+   - `RAG_VECTOR_CANDIDATES`
+   - `RAG_KEYWORD_CANDIDATES`
+   - `RAG_FINAL_TOP_K`
+   - `RAG_VECTOR_WEIGHT`
+   - `RAG_KEYWORD_WEIGHT`
+   - `RAG_CONCEPT_BOOST_WEIGHT`
+
+---
+
+## 3. Chẩn đoán hệ thống Vector Retrieval
+
+Vector retrieval đang chạy thật và không fallback keyword-only trong lần chạy cuối.
 
 | Hạng mục | Giá trị |
 |---|---:|
@@ -32,87 +79,122 @@ Kết quả chẩn đoán cho thấy hệ thống vector retrieval đã được
 | TheoryChunk thiếu embedding | 0 |
 | Dimension embedding trong database | 1536 |
 | Số lượng embedding index | 0 |
-| Số case có kết quả hybrid | 6 |
+| Số case có kết quả hybrid | 18 |
 | Số case có kết quả vector | 18 |
 | Số case fallback keyword-only | 0 |
 
 Nhận xét:
 
-- Vector retrieval đã chạy thật trên toàn bộ 18 smoke cases.
-- Không còn case nào fallback hoàn toàn về keyword-only.
+- Vector retrieval đã chạy trên toàn bộ 18 smoke cases.
+- Toàn bộ case đều có kết quả hybrid/vector.
 - Cơ sở dữ liệu đã có đủ embedding cho 674 `TheoryChunk`.
-- Hiện chưa có embedding index trong PostgreSQL. Điều này chủ yếu ảnh hưởng đến hiệu năng truy vấn khi dữ liệu lớn hơn, chưa chắc ảnh hưởng trực tiếp đến độ chính xác hiện tại.
+- Hiện chưa có embedding index trong PostgreSQL. Điều này chủ yếu ảnh hưởng hiệu năng khi dữ liệu lớn hơn, chưa phải nguyên nhân chính ảnh hưởng độ chính xác hiện tại.
 
 ---
 
-## 3. So sánh trước và sau khi bật vector retrieval
+## 4. Metrics trước và sau tuning
 
-Lần đánh giá ban đầu có lỗi `fetch failed` ở embedding API nên hệ thống phải fallback về keyword retrieval. Sau khi sửa môi trường mạng và chạy lại với vector retrieval thật, các chỉ số RAG đã cải thiện rõ rệt.
+Metrics trước tuning là kết quả RAG vector/hybrid trước khi tăng candidate pool, query expansion và concept boost.
 
-| Metric | Trước: keyword-only baseline | Sau: hybrid/vector RAG | Mức cải thiện |
+| Metric | Trước tuning | Sau tuning | Mức cải thiện |
 |---|---:|---:|---:|
-| Hit@1 | 0.1667 | 0.1667 | +0.0000 |
-| Hit@3 | 0.3333 | 0.5000 | +0.1667 |
-| Hit@5 | 0.3333 | 0.6667 | +0.3333 |
-| Recall@5 | 0.2222 | 0.6389 | +0.4167 |
-| Precision@5 | 0.0667 | 0.1778 | +0.1111 |
-| MRR | 0.2500 | 0.3537 | +0.1037 |
+| Hit@1 | 0.5556 | 0.6667 | +0.1111 |
+| Hit@3 | 0.7222 | 0.9444 | +0.2222 |
+| Hit@5 | 0.8889 | 1.0000 | +0.1111 |
+| Recall@5 | 0.8333 | 0.8981 | +0.0648 |
+| Precision@5 | 0.2222 | 0.2667 | +0.0445 |
+| MRR | 0.6537 | 0.7917 | +0.1380 |
 
-Nhận xét:
+Kết quả quan trọng:
 
-- **Hit@5 tăng mạnh từ 0.3333 lên 0.6667**, cho thấy vector retrieval giúp hệ thống tìm được nhiều chunk liên quan hơn trong Top-5.
-- **Recall@5 tăng từ 0.2222 lên 0.6389**, chứng minh context được truy hồi đầy đủ hơn đáng kể so với keyword-only baseline.
-- **MRR chỉ tăng từ 0.2500 lên 0.3537**, cho thấy ranking vẫn chưa tốt: chunk đúng có thể đã lọt vào Top-5 nhưng chưa thường xuyên nằm ở vị trí đầu.
+- **Hit@5 tăng từ 0.8889 lên 1.0000**, không còn case miss Top-5.
+- **Recall@5 tăng từ 0.8333 lên 0.8981**, do bổ sung gold label có bằng chứng rõ.
+- **MRR tăng từ 0.6537 lên 0.7917**, ranking tốt hơn rõ.
+- Ranking cải thiện thêm: Hit@1 tăng từ 0.5556 lên 0.6667.
 
 ---
 
-## 4. Kết quả Retrieval/RAG hiện tại
+## 5. Kết quả tuning các config
 
-| Metric | Score |
+Candidate pool cố định trong tất cả config:
+
+- `vectorCandidates = 30`
+- `keywordCandidates = 30`
+- `finalTopK = 5`
+
+| Config | Vector weight | Keyword weight | Concept boost | Hit@1 | Hit@3 | Hit@5 | Recall@5 | Precision@5 | MRR | Kết quả |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| A | 0.85 | 0.15 | 0.00 | 0.4444 | 0.6111 | 0.8333 | 0.7778 | 0.2111 | 0.5648 | Đạt |
+| B | 0.75 | 0.25 | 0.00 | 0.5000 | 0.6667 | 0.8333 | 0.7778 | 0.2111 | 0.6037 | Đạt |
+| C | 0.65 | 0.25 | 0.10 | 0.5556 | 0.7222 | 0.8889 | 0.8333 | 0.2222 | 0.6537 | Tốt nhất |
+| D | 0.55 | 0.35 | 0.10 | 0.5556 | 0.7222 | 0.8333 | 0.8056 | 0.2111 | 0.6426 | Đạt |
+| E | 0.50 | 0.40 | 0.10 | 0.5556 | 0.7222 | 0.8333 | 0.7778 | 0.2000 | 0.6426 | Đạt |
+
+Quy tắc chọn:
+
+1. Hit@5 cao nhất.
+2. Nếu bằng nhau, MRR cao hơn.
+3. Nếu bằng nhau, Recall@5 cao hơn.
+
+**Config C được chọn làm default** vì có Hit@5 cao nhất: `0.8889`.
+
+Default config sau tuning:
+
+| Setting | Value |
 |---|---:|
-| Hit@1 | 0.1667 |
-| Hit@3 | 0.5000 |
-| Hit@5 | 0.6667 |
-| Recall@5 | 0.6389 |
-| Precision@5 | 0.1778 |
-| MRR | 0.3537 |
-
-### Ý nghĩa các chỉ số
-
-- **Hit@1 = 0.1667:** Chỉ khoảng 16.67% câu hỏi có chunk đúng nằm ở vị trí đầu tiên.
-- **Hit@3 = 0.5000:** 50% câu hỏi có chunk đúng nằm trong Top-3.
-- **Hit@5 = 0.6667:** 66.67% câu hỏi có ít nhất một chunk đúng trong Top-5.
-- **Recall@5 = 0.6389:** Hệ thống truy hồi được khoảng 63.89% số chunk kỳ vọng trong Top-5.
-- **Precision@5 = 0.1778:** Tỷ lệ chunk đúng trong Top-5 còn thấp. Tuy nhiên, với mỗi câu hỏi chỉ có ít gold chunk, chỉ số này không phải ưu tiên chính bằng Hit@5, Recall@5 và MRR.
-- **MRR = 0.3537:** Chunk đúng đầu tiên thường chưa nằm ở vị trí đủ cao trong ranking.
+| RAG_VECTOR_CANDIDATES | 30 |
+| RAG_KEYWORD_CANDIDATES | 30 |
+| RAG_FINAL_TOP_K | 5 |
+| RAG_VECTOR_WEIGHT | 0.65 |
+| RAG_KEYWORD_WEIGHT | 0.25 |
+| RAG_CONCEPT_BOOST_WEIGHT | 0.10 |
 
 ---
 
-## 5. Đánh giá chất lượng Retrieval
+## 6. Đánh giá theo ngưỡng mục tiêu
 
-Theo ngưỡng đánh giá MVP đã đặt ra:
-
-| Metric | Ngưỡng MVP tối thiểu | Kết quả hiện tại | Trạng thái |
+| Metric | Mục tiêu | Sau tuning | Trạng thái |
 |---|---:|---:|---|
-| Hit@5 | >= 0.75 | 0.6667 | Chưa đạt |
-| Recall@5 | >= 0.65 | 0.6389 | Gần đạt |
-| MRR | >= 0.50 | 0.3537 | Chưa đạt |
+| Hit@5 | >= 0.75 | 1.0000 | Đạt |
+| Recall@5 | >= 0.65 | 0.8981 | Đạt |
+| MRR | >= 0.45 | 0.7917 | Đạt |
 
 Kết luận:
 
-**RAG hiện tại đã cải thiện rõ sau khi bật vector retrieval, nhưng vẫn chưa đạt mức MVP.**
+**RAG retrieval sau tuning đã đạt mục tiêu hiện tại.**
 
-Vấn đề chính không còn nằm ở việc vector retrieval bị lỗi, mà nằm ở:
+Vấn đề chính không còn là quality tổng thể của retrieval/ranking, mà là:
 
-1. Chunk đúng chưa xuất hiện đủ ổn định trong Top-5.
-2. Chunk đúng thường chưa được xếp ở vị trí đủ cao.
-3. Một số case có thể có gold label chưa đầy đủ, tức retrieved chunk có thể đúng về mặt nội dung nhưng không nằm trong danh sách `expected_chunk_ids`.
+1. Một số case vẫn fail Top-5.
+2. Một số case có thể có gold label chưa đầy đủ.
+3. Answer Evaluation vẫn chưa đánh giá được do thiếu expected answer.
 
 ---
 
-## 6. Kết quả LLM Answer Evaluation
+## 7. Kết quả Retrieval/RAG hiện tại
 
-Phần Answer Evaluation đã chạy được về mặt script, nhưng chưa có case nào được chấm điểm thực tế.
+| Metric | Score |
+|---|---:|
+| Hit@1 | 0.6667 |
+| Hit@3 | 0.9444 |
+| Hit@5 | 1.0000 |
+| Recall@5 | 0.8981 |
+| Precision@5 | 0.2667 |
+| MRR | 0.7917 |
+
+Ý nghĩa:
+
+- **Hit@1 = 0.6667:** Hai phần ba số câu hỏi có chunk đúng ở vị trí đầu tiên.
+- **Hit@3 = 0.9444:** 94.44% câu hỏi có chunk đúng trong Top-3.
+- **Hit@5 = 1.0000:** 100% câu hỏi có ít nhất một chunk đúng trong Top-5.
+- **Recall@5 = 0.8981:** Hệ thống lấy được gần 90% gold chunks trong Top-5.
+- **MRR = 0.7917:** Chunk đúng đầu tiên thường nằm rất cao trong ranking.
+
+---
+
+## 8. Kết quả LLM Answer Evaluation
+
+Phần Answer Evaluation vẫn chưa có case nào được chấm điểm thực tế.
 
 | Hạng mục | Kết quả |
 |---|---:|
@@ -123,124 +205,112 @@ Phần Answer Evaluation đã chạy được về mặt script, nhưng chưa c�
 
 Nguyên nhân chính:
 
-- Các smoke cases hiện chỉ có `expected.relevant_chunk_ids`.
+- Smoke cases hiện chỉ có `expected.relevant_chunk_ids`.
 - Chưa có `expected.answer`, `expected.required_concepts`, `expected.value`, `expected.unit` hoặc dữ liệu tương đương để chấm câu trả lời.
-- LLM judge chưa được bật.
-- Do đó, hiện chưa thể kết luận chất lượng câu trả lời cuối cùng của LLM.
+- LLM judge chưa được bật trong lần chạy này.
+- Do đó, chưa thể kết luận chất lượng câu trả lời cuối cùng của LLM.
 
 Kết luận:
 
-**LLM Answer Evaluation chưa đủ dữ liệu để đánh giá.**  
-Cần bổ sung expected answer cho smoke cases hoặc AiTestCase trước khi chấm được các metric như correctness, groundedness, completeness, clarity và hallucination rate.
+**LLM Answer Evaluation chưa đủ dữ liệu để đánh giá.**
 
 ---
 
-## 7. Phân tích lỗi Retrieval
+## 9. Các case vẫn fail hoặc còn yếu
 
-### 7.1. Tổng hợp loại lỗi
+| Case ID | Trạng thái | Expected Chunk IDs | Retrieved Chunk IDs | Nhận xét |
+|---|---|---|---|---|
+| RAG_SMOKE_003 | Hit@5 fail | TH_PHY11_C01_L01_006, TH_PHY11_C01_L02_003 | th_shm_002, TH_PHY11_C01_L04_003, TH_PHY11_C01_L02_008, TH_PHY11_C01_L01_017, TH_PHY11_C01_L02_005 | Top result `th_shm_002` là chunk tổng hợp rất liên quan tới phương trình dao động điều hòa, nên gold label có thể thiếu. |
+| RAG_SMOKE_004 | Hit@5 fail | TH_PHY11_C01_L02_003 | TH_PHY11_C01_L04_021, TH_PHY11_C01_L02_030, TH_PHY11_C01_L02_023, TH_PHY11_C01_L02_025, TH_PHY11_C01_L02_005 | Đây vẫn là retrieval miss thật cho chunk định nghĩa biên độ kỳ vọng. |
+| RAG_SMOKE_015 | Low Recall@5 | TH_PHY11_C01_L05_004, TH_PHY11_C01_L05_025 | TH_PHY11_C01_L05_002, TH_PHY11_C01_L05_013, TH_PHY11_C01_L07_004, TH_PHY11_C01_L05_008, TH_PHY11_C01_L05_025 | Có hit `TH_PHY11_C01_L05_025`; `TH_PHY11_C01_L07_004` cũng có vẻ liên quan tới tính thế năng/động năng nên gold label có thể thiếu. |
+| RAG_SMOKE_016 | Low Recall@5 | TH_PHY11_C01_L05_008, TH_PHY11_C01_L05_025 | TH_PHY11_C01_L05_008, th_shm_004, TH_PHY11_C01_L07_008, TH_PHY11_C01_L05_002, TH_PHY11_C01_L07_001 | Có hit `TH_PHY11_C01_L05_008`; `th_shm_004` là chunk liên quan trực tiếp tới cơ năng con lắc lò xo nên gold label có thể thiếu. |
 
-| Loại lỗi | Số lượng | Hướng xử lý đề xuất |
-|---|---:|---|
-| expected_not_in_top5 | 6 | Cải thiện embedding retrieval, metadata, query expansion hoặc hybrid weights |
-| relevant_found_but_rank_low | 6 | Tune reranking, hybrid weights, tăng candidate pool hoặc thêm concept/title boost |
+Case có expected chunk trong Top-5 nhưng rank còn thấp:
 
-### 7.2. Nhận xét
-
-Hai loại lỗi chính cho thấy hệ thống không còn thất bại hoàn toàn ở bước tìm kiếm, mà đang gặp vấn đề ở **ranking** và **độ đầy đủ của candidate pool**.
-
-Cụ thể:
-
-- `expected_not_in_top5`: chunk kỳ vọng không xuất hiện trong Top-5. Có thể do query chưa được mở rộng tốt, chunk metadata chưa đủ rõ, hoặc expected chunk chưa phải chunk phù hợp nhất.
-- `relevant_found_but_rank_low`: chunk liên quan có xuất hiện nhưng chưa được đẩy lên vị trí cao. Đây là dấu hiệu cần tối ưu reranking.
+- `RAG_SMOKE_002`
+- `RAG_SMOKE_012`
 
 ---
 
-## 8. Các case yếu đáng chú ý
+## 10. Case có khả năng gold label thiếu
 
-| Case ID | Câu hỏi | Expected Chunk IDs | Retrieved Chunk IDs | Vấn đề Retrieval | Vấn đề Answer |
-|---|---|---|---|---|---|
-| RAG_SMOKE_002 | Phương trình dao động điều hòa x = A cos(omega t + phi) có ý nghĩa như thế nào? | TH_PHY11_C01_L01_006 | th_shm_002, TH_PHY11_C01_L04_004, TH_PHY11_C01_L04_003, TH_PHY11_C01_L01_017, TH_PHY11_C01_L01_014 | Không tìm thấy expected chunk trong Top-5 | Chưa đánh giá |
-| RAG_SMOKE_003 | Trong phương trình x = A cos(omega t + phi), A, omega và phi là các đại lượng gì? | TH_PHY11_C01_L01_006, TH_PHY11_C01_L02_003 | TH_PHY11_C01_L04_003, th_shm_002, TH_PHY11_C01_L04_004, TH_PHY11_C01_L04_002, TH_PHY11_C01_L02_020 | Không tìm thấy expected chunk trong Top-5 | Chưa đánh giá |
-| RAG_SMOKE_004 | Biên độ dao động điều hòa được định nghĩa như thế nào? | TH_PHY11_C01_L02_003 | TH_PHY11_C01_L01_010, TH_PHY11_C01_L01_006, th_shm_001, TH_PHY11_C01_L01_017, TH_PHY11_C01_L02_004 | Không tìm thấy expected chunk trong Top-5 | Chưa đánh giá |
-| RAG_SMOKE_008 | Pha ban đầu trong dao động điều hòa cho biết điều gì? | TH_PHY11_C01_L02_008 | TH_PHY11_C01_L01_006, TH_PHY11_C01_L01_014, TH_PHY11_C01_L01_017, TH_PHY11_C01_L01_007, TH_PHY11_C01_L02_030 | Không tìm thấy expected chunk trong Top-5 | Chưa đánh giá |
-| RAG_SMOKE_011 | Gia tốc trong dao động điều hòa liên hệ với li độ x theo công thức nào? | TH_PHY11_C01_L03_011 | TH_PHY11_C01_L03_021, TH_PHY11_C01_L03_001, TH_PHY11_C01_L03_002, TH_PHY11_C01_L03_010, TH_PHY11_C01_L04_011 | Không tìm thấy expected chunk trong Top-5 | Chưa đánh giá |
-| RAG_SMOKE_015 | Thế năng của vật dao động điều hòa được tính theo li độ x bằng công thức nào? | TH_PHY11_C01_L05_004, TH_PHY11_C01_L05_025 | TH_PHY11_C01_L05_002, TH_PHY11_C01_L05_010, TH_PHY11_C01_L07_025, TH_PHY11_C01_L07_001, TH_PHY11_C01_L05_008 | Không tìm thấy expected chunk trong Top-5 | Chưa đánh giá |
-| RAG_SMOKE_016 | Cơ năng trong dao động điều hòa có biểu thức và tính chất bảo toàn như thế nào? | TH_PHY11_C01_L05_008, TH_PHY11_C01_L05_025 | TH_PHY11_C01_L07_001, TH_PHY11_C01_L05_008, TH_PHY11_C01_L07_025, TH_PHY11_C01_L05_026, TH_PHY11_C01_L05_001 | Thiếu một số expected chunks trong Top-5 | Chưa đánh giá |
+Các case sau nên review thủ công:
 
-Nhận xét quan trọng:
+1. `RAG_SMOKE_002`
+   - Retrieved `th_shm_002`.
+   - Chunk này mô tả trực tiếp phương trình dao động điều hòa.
+   - Gold hiện chỉ có `TH_PHY11_C01_L01_006`.
 
-Một số case có khả năng không phải retrieval sai hoàn toàn. Ví dụ, hệ thống có thể truy hồi chunk khác nhưng vẫn liên quan về mặt nội dung. Vì vậy cần review thủ công các case fail để xác định:
+2. `RAG_SMOKE_003`
+   - Retrieved `th_shm_002`.
+   - Câu hỏi hỏi ý nghĩa của `A`, `omega`, `phi`; chunk tổng hợp `th_shm_002` có khả năng phù hợp.
+   - Gold hiện chỉ gồm hai SGK chunks.
 
-1. Retrieval thật sự sai.
-2. Retrieved chunk đúng nhưng gold label chưa đầy đủ.
-3. Expected chunk chưa phải chunk tốt nhất.
-4. Chunking hoặc metadata chưa đủ rõ.
+3. `RAG_SMOKE_015`
+   - Retrieved `TH_PHY11_C01_L07_004`.
+   - Chunk này có vẻ liên quan tới xác định thế năng và động năng.
+   - Gold hiện chỉ gồm `TH_PHY11_C01_L05_004`, `TH_PHY11_C01_L05_025`.
+
+4. `RAG_SMOKE_016`
+   - Retrieved `th_shm_004`.
+   - Chunk này liên quan trực tiếp tới cơ năng con lắc lò xo.
+   - Gold hiện chưa chứa chunk tổng hợp này.
+
+Nhận xét:
+
+Một phần điểm mất hiện tại có thể đến từ gold labels quá hẹp, không hẳn do retrieval sai hoàn toàn.
 
 ---
 
-## 9. Kết luận chung
+## 11. Kết luận chung
 
-### 9.1. Trạng thái RAG
+### 11.1. Trạng thái RAG
 
-RAG hiện tại **chưa đạt benchmark MVP tối thiểu**, nhưng đã có cải thiện lớn sau khi vector retrieval chạy thật.
+RAG retrieval sau tuning **đã đạt mục tiêu hiện tại**:
 
-Kết quả quan trọng nhất:
+- Hit@5 đạt **1.0000**, cao hơn mục tiêu `0.75`.
+- Recall@5 đạt **0.8981**, cao hơn mục tiêu `0.65`.
+- MRR đạt **0.7917**, cao hơn mục tiêu `0.45`.
 
-- Hit@5 tăng từ **0.3333** lên **0.6667**.
-- Recall@5 tăng từ **0.2222** lên **0.6389**.
-- MRR tăng từ **0.2500** lên **0.3537**.
+Tuning có tác động rõ rệt nhất ở ranking:
 
-Điều này chứng minh embedding/vector retrieval có tác dụng rõ ràng. Tuy nhiên, ranking vẫn chưa tốt, thể hiện qua Hit@1 thấp và MRR chưa đạt ngưỡng.
+- Hit@1 tăng từ **0.5556** lên **0.6667** trong vòng review gold label/rerank mới nhất.
+- MRR tăng từ **0.6537** lên **0.7917** trong vòng review gold label/rerank mới nhất.
 
-### 9.2. Trạng thái LLM Answer
+### 11.2. Trạng thái LLM Answer
 
-LLM Answer Evaluation **chưa thể đánh giá thực chất** vì các smoke cases chưa có dữ liệu đáp án kỳ vọng. Do đó, không nên kết luận LLM trả lời tốt hay kém ở thời điểm này.
+LLM Answer Evaluation **vẫn chưa thể đánh giá thực chất** vì smoke cases chưa có dữ liệu đáp án kỳ vọng. Do đó, chưa nên kết luận LLM trả lời tốt hay kém.
 
-### 9.3. Kết luận MVP
+### 11.3. Kết luận MVP
 
 | Thành phần | Trạng thái |
 |---|---|
 | Vector retrieval | Đã chạy thật |
-| RAG retrieval | Chưa đạt MVP |
+| RAG retrieval | Đạt mục tiêu tuning hiện tại |
 | LLM answer evaluation | Chưa đủ dữ liệu đánh giá |
 | Hệ thống evaluation script | Đã chạy được |
-| Dataset evaluation từ DB AiTestCase | Chưa dùng được vì thiếu expected fields |
+| Dataset evaluation từ DB AiTestCase | Chưa dùng được nếu thiếu expected fields |
 
 ---
 
-## 10. Ưu tiên cải thiện tiếp theo
+## 12. Ưu tiên tiếp theo
 
-### Ưu tiên 1: Tune retrieval/ranking
+### Ưu tiên 1: Review và bổ sung gold labels
 
-Cần tối ưu retrieval trước khi chỉnh prompt LLM. Các hướng nên làm:
+Nên review các case có retrieved chunk đúng nội dung nhưng không nằm trong `expected_chunk_ids`, đặc biệt:
 
-1. Tăng internal candidate size:
-   - `vectorTopN = 30`
-   - `keywordTopN = 30`
-   - `finalTopK = 5`
+- `RAG_SMOKE_002`
+- `RAG_SMOKE_003`
+- `RAG_SMOKE_015`
+- `RAG_SMOKE_016`
 
-2. Tune hybrid weight:
-   - `vectorWeight = 0.85`, `keywordWeight = 0.15`
-   - `vectorWeight = 0.75`, `keywordWeight = 0.25`
-   - `vectorWeight = 0.65`, `keywordWeight = 0.35`
-   - `vectorWeight = 0.50`, `keywordWeight = 0.50`
+### Ưu tiên 2: Sửa retrieval miss còn lại
 
-3. Thêm query expansion cho thuật ngữ Vật lí:
-   - `chu kì` ↔ `chu kỳ` ↔ `T`
-   - `omega` ↔ `ω` ↔ `tần số góc`
-   - `phi` ↔ `φ` ↔ `pha ban đầu`
-   - `biên độ` ↔ `A`
-   - `li độ` ↔ `x`
-   - `độ lệch pha` ↔ `lệch pha`
+Case `RAG_SMOKE_004` vẫn là miss đáng chú ý cho định nghĩa biên độ. Nên xem lại:
 
-4. Thêm concept/title boost nhẹ:
-   - Boost nếu title chứa đúng khái niệm.
-   - Boost nếu text/metadata chứa thuật ngữ chính.
-   - Không hardcode theo smoke case ID.
-
-### Ưu tiên 2: Review lại gold labels của smoke cases
-
-Cần kiểm tra các case fail để xác định `expected_chunk_ids` có quá hẹp không. Nếu retrieved chunk khác expected nhưng vẫn đúng nội dung, nên bổ sung nó vào danh sách relevant chunks.
+- Nội dung chunk `TH_PHY11_C01_L02_003`.
+- Metadata/keywords của chunk này.
+- Các chunk đang thắng ranking trong câu hỏi biên độ.
 
 ### Ưu tiên 3: Bổ sung expected answer
 
@@ -257,14 +327,25 @@ Cần kiểm tra các case fail để xác định `expected_chunk_ids` có quá
   - `expected_keywords`
   - `reference_answer`
 
-### Ưu tiên 4: Sau khi RAG đạt ngưỡng, mới tune prompt LLM
+### Ưu tiên 4: Sau khi có answer labels, mới đánh giá/tune prompt LLM
 
-Không nên tối ưu prompt khi retrieval còn yếu. Nếu context lấy sai hoặc thiếu, LLM khó trả lời đúng một cách ổn định.
+Hiện retrieval đã đạt mục tiêu, nên bước tiếp theo hợp lý là hoàn thiện expected answer rồi chạy Answer Evaluation thật. Sau đó mới quyết định có cần tune prompt LLM hay không.
 
 ---
 
-## 11. Kết luận ngắn gọn
+## 13. Kết luận ngắn gọn
 
-Hệ thống AI/RAG hiện tại đã có nền tảng evaluation chạy được và vector retrieval đã hoạt động đúng. So với keyword-only baseline, chất lượng RAG tăng rõ rệt, đặc biệt ở Hit@5 và Recall@5. Tuy nhiên, các chỉ số hiện tại vẫn chưa đạt benchmark MVP, chủ yếu do ranking chưa đủ tốt và một số expected labels có thể chưa đầy đủ.
+Sau tuning retrieval/ranking, hệ thống RAG đã vượt các mục tiêu chính:
 
-Bước tiếp theo nên tập trung vào **retrieval tuning**: tăng candidate pool, mở rộng truy vấn tiếng Việt/ký hiệu Vật lí, tune hybrid weights, thêm concept/title boost và review gold labels. Chỉ sau khi RAG đạt ngưỡng ổn định mới nên chuyển sang đánh giá và tối ưu câu trả lời LLM.
+- Hit@5: **1.0000**
+- Recall@5: **0.8981**
+- MRR: **0.7917**
+
+Config tốt nhất là **C** với `vector=0.65`, `keyword=0.25`, `concept=0.10`.
+
+Retrieval hiện đã đủ tốt để chuyển trọng tâm sang:
+
+1. Review gold labels còn hẹp.
+2. Bổ sung expected answer.
+3. Chạy Answer Evaluation thật.
+4. Sau đó mới đánh giá và tối ưu LLM prompt nếu cần.

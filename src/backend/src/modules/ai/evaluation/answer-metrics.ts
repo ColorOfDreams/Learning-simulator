@@ -21,6 +21,11 @@ export type RuleBasedAnswerMetrics = {
   ruleBasedScore: number;
 };
 
+type ConceptRequirement = {
+  label: string;
+  anyOf: string[];
+};
+
 const DEFAULT_NUMERIC_TOLERANCE = 1e-6;
 const NUMBER_PATTERN =
   /[-+]?(?:\d{1,3}(?:[.\s]\d{3})+|\d+)(?:[,.]\d+)?/g;
@@ -99,7 +104,9 @@ export function checkRequiredConcepts(
     typeof answerText === 'string' ? answerText : '',
   );
   const matchedConcepts = concepts.filter((concept) =>
-    normalizedAnswer.includes(normalizeTextForMatch(concept)),
+    concept.anyOf.some((alias) =>
+      normalizedAnswer.includes(normalizeTextForMatch(alias)),
+    ),
   );
   const missingConcepts = concepts.filter(
     (concept) => !matchedConcepts.includes(concept),
@@ -107,8 +114,8 @@ export function checkRequiredConcepts(
 
   return {
     conceptCoverage: matchedConcepts.length / concepts.length,
-    matchedConcepts,
-    missingConcepts,
+    matchedConcepts: matchedConcepts.map((concept) => concept.label),
+    missingConcepts: missingConcepts.map((concept) => concept.label),
   };
 }
 
@@ -149,11 +156,21 @@ export function normalizeTextForMatch(value: string) {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd')
-    .replace(/π/g, 'pi')
-    .replace(/ω/g, 'omega')
-    .replace(/φ|ϕ/g, 'phi')
+    .replace(/Ä‘/g, 'd')
+    .replace(/[πΠ]/g, 'pi')
+    .replace(/Ï€/g, 'pi')
+    .replace(/[ωΩ]/g, 'omega')
+    .replace(/Ï‰/g, 'omega')
+    .replace(/[φϕΦ]/g, 'phi')
+    .replace(/Ï†|Ï•/g, 'phi')
     .replace(/²/g, '^2')
+    .replace(/Â²/g, '^2')
     .replace(/³/g, '^3')
+    .replace(/Â³/g, '^3')
+    .replace(/√/g, 'sqrt')
+    .replace(/_/g, '')
+    .replace(/\bchu ky\b/g, 'chu ki')
+    .replace(/\s*([=+\-*/^()])\s*/g, '$1')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -183,9 +200,7 @@ function computeScore(input: {
   ]);
 }
 
-function weightedAverage(
-  items: { value: number | null; weight: number }[],
-) {
+function weightedAverage(items: { value: number | null; weight: number }[]) {
   const applicable = items.filter((item) => item.value !== null);
 
   if (applicable.length === 0) {
@@ -317,9 +332,41 @@ function normalizeConceptList(values: readonly unknown[] | null | undefined) {
   }
 
   return values
-    .filter((value): value is string => typeof value === 'string')
-    .map((value) => value.trim())
-    .filter(Boolean);
+    .map(readConceptRequirement)
+    .filter((value): value is ConceptRequirement => Boolean(value));
+}
+
+function readConceptRequirement(value: unknown): ConceptRequirement | undefined {
+  if (typeof value === 'string') {
+    const label = value.trim();
+
+    return label ? { label, anyOf: [label] } : undefined;
+  }
+
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return undefined;
+  }
+
+  const record = value as Record<string, unknown>;
+  const label =
+    typeof record.label === 'string' && record.label.trim()
+      ? record.label.trim()
+      : undefined;
+  const aliases = Array.isArray(record.anyOf)
+    ? record.anyOf
+        .filter((item): item is string => typeof item === 'string')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    : [];
+
+  if (!label && aliases.length === 0) {
+    return undefined;
+  }
+
+  return {
+    label: label ?? aliases[0],
+    anyOf: [...new Set([...(label ? [label] : []), ...aliases])],
+  };
 }
 
 function escapeRegExp(value: string) {

@@ -1,5 +1,6 @@
 import type {
   AiEvaluationTestCaseLike,
+  ExpectedConceptRequirement,
   ExpectedEvaluationAnswer,
   ExpectedEvaluationData,
   ExpectedEvaluationSource,
@@ -85,8 +86,8 @@ function normalizeAnswer(value: unknown): ExpectedEvaluationAnswer | undefined {
 
   const answer = { ...(value as ExpectedEvaluationAnswer) };
   const requiredConcepts =
-    asStringArray(answer.required_concepts) ??
-    asStringArray(answer.requiredConcepts);
+    asConceptArray(answer.required_concepts) ??
+    asConceptArray(answer.requiredConcepts);
 
   if (requiredConcepts) {
     answer.required_concepts = requiredConcepts;
@@ -105,6 +106,32 @@ function asStringArray(value: unknown) {
   }
 
   return value.filter((item): item is string => typeof item === 'string');
+}
+
+function asConceptArray(value: unknown): ExpectedConceptRequirement[] | undefined {
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+
+  return value.filter(isExpectedConceptRequirement);
+}
+
+function isExpectedConceptRequirement(
+  value: unknown,
+): value is ExpectedConceptRequirement {
+  if (typeof value === 'string') {
+    return true;
+  }
+
+  if (!isRecord(value)) {
+    return false;
+  }
+
+  return (
+    typeof value.label === 'string' &&
+    Array.isArray(value.anyOf) &&
+    value.anyOf.every((item) => typeof item === 'string')
+  );
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

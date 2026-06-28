@@ -38,8 +38,16 @@ type RetrievedChunkReport = {
   topic?: string;
   source?: string;
   score?: number;
+  finalScore?: number;
   vectorScore?: number;
   keywordScore?: number;
+  conceptScore?: number;
+  conceptBoost?: number;
+  titleBoost?: number;
+  metadataBoost?: number;
+  formulaBoost?: number;
+  textBoost?: number;
+  topicBoost?: number;
   retrievalType?: 'vector' | 'keyword' | 'hybrid';
 };
 
@@ -507,8 +515,16 @@ function toRetrievedChunkReport(reference: RagReference): RetrievedChunkReport {
     topic: reference.topic,
     source: reference.source,
     score: reference.score,
+    finalScore: reference.finalScore,
     vectorScore: reference.vectorScore,
     keywordScore: reference.keywordScore,
+    conceptScore: reference.conceptScore,
+    conceptBoost: reference.conceptBoost,
+    titleBoost: reference.titleBoost,
+    metadataBoost: reference.metadataBoost,
+    formulaBoost: reference.formulaBoost,
+    textBoost: reference.textBoost,
+    topicBoost: reference.topicBoost,
     retrievalType: reference.retrievalType,
   };
 }

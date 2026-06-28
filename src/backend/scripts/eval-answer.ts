@@ -49,6 +49,17 @@ type AnswerEvalCaseReport = {
   judge_reason?: string;
   hallucination?: boolean;
   judge_error?: string;
+  used_reference_ids?: string[];
+  confidence?: string;
+  output_metadata?: {
+    llmEnabled?: boolean;
+    model?: string;
+    retrievalTopK?: number;
+    promptTokensApprox?: number;
+    latencyMs?: number;
+    parseFallback?: boolean;
+    error?: string;
+  };
   skipped_reason?: string;
   error?: string;
 };
@@ -75,6 +86,8 @@ type AnswerEvalReport = {
     avg_citation_usage: number;
     avg_final_answer_score: number;
     hallucination_rate: number;
+    avg_latency_ms: number;
+    model?: string;
   };
   cases: AnswerEvalCaseReport[];
 };
@@ -90,7 +103,7 @@ async function main() {
     const aiService = app.get(AiService);
     const evalSource = readEvalSource();
     const aiMethod = readEvalAiMethod();
-    const testCases = await loadEvalCases(app, evalSource);
+    const testCases = limitCases(await loadEvalCases(app, evalSource));
     const caseReports: AnswerEvalCaseReport[] = [];
 
     for (const testCase of testCases) {
@@ -101,10 +114,12 @@ async function main() {
     const reportsDir = join(process.cwd(), 'reports');
     const reportPath = join(reportsDir, 'answer-eval-report.json');
     const summaryPath = join(reportsDir, 'answer-eval-summary.md');
+    const samplesPath = join(reportsDir, 'llm-answer-samples.md');
 
     await mkdir(reportsDir, { recursive: true });
     await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
     await writeFile(summaryPath, `${buildMarkdownSummary(report)}\n`, 'utf8');
+    await writeFile(samplesPath, `${buildSamplesMarkdown(report)}\n`, 'utf8');
 
     console.log(JSON.stringify(report.summary, null, 2));
     console.log(`Answer eval source: ${evalSource}`);
@@ -112,6 +127,7 @@ async function main() {
     console.log(`LLM enabled: ${report.llm_enabled}`);
     console.log(`Answer eval report written to ${reportPath}`);
     console.log(`Answer eval summary written to ${summaryPath}`);
+    console.log(`LLM answer samples written to ${samplesPath}`);
   } finally {
     await app.close();
   }
@@ -185,6 +201,7 @@ async function evaluateCase(
       expected_answer: expectedAnswer,
       ai_answer: aiAnswer,
       metrics,
+      ...extractOutputDiagnostics(output),
       ...judgeFields,
     };
   } catch (error) {
@@ -265,16 +282,26 @@ function buildReport(
         item.expected_answer?.type === 'mixed' ||
         item.expected_answer?.value !== undefined),
   );
-  const conceptualCases = evaluatedCases.filter(
+  const conceptCheckCases = evaluatedCases.filter(
     (item) => item.metrics.conceptCoverage !== null,
   );
+  const conceptualCases = evaluatedCases.filter(
+    (item) =>
+      (item.expected_answer?.type ?? inferExpectedAnswerType(item)) ===
+      'conceptual',
+  );
   const mixedCases = evaluatedCases.filter(
-    (item) => item.expected_answer?.type === 'mixed',
+    (item) => (item.expected_answer?.type ?? inferExpectedAnswerType(item)) === 'mixed',
   );
   const judgedCases = evaluatedCases.filter((item) => item.judge_scores);
   const hallucinationCases = judgedCases.filter(
     (item) => item.hallucination === true,
   );
+  const latencyCases = evaluatedCases.filter(
+    (item) => typeof item.output_metadata?.latencyMs === 'number',
+  );
+  const model = evaluatedCases.find((item) => item.output_metadata?.model)
+    ?.output_metadata?.model;
 
   return {
     generated_at: new Date().toISOString(),
@@ -292,7 +319,7 @@ function buildReport(
         item.metrics.numericCorrect ? 1 : 0,
       ),
       avg_concept_coverage: average(
-        conceptualCases,
+        conceptCheckCases,
         (item) => item.metrics.conceptCoverage ?? 0,
       ),
       avg_rule_based_score: average(
@@ -325,6 +352,11 @@ function buildReport(
       ),
       hallucination_rate:
         judgedCases.length === 0 ? 0 : hallucinationCases.length / judgedCases.length,
+      avg_latency_ms: average(
+        latencyCases,
+        (item) => item.output_metadata?.latencyMs ?? 0,
+      ),
+      ...(model ? { model } : {}),
     },
     cases: caseReports,
   };
@@ -336,6 +368,13 @@ function buildMarkdownSummary(report: AnswerEvalReport) {
   const weakCases = report.cases
     .filter((item) => Boolean(item.error) || item.metrics.ruleBasedScore < 0.7)
     .slice(0, 10);
+  const hasEvaluatedCases = report.summary.evaluated_cases > 0;
+  const hasNumericCases = report.summary.numeric_cases > 0;
+  const hasConceptChecks =
+    report.summary.conceptual_cases > 0 || report.summary.mixed_cases > 0;
+  const hasJudgeResults = report.cases.some(
+    (item) => item.judge_scores || item.hallucination !== undefined,
+  );
 
   return [
     '# AI/RAG Answer Evaluation Summary',
@@ -344,6 +383,11 @@ function buildMarkdownSummary(report: AnswerEvalReport) {
     `- Source: ${report.source}`,
     `- AI method: ${report.ai_method}`,
     `- LLM enabled: ${report.llm_enabled}`,
+    `- Model: ${report.summary.model ?? 'N/A'}`,
+    `- Avg latency: ${formatMetricIf(
+      report.summary.avg_latency_ms,
+      report.summary.evaluated_cases > 0 && report.summary.avg_latency_ms > 0,
+    )} ms`,
     `- Answer judge enabled: ${isAnswerJudgeEnabled()}`,
     '',
     '## Cases',
@@ -358,18 +402,54 @@ function buildMarkdownSummary(report: AnswerEvalReport) {
     '',
     '## Metrics',
     '',
+    ...(hasEvaluatedCases
+      ? []
+      : [
+          'Answer evaluation chưa được thực hiện thực chất vì không có case nào đủ expected.answer. Các chỉ số dưới đây không phải là điểm 0 của AI.',
+          '',
+        ]),
     '| Metric | Value |',
     '| --- | ---: |',
-    `| Numeric accuracy | ${formatMetric(report.summary.numeric_accuracy)} |`,
-    `| Avg concept coverage | ${formatMetric(report.summary.avg_concept_coverage)} |`,
-    `| Avg rule-based score | ${formatMetric(report.summary.avg_rule_based_score)} |`,
-    `| Avg correctness | ${formatMetric(report.summary.avg_correctness)} |`,
-    `| Avg groundedness | ${formatMetric(report.summary.avg_groundedness)} |`,
-    `| Avg completeness | ${formatMetric(report.summary.avg_completeness)} |`,
-    `| Avg clarity | ${formatMetric(report.summary.avg_clarity)} |`,
-    `| Avg citation usage | ${formatMetric(report.summary.avg_citation_usage)} |`,
-    `| Avg final answer score | ${formatMetric(report.summary.avg_final_answer_score)} |`,
-    `| Hallucination rate | ${formatMetric(report.summary.hallucination_rate)} |`,
+    `| Numeric accuracy | ${formatMetricIf(
+      report.summary.numeric_accuracy,
+      hasEvaluatedCases && hasNumericCases,
+    )} |`,
+    `| Avg concept coverage | ${formatMetricIf(
+      report.summary.avg_concept_coverage,
+      hasEvaluatedCases && hasConceptChecks,
+    )} |`,
+    `| Avg rule-based score | ${formatMetricIf(
+      report.summary.avg_rule_based_score,
+      hasEvaluatedCases,
+    )} |`,
+    `| Avg correctness | ${formatMetricIf(
+      report.summary.avg_correctness,
+      hasEvaluatedCases && hasJudgeResults,
+    )} |`,
+    `| Avg groundedness | ${formatMetricIf(
+      report.summary.avg_groundedness,
+      hasEvaluatedCases && hasJudgeResults,
+    )} |`,
+    `| Avg completeness | ${formatMetricIf(
+      report.summary.avg_completeness,
+      hasEvaluatedCases && hasJudgeResults,
+    )} |`,
+    `| Avg clarity | ${formatMetricIf(
+      report.summary.avg_clarity,
+      hasEvaluatedCases && hasJudgeResults,
+    )} |`,
+    `| Avg citation usage | ${formatMetricIf(
+      report.summary.avg_citation_usage,
+      hasEvaluatedCases && hasJudgeResults,
+    )} |`,
+    `| Avg final answer score | ${formatMetricIf(
+      report.summary.avg_final_answer_score,
+      hasEvaluatedCases && hasJudgeResults,
+    )} |`,
+    `| Hallucination rate | ${formatMetricIf(
+      report.summary.hallucination_rate,
+      hasEvaluatedCases && hasJudgeResults,
+    )} |`,
     '',
     '## Error Analysis',
     '',
@@ -385,7 +465,7 @@ function buildMarkdownSummary(report: AnswerEvalReport) {
       (item) =>
         `| ${escapeCell(item.case_id)} | ${escapeCell(
           truncate(item.question),
-        )} | ${formatMetric(item.metrics.ruleBasedScore)} | ${escapeCell(
+        )} | ${formatCaseScore(item)} | ${escapeCell(
           item.error ?? item.skipped_reason ?? weakReason(item),
         )} |`,
     ),
@@ -448,8 +528,20 @@ function extractAnswerText(output: unknown) {
   }
 
   const answer = output.answer;
+  const topLevelSteps = Array.isArray(output.steps)
+    ? output.steps.filter((item): item is string => typeof item === 'string')
+    : [];
+  const topLevelFormulae = Array.isArray(output.formulae)
+    ? output.formulae.filter((item): item is string => typeof item === 'string')
+    : [];
+  const simulationHint =
+    typeof output.simulation_hint === 'string' ? output.simulation_hint : '';
+
   if (typeof answer === 'string') {
-    return answer.trim();
+    return [answer, ...topLevelSteps, ...topLevelFormulae, simulationHint]
+      .filter(Boolean)
+      .join('\n')
+      .trim();
   }
 
   if (isRecord(answer)) {
@@ -459,10 +551,67 @@ function extractAnswerText(output: unknown) {
       ? answer.steps.filter((item): item is string => typeof item === 'string')
       : [];
 
-    return [shortAnswer, ...steps].filter(Boolean).join('\n').trim();
+    return [
+      shortAnswer,
+      ...steps,
+      ...topLevelSteps,
+      ...topLevelFormulae,
+      simulationHint,
+    ]
+      .filter(Boolean)
+      .join('\n')
+      .trim();
   }
 
   return '';
+}
+
+function extractOutputDiagnostics(output: unknown) {
+  if (!isRecord(output)) {
+    return {};
+  }
+
+  const metadata = isRecord(output.metadata) ? output.metadata : undefined;
+
+  return {
+    ...(Array.isArray(output.used_reference_ids)
+      ? {
+          used_reference_ids: output.used_reference_ids.filter(
+            (item): item is string => typeof item === 'string',
+          ),
+        }
+      : {}),
+    ...(typeof output.confidence === 'string'
+      ? { confidence: output.confidence }
+      : {}),
+    ...(metadata
+      ? {
+          output_metadata: {
+            ...(typeof metadata.llmEnabled === 'boolean'
+              ? { llmEnabled: metadata.llmEnabled }
+              : {}),
+            ...(typeof metadata.model === 'string'
+              ? { model: metadata.model }
+              : {}),
+            ...(typeof metadata.retrievalTopK === 'number'
+              ? { retrievalTopK: metadata.retrievalTopK }
+              : {}),
+            ...(typeof metadata.promptTokensApprox === 'number'
+              ? { promptTokensApprox: metadata.promptTokensApprox }
+              : {}),
+            ...(typeof metadata.latencyMs === 'number'
+              ? { latencyMs: metadata.latencyMs }
+              : {}),
+            ...(typeof metadata.parseFallback === 'boolean'
+              ? { parseFallback: metadata.parseFallback }
+              : {}),
+            ...(typeof metadata.error === 'string'
+              ? { error: metadata.error }
+              : {}),
+          },
+        }
+      : {}),
+  };
 }
 
 function extractReferences(output: unknown): AnswerJudgeReference[] {
@@ -483,18 +632,18 @@ function extractReferences(output: unknown): AnswerJudgeReference[] {
 }
 
 function configureLlmForEval() {
-  if (!isLlmEnabledForEval()) {
-    delete process.env.LLM_API_KEY;
-    return;
-  }
-
   if (!process.env.LLM_API_KEY && process.env.OPENAI_API_KEY) {
     process.env.LLM_API_KEY = process.env.OPENAI_API_KEY;
+  }
+
+  if (!isLlmEnabledForEval()) {
+    delete process.env.LLM_API_KEY;
   }
 }
 
 function isLlmEnabledForEval() {
-  const explicit = process.env.EVAL_USE_LLM === 'true';
+  const explicit =
+    process.env.EVAL_USE_LLM === 'true' || readEvalAiMethod() === 'chat';
   const hasKey = Boolean(process.env.LLM_API_KEY || process.env.OPENAI_API_KEY);
 
   return explicit && hasKey;
@@ -546,7 +695,18 @@ function readEvalSource(): EvalSource {
 }
 
 function readEvalAiMethod(): EvalAiMethod {
-  return process.env.EVAL_AI_METHOD === 'chat' ? 'chat' : 'analyze';
+  return process.env.ANSWER_AI_METHOD === 'chat' ||
+    process.env.EVAL_AI_METHOD === 'chat'
+    ? 'chat'
+    : 'analyze';
+}
+
+function limitCases<T>(items: T[]) {
+  const maxCases = Number(process.env.EVAL_MAX_CASES);
+
+  return Number.isFinite(maxCases) && maxCases > 0
+    ? items.slice(0, maxCases)
+    : items;
 }
 
 function average<T>(items: T[], getValue: (item: T) => number) {
@@ -555,6 +715,75 @@ function average<T>(items: T[], getValue: (item: T) => number) {
   }
 
   return items.reduce((sum, item) => sum + getValue(item), 0) / items.length;
+}
+
+function buildSamplesMarkdown(report: AnswerEvalReport) {
+  const evaluated = report.cases.filter((item) => !item.skipped_reason);
+  const good = [...evaluated]
+    .sort((left, right) => right.metrics.ruleBasedScore - left.metrics.ruleBasedScore)
+    .slice(0, 5);
+  const weak = [...evaluated]
+    .sort((left, right) => left.metrics.ruleBasedScore - right.metrics.ruleBasedScore)
+    .slice(0, 5);
+
+  return [
+    '# LLM Answer Samples',
+    '',
+    `- Run time: ${report.generated_at}`,
+    `- AI method: ${report.ai_method}`,
+    `- LLM enabled: ${report.llm_enabled}`,
+    `- Model: ${report.summary.model ?? 'N/A'}`,
+    '',
+    '## Best Samples',
+    '',
+    ...formatSampleBlocks(good),
+    '',
+    '## Weakest Samples',
+    '',
+    ...formatSampleBlocks(weak),
+    '',
+  ]
+    .filter((line, index, lines) => line !== '' || lines[index - 1] !== '')
+    .join('\n');
+}
+
+function formatSampleBlocks(cases: AnswerEvalCaseReport[]) {
+  if (cases.length === 0) {
+    return ['No evaluated answer samples available.'];
+  }
+
+  return cases.flatMap((item) => [
+    `### ${item.case_id} - score ${formatMetric(item.metrics.ruleBasedScore)}`,
+    '',
+    `Question: ${item.question}`,
+    '',
+    `Confidence: ${item.confidence ?? 'N/A'}`,
+    `Used references: ${(item.used_reference_ids ?? []).join(', ') || 'N/A'}`,
+    `Matched concepts: ${item.metrics.matchedConcepts.join(', ') || 'N/A'}`,
+    `Missing concepts: ${item.metrics.missingConcepts.join(', ') || 'N/A'}`,
+    '',
+    'Answer:',
+    '',
+    truncate(item.ai_answer, 1200),
+    '',
+  ]);
+}
+
+function inferExpectedAnswerType(item: AnswerEvalCaseReport) {
+  const expectedAnswer = item.expected_answer;
+
+  if (
+    expectedAnswer?.value !== undefined &&
+    item.metrics.conceptCoverage !== null
+  ) {
+    return 'mixed';
+  }
+
+  if (expectedAnswer?.value !== undefined) {
+    return 'numeric';
+  }
+
+  return 'conceptual';
 }
 
 function weakReason(item: AnswerEvalCaseReport) {
@@ -569,6 +798,18 @@ function weakReason(item: AnswerEvalCaseReport) {
 
 function formatMetric(value: number) {
   return Number.isFinite(value) ? value.toFixed(4) : '0.0000';
+}
+
+function formatMetricIf(value: number, applicable: boolean) {
+  return applicable ? formatMetric(value) : 'N/A';
+}
+
+function formatCaseScore(item: AnswerEvalCaseReport) {
+  if (item.skipped_reason) {
+    return 'N/A';
+  }
+
+  return formatMetric(item.metrics.ruleBasedScore);
 }
 
 function truncate(value: string, maxLength = 140) {

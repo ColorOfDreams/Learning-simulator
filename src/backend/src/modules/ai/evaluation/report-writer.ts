@@ -26,8 +26,16 @@ type RagEvalCase = {
     topic?: string;
     source?: string;
     score?: number;
+    finalScore?: number;
     vectorScore?: number;
     keywordScore?: number;
+    conceptScore?: number;
+    conceptBoost?: number;
+    titleBoost?: number;
+    metadataBoost?: number;
+    formulaBoost?: number;
+    textBoost?: number;
+    topicBoost?: number;
     retrievalType?: string;
   }[];
   metrics?: RagEvalMetrics;

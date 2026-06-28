@@ -1,12 +1,19 @@
 export type EvaluationAnswerType = 'numeric' | 'conceptual' | 'mixed';
 
+export type ExpectedConceptRequirement =
+  | string
+  | {
+      label: string;
+      anyOf: string[];
+    };
+
 export type ExpectedEvaluationAnswer = {
   type?: EvaluationAnswerType;
   value?: number | string | boolean | Record<string, unknown> | null;
   unit?: string;
   tolerance?: number;
-  required_concepts?: string[];
-  requiredConcepts?: string[];
+  required_concepts?: ExpectedConceptRequirement[];
+  requiredConcepts?: ExpectedConceptRequirement[];
   [key: string]: unknown;
 };
 

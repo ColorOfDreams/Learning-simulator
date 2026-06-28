@@ -125,6 +125,8 @@ type AnswerEvalReport = {
     avg_citation_usage: number;
     avg_final_answer_score: number;
     hallucination_rate: number;
+    avg_latency_ms?: number;
+    model?: string;
   };
   cases: AnswerEvalCaseReport[];
 };
@@ -481,36 +483,77 @@ function formatAnswerMetrics(
 
   if (report.summary.evaluated_cases === 0) {
     return [
-      'Answer evaluation produced a report, but no case was evaluated.',
+      'Answer evaluation chưa được thực hiện thực chất vì không có case nào đủ expected.answer. Các chỉ số dưới đây không phải là điểm 0 của AI.',
+      '',
+      '| Metric | Score |',
+      '| --- | ---: |',
+      '| Numeric Accuracy | N/A |',
+      '| Avg Concept Coverage | N/A |',
+      '| Avg Rule-based Score | N/A |',
+      '| Avg Correctness | N/A |',
+      '| Avg Groundedness | N/A |',
+      '| Avg Completeness | N/A |',
+      '| Avg Clarity | N/A |',
+      '| Avg Citation Usage | N/A |',
+      '| Avg Final Answer Score | N/A |',
+      '| Hallucination Rate | N/A |',
       '',
       'Likely reason: test cases are missing expected answer data.',
     ];
   }
 
+  const hasNumericCases = report.summary.numeric_cases > 0;
+  const hasConceptChecks =
+    report.summary.conceptual_cases > 0 || report.summary.mixed_cases > 0;
+
   return [
     '| Metric | Score |',
     '| --- | ---: |',
-    `| Numeric Accuracy | ${formatMetric(report.summary.numeric_accuracy)} |`,
-    `| Avg Concept Coverage | ${formatMetric(
+    `| Numeric Accuracy | ${formatMetricIf(
+      report.summary.numeric_accuracy,
+      hasNumericCases,
+    )} |`,
+    `| Avg Concept Coverage | ${formatMetricIf(
       report.summary.avg_concept_coverage,
+      hasConceptChecks,
     )} |`,
     `| Avg Rule-based Score | ${formatMetric(
       report.summary.avg_rule_based_score,
     )} |`,
-    ...(judgeAvailable
-      ? [
-          `| Avg Correctness | ${formatMetric(report.summary.avg_correctness)} |`,
-          `| Avg Groundedness | ${formatMetric(report.summary.avg_groundedness)} |`,
-          `| Avg Completeness | ${formatMetric(report.summary.avg_completeness)} |`,
-          `| Avg Clarity | ${formatMetric(report.summary.avg_clarity)} |`,
-          `| Avg Final Answer Score | ${formatMetric(
-            report.summary.avg_final_answer_score,
-          )} |`,
-          `| Hallucination Rate | ${formatMetric(
-            report.summary.hallucination_rate,
-          )} |`,
-        ]
-      : []),
+    `| Model | ${report.summary.model ?? 'N/A'} |`,
+    `| Avg Latency Ms | ${formatMetricIf(
+      report.summary.avg_latency_ms,
+      typeof report.summary.avg_latency_ms === 'number' &&
+        report.summary.avg_latency_ms > 0,
+    )} |`,
+    `| Avg Correctness | ${formatMetricIf(
+      report.summary.avg_correctness,
+      judgeAvailable,
+    )} |`,
+    `| Avg Groundedness | ${formatMetricIf(
+      report.summary.avg_groundedness,
+      judgeAvailable,
+    )} |`,
+    `| Avg Completeness | ${formatMetricIf(
+      report.summary.avg_completeness,
+      judgeAvailable,
+    )} |`,
+    `| Avg Clarity | ${formatMetricIf(
+      report.summary.avg_clarity,
+      judgeAvailable,
+    )} |`,
+    `| Avg Citation Usage | ${formatMetricIf(
+      report.summary.avg_citation_usage,
+      judgeAvailable,
+    )} |`,
+    `| Avg Final Answer Score | ${formatMetricIf(
+      report.summary.avg_final_answer_score,
+      judgeAvailable,
+    )} |`,
+    `| Hallucination Rate | ${formatMetricIf(
+      report.summary.hallucination_rate,
+      judgeAvailable,
+    )} |`,
   ];
 }
 
@@ -520,6 +563,10 @@ function buildAnswerConclusion(
 ) {
   if (!report) {
     return 'not passed, missing reports/answer-eval-report.json';
+  }
+
+  if (report.summary.evaluated_cases === 0) {
+    return 'not evaluated, no case had expected answer data';
   }
 
   const ruleBasedPassed = report.summary.avg_rule_based_score >= 0.7;
@@ -821,6 +868,10 @@ function formatMetric(value: number | undefined) {
   return typeof value === 'number' && Number.isFinite(value)
     ? value.toFixed(4)
     : 'N/A';
+}
+
+function formatMetricIf(value: number | undefined, applicable: boolean) {
+  return applicable ? formatMetric(value) : 'N/A';
 }
 
 function formatSignedMetric(value: number) {
