@@ -188,41 +188,25 @@ export class UsersSeedService implements OnApplicationBootstrap {
   }
 
   private async seedAdmin() {
+    const data = { firstName: 'Admin', lastName: 'Hệ thống', role: UserRole.ADMIN };
     const existing = await this.usersService.findByEmail('admin@gmail.com');
     if (existing) {
-      if (existing.role !== UserRole.ADMIN) {
-        await this.usersService.update(existing.id, { role: UserRole.ADMIN });
-      }
+      await this.usersService.update(existing.id, data);
       return;
     }
-
     const hashed = await bcrypt.hash('abc123', 10);
-    await this.usersService.create({
-      email: 'admin@gmail.com',
-      password: hashed,
-      firstName: 'Admin',
-      lastName: 'Hệ thống',
-      role: UserRole.ADMIN,
-    });
+    await this.usersService.create({ email: 'admin@gmail.com', password: hashed, ...data });
   }
 
   private async seedTeacher() {
+    const data = { firstName: 'Giáo viên', lastName: 'Mẫu', role: UserRole.TEACHER };
     const existing = await this.usersService.findByEmail('giaovien@gmail.com');
     if (existing) {
-      if (existing.role !== UserRole.TEACHER) {
-        await this.usersService.update(existing.id, { role: UserRole.TEACHER });
-      }
+      await this.usersService.update(existing.id, data);
       return;
     }
-
     const hashed = await bcrypt.hash('abc123', 10);
-    await this.usersService.create({
-      email: 'giaovien@gmail.com',
-      password: hashed,
-      firstName: 'Giáo viên',
-      lastName: 'Mẫu',
-      role: UserRole.TEACHER,
-    });
+    await this.usersService.create({ email: 'giaovien@gmail.com', password: hashed, ...data });
   }
 
   private async seedOwner() {
