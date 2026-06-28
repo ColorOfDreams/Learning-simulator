@@ -1275,9 +1275,8 @@ const HocSinhHome: React.FC = () => {
 								{chatMessages.map((msg, index) => (
 									<div
 										key={index}
-										className={`stu-home__hero-chat-row ${
-											msg.role === 'user' ? 'stu-home__hero-chat-row--user' : 'stu-home__hero-chat-row--ai'
-										}`}
+										className={`stu-home__hero-chat-row ${msg.role === 'user' ? 'stu-home__hero-chat-row--user' : 'stu-home__hero-chat-row--ai'
+											}`}
 									>
 										<div className='stu-home__hero-chat-bubble-container'>
 											<div className='stu-home__hero-chat-bubble'>{msg.text}</div>
@@ -1384,7 +1383,7 @@ const HocSinhHome: React.FC = () => {
 					{/* Divider */}
 					<div className='stu-home__divider'>
 						<div className='stu-home__divider-line' />
-						<div className='stu-home__divider-text'>hoặc duyệt danh mục</div>
+						<div className='stu-home__divider-text'></div>
 						<div className='stu-home__divider-line' />
 					</div>
 
