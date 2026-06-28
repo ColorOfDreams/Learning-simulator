@@ -1,4 +1,4 @@
-import React, { Suspense, useMemo, useState, useCallback, useEffect } from 'react';
+import React, { Suspense, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import { useModel } from '@umijs/max';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
@@ -146,14 +146,58 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
 
   const [pouringAction, setPouringAction] = useState<{ sourceId: string, targetId: string, startTime: number, sourcePos?: [number, number, number] } | null>(null);
 
+  const objectsRef = useRef(sceneGraph?.objects || []);
+  useEffect(() => {
+    objectsRef.current = sceneGraph?.objects || [];
+  }, [sceneGraph?.objects]);
+
   useEffect(() => {
     if (pouringAction) {
       const timer = setTimeout(() => {
+        const objects = objectsRef.current;
+        const sourceObj = objects.find((o: any) => o.id === pouringAction.sourceId);
+        const targetObj = objects.find((o: any) => o.id === pouringAction.targetId);
+        
+        if (sourceObj && targetObj) {
+          const sProps: any = sourceObj.properties || {};
+          const tProps: any = targetObj.properties || {};
+          
+          let sChem = sProps.symbol || sProps.kyHieu;
+          if (sourceObj.modelName === 'NuocCat') sChem = 'H2O';
+          
+          const tColor = tProps.liquidColor || tProps.mauChatLong || '#00a8ff';
+          let tContents = Array.isArray(tProps.contents) ? tProps.contents : [];
+          if (targetObj.modelName === 'Beaker' && tProps.liquidVolume > 0 && tContents.length === 0) {
+            // Assume pre-filled beaker has H2O
+            tContents = ['H2O'];
+          }
+          const tTemp = tProps.temperature || 25;
+          
+          if (sChem) {
+            const { ChemicalEngine } = require('./ChemicalEngine');
+            ChemicalEngine.mix(tContents, sChem, tTemp, tColor).then((result: any) => {
+              const { updatedContents, updatedColor, effect } = result;
+              updateObjectProperty(targetObj.id, 'contents', updatedContents);
+              updateObjectProperty(targetObj.id, 'liquidColor', updatedColor);
+              
+              // Increment volume
+              const curVol = tProps.liquidVolume || 0;
+              if (curVol < 500) { // arbitrary max volume
+                updateObjectProperty(targetObj.id, 'liquidVolume', curVol + 20);
+              }
+              
+              if (effect) {
+                 updateObjectProperty(targetObj.id, 'reactionEffect', { ...effect, timestamp: Date.now() });
+              }
+            });
+          }
+        }
+        
         setPouringAction(null);
       }, 2500);
       return () => clearTimeout(timer);
     }
-  }, [pouringAction]);
+  }, [pouringAction, updateObjectProperty]);
 
   const [isDraggingPourable, setIsDraggingPourable] = useState<string | null>(null);
 

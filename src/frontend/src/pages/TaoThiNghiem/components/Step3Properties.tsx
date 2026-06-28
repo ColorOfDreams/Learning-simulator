@@ -118,6 +118,15 @@ const Step3Properties: React.FC<Props> = ({ data, onChange, onBack }) => {
         </div>
       );
     }
+    if (m === 'BunsenBurner' || m === 'DenCon') {
+      props.push(
+        <div className="s3-prop" key="flame">
+          <label>Kích thước lửa</label>
+          <InputNumber min={0.5} max={3.0} step={0.1} value={obj.properties?.kichThuocLua ?? 1}
+            onChange={(v) => updateProp(obj.id, 'kichThuocLua', v)} style={{ width: '100%' }} />
+        </div>
+      );
+    }
     if (props.length === 0) {
       props.push(<div className="s3-prop" key="none" style={{ color: '#94a3b8', fontSize: 12 }}>Không có thông số</div>);
     }

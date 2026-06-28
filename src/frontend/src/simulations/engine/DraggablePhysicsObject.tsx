@@ -405,6 +405,16 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         onPointerLeave={(e) => { 
           if (!dragging) setHoveredObjectId(null);
         }}
+        onContextMenu={(e) => {
+          e.stopPropagation();
+          const mName = getModel(object);
+          if (mName === 'BunsenBurner' || mName === 'DenCon') {
+            const curBatDen = object.properties?.batDen ?? (object as any).thuocTinh?.batDen ?? false;
+            if (updateObjectProperty) {
+              updateObjectProperty(object.id, 'batDen', !curBatDen);
+            }
+          }
+        }}
       >
         {children}
         {/* Hide label if this object is being dragged, or if it's the target of a snap or pour action */}

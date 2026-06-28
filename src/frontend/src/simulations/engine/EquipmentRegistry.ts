@@ -25,7 +25,10 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
   Beaker: {
     getCollider: () => [0.5, 1.0, 0.5],
     initY: 0.4,
-    getSnapPoints: () => [{ id: 'container', position: [0, -0.1, 0], type: 'container', label: 'Bình chứa', connectsTo: ['chemical'] }],
+    getSnapPoints: () => [
+      { id: 'container', position: [0, -0.1, 0], type: 'container', label: 'Bình chứa', connectsTo: ['chemical'] },
+      { id: 'heater_target', position: [0, -0.5, 0], type: 'heater_target', label: 'Đáy', connectsTo: ['heater'] }
+    ],
     tags: ['pourable', 'container'],
   },
   ChatLong: {
@@ -165,13 +168,19 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
   ErlenmeyerFlask: {
     getCollider: () => defaultCollider,
     initY: 0,
-    getSnapPoints: () => [{ id: 'container', position: [0, -0.1, 0], type: 'container', label: 'Bình chứa', connectsTo: ['chemical'] }],
+    getSnapPoints: () => [
+      { id: 'container', position: [0, -0.1, 0], type: 'container', label: 'Bình chứa', connectsTo: ['chemical'] },
+      { id: 'heater_target', position: [0, -0.5, 0], type: 'heater_target', label: 'Đáy', connectsTo: ['heater'] }
+    ],
     tags: ['pourable', 'container'],
   },
   RoundFlask: {
     getCollider: () => defaultCollider,
     initY: 0,
-    getSnapPoints: () => [{ id: 'container', position: [0, -0.1, 0], type: 'container', label: 'Bình chứa', connectsTo: ['chemical'] }],
+    getSnapPoints: () => [
+      { id: 'container', position: [0, -0.1, 0], type: 'container', label: 'Bình chứa', connectsTo: ['chemical'] },
+      { id: 'heater_target', position: [0, -0.5, 0], type: 'heater_target', label: 'Đáy', connectsTo: ['heater'] }
+    ],
     tags: ['pourable', 'container'],
   },
   NuocCat: {
@@ -199,9 +208,9 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
     tags: ['container'],
   },
   BunsenBurner: {
-    getCollider: () => defaultCollider,
-    initY: 0,
-    getSnapPoints: () => [],
+    getCollider: () => [0.4, 0.8, 0.4],
+    initY: 0.4,
+    getSnapPoints: () => [{ id: 'heater_top', position: [0, 0.7, 0], type: 'heater', label: 'Kệ đun', connectsTo: ['heater_target'] }],
     tags: [],
   },
   pHMeter: {

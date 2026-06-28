@@ -214,15 +214,18 @@ const COMPOUND_NAMES: Record<string, string> = {
   'H2O': 'Nước cất',
   'HCl': 'Axit clohidric',
   'H2SO4': 'Axit sunfuric',
-  'HNO3': 'Axit nitric',
   'NaOH': 'Natri hiđroxit',
-  'CuSO4': 'Đồng(II) sunfat',
+  'Ca(OH)2': 'Canxi hiđroxit',
   'NaCl': 'Natri clorua',
-  'CaCO3': 'Canxi cacbonat',
-  'AgNO3': 'Bạc nitrat',
-  'FeCl2': 'Sắt(II) clorua',
-  'Cu(NO3)2': 'Đồng(II) nitrat',
+  'CuSO4': 'Đồng (II) sunfat',
   'KMnO4': 'Thuốc tím',
+  'BaCl2': 'Bari clorua',
+  'AgNO3': 'Bạc nitrat',
+  'HNO3': 'Axit nitric',
+  'CaCO3': 'Canxi cacbonat',
+  'CO2': 'Cacbon đioxit',
+  'SO2': 'Lưu huỳnh đioxit',
+  'CuO': 'Đồng (II) oxit',
 };
 const useChemColor = (doiTuong: Scene.Object, fallback: string) => {
   const symbol = doiTuong.thuocTinh?.kyHieu || doiTuong.properties?.kyHieu || doiTuong.properties?.symbol;
@@ -420,7 +423,8 @@ export const ChatRan: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doT
 
 export const ChatLong: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiScene }) => {
   const color = useChemColor(doiTuong, '#3b82f6');
-  const symbol = doiTuong.properties?.symbol || doiTuong.thuocTinh?.kyHieu;
+  let symbol = doiTuong.properties?.symbol || doiTuong.thuocTinh?.kyHieu;
+  if (!symbol && doiTuong.modelName === 'NuocCat') symbol = 'H2O';
   const chem = symbol ? findChemical(symbol) : null;
   const compoundName = symbol ? COMPOUND_NAMES[symbol] : null;
   const displayName = chem ? chem.name : compoundName;

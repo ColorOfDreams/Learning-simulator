@@ -135,6 +135,58 @@ const PouringGasParticles: React.FC<{ start: THREE.Vector3, end: THREE.Vector3, 
   );
 };
 
+const ReactionVisual: React.FC<{ objectId: string, effect: any, position: THREE.Vector3 }> = ({ objectId, effect, position }) => {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const particleCount = effect.effect === 'bubble' ? 50 : (effect.effect === 'precipitate' ? 100 : 0);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+
+  const particles = useMemo(() => {
+    return Array.from({ length: particleCount }, () => ({
+      progress: Math.random(),
+      speed: 0.2 + Math.random() * 0.4,
+      offset: new THREE.Vector3((Math.random() - 0.5) * 0.25, (Math.random() - 0.5) * 0.1, (Math.random() - 0.5) * 0.25),
+    }));
+  }, [particleCount]);
+
+  useFrame((_, delta) => {
+    if (!meshRef.current || particleCount === 0) return;
+    const isBubble = effect.effect === 'bubble';
+    particles.forEach((p, i) => {
+      p.progress += delta * p.speed;
+      if (p.progress > 1) {
+        p.progress = 0;
+        p.offset.set((Math.random() - 0.5) * 0.25, (Math.random() - 0.5) * 0.1, (Math.random() - 0.5) * 0.25);
+      }
+      
+      dummy.position.copy(position).add(p.offset);
+      if (isBubble) {
+        dummy.position.y += p.progress * 0.4; // rise up
+        dummy.scale.setScalar(0.4 + p.progress * 0.6);
+      } else {
+        dummy.position.y -= p.progress * 0.3; // fall down
+        dummy.scale.setScalar(0.5);
+      }
+      
+      dummy.updateMatrix();
+      meshRef.current!.setMatrixAt(i, dummy.matrix);
+    });
+    meshRef.current.instanceMatrix.needsUpdate = true;
+  });
+
+  if (particleCount === 0) return null;
+
+  return (
+    <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, particleCount]}>
+      <sphereGeometry args={[effect.effect === 'bubble' ? 0.02 : 0.015, 8, 8]} />
+      <meshStandardMaterial 
+        color={effect.effect === 'bubble' ? '#ffffff' : (effect.precipitateColor || '#a8a29e')} 
+        transparent 
+        opacity={effect.effect === 'bubble' ? 0.6 : 0.9} 
+      />
+    </instancedMesh>
+  );
+};
+
 const InteractionEffects: React.FC<Props> = ({ objects, isPlaying }) => {
   const groupRef = useRef<THREE.Group>(null);
   const timeRef = useRef(0);
@@ -166,17 +218,45 @@ const InteractionEffects: React.FC<Props> = ({ objects, isPlaying }) => {
     return result;
   }, [objects]);
 
-  const { pouringAction, setPouringAction } = useInteraction();
+  const { pouringAction, setPouringAction, checkRuleAndAdvance, updateObjectProperty } = useInteraction();
+
+  const heatTimerRef = useRef(0);
 
   useFrame((_, delta) => {
     timeRef.current += delta;
     if (!groupRef.current) return;
 
-    // Auto-dismiss pouring action after 2.5 seconds
-    if (pouringAction && timeRef.current - (pouringAction.startTime / 1000) > 2.5) {
-      // Actually we should use a relative timer if startTime is performance.now()
-      // Let's just say we spawn particles if pouringAction is present
+    if (isPlaying) {
+      heatTimerRef.current += delta;
+      if (heatTimerRef.current > 1.0) {
+        heatTimerRef.current = 0;
+        const burners = objects.filter(o => (o.modelName === 'BunsenBurner' || o.modelName === 'DenCon') && (o.properties?.batDen || (o as any).thuocTinh?.batDen));
+        if (burners.length > 0) {
+          burners.forEach(burner => {
+            const bp = [...(burner.position || (burner as any).viTri || [0,0,0])];
+            objects.forEach(target => {
+              if (target.id === burner.id) return;
+              const targetModel = target.modelName || (target as any).maDungCu;
+              if (!getEquipmentConfig(targetModel).tags.includes('container')) return;
+              const tp = [...(target.position || (target as any).viTri || [0,0,0])];
+              const distXZ = Math.sqrt((bp[0] - tp[0])**2 + (bp[2] - tp[2])**2);
+              const dy = tp[1] - bp[1];
+              if (distXZ < 0.6 && dy > 0 && dy < 2.0) {
+                if (checkRuleAndAdvance) checkRuleAndAdvance('heat', burner.id, target.id);
+                if (updateObjectProperty) {
+                  const curTemp = target.properties?.temperature || 25;
+                  if (curTemp < 100) {
+                    updateObjectProperty(target.id, 'temperature', curTemp + 5);
+                  }
+                }
+              }
+            });
+          });
+        }
+      }
     }
+
+    // Auto-dismiss pouring action after 2.5 seconds
 
     groupRef.current.children.forEach((child: any) => {
       if (child.userData?.type === 'snap-particle') {
@@ -262,6 +342,20 @@ const InteractionEffects: React.FC<Props> = ({ objects, isPlaying }) => {
         }
         return <PouringParticles start={streamStart} end={streamEnd} color={liquidColor} />;
       })()}
+
+      {/* Reaction Visuals */}
+      {objects.map(obj => {
+        const effect = obj.properties?.reactionEffect;
+        if (!effect) return null;
+        const elapsed = (Date.now() - (effect.timestamp || 0)) / 1000;
+        if (elapsed > (effect.durationLeft || 5)) return null;
+
+        const p = [...obj.position] as [number, number, number];
+        const y = p[1] === 5 ? getEquipmentConfig(obj.modelName).initY : p[1];
+        const pos = new THREE.Vector3(p[0], y + 0.2, p[2]); // render inside container
+        
+        return <ReactionVisual key={`rxn-${obj.id}`} objectId={obj.id} effect={effect} position={pos} />;
+      })}
     </group>
   );
 };

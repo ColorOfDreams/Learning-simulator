@@ -61,6 +61,7 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
     } as EquipmentDef));
     return tatCa.filter((eq) => {
       if (eq.subject !== expectedSubject) return false;
+      if (eq.id === 'ChemicalLiquid') return false; // Hide generic ChatLong from list
       if (grade && eq.grade !== grade) return false;
       if (chapter && eq.chapter !== chapter) return false;
       if (topic && eq.topic !== topic) return false;
@@ -127,12 +128,16 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
       newObjects = newObjects.filter((o) => o.modelName !== eq.id);
     } else {
       const y = INITIAL_Y[eq.id] || 0;
+      let properties: any = {};
+      if (eq.id === 'WoodenBlock') properties = { color: '#feca57' };
+      if (eq.id === 'NuocCat') properties = { symbol: 'H2O' };
+      
       newObjects.push({
         id: `${eq.id}_${Date.now()}`,
         modelName: eq.id,
         position: [0, 5, 0] as [number, number, number],
         rotation: [0, 0, 0], scale: [1, 1, 1],
-        properties: eq.id === 'WoodenBlock' ? { color: '#feca57' } : {},
+        properties,
       });
     }
     onChange({ ...data, objects: newObjects });
