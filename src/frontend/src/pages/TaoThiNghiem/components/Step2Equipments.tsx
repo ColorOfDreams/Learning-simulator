@@ -264,14 +264,8 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange }) => {
           return (
             <div key={eq.id} className={`s2-card ${sel ? 'selected' : ''}`}
               onClick={() => toggleEquip(eq)} style={{ '--accent': accent } as React.CSSProperties}>
-              <div className="s2-card-preview" onClick={(e) => { e.stopPropagation(); if (!isChem) setPreview(eq.id); }}>
-                {isChem ? (
-                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>
-                    {eq.id === 'ChemicalSolid' ? '🧪' : eq.id === 'ChemicalLiquid' ? '💧' : '💨'}
-                  </div>
-                ) : (
-                  <MiniPreview modelName={eq.id} size={64} />
-                )}
+              <div className="s2-card-preview" onClick={(e) => { e.stopPropagation(); setPreview(eq.id); }}>
+                <MiniPreview modelName={eq.id} size={64} />
               </div>
               <div className="s2-card-body">
                 <div className="s2-card-name">{eq.name}</div>

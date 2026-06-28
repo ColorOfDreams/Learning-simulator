@@ -51,7 +51,6 @@ import '@/dung-cu/hoa-hoc/ChatRan';
 import '@/dung-cu/hoa-hoc/ChatLong';
 import '@/dung-cu/hoa-hoc/NuocCat';
 import '@/dung-cu/hoa-hoc/ChatKhi';
-import '@/dung-cu/hoa-hoc/BangTuanHoan';
 import '@/dung-cu/toan-hoc/MatPhangToaDo';
 import '@/dung-cu/toan-hoc/DoThiParabol';
 import '@/dung-cu/toan-hoc/SongLuongGiac';
@@ -80,7 +79,7 @@ export async function getInitialState(): Promise<IInitialState> {
 			const { authorizedPermissions } = JSON.parse(raw) as Partial<IInitialState>;
 			Object.assign(initialState, { authorizedPermissions });
 		}
-	} catch (e) {}
+	} catch (e) { }
 
 	const token = localStorage.getItem('token');
 	if (token && token !== 'undefined') {
@@ -93,7 +92,7 @@ export async function getInitialState(): Promise<IInitialState> {
 					rsid: currentRole,
 				},
 			];
-		} catch {}
+		} catch { }
 
 		try {
 			const info = await getUserInfo();

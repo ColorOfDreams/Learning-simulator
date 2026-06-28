@@ -468,8 +468,4 @@ export const ChatKhi: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doT
     </DoiTuongKeoTha>
   );
 };
-export const BangTuanHoan: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiScene }) => (
-  <DoiTuongKeoTha doiTuong={doiTuong} nhan="Bảng Tuần Hoàn" kichThuocVaCham={[1.5, 1.0, 0.05]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene} coDinh>
-    <mesh castShadow><boxGeometry args={[3.0, 2.0, 0.05]} /><meshStandardMaterial color="#f8fafc" roughness={0.5} /></mesh>
-  </DoiTuongKeoTha>
-);
+

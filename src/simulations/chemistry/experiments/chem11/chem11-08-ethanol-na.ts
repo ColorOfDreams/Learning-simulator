@@ -9,7 +9,7 @@ const experiment = {
       { type: 'dish_sodium', id: 'na', label: 'Mẩu sodium (Na)', x: -4.8, z: 1.7 }
     ],
     steps: [
-      { text: 'Rót ethanol khan vào ống nghiệm.', type: 'pour', src: 'etoh', dst: 'tube', pour: { level: 0.5, color: 0xe4eef6, opacity: 0.5 } },
+      { text: 'Rót ethanol khan vào ống nghiệm.', type: 'pour', src: 'etoh', dst: 'tube', pour: { level: 0.5, color: 0xf5f9ff, opacity: 0.3 } },
       { text: 'Thả mẩu sodium nhỏ vào ống nghiệm.', type: 'drop', src: 'na', dst: 'tube', dropOffset: { y: 0.48, z: 0.16 } },
       { text: 'Quan sát: bọt khí H₂ thoát ra đều, mẩu Na tan dần.', type: 'wait', id: 'tube', fx: 'etoh_na_react' }
     ]

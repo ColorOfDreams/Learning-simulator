@@ -3,7 +3,46 @@ import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 
 const PreviewModel: React.FC<{ modelName: string }> = ({ modelName }) => {
-  switch (modelName) {
+  const aliasMap: Record<string, string> = {
+    'CocThuyTinh': 'Beaker',
+    'BinhTamGiac': 'ErlenmeyerFlask',
+    'BinhCau': 'RoundFlask',
+    'Buret': 'Burette',
+    'Pipet': 'Pipette',
+    'CoiChay': 'Mortar',
+    'OngNghiem': 'TestTube',
+    'GiaDo': 'Stand',
+    'NuocCat': 'ChemicalLiquid',
+    'DongCoRung': 'DrivingMotor',
+    'KhoiGo': 'WoodenBlock',
+    'VatNang': 'MassBlock',
+    'LoXo': 'Spring',
+    'DongHoNangLuong': 'EnergyMeter',
+    'ThuocDo': 'Ruler',
+    'ThuocDoGoc': 'Protractor',
+    'BoGiamChan': 'Dashpot',
+    'DongHoBamGiay': 'Stopwatch',
+    'ConLacLoXo': 'SpringPendulum',
+    'ConLacDon': 'SimplePendulum',
+    'NhietKe': 'Thermometer',
+    'OngSinhHan': 'Condenser',
+    'MayDoPH': 'pHMeter',
+    'DenCon': 'BunsenBurner',
+    'ChatLong': 'ChemicalLiquid',
+    'ChatKhi': 'ChemicalGas',
+    'ChatRan': 'ChemicalSolid',
+    'TamGiac': 'GeometryTriangle',
+    'MatPhangToaDo': 'CoordinatePlane',
+    'DuongTron': 'GeometryCircle',
+    'DoThiParabol': 'ParabolaGraph',
+    'BieuDoThongKe': 'StatisticsChart',
+    'SongLuongGiac': 'TrigWave',
+    'BangVeDoThi': 'FunctionPlotter',
+    'Vector2D': 'Vector2D'
+  };
+  const resolvedName = aliasMap[modelName] || modelName;
+
+  switch (resolvedName) {
     case 'Stand':
       return (
         <group position={[0, 1.4, 0]}>
@@ -47,20 +86,20 @@ const PreviewModel: React.FC<{ modelName: string }> = ({ modelName }) => {
     case 'RoundFlask':
       return (<group position={[0, 0.1, 0]}><mesh position={[0, -0.1, 0]}><sphereGeometry args={[0.45, 32, 32]} /><meshStandardMaterial color="#e0f4ff" roughness={0.05} metalness={0.05} transparent opacity={0.55} /></mesh><mesh position={[0, 1.2, 0]}><cylinderGeometry args={[0.1, 0.1, 1.2, 32]} /><meshStandardMaterial color="#e0f4ff" roughness={0.05} transparent opacity={0.55} /></mesh></group>);
     case 'Burette':
-      return (<group><mesh><cylinderGeometry args={[0.05, 0.05, 4, 32]} /><meshStandardMaterial color="#e8f6ff" roughness={0.05} metalness={0.05} transparent opacity={0.55} /></mesh><mesh position={[0, -2.1, 0]}><cylinderGeometry args={[0.05, 0.05, 0.2, 32]} /><meshStandardMaterial color="#c0c0c0" roughness={0.3} metalness={0.5} /></mesh><mesh position={[0, -2.25, 0]}><cylinderGeometry args={[0.01, 0.03, 0.15, 16]} /><meshStandardMaterial color="#e8f6ff" /></mesh></group>);
+      return (<group><mesh><cylinderGeometry args={[0.15, 0.15, 3.5, 32]} /><meshStandardMaterial color="#e8f6ff" roughness={0.05} metalness={0.05} transparent opacity={0.55} /></mesh><mesh position={[0, -1.8, 0]}><cylinderGeometry args={[0.15, 0.15, 0.2, 32]} /><meshStandardMaterial color="#c0c0c0" roughness={0.3} metalness={0.5} /></mesh><mesh position={[0, -2.0, 0]}><cylinderGeometry args={[0.03, 0.08, 0.2, 16]} /><meshStandardMaterial color="#e8f6ff" /></mesh></group>);
     case 'Pipette':
-      return (<group><mesh><cylinderGeometry args={[0.02, 0.02, 1.5, 32]} /><meshStandardMaterial color="#e8f6ff" roughness={0.05} transparent opacity={0.55} /></mesh><mesh position={[0, 0.8, 0]}><sphereGeometry args={[0.08, 16, 16]} /><meshStandardMaterial color="#e8f6ff" roughness={0.05} transparent opacity={0.55} /></mesh></group>);
+      return (<group><mesh><cylinderGeometry args={[0.06, 0.06, 2.5, 32]} /><meshStandardMaterial color="#e8f6ff" roughness={0.05} transparent opacity={0.55} /></mesh><mesh position={[0, 1.4, 0]}><sphereGeometry args={[0.2, 16, 16]} /><meshStandardMaterial color="#e8f6ff" roughness={0.05} transparent opacity={0.55} /></mesh></group>);
     case 'Thermometer':
-      return (<group position={[0, 0.2, 0]}><mesh><cylinderGeometry args={[0.03, 0.03, 3.0, 32]} /><meshStandardMaterial color="#f0f8ff" transparent opacity={0.6} roughness={0.1} /></mesh><mesh position={[0, -1.5, 0]}><sphereGeometry args={[0.04, 16, 16]} /><meshStandardMaterial color="#ff2020" emissive="#ff0000" emissiveIntensity={0.3} /></mesh><mesh position={[0, 0, 0]}><cylinderGeometry args={[0.008, 0.008, 1.8, 16]} /><meshStandardMaterial color="#ff2020" emissive="#ff0000" emissiveIntensity={0.3} /></mesh></group>);
+      return (<group position={[0, 0.2, 0]}><mesh><cylinderGeometry args={[0.08, 0.08, 3.0, 32]} /><meshStandardMaterial color="#f0f8ff" transparent opacity={0.6} roughness={0.1} /></mesh><mesh position={[0, -1.5, 0]}><sphereGeometry args={[0.12, 16, 16]} /><meshStandardMaterial color="#ff2020" emissive="#ff0000" emissiveIntensity={0.3} /></mesh><mesh position={[0, 0, 0]}><cylinderGeometry args={[0.025, 0.025, 1.8, 16]} /><meshStandardMaterial color="#ff2020" emissive="#ff0000" emissiveIntensity={0.3} /></mesh></group>);
     case 'BunsenBurner':
       return (<group position={[0, 0.6, 0]}><mesh position={[0, -1.0, 0]}><cylinderGeometry args={[0.25, 0.25, 0.2, 32]} /><meshStandardMaterial color="#555" roughness={0.5} metalness={0.3} /></mesh><mesh position={[0, -0.1, 0]}><cylinderGeometry args={[0.06, 0.06, 1.5, 32]} /><meshStandardMaterial color="#b8860b" roughness={0.3} metalness={0.7} /></mesh><mesh position={[0, 0.8, 0]}><coneGeometry args={[0.02, 0.25, 16]} /><meshStandardMaterial color="#0066ff" emissive="#0022cc" emissiveIntensity={0.6} transparent opacity={0.7} /></mesh><mesh position={[0, 1.0, 0]}><coneGeometry args={[0.04, 0.2, 16]} /><meshStandardMaterial color="#ff8800" emissive="#ff4400" emissiveIntensity={0.4} transparent opacity={0.7} /></mesh></group>);
-    case 'pHMeter': return (<group><mesh><boxGeometry args={[0.5, 0.3, 0.15]} /><meshStandardMaterial color="#e0e0e0" roughness={0.2} /></mesh><mesh position={[0, 0, 0.08]}><boxGeometry args={[0.3, 0.2, 0.01]} /><meshStandardMaterial color="#1a3a1a" /></mesh><mesh position={[0, -0.24, 0.05]}><cylinderGeometry args={[0.025, 0.025, 0.5, 16]} /><meshStandardMaterial color="#f0f0f0" /></mesh></group>);
-    case 'Condenser': return (<group><mesh><cylinderGeometry args={[0.15, 0.15, 3.5, 32]} /><meshStandardMaterial color="#e0f4ff" roughness={0.05} transparent opacity={0.4} /></mesh><mesh position={[0, 0, 0]}><cylinderGeometry args={[0.05, 0.05, 4.0, 32]} /><meshStandardMaterial color="#e0f4ff" roughness={0.05} transparent opacity={0.4} /></mesh></group>);
-    case 'Mortar': return (<group position={[0, -0.1, 0]}><mesh><sphereGeometry args={[0.35, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} /><meshStandardMaterial color="#f5f0e8" roughness={0.5} /></mesh><mesh position={[0.15, 0.2, 0.1]} rotation={[0.3, 0, 0.1]}><cylinderGeometry args={[0.04, 0.05, 0.7, 16]} /><meshStandardMaterial color="#faf5f0" roughness={0.3} /></mesh></group>);
-    case 'PeriodicTable': return (<mesh><boxGeometry args={[3.5, 2.0, 0.05]} /><meshStandardMaterial color="#f8f8f8" roughness={0.2} /></mesh>);
-    case 'ChemicalSolid': return (<group>{[[0, 0, 0], [0.08, 0.03, 0.05], [0.03, 0.05, -0.06], [-0.07, 0.01, 0.04], [-0.04, 0.04, -0.03], [0.06, 0.02, -0.04], [-0.05, 0.02, 0.06], [0.01, 0.06, 0.02]].map((p, i) => (<mesh key={i} position={[p[0], p[1] + 0.05, p[2]]} rotation={[0.3, 0.4, 0.2]}><boxGeometry args={[0.05, 0.04, 0.05]} /><meshStandardMaterial color="#c0c0c0" roughness={0.3} metalness={0.5} /></mesh>))}</group>);
-    case 'ChemicalLiquid': return (<group><mesh><cylinderGeometry args={[0.25, 0.25, 1.2, 32]} /><meshStandardMaterial color="#e0f0ff" roughness={0.05} transparent opacity={0.5} /></mesh><mesh position={[0, -0.3, 0]}><cylinderGeometry args={[0.22, 0.22, 0.6, 32]} /><meshStandardMaterial color="#00a8ff" transparent opacity={0.75} roughness={0.1} /></mesh></group>);
-    case 'ChemicalGas': return (<group><mesh><sphereGeometry args={[0.28, 32, 32]} /><meshStandardMaterial color="#a0ffa0" transparent opacity={0.2} roughness={0.5} depthWrite={false} /></mesh></group>);
+    case 'pHMeter': return (<group><mesh><boxGeometry args={[1.5, 0.9, 0.45]} /><meshStandardMaterial color="#e0e0e0" roughness={0.2} /></mesh><mesh position={[0, 0, 0.24]}><boxGeometry args={[0.9, 0.6, 0.03]} /><meshStandardMaterial color="#1a3a1a" /></mesh><mesh position={[0, -0.72, 0.15]}><cylinderGeometry args={[0.075, 0.075, 1.5, 16]} /><meshStandardMaterial color="#f0f0f0" /></mesh></group>);
+    case 'Condenser': return (<group><mesh><cylinderGeometry args={[0.3, 0.3, 3.5, 32]} /><meshStandardMaterial color="#e0f4ff" roughness={0.05} transparent opacity={0.4} /></mesh><mesh position={[0, 0, 0]}><cylinderGeometry args={[0.1, 0.1, 4.0, 32]} /><meshStandardMaterial color="#e0f4ff" roughness={0.05} transparent opacity={0.4} /></mesh></group>);
+    case 'Mortar': return (<group position={[0, -0.1, 0]}><mesh><sphereGeometry args={[0.5, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2]} /><meshStandardMaterial color="#f5f0e8" roughness={0.5} /></mesh><mesh position={[0.2, 0.3, 0.15]} rotation={[0.3, 0, 0.1]}><cylinderGeometry args={[0.06, 0.075, 1.0, 16]} /><meshStandardMaterial color="#faf5f0" roughness={0.3} /></mesh></group>);
+    case 'PeriodicTable': return (<group><mesh><boxGeometry args={[3.5, 2.0, 0.05]} /><meshStandardMaterial color="#f8f8f8" roughness={0.2} /></mesh>{[...Array(18)].map((_, i) => <mesh key={`col-${i}`} position={[-1.6 + i * 0.188, 0, 0.03]}><boxGeometry args={[0.15, 1.8, 0.01]} /><meshStandardMaterial color={['#ff6b6b', '#ffa94d', '#ffd43b', '#a9e34b', '#4dabf7', '#748ffc', '#da77f2'][i % 7]} roughness={0.6} /></mesh>)}</group>);
+    case 'ChemicalSolid': return (<group position={[0, -0.25, 0]}><mesh><cylinderGeometry args={[0.2, 0.2, 0.5, 32]} /><meshPhysicalMaterial color="#ffffff" transparent opacity={0.3} roughness={0.1} clearcoat={1} depthWrite={false} /></mesh><mesh position={[0, 0.27, 0]}><cylinderGeometry args={[0.21, 0.21, 0.06, 32]} /><meshStandardMaterial color="#334155" roughness={0.6} /></mesh><group position={[0, 0, 0.201]}><mesh><planeGeometry args={[0.25, 0.15]} /><meshStandardMaterial color="#f8fafc" roughness={0.8} /></mesh></group><mesh position={[0, -0.15, 0]}><cylinderGeometry args={[0.18, 0.18, 0.2, 32]} /><meshStandardMaterial color="#a855f7" roughness={0.8} /></mesh></group>);
+    case 'ChemicalLiquid': return (<group position={[0, -0.25, 0]}><mesh><cylinderGeometry args={[0.2, 0.2, 0.5, 32]} /><meshPhysicalMaterial color="#ffffff" transparent opacity={0.3} roughness={0.1} clearcoat={1} depthWrite={false} /></mesh><mesh position={[0, 0.27, 0]}><cylinderGeometry args={[0.21, 0.21, 0.06, 32]} /><meshStandardMaterial color="#334155" roughness={0.6} /></mesh><group position={[0, 0, 0.201]}><mesh><planeGeometry args={[0.25, 0.15]} /><meshStandardMaterial color="#f8fafc" roughness={0.8} /></mesh></group><mesh position={[0, -0.1, 0]}><cylinderGeometry args={[0.18, 0.18, 0.3, 32]} /><meshPhysicalMaterial color="#3b82f6" transparent opacity={0.7} roughness={0.1} /></mesh></group>);
+    case 'ChemicalGas': return (<group position={[0, -0.25, 0]}><mesh><cylinderGeometry args={[0.2, 0.2, 0.5, 32]} /><meshPhysicalMaterial color="#ffffff" transparent opacity={0.3} roughness={0.1} clearcoat={1} depthWrite={false} /></mesh><mesh position={[0, 0.27, 0]}><cylinderGeometry args={[0.21, 0.21, 0.06, 32]} /><meshStandardMaterial color="#334155" roughness={0.6} /></mesh><group position={[0, 0, 0.201]}><mesh><planeGeometry args={[0.25, 0.15]} /><meshStandardMaterial color="#f8fafc" roughness={0.8} /></mesh></group><mesh position={[0, -0.05, 0]}><cylinderGeometry args={[0.18, 0.18, 0.4, 32]} /><meshPhysicalMaterial color="#a0ffa0" transparent opacity={0.4} roughness={0.1} /></mesh></group>);
     case 'CoordinatePlane': return (<group><gridHelper args={[10, 20, '#cbd5e1', '#e2e8f0']} position={[0, 0, 0]} /><mesh><boxGeometry args={[10, 0.02, 10]} /><meshStandardMaterial color="#f8fafc" roughness={0.5} /></mesh></group>);
     case 'ParabolaGraph': return (<group><gridHelper args={[8, 16, '#cbd5e1', '#e2e8f0']} position={[0, 0, 0]} /><mesh><boxGeometry args={[8, 0.02, 8]} /><meshStandardMaterial color="#f8fafc" /></mesh></group>);
     case 'TrigWave': return (<group><gridHelper args={[8, 16, '#cbd5e1', '#e2e8f0']} position={[0, 0, 0]} /><mesh><boxGeometry args={[8, 0.02, 8]} /><meshStandardMaterial color="#f8fafc" /></mesh></group>);
