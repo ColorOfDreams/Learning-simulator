@@ -160,7 +160,8 @@ export default function GenericChemSimulation({
   config,
   currentStep = 1,
   onStepChange,
-}: SimulationProps & { currentStep?: number; onStepChange?: (step: number) => void }) {
+  onThumbnail,
+}: SimulationProps & { currentStep?: number; onStepChange?: (step: number) => void; onThumbnail?: (simId: string, dataUrl: string) => void }) {
   const mountRef = useRef<HTMLDivElement | null>(null);
 
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -1465,7 +1466,7 @@ export default function GenericChemSimulation({
     camera.position.set(0, 7, 14);
     cameraRef.current = camera;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
@@ -2323,6 +2324,15 @@ export default function GenericChemSimulation({
 
     reqId = requestAnimationFrame(animate);
 
+    const thumbnailTimer = setTimeout(() => {
+      try {
+        const dataUrl = renderer.domElement.toDataURL('image/webp', 0.75);
+        if (dataUrl && dataUrl.length > 1000) {
+          onThumbnail?.(simId, dataUrl);
+        }
+      } catch (_) {}
+    }, 400);
+
     const handleResize = () => {
       if (!mountRef.current) return;
       const w = mountRef.current.clientWidth;
@@ -2334,6 +2344,7 @@ export default function GenericChemSimulation({
     window.addEventListener('resize', handleResize);
 
     return () => {
+      clearTimeout(thumbnailTimer);
       cancelAnimationFrame(reqId);
       window.removeEventListener('resize', handleResize);
       canvasElement.removeEventListener('pointerdown', handlePointerDown);

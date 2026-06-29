@@ -12,12 +12,12 @@ import './TeacherClassDetails.less';
 const { Title, Text } = Typography;
 
 const BUILT_IN_SIMULATIONS = [
-  { value: 'SIM-08', label: 'Đồ thị hàm số bậc hai (Toán)' },
-  { value: 'SIM-16', label: 'Chuyển động ném xiên & Parabol (Toán)' },
-  { value: 'SIM-17', label: 'Bất phương trình bậc nhất hai ẩn (Toán)' },
-  { value: 'SIM-18', label: 'Hệ thức lượng trong tam giác (Toán)' },
-  { value: 'SIM-19', label: 'Phương trình đường tròn và Ellipse (Toán)' },
-  { value: 'SIM-20', label: 'Thống kê (Toán)' },
+  { value: 'MATH10-01', label: 'Đồ thị hàm số bậc hai (Toán)' },
+  { value: 'MATH10-02', label: 'Chuyển động ném xiên & Parabol (Toán)' },
+  { value: 'MATH10-03', label: 'Bất phương trình bậc nhất hai ẩn (Toán)' },
+  { value: 'MATH10-04', label: 'Hệ thức lượng trong tam giác (Toán)' },
+  { value: 'MATH10-05', label: 'Phương trình đường tròn và Ellipse (Toán)' },
+  { value: 'MATH10-06', label: 'Thống kê (Toán)' },
   { value: 'CHEM10-04', label: 'Đốt cháy dây magnesium (Hóa học 10)' },
   { value: 'CHEM11-01', label: 'Độ pH và Chất chỉ thị (Hóa học 11)' },
   { value: 'CHEM11-02', label: 'Chuẩn độ Acid - Base (Hóa học 11)' },

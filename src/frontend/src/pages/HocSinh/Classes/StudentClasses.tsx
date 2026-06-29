@@ -37,6 +37,11 @@ const StudentClasses: React.FC = () => {
       <div className="student-classes scl">
         <div className="student-classes__header">
           <Title level={2}>Lớp học của tôi</Title>
+          {!loading && classes.length > 0 && (
+            <Button type="primary" size="large" style={{ borderRadius: '8px', fontWeight: 600 }} onClick={() => history.push('/join')}>
+              Tham gia lớp học
+            </Button>
+          )}
         </div>
 
         {loading ? (
@@ -68,7 +73,6 @@ const StudentClasses: React.FC = () => {
                       history.push(`/hoc-sinh/classes/${cls.id}`);
                     }
                   }}
-                  style={isPending ? { opacity: 0.8, backgroundColor: '#fafafa' } : undefined}
                 >
                   <div className="class-card__header">
                     <Title level={4}>{cls.name}</Title>

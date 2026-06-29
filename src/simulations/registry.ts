@@ -36,14 +36,7 @@ import ResistorsSimulation from './physics/SIM-51-resistors'
 import FullCircuitSimulation from './physics/SIM-52-fullcircuit'
 
 
-// Math 10 simulations
-import QuadraticSimulation from './math/SIM-08-quadratic'
-import ProjectileArchSimulation from './math/SIM-16-projectile-arch'
-import InequalitySimulation from './math/SIM-17-inequality'
-import TriangulationSimulation from './math/SIM-18-triangulation'
-import ConicSimulation from './math/SIM-19-conic'
-import StatisticsSimulation from './math/SIM-20-statistics'
-
+import GenericMathSimulation from './math/GenericMathSimulation'
 const registry = new Map<string, ComponentType<SimulationProps>>()
 
 export function registerSimulation(id: string, component: ComponentType<SimulationProps>) {
@@ -115,12 +108,20 @@ registerSimulation('SIM-14', GenericChemSimulation)
 registerSimulation('SIM-15', GenericChemSimulation)
 
 // Register Math simulations
-registerSimulation('SIM-08', QuadraticSimulation) // Overwrites chem SIM-08 in the registry, which is correct for Math 10 scope mapping
-registerSimulation('SIM-16', ProjectileArchSimulation)
-registerSimulation('SIM-17', InequalitySimulation)
-registerSimulation('SIM-18', TriangulationSimulation)
-registerSimulation('SIM-19', ConicSimulation)
-registerSimulation('SIM-20', StatisticsSimulation)
+registerSimulation('MATH10-01', GenericMathSimulation)
+registerSimulation('MATH10-02', GenericMathSimulation)
+registerSimulation('MATH10-03', GenericMathSimulation)
+registerSimulation('MATH10-04', GenericMathSimulation)
+registerSimulation('MATH10-05', GenericMathSimulation)
+registerSimulation('MATH10-06', GenericMathSimulation)
+
+// Legacy Math aliases for backwards compatibility
+registerSimulation('SIM-08', GenericMathSimulation) // Overwrites chem SIM-08 in the registry, which is correct for Math 10 scope mapping
+registerSimulation('SIM-16', GenericMathSimulation)
+registerSimulation('SIM-17', GenericMathSimulation)
+registerSimulation('SIM-18', GenericMathSimulation)
+registerSimulation('SIM-19', GenericMathSimulation)
+registerSimulation('SIM-20', GenericMathSimulation)
 registerSimulation('SIM-21', KinematicsSimulation)
 registerSimulation('SIM-22', FreefallSimulation)
 registerSimulation('SIM-23', HorizontalSimulation)

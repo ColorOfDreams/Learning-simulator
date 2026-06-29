@@ -5,9 +5,14 @@ import './index.less';
 interface CelebrationOverlayProps {
 	score: number;
 	onClose: () => void;
+	icon?: string;
+	title?: string;
+	message?: string;
+	showScore?: boolean;
+	closeLabel?: string;
 }
 
-const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ score, onClose }) => {
+const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ score, onClose, icon, title, message, showScore, closeLabel }) => {
 	useEffect(() => {
 		// Fire multiple confetti bursts
 		const duration = 3000;
@@ -42,16 +47,18 @@ const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ score, onClose 
 	return (
 		<div className='celebration-overlay'>
 			<div className='celebration-overlay__content'>
-				<div className='celebration-overlay__icon'>🏆</div>
-				<h2 className='celebration-overlay__title'>Tuyệt vời!</h2>
+				<div className='celebration-overlay__icon'>{icon ?? '🏆'}</div>
+				<h2 className='celebration-overlay__title'>{title ?? 'Tuyệt vời!'}</h2>
 				<p className='celebration-overlay__msg'>
-					Bạn đã hoàn thành xuất sắc bài thực hành.
+					{message ?? 'Bạn đã hoàn thành xuất sắc bài thực hành.'}
 				</p>
-				<div className='celebration-overlay__score'>
-					Tỉ lệ đúng: <span>{score}%</span>
-				</div>
+				{(showScore ?? true) && (
+					<div className='celebration-overlay__score'>
+						Tỉ lệ đúng: <span>{score}%</span>
+					</div>
+				)}
 				<button className='celebration-overlay__btn' onClick={onClose}>
-					Xem chi tiết kết quả
+					{closeLabel ?? 'Xem chi tiết kết quả'}
 				</button>
 			</div>
 		</div>

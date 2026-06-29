@@ -1523,12 +1523,12 @@ export class AiService {
         '- CHEM12-12: Điện phân dung dịch CuSO₄ (Môn: chem, topic: cuso4_electrolysis)',
         '- CHEM12-13: Ăn mòn điện hóa học (pin Zn-Cu) (Môn: chem, topic: electrochemical_corrosion)',
         '--- Toán ---',
-        '- SIM-08_math: Đồ thị hàm số bậc hai (Môn: math, topic: quadratic)',
-        '- SIM-16: Ném xiên và vòm cổng parabol (Môn: math, topic: projectile-arch)',
-        '- SIM-17: Miền nghiệm hệ bất phương trình (Môn: math, topic: inequality)',
-        '- SIM-18: Hệ thức lượng tam giác cột cờ (Môn: math, topic: triangulation)',
-        '- SIM-19: Định nghĩa Elip ghim đinh (Môn: math, topic: conic)',
-        '- SIM-20: Thống kê số liệu mẫu và biểu đồ (Môn: math, topic: statistics)',
+        '- MATH10-01: Đồ thị hàm số bậc hai (Môn: math, topic: quadratic)',
+        '- MATH10-02: Ném xiên và vòm cổng parabol (Môn: math, topic: projectile-arch)',
+        '- MATH10-03: Miền nghiệm hệ bất phương trình (Môn: math, topic: inequality)',
+        '- MATH10-04: Hệ thức lượng tam giác cột cờ (Môn: math, topic: triangulation)',
+        '- MATH10-05: Định nghĩa Elip ghim đinh (Môn: math, topic: conic)',
+        '- MATH10-06: Thống kê số liệu mẫu và biểu đồ (Môn: math, topic: statistics)',
         '--- Vật lý ---',
         '- SIM-02: Chuyển động ném xiên (Môn: physics, topic: projectile)',
         '- SIM-22: Sự rơi tự do (Môn: physics, topic: free_fall)',
@@ -1576,7 +1576,7 @@ export class AiService {
         '{',
         '  "is_related": boolean,',
         '  "has_simulation": boolean,',
-        '  "simulation_id": "CHEM10-01" | ... | "CHEM10-12" | "CHEM11-01" | ... | "CHEM11-11" | "CHEM12-01" | ... | "CHEM12-13" | "SIM-02" | "SIM-08" | "SIM-16" | ... | "SIM-52" | null,',
+        '  "simulation_id": "CHEM10-01" | ... | "CHEM10-12" | "CHEM11-01" | ... | "CHEM11-11" | "CHEM12-01" | ... | "CHEM12-13" | "MATH10-01" | ... | "MATH10-06" | "SIM-02" | "SIM-08" | "SIM-16" | ... | "SIM-52" | null,',
         '  "subject": "physics" | "math" | "chem",',
         '  "topic": string,',
         '  "short_answer": "Lời giải thích tự nhiên bằng tiếng Việt. Unicode cho công thức. Không dùng LaTeX block. Không viết mã SIM-XX.",',
@@ -2563,10 +2563,11 @@ export class AiService {
     subject?: string,
     count: number = 3,
   ) {
+    const normalizedKey = normalizeSimulationId(simulationId, subject);
     const key =
-      simulationId === 'SIM-08' && subject === 'math'
+      normalizedKey === 'MATH10-01'
         ? 'SIM-08_math'
-        : simulationId;
+        : normalizedKey;
     const list =
       LOCAL_FALLBACK_QUESTIONS[key] || LOCAL_FALLBACK_QUESTIONS['default'];
     const result: typeof list = [];
@@ -3075,6 +3076,36 @@ const SIMULATIONS_METADATA: Record<
     subject: 'math',
     topic: 'quadratic',
   },
+  'MATH10-01': {
+    title: 'Đồ thị hàm số bậc hai',
+    subject: 'math',
+    topic: 'quadratic',
+  },
+  'MATH10-02': {
+    title: 'Ném xiên và vòm cổng parabol',
+    subject: 'math',
+    topic: 'projectile-arch',
+  },
+  'MATH10-03': {
+    title: 'Miền nghiệm hệ bất phương trình',
+    subject: 'math',
+    topic: 'inequality',
+  },
+  'MATH10-04': {
+    title: 'Hệ thức lượng tam giác cột cờ',
+    subject: 'math',
+    topic: 'triangulation',
+  },
+  'MATH10-05': {
+    title: 'Định nghĩa Elip ghim đinh',
+    subject: 'math',
+    topic: 'conic',
+  },
+  'MATH10-06': {
+    title: 'Thống kê số liệu mẫu và biểu đồ',
+    subject: 'math',
+    topic: 'statistics',
+  },
   'CHEM11-05': {
     title: 'H₂SO₄ đặc tác dụng với đường (Saccharose)',
     subject: 'chem',
@@ -3358,9 +3389,17 @@ const CHEM11_SIM_ALIASES: Record<string, string> = {
   'SIM-13': 'CHEM11-09',
   'SIM-14': 'CHEM11-10',
   'SIM-15': 'CHEM11-11',
+  'SIM-16': 'MATH10-02',
+  'SIM-17': 'MATH10-03',
+  'SIM-18': 'MATH10-04',
+  'SIM-19': 'MATH10-05',
+  'SIM-20': 'MATH10-06',
 };
 
-function normalizeSimulationId(simId: string): string {
+function normalizeSimulationId(simId: string, subject?: string): string {
+  if (simId === 'SIM-08') {
+    return subject === 'math' ? 'MATH10-01' : 'SIM-08_chem';
+  }
   return CHEM11_SIM_ALIASES[simId] || simId;
 }
 
@@ -3370,14 +3409,8 @@ function getSimulationMetadata(
 ):
   | { title: string; subject: 'math' | 'physics' | 'chem'; topic: string }
   | undefined {
-  simId = normalizeSimulationId(simId);
-  if (simId === 'SIM-08') {
-    if (subject === 'math') {
-      return SIMULATIONS_METADATA['SIM-08_math'];
-    }
-    return SIMULATIONS_METADATA['SIM-08_chem'];
-  }
-  return SIMULATIONS_METADATA[simId];
+  const normId = normalizeSimulationId(simId, subject);
+  return SIMULATIONS_METADATA[normId];
 }
 
 const LOCAL_FALLBACK_QUESTIONS: Record<

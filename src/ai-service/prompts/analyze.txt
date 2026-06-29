@@ -28,19 +28,19 @@ Các simulation có sẵn:
 - CHEM12-11: Điều chế Fe(OH)₂ và Fe(OH)₃ (Hóa học, topic: iron_hydroxides)
 - CHEM12-12: Điện phân dung dịch CuSO₄ (Hóa học, topic: cuso4_electrolysis)
 - CHEM12-13: Ăn mòn điện hóa học Zn-Cu (Hóa học, topic: electrochemical_corrosion)
-- SIM-08 (Toán): Đồ thị hàm số bậc hai (Toán, topic: quadratic)
-- SIM-16: Ném xiên và vòm cổng parabol (Toán, topic: projectile-arch)
-- SIM-17: Miền nghiệm hệ bất phương trình (Toán, topic: inequality)
-- SIM-18: Hệ thức lượng tam giác cột cờ (Toán, topic: triangulation)
-- SIM-19: Định nghĩa Elip ghim đinh (Toán, topic: conic)
-- SIM-20: Thống kê số liệu mẫu và biểu đồ (Toán, topic: statistics)
+- MATH10-01: Đồ thị hàm số bậc hai (Toán, topic: quadratic)
+- MATH10-02: Ném xiên và vòm cổng parabol (Toán, topic: projectile-arch)
+- MATH10-03: Miền nghiệm hệ bất phương trình (Toán, topic: inequality)
+- MATH10-04: Hệ thức lượng tam giác cột cờ (Toán, topic: triangulation)
+- MATH10-05: Định nghĩa Elip ghim đinh (Toán, topic: conic)
+- MATH10-06: Thống kê số liệu mẫu và biểu đồ (Toán, topic: statistics)
 - SIM-21: Chuyển động thẳng đều & biến đổi đều (Vật lý, topic: kinematics)
 
 Output format (JSON duy nhất, không có text khác):
 {
   "subject": "physics" | "chemistry" | "math",
   "topic": "<topic string>",
-  "simulation_id": "SIM-02" | "CHEM11-01" | ... | "CHEM11-11" | "CHEM12-01" | ... | "CHEM12-13" | "SIM-08" | ... | "SIM-21" | null,
+  "simulation_id": "SIM-02" | "CHEM11-01" | ... | "CHEM11-11" | "CHEM12-01" | ... | "CHEM12-13" | "MATH10-01" | ... | "MATH10-06" | "SIM-21" | null,
   "parameters": [
     { "key": "<param_key>", "value": <number>, "unit": "<unit>", "label": "<Vietnamese label>" }
   ],

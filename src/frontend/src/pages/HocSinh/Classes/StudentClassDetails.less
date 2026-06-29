@@ -1,16 +1,48 @@
+@import '../components/student-theme.less';
+
 .student-class-details {
+  flex: 1;
   width: 100%;
-  padding: 32px 40px;
-  max-width: 1400px;
+  padding: 34px 44px 56px;
+  max-width: 1020px;
   margin: 0 auto;
   text-align: left;
+  background: @stu-bg;
+  min-height: 100%;
+  overflow-y: auto;
+  .stu-scrollbar();
+
+  // Override default PageCard styles to align with student theme
+  .ant-card {
+    background: @stu-bg-card !important;
+    border: 1px solid @stu-border !important;
+    border-radius: @stu-radius-2xl;
+    box-shadow: @stu-shadow-md;
+
+    .ant-card-head {
+      border-bottom: 1px solid @stu-border-light;
+      background: transparent;
+      padding: 20px 24px;
+      
+      .ant-card-head-title {
+        h3.ant-typography {
+          color: @stu-text-heading !important;
+          font-family: @font-heading;
+          font-weight: 800;
+          font-size: 24px;
+        }
+      }
+    }
+  }
 
   .assignments-section {
-    padding: 24px;
+    padding: 12px 0 24px 0;
     
     h4.ant-typography {
-      margin-bottom: 24px;
+      margin-bottom: 16px;
       font-weight: 700;
+      color: @stu-text-heading !important;
+      font-size: 18px;
     }
   }
 
@@ -18,14 +50,23 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    margin-top: 20px;
   }
 
   .assignment-card {
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border-radius: @stu-radius-xl !important;
+    box-shadow: @stu-shadow-sm;
+    border: 1px solid @stu-border !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     
     .ant-card-body {
-      padding: 20px 24px;
+      padding: 20px 24px !important;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: @stu-shadow-lg;
+      border-color: @stu-accent !important;
     }
 
     &__content {
@@ -44,22 +85,26 @@
       flex: 1;
       
       h5.ant-typography {
-        margin-bottom: 8px;
-        font-size: 16px;
+        margin-bottom: 6px;
+        font-size: 17px;
+        font-weight: 700;
+        color: @stu-text-heading !important;
       }
 
       .ant-typography {
         display: block;
-        margin-bottom: 12px;
-        color: #595959;
+        margin-bottom: 8px;
+        color: @stu-text-secondary !important;
+        font-size: 13.5px;
       }
     }
 
     &__meta {
       font-size: 13px;
-      color: #8c8c8c;
+      color: @stu-text-muted;
       strong {
-        color: #262626;
+        color: @stu-text-primary;
+        font-weight: 600;
       }
     }
 
@@ -86,12 +131,17 @@
 
         .score-display {
           font-size: 14px;
+          color: @stu-text-secondary;
           strong {
             font-size: 18px;
-            color: #1677ff;
+            color: @stu-accent !important;
           }
         }
       }
     }
+  }
+
+  .ant-empty-description {
+    color: @stu-text-muted !important;
   }
 }
