@@ -12,9 +12,18 @@ export type RagReference = {
   topic?: string;
   source?: string;
   metadata?: object;
+  keywords?: string[];
   score?: number;
+  finalScore?: number;
   vectorScore?: number;
   keywordScore?: number;
+  conceptScore?: number;
+  conceptBoost?: number;
+  titleBoost?: number;
+  metadataBoost?: number;
+  formulaBoost?: number;
+  textBoost?: number;
+  topicBoost?: number;
   retrievalType?: 'vector' | 'keyword' | 'hybrid';
 };
 
@@ -25,6 +34,7 @@ export type RetrieveTheoryChunksInput = {
   topic?: string;
   simulationId?: string;
   topK?: number;
+  disableVector?: boolean;
 };
 
 type VectorSearchRow = {
@@ -34,7 +44,65 @@ type VectorSearchRow = {
   topic: string;
   source: unknown;
   metadata: unknown;
+  keywords: unknown;
   vectorScore: number | string;
+};
+
+type RagRetrievalConfig = {
+  vectorCandidates: number;
+  keywordCandidates: number;
+  finalTopK: number;
+  vectorWeight: number;
+  keywordWeight: number;
+  conceptBoostWeight: number;
+};
+
+type ConceptGroup = {
+  name: string;
+  aliases: string[];
+};
+
+const PHYSICS_CONCEPT_GROUPS: ConceptGroup[] = [
+  { name: 'period', aliases: ['chu kì', 'chu kỳ', 'T'] },
+  {
+    name: 'angular_frequency',
+    aliases: ['omega', 'ω', 'tần số góc', 'rad/s'],
+  },
+  { name: 'initial_phase', aliases: ['phi', 'φ', 'pha ban đầu'] },
+  {
+    name: 'amplitude',
+    aliases: ['biên độ', 'A', 'li độ cực đại', 'độ lệch cực đại'],
+  },
+  { name: 'displacement', aliases: ['li độ', 'x', 'vị trí cân bằng'] },
+  { name: 'phase_difference', aliases: ['độ lệch pha', 'lệch pha'] },
+  { name: 'potential_energy', aliases: ['thế năng', 'Wt', '1/2 kx^2'] },
+  {
+    name: 'mechanical_energy',
+    aliases: ['cơ năng', 'W', '1/2 kA^2', 'bảo toàn'],
+  },
+  { name: 'acceleration', aliases: ['gia tốc', 'a', '-ω²x'] },
+  { name: 'velocity', aliases: ['vận tốc', 'v', 'vmax', 'ωA'] },
+  {
+    name: 'spring_period',
+    aliases: ['con lắc lò xo', 'khối lượng', 'độ cứng', 'm', 'k'],
+  },
+];
+
+export type RagVectorDiagnostics = {
+  vectorEnabled: boolean;
+  embeddingConfigured: boolean;
+  embeddingBaseUrl: string;
+  embeddingEndpoint: string;
+  embeddingModel: string;
+  embeddingDimension: number;
+  embeddingApiKeyPresent: boolean;
+  hasGlobalFetch: boolean;
+  pgvectorExtensionEnabled: boolean;
+  theoryChunksTotal: number;
+  theoryChunksWithEmbedding: number;
+  theoryChunksMissingEmbedding: number;
+  embeddingDimensionsInDb: number[];
+  embeddingIndexCount: number;
 };
 
 @Injectable()
@@ -50,25 +118,44 @@ export class RagRetrievalService {
   async retrieveTheoryChunks(
     input: RetrieveTheoryChunksInput,
   ): Promise<RagReference[]> {
-    const topK = this.normalizeTopK(input.topK);
+    const config = this.readConfig();
+    const topK = this.normalizeTopK(input.topK, config);
     const topic = input.topic === 'unknown' ? undefined : input.topic;
     const normalizedInput = { ...input, topic };
+    const expandedInput = {
+      ...normalizedInput,
+      message: this.expandQuery(input.message),
+    };
 
     this.logger.debug(
-      `Retrieve topic=${topic ?? 'any'} subject=${input.subject ?? 'any'} grade=${input.grade ?? 'any'} simulationId=${input.simulationId ?? 'none'} topK=${topK}`,
+      `Retrieve topic=${topic ?? 'any'} subject=${input.subject ?? 'any'} grade=${input.grade ?? 'any'} simulationId=${input.simulationId ?? 'none'} topK=${topK} vectorCandidates=${config.vectorCandidates} keywordCandidates=${config.keywordCandidates}`,
     );
 
-    const keywordResults = await this.keywordSearch(normalizedInput);
+    const keywordResults = await this.keywordSearch(expandedInput, config);
     let vectorResults: RagReference[] = [];
 
-    try {
-      vectorResults = await this.vectorSearch(normalizedInput);
-    } catch (error) {
-      const reason = error instanceof Error ? error.message : String(error);
-      this.logger.warn(`Vector retrieval fallback to keyword: ${reason}`);
+    if (!input.disableVector) {
+      try {
+        vectorResults = await this.vectorSearch(expandedInput, config);
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        if (reason.includes('missing EMBEDDING_API_KEY')) {
+          this.logger.warn(reason);
+        } else {
+          this.logger.warn(`Vector retrieval fallback to keyword: ${reason}`);
+        }
+      }
+    } else {
+      this.logger.debug('Vector retrieval disabled for keyword-only baseline.');
     }
 
-    const results = this.mergeAndRank(vectorResults, keywordResults, topK);
+    const results = this.mergeAndRank(
+      vectorResults,
+      keywordResults,
+      normalizedInput,
+      topK,
+      config,
+    );
     this.logger.debug(
       `Retrieve results vector=${vectorResults.length} keyword=${keywordResults.length} final=${results.length}`,
     );
@@ -78,18 +165,23 @@ export class RagRetrievalService {
 
   private async vectorSearch(
     input: RetrieveTheoryChunksInput,
+    config: RagRetrievalConfig,
   ): Promise<RagReference[]> {
     const embedding = await this.embeddingService.embedText(input.message);
-    let rows = await this.queryVectorRows(embedding, input);
+    let rows = await this.queryVectorRows(embedding, input, config);
 
     if (rows.length === 0 && input.topic) {
       this.logger.debug(
         `Vector retrieval found no chunks for topic=${input.topic}; retrying without topic filter`,
       );
-      rows = await this.queryVectorRows(embedding, {
-        ...input,
-        topic: undefined,
-      });
+      rows = await this.queryVectorRows(
+        embedding,
+        {
+          ...input,
+          topic: undefined,
+        },
+        config,
+      );
     }
 
     return rows.map((row) => ({
@@ -103,6 +195,7 @@ export class RagRetrievalService {
       ...(this.asMetadata(row.metadata)
         ? { metadata: this.asMetadata(row.metadata) }
         : {}),
+      keywords: this.asStringArray(row.keywords),
       vectorScore: this.normalizeScore(Number(row.vectorScore)),
       retrievalType: 'vector' as const,
     }));
@@ -111,51 +204,148 @@ export class RagRetrievalService {
   private async queryVectorRows(
     embedding: number[],
     input: RetrieveTheoryChunksInput,
+    config: RagRetrievalConfig,
   ): Promise<VectorSearchRow[]> {
-    return (await this.dataSource.query(
-      `
-        SELECT
-          id,
-          title,
-          text,
-          topic,
-          source,
-          metadata,
-          1 - (embedding <=> $1::vector) AS "vectorScore"
-        FROM theory_chunks
-        WHERE embedding IS NOT NULL
-          AND is_active = true
-          AND ($2::text IS NULL OR subject = $2)
-          AND ($3::int IS NULL OR grade = $3)
-          AND ($4::text IS NULL OR topic = $4)
-        ORDER BY embedding <=> $1::vector
-        LIMIT $5
-      `,
-      [
-        toPgVector(embedding),
-        input.subject ?? null,
-        input.grade ?? null,
-        input.topic ?? null,
-        10,
-      ],
-    )) as VectorSearchRow[];
+    try {
+      return (await this.dataSource.query(
+        `
+          SELECT
+            id,
+            title,
+            text,
+            topic,
+            source,
+            metadata,
+            keywords,
+            1 - (embedding <=> $1::vector) AS "vectorScore"
+          FROM theory_chunks
+          WHERE embedding IS NOT NULL
+            AND is_active = true
+            AND ($2::text IS NULL OR subject = $2)
+            AND ($3::int IS NULL OR grade = $3)
+            AND ($4::text IS NULL OR topic = $4)
+          ORDER BY embedding <=> $1::vector
+          LIMIT $5
+        `,
+        [
+          toPgVector(embedding),
+          input.subject ?? null,
+          input.grade ?? null,
+          input.topic ?? null,
+          config.vectorCandidates,
+        ],
+      )) as VectorSearchRow[];
+    } catch (error) {
+      throw new Error(`Vector SQL failed: ${this.formatDatabaseError(error)}`);
+    }
+  }
+
+  async getVectorDiagnostics(): Promise<RagVectorDiagnostics> {
+    const embeddingDiagnostics = this.embeddingService.getDiagnostics();
+    const [countRow] = (await this.dataSource.query(`
+      SELECT
+        COUNT(*)::int AS "theoryChunksTotal",
+        COUNT(embedding)::int AS "theoryChunksWithEmbedding",
+        (COUNT(*) - COUNT(embedding))::int AS "theoryChunksMissingEmbedding"
+      FROM theory_chunks
+    `)) as Array<{
+      theoryChunksTotal: number;
+      theoryChunksWithEmbedding: number;
+      theoryChunksMissingEmbedding: number;
+    }>;
+    const dimensionRows = (await this.dataSource.query(`
+      SELECT vector_dims(embedding)::int AS dimension
+      FROM theory_chunks
+      WHERE embedding IS NOT NULL
+      GROUP BY vector_dims(embedding)
+      ORDER BY dimension ASC
+    `)) as Array<{ dimension: number }>;
+    const [extensionRow] = (await this.dataSource.query(`
+      SELECT EXISTS (
+        SELECT 1 FROM pg_extension WHERE extname = 'vector'
+      ) AS enabled
+    `)) as Array<{ enabled: boolean }>;
+    const [indexRow] = (await this.dataSource.query(`
+      SELECT COUNT(*)::int AS count
+      FROM pg_indexes
+      WHERE tablename = 'theory_chunks'
+        AND indexdef ILIKE '%embedding%'
+    `)) as Array<{ count: number }>;
+
+    const embeddingDimensionsInDb = dimensionRows
+      .map((row) => Number(row.dimension))
+      .filter((value) => Number.isFinite(value));
+    const pgvectorExtensionEnabled = Boolean(extensionRow?.enabled);
+    const theoryChunksWithEmbedding =
+      Number(countRow?.theoryChunksWithEmbedding) || 0;
+    const dimensionMatches =
+      embeddingDimensionsInDb.length === 1 &&
+      embeddingDimensionsInDb[0] === embeddingDiagnostics.dimension;
+
+    return {
+      vectorEnabled:
+        embeddingDiagnostics.hasApiKey &&
+        embeddingDiagnostics.hasGlobalFetch &&
+        pgvectorExtensionEnabled &&
+        theoryChunksWithEmbedding > 0 &&
+        dimensionMatches,
+      embeddingConfigured: embeddingDiagnostics.hasApiKey,
+      embeddingBaseUrl: embeddingDiagnostics.baseUrl,
+      embeddingEndpoint: embeddingDiagnostics.endpoint,
+      embeddingModel: embeddingDiagnostics.model,
+      embeddingDimension: embeddingDiagnostics.dimension,
+      embeddingApiKeyPresent: embeddingDiagnostics.hasApiKey,
+      hasGlobalFetch: embeddingDiagnostics.hasGlobalFetch,
+      pgvectorExtensionEnabled,
+      theoryChunksTotal: Number(countRow?.theoryChunksTotal) || 0,
+      theoryChunksWithEmbedding,
+      theoryChunksMissingEmbedding:
+        Number(countRow?.theoryChunksMissingEmbedding) || 0,
+      embeddingDimensionsInDb,
+      embeddingIndexCount: Number(indexRow?.count) || 0,
+    };
   }
 
   private async keywordSearch(
     input: RetrieveTheoryChunksInput,
+    config: RagRetrievalConfig,
   ): Promise<RagReference[]> {
-    const chunks = await this.theoryChunkService.searchForRag(
-      input.message,
-      input.topic,
-    );
+    const chunks = await this.theoryChunkService.findAll();
+    const rankedChunks = chunks
+      .filter(
+        (chunk) =>
+          (!input.subject || chunk.subject === input.subject) &&
+          (input.grade === undefined || chunk.grade === input.grade),
+      )
+      .map((chunk) => ({
+        chunk,
+        score: this.keywordScore(chunk, input.message),
+        topicMatched: Boolean(input.topic && chunk.topic === input.topic),
+      }))
+      .filter((item) => item.score > 0)
+      .sort((left, right) => {
+        if (left.topicMatched !== right.topicMatched) {
+          return left.topicMatched ? -1 : 1;
+        }
 
-    return chunks.map((chunk) => this.fromTheoryChunk(chunk, input.message));
+        if (right.score !== left.score) {
+          return right.score - left.score;
+        }
+
+        return left.chunk.id.localeCompare(right.chunk.id);
+      })
+      .slice(0, config.keywordCandidates)
+      .map((item) => item.chunk);
+
+    return rankedChunks.map((chunk) => this.fromTheoryChunk(chunk, input.message));
   }
 
   private mergeAndRank(
     vectorResults: RagReference[],
     keywordResults: RagReference[],
+    input: RetrieveTheoryChunksInput,
     topK: number,
+    config: RagRetrievalConfig,
   ): RagReference[] {
     const merged = new Map<string, RagReference>();
 
@@ -175,16 +365,24 @@ export class RagRetrievalService {
       .map((reference) => {
         const hasVector = reference.vectorScore !== undefined;
         const hasKeyword = reference.keywordScore !== undefined;
+        const boosts = this.fieldAwareBoosts(reference, input);
+        const conceptScore = boosts.conceptBoost;
         const score =
-          hasVector && hasKeyword
-            ? 0.75 * reference.vectorScore! + 0.25 * reference.keywordScore!
-            : hasVector
-              ? reference.vectorScore!
-              : reference.keywordScore!;
+          (hasVector ? config.vectorWeight * reference.vectorScore! : 0) +
+          (hasKeyword ? config.keywordWeight * reference.keywordScore! : 0) +
+          config.conceptBoostWeight * boosts.totalBoost;
 
         return {
           ...reference,
           score,
+          finalScore: score,
+          conceptScore,
+          conceptBoost: boosts.conceptBoost,
+          titleBoost: boosts.titleBoost,
+          metadataBoost: boosts.metadataBoost,
+          formulaBoost: boosts.formulaBoost,
+          textBoost: boosts.textBoost,
+          topicBoost: boosts.topicBoost,
           retrievalType:
             hasVector && hasKeyword
               ? ('hybrid' as const)
@@ -210,15 +408,14 @@ export class RagRetrievalService {
       topic: chunk.topic,
       ...(source ? { source } : {}),
       ...(chunk.metadata ? { metadata: chunk.metadata } : {}),
+      keywords: chunk.keywords ?? [],
       keywordScore: this.keywordScore(chunk, message),
       retrievalType: 'keyword',
     };
   }
 
   private keywordScore(chunk: TheoryChunkEntity, message: string) {
-    const tokens = [...new Set(this.normalize(message).split(/\s+/))].filter(
-      (token) => token.length >= 2,
-    );
+    const tokens = this.searchTokens(message);
     if (tokens.length === 0) {
       return 0;
     }
@@ -233,12 +430,242 @@ export class RagRetrievalService {
     return this.normalizeScore(matchedTokens.length / tokens.length);
   }
 
+  private fieldAwareBoosts(
+    reference: RagReference,
+    input: RetrieveTheoryChunksInput,
+  ) {
+    const activeConcepts = this.activeConceptGroups(input.message);
+    const activeAliases = activeConcepts.flatMap((group) =>
+      group.aliases.map((alias) => this.normalizeAlias(alias)),
+    );
+    const normalizedTitle = this.normalize(reference.title);
+    const normalizedText = this.normalize(reference.text);
+    const normalizedMetadata = this.normalize(
+      [
+        reference.topic,
+        reference.metadata ? JSON.stringify(reference.metadata) : '',
+        ...(reference.keywords ?? []),
+      ]
+        .filter(Boolean)
+        .join(' '),
+    );
+    const conceptBoost = this.conceptScore(reference, input) * 0.2;
+    const titleBoost = this.normalizedAliasMatch(
+      normalizedTitle,
+      activeAliases,
+      0.25,
+    );
+    const metadataBoost = this.normalizedAliasMatch(
+      normalizedMetadata,
+      activeAliases,
+      0.25,
+    );
+    const formulaBoost = this.normalizedAliasMatch(
+      [normalizedTitle, normalizedText, normalizedMetadata].join(' '),
+      this.formulaAliases(input.message, activeAliases),
+      0.1,
+    );
+    const definitionBoost =
+      this.isDefinitionQuestion(input.message) &&
+      this.hasDefinitionPattern(normalizedText, activeAliases)
+        ? 0.25
+        : 0;
+    const textBoost = Math.min(
+      0.35,
+      this.normalizedAliasMatch(normalizedText, activeAliases, 0.15) +
+        definitionBoost,
+    );
+    const topicBoost = input.topic && reference.topic === input.topic ? 0.05 : 0;
+    const totalBoost = this.normalizeScore(
+      conceptBoost +
+        titleBoost +
+        metadataBoost +
+        formulaBoost +
+        textBoost +
+        topicBoost,
+    );
+
+    return {
+      conceptBoost,
+      titleBoost,
+      metadataBoost,
+      formulaBoost,
+      textBoost,
+      topicBoost,
+      totalBoost,
+    };
+  }
+
+  private conceptScore(
+    reference: RagReference,
+    input: RetrieveTheoryChunksInput,
+  ) {
+    const activeConcepts = this.activeConceptGroups(input.message);
+    if (activeConcepts.length === 0) {
+      return input.topic && reference.topic === input.topic ? 0.2 : 0;
+    }
+
+    const normalizedTitle = this.normalize(reference.title);
+    const normalizedText = this.normalize(reference.text);
+    const normalizedMetadata = this.normalize(
+      [
+        reference.topic,
+        reference.metadata ? JSON.stringify(reference.metadata) : '',
+        ...(reference.keywords ?? []),
+      ]
+        .filter(Boolean)
+        .join(' '),
+    );
+    let score = 0;
+
+    for (const group of activeConcepts) {
+      const aliases = group.aliases.map((alias) => this.normalizeAlias(alias));
+      const titleMatched = aliases.some((alias) =>
+        this.hasExactAlias(normalizedTitle, alias),
+      );
+      const textMatched = aliases.some((alias) =>
+        this.hasExactAlias(normalizedText, alias),
+      );
+      const metadataMatched = aliases.some((alias) =>
+        this.hasExactAlias(normalizedMetadata, alias),
+      );
+
+      if (titleMatched) {
+        score += 0.45;
+      }
+      if (textMatched) {
+        score += 0.35;
+      }
+      if (metadataMatched) {
+        score += 0.15;
+      }
+    }
+
+    if (input.topic && reference.topic === input.topic) {
+      score += 0.2;
+    }
+
+    return this.normalizeScore(score / Math.max(1, activeConcepts.length));
+  }
+
+  private expandQuery(message: string) {
+    const activeGroups = this.activeConceptGroups(message);
+    const aliases = activeGroups.flatMap((group) => group.aliases);
+
+    return aliases.length === 0 ? message : [message, ...aliases].join(' ');
+  }
+
+  private activeConceptGroups(message: string) {
+    const normalizedMessage = this.normalize(message);
+
+    return PHYSICS_CONCEPT_GROUPS.filter((group) =>
+      group.aliases
+        .map((alias) => this.normalizeAlias(alias))
+        .some((alias) => this.hasExactAlias(normalizedMessage, alias)),
+    );
+  }
+
+  private searchTokens(message: string) {
+    const tokens = this.normalize(message)
+      .split(/\s+/)
+      .map((token) => token.trim())
+      .filter((token) => token.length >= 2 || this.isPhysicsSymbol(token));
+
+    return [...new Set(tokens)];
+  }
+
+  private normalizeAlias(alias: string) {
+    return this.normalize(alias).trim();
+  }
+
+  private hasExactAlias(haystack: string, alias: string) {
+    if (!alias) {
+      return false;
+    }
+
+    if (/^[a-z0-9]$/i.test(alias)) {
+      return new RegExp(
+        `(^|[^a-z0-9])${this.escapeRegex(alias)}([^a-z0-9]|$)`,
+      ).test(haystack);
+    }
+
+    return haystack.includes(alias);
+  }
+
+  private normalizedAliasMatch(
+    haystack: string,
+    aliases: string[],
+    maxScore: number,
+  ) {
+    const uniqueAliases = [...new Set(aliases.filter(Boolean))];
+    if (uniqueAliases.length === 0) {
+      return 0;
+    }
+
+    const matchedCount = uniqueAliases.filter((alias) =>
+      this.hasExactAlias(haystack, alias),
+    ).length;
+
+    return Math.min(maxScore, (matchedCount / uniqueAliases.length) * maxScore);
+  }
+
+  private formulaAliases(message: string, conceptAliases: string[]) {
+    const normalizedMessage = this.normalize(message);
+    const symbolAliases = conceptAliases.filter(
+      (alias) =>
+        /^[a-z0-9]$/i.test(alias) ||
+        alias.includes('/') ||
+        alias.includes('omega') ||
+        alias.includes('phi') ||
+        alias.includes('1/2'),
+    );
+    const querySymbols = this.searchTokens(normalizedMessage).filter((token) =>
+      this.isPhysicsSymbol(token),
+    );
+
+    return [...new Set([...symbolAliases, ...querySymbols])];
+  }
+
+  private isDefinitionQuestion(message: string) {
+    const normalizedMessage = this.normalize(message);
+
+    return [
+      'dinh nghia',
+      'la gi',
+      'duoc hieu',
+      'cho biet',
+      'la cac dai luong gi',
+    ].some((phrase) => normalizedMessage.includes(phrase));
+  }
+
+  private hasDefinitionPattern(haystack: string, aliases: string[]) {
+    return aliases.some((alias) => {
+      if (!alias || /^[a-z0-9]$/i.test(alias)) {
+        return false;
+      }
+
+      const escaped = this.escapeRegex(alias);
+      return new RegExp(`${escaped}.{0,40}(^|\\s)la(\\s|$)`).test(haystack);
+    });
+  }
+
+  private isPhysicsSymbol(token: string) {
+    return ['a', 'f', 'k', 'm', 't', 'v', 'w', 'x'].includes(token);
+  }
+
   private normalize(value: string) {
-    return value
+    return this.decodeMojibake(value)
       .toLowerCase()
+      .replace(/ω/g, ' omega ')
+      .replace(/φ/g, ' phi ')
+      .replace(/²/g, '2')
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
-      .replace(/đ/g, 'd');
+      .replace(/đ/g, 'd')
+      .replace(/ð/g, 'd')
+      .replace(/[^a-z0-9/+\-.]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   private normalizeScore(value: number) {
@@ -249,12 +676,58 @@ export class RagRetrievalService {
     return Math.max(0, Math.min(1, value));
   }
 
-  private normalizeTopK(value?: number) {
+  private normalizeTopK(value: number | undefined, config: RagRetrievalConfig) {
     if (!Number.isInteger(value) || !value || value < 1) {
-      return 5;
+      return config.finalTopK;
     }
 
     return Math.min(value, 10);
+  }
+
+  private readConfig(): RagRetrievalConfig {
+    return {
+      vectorCandidates: this.readIntegerEnv('RAG_VECTOR_CANDIDATES', 30, 1, 100),
+      keywordCandidates: this.readIntegerEnv('RAG_KEYWORD_CANDIDATES', 30, 1, 100),
+      finalTopK: this.readIntegerEnv('RAG_FINAL_TOP_K', 5, 1, 10),
+      vectorWeight: this.readNumberEnv('RAG_VECTOR_WEIGHT', 0.65, 0, 1),
+      keywordWeight: this.readNumberEnv('RAG_KEYWORD_WEIGHT', 0.25, 0, 1),
+      conceptBoostWeight: this.readNumberEnv(
+        'RAG_CONCEPT_BOOST_WEIGHT',
+        0.1,
+        0,
+        1,
+      ),
+    };
+  }
+
+  private readIntegerEnv(
+    name: string,
+    fallback: number,
+    min: number,
+    max: number,
+  ) {
+    const parsed = Number.parseInt(process.env[name] ?? '', 10);
+
+    if (!Number.isInteger(parsed)) {
+      return fallback;
+    }
+
+    return Math.max(min, Math.min(max, parsed));
+  }
+
+  private readNumberEnv(
+    name: string,
+    fallback: number,
+    min: number,
+    max: number,
+  ) {
+    const parsed = Number.parseFloat(process.env[name] ?? '');
+
+    if (!Number.isFinite(parsed)) {
+      return fallback;
+    }
+
+    return Math.max(min, Math.min(max, parsed));
   }
 
   private sourceName(source: unknown) {
@@ -279,5 +752,44 @@ export class RagRetrievalService {
     return value && typeof value === 'object' && !Array.isArray(value)
       ? (value as object)
       : undefined;
+  }
+
+  private asStringArray(value: unknown): string[] {
+    return Array.isArray(value)
+      ? value.filter((item): item is string => typeof item === 'string')
+      : [];
+  }
+
+  private decodeMojibake(value: string) {
+    if (!/[ÃÄÆÂ]|á[º»]/.test(value)) {
+      return value;
+    }
+
+    return Buffer.from(value, 'latin1').toString('utf8');
+  }
+
+  private escapeRegex(value: string) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  private formatDatabaseError(error: unknown) {
+    if (!(error instanceof Error)) {
+      return String(error);
+    }
+
+    const fields = error as Error & {
+      code?: string;
+      detail?: string;
+      hint?: string;
+    };
+    const parts = [
+      `name=${error.name}`,
+      `message=${error.message}`,
+      fields.code ? `code=${fields.code}` : '',
+      fields.detail ? `detail=${fields.detail}` : '',
+      fields.hint ? `hint=${fields.hint}` : '',
+    ].filter(Boolean);
+
+    return parts.join(' ');
   }
 }

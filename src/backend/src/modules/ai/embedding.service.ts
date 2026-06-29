@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 type EmbeddingApiResponse = {
@@ -7,6 +7,8 @@ type EmbeddingApiResponse = {
 
 @Injectable()
 export class EmbeddingService {
+  private readonly logger = new Logger(EmbeddingService.name);
+
   constructor(private readonly configService: ConfigService) {}
 
   get model() {
@@ -32,6 +34,28 @@ export class EmbeddingService {
     return Boolean(this.configService.get<string>('EMBEDDING_API_KEY'));
   }
 
+  get baseUrl() {
+    return this.trimTrailingSlash(
+      this.configService.get<string>('EMBEDDING_BASE_URL') ??
+        'https://api.openai.com/v1',
+    );
+  }
+
+  get endpoint() {
+    return `${this.baseUrl}/embeddings`;
+  }
+
+  getDiagnostics() {
+    return {
+      baseUrl: this.baseUrl,
+      endpoint: this.endpoint,
+      model: this.model,
+      dimension: this.dimension,
+      hasApiKey: this.isConfigured(),
+      hasGlobalFetch: typeof fetch === 'function',
+    };
+  }
+
   async embedText(text: string): Promise<number[]> {
     const [embedding] = await this.embedBatch([text]);
     return embedding;
@@ -44,38 +68,50 @@ export class EmbeddingService {
 
     const apiKey = this.configService.get<string>('EMBEDDING_API_KEY');
     if (!apiKey) {
+      throw new Error('Vector retrieval disabled: missing EMBEDDING_API_KEY.');
+    }
+
+    const diagnostics = this.getDiagnostics();
+    this.logger.debug(
+      `Embedding request endpoint=${diagnostics.endpoint} model=${diagnostics.model} dimension=${diagnostics.dimension} hasApiKey=${diagnostics.hasApiKey} hasGlobalFetch=${diagnostics.hasGlobalFetch}`,
+    );
+
+    let response: Response;
+
+    try {
+      response = await fetch(this.endpoint, {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${apiKey}`,
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: this.model,
+          input: texts,
+          // OpenAI supports controlling output dimensions; Mistral and others do not.
+          ...(this.baseUrl.includes('openai.com')
+            ? { dimensions: this.dimension }
+            : {}),
+        }),
+      });
+    } catch (error) {
+      const detail = this.formatFetchError(error);
       throw new Error(
-        'EMBEDDING_API_KEY is required to create TheoryChunk embeddings.',
+        `Embedding request failed before response: endpoint=${this.endpoint} model=${this.model} dimension=${this.dimension} ${detail}`,
       );
     }
 
-    const baseUrl = this.trimTrailingSlash(
-      this.configService.get<string>('EMBEDDING_BASE_URL') ??
-        'https://api.openai.com/v1',
-    );
-    const response = await fetch(`${baseUrl}/embeddings`, {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${apiKey}`,
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: this.model,
-        input: texts,
-        // OpenAI supports controlling output dimensions; Mistral and others do not
-        ...(baseUrl.includes('openai.com') ? { dimensions: this.dimension } : {}),
-      }),
-    });
-
     if (!response.ok) {
       const body = await response.text();
-      throw new Error(`Embedding request failed: ${response.status} ${body}`);
+      throw new Error(
+        `Embedding request failed: status=${response.status} body=${this.truncate(body)}`,
+      );
     }
 
     const json = (await response.json()) as EmbeddingApiResponse;
     if (!Array.isArray(json.data) || json.data.length !== texts.length) {
       throw new Error(
-        `Embedding response returned ${json.data?.length ?? 0} vectors for ${texts.length} inputs.`,
+        `Embedding response shape invalid: expected data[${texts.length}], got ${json.data?.length ?? 0}.`,
       );
     }
 
@@ -100,5 +136,26 @@ export class EmbeddingService {
 
   private trimTrailingSlash(value: string) {
     return value.replace(/\/+$/, '');
+  }
+
+  private formatFetchError(error: unknown) {
+    if (!(error instanceof Error)) {
+      return `error=${String(error)}`;
+    }
+
+    const cause =
+      'cause' in error && error.cause
+        ? ` cause=${this.truncate(String(error.cause))}`
+        : '';
+
+    return `name=${error.name} message=${this.truncate(error.message)}${cause}`;
+  }
+
+  private truncate(value: string, maxLength = 500) {
+    const normalized = value.replace(/\s+/g, ' ').trim();
+
+    return normalized.length <= maxLength
+      ? normalized
+      : `${normalized.slice(0, maxLength - 3).trimEnd()}...`;
   }
 }
