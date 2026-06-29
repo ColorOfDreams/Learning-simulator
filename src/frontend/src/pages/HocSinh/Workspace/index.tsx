@@ -1,6 +1,7 @@
 import { chatWithAiPrompt, generateAiQuiz } from '@/services/ai/api';
 import { completeActivity, completeLabSession, getUserInfo, openLabSession } from '@/services/base/api';
 import GenericChemSimulation from '@simulations/chemistry/GenericChemSimulation';
+import { EXPERIMENTS_CONFIG, CHEM_EXPERIMENT_ALIASES } from '@simulations/chemistry/experiments';
 import ProjectileSimulation from '@simulations/physics/SIM-02-projectile';
 import KinematicsSimulation from '@simulations/physics/SIM-21-kinematics';
 import FreefallSimulation from '@simulations/physics/SIM-22-freefall';
@@ -40,12 +41,7 @@ import StudentLayout from '../components/StudentLayout';
 import CelebrationOverlay from '@/components/CelebrationOverlay';
 
 // Math 10 Simulations
-import QuadraticSimulation from '@simulations/math/SIM-08-quadratic';
-import ProjectileArchSimulation from '@simulations/math/SIM-16-projectile-arch';
-import InequalitySimulation from '@simulations/math/SIM-17-inequality';
-import TriangulationSimulation from '@simulations/math/SIM-18-triangulation';
-import ConicSimulation from '@simulations/math/SIM-19-conic';
-import StatisticsSimulation from '@simulations/math/SIM-20-statistics';
+import GenericMathSimulation from '@simulations/math/GenericMathSimulation';
 
 import './index.less';
 
@@ -72,6 +68,8 @@ const CHEM_SIM_ALIASES: Record<string, string> = {
 	'SIM-05': 'CHEM11-02',
 	'SIM-06': 'CHEM11-03',
 	'SIM-07': 'CHEM11-04',
+	'SIM-08': 'MATH10-01',
+	'SIM-08-math': 'MATH10-01',
 	'SIM-09': 'CHEM11-05',
 	'SIM-10': 'CHEM11-06',
 	'SIM-11': 'CHEM11-07',
@@ -79,6 +77,11 @@ const CHEM_SIM_ALIASES: Record<string, string> = {
 	'SIM-13': 'CHEM11-09',
 	'SIM-14': 'CHEM11-10',
 	'SIM-15': 'CHEM11-11',
+	'SIM-16': 'MATH10-02',
+	'SIM-17': 'MATH10-03',
+	'SIM-18': 'MATH10-04',
+	'SIM-19': 'MATH10-05',
+	'SIM-20': 'MATH10-06',
 };
 
 const normalizeLabSimId = (simId: string) => CHEM_SIM_ALIASES[simId] || simId;
@@ -283,13 +286,30 @@ const LAB_META = {
 		tutor: 'Trợ lý Vật lý AI',
 		className: 'physics',
 	},
-	'SIM-08-math': { label: 'Toán', title: 'Đồ thị hàm số bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'SIM-16': { label: 'Toán', title: 'Ném xiên và vòm cổng parabol', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'SIM-17': { label: 'Toán', title: 'Miền nghiệm hệ bất phương trình', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'SIM-18': { label: 'Toán', title: 'Hệ thức lượng tam giác cột cờ', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'SIM-19': { label: 'Toán', title: 'Định nghĩa Elip ghim đinh', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'SIM-20': { label: 'Toán', title: 'Thống kê số liệu mẫu và biểu đồ', tutor: 'Trợ lý Toán AI', className: 'math' },
-	default_math: { label: 'Toán', title: 'Hàm bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'SIM-08-math': { label: 'Toán 10', title: 'Đồ thị hàm số bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'SIM-16': { label: 'Toán 10', title: 'Ném xiên và vòm cổng parabol', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'SIM-17': { label: 'Toán 10', title: 'Miền nghiệm hệ bất phương trình', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'SIM-18': { label: 'Toán 10', title: 'Hệ thức lượng tam giác cột cờ', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'SIM-19': { label: 'Toán 10', title: 'Định nghĩa Elip ghim đinh', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'SIM-20': { label: 'Toán 10', title: 'Thống kê số liệu mẫu và biểu đồ', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH10-01': { label: 'Toán 10', title: 'Đồ thị hàm số bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH10-02': { label: 'Toán 10', title: 'Ném xiên và vòm cổng parabol', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH10-03': { label: 'Toán 10', title: 'Miền nghiệm hệ bất phương trình', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH10-04': { label: 'Toán 10', title: 'Hệ thức lượng tam giác cột cờ', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH10-05': { label: 'Toán 10', title: 'Định nghĩa Elip ghim đinh', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH10-06': { label: 'Toán 10', title: 'Thống kê số liệu mẫu và biểu đồ', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-01': { label: 'Toán 11', title: 'Đồ thị hàm lượng giác', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-02': { label: 'Toán 11', title: 'Vòng tròn đơn vị & phương trình lượng giác', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-03': { label: 'Toán 11', title: 'Hoán vị, tổ hợp & Nhị thức Newton', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-04': { label: 'Toán 11', title: 'Xác suất sự kiện & biến cố', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-05': { label: 'Toán 11', title: 'Giới hạn dãy số', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-06': { label: 'Toán 11', title: 'Giới hạn hàm số & hàm liên tục', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-07': { label: 'Toán 11', title: 'Đạo hàm & tiếp tuyến đường cong', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-08': { label: 'Toán 11', title: 'Phép dời hình & phép đồng dạng', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-09': { label: 'Toán 11', title: 'Đường thẳng & mặt phẳng trong không gian', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-10': { label: 'Toán 11', title: 'Quan hệ vuông góc trong không gian', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-11': { label: 'Toán 11', title: 'Hình lăng trụ & hình chóp', tutor: 'Trợ lý Toán AI', className: 'math' },
+	default_math: { label: 'Toán 10', title: 'Hàm bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
 	default_physics: {
 		label: 'Vật lý',
 		title: 'Chuyển động ném xiên',
@@ -1679,6 +1699,23 @@ const Workspace: React.FC = () => {
 		'SIM-18',
 		'SIM-19',
 		'SIM-20',
+		'MATH10-01',
+		'MATH10-02',
+		'MATH10-03',
+		'MATH10-04',
+		'MATH10-05',
+		'MATH10-06',
+		'MATH11-01',
+		'MATH11-02',
+		'MATH11-03',
+		'MATH11-04',
+		'MATH11-05',
+		'MATH11-06',
+		'MATH11-07',
+		'MATH11-08',
+		'MATH11-09',
+		'MATH11-10',
+		'MATH11-11',
 		'SIM-21',
 		'SIM-22',
 		'SIM-23',
@@ -1902,8 +1939,80 @@ const Workspace: React.FC = () => {
 	const [conicA, setConicA] = useState(5);
 	const [isCPlaying, setIsCPlaying] = useState(false);
 
+	// MATH11-01 trig
+	const [trigA, setTrigA] = useState(1);
+	const [trigB, setTrigB] = useState(1);
+	const [trigC, setTrigC] = useState(0);
+	const [trigD, setTrigD] = useState(0);
+	const [trigFnIdx, setTrigFnIdx] = useState(0);
+
+	// MATH11-02 unit circle
+	const [ucAngle, setUcAngle] = useState(45);
+	const [ucTarget, setUcTarget] = useState(0.5);
+
+	// MATH11-03 combinatorics
+	const [combN, setCombN] = useState(5);
+	const [combK, setCombK] = useState(2);
+
+	// MATH11-04 probability
+	const [probPA, setProbPA] = useState(0.5);
+	const [probPB, setProbPB] = useState(0.4);
+	const [probPAB, setProbPAB] = useState(0.15);
+
+	// MATH11-05 seq limits
+	const [seqType, setSeqType] = useState(0);
+	const [seqEps, setSeqEps] = useState(0.3);
+
+	// MATH11-06 func limits
+	const [limFuncType, setLimFuncType] = useState(0);
+
+	// MATH11-07 derivatives
+	const [derFnIdx, setDerFnIdx] = useState(0);
+	const [derX0, setDerX0] = useState(1.0);
+	const [derH, setDerH] = useState(0.5);
+
+	// MATH11-08 transformations
+	const [transType, setTransType] = useState(0);
+	const [transTx, setTransTx] = useState(3);
+	const [transTy, setTransTy] = useState(2);
+	const [transAngle, setTransAngle] = useState(90);
+
+	// MATH11-09 planes3d
+	const [planeAlpha, setPlaneAlpha] = useState(20);
+	const [planeBeta, setPlaneBeta] = useState(50);
+	const [planesParallel, setPlanesParallel] = useState(0);
+
+	// MATH11-10 perpendicular3d
+	const [perpNx, setPerpNx] = useState(0);
+	const [perpNy, setPerpNy] = useState(1);
+	const [perpNz, setPerpNz] = useState(0);
+
+	// MATH11-11 polyhedra
+	const [polyType11, setPolyType11] = useState(0);
+	const [polyN11, setPolyN11] = useState(4);
+	const [polyBaseR, setPolyBaseR] = useState(1.5);
+	const [polyH11, setPolyH11] = useState(2.5);
+
+	// Sim viewport pan/zoom
+	const [simZoom, setSimZoom] = useState(1);
+	const [simPan, setSimPan] = useState({ x: 0, y: 0 });
+	const [simIsDragging, setSimIsDragging] = useState(false);
+	const simDragRef = useRef({ startX: 0, startY: 0, panX: 0, panY: 0 });
+
 	// Chem params
 	const [chemStep, setChemStep] = useState(1);
+	const [isAutoRunning, setIsAutoRunning] = useState(false);
+	const [showChemCelebration, setShowChemCelebration] = useState(false);
+	const chemExperimentId = simId ? (CHEM_EXPERIMENT_ALIASES[simId] || simId) : null;
+	const resolvedMathSimId = simId ? (CHEM_SIM_ALIASES[simId] || simId) : 'MATH10-01';
+	const MATH_3D_SIMS_SET = new Set(['MATH11-09', 'MATH11-10', 'MATH11-11']);
+	const simPanZoomEnabled = subject === 'math' && !MATH_3D_SIMS_SET.has(resolvedMathSimId);
+	const totalChemSteps = chemExperimentId ? (EXPERIMENTS_CONFIG[chemExperimentId]?.steps?.length ?? 0) : 0;
+	const isExperimentDone = subject !== 'chem' || (totalChemSteps > 0 && chemStep > totalChemSteps);
+	const isQuizDone = dynQuizState === 'done';
+	const canSubmit = isExperimentDone && isQuizDone;
+	const [submitToast, setSubmitToast] = useState<{ msg: string; type: 'warn' | 'success' } | null>(null);
+	const submitToastRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	// Chat
 	const [activeRightTab, setActiveRightTab] = useState<'chat' | 'quiz'>('chat');
@@ -1933,6 +2042,12 @@ const Workspace: React.FC = () => {
 	const xpAwardedRef = useRef(false);
 
 	const openedLabRef = useRef<string | null>(null);
+	useEffect(() => {
+		setSimZoom(1);
+		setSimPan({ x: 0, y: 0 });
+		setSimIsDragging(false);
+	}, [simId]);
+
 	useEffect(() => {
 		if (simId && simId !== 'default' && openedLabRef.current !== simId) {
 			openedLabRef.current = simId;
@@ -2436,13 +2551,54 @@ const Workspace: React.FC = () => {
 			}
 		} else {
 			setChemStep(1);
+			setIsAutoRunning(false);
+			setShowChemCelebration(false);
 		}
 	}, [subject, simId]);
+
+	useEffect(() => {
+		if (!isAutoRunning) return;
+		if (chemStep > totalChemSteps) {
+			setIsAutoRunning(false);
+			return;
+		}
+		const timer = setTimeout(() => {
+			document.getElementById('sim-trigger')?.click();
+		}, 300);
+		return () => clearTimeout(timer);
+	}, [chemStep, isAutoRunning, totalChemSteps]);
+
+	useEffect(() => {
+		if (subject === 'chem' && totalChemSteps > 0 && chemStep > totalChemSteps) {
+			setShowChemCelebration(true);
+		}
+	}, [subject, chemStep, totalChemSteps]);
 
 	const handleGlobalReset = useCallback(() => {
 		resetParams();
 		setPhysResetKey((k) => k + 1);
 	}, [resetParams]);
+
+	const handleSubmit = () => {
+		if (submitToastRef.current) clearTimeout(submitToastRef.current);
+		let msg: string;
+		let type: 'warn' | 'success';
+		if (!isExperimentDone && !isQuizDone) {
+			msg = 'Bạn cần hoàn thành thí nghiệm và quiz trước khi nộp!';
+			type = 'warn';
+		} else if (!isExperimentDone) {
+			msg = 'Bạn chưa hoàn thành thí nghiệm. Hãy thực hiện hết các bước!';
+			type = 'warn';
+		} else if (!isQuizDone) {
+			msg = 'Bạn chưa hoàn thành quiz. Hãy trả lời hết các câu hỏi!';
+			type = 'warn';
+		} else {
+			msg = '✓ Đã lưu & nộp thành công!';
+			type = 'success';
+		}
+		setSubmitToast({ msg, type });
+		submitToastRef.current = setTimeout(() => setSubmitToast(null), 3500);
+	};
 
 	const f = (x: number) => {
 		const r = Math.round(x * 10) / 10;
@@ -2497,44 +2653,112 @@ const Workspace: React.FC = () => {
 																								? 'E_{lk} = \\Delta m\\,c^2 \\quad \\vert \\quad E_{lkr} = \\frac{E_{lk}}{A}'
 																								: 'y = v_0 \\sin\\theta\\,t - \\frac{1}{2}\\,g\\,t^2 \\quad \\vert \\quad x = v_0 \\cos\\theta\\,t'
 			: subject === 'math'
-				? simId === 'SIM-16'
+				? resolvedMathSimId === 'MATH10-02' || simId === 'SIM-16'
 					? `x(t) = 2 + v_0 \\cos\\alpha\\,t \\quad \\vert \\quad y(t) = v_0 \\sin\\alpha\\,t - \\frac{1}{2}\\,g\\,t^2 \\quad \\vert \\quad \\text{Cổng: } y = -0.25 (x - 8)^2 + 9`
-					: simId === 'SIM-17'
+					: resolvedMathSimId === 'MATH10-03' || simId === 'SIM-17'
 						? `d_1: ${f(inA1)}x ${inB1 >= 0 ? '+' : '-'} ${Math.abs(f(inB1))}y \\le ${f(inC1)} \\quad \\vert \\quad d_2: ${f(inA2)}x ${inB2 >= 0 ? '+' : '-'} ${Math.abs(f(inB2))}y \\le ${f(inC2)}`
-						: simId === 'SIM-18'
+						: resolvedMathSimId === 'MATH10-04' || simId === 'SIM-18'
 							? `H = h_0 + a\\,\\tan(\\alpha) = ${f(triH0)} + ${f(triA)}\\,\\tan(${triAlpha}^\\circ) = ${(triH0 + triA * Math.tan((triAlpha * Math.PI) / 180)).toFixed(2)}\\text{ m}`
-							: simId === 'SIM-19'
+							: resolvedMathSimId === 'MATH10-05' || simId === 'SIM-19'
 								? `\\text{Elip: } \\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1 \\quad \\vert \\quad MF_1 + MF_2 = 2a \\quad (a=${f(conicA)}, b=${Math.sqrt(Math.max(0.1, conicA * conicA - conicC * conicC)).toFixed(2)}, c=${f(conicC)})`
-								: simId === 'SIM-20'
+								: resolvedMathSimId === 'MATH10-06' || simId === 'SIM-20'
 									? `\\text{Số trung bình } \\bar{x} = \\frac{\\sum x_i}{n} \\quad \\vert \\quad \\text{Độ lệch chuẩn } s = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n}}`
-									: `y = ${f(mA)}x^2 ${mB >= 0 ? '+' : '-'} ${Math.abs(f(mB))}x ${mC >= 0 ? '+' : '-'} ${Math.abs(f(mC))}`
-				: simId === 'CHEM12-02'
+									: resolvedMathSimId === 'MATH11-01'
+										? `y = A\\sin(Bx+C)+D \\quad T = \\frac{2\\pi}{|B|}`
+										: resolvedMathSimId === 'MATH11-02'
+											? `\\sin x = a \\Rightarrow x = \\arcsin a + 2k\\pi \\quad \\text{hoặc} \\quad x = \\pi - \\arcsin a + 2k\\pi`
+											: resolvedMathSimId === 'MATH11-03'
+												? `C_n^k = \\frac{n!}{k!(n-k)!} \\quad A_n^k = \\frac{n!}{(n-k)!}`
+												: resolvedMathSimId === 'MATH11-04'
+													? `P(A \\cup B) = P(A) + P(B) - P(A \\cap B)`
+													: resolvedMathSimId === 'MATH11-05'
+														? `\\lim_{n\\to\\infty} u_n = L \\quad \\forall \\varepsilon > 0,\\, \\exists N: n > N \\Rightarrow |u_n - L| < \\varepsilon`
+														: resolvedMathSimId === 'MATH11-06'
+															? `\\lim_{x\\to a} f(x) = L \\quad f \\text{ liên tục tại } a \\Leftrightarrow \\lim_{x\\to a}f(x)=f(a)`
+															: resolvedMathSimId === 'MATH11-07'
+																? `f'(x_0) = \\lim_{h\\to 0}\\frac{f(x_0+h)-f(x_0)}{h}`
+																: resolvedMathSimId === 'MATH11-08'
+																	? `T_{\\vec{v}}(M) = M' \\quad \\overrightarrow{MM'} = \\vec{v}`
+																	: resolvedMathSimId === 'MATH11-09'
+																		? `\\vec{n_1} \\parallel \\vec{n_2} \\Leftrightarrow \\text{hai mặt phẳng song song}`
+																		: resolvedMathSimId === 'MATH11-10'
+																			? `d \\perp (P) \\Leftrightarrow d \\perp \\vec{n}_{(P)}`
+																			: resolvedMathSimId === 'MATH11-11'
+																				? `V_{\\text{lăng trụ}} = S_{đáy} \\cdot h \\quad V_{\\text{chóp}} = \\tfrac{1}{3}S_{đáy} \\cdot h`
+																				: `y = ${f(mA)}x^2 ${mB >= 0 ? '+' : '-'} ${Math.abs(f(mB))}x ${mC >= 0 ? '+' : '-'} ${Math.abs(f(mC))}`
+			: chemExperimentId === 'CHEM12-01'
+				? '\\text{CH}_3\\text{COOH} + \\text{C}_2\\text{H}_5\\text{OH} \\rightleftharpoons \\text{CH}_3\\text{COOC}_2\\text{H}_5 + \\text{H}_2\\text{O}'
+				: chemExperimentId === 'CHEM12-02'
 					? '\\text{(C}_{17}\\text{H}_{35}\\text{COO)}_3\\text{C}_3\\text{H}_5 + 3\\text{NaOH} \\xrightarrow{t^\\circ} 3\\text{C}_{17}\\text{H}_{35}\\text{COONa} + \\text{C}_3\\text{H}_5\\text{(OH)}_3'
-					: simId === 'CHEM11-01'
-						? '\\text{pH} = -\\log[\\text{H}^+] \\quad \\vert \\quad \\text{Chất chỉ thị đổi màu theo môi trường acid/base}'
-						: simId === 'CHEM11-02'
-							? '\\text{HCl} + \\text{NaOH} \\rightarrow \\text{NaCl} + \\text{H}_2\\text{O} \\quad \\vert \\quad n_{\\text{acid}} = n_{\\text{base}}'
-							: simId === 'CHEM11-03'
-								? '\\text{Cu} + 4\\text{HNO}_3 \\rightarrow \\text{Cu(NO}_3\\text{)}_2 + 2\\text{NO}_2\\uparrow + 2\\text{H}_2\\text{O}'
-								: simId === 'CHEM11-04'
-									? '\\text{NH}_3 + \\text{HCl} \\rightarrow \\text{NH}_4\\text{Cl}\\downarrow \\quad \\text{(khói trắng)}'
-									: simId === 'SIM-08'
-										? '2\\text{Na} + 2\\text{H}_2\\text{O} \\rightarrow 2\\text{NaOH} + \\text{H}_2\\uparrow \\text{ (phản ứng tỏa nhiệt mạnh)}'
-										: simId === 'CHEM11-05'
-											? '\\text{C}_{12}\\text{H}_{22}\\text{O}_{11} \\xrightarrow{\\text{H}_2\\text{SO}_4\\,\\text{đặc}} 12\\text{C} + 11\\text{H}_2\\text{O}'
-											: simId === 'CHEM11-06'
-												? '\\text{CH}_2=\\text{CH}_2 + \\text{Br}_2 \\rightarrow \\text{CH}_2\\text{Br}-\\text{CH}_2\\text{Br}'
-												: simId === 'CHEM11-07'
-													? '\\text{HC}\\equiv\\text{CH} + 2\\text{[Ag(NH}_3\\text{)}_2\\text{]OH} \\rightarrow \\text{AgC}\\equiv\\text{CAg}\\downarrow + 4\\text{NH}_3 + 2\\text{H}_2\\text{O}'
-													: simId === 'CHEM11-08'
-														? '2\\text{C}_2\\text{H}_5\\text{OH} + 2\\text{Na} \\rightarrow 2\\text{C}_2\\text{H}_5\\text{ONa} + \\text{H}_2\\uparrow'
-														: simId === 'CHEM11-09'
-															? '\\text{C}_6\\text{H}_5\\text{OH} + 3\\text{Br}_2 \\rightarrow \\text{C}_6\\text{H}_2\\text{Br}_3\\text{OH}\\downarrow + 3\\text{HBr}'
-															: simId === 'CHEM11-10'
-																? '\\text{Glycerol} + \\text{Cu(OH)}_2 \\rightarrow \\text{phức đồng màu xanh lam}'
-																: simId === 'CHEM11-11'
-																	? '2\\text{CH}_3\\text{COOH} + \\text{CaCO}_3 \\rightarrow (\\text{CH}_3\\text{COO})_2\\text{Ca} + \\text{CO}_2\\uparrow + \\text{H}_2\\text{O}'
-																	: '\\text{CH}_3\\text{COOH} + \\text{C}_2\\text{H}_5\\text{OH} \\rightleftharpoons \\text{CH}_3\\text{COOC}_2\\text{H}_5 + \\text{H}_2\\text{O}';
+				: chemExperimentId === 'CHEM12-03'
+					? '\\text{CH}_2\\text{OH[CHOH]}_4\\text{CHO} + 2\\text{Cu(OH)}_2 + \\text{NaOH} \\xrightarrow{t^\\circ} \\text{CH}_2\\text{OH[CHOH]}_4\\text{COONa} + \\text{Cu}_2\\text{O}\\downarrow + 3\\text{H}_2\\text{O}'
+				: chemExperimentId === 'CHEM12-04'
+					? '\\text{CH}_2\\text{OH[CHOH]}_4\\text{CHO} + 2\\text{[Ag(NH}_3\\text{)}_2\\text{]OH} \\xrightarrow{t^\\circ} \\text{CH}_2\\text{OH[CHOH]}_4\\text{COONH}_4 + 2\\text{Ag}\\downarrow + 3\\text{NH}_3 + \\text{H}_2\\text{O}'
+				: chemExperimentId === 'CHEM12-05'
+					? '\\text{Tinh bột} + \\text{I}_2 \\rightleftharpoons \\text{Hợp chất màu xanh tím (hấp phụ)}'
+				: chemExperimentId === 'CHEM12-06'
+					? '\\text{Protein} + \\text{Cu(OH)}_2 \\xrightarrow{\\text{NaOH}} \\text{Phức chất màu tím đặc trưng}'
+				: chemExperimentId === 'CHEM12-07'
+					? '2\\text{Na} + 2\\text{H}_2\\text{O} \\rightarrow 2\\text{NaOH} + \\text{H}_2\\uparrow \\text{ (tỏa nhiệt mạnh)}'
+				: chemExperimentId === 'CHEM12-08'
+					? '\\text{Fe} + \\text{CuSO}_4 \\rightarrow \\text{FeSO}_4 + \\text{Cu}\\downarrow'
+				: chemExperimentId === 'CHEM12-09'
+					? '2\\text{Al} + 2\\text{NaOH} + 6\\text{H}_2\\text{O} \\rightarrow 2\\text{Na[Al(OH)}_4\\text{]} + 3\\text{H}_2\\uparrow'
+				: chemExperimentId === 'CHEM12-10'
+					? '2\\text{Al} + \\text{Fe}_2\\text{O}_3 \\xrightarrow{t^\\circ} \\text{Al}_2\\text{O}_3 + 2\\text{Fe}'
+				: chemExperimentId === 'CHEM12-11'
+					? '\\text{Fe}^{2+} \\xrightarrow{\\text{OH}^-} \\text{Fe(OH)}_2\\downarrow\\text{ (xanh trắng)} \\quad \\vert \\quad \\text{Fe}^{3+} \\xrightarrow{\\text{OH}^-} \\text{Fe(OH)}_3\\downarrow\\text{ (nâu đỏ)}'
+				: chemExperimentId === 'CHEM12-12'
+					? '2\\text{CuSO}_4 + 2\\text{H}_2\\text{O} \\xrightarrow{\\text{điện phân}} 2\\text{Cu}\\downarrow\\text{ (cathode)} + \\text{O}_2\\uparrow\\text{ (anode)} + 2\\text{H}_2\\text{SO}_4'
+				: chemExperimentId === 'CHEM12-13'
+					? '\\text{Cực âm (Zn): } \\text{Zn} \\rightarrow \\text{Zn}^{2+} + 2\\text{e} \\quad \\vert \\quad \\text{Cực dương (Cu): } 2\\text{H}^+ + 2\\text{e} \\rightarrow \\text{H}_2\\uparrow'
+				: chemExperimentId === 'CHEM11-01'
+					? '\\text{pH} = -\\log[\\text{H}^+] \\quad \\vert \\quad \\text{Chất chỉ thị đổi màu theo môi trường acid/base}'
+				: chemExperimentId === 'CHEM11-02'
+					? '\\text{HCl} + \\text{NaOH} \\rightarrow \\text{NaCl} + \\text{H}_2\\text{O} \\quad \\vert \\quad n_{\\text{acid}} = n_{\\text{base}}'
+				: chemExperimentId === 'CHEM11-03'
+					? '\\text{Cu} + 4\\text{HNO}_3 \\rightarrow \\text{Cu(NO}_3\\text{)}_2 + 2\\text{NO}_2\\uparrow + 2\\text{H}_2\\text{O}'
+				: chemExperimentId === 'CHEM11-04'
+					? '\\text{NH}_3 + \\text{HCl} \\rightarrow \\text{NH}_4\\text{Cl}\\downarrow \\quad \\text{(khói trắng)}'
+				: chemExperimentId === 'CHEM11-05'
+					? '\\text{C}_{12}\\text{H}_{22}\\text{O}_{11} \\xrightarrow{\\text{H}_2\\text{SO}_4\\,\\text{đặc}} 12\\text{C} + 11\\text{H}_2\\text{O}'
+				: chemExperimentId === 'CHEM11-06'
+					? '\\text{CH}_2=\\text{CH}_2 + \\text{Br}_2 \\rightarrow \\text{CH}_2\\text{Br}-\\text{CH}_2\\text{Br}'
+				: chemExperimentId === 'CHEM11-07'
+					? '\\text{HC}\\equiv\\text{CH} + 2\\text{[Ag(NH}_3\\text{)}_2\\text{]OH} \\rightarrow \\text{AgC}\\equiv\\text{CAg}\\downarrow + 4\\text{NH}_3 + 2\\text{H}_2\\text{O}'
+				: chemExperimentId === 'CHEM11-08'
+					? '2\\text{C}_2\\text{H}_5\\text{OH} + 2\\text{Na} \\rightarrow 2\\text{C}_2\\text{H}_5\\text{ONa} + \\text{H}_2\\uparrow'
+				: chemExperimentId === 'CHEM11-09'
+					? '\\text{C}_6\\text{H}_5\\text{OH} + 3\\text{Br}_2 \\rightarrow \\text{C}_6\\text{H}_2\\text{Br}_3\\text{OH}\\downarrow + 3\\text{HBr}'
+				: chemExperimentId === 'CHEM11-10'
+					? '\\text{Glycerol} + \\text{Cu(OH)}_2 \\rightarrow \\text{phức đồng màu xanh lam}'
+				: chemExperimentId === 'CHEM11-11'
+					? '2\\text{CH}_3\\text{COOH} + \\text{CaCO}_3 \\rightarrow (\\text{CH}_3\\text{COO})_2\\text{Ca} + \\text{CO}_2\\uparrow + \\text{H}_2\\text{O}'
+				: chemExperimentId === 'CHEM10-01'
+					? '\\alpha\\text{ (He}^{2+}\\text{)} \\rightarrow \\text{Bắn phá hạt Au} \\quad \\vert \\quad \\text{Hầu hết hạt truyền thẳng}'
+				: chemExperimentId === 'CHEM10-02'
+					? '\\text{Na}^+\\text{ (vàng), } \\text{K}^+\\text{ (tím), } \\text{Cu}^{2+}\\text{ (xanh lá), } \\text{Ca}^{2+}\\text{ (đỏ cam)}'
+				: chemExperimentId === 'CHEM10-03'
+					? '\\text{Zn} + 2\\text{HCl} \\rightarrow \\text{ZnCl}_2 + \\text{H}_2\\uparrow'
+				: chemExperimentId === 'CHEM10-04'
+					? '2\\text{Mg} + \\text{O}_2 \\xrightarrow{t^\\circ} 2\\text{MgO}'
+				: chemExperimentId === 'CHEM10-05'
+					? '\\text{CaO} + \\text{H}_2\\text{O} \\rightarrow \\text{Ca(OH)}_2 \\quad \\vert \\quad \\Delta_r H^\\circ < 0\\text{ (tỏa nhiệt)}'
+				: chemExperimentId === 'CHEM10-06'
+					? '\\text{Ba(OH)}_2\\cdot8\\text{H}_2\\text{O} + 2\\text{NH}_4\\text{Cl} \\rightarrow \\text{BaCl}_2 + 2\\text{NH}_3\\uparrow + 10\\text{H}_2\\text{O} \\quad \\vert \\quad \\Delta_r H^\\circ > 0'
+				: chemExperimentId === 'CHEM10-07'
+					? '\\text{Na}_2\\text{S}_2\\text{O}_3 + \\text{H}_2\\text{SO}_4 \\rightarrow \\text{Na}_2\\text{SO}_4 + \\text{S}\\downarrow + \\text{SO}_2\\uparrow + \\text{H}_2\\text{O}'
+				: chemExperimentId === 'CHEM10-08'
+					? '2\\text{H}_2\\text{O}_2 \\xrightarrow{\\text{MnO}_2} 2\\text{H}_2\\text{O} + \\text{O}_2\\uparrow'
+				: chemExperimentId === 'CHEM10-09'
+					? '\\text{CaCO}_3 + 2\\text{HCl} \\rightarrow \\text{CaCl}_2 + \\text{CO}_2\\uparrow + \\text{H}_2\\text{O}'
+				: chemExperimentId === 'CHEM10-10'
+					? '\\text{Ag}^+ + \\text{Cl}^- \\rightarrow \\text{AgCl}\\downarrow\\text{ (trắng)} \\quad \\vert \\quad \\text{Ag}^+ + \\text{Br}^- \\rightarrow \\text{AgBr}\\downarrow\\text{ (vàng nhạt)}'
+				: chemExperimentId === 'CHEM10-11'
+					? '\\text{Cl}_2 + \\text{H}_2\\text{O} \\rightleftharpoons \\text{HCl} + \\text{HClO (tính oxy hóa tẩy màu)}'
+				: chemExperimentId === 'CHEM10-12'
+					? '\\text{Cl}_2 + 2\\text{NaBr} \\rightarrow 2\\text{NaCl} + \\text{Br}_2'
+				: '\\text{CH}_3\\text{COOH} + \\text{C}_2\\text{H}_5\\text{OH} \\rightleftharpoons \\text{CH}_3\\text{COOC}_2\\text{H}_5 + \\text{H}_2\\text{O}';
 
 	const centerTitle =
 		subject === 'physics'
@@ -2582,20 +2806,44 @@ const Workspace: React.FC = () => {
 																								? 'Năng lượng liên kết riêng'
 																								: 'Quỹ đạo'
 			: subject === 'math'
-				? simId === 'SIM-08' || simId === 'SIM-08-math' || !simId
-					? 'Đồ thị hàm bậc hai'
-					: simId === 'SIM-16'
-						? 'Quỹ đạo và vòm cổng'
-						: simId === 'SIM-17'
-							? 'Miền nghiệm hệ BPT'
-							: simId === 'SIM-18'
-								? 'Đo đạc thực tế'
-								: simId === 'SIM-19'
-									? 'Vẽ Elip'
-									: 'Thống kê số liệu'
+				? meta.title
 				: 'Mô phỏng phản ứng';
 
 	const unusedBundle = { liveT, liveX, liveV, physicsCalc, mathCalc };
+
+	const handleSimWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
+		if (!simPanZoomEnabled) return;
+		e.preventDefault();
+		const rect = e.currentTarget.getBoundingClientRect();
+		const cx = e.clientX - rect.left;
+		const cy = e.clientY - rect.top;
+		const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+		setSimZoom(prev => {
+			const next = Math.min(Math.max(prev * factor, 0.2), 10);
+			const ratio = next / prev;
+			setSimPan(pan => ({ x: cx - ratio * (cx - pan.x), y: cy - ratio * (cy - pan.y) }));
+			return next;
+		});
+	}, [simPanZoomEnabled]);
+
+	const handleSimMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+		if (!simPanZoomEnabled || e.button !== 0) return;
+		e.preventDefault();
+		setSimIsDragging(true);
+		simDragRef.current = { startX: e.clientX, startY: e.clientY, panX: simPan.x, panY: simPan.y };
+	}, [simPanZoomEnabled, simPan]);
+
+	const handleSimMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+		if (!simIsDragging) return;
+		setSimPan({
+			x: simDragRef.current.panX + (e.clientX - simDragRef.current.startX),
+			y: simDragRef.current.panY + (e.clientY - simDragRef.current.startY),
+		});
+	}, [simIsDragging]);
+
+	const handleSimMouseUp = useCallback(() => { setSimIsDragging(false); }, []);
+
+	const resetSimView = useCallback(() => { setSimZoom(1); setSimPan({ x: 0, y: 0 }); }, []);
 
 	return (
 		<StudentLayout hideSidebar>
@@ -2627,9 +2875,20 @@ const Workspace: React.FC = () => {
 						<div className='stu-ws__btn-secondary' onClick={handleGlobalReset}>
 							Đặt lại
 						</div>
-						<div className='stu-ws__btn-primary'>Lưu & Nộp</div>
+						<div
+							className={`stu-ws__btn-primary${!canSubmit ? ' stu-ws__btn-primary--locked' : ''}`}
+							onClick={handleSubmit}
+						>
+							Lưu & Nộp
+						</div>
 					</div>
 				</div>
+
+				{submitToast && (
+					<div className={`stu-ws__submit-toast stu-ws__submit-toast--${submitToast.type}`}>
+						{submitToast.msg}
+					</div>
+				)}
 
 				{/* 3-Panel Layout */}
 				<div className='stu-ws__panels'>
@@ -9298,13 +9557,9 @@ const Workspace: React.FC = () => {
 									<span>Thông số</span>
 								</div>
 
-								{/* SIM-08 or default_math: Quadratic Graph */}
-								{(simId === 'SIM-08' || simId === 'SIM-08-math' || !simId) && (
+								{/* MATH10-01: Quadratic Graph */}
+								{(resolvedMathSimId === 'MATH10-01' || !simId) && (
 									<>
-										<div
-											className='stu-ws__formula-box'
-											dangerouslySetInnerHTML={renderTex('y = a\\,x^2 + b\\,x + c')}
-										/>
 										<div className='stu-ws__param stu-ws__param--v0'>
 											<div className='stu-ws__param-row'>
 												<span>a</span>
@@ -9350,20 +9605,41 @@ const Workspace: React.FC = () => {
 												onChange={(e) => setMC(+e.target.value)}
 											/>
 										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>📐 Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('y = a\\,x^2 + b\\,x + c \\quad (a \\neq 0)')} />
+											<div dangerouslySetInnerHTML={renderTex('I\\left(-\\frac{b}{2a}; -\\frac{\\Delta}{4a}\\right)')} style={{ marginTop: '6px' }} />
+											<div dangerouslySetInnerHTML={renderTex('\\text{Trục đối xứng: } x = -\\frac{b}{2a}')} style={{ marginTop: '6px' }} />
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>🔤 Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a, b, c')} />
+												<span className='stu-ws__symbol-desc'>các hệ số thực của hàm số bậc hai</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('I')} />
+												<span className='stu-ws__symbol-desc'>đỉnh của parabol</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\Delta')} />
+												<span className='stu-ws__symbol-desc'>biệt thức Δ = b² - 4ac</span>
+											</div>
+										</div>
 									</>
 								)}
 
-								{/* SIM-16: Projectile & Parabolic Arch */}
-								{simId === 'SIM-16' && (
+								{/* MATH10-02: Projectile & Parabolic Arch */}
+								{resolvedMathSimId === 'MATH10-02' && (
 									<>
-										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('x(t) = 2 + v_0 \\cos\\alpha\\,t')} />
-											<div
-												dangerouslySetInnerHTML={renderTex('y(t) = v_0 \\sin\\alpha\\,t - \\frac{1}{2}\\,g\\,t^2')}
-												style={{ marginTop: '6px' }}
-											/>
-											<div className='stu-ws__formula-hint'>Cổng: y = -0.25 (x - 8)^2 + 9</div>
-										</div>
 										<div className='stu-ws__param stu-ws__param--v0'>
 											<div className='stu-ws__param-row'>
 												<span>
@@ -9416,33 +9692,41 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 
-										<div
-											style={{
-												marginTop: '12px',
-												fontSize: '11px',
-												color: '#94a3b8',
-												background: 'rgba(30, 41, 59, 0.5)',
-												padding: '8px',
-												borderRadius: '6px',
-												lineHeight: '1.4',
-											}}
-										>
-											💡 <b>Bài toán thực tế:</b> Cổng đá dạng parabol cao 9m, rộng 12m. Hãy điều chỉnh góc ném α và vận
-											tốc v₀ để quỹ đạo bay khớp hoàn hảo vòm cổng!
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>📐 Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('x(t) = 2 + v_0 \\cos\\alpha\\,t')} />
+											<div dangerouslySetInnerHTML={renderTex('y(t) = v_0 \\sin\\alpha\\,t - \\frac{1}{2}\\,g\\,t^2')} style={{ marginTop: '6px' }} />
+											<div dangerouslySetInnerHTML={renderTex('y = \\tan\\alpha(x-2) - \\frac{g}{2v_0^2\\cos^2\\alpha}(x-2)^2')} style={{ marginTop: '6px' }} />
+											<div className='stu-ws__formula-hint' style={{ marginTop: '6px' }}>Cổng đá: y = -0.25(x - 8)² + 9</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>🔤 Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('v_0')} />
+												<span className='stu-ws__symbol-desc'>vận tốc ném ban đầu (m/s)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\alpha')} />
+												<span className='stu-ws__symbol-desc'>góc ném ban đầu (độ)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('g')} />
+												<span className='stu-ws__symbol-desc'>gia tốc trọng trường (m/s²)</span>
+											</div>
 										</div>
 									</>
 								)}
 
-								{/* SIM-17: Linear Inequalities */}
-								{simId === 'SIM-17' && (
+								{/* MATH10-03: Linear Inequalities */}
+								{resolvedMathSimId === 'MATH10-03' && (
 									<>
-										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('d_1: A_1 x + B_1 y \\le C_1')} />
-											<div
-												dangerouslySetInnerHTML={renderTex('d_2: A_2 x + B_2 y \\le C_2')}
-												style={{ marginTop: '6px' }}
-											/>
-										</div>
 										<div style={{ fontSize: '12px', fontWeight: 'bold', color: '#4f6ef7', marginBottom: '4px' }}>
 											Bất phương trình 1:
 										</div>
@@ -9552,15 +9836,39 @@ const Workspace: React.FC = () => {
 												<div className='stu-ws__toggle-knob' />
 											</div>
 										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>📐 Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('d_1: A_1 x + B_1 y \\le C_1')} />
+											<div dangerouslySetInnerHTML={renderTex('d_2: A_2 x + B_2 y \\le C_2')} style={{ marginTop: '6px' }} />
+											<div style={{ marginTop: '6px', fontSize: '11px', color: '#94a3b8' }}>
+												Giao của 2 nửa mặt phẳng bờ d₁, d₂ biểu diễn miền nghiệm của hệ bất phương trình.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>🔤 Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('x, y')} />
+												<span className='stu-ws__symbol-desc'>tọa độ các điểm trên mặt phẳng</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A_i, B_i, C_i')} />
+												<span className='stu-ws__symbol-desc'>các hệ số của bất phương trình i</span>
+											</div>
+										</div>
 									</>
 								)}
 
-								{/* SIM-18: Triangulation */}
-								{simId === 'SIM-18' && (
+								{/* MATH10-04: Triangulation */}
+								{resolvedMathSimId === 'MATH10-04' && (
 									<>
-										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('H = h_0 + a\\,\\tan\\alpha')} />
-										</div>
 										<div className='stu-ws__param stu-ws__param--v0'>
 											<div className='stu-ws__param-row'>
 												<span>Khoảng cách (a)</span>
@@ -9606,16 +9914,46 @@ const Workspace: React.FC = () => {
 												onChange={(e) => setTriH0(+e.target.value)}
 											/>
 										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>📐 Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('H = h_0 + a\\,\\tan\\alpha')} />
+											<div style={{ marginTop: '6px', fontSize: '11px', color: '#94a3b8' }}>
+												Đo gián tiếp chiều cao vật thể đứng từ xa dựa trên hệ thức lượng lượng giác.
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>🔤 Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('H')} />
+												<span className='stu-ws__symbol-desc'>chiều cao cột cờ thực tế (m)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('h_0')} />
+												<span className='stu-ws__symbol-desc'>chiều cao tầm mắt người đo (m)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a')} />
+												<span className='stu-ws__symbol-desc'>khoảng cách nằm ngang đo được (m)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\alpha')} />
+												<span className='stu-ws__symbol-desc'>góc nâng đo bằng giác kế (độ)</span>
+											</div>
+										</div>
 									</>
 								)}
 
-								{/* SIM-19: Ellipse Conic */}
-								{simId === 'SIM-19' && (
+								{/* MATH10-05: Ellipse Conic */}
+								{resolvedMathSimId === 'MATH10-05' && (
 									<>
-										<div className='stu-ws__formula-box'>
-											<div dangerouslySetInnerHTML={renderTex('\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1')} />
-											<div dangerouslySetInnerHTML={renderTex('MF_1 + MF_2 = 2a')} style={{ marginTop: '6px' }} />
-										</div>
 										<div className='stu-ws__param stu-ws__param--v0'>
 											<div className='stu-ws__param-row'>
 												<span>Nửa tiêu cự (c)</span>
@@ -9658,74 +9996,533 @@ const Workspace: React.FC = () => {
 											/>
 										</div>
 
-										<div
-											style={{
-												marginTop: '12px',
-												fontSize: '11px',
-												color: '#94a3b8',
-												background: 'rgba(30, 41, 59, 0.5)',
-												padding: '8px',
-												borderRadius: '6px',
-												lineHeight: '1.4',
-											}}
-										>
-											💡 <b>Định nghĩa Elip:</b> Quỹ tích những điểm M sao cho tổng khoảng cách đến hai tiêu điểm không
-											đổi MF₁ + MF₂ = 2a.
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>📐 Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1 \\quad (a > b > 0)')} />
+											<div dangerouslySetInnerHTML={renderTex('MF_1 + MF_2 = 2a')} style={{ marginTop: '6px' }} />
+											<div dangerouslySetInnerHTML={renderTex('a^2 = b^2 + c^2')} style={{ marginTop: '6px' }} />
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>🔤 Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a')} />
+												<span className='stu-ws__symbol-desc'>độ dài bán trục lớn elip</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('b')} />
+												<span className='stu-ws__symbol-desc'>độ dài bán trục nhỏ elip</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('c')} />
+												<span className='stu-ws__symbol-desc'>nửa tiêu cự của elip</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('F_1, F_2')} />
+												<span className='stu-ws__symbol-desc'>tiêu điểm của hình elip</span>
+											</div>
 										</div>
 									</>
 								)}
 
-								{/* SIM-20: Statistics */}
-								{simId === 'SIM-20' && (
+								{/* MATH10-06: Statistics */}
+								{resolvedMathSimId === 'MATH10-06' && (
 									<>
+										<div style={{ padding: '8px', background: 'rgba(30, 41, 59, 0.4)', borderRadius: '8px', fontSize: '11px', color: '#94a3b8', lineHeight: '1.4' }}>
+											📊 Nhập trực tiếp các phần tử số liệu vào bảng tính để tính toán giá trị thống kê đặc trưng.
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>📐 Công thức & Lý thuyết</span>
+										</div>
 										<div className='stu-ws__formula-box'>
 											<div dangerouslySetInnerHTML={renderTex('\\bar{x} = \\frac{\\sum x_i}{n}')} />
-											<div
-												dangerouslySetInnerHTML={renderTex('s = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n}}')}
-												style={{ marginTop: '6px' }}
-											/>
+											<div dangerouslySetInnerHTML={renderTex('s = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n}}')} style={{ marginTop: '6px' }} />
+											<div style={{ marginTop: '6px', fontSize: '11px', color: '#94a3b8' }}>
+												Khoảng tứ phân vị IQR = Q₃ - Q₁ đo độ phân tán của 50% dữ liệu ở giữa.
+											</div>
 										</div>
-										<div
-											style={{
-												fontSize: '11px',
-												color: '#94a3b8',
-												lineHeight: '1.5',
-												display: 'flex',
-												flexDirection: 'column',
-												gap: '8px',
-											}}
-										>
-											<div>
-												📊 <b>Các đại lượng đo xu thế trung tâm:</b>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>🔤 Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('n')} />
+												<span className='stu-ws__symbol-desc'>cỡ mẫu (số lượng dữ liệu)</span>
 											</div>
-											<div>
-												• <b>Số trung bình (x̄):</b> Giá trị trung bình cộng của mẫu số liệu.
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\bar{x}')} />
+												<span className='stu-ws__symbol-desc'>số trung bình cộng của mẫu</span>
 											</div>
-											<div>
-												• <b>Trung vị (Q₂):</b> Giá trị chia mẫu số liệu thành hai phần bằng nhau.
-											</div>
-											<div>
-												• <b>Tứ phân vị (Q₁, Q₃):</b> Các giá trị chia mẫu số liệu đã sắp xếp thành 4 phần bằng nhau.
-											</div>
-											<div style={{ borderTop: '1px solid #1e293b', paddingTop: '6px' }}>
-												📉 <b>Các đại lượng đo độ phân tán:</b>
-											</div>
-											<div>
-												• <b>Khoảng biến thiên (R):</b> Hiệu giữa giá trị lớn nhất và nhỏ nhất.
-											</div>
-											<div>
-												• <b>Khoảng tứ phân vị (IQR):</b> Bằng Q₃ - Q₁, đo độ phân tán của 50% dữ liệu ở giữa.
-											</div>
-											<div>
-												• <b>Độ lệch chuẩn (s):</b> Đo mức độ phân tán xung quanh số trung bình.
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('s')} />
+												<span className='stu-ws__symbol-desc'>độ lệch chuẩn của mẫu số liệu</span>
 											</div>
 										</div>
 									</>
 								)}
-							</>
-						)}
 
-						{/* Chem Steps */}
+							{/* MATH11-01: Đồ thị hàm lượng giác */}
+							{resolvedMathSimId === 'MATH11-01' && (
+								<>
+									{[
+										{ label: 'A (biên độ)', val: trigA, set: setTrigA, min: 0.1, max: 3, step: 0.1 },
+										{ label: 'B (tần số)', val: trigB, set: setTrigB, min: 0.1, max: 4, step: 0.1 },
+										{ label: 'C (pha rad)', val: trigC, set: setTrigC, min: -3.14, max: 3.14, step: 0.1 },
+										{ label: 'D (dịch dọc)', val: trigD, set: setTrigD, min: -3, max: 3, step: 0.1 },
+									].map(({ label, val, set, min, max, step }) => (
+										<div key={label} className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>{label}</span>
+												<span className='stu-ws__param-val'>{val.toFixed(1)}</span>
+											</div>
+											<input type='range' min={min} max={max} step={step} value={val}
+												style={getTrackStyle(val, min, max, '#4f6ef7')}
+												onChange={e => set(+e.target.value)} />
+										</div>
+									))}
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Hàm số</span></div>
+										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+											{['sin', 'cos', 'tan'].map((fn, i) => (
+												<button key={fn} onClick={() => setTrigFnIdx(i)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer',
+														background: trigFnIdx === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 13 }}>
+													{fn}
+												</button>
+											))}
+										</div>
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex('y = A\\sin(Bx + C) + D')} />
+										<div dangerouslySetInnerHTML={renderTex('T = \\dfrac{2\\pi}{|B|}')} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A')} /><span className='stu-ws__symbol-desc'>biên độ dao động</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('B')} /><span className='stu-ws__symbol-desc'>hệ số tần số, chu kỳ T=2π/|B|</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('C')} /><span className='stu-ws__symbol-desc'>pha ban đầu (rad)</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('D')} /><span className='stu-ws__symbol-desc'>dịch chuyển dọc trục y</span></div>
+									</div>
+								</>
+							)}
+
+							{/* MATH11-02: Vòng tròn đơn vị */}
+							{resolvedMathSimId === 'MATH11-02' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Góc θ (độ)</span><span className='stu-ws__param-val'>{ucAngle}°</span></div>
+										<input type='range' min={0} max={360} step={1} value={ucAngle}
+											style={getTrackStyle(ucAngle, 0, 360, '#4f6ef7')}
+											onChange={e => setUcAngle(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Giá trị a (sin x = a)</span><span className='stu-ws__param-val'>{ucTarget.toFixed(2)}</span></div>
+										<input type='range' min={-1} max={1} step={0.01} value={ucTarget}
+											style={getTrackStyle(ucTarget, -1, 1, '#f59e0b')}
+											onChange={e => setUcTarget(+e.target.value)} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex('\\sin x = a,\\ -1\\le a\\le 1')} />
+										<div dangerouslySetInnerHTML={renderTex('x = \\arcsin a + 2k\\pi')} style={{ marginTop: 6 }} />
+										<div dangerouslySetInnerHTML={renderTex('x = \\pi - \\arcsin a + 2k\\pi')} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\theta')} /><span className='stu-ws__symbol-desc'>góc lượng giác</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\sin\\theta')} /><span className='stu-ws__symbol-desc'>tung độ điểm P trên vòng tròn</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('k\\in\\mathbb{Z}')} /><span className='stu-ws__symbol-desc'>số nguyên, chỉ các chu kỳ lặp</span></div>
+									</div>
+								</>
+							)}
+
+							{/* MATH11-03: Tổ hợp & Nhị thức Newton */}
+							{resolvedMathSimId === 'MATH11-03' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>n</span><span className='stu-ws__param-val'>{combN}</span></div>
+										<input type='range' min={0} max={10} step={1} value={combN}
+											style={getTrackStyle(combN, 0, 10, '#4f6ef7')}
+											onChange={e => { const v = +e.target.value; setCombN(v); if (combK > v) setCombK(v); }} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>k</span><span className='stu-ws__param-val'>{combK}</span></div>
+										<input type='range' min={0} max={combN} step={1} value={combK}
+											style={getTrackStyle(combK, 0, combN, '#f59e0b')}
+											onChange={e => setCombK(+e.target.value)} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex('P_n = n!')} />
+										<div dangerouslySetInnerHTML={renderTex('A_n^k = \\frac{n!}{(n-k)!}')} style={{ marginTop: 6 }} />
+										<div dangerouslySetInnerHTML={renderTex('C_n^k = \\frac{n!}{k!(n-k)!}')} style={{ marginTop: 6 }} />
+										<div dangerouslySetInnerHTML={renderTex('(a+b)^n=\\sum_{k=0}^{n}C_n^k a^{n-k}b^k')} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('P_n')} /><span className='stu-ws__symbol-desc'>hoán vị của n phần tử</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A_n^k')} /><span className='stu-ws__symbol-desc'>chỉnh hợp chập k của n phần tử</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('C_n^k')} /><span className='stu-ws__symbol-desc'>tổ hợp / hệ số nhị thức</span></div>
+									</div>
+								</>
+							)}
+
+							{/* MATH11-04: Xác suất sự kiện */}
+							{resolvedMathSimId === 'MATH11-04' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span style={{ color: '#3b82f6' }}>P(A)</span><span className='stu-ws__param-val'>{probPA.toFixed(2)}</span></div>
+										<input type='range' min={0.05} max={0.9} step={0.01} value={probPA}
+											style={getTrackStyle(probPA, 0.05, 0.9, '#3b82f6')}
+											onChange={e => setProbPA(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span style={{ color: '#8b5cf6' }}>P(B)</span><span className='stu-ws__param-val'>{probPB.toFixed(2)}</span></div>
+										<input type='range' min={0.05} max={0.9} step={0.01} value={probPB}
+											style={getTrackStyle(probPB, 0.05, 0.9, '#8b5cf6')}
+											onChange={e => setProbPB(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>P(A∩B)</span><span className='stu-ws__param-val'>{probPAB.toFixed(2)}</span></div>
+										<input type='range' min={0} max={Math.min(probPA, probPB)} step={0.01} value={probPAB}
+											style={getTrackStyle(probPAB, 0, Math.min(probPA, probPB), '#6366f1')}
+											onChange={e => setProbPAB(+e.target.value)} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex('P(A\\cup B)=P(A)+P(B)-P(A\\cap B)')} />
+										<div dangerouslySetInnerHTML={renderTex('P(A|B)=\\frac{P(A\\cap B)}{P(B)}')} style={{ marginTop: 6 }} />
+										<div dangerouslySetInnerHTML={renderTex('P(\\bar{A})=1-P(A)')} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A\\cap B')} /><span className='stu-ws__symbol-desc'>giao — cả A và B xảy ra</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A\\cup B')} /><span className='stu-ws__symbol-desc'>hợp — A hoặc B xảy ra</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('P(A|B)')} /><span className='stu-ws__symbol-desc'>xác suất có điều kiện</span></div>
+									</div>
+								</>
+							)}
+
+							{/* MATH11-05: Giới hạn dãy số */}
+							{resolvedMathSimId === 'MATH11-05' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Chọn dãy số</span></div>
+										<div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 4 }}>
+											{['aₙ=1/n → 0', 'aₙ=(−1)ⁿ/n → 0', 'aₙ=n/(n+1) → 1', 'aₙ=(2n+1)/(n+1) → 2'].map((label, i) => (
+												<button key={i} onClick={() => setSeqType(i)}
+													style={{ padding: '4px 8px', borderRadius: 6, border: 'none', cursor: 'pointer', textAlign: 'left',
+														background: seqType === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 12 }}>
+													{label}
+												</button>
+											))}
+										</div>
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>ε (độ chính xác)</span><span className='stu-ws__param-val'>{seqEps.toFixed(2)}</span></div>
+										<input type='range' min={0.05} max={1.0} step={0.05} value={seqEps}
+											style={getTrackStyle(seqEps, 0.05, 1.0, '#f59e0b')}
+											onChange={e => setSeqEps(+e.target.value)} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex('\\lim_{n\\to\\infty}a_n=L')} />
+										<div dangerouslySetInnerHTML={renderTex('\\forall\\varepsilon>0\\ \\exists N: n>N\\Rightarrow|a_n-L|<\\varepsilon')} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a_n')} /><span className='stu-ws__symbol-desc'>số hạng thứ n của dãy số</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('L')} /><span className='stu-ws__symbol-desc'>giới hạn của dãy số</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\varepsilon')} /><span className='stu-ws__symbol-desc'>epsilon — độ chính xác cho trước</span></div>
+									</div>
+								</>
+							)}
+
+							{/* MATH11-06: Giới hạn hàm số & hàm liên tục */}
+							{resolvedMathSimId === 'MATH11-06' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Chọn hàm số</span></div>
+										<div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 4 }}>
+											{['(x²−1)/(x−1), gián đoạn bỏ được', 'Hàm bậc thang, gián đoạn nhảy', '|x|/x dấu, gián đoạn tại 0', 'sin(x)/x, gián đoạn bỏ được tại 0'].map((label, i) => (
+												<button key={i} onClick={() => setLimFuncType(i)}
+													style={{ padding: '4px 8px', borderRadius: 6, border: 'none', cursor: 'pointer', textAlign: 'left',
+														background: limFuncType === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 11 }}>
+													{label}
+												</button>
+											))}
+										</div>
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a}f(x)=L')} />
+										<div dangerouslySetInnerHTML={renderTex('f\\ \\text{liên tục tại}\\ a\\Leftrightarrow\\lim_{x\\to a}f(x)=f(a)')} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a^-}')} /><span className='stu-ws__symbol-desc'>giới hạn trái</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a^+}')} /><span className='stu-ws__symbol-desc'>giới hạn phải</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('f(a)')} /><span className='stu-ws__symbol-desc'>giá trị hàm số tại a</span></div>
+									</div>
+								</>
+							)}
+
+							{/* MATH11-07: Đạo hàm & tiếp tuyến */}
+							{resolvedMathSimId === 'MATH11-07' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Hàm số f(x)</span></div>
+										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+											{['x²', 'x³', 'sin x', 'x³−3x'].map((fn, i) => (
+												<button key={fn} onClick={() => setDerFnIdx(i)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer',
+														background: derFnIdx === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 12 }}>
+													{fn}
+												</button>
+											))}
+										</div>
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>x₀ (điểm tiếp xúc)</span><span className='stu-ws__param-val'>{derX0.toFixed(1)}</span></div>
+										<input type='range' min={-3} max={3} step={0.1} value={derX0}
+											style={getTrackStyle(derX0, -3, 3, '#fb923c')}
+											onChange={e => setDerX0(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>h (cát tuyến → tiếp tuyến)</span><span className='stu-ws__param-val'>{derH.toFixed(2)}</span></div>
+										<input type='range' min={0.01} max={2} step={0.01} value={derH}
+											style={getTrackStyle(derH, 0.01, 2, '#fbbf24')}
+											onChange={e => setDerH(+e.target.value)} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("f'(x_0)=\\lim_{h\\to 0}\\frac{f(x_0+h)-f(x_0)}{h}")} />
+										<div dangerouslySetInnerHTML={renderTex("y=f(x_0)+f'(x_0)(x-x_0)")} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f'(x_0)")} /><span className='stu-ws__symbol-desc'>đạo hàm của f tại x₀</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('h')} /><span className='stu-ws__symbol-desc'>gia số của biến độc lập</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("k=f'(x_0)")} /><span className='stu-ws__symbol-desc'>hệ số góc tiếp tuyến</span></div>
+									</div>
+								</>
+							)}
+
+							{/* MATH11-08: Phép dời hình & phép đồng dạng */}
+							{resolvedMathSimId === 'MATH11-08' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Phép biến đổi</span></div>
+										<div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 4 }}>
+											{['Tịnh tiến theo vectơ (tx,ty)', 'Đối xứng qua Ox', 'Đối xứng qua Oy', 'Đối xứng qua tâm O', 'Phép quay góc α'].map((label, i) => (
+												<button key={i} onClick={() => setTransType(i)}
+													style={{ padding: '4px 8px', borderRadius: 6, border: 'none', cursor: 'pointer', textAlign: 'left',
+														background: transType === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 11 }}>
+													{label}
+												</button>
+											))}
+										</div>
+									</div>
+									{transType === 0 && (<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'><span>tx</span><span className='stu-ws__param-val'>{transTx.toFixed(1)}</span></div>
+											<input type='range' min={-5} max={5} step={0.5} value={transTx}
+												style={getTrackStyle(transTx, -5, 5, '#4f6ef7')}
+												onChange={e => setTransTx(+e.target.value)} />
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'><span>ty</span><span className='stu-ws__param-val'>{transTy.toFixed(1)}</span></div>
+											<input type='range' min={-5} max={5} step={0.5} value={transTy}
+												style={getTrackStyle(transTy, -5, 5, '#4f6ef7')}
+												onChange={e => setTransTy(+e.target.value)} />
+										</div>
+									</>)}
+									{transType === 4 && (
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'><span>Góc quay α</span><span className='stu-ws__param-val'>{transAngle}°</span></div>
+											<input type='range' min={0} max={360} step={5} value={transAngle}
+												style={getTrackStyle(transAngle, 0, 360, '#4f6ef7')}
+												onChange={e => setTransAngle(+e.target.value)} />
+										</div>
+									)}
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex('T_{\\vec{v}}(M)=M\':\\ M\'=M+\\vec{v}')} />
+										<div dangerouslySetInnerHTML={renderTex("R_{O,\\alpha}:\\ (x',y')=(x\\cos\\alpha-y\\sin\\alpha,\\,x\\sin\\alpha+y\\cos\\alpha)")} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('T_{\\vec{v}}')} /><span className='stu-ws__symbol-desc'>phép tịnh tiến theo vectơ v</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\Phi_O')} /><span className='stu-ws__symbol-desc'>phép đối xứng tâm O</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('R_{O,\\alpha}')} /><span className='stu-ws__symbol-desc'>phép quay tâm O góc α</span></div>
+									</div>
+								</>
+							)}
+
+							{/* MATH11-09: Đường thẳng & mặt phẳng */}
+							{resolvedMathSimId === 'MATH11-09' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Góc nghiêng α (°)</span><span className='stu-ws__param-val'>{planeAlpha}°</span></div>
+										<input type='range' min={0} max={60} step={1} value={planeAlpha}
+											style={getTrackStyle(planeAlpha, 0, 60, '#3b82f6')}
+											onChange={e => setPlaneAlpha(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Góc nghiêng β (°)</span><span className='stu-ws__param-val'>{planeBeta}°</span></div>
+										<input type='range' min={0} max={60} step={1} value={planeBeta}
+											style={getTrackStyle(planeBeta, 0, 60, '#fb923c')}
+											onChange={e => setPlaneBeta(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Quan hệ</span></div>
+										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+											{['Giao nhau', 'Song song'].map((label, i) => (
+												<button key={i} onClick={() => setPlanesParallel(i)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer',
+														background: planesParallel === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 13 }}>
+													{label}
+												</button>
+											))}
+										</div>
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex('\\alpha\\parallel\\beta\\Leftrightarrow\\vec{n}_1\\parallel\\vec{n}_2')} />
+										<div dangerouslySetInnerHTML={renderTex('\\cos\\theta=\\frac{|\\vec{n}_1\\cdot\\vec{n}_2|}{|\\vec{n}_1||\\vec{n}_2|}')} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{n}')} /><span className='stu-ws__symbol-desc'>vectơ pháp tuyến của mặt phẳng</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\alpha\\cap\\beta')} /><span className='stu-ws__symbol-desc'>giao tuyến của hai mặt phẳng</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\theta')} /><span className='stu-ws__symbol-desc'>góc nhị diện giữa hai mặt phẳng</span></div>
+									</div>
+								</>
+							)}
+
+							{/* MATH11-10: Quan hệ vuông góc trong không gian */}
+							{resolvedMathSimId === 'MATH11-10' && (
+								<>
+									{[{ label: 'nx', val: perpNx, set: setPerpNx }, { label: 'ny', val: perpNy, set: setPerpNy }, { label: 'nz', val: perpNz, set: setPerpNz }].map(({ label, val, set }) => (
+										<div key={label} className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'><span>Pháp tuyến {label}</span><span className='stu-ws__param-val'>{val.toFixed(1)}</span></div>
+											<input type='range' min={-1} max={1} step={0.1} value={val}
+												style={getTrackStyle(val, -1, 1, '#fbbf24')}
+												onChange={e => set(+e.target.value)} />
+										</div>
+									))}
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex('d\\perp\\alpha\\Leftrightarrow d\\perp a,d\\perp b\\ (a,b\\subset\\alpha)')} />
+										<div dangerouslySetInnerHTML={renderTex('\\alpha\\perp\\beta\\Leftrightarrow\\exists d\\subset\\alpha:\\ d\\perp\\beta')} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('d\\perp\\alpha')} /><span className='stu-ws__symbol-desc'>đường thẳng d vuông góc mặt phẳng α</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\alpha\\perp\\beta')} /><span className='stu-ws__symbol-desc'>hai mặt phẳng vuông góc nhau</span></div>
+									</div>
+								</>
+							)}
+
+							{/* MATH11-11: Hình lăng trụ & hình chóp */}
+							{resolvedMathSimId === 'MATH11-11' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Loại hình</span></div>
+										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+											{['Lăng trụ', 'Hình chóp'].map((label, i) => (
+												<button key={i} onClick={() => setPolyType11(i)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer',
+														background: polyType11 === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 13 }}>
+													{label}
+												</button>
+											))}
+										</div>
+									</div>
+									{[
+										{ label: 'Số cạnh đáy (n)', val: polyN11, set: setPolyN11, min: 3, max: 6, step: 1 },
+										{ label: 'Bán kính đáy (r)', val: polyBaseR, set: setPolyBaseR, min: 0.5, max: 2.5, step: 0.1 },
+										{ label: 'Chiều cao (h)', val: polyH11, set: setPolyH11, min: 0.5, max: 4, step: 0.1 },
+									].map(({ label, val, set, min, max, step }) => (
+										<div key={label} className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'><span>{label}</span><span className='stu-ws__param-val'>{val.toFixed(step < 1 ? 1 : 0)}</span></div>
+											<input type='range' min={min} max={max} step={step} value={val}
+												style={getTrackStyle(val, min, max, '#4f6ef7')}
+												onChange={e => set(+e.target.value)} />
+										</div>
+									))}
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex(polyType11 === 0 ? 'V=S_{đáy}\\cdot h' : 'V=\\tfrac{1}{3}S_{đáy}\\cdot h')} />
+										<div dangerouslySetInnerHTML={renderTex('S_{n\\text{-giác đều}}=\\tfrac{n\\cdot r^2\\sin(2\\pi/n)}{2}')} style={{ marginTop: 6 }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('S_{đáy}')} /><span className='stu-ws__symbol-desc'>diện tích đa giác đều ở đáy</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('h')} /><span className='stu-ws__symbol-desc'>chiều cao của hình</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('V')} /><span className='stu-ws__symbol-desc'>thể tích hình</span></div>
+									</div>
+								</>
+							)}
+						</>
+					)}
+
+					{/* Chem Steps */}
 						{subject === 'chem' && (
 							<>
 								<div className='stu-ws__section-label'>Các bước hướng dẫn</div>
@@ -9786,6 +10583,16 @@ const Workspace: React.FC = () => {
 									</button>
 								</div>
 							)}
+							{subject === 'chem' && totalChemSteps > 0 && chemStep <= totalChemSteps && (
+								<div className='stu-ws__center-actions'>
+									<button
+										className={`stu-ws__center-btn stu-ws__center-btn--quick ${isAutoRunning ? 'stu-ws__center-btn--active' : ''}`}
+										onClick={() => setIsAutoRunning((prev) => !prev)}
+									>
+										{isAutoRunning ? 'Dừng lại' : 'Thực hiện nhanh'}
+									</button>
+								</div>
+							)}
 							{subject === 'math' && simId === 'SIM-16' && (
 								<div className='stu-ws__center-actions'>
 									<button
@@ -9814,7 +10621,7 @@ const Workspace: React.FC = () => {
 							id={`sim-mount-${subject}`}
 							data-sim={subject}
 						>
-							{subject !== 'chem' && (
+							{subject !== 'chem' && subject !== 'math' && (
 								<div className={`stu-ws__sim-pill stu-ws__sim-pill--${meta.className}`}>
 									{subject === 'physics' &&
 										(simId === 'SIM-21'
@@ -9874,6 +10681,25 @@ const Workspace: React.FC = () => {
 														: `Thống kê mẫu số liệu`)}
 								</div>
 							)}
+							<div
+								className='stu-ws__sim-viewport'
+								style={{ cursor: simIsDragging ? 'grabbing' : simPanZoomEnabled ? 'grab' : undefined }}
+								onWheel={handleSimWheel}
+								onMouseDown={handleSimMouseDown}
+								onMouseMove={handleSimMouseMove}
+								onMouseUp={handleSimMouseUp}
+								onMouseLeave={handleSimMouseUp}
+							>
+								<div style={{
+									position: 'absolute',
+									top: 0,
+									left: 0,
+									right: 0,
+									bottom: 0,
+									transform: `translate(${simPan.x}px, ${simPan.y}px) scale(${simZoom})`,
+									transformOrigin: '50% 50%',
+									willChange: 'transform',
+								}}>
 							{subject === 'physics' ? (
 								simId === 'SIM-21' ? (
 									<KinematicsSimulation
@@ -10438,93 +11264,134 @@ const Workspace: React.FC = () => {
 									onStepChange={(step: number) => setChemStep(step)}
 								/>
 							) : subject === 'math' ? (
-								simId === 'SIM-08' || simId === 'SIM-08-math' || !simId ? (
-									<QuadraticSimulation
-										config={{
-											simulation_id: 'SIM-08',
-											subject: 'math',
-											topic: 'quadratic',
-											parameters: [
-												{ key: 'a', value: mA, unit: '', label: 'a' },
-												{ key: 'b', value: mB, unit: '', label: 'b' },
-												{ key: 'c', value: mC, unit: '', label: 'c' },
-											],
-										}}
-									/>
-								) : simId === 'SIM-16' ? (
-									<ProjectileArchSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-16',
-											subject: 'math',
-											topic: 'projectile-arch',
-											parameters: [
-												{ key: 'v0', value: mVel, unit: 'm/s', label: 'Vận tốc đầu' },
-												{ key: 'alpha', value: mAngle, unit: '°', label: 'Góc ném' },
-												{ key: 'g', value: mGrav, unit: 'm/s²', label: 'Gia tốc' },
-											],
-										}}
-										isPlaying={isMPlaying}
-										onAnimationEnd={() => setIsMPlaying(false)}
-									/>
-								) : simId === 'SIM-17' ? (
-									<InequalitySimulation
-										config={{
-											simulation_id: 'SIM-17',
-											subject: 'math',
-											topic: 'inequality',
-											parameters: [
-												{ key: 'A1', value: inA1, unit: '', label: 'A1' },
-												{ key: 'B1', value: inB1, unit: '', label: 'B1' },
-												{ key: 'C1', value: inC1, unit: '', label: 'C1' },
-												{ key: 'A2', value: inA2, unit: '', label: 'A2' },
-												{ key: 'B2', value: inB2, unit: '', label: 'B2' },
-												{ key: 'C2', value: inC2, unit: '', label: 'C2' },
-												{ key: 'show1', value: showM1 ? 1 : 0, unit: '', label: 'show1' },
-												{ key: 'show2', value: showM2 ? 1 : 0, unit: '', label: 'show2' },
-											],
-										}}
-									/>
-								) : simId === 'SIM-18' ? (
-									<TriangulationSimulation
-										config={{
-											simulation_id: 'SIM-18',
-											subject: 'math',
-											topic: 'triangulation',
-											parameters: [
-												{ key: 'a', value: triA, unit: 'm', label: 'Khoảng cách' },
-												{ key: 'alpha', value: triAlpha, unit: '°', label: 'Góc nâng' },
-												{ key: 'h0', value: triH0, unit: 'm', label: 'Chiều cao mắt' },
-											],
-										}}
-									/>
-								) : simId === 'SIM-19' ? (
-									<ConicSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-19',
-											subject: 'math',
-											topic: 'conic',
-											parameters: [
-												{ key: 'c', value: conicC, unit: '', label: 'Nửa tiêu cự c' },
-												{ key: 'a', value: conicA, unit: '', label: 'Nửa trục lớn a' },
-											],
-										}}
-										isPlaying={isCPlaying}
-										onAnimationEnd={() => setIsCPlaying(false)}
-									/>
-								) : simId === 'SIM-20' ? (
-									<StatisticsSimulation
-										config={{
-											simulation_id: 'SIM-20',
-											subject: 'math',
-											topic: 'statistics',
-											parameters: [],
-										}}
-									/>
-								) : (
-									<div className='stu-ws__sim-placeholder'>Không tìm thấy mô phỏng Toán học tương ứng</div>
-								)
+								(() => {
+									const activeSimId = simId || 'MATH10-01';
+									const resolvedSimId = CHEM_SIM_ALIASES[activeSimId] || activeSimId;
+									let mathParams: Array<{ key: string; value: number; unit: string; label: string }> = [];
+
+									if (resolvedSimId === 'MATH10-01') {
+										mathParams = [
+											{ key: 'a', value: mA, unit: '', label: 'a' },
+											{ key: 'b', value: mB, unit: '', label: 'b' },
+											{ key: 'c', value: mC, unit: '', label: 'c' },
+										];
+									} else if (resolvedSimId === 'MATH10-02') {
+										mathParams = [
+											{ key: 'v0', value: mVel, unit: 'm/s', label: 'Vận tốc đầu' },
+											{ key: 'alpha', value: mAngle, unit: '°', label: 'Góc ném' },
+											{ key: 'g', value: mGrav, unit: 'm/s²', label: 'Gia tốc' },
+										];
+									} else if (resolvedSimId === 'MATH10-03') {
+										mathParams = [
+											{ key: 'A1', value: inA1, unit: '', label: 'A1' },
+											{ key: 'B1', value: inB1, unit: '', label: 'B1' },
+											{ key: 'C1', value: inC1, unit: '', label: 'C1' },
+											{ key: 'A2', value: inA2, unit: '', label: 'A2' },
+											{ key: 'B2', value: inB2, unit: '', label: 'B2' },
+											{ key: 'C2', value: inC2, unit: '', label: 'C2' },
+											{ key: 'show1', value: showM1 ? 1 : 0, unit: '', label: 'show1' },
+											{ key: 'show2', value: showM2 ? 1 : 0, unit: '', label: 'show2' },
+										];
+									} else if (resolvedSimId === 'MATH10-04') {
+										mathParams = [
+											{ key: 'a', value: triA, unit: 'm', label: 'Khoảng cách' },
+											{ key: 'alpha', value: triAlpha, unit: '°', label: 'Góc nâng' },
+											{ key: 'h0', value: triH0, unit: 'm', label: 'Chiều cao mắt' },
+										];
+									} else if (resolvedSimId === 'MATH10-05') {
+										mathParams = [
+											{ key: 'c', value: conicC, unit: '', label: 'Nửa tiêu cự c' },
+											{ key: 'a', value: conicA, unit: '', label: 'Nửa trục lớn a' },
+										];
+									} else if (resolvedSimId === 'MATH11-01') {
+										mathParams = [
+											{ key: 'A', value: trigA, unit: '', label: 'A' },
+											{ key: 'B', value: trigB, unit: '', label: 'B' },
+											{ key: 'C', value: trigC, unit: 'rad', label: 'C' },
+											{ key: 'D', value: trigD, unit: '', label: 'D' },
+											{ key: 'fn', value: trigFnIdx, unit: '', label: 'Hàm' },
+										];
+									} else if (resolvedSimId === 'MATH11-02') {
+										mathParams = [
+											{ key: 'angle', value: ucAngle, unit: '°', label: 'Góc' },
+											{ key: 'target', value: ucTarget, unit: '', label: 'Giá trị a' },
+										];
+									} else if (resolvedSimId === 'MATH11-03') {
+										mathParams = [
+											{ key: 'n', value: combN, unit: '', label: 'n' },
+											{ key: 'k', value: combK, unit: '', label: 'k' },
+										];
+									} else if (resolvedSimId === 'MATH11-04') {
+										mathParams = [
+											{ key: 'PA', value: probPA, unit: '', label: 'P(A)' },
+											{ key: 'PB', value: probPB, unit: '', label: 'P(B)' },
+											{ key: 'PAB', value: probPAB, unit: '', label: 'P(A∩B)' },
+										];
+									} else if (resolvedSimId === 'MATH11-05') {
+										mathParams = [
+											{ key: 'seqType', value: seqType, unit: '', label: 'Dãy số' },
+											{ key: 'epsilon', value: seqEps, unit: '', label: 'ε' },
+										];
+									} else if (resolvedSimId === 'MATH11-06') {
+										mathParams = [
+											{ key: 'funcType', value: limFuncType, unit: '', label: 'Hàm số' },
+										];
+									} else if (resolvedSimId === 'MATH11-07') {
+										mathParams = [
+											{ key: 'fnIdx', value: derFnIdx, unit: '', label: 'Hàm số' },
+											{ key: 'x0', value: derX0, unit: '', label: 'x₀' },
+											{ key: 'h', value: derH, unit: '', label: 'h' },
+										];
+									} else if (resolvedSimId === 'MATH11-08') {
+										mathParams = [
+											{ key: 'transType', value: transType, unit: '', label: 'Phép biến đổi' },
+											{ key: 'tx', value: transTx, unit: '', label: 'tx' },
+											{ key: 'ty', value: transTy, unit: '', label: 'ty' },
+											{ key: 'angle', value: transAngle, unit: '°', label: 'Góc quay' },
+										];
+									} else if (resolvedSimId === 'MATH11-09') {
+										mathParams = [
+											{ key: 'alpha', value: planeAlpha, unit: '°', label: 'Góc mặt phẳng α' },
+											{ key: 'beta', value: planeBeta, unit: '°', label: 'Góc mặt phẳng β' },
+											{ key: 'parallel', value: planesParallel, unit: '', label: 'Song song' },
+										];
+									} else if (resolvedSimId === 'MATH11-10') {
+										mathParams = [
+											{ key: 'normalX', value: perpNx, unit: '', label: 'nx' },
+											{ key: 'normalY', value: perpNy, unit: '', label: 'ny' },
+											{ key: 'normalZ', value: perpNz, unit: '', label: 'nz' },
+										];
+									} else if (resolvedSimId === 'MATH11-11') {
+										mathParams = [
+											{ key: 'polyType', value: polyType11, unit: '', label: 'Loại hình' },
+											{ key: 'n', value: polyN11, unit: '', label: 'Số cạnh đáy' },
+											{ key: 'baseR', value: polyBaseR, unit: '', label: 'Bán kính đáy' },
+											{ key: 'height', value: polyH11, unit: '', label: 'Chiều cao' },
+										];
+									}
+
+									return (
+										<GenericMathSimulation
+											key={resolvedSimId === 'MATH10-02' || resolvedSimId === 'MATH10-05' ? physResetKey : undefined}
+											config={{
+												simulation_id: resolvedSimId,
+												subject: 'math',
+												topic: 'generic',
+												parameters: mathParams,
+											}}
+											isPlaying={
+												resolvedSimId === 'MATH10-02' ? isMPlaying :
+												resolvedSimId === 'MATH10-05' ? isCPlaying :
+												undefined
+											}
+											onAnimationEnd={
+												resolvedSimId === 'MATH10-02' ? () => setIsMPlaying(false) :
+												resolvedSimId === 'MATH10-05' ? () => setIsCPlaying(false) :
+												undefined
+											}
+										/>
+									);
+								})()
 							) : (
 								<div className='stu-ws__sim-placeholder'>
 									<div className='stu-ws__sim-icon'>
@@ -10544,6 +11411,11 @@ const Workspace: React.FC = () => {
 									</div>
 									<div className='stu-ws__sim-label'>Điểm gắn Mô phỏng</div>
 								</div>
+							)}
+								</div>
+							</div>
+							{simPanZoomEnabled && (simZoom !== 1 || simPan.x !== 0 || simPan.y !== 0) && (
+								<button className='stu-ws__sim-reset' onClick={resetSimView}>↺ Reset</button>
 							)}
 						</div>
 
@@ -10918,7 +11790,18 @@ const Workspace: React.FC = () => {
 			{showCelebration && dynQuizState === 'done' && (
 				<CelebrationOverlay 
 					score={dynQuestions.length > 0 ? Math.round((dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length / dynQuestions.length) * 100) : 0} 
-					onClose={() => setShowCelebration(false)} 
+					onClose={() => setShowCelebration(false)}
+				/>
+			)}
+			{showChemCelebration && (
+				<CelebrationOverlay
+					score={0}
+					icon='🧪'
+					title='Xuất sắc!'
+					message='Bạn đã hoàn thành tất cả bước thí nghiệm! Hãy xem lại các hiện tượng quan sát được ở bên phải.'
+					showScore={false}
+					closeLabel='Hoàn thành'
+					onClose={() => setShowChemCelebration(false)}
 				/>
 			)}
 		</StudentLayout>
