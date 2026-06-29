@@ -1,4 +1,6 @@
 import { analyzeAiPrompt } from '@/services/ai/api';
+import { getSceneAll } from '@/services/base/api';
+import { Pagination } from 'antd';
 import React, { useCallback, useMemo, useState } from 'react';
 import { history, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
@@ -6,7 +8,7 @@ import './index.less';
 
 // ── Types ──
 interface LabItem {
-	id: number;
+	id: number | string;
 	title: string;
 	subject: 'physics' | 'math' | 'chem';
 	level: string;
@@ -1007,6 +1009,29 @@ const HocSinhHome: React.FC = () => {
 	// AI Assistant States
 	const [aiLoading, setAiLoading] = useState(false);
 	const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+	const [dynamicLabs, setDynamicLabs] = useState<LabItem[]>([]);
+
+	React.useEffect(() => {
+		getSceneAll()
+			.then((res) => {
+				const scenes = res.data?.data || res.data || [];
+				if (Array.isArray(scenes)) {
+					const mapped: LabItem[] = scenes.map((s: any) => ({
+						id: s.id,
+						title: s.name || 'Thí nghiệm tùy chỉnh',
+						subject: s.roomType === 'chemistry' ? 'chem' : s.roomType,
+						level: 'Trung bình',
+						mins: '~15 phút',
+						xp: '+100 XP',
+						locked: false,
+						simId: s.id,
+						grade: 12, // Default grade for custom scenes
+					}));
+					setDynamicLabs(mapped);
+				}
+			})
+			.catch((err) => console.error('Fetch scenes error:', err));
+	}, []);
 
 	// Auto-scroll chat to bottom
 	React.useEffect(() => {
@@ -1016,17 +1041,32 @@ const HocSinhHome: React.FC = () => {
 		}
 	}, [chatMessages, aiLoading]);
 
+	const combinedLabs = useMemo(() => [...dynamicLabs, ...ALL_LABS], [dynamicLabs]);
+
 	const filteredLabs = useMemo(
-		() => ALL_LABS.filter((l) => l.grade === grade && (filter === 'all' || l.subject === filter)),
-		[grade, filter],
+		() => combinedLabs.filter((l) => (l.grade === grade || typeof l.id === 'string') && (filter === 'all' || l.subject === filter)),
+		[grade, filter, combinedLabs],
 	);
 
+	const [currentPage, setCurrentPage] = useState(1);
+
 	React.useEffect(() => {
-		if (!restoredHomeState) return;
+		setCurrentPage(1);
+	}, [grade, filter]);
+
+	const paginatedLabs = useMemo(() => {
+		const startIndex = (currentPage - 1) * 9;
+		return filteredLabs.slice(startIndex, startIndex + 9);
+	}, [filteredLabs, currentPage]);
+
+	const scrollRestored = React.useRef(false);
+	React.useEffect(() => {
+		if (!restoredHomeState || scrollRestored.current) return;
 		const frame = window.requestAnimationFrame(() => {
 			const el = homeScrollRef.current;
 			if (el) {
 				el.scrollTop = restoredHomeState.scrollTop;
+				scrollRestored.current = true;
 			}
 			sessionStorage.removeItem(HOME_SCROLL_RESTORE_KEY);
 		});
@@ -1053,6 +1093,9 @@ const HocSinhHome: React.FC = () => {
 				setFilter(matchedLab.subject);
 				localStorage.setItem('selected_grade', String(matchedLab.grade));
 				localStorage.setItem('selected_filter', matchedLab.subject);
+			} else {
+				// Dynamic lab, open sandbox viewer
+				path = `/thi-nghiem?id=${simId}&role=student`;
 			}
 		}
 		history.push(path);
@@ -1232,9 +1275,8 @@ const HocSinhHome: React.FC = () => {
 								{chatMessages.map((msg, index) => (
 									<div
 										key={index}
-										className={`stu-home__hero-chat-row ${
-											msg.role === 'user' ? 'stu-home__hero-chat-row--user' : 'stu-home__hero-chat-row--ai'
-										}`}
+										className={`stu-home__hero-chat-row ${msg.role === 'user' ? 'stu-home__hero-chat-row--user' : 'stu-home__hero-chat-row--ai'
+											}`}
 									>
 										<div className='stu-home__hero-chat-bubble-container'>
 											<div className='stu-home__hero-chat-bubble'>{msg.text}</div>
@@ -1341,7 +1383,7 @@ const HocSinhHome: React.FC = () => {
 					{/* Divider */}
 					<div className='stu-home__divider'>
 						<div className='stu-home__divider-line' />
-						<div className='stu-home__divider-text'>hoặc duyệt danh mục</div>
+						<div className='stu-home__divider-text'></div>
 						<div className='stu-home__divider-line' />
 					</div>
 
@@ -1373,7 +1415,7 @@ const HocSinhHome: React.FC = () => {
 
 					{/* Lab Grid */}
 					<div className='stu-home__grid'>
-						{filteredLabs.map((lab, idx) => (
+						{paginatedLabs.map((lab, idx) => (
 							<div
 								key={lab.id}
 								className='stu-home__card'
@@ -1415,6 +1457,19 @@ const HocSinhHome: React.FC = () => {
 							</div>
 						))}
 					</div>
+
+					{/* Pagination */}
+					{filteredLabs.length > 9 && (
+						<div style={{ display: 'flex', justifyContent: 'center', marginTop: '32px', marginBottom: '24px' }}>
+							<Pagination
+								current={currentPage}
+								pageSize={9}
+								total={filteredLabs.length}
+								onChange={(page) => setCurrentPage(page)}
+								showSizeChanger={false}
+							/>
+						</div>
+					)}
 				</div>
 			</div>
 		</StudentLayout>

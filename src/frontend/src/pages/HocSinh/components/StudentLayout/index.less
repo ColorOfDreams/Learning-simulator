@@ -110,6 +110,14 @@
 						background: linear-gradient(90deg, oklch(0.72 0.15 70 / 0.25), oklch(0.72 0.15 70 / 0.07)) !important;
 					}
 				}
+				&--active-classes {
+					background: linear-gradient(90deg, oklch(0.65 0.15 140 / 0.25), oklch(0.65 0.15 140 / 0.07)) !important;
+					color: oklch(0.75 0.15 140) !important;
+					box-shadow: inset 3px 0 0 oklch(0.75 0.15 140) !important;
+					&:hover {
+						background: linear-gradient(90deg, oklch(0.65 0.15 140 / 0.25), oklch(0.65 0.15 140 / 0.07)) !important;
+					}
+				}
 				&--active-saved {
 					background: linear-gradient(90deg, oklch(0.6 0.16 300 / 0.25), oklch(0.6 0.16 300 / 0.07)) !important;
 					color: oklch(0.7 0.14 300) !important;
@@ -259,6 +267,9 @@
 			&.stu-sidebar__nav-item--leaderboard {
 				background: oklch(0.72 0.15 70 / 0.12);
 			}
+			&.stu-sidebar__nav-item--classes {
+				background: oklch(0.65 0.15 140 / 0.1);
+			}
 			&.stu-sidebar__nav-item--saved {
 				background: oklch(0.6 0.16 300 / 0.09);
 			}
@@ -314,6 +325,14 @@
 				box-shadow: inset 3px 0 0 oklch(0.72 0.15 70) !important;
 				&:hover {
 					background: linear-gradient(90deg, oklch(0.72 0.15 70 / 0.2), oklch(0.72 0.15 70 / 0.05)) !important;
+				}
+			}
+			&-classes {
+				background: linear-gradient(90deg, oklch(0.65 0.15 140 / 0.2), oklch(0.65 0.15 140 / 0.05)) !important;
+				color: oklch(0.48 0.14 140) !important;
+				box-shadow: inset 3px 0 0 oklch(0.65 0.15 140) !important;
+				&:hover {
+					background: linear-gradient(90deg, oklch(0.65 0.15 140 / 0.2), oklch(0.65 0.15 140 / 0.05)) !important;
 				}
 			}
 			&-saved {

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { existsSync } from 'node:fs';
@@ -50,7 +54,9 @@ export class LearningDatasetSeedService {
     const dataset = validation.data;
     await this.simulationTemplateRepo.upsert(
       dataset.simulationTemplates.map((item) =>
-        this.simulationTemplateRepo.create(this.normalizeSimulationTemplate(item)),
+        this.simulationTemplateRepo.create(
+          this.normalizeSimulationTemplate(item),
+        ),
       ),
       ['simulationId'],
     );
@@ -133,7 +139,10 @@ export class LearningDatasetSeedService {
     const candidates = [
       configured,
       resolve(process.cwd(), configured),
-      resolve(process.cwd(), '../database/data/11/all-in-one.learning-data.json'),
+      resolve(
+        process.cwd(),
+        '../database/data/11/all-in-one.learning-data.json',
+      ),
       resolve(process.cwd(), '../database/data/all-in-one.learning-data.json'),
     ];
 
@@ -224,9 +233,11 @@ export class LearningDatasetSeedService {
       answer: {
         short: item.answer?.short ?? item.answer?.text ?? '',
         steps: this.ensureArray(item.answer?.steps).map((step, index) => ({
-          step: typeof step === 'object' ? step.step ?? index + 1 : index + 1,
+          step: typeof step === 'object' ? (step.step ?? index + 1) : index + 1,
           content:
-            typeof step === 'object' ? step.content ?? String(step) : String(step),
+            typeof step === 'object'
+              ? (step.content ?? String(step))
+              : String(step),
         })),
       },
       difficulty: item.difficulty ?? 'recognition',

@@ -4,6 +4,7 @@ import type { EModuleKey, EScopeFile, ESettingKey, EStorageFile } from './consta
 declare module Login {
 	export interface IUser {
 		id?: string;
+		studentCode?: string;
 		sub: string; // SsoId 'b323b6c8-2f1e-4a9b-941b-f1e466b9ba40';
 		ssoId: string;
 		email: string;

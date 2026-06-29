@@ -10,9 +10,9 @@ const experiment = {
       { type: 'dish_marble', id: 'marble', label: 'Đá vôi CaCO₃', x: -4.8, z: 1.7 }
     ],
     steps: [
-      { text: 'Rót acetic acid vào ống 1 (đã nhỏ sẵn quỳ tím) — quỳ hóa đỏ.', type: 'pour', src: 'acid', dst: 'tube1', pour: { level: 0.45, color: 0xeaf0e4, opacity: 0.5 }, fx: 'acid_litmus' },
+      { text: 'Rót acetic acid vào ống 1 (đã nhỏ sẵn quỳ tím) — quỳ hóa đỏ.', type: 'pour', src: 'acid', dst: 'tube1', pour: { level: 0.45, color: 0xf5f9ff, opacity: 0.3 }, fx: 'acid_litmus' },
       { text: 'Thả viên đá vôi vào ống 2.', type: 'drop', src: 'marble', dst: 'tube2', dropOffset: { y: 0.42, z: 0.18, scale: 0.9 } },
-      { text: 'Rót acetic acid vào ống 2 — sủi bọt khí CO₂!', type: 'pour', src: 'acid', dst: 'tube2', pour: { level: 0.5, color: 0xeaf0e4, opacity: 0.5 }, fx: 'acid_caco3' }
+      { text: 'Rót acetic acid vào ống 2 — sủi bọt khí CO₂!', type: 'pour', src: 'acid', dst: 'tube2', pour: { level: 0.5, color: 0xf5f9ff, opacity: 0.3 }, fx: 'acid_caco3' }
     ]
   } satisfies ChemExperimentDef;
 

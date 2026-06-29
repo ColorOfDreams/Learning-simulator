@@ -37,6 +37,7 @@ import FullCircuitSimulation from '@simulations/physics/SIM-52-fullcircuit';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { history, useLocation, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
+import CelebrationOverlay from '@/components/CelebrationOverlay';
 
 // Math 10 Simulations
 import QuadraticSimulation from '@simulations/math/SIM-08-quadratic';
@@ -1928,6 +1929,7 @@ const Workspace: React.FC = () => {
 	const [dynCurrent, setDynCurrent] = useState(0);
 	const [dynAnswers, setDynAnswers] = useState<Record<number, string>>({});
 	const [dynUsedLlm, setDynUsedLlm] = useState(false);
+	const [showCelebration, setShowCelebration] = useState(false);
 	const xpAwardedRef = useRef(false);
 
 	const openedLabRef = useRef<string | null>(null);
@@ -1974,6 +1976,7 @@ const Workspace: React.FC = () => {
 
 	const startDynQuiz = useCallback(async () => {
 		setDynQuizState('loading');
+		setShowCelebration(false);
 		setDynCurrent(0);
 		setDynAnswers({});
 		try {
@@ -10792,7 +10795,12 @@ const Workspace: React.FC = () => {
 													) : (
 														<div
 															className={`dqz-nav-btn dqz-nav-btn--primary ${!picked ? 'dqz-nav-btn--disabled' : ''}`}
-															onClick={() => picked && setDynQuizState('done')}
+															onClick={() => {
+																if (picked) {
+																	setDynQuizState('done');
+																	setShowCelebration(true);
+																}
+															}}
 														>
 															Xem kết quả
 														</div>
@@ -10907,6 +10915,12 @@ const Workspace: React.FC = () => {
 					</div>
 				</div>
 			</div>
+			{showCelebration && dynQuizState === 'done' && (
+				<CelebrationOverlay 
+					score={dynQuestions.length > 0 ? Math.round((dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length / dynQuestions.length) * 100) : 0} 
+					onClose={() => setShowCelebration(false)} 
+				/>
+			)}
 		</StudentLayout>
 	);
 };

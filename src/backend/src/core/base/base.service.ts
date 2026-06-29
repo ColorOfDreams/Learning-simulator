@@ -4,7 +4,7 @@ import { NotFoundException } from '@nestjs/common';
 import { BaseEntity } from './base.entity';
 
 export abstract class BaseService<T extends BaseEntity> {
-  constructor(protected readonly repository: Repository<T>) {}
+  constructor(protected readonly repository: Repository<T>) { }
 
   async findAll(options?: any): Promise<T[]> {
     return this.repository.find(options);

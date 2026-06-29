@@ -1,6 +1,19 @@
-import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiProperty } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+  ApiProperty,
+} from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -112,7 +125,10 @@ export class UsersController extends BaseController<UserEntity> {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Ghi nhận hoàn thành hoạt động và tích XP' })
-  async completeActivity(@Req() req: Request, @Body() dto: CompleteActivityDto) {
+  async completeActivity(
+    @Req() req: Request,
+    @Body() dto: CompleteActivityDto,
+  ) {
     const user = req.user as UserEntity;
     const fresh = await this.usersService.findById(user.id);
     const currentXp = fresh?.xp ?? 0;
@@ -128,7 +144,9 @@ export class UsersController extends BaseController<UserEntity> {
     if (lastActiveDate) {
       const last = new Date(lastActiveDate);
       last.setHours(0, 0, 0, 0);
-      const diffDays = Math.round((today.getTime() - last.getTime()) / 86400000);
+      const diffDays = Math.round(
+        (today.getTime() - last.getTime()) / 86400000,
+      );
       if (diffDays === 0) newStreak = currentStreak;
       else if (diffDays === 1) newStreak = currentStreak + 1;
     }
@@ -141,9 +159,15 @@ export class UsersController extends BaseController<UserEntity> {
       streak: newStreak,
       maxStreak,
       lastActiveDate: today,
-    } as any);
+    });
 
-    return { xp: newXp, level: newLevel, streak: newStreak, maxStreak, levelTitle: getLevelTitle(newLevel) };
+    return {
+      xp: newXp,
+      level: newLevel,
+      streak: newStreak,
+      maxStreak,
+      levelTitle: getLevelTitle(newLevel),
+    };
   }
 
   @Get('leaderboard')
@@ -156,8 +180,13 @@ export class UsersController extends BaseController<UserEntity> {
       order: { xp: 'DESC' } as any,
       take: Number(limit),
     } as any);
-    return (students as UserEntity[]).map(({ id, firstName, lastName, xp, level, picture }) => ({
-      id, firstName, lastName, xp, level, picture,
+    return students.map(({ id, firstName, lastName, xp, level, picture }) => ({
+      id,
+      firstName,
+      lastName,
+      xp,
+      level,
+      picture,
     }));
   }
 
@@ -172,7 +201,8 @@ export class UsersController extends BaseController<UserEntity> {
       order: { updatedAt: 'DESC' },
     });
     if (existing) {
-      existing.simulationTitle = dto.simulationTitle ?? existing.simulationTitle;
+      existing.simulationTitle =
+        dto.simulationTitle ?? existing.simulationTitle;
       return this.labRepo.save(existing);
     }
     const session = this.labRepo.create({
@@ -240,10 +270,10 @@ export class UsersController extends BaseController<UserEntity> {
     const completed: UserLabSessionEntity[] = [];
 
     for (const simSessions of Object.values(bySimId)) {
-      const hasCompleted = simSessions.some(s => s.status === 'completed');
+      const hasCompleted = simSessions.some((s) => s.status === 'completed');
       if (hasCompleted) {
         const best = simSessions
-          .filter(s => s.status === 'completed')
+          .filter((s) => s.status === 'completed')
           .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))[0];
         completed.push(best);
       } else {

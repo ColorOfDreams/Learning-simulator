@@ -23,7 +23,11 @@ export class UserLabSessionEntity extends BaseEntity {
   subject!: string;
 
   @ApiProperty({ enum: ['in_progress', 'completed'], default: 'in_progress' })
-  @Column({ type: 'enum', enum: ['in_progress', 'completed'], default: 'in_progress' })
+  @Column({
+    type: 'enum',
+    enum: ['in_progress', 'completed'],
+    default: 'in_progress',
+  })
   status!: LabStatus;
 
   @ApiProperty({ nullable: true })

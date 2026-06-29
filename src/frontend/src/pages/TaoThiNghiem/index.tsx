@@ -1,97 +1,146 @@
-import useInitModel from '@/hooks/useInitModel';
-import { Button, Card, message, Steps } from 'antd';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Button, message, Tabs, Modal } from 'antd';
+import { ArrowLeftOutlined, ArrowRightOutlined, CheckOutlined, RobotOutlined, ToolOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { history } from 'umi';
+import useInitModel from '@/hooks/useInitModel';
 import Step1Subject from './components/Step1Subject';
 import Step2Equipments from './components/Step2Equipments';
 import Step3Properties from './components/Step3Properties';
+import AiGenerate from './components/AiGenerate';
+import { validateExperiment } from '@/utils/experiment-validator';
+import './TaoThiNghiem.less';
 
-const { Step } = Steps;
+const TaoThiNghiem: React.FC = () => {
+  const [step, setStep] = useState(0);
+  const [mode, setMode] = useState<'ai' | 'manual'>('manual');
+  const { postModel } = useInitModel('scene');
+  const [submitting, setSubmitting] = useState(false);
 
-const TaoThiNghiem = () => {
-	const [current, setCurrent] = useState(0);
-	const { postModel } = useInitModel<Scene.IRecord>('scene');
-	const [sceneData, setSceneData] = useState<Partial<Scene.IRecord>>({
-		name: '',
-		roomType: 'physics',
-		environment: { gravity: 9.81, temperature: 25 },
-		objects: [],
-	});
+  const [sceneData, setSceneData] = useState<Partial<Scene.IRecord>>({
+    name: '',
+    roomType: 'physics',
+    environment: { gravity: 9.81, temperature: 25 },
+    objects: [],
+  });
 
-	const steps = [
-		{
-			title: 'Phân môn & Môi trường',
-			content: <Step1Subject data={sceneData} onChange={setSceneData} />,
-		},
-		{
-			title: 'Chọn dụng cụ',
-			content: <Step2Equipments data={sceneData} onChange={setSceneData} />,
-		},
-		{
-			title: 'Thiết lập thông số',
-			content: <Step3Properties data={sceneData} onChange={setSceneData} />,
-		},
-	];
+  const update = (val: Partial<Scene.IRecord>) => setSceneData((prev) => ({ ...prev, ...val }));
 
-	const next = () => {
-		setCurrent(current + 1);
-	};
+  const handleSave = async (data?: Partial<Scene.IRecord>) => {
+    const payload = data || sceneData;
+    if (!payload.name?.trim()) { message.warning('Vui lòng đặt tên thí nghiệm'); return; }
 
-	const prev = () => {
-		setCurrent(current - 1);
-	};
+    const validation = validateExperiment(payload.objects || []);
+    if (validation.errors.length > 0) {
+      Modal.error({ title: 'Không thể lưu', content: validation.errors.join('\n'), centered: true });
+      return;
+    }
+    if (validation.warnings.length > 0) {
+      Modal.confirm({
+        title: 'Thí nghiệm có thể chưa hoàn chỉnh',
+        icon: <ExclamationCircleOutlined />,
+        content: validation.warnings.join('\n'),
+        okText: 'Vẫn lưu',
+        cancelText: 'Quay lại',
+        centered: true,
+        onOk: () => doSave(payload),
+      });
+      return;
+    }
+    doSave(payload);
+  };
 
-	const onFinish = async () => {
-		if (!sceneData.name) {
-			message.error('Vui lòng nhập tên thí nghiệm!');
-			setCurrent(0);
-			return;
-		}
+  const doSave = async (payload: Partial<Scene.IRecord>) => {
+    setSubmitting(true);
+    try {
+      if (postModel) {
+        const result = await postModel(payload);
+        const id = (result as any)?.data?.id || (result as any)?.id;
+        if (id) {
+          message.success('Tạo thí nghiệm thành công! Đang vào phòng lab...');
+          setTimeout(() => history.push(`/thi-nghiem?id=${id}`), 600);
+          return;
+        }
+      }
+      history.push('/quan-ly-thi-nghiem');
+    } catch {
+      message.error('Có lỗi xảy ra, vui lòng thử lại');
+    } finally { setSubmitting(false); }
+  };
 
-		try {
-			let result;
-			if (postModel) {
-				result = await postModel(sceneData);
-			}
-			message.success('Tạo thí nghiệm thành công!');
-			if (result?.id) {
-				history.push(`/thi-nghiem?id=${result.id}`);
-			} else {
-				history.push('/quan-ly-thi-nghiem');
-			}
-		} catch (err) {
-			console.error(err);
-			message.error('Lỗi lưu thí nghiệm. Xem console để biết thêm chi tiết.');
-		}
-	};
+  const handleSwitchToManual = (data: Partial<Scene.IRecord>) => {
+    setSceneData((prev) => ({ ...prev, ...data, objects: prev.objects || [] }));
+    setMode('manual');
+    setStep(1); // Skip step 0, go directly to equipment selection
+  };
 
-	return (
-		<Card title='Tạo mới Thí Nghiệm' bordered={false}>
-			<Steps current={current}>
-				{steps.map((item) => (
-					<Step key={item.title} title={item.title} />
-				))}
-			</Steps>
-			<div style={{ marginTop: 24, minHeight: '400px' }}>{steps[current].content}</div>
-			<div style={{ marginTop: 24, textAlign: 'right' }}>
-				{current > 0 && (
-					<Button style={{ margin: '0 8px' }} onClick={() => prev()}>
-						Quay lại
-					</Button>
-				)}
-				{current < steps.length - 1 && (
-					<Button type='primary' onClick={() => next()}>
-						Tiếp theo
-					</Button>
-				)}
-				{current === steps.length - 1 && (
-					<Button type='primary' onClick={onFinish}>
-						Hoàn tất & Chơi thử
-					</Button>
-				)}
-			</div>
-		</Card>
-	);
+  const selectedCount = sceneData.objects?.length || 0;
+
+  return (
+    <div className="ttn-page">
+      <Tabs
+        activeKey={mode}
+        onChange={(key) => setMode(key as 'ai' | 'manual')}
+        centered
+        tabBarStyle={{ marginBottom: 0, background: '#fff', borderRadius: '12px 12px 0 0', paddingTop: 8 }}
+        items={[
+          { key: 'ai', label: <span><RobotOutlined /> Tạo bằng AI</span> },
+          { key: 'manual', label: <span><ToolOutlined /> Tạo thủ công</span> },
+        ]}
+      />
+
+      {mode === 'ai' ? (
+        <div className="ttn-body">
+          <AiGenerate
+            onAccept={handleSave}
+            onSwitchToManual={handleSwitchToManual}
+            submitting={submitting}
+          />
+        </div>
+      ) : (
+        <>
+          <div className="ttn-topbar">
+            <div className="ttn-topbar-left">
+              {step > 0 ? (
+                <Button icon={<ArrowLeftOutlined />} onClick={() => setStep((s) => s - 1)}>
+                  Quay lại
+                </Button>
+              ) : (
+                <Button type="text" icon={<ArrowLeftOutlined />} onClick={() => history.push('/quan-ly-thi-nghiem')}>
+                  Thoát
+                </Button>
+              )}
+            </div>
+
+            <div className="ttn-progress">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className={`ttn-dot ${i === step ? 'active' : i < step ? 'done' : ''}`} />
+              ))}
+            </div>
+
+            <div className="ttn-topbar-right">
+              {step === 2 ? (
+                <Button type="primary" onClick={() => handleSave()} loading={submitting} icon={<CheckOutlined />}>
+                  {selectedCount > 0 ? `Hoàn tất (${selectedCount})` : 'Hoàn tất'}
+                </Button>
+              ) : (
+                <Button type="primary" onClick={() => setStep((s) => s + 1)} icon={<ArrowRightOutlined />}>
+                  Tiếp tục
+                </Button>
+              )}
+            </div>
+          </div>
+
+          <div className="ttn-body">
+            <div className={`ttn-panel ${step === 0 ? 'enter' : ''}`} key={step}>
+              {step === 0 && <Step1Subject data={sceneData} onChange={update} />}
+              {step === 1 && <Step2Equipments data={sceneData} onChange={update} />}
+              {step === 2 && <Step3Properties data={sceneData} onChange={update} onBack={() => setStep(1)} />}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default TaoThiNghiem;

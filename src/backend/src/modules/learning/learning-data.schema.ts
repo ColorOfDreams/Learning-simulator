@@ -69,12 +69,7 @@ const REQUIRED_FIELDS: Record<(typeof COLLECTIONS)[number], string[]> = {
     'patternId',
     'validationStatus',
   ],
-  aiTestCases: [
-    'id',
-    'input',
-    'expected',
-    'validationStatus',
-  ],
+  aiTestCases: ['id', 'input', 'expected', 'validationStatus'],
   simulationTemplates: [
     'id',
     'subject',
@@ -192,7 +187,9 @@ export function validateLearningDataset(value: unknown): {
   }
 
   const patternIds = new Set(dataset.problemPatterns.map((item) => item.id));
-  const simulationIds = new Set(dataset.simulationTemplates.map((item) => item.id));
+  const simulationIds = new Set(
+    dataset.simulationTemplates.map((item) => item.id),
+  );
   const learningItemIds = new Set(dataset.learningItems.map((item) => item.id));
 
   dataset.learningItems.forEach((item, index) => {

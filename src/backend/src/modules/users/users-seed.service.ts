@@ -130,11 +130,46 @@ const STUDENTS: Partial<UserEntity>[] = [
 ];
 
 const LAB_SESSIONS = [
-  { simulationId: 'acid-base_3D', simulationTitle: 'Phản ứng Axit - Bazơ', subject: 'chem', score: 92, totalQuestions: 5, correctAnswers: 5 },
-  { simulationId: 'spring_3D', simulationTitle: 'Con lắc lò xo', subject: 'phys', score: 80, totalQuestions: 5, correctAnswers: 4 },
-  { simulationId: 'pendulum_3D', simulationTitle: 'Con lắc đơn', subject: 'phys', score: 60, totalQuestions: 5, correctAnswers: 3 },
-  { simulationId: 'oxidation-reduction_3D', simulationTitle: 'Oxi hóa - Khử', subject: 'chem', score: 100, totalQuestions: 5, correctAnswers: 5 },
-  { simulationId: 'electrolysis_3D', simulationTitle: 'Điện phân', subject: 'chem', score: 40, totalQuestions: 5, correctAnswers: 2 },
+  {
+    simulationId: 'acid-base_3D',
+    simulationTitle: 'Phản ứng Axit - Bazơ',
+    subject: 'chem',
+    score: 92,
+    totalQuestions: 5,
+    correctAnswers: 5,
+  },
+  {
+    simulationId: 'spring_3D',
+    simulationTitle: 'Con lắc lò xo',
+    subject: 'phys',
+    score: 80,
+    totalQuestions: 5,
+    correctAnswers: 4,
+  },
+  {
+    simulationId: 'pendulum_3D',
+    simulationTitle: 'Con lắc đơn',
+    subject: 'phys',
+    score: 60,
+    totalQuestions: 5,
+    correctAnswers: 3,
+  },
+  {
+    simulationId: 'oxidation-reduction_3D',
+    simulationTitle: 'Oxi hóa - Khử',
+    subject: 'chem',
+    score: 100,
+    totalQuestions: 5,
+    correctAnswers: 5,
+  },
+  {
+    simulationId: 'electrolysis_3D',
+    simulationTitle: 'Điện phân',
+    subject: 'chem',
+    score: 40,
+    totalQuestions: 5,
+    correctAnswers: 2,
+  },
 ];
 
 @Injectable()
@@ -153,45 +188,31 @@ export class UsersSeedService implements OnApplicationBootstrap {
   }
 
   private async seedAdmin() {
+    const data = { firstName: 'Admin', lastName: 'Hệ thống', role: UserRole.ADMIN };
     const existing = await this.usersService.findByEmail('admin@gmail.com');
     if (existing) {
-      if (existing.role !== UserRole.ADMIN) {
-        await this.usersService.update(existing.id, { role: UserRole.ADMIN });
-      }
+      await this.usersService.update(existing.id, data);
       return;
     }
-
     const hashed = await bcrypt.hash('abc123', 10);
-    await this.usersService.create({
-      email: 'admin@gmail.com',
-      password: hashed,
-      firstName: 'Admin',
-      lastName: 'Hệ thống',
-      role: UserRole.ADMIN,
-    });
+    await this.usersService.create({ email: 'admin@gmail.com', password: hashed, ...data });
   }
 
   private async seedTeacher() {
+    const data = { firstName: 'Giáo viên', lastName: 'Mẫu', role: UserRole.TEACHER };
     const existing = await this.usersService.findByEmail('giaovien@gmail.com');
     if (existing) {
-      if (existing.role !== UserRole.TEACHER) {
-        await this.usersService.update(existing.id, { role: UserRole.TEACHER });
-      }
+      await this.usersService.update(existing.id, data);
       return;
     }
-
     const hashed = await bcrypt.hash('abc123', 10);
-    await this.usersService.create({
-      email: 'giaovien@gmail.com',
-      password: hashed,
-      firstName: 'Giáo viên',
-      lastName: 'Mẫu',
-      role: UserRole.TEACHER,
-    });
+    await this.usersService.create({ email: 'giaovien@gmail.com', password: hashed, ...data });
   }
 
   private async seedOwner() {
-    const existing = await this.usersService.findByEmail('vanhung71388@gmail.com');
+    const existing = await this.usersService.findByEmail(
+      'vanhung71388@gmail.com',
+    );
     if (!existing) return;
     await this.usersService.update(existing.id, {
       xp: 3800,
@@ -231,7 +252,9 @@ export class UsersSeedService implements OnApplicationBootstrap {
   }
 
   private async seedLabSessions(userId: string) {
-    const existing = await this.labSessionRepository.count({ where: { userId } });
+    const existing = await this.labSessionRepository.count({
+      where: { userId },
+    });
     if (existing > 0) return;
 
     const sessions = LAB_SESSIONS.slice(0, 2 + Math.floor(Math.random() * 4));
@@ -245,7 +268,9 @@ export class UsersSeedService implements OnApplicationBootstrap {
         score: s.score,
         totalQuestions: s.totalQuestions,
         correctAnswers: s.correctAnswers,
-        completedAt: new Date(Date.now() - Math.floor(Math.random() * 7) * 86400000),
+        completedAt: new Date(
+          Date.now() - Math.floor(Math.random() * 7) * 86400000,
+        ),
       });
       await this.labSessionRepository.save(session);
     }
