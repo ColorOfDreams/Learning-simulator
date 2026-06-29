@@ -791,6 +791,13 @@
 		right: 0;
 		bottom: 0;
 		overflow: hidden;
+
+		// Force sim outer div (direct child of transform-div) to fill absolutely
+		// so SVG height:100% resolves against a definite pixel height, not content size
+		> div > div {
+			position: absolute;
+			inset: 0;
+		}
 	}
 
 	&__sim-reset {
