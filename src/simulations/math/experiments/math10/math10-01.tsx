@@ -67,7 +67,7 @@ export default function QuadraticSimulation({ config }: SimulationProps) {
   }, []);
 
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#090d16', overflow: 'hidden', display: 'flex', flexDirection: 'column', color: '#fff', boxSizing: 'border-box' }}>
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden', display: 'flex', flexDirection: 'column', color: '#fff', boxSizing: 'border-box' }}>
       <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
           {/* Grid lines */}
           <g stroke="#1e293b" strokeWidth="0.5">

@@ -23,7 +23,7 @@ export default function TriangulationSimulation({ config }: SimulationProps) {
   const hTotal = h0 + hTriangle;
 
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#0a0f1d', overflow: 'hidden', display: 'flex', flexDirection: 'column', color: '#fff', boxSizing: 'border-box' }}>
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#0a0f1d', overflow: 'hidden', display: 'flex', flexDirection: 'column', color: '#fff', boxSizing: 'border-box' }}>
       <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
           {/* Ground line */}
           <line x1={0} y1={originY} x2={width} y2={originY} stroke="#475569" strokeWidth="3" />

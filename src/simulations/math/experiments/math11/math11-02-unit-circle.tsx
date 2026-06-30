@@ -45,7 +45,7 @@ export default function UnitCircleSimulation({ config }: SimulationProps) {
   const rpWidth = 170;
 
   return (
-    <div style={{ width: '100%', height: '100%', background: '#090d16', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
       <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
 
         <line x1={cx - R - 20} y1={cy} x2={cx + R + 20} y2={cy} stroke="#475569" strokeWidth="1.5" />

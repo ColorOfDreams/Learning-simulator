@@ -124,7 +124,7 @@ export default function DerivativesSimulation({ config }: SimulationProps) {
   const y1pt = toSY(f(x0 + h));
 
   return (
-    <div style={{ width: '100%', height: '100%', background: '#090d16', color: '#f8fafc', fontFamily: 'sans-serif', position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', color: '#f8fafc', fontFamily: 'sans-serif', boxSizing: 'border-box', overflow: 'hidden' }}>
       <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
         <rect width={W} height={H} fill="#090d16" />
 

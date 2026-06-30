@@ -156,7 +156,7 @@ export default function TrigSimulation({ config }: SimulationProps) {
   const showAmplitude = fnIndex !== 2;
 
   return (
-    <div style={{ width: '100%', height: '100%', background: '#090d16', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
       <svg width="100%" height="100%" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet">
         <g stroke="#1e293b" strokeWidth="0.5" opacity="0.8">
           {gridLines.map((l, i) => (
