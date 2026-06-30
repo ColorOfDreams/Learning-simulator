@@ -39,7 +39,10 @@ const PHYSICS_REGISTRY: Record<string, React.LazyExoticComponent<SimComponent>> 
   'SIM-52': lazy(() => import('./physics/SIM-52-fullcircuit')),
 };
 
-const MATH_3D_SIMS = new Set(['MATH11-09', 'MATH11-10', 'MATH11-11']);
+const MATH_3D_SIMS = new Set([
+  'MATH11-09', 'MATH11-10', 'MATH11-11',
+  'MATH12-08', 'MATH12-09', 'MATH12-10', 'MATH12-11',
+]);
 
 const MATH_REGISTRY: Record<string, React.LazyExoticComponent<SimComponent>> = {
   'MATH10-01': lazy(() => import('./math/experiments/math10/math10-01')),
@@ -60,6 +63,18 @@ const MATH_REGISTRY: Record<string, React.LazyExoticComponent<SimComponent>> = {
   'MATH11-09': lazy(() => import('./math/experiments/math11/math11-09-planes3d')),
   'MATH11-10': lazy(() => import('./math/experiments/math11/math11-10-perpendicular3d')),
   'MATH11-11': lazy(() => import('./math/experiments/math11/math11-11-polyhedra')),
+
+  'MATH12-01': lazy(() => import('./math/experiments/math12/math12-01-cubic')),
+  'MATH12-02': lazy(() => import('./math/experiments/math12/math12-02-rational')),
+  'MATH12-03': lazy(() => import('./math/experiments/math12/math12-03-exponential')),
+  'MATH12-04': lazy(() => import('./math/experiments/math12/math12-04-logarithm')),
+  'MATH12-05': lazy(() => import('./math/experiments/math12/math12-05-integral-area')),
+  'MATH12-06': lazy(() => import('./math/experiments/math12/math12-06-area-between')),
+  'MATH12-07': lazy(() => import('./math/experiments/math12/math12-07-complex')),
+  'MATH12-08': lazy(() => import('./math/experiments/math12/math12-08-revolution3d')),
+  'MATH12-09': lazy(() => import('./math/experiments/math12/math12-09-polyhedra3d')),
+  'MATH12-10': lazy(() => import('./math/experiments/math12/math12-10-plane3d')),
+  'MATH12-11': lazy(() => import('./math/experiments/math12/math12-11-line3d')),
 
   // Legacy Math aliases for backwards compatibility
   'SIM-08': lazy(() => import('./math/experiments/math10/math10-01')),

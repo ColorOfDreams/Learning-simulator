@@ -1,5 +1,6 @@
 import { experiments as math10Experiments } from './math10';
 import { experiments as math11Experiments } from './math11';
+import { experiments as math12Experiments } from './math12';
 import type { ComponentType } from 'react';
 import type { SimulationProps } from '../types';
 
@@ -15,4 +16,5 @@ export const MATH_EXPERIMENT_ALIASES: Record<string, string> = {
 export const EXPERIMENTS_CONFIG: Record<string, ComponentType<SimulationProps>> = {
   ...math10Experiments,
   ...math11Experiments,
+  ...math12Experiments,
 };

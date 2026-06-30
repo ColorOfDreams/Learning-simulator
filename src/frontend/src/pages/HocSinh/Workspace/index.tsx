@@ -309,6 +309,17 @@ const LAB_META = {
 	'MATH11-09': { label: 'Toán 11', title: 'Đường thẳng & mặt phẳng trong không gian', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'MATH11-10': { label: 'Toán 11', title: 'Quan hệ vuông góc trong không gian', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'MATH11-11': { label: 'Toán 11', title: 'Hình lăng trụ & hình chóp', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-01': { label: 'Toán 12', title: 'Đồ thị hàm số bậc 3 & bảng biến thiên', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-02': { label: 'Toán 12', title: 'Hàm phân thức & tiệm cận', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-03': { label: 'Toán 12', title: 'Hàm số mũ & lũy thừa', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-04': { label: 'Toán 12', title: 'Hàm logarit – đồ thị & tính chất', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-05': { label: 'Toán 12', title: 'Tích phân – diện tích dưới đường cong', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-06': { label: 'Toán 12', title: 'Diện tích miền giữa hai đường cong', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-07': { label: 'Toán 12', title: 'Số phức – mặt phẳng Argand', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-08': { label: 'Toán 12', title: 'Mặt cầu – mặt trụ – mặt nón', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-09': { label: 'Toán 12', title: 'Khối đa diện & thể tích', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-10': { label: 'Toán 12', title: 'Phương trình mặt phẳng trong Oxyz', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-11': { label: 'Toán 12', title: 'Đường thẳng trong không gian Oxyz', tutor: 'Trợ lý Toán AI', className: 'math' },
 	default_math: { label: 'Toán 10', title: 'Hàm bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
 	default_physics: {
 		label: 'Vật lý',
@@ -1993,6 +2004,53 @@ const Workspace: React.FC = () => {
 	const [polyBaseR, setPolyBaseR] = useState(1.5);
 	const [polyH11, setPolyH11] = useState(2.5);
 
+	// MATH12-01 cubic
+	const [cubicA, setCubicA] = useState(1);
+	const [cubicB, setCubicB] = useState(-3);
+	const [cubicC, setCubicC] = useState(0);
+	const [cubicD, setCubicD] = useState(0);
+	// MATH12-02 rational y=(ax+b)/(cx+d)
+	const [ratA, setRatA] = useState(1);
+	const [ratB, setRatB] = useState(0);
+	const [ratC, setRatC] = useState(1);
+	const [ratD, setRatD] = useState(1);
+	// MATH12-03 exponential
+	const [expBase, setExpBase] = useState(2);
+	// MATH12-04 logarithm
+	const [logBaseVal, setLogBaseVal] = useState(Math.E);
+	// MATH12-05 integral area
+	const [intFnIdx, setIntFnIdx] = useState(0);
+	const [intA, setIntA] = useState(0);
+	const [intB, setIntB] = useState(Math.PI);
+	const [intN, setIntN] = useState(8);
+	// MATH12-06 area between curves
+	const [abFnIdx, setAbFnIdx] = useState(0);
+	// MATH12-07 complex plane
+	const [cxRe, setCxRe] = useState(3);
+	const [cxIm, setCxIm] = useState(2);
+	// MATH12-08 revolution surfaces (0=sphere,1=cyl,2=cone)
+	const [revShape, setRevShape] = useState(0);
+	const [revR, setRevR] = useState(2);
+	const [revH, setRevH] = useState(4);
+	// MATH12-09 polyhedra3d (0=prism,1=pyramid,2=frustum)
+	const [ph3Type, setPh3Type] = useState(0);
+	const [ph3N, setPh3N] = useState(4);
+	const [ph3R, setPh3R] = useState(2);
+	const [ph3H, setPh3H] = useState(3);
+	const [ph3R2, setPh3R2] = useState(1);
+	// MATH12-10 plane Oxyz ax+by+cz+d=0
+	const [plNx, setPlNx] = useState(1);
+	const [plNy, setPlNy] = useState(1);
+	const [plNz, setPlNz] = useState(1);
+	const [plD, setPlD] = useState(0);
+	// MATH12-11 line Oxyz
+	const [ln3Mx, setLn3Mx] = useState(0);
+	const [ln3My, setLn3My] = useState(0);
+	const [ln3Mz, setLn3Mz] = useState(0);
+	const [ln3Ux, setLn3Ux] = useState(1);
+	const [ln3Uy, setLn3Uy] = useState(2);
+	const [ln3Uz, setLn3Uz] = useState(1);
+
 	// Sim viewport pan/zoom
 	const [simZoom, setSimZoom] = useState(1);
 	const [simPan, setSimPan] = useState({ x: 0, y: 0 });
@@ -2005,7 +2063,7 @@ const Workspace: React.FC = () => {
 	const [showChemCelebration, setShowChemCelebration] = useState(false);
 	const chemExperimentId = simId ? (CHEM_EXPERIMENT_ALIASES[simId] || simId) : null;
 	const resolvedMathSimId = simId ? (CHEM_SIM_ALIASES[simId] || simId) : 'MATH10-01';
-	const MATH_3D_SIMS_SET = new Set(['MATH11-09', 'MATH11-10', 'MATH11-11']);
+	const MATH_3D_SIMS_SET = new Set(['MATH11-09', 'MATH11-10', 'MATH11-11', 'MATH12-08', 'MATH12-09', 'MATH12-10', 'MATH12-11']);
 	const simPanZoomEnabled = subject === 'math' && !MATH_3D_SIMS_SET.has(resolvedMathSimId);
 	const totalChemSteps = chemExperimentId ? (EXPERIMENTS_CONFIG[chemExperimentId]?.steps?.length ?? 0) : 0;
 	const isExperimentDone = subject !== 'chem' || (totalChemSteps > 0 && chemStep > totalChemSteps);
@@ -2685,6 +2743,28 @@ const Workspace: React.FC = () => {
 																			? `d \\perp (P) \\Leftrightarrow d \\perp \\vec{n}_{(P)}`
 																			: resolvedMathSimId === 'MATH11-11'
 																				? `V_{\\text{lăng trụ}} = S_{đáy} \\cdot h \\quad V_{\\text{chóp}} = \\tfrac{1}{3}S_{đáy} \\cdot h`
+																				: resolvedMathSimId === 'MATH12-01'
+																					? `f(x)=ax^3+bx^2+cx+d \\quad f'(x)=3ax^2+2bx+c`
+																				: resolvedMathSimId === 'MATH12-02'
+																					? `y=\\dfrac{ax+b}{cx+d} \\quad TCĐ:\\,x=-\\tfrac{d}{c} \\quad TCN:\\,y=\\tfrac{a}{c}`
+																				: resolvedMathSimId === 'MATH12-03'
+																					? `y=a^x\\;(a>0,a\\neq1)\\quad \\lim_{x\\to-\\infty}a^x=0`
+																				: resolvedMathSimId === 'MATH12-04'
+																					? `y=\\log_a x\\quad D=(0,+\\infty)\\quad \\log_a(xy)=\\log_a x+\\log_a y`
+																				: resolvedMathSimId === 'MATH12-05'
+																					? `\\int_a^b f(x)\\,dx = F(b)-F(a)`
+																				: resolvedMathSimId === 'MATH12-06'
+																					? `S=\\int_a^b |f(x)-g(x)|\\,dx`
+																				: resolvedMathSimId === 'MATH12-07'
+																					? `z=a+bi=r(\\cos\\theta+i\\sin\\theta)\\quad|z|=\\sqrt{a^2+b^2}`
+																				: resolvedMathSimId === 'MATH12-08'
+																					? `V_{\\text{cầu}}=\\tfrac{4}{3}\\pi R^3\\quad V_{\\text{trụ}}=\\pi R^2h\\quad V_{\\text{nón}}=\\tfrac{1}{3}\\pi R^2h`
+																				: resolvedMathSimId === 'MATH12-09'
+																					? `V_{\\text{chóp}}=\\tfrac{1}{3}Sh\\quad V_{\\text{cụt}}=\\tfrac{h}{3}(S_1+S_2+\\sqrt{S_1 S_2})`
+																				: resolvedMathSimId === 'MATH12-10'
+																					? `ax+by+cz+d=0\\quad d(M,P)=\\dfrac{|ax_0+by_0+cz_0+d|}{\\sqrt{a^2+b^2+c^2}}`
+																				: resolvedMathSimId === 'MATH12-11'
+																					? `\\dfrac{x-x_0}{a}=\\dfrac{y-y_0}{b}=\\dfrac{z-z_0}{c}`
 																				: `y = ${f(mA)}x^2 ${mB >= 0 ? '+' : '-'} ${Math.abs(f(mB))}x ${mC >= 0 ? '+' : '-'} ${Math.abs(f(mC))}`
 			: chemExperimentId === 'CHEM12-01'
 				? '\\text{CH}_3\\text{COOH} + \\text{C}_2\\text{H}_5\\text{OH} \\rightleftharpoons \\text{CH}_3\\text{COOC}_2\\text{H}_5 + \\text{H}_2\\text{O}'
@@ -10120,6 +10200,337 @@ const Workspace: React.FC = () => {
 									</div>
 								</>
 							)}
+							{/* MATH12-01 */}
+							{resolvedMathSimId === 'MATH12-01' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>a</span><strong>{cubicA.toFixed(2)}</strong></div>
+										<input type='range' min={-3} max={3} step={0.5} value={cubicA}
+											style={getTrackStyle(cubicA, -3, 3, '#4f6ef7')}
+											onChange={e => setCubicA(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>b</span><strong>{cubicB.toFixed(2)}</strong></div>
+										<input type='range' min={-5} max={5} step={0.5} value={cubicB}
+											style={getTrackStyle(cubicB, -5, 5, '#4f6ef7')}
+											onChange={e => setCubicB(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>c</span><strong>{cubicC.toFixed(2)}</strong></div>
+										<input type='range' min={-5} max={5} step={0.5} value={cubicC}
+											style={getTrackStyle(cubicC, -5, 5, '#4f6ef7')}
+											onChange={e => setCubicC(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>d</span><strong>{cubicD.toFixed(2)}</strong></div>
+										<input type='range' min={-5} max={5} step={0.5} value={cubicD}
+											style={getTrackStyle(cubicD, -5, 5, '#4f6ef7')}
+											onChange={e => setCubicD(+e.target.value)} />
+									</div>
+								</>
+							)}
+							{/* MATH12-02 */}
+							{resolvedMathSimId === 'MATH12-02' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>a (tử số)</span><strong>{ratA.toFixed(2)}</strong></div>
+										<input type='range' min={-4} max={4} step={0.5} value={ratA}
+											style={getTrackStyle(ratA, -4, 4, '#4f6ef7')}
+											onChange={e => setRatA(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>b (tử số)</span><strong>{ratB.toFixed(2)}</strong></div>
+										<input type='range' min={-4} max={4} step={0.5} value={ratB}
+											style={getTrackStyle(ratB, -4, 4, '#4f6ef7')}
+											onChange={e => setRatB(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>c (mẫu số)</span><strong>{ratC.toFixed(2)}</strong></div>
+										<input type='range' min={-4} max={4} step={0.5} value={ratC}
+											style={getTrackStyle(ratC, -4, 4, '#4f6ef7')}
+											onChange={e => setRatC(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>d (mẫu số)</span><strong>{ratD.toFixed(2)}</strong></div>
+										<input type='range' min={-4} max={4} step={0.5} value={ratD}
+											style={getTrackStyle(ratD, -4, 4, '#4f6ef7')}
+											onChange={e => setRatD(+e.target.value)} />
+									</div>
+								</>
+							)}
+							{/* MATH12-03 */}
+							{resolvedMathSimId === 'MATH12-03' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Cơ số a</span><strong>{expBase.toFixed(2)}</strong></div>
+										<input type='range' min={0.1} max={4} step={0.1} value={expBase}
+											style={getTrackStyle(expBase, 0.1, 4, '#4f6ef7')}
+											onChange={e => setExpBase(+e.target.value)} />
+									</div>
+								</>
+							)}
+							{/* MATH12-04 */}
+							{resolvedMathSimId === 'MATH12-04' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Cơ số a</span><strong>{logBaseVal.toFixed(2)}</strong></div>
+										<input type='range' min={1.01} max={10} step={0.1} value={logBaseVal}
+											style={getTrackStyle(logBaseVal, 1.01, 10, '#4f6ef7')}
+											onChange={e => setLogBaseVal(+e.target.value)} />
+									</div>
+								</>
+							)}
+							{/* MATH12-05 */}
+							{resolvedMathSimId === 'MATH12-05' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Hàm số</span></div>
+										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+												<button key={0} onClick={() => setIntFnIdx(0)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: intFnIdx === 0 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'sin(x)'}
+												</button>
+												<button key={1} onClick={() => setIntFnIdx(1)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: intFnIdx === 1 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'x²'}
+												</button>
+												<button key={2} onClick={() => setIntFnIdx(2)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: intFnIdx === 2 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'x³−2x'}
+												</button>
+												<button key={3} onClick={() => setIntFnIdx(3)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: intFnIdx === 3 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'eˣ/4'}
+												</button>
+										</div>
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>a (cận dưới)</span><strong>{intA.toFixed(2)}</strong></div>
+										<input type='range' min={-4} max={4} step={0.1} value={intA}
+											style={getTrackStyle(intA, -4, 4, '#4f6ef7')}
+											onChange={e => setIntA(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>b (cận trên)</span><strong>{intB.toFixed(2)}</strong></div>
+										<input type='range' min={-4} max={4} step={0.1} value={intB}
+											style={getTrackStyle(intB, -4, 4, '#4f6ef7')}
+											onChange={e => setIntB(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>N (số dải)</span><strong>{intN}</strong></div>
+										<input type='range' min={1} max={20} step={1} value={intN}
+											style={getTrackStyle(intN, 1, 20, '#4ade80')}
+											onChange={e => setIntN(+e.target.value)} />
+									</div>
+								</>
+							)}
+							{/* MATH12-06 */}
+							{resolvedMathSimId === 'MATH12-06' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Cặp hàm số</span></div>
+										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+												<button key={0} onClick={() => setAbFnIdx(0)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: abFnIdx === 0 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'x² và x+2'}
+												</button>
+												<button key={1} onClick={() => setAbFnIdx(1)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: abFnIdx === 1 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'sin & cos'}
+												</button>
+												<button key={2} onClick={() => setAbFnIdx(2)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: abFnIdx === 2 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'x³ và x'}
+												</button>
+												<button key={3} onClick={() => setAbFnIdx(3)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: abFnIdx === 3 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'√x và x²'}
+												</button>
+										</div>
+									</div>
+								</>
+							)}
+							{/* MATH12-07 */}
+							{resolvedMathSimId === 'MATH12-07' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Phần thực a</span><strong>{cxRe.toFixed(2)}</strong></div>
+										<input type='range' min={-5} max={5} step={0.5} value={cxRe}
+											style={getTrackStyle(cxRe, -5, 5, '#4f6ef7')}
+											onChange={e => setCxRe(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Phần ảo b</span><strong>{cxIm.toFixed(2)}</strong></div>
+										<input type='range' min={-5} max={5} step={0.5} value={cxIm}
+											style={getTrackStyle(cxIm, -5, 5, '#4f6ef7')}
+											onChange={e => setCxIm(+e.target.value)} />
+									</div>
+								</>
+							)}
+							{/* MATH12-08 */}
+							{resolvedMathSimId === 'MATH12-08' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Loại mặt tròn xoay</span></div>
+										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+												<button key={0} onClick={() => setRevShape(0)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: revShape === 0 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'Mặt cầu'}
+												</button>
+												<button key={1} onClick={() => setRevShape(1)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: revShape === 1 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'Mặt trụ'}
+												</button>
+												<button key={2} onClick={() => setRevShape(2)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: revShape === 2 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'Mặt nón'}
+												</button>
+										</div>
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Bán kính R</span><strong>{revR.toFixed(2)}</strong></div>
+										<input type='range' min={0.5} max={4} step={0.1} value={revR}
+											style={getTrackStyle(revR, 0.5, 4, '#4f6ef7')}
+											onChange={e => setRevR(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Chiều cao H</span><strong>{revH.toFixed(2)}</strong></div>
+										<input type='range' min={0.5} max={6} step={0.1} value={revH}
+											style={getTrackStyle(revH, 0.5, 6, '#4f6ef7')}
+											onChange={e => setRevH(+e.target.value)} />
+									</div>
+								</>
+							)}
+							{/* MATH12-09 */}
+							{resolvedMathSimId === 'MATH12-09' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Loại khối</span></div>
+										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+												<button key={0} onClick={() => setPh3Type(0)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: ph3Type === 0 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'Lăng trụ'}
+												</button>
+												<button key={1} onClick={() => setPh3Type(1)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: ph3Type === 1 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'Hình chóp'}
+												</button>
+												<button key={2} onClick={() => setPh3Type(2)}
+													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
+														background: ph3Type === 2 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
+													{'Chóp cụt'}
+												</button>
+										</div>
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Số cạnh đáy n</span><strong>{ph3N}</strong></div>
+										<input type='range' min={3} max={8} step={1} value={ph3N}
+											style={getTrackStyle(ph3N, 3, 8, '#4ade80')}
+											onChange={e => setPh3N(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Bán kính R</span><strong>{ph3R.toFixed(2)}</strong></div>
+										<input type='range' min={0.5} max={4} step={0.1} value={ph3R}
+											style={getTrackStyle(ph3R, 0.5, 4, '#4f6ef7')}
+											onChange={e => setPh3R(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Chiều cao H</span><strong>{ph3H.toFixed(2)}</strong></div>
+										<input type='range' min={0.5} max={6} step={0.1} value={ph3H}
+											style={getTrackStyle(ph3H, 0.5, 6, '#4f6ef7')}
+											onChange={e => setPh3H(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>Bán kính trên r</span><strong>{ph3R2.toFixed(2)}</strong></div>
+										<input type='range' min={0.1} max={3} step={0.1} value={ph3R2}
+											style={getTrackStyle(ph3R2, 0.1, 3, '#4f6ef7')}
+											onChange={e => setPh3R2(+e.target.value)} />
+									</div>
+								</>
+							)}
+							{/* MATH12-10 */}
+							{resolvedMathSimId === 'MATH12-10' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>nx (hệ số x)</span><strong>{plNx.toFixed(2)}</strong></div>
+										<input type='range' min={-3} max={3} step={0.5} value={plNx}
+											style={getTrackStyle(plNx, -3, 3, '#4f6ef7')}
+											onChange={e => setPlNx(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>ny (hệ số y)</span><strong>{plNy.toFixed(2)}</strong></div>
+										<input type='range' min={-3} max={3} step={0.5} value={plNy}
+											style={getTrackStyle(plNy, -3, 3, '#4f6ef7')}
+											onChange={e => setPlNy(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>nz (hệ số z)</span><strong>{plNz.toFixed(2)}</strong></div>
+										<input type='range' min={-3} max={3} step={0.5} value={plNz}
+											style={getTrackStyle(plNz, -3, 3, '#4f6ef7')}
+											onChange={e => setPlNz(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>d (hằng số)</span><strong>{plD.toFixed(2)}</strong></div>
+										<input type='range' min={-5} max={5} step={0.5} value={plD}
+											style={getTrackStyle(plD, -5, 5, '#4f6ef7')}
+											onChange={e => setPlD(+e.target.value)} />
+									</div>
+								</>
+							)}
+							{/* MATH12-11 */}
+							{resolvedMathSimId === 'MATH12-11' && (
+								<>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>M.x₀</span><strong>{ln3Mx.toFixed(2)}</strong></div>
+										<input type='range' min={-3} max={3} step={0.5} value={ln3Mx}
+											style={getTrackStyle(ln3Mx, -3, 3, '#4f6ef7')}
+											onChange={e => setLn3Mx(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>M.y₀</span><strong>{ln3My.toFixed(2)}</strong></div>
+										<input type='range' min={-3} max={3} step={0.5} value={ln3My}
+											style={getTrackStyle(ln3My, -3, 3, '#4f6ef7')}
+											onChange={e => setLn3My(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>M.z₀</span><strong>{ln3Mz.toFixed(2)}</strong></div>
+										<input type='range' min={-3} max={3} step={0.5} value={ln3Mz}
+											style={getTrackStyle(ln3Mz, -3, 3, '#4f6ef7')}
+											onChange={e => setLn3Mz(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>u.a</span><strong>{ln3Ux.toFixed(2)}</strong></div>
+										<input type='range' min={-4} max={4} step={0.5} value={ln3Ux}
+											style={getTrackStyle(ln3Ux, -4, 4, '#f97316')}
+											onChange={e => setLn3Ux(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>u.b</span><strong>{ln3Uy.toFixed(2)}</strong></div>
+										<input type='range' min={-4} max={4} step={0.5} value={ln3Uy}
+											style={getTrackStyle(ln3Uy, -4, 4, '#f97316')}
+											onChange={e => setLn3Uy(+e.target.value)} />
+									</div>
+									<div className='stu-ws__param stu-ws__param--v0'>
+										<div className='stu-ws__param-row'><span>u.c</span><strong>{ln3Uz.toFixed(2)}</strong></div>
+										<input type='range' min={-4} max={4} step={0.5} value={ln3Uz}
+											style={getTrackStyle(ln3Uz, -4, 4, '#f97316')}
+											onChange={e => setLn3Uz(+e.target.value)} />
+									</div>
+								</>
+							)}
 
 							{/* MATH11-02: Vòng tròn đơn vị */}
 							{resolvedMathSimId === 'MATH11-02' && (
@@ -11367,6 +11778,68 @@ const Workspace: React.FC = () => {
 											{ key: 'n', value: polyN11, unit: '', label: 'Số cạnh đáy' },
 											{ key: 'baseR', value: polyBaseR, unit: '', label: 'Bán kính đáy' },
 											{ key: 'height', value: polyH11, unit: '', label: 'Chiều cao' },
+										];
+									} else if (resolvedSimId === 'MATH12-01') {
+										mathParams = [
+											{ key: 'a', value: cubicA, unit: '', label: 'Hệ số a' },
+											{ key: 'b', value: cubicB, unit: '', label: 'Hệ số b' },
+											{ key: 'c', value: cubicC, unit: '', label: 'Hệ số c' },
+											{ key: 'd', value: cubicD, unit: '', label: 'Hệ số d' },
+										];
+									} else if (resolvedSimId === 'MATH12-02') {
+										mathParams = [
+											{ key: 'a', value: ratA, unit: '', label: 'Hệ số a' },
+											{ key: 'b', value: ratB, unit: '', label: 'Hệ số b' },
+											{ key: 'c', value: ratC, unit: '', label: 'Hệ số c' },
+											{ key: 'd', value: ratD, unit: '', label: 'Hệ số d' },
+										];
+									} else if (resolvedSimId === 'MATH12-03') {
+										mathParams = [{ key: 'base', value: expBase, unit: '', label: 'Cơ số a' }];
+									} else if (resolvedSimId === 'MATH12-04') {
+										mathParams = [{ key: 'base', value: logBaseVal, unit: '', label: 'Cơ số a' }];
+									} else if (resolvedSimId === 'MATH12-05') {
+										mathParams = [
+											{ key: 'fnIdx', value: intFnIdx, unit: '', label: 'Hàm số' },
+											{ key: 'a', value: intA, unit: '', label: 'Cận dưới a' },
+											{ key: 'b', value: intB, unit: '', label: 'Cận trên b' },
+											{ key: 'N', value: intN, unit: '', label: 'Số dải N' },
+										];
+									} else if (resolvedSimId === 'MATH12-06') {
+										mathParams = [{ key: 'pairIdx', value: abFnIdx, unit: '', label: 'Cặp hàm' }];
+									} else if (resolvedSimId === 'MATH12-07') {
+										mathParams = [
+											{ key: 're', value: cxRe, unit: '', label: 'Phần thực a' },
+											{ key: 'im', value: cxIm, unit: '', label: 'Phần ảo b' },
+										];
+									} else if (resolvedSimId === 'MATH12-08') {
+										mathParams = [
+											{ key: 'shape', value: revShape, unit: '', label: 'Loại mặt' },
+											{ key: 'R', value: revR, unit: '', label: 'Bán kính R' },
+											{ key: 'H', value: revH, unit: '', label: 'Chiều cao H' },
+										];
+									} else if (resolvedSimId === 'MATH12-09') {
+										mathParams = [
+											{ key: 'type', value: ph3Type, unit: '', label: 'Loại khối' },
+											{ key: 'n', value: ph3N, unit: '', label: 'Số cạnh đáy' },
+											{ key: 'R', value: ph3R, unit: '', label: 'Bán kính R' },
+											{ key: 'H', value: ph3H, unit: '', label: 'Chiều cao H' },
+											{ key: 'R2', value: ph3R2, unit: '', label: 'Bán kính trên r' },
+										];
+									} else if (resolvedSimId === 'MATH12-10') {
+										mathParams = [
+											{ key: 'nx', value: plNx, unit: '', label: 'nx' },
+											{ key: 'ny', value: plNy, unit: '', label: 'ny' },
+											{ key: 'nz', value: plNz, unit: '', label: 'nz' },
+											{ key: 'd', value: plD, unit: '', label: 'Hằng số d' },
+										];
+									} else if (resolvedSimId === 'MATH12-11') {
+										mathParams = [
+											{ key: 'mx', value: ln3Mx, unit: '', label: 'x₀' },
+											{ key: 'my', value: ln3My, unit: '', label: 'y₀' },
+											{ key: 'mz', value: ln3Mz, unit: '', label: 'z₀' },
+											{ key: 'ux', value: ln3Ux, unit: '', label: 'u.a' },
+											{ key: 'uy', value: ln3Uy, unit: '', label: 'u.b' },
+											{ key: 'uz', value: ln3Uz, unit: '', label: 'u.c' },
 										];
 									}
 
