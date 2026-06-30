@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input, Button, Card, Tag, message, Spin } from 'antd';
 import { RobotOutlined, UserOutlined, SendOutlined, RocketOutlined } from '@ant-design/icons';
+import ReactMarkdown from 'react-markdown';
 import { chatSessionApi } from '@/services/ai/api';
 import '../TaoThiNghiem.less';
 
@@ -124,7 +125,7 @@ const AiGenerate: React.FC<Props> = ({ onAccept, onSwitchToManual, submitting })
       <div 
         className="chat-messages" 
         ref={chatContainerRef}
-        style={{ height: 320, overflowY: 'auto', padding: '16px', background: '#f8fafc', borderRadius: 12, marginBottom: 16 }}
+        style={{ height: 420, overflowY: 'auto', padding: '16px', background: '#f8fafc', borderRadius: 12, marginBottom: 16 }}
       >
         {messages.map(msg => (
           <div key={msg.id} style={{ display: 'flex', gap: 12, marginBottom: 16, flexDirection: msg.role === 'user' ? 'row-reverse' : 'row' }}>
@@ -142,7 +143,21 @@ const AiGenerate: React.FC<Props> = ({ onAccept, onSwitchToManual, submitting })
               borderTopRightRadius: msg.role === 'user' ? 4 : 16,
               borderTopLeftRadius: msg.role === 'assistant' ? 4 : 16,
             }}>
-              <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.5 }}>{msg.content}</div>
+              {msg.role === 'assistant' ? (
+                <ReactMarkdown
+                  components={{
+                    p: ({ children }) => <p style={{ margin: '0 0 8px', lineHeight: 1.6 }}>{children}</p>,
+                    ul: ({ children }) => <ul style={{ paddingLeft: 20, margin: '4px 0' }}>{children}</ul>,
+                    li: ({ children }) => <li style={{ marginBottom: 2 }}>{children}</li>,
+                    strong: ({ children }) => <strong style={{ color: '#1e40af' }}>{children}</strong>,
+                    code: ({ children }) => <code style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: 4, fontFamily: 'monospace', fontSize: 13 }}>{children}</code>,
+                  }}
+                >
+                  {msg.content}
+                </ReactMarkdown>
+              ) : (
+                <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.5 }}>{msg.content}</div>
+              )}
               {msg.metadata?.experimentConfig && renderConfigCard(msg.metadata.experimentConfig)}
             </div>
           </div>

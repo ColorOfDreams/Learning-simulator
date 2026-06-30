@@ -1420,6 +1420,342 @@ export class AiService {
     return Number(value.toFixed(3)).toString().replace('.', ',');
   }
 
+  async chatRaw(request: {
+    message: string;
+    subject?: string;
+    grade?: number;
+  }) {
+    const msg = request.message.trim();
+    const subject = request.subject ?? 'physics';
+    const grade = request.grade ?? 11;
+    const topic = this.detectTopic(msg);
+    const intent = this.detectIntent(msg);
+    const ragChunks = await this.ragRetrievalService.retrieveTheoryChunks({
+      message: msg,
+      subject,
+      grade,
+      topic,
+    });
+    const patterns = await this.findPatternsForTopic(topic, msg);
+    const selectedPattern = this.selectPattern(
+      msg,
+      this.extractTarget(msg),
+      patterns,
+    );
+
+    const llmAnswer = await this.generateLlmResponse({
+      message: msg,
+      topic,
+      subject,
+      grade,
+      intent,
+      context: [],
+      ragChunks,
+      selectedPattern,
+      allowGeneralKnowledge: true,
+    });
+
+    return {
+      intent,
+      topic,
+      answer:
+        llmAnswer ??
+        this.buildLocalChatFallback(msg, topic, ragChunks, selectedPattern),
+      used_llm: Boolean(llmAnswer),
+    };
+  }
+
+  async generateGuidance(sceneGraph?: {
+    roomType?: string;
+    objects?: Array<{
+      modelName: string;
+      properties?: Record<string, unknown>;
+    }>;
+  }) {
+    if (!sceneGraph?.objects?.length) {
+      return {
+        text: 'Chao ban! Hay tao mot thi nghiem voi cac dung cu de bat dau.',
+        steps: [],
+      };
+    }
+    if (this.llmService.isConfigured()) {
+      try {
+        const equipDesc = sceneGraph.objects
+          .map((o) => {
+            const p = o.properties || {};
+            const propStr = (v: unknown): string =>
+              typeof v === 'string' || typeof v === 'number' ? String(v) : '';
+            const d: string[] = [];
+            if (propStr(p.length)) d.push('dai ' + propStr(p.length) + 'm');
+            if (propStr(p.mass)) d.push('nang ' + propStr(p.mass) + 'kg');
+            if (propStr(p.stiffness))
+              d.push('do cung ' + propStr(p.stiffness) + 'N/m');
+            if (propStr(p.symbol)) d.push('ky hieu ' + propStr(p.symbol));
+            if (propStr(p.volume)) d.push(propStr(p.volume) + 'ml');
+            return (
+              '- ' + o.modelName + (d.length ? ' (' + d.join(', ') + ')' : '')
+            );
+          })
+          .join('\n');
+        const subj =
+          sceneGraph.roomType === 'chemistry'
+            ? 'Hoa hoc'
+            : sceneGraph.roomType === 'math'
+              ? 'Toan hoc'
+              : 'Vat ly';
+        const response = await this.llmService.complete([
+          {
+            role: 'user',
+            content: [
+              'Ban la tro ly huong dan thi nghiem. Dung cu hien co:',
+              equipDesc,
+              'Mon: ' + subj,
+              'Tao 3-5 buoc huong dan. Tra ve CHI JSON: { "steps": [{ "id":"...", "title":"...", "description":"...", "targetEquipment":"..." }] }',
+            ].join('\n'),
+          },
+        ]);
+        if (response) {
+          const cleaned = response.replace(/```json|```/g, '').trim();
+          const match = cleaned.match(/\{[\s\S]*\}/);
+          if (match) {
+            const parsed = JSON.parse(match[0]) as {
+              steps?: GuidanceStep[];
+            };
+            return {
+              text: 'Chao ban! Hay lam theo huong dan ben duoi.',
+              steps: (parsed.steps || []).map((s: GuidanceStep, i: number) => ({
+                id: s.id || 'step_' + (i + 1),
+                title: s.title || '',
+                description: s.description || '',
+                targetEquipment: s.targetEquipment,
+                condition: s.condition || null,
+              })),
+            };
+          }
+        }
+      } catch {
+        /* fallback */
+      }
+    }
+    const names = sceneGraph.objects.map(
+      (o: { modelName: string; properties?: Record<string, unknown> }) =>
+        o.modelName,
+    );
+    return {
+      text:
+        'Phong thi nghiem co: ' + names.join(', ') + '. Bat dau kham pha nhe.',
+      steps: [
+        {
+          id: 'explore',
+          title: 'Kham pha dung cu',
+          description: 'Keo tha va kham pha tung dung cu.',
+        },
+        {
+          id: 'play',
+          title: 'Bam Play',
+          description: 'Nhan Play de xem mo phong.',
+        },
+      ],
+    };
+  }
+
+  async generateExperiment(message: string) {
+    if (!this.llmService.isConfigured()) {
+      return {
+        name: 'Thí nghiệm mới',
+        roomType: 'physics',
+        explanation: 'LLM chưa được cấu hình. Vui lòng tạo thủ công.',
+        objects: [] as Array<{
+          modelName: string;
+          properties: Record<string, unknown>;
+        }>,
+        steps: [] as Array<any>,
+      };
+    }
+
+    const equipmentList = [
+      'Vật lý: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
+      'Hóa học: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
+      'Toán học: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
+    ].join('\n');
+
+    try {
+      const response = await this.llmService.complete([
+        {
+          role: 'system',
+          content: `Bạn là trợ lý thiết kế thí nghiệm 3D cho học sinh lớp 11. 
+Dụng cụ có sẵn:\n${equipmentList}\n
+Dựa trên mô tả của học sinh, hãy chọn dụng cụ và thông số phù hợp. Đồng thời, tự động tạo các bước hướng dẫn thực hành (steps).
+Trả về CHỈ JSON (không markdown, không giải thích):
+{
+  "name": "tên thí nghiệm",
+  "roomType": "physics|chemistry|math",
+  "explanation": "giải thích ngắn 1-2 câu",
+  "objects": [
+    { "modelName": "tên dụng cụ", "properties": { "key": value } }
+  ],
+  "steps": [
+    { 
+      "id": "step_1", 
+      "title": "Tiêu đề bước", 
+      "description": "Mô tả chi tiết thao tác", 
+      "expectedAction": { "type": "drag_and_drop", "sourceModel": "tên model kéo", "targetModel": "tên model đích" } 
+    }
+  ]
+}`,
+        },
+        { role: 'user', content: message },
+      ]);
+
+      const cleaned = (response || '').replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(cleaned) as ExperimentSpec & { steps?: any[] };
+      return {
+        name: parsed.name || 'Thí nghiệm mới',
+        roomType: parsed.roomType || 'physics',
+        explanation: parsed.explanation || '',
+        objects: (parsed.objects || []).map(
+          (obj: {
+            modelName: string;
+            properties: Record<string, unknown>;
+          }) => ({
+            modelName: obj.modelName,
+            properties: obj.properties || {},
+          }),
+        ),
+        steps: parsed.steps || [],
+      };
+    } catch {
+      return {
+        name: 'Thí nghiệm mới',
+        roomType: 'physics',
+        explanation:
+          'Không thể tạo tự động, vui lòng thử lại hoặc tạo thủ công.',
+        objects: [],
+        steps: [],
+      };
+    }
+  }
+
+  async chatExperimentDesign(payload: {
+    message: string;
+    subject?: string;
+    context?: { role: 'user' | 'assistant'; content: string }[];
+  }) {
+    if (!this.llmService.isConfigured()) {
+      return {
+        answer: 'LLM chưa được cấu hình. Vui lòng thử lại sau.',
+      };
+    }
+
+    const msg = payload.message.trim();
+    const subject = payload.subject ?? 'physics';
+    const topic = this.detectTopic(msg);
+
+    const ragChunks = await this.ragRetrievalService.retrieveTheoryChunks({
+      message: msg,
+      subject,
+      grade: 11,
+      topic,
+    });
+
+    const equipmentList = [
+      'Vật lý: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
+      'Hóa học: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
+      'Toán học: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
+    ].join('\n');
+
+    const references = ragChunks
+      .slice(0, 3)
+      .map(
+        (chunk, index) =>
+          `[${index + 1}] ${chunk.title ?? chunk.id}: ${chunk.text}`,
+      )
+      .join('\n');
+
+    const contextStr = (payload.context ?? [])
+      .slice(-6)
+      .map((item) => `${item.role}: ${item.content}`)
+      .join('\n');
+
+    const systemPrompt = `Bạn là trợ lý thiết kế thí nghiệm 3D khoa học. Trả lời ngắn gọn, thân thiện bằng tiếng Việt.
+
+DỤNG CỤ CÓ SẴN trong hệ thống:
+${equipmentList}
+
+${references ? `THAM KHẢO lý thuyết:\n${references}\n` : ''}
+
+QUY TRÌNH 2 BƯỚC:
+
+*BƯỚC 1 — Khi người dùng nêu chủ đề (VD: "tạo con lắc đơn"):*
+- CHỌN NGAY dụng cụ phù hợp từ danh sách CÓ SẴN phía trên
+- TỰ đề xuất thông số mặc định hợp lý, KHÔNG hỏi lại chi tiết
+- Trình bày gọn trong 4-5 câu:
+  1 dòng tên thí nghiệm
+  1 danh sách dụng cụ (dùng dấu -)
+  1-2 dòng thông số chính
+  Kết thúc: "Bạn có muốn tôi tạo thí nghiệm này không?"
+- TUYỆT ĐỐI KHÔNG trả JSON ở bước này
+
+*BƯỚC 2 — Khi người dùng đồng ý (có/đồng ý/tạo/ok/yes):*
+- Trả JSON config trong block \`\`\`json ... \`\`\`
+- Format:
+{
+  "name": "tên thí nghiệm",
+  "roomType": "physics|chemistry|math",
+  "objects": [
+    { "modelName": "tên dụng cụ trong danh sách", "properties": { "key": "value" } }
+  ]
+}
+- Chỉ dùng modelName CÓ TRONG danh sách dụng cụ có sẵn
+- Sau JSON có thể kèm 1 dòng chúc mừng ngắn`;
+
+    const userPrompt = `CONTEXT:
+${contextStr}
+
+QUESTION:
+${msg}`;
+
+    try {
+      const response = await this.llmService.complete(
+        [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        { maxTokens: 500 },
+      );
+
+      const cleanedResponse = response || '';
+
+      let answer = cleanedResponse;
+      let experimentConfig: any = undefined;
+
+      const jsonMatch = cleanedResponse.match(/```json([\s\S]*?)```/);
+      if (jsonMatch) {
+        try {
+          const parsed = JSON.parse(jsonMatch[1].trim());
+          experimentConfig = {
+            name: parsed.name || 'Thí nghiệm mới',
+            roomType: parsed.roomType || 'physics',
+            objects: (parsed.objects || []).map((obj: any) => ({
+              modelName: obj.modelName,
+              properties: obj.properties || {},
+            })),
+          };
+          answer = cleanedResponse.replace(jsonMatch[0], '').trim();
+        } catch (e) {}
+      }
+
+      return {
+        answer: answer || 'Cấu hình thí nghiệm đã sẵn sàng!',
+        experimentConfig,
+      };
+    } catch {
+      return {
+        answer: 'Xin lỗi, hệ thống AI đang gặp sự cố.',
+      };
+    }
+  }
+
   private shouldIncludeChatDebug() {
     return (
       process.env.NODE_ENV !== 'production' || process.env.AI_DEBUG === 'true'
@@ -2575,330 +2911,6 @@ export class AiService {
       result.push(list[i % list.length]);
     }
     return result;
-  }
-
-  async chatRaw(request: {
-    message: string;
-    subject?: string;
-    grade?: number;
-  }) {
-    const msg = request.message.trim();
-    const subject = request.subject ?? 'physics';
-    const grade = request.grade ?? 11;
-    const topic = this.detectTopic(msg);
-    const intent = this.detectIntent(msg);
-    const ragChunks = await this.ragRetrievalService.retrieveTheoryChunks({
-      message: msg,
-      subject,
-      grade,
-      topic,
-    });
-    const patterns = await this.findPatternsForTopic(topic, msg);
-    const selectedPattern = this.selectPattern(
-      msg,
-      this.extractTarget(msg),
-      patterns,
-    );
-
-    const llmAnswer = await this.generateLlmResponse({
-      message: msg,
-      topic,
-      subject,
-      grade,
-      intent,
-      context: [],
-      ragChunks,
-      selectedPattern,
-      allowGeneralKnowledge: true,
-    });
-
-    return {
-      intent,
-      topic,
-      answer:
-        llmAnswer ??
-        this.buildLocalChatFallback(msg, topic, ragChunks, selectedPattern),
-      used_llm: Boolean(llmAnswer),
-    };
-  }
-
-  async generateGuidance(sceneGraph?: {
-    roomType?: string;
-    objects?: Array<{
-      modelName: string;
-      properties?: Record<string, unknown>;
-    }>;
-  }) {
-    if (!sceneGraph?.objects?.length) {
-      return {
-        text: 'Chao ban! Hay tao mot thi nghiem voi cac dung cu de bat dau.',
-        steps: [] as GuidanceStep[],
-      };
-    }
-    if (this.llmService.isConfigured()) {
-      try {
-        const equipDesc = sceneGraph.objects
-          .map((o) => {
-            const p = o.properties || {};
-            const propStr = (v: unknown): string =>
-              typeof v === 'string' || typeof v === 'number' ? String(v) : '';
-            const d: string[] = [];
-            if (propStr(p.length)) d.push('dai ' + propStr(p.length) + 'm');
-            if (propStr(p.mass)) d.push('nang ' + propStr(p.mass) + 'kg');
-            if (propStr(p.stiffness))
-              d.push('do cung ' + propStr(p.stiffness) + 'N/m');
-            if (propStr(p.symbol)) d.push('ky hieu ' + propStr(p.symbol));
-            if (propStr(p.volume)) d.push(propStr(p.volume) + 'ml');
-            return (
-              '- ' + o.modelName + (d.length ? ' (' + d.join(', ') + ')' : '')
-            );
-          })
-          .join('\n');
-        const subj =
-          sceneGraph.roomType === 'chemistry'
-            ? 'Hoa hoc'
-            : sceneGraph.roomType === 'math'
-              ? 'Toan hoc'
-              : 'Vat ly';
-        const response = await this.llmService.complete([
-          {
-            role: 'user',
-            content: [
-              'Ban la tro ly huong dan thi nghiem. Dung cu hien co:',
-              equipDesc,
-              'Mon: ' + subj,
-              'Tao 3-5 buoc huong dan. Tra ve CHI JSON: { "steps": [{ "id":"...", "title":"...", "description":"...", "targetEquipment":"..." }] }',
-            ].join('\n'),
-          },
-        ]);
-        if (response) {
-          const cleaned = response.replace(/```json|```/g, '').trim();
-          const match = cleaned.match(/\{[\s\S]*\}/);
-          if (match) {
-            const parsed = JSON.parse(match[0]) as {
-              steps?: GuidanceStep[];
-            };
-            return {
-              text: 'Chao ban! Hay lam theo huong dan ben duoi.',
-              steps: (parsed.steps || []).map((s: GuidanceStep, i: number) => ({
-                id: s.id || 'step_' + (i + 1),
-                title: s.title || '',
-                description: s.description || '',
-                targetEquipment: s.targetEquipment,
-                condition: s.condition || null,
-              })),
-            };
-          }
-        }
-      } catch {
-        /* fallback */
-      }
-    }
-    const names = sceneGraph.objects.map((o) => o.modelName);
-    return {
-      text:
-        'Phong thi nghiem co: ' + names.join(', ') + '. Bat dau kham pha nhe.',
-      steps: [
-        {
-          id: 'explore',
-          title: 'Kham pha dung cu',
-          description: 'Keo tha va kham pha tung dung cu.',
-        },
-        {
-          id: 'play',
-          title: 'Bam Play',
-          description: 'Nhan Play de xem mo phong.',
-        },
-      ],
-    };
-  }
-
-  async generateExperiment(message: string) {
-    if (!this.llmService.isConfigured()) {
-      return {
-        name: 'Thí nghiệm mới',
-        roomType: 'physics' as const,
-        explanation: 'LLM chưa được cấu hình. Vui lòng tạo thủ công.',
-        objects: [] as Array<{
-          modelName: string;
-          properties: Record<string, unknown>;
-        }>,
-        steps: [] as unknown[],
-      };
-    }
-
-    const equipmentList = [
-      'Vật lý: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
-      'Hóa học: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
-      'Toán học: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
-    ].join('\n');
-
-    try {
-      const response = await this.llmService.complete([
-        {
-          role: 'system',
-          content: `Bạn là trợ lý thiết kế thí nghiệm 3D cho học sinh lớp 11.
-Dụng cụ có sẵn:\n${equipmentList}\n
-Dựa trên mô tả của học sinh, hãy chọn dụng cụ và thông số phù hợp. Đồng thời, tự động tạo các bước hướng dẫn thực hành (steps).
-Trả về CHỈ JSON (không markdown, không giải thích):
-{
-  "name": "tên thí nghiệm",
-  "roomType": "physics|chemistry|math",
-  "explanation": "giải thích ngắn 1-2 câu",
-  "objects": [
-    { "modelName": "tên dụng cụ", "properties": { "key": value } }
-  ],
-  "steps": [
-    {
-      "id": "step_1",
-      "title": "Tiêu đề bước",
-      "description": "Mô tả chi tiết thao tác"
-    }
-  ]
-}`,
-        },
-        { role: 'user', content: message },
-      ]);
-
-      const cleaned = (response || '').replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(cleaned) as ExperimentSpec & {
-        steps?: unknown[];
-      };
-      return {
-        name: parsed.name || 'Thí nghiệm mới',
-        roomType: parsed.roomType || 'physics',
-        explanation: parsed.explanation || '',
-        objects: (parsed.objects || []).map(
-          (obj: { modelName: string; properties: Record<string, unknown> }) => ({
-            modelName: obj.modelName,
-            properties: obj.properties || {},
-          }),
-        ),
-        steps: parsed.steps || [],
-      };
-    } catch {
-      return {
-        name: 'Thí nghiệm mới',
-        roomType: 'physics' as const,
-        explanation:
-          'Không thể tạo tự động, vui lòng thử lại hoặc tạo thủ công.',
-        objects: [],
-        steps: [],
-      };
-    }
-  }
-
-  async chatExperimentDesign(payload: {
-    message: string;
-    subject?: string;
-    context?: { role: 'user' | 'assistant'; content: string }[];
-  }) {
-    if (!this.llmService.isConfigured()) {
-      return { answer: 'LLM chưa được cấu hình. Vui lòng thử lại sau.' };
-    }
-
-    const msg = payload.message.trim();
-    const subject = payload.subject ?? 'physics';
-    const topic = this.detectTopic(msg);
-
-    const ragChunks = await this.ragRetrievalService.retrieveTheoryChunks({
-      message: msg,
-      subject,
-      grade: 11,
-      topic,
-    });
-
-    const equipmentList = [
-      'Vật lý: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
-      'Hóa học: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
-      'Toán học: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
-    ].join('\n');
-
-    const references = ragChunks
-      .slice(0, 3)
-      .map(
-        (chunk, index) =>
-          `[${index + 1}] ${chunk.title ?? chunk.id}: ${chunk.text}`,
-      )
-      .join('\n');
-
-    const contextStr = (payload.context ?? [])
-      .slice(-6)
-      .map((item) => `${item.role}: ${item.content}`)
-      .join('\n');
-
-    const systemPrompt = `Bạn là trợ lý ảo thiết kế thí nghiệm 3D khoa học.
-MỤC TIÊU: Trò chuyện với người dùng để gợi ý và chốt cấu hình thí nghiệm.
-DỤNG CỤ CÓ SẴN:
-${equipmentList}
-
-LUẬT QUAN TRỌNG:
-1. LUÔN tham khảo lý thuyết sau (nếu có) để tư vấn chính xác:
-${references || '(Không có)'}
-2. Hỏi lại nếu người dùng chưa cung cấp đủ thông số hoặc dụng cụ. Gợi ý cụ thể dựa trên lý thuyết.
-3. NẾU ĐÃ ĐỦ DỮ KIỆN để tạo thí nghiệm (người dùng đồng ý cấu hình), hãy đính kèm JSON cấu hình vào cuối câu trả lời trong block \`\`\`json ... \`\`\`. Nếu chưa đủ, chỉ trả lời text.
-4. JSON CẤU HÌNH PHẢI CÓ ĐỊNH DẠNG SAU:
-\`\`\`json
-{
-  "name": "tên thí nghiệm",
-  "roomType": "physics|chemistry|math",
-  "objects": [ { "modelName": "tên dụng cụ", "properties": { "key": "value" } } ]
-}
-\`\`\``;
-
-    const userPrompt = `CONTEXT:\n${contextStr}\n\nQUESTION:\n${msg}`;
-
-    try {
-      const response = await this.llmService.complete([
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt },
-      ]);
-
-      const cleanedResponse = response || '';
-      let answer = cleanedResponse;
-      let experimentConfig:
-        | {
-            name: string;
-            roomType: string;
-            objects: Array<{
-              modelName: string;
-              properties: Record<string, unknown>;
-            }>;
-          }
-        | undefined;
-
-      const jsonMatch = cleanedResponse.match(/```json([\s\S]*?)```/);
-      if (jsonMatch) {
-        try {
-          const parsed = JSON.parse(jsonMatch[1].trim()) as {
-            name?: string;
-            roomType?: string;
-            objects?: Array<{
-              modelName: string;
-              properties?: Record<string, unknown>;
-            }>;
-          };
-          experimentConfig = {
-            name: parsed.name || 'Thí nghiệm mới',
-            roomType: parsed.roomType || 'physics',
-            objects: (parsed.objects || []).map((obj) => ({
-              modelName: obj.modelName,
-              properties: obj.properties || {},
-            })),
-          };
-          answer = cleanedResponse.replace(jsonMatch[0], '').trim();
-        } catch {
-          /* keep original answer */
-        }
-      }
-
-      return {
-        answer: answer || 'Cấu hình thí nghiệm đã sẵn sàng!',
-        experimentConfig,
-      };
-    } catch {
-      return { answer: 'Xin lỗi, hệ thống AI đang gặp sự cố.' };
-    }
   }
 }
 
