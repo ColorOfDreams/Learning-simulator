@@ -188,7 +188,7 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
     initY: 1.5,
     getSnapPoints: () => [],
     tags: ['kinematic'],
-  }
+  },
 };
 
 export const getEquipmentConfig = (modelName: string): EquipmentConfig => {

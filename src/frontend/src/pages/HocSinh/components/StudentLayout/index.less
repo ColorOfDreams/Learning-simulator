@@ -67,6 +67,7 @@
 			.stu-sidebar__logo-title {
 				color: var(--text);
 			}
+
 			.stu-sidebar__logo-sub {
 				color: var(--muted);
 			}
@@ -82,46 +83,57 @@
 					background: linear-gradient(90deg, oklch(0.62 0.16 264 / 0.25), oklch(0.62 0.16 264 / 0.07)) !important;
 					color: oklch(0.7 0.14 264) !important;
 					box-shadow: inset 3px 0 0 oklch(0.7 0.14 264) !important;
+
 					&:hover {
 						background: linear-gradient(90deg, oklch(0.62 0.16 264 / 0.25), oklch(0.62 0.16 264 / 0.07)) !important;
 					}
 				}
+
 				&--active-my-labs {
 					background: linear-gradient(90deg, oklch(0.6 0.18 350 / 0.25), oklch(0.6 0.18 350 / 0.07)) !important;
 					color: oklch(0.7 0.16 350) !important;
 					box-shadow: inset 3px 0 0 oklch(0.7 0.16 350) !important;
+
 					&:hover {
 						background: linear-gradient(90deg, oklch(0.6 0.18 350 / 0.25), oklch(0.6 0.18 350 / 0.07)) !important;
 					}
 				}
+
 				&--active-progress {
 					background: linear-gradient(90deg, oklch(0.58 0.13 195 / 0.25), oklch(0.58 0.13 195 / 0.07)) !important;
 					color: oklch(0.68 0.12 195) !important;
 					box-shadow: inset 3px 0 0 oklch(0.68 0.12 195) !important;
+
 					&:hover {
 						background: linear-gradient(90deg, oklch(0.58 0.13 195 / 0.25), oklch(0.58 0.13 195 / 0.07)) !important;
 					}
 				}
+
 				&--active-leaderboard {
 					background: linear-gradient(90deg, oklch(0.72 0.15 70 / 0.25), oklch(0.72 0.15 70 / 0.07)) !important;
 					color: oklch(0.78 0.13 70) !important;
 					box-shadow: inset 3px 0 0 oklch(0.78 0.13 70) !important;
+
 					&:hover {
 						background: linear-gradient(90deg, oklch(0.72 0.15 70 / 0.25), oklch(0.72 0.15 70 / 0.07)) !important;
 					}
 				}
+
 				&--active-classes {
 					background: linear-gradient(90deg, oklch(0.65 0.15 140 / 0.25), oklch(0.65 0.15 140 / 0.07)) !important;
 					color: oklch(0.75 0.15 140) !important;
 					box-shadow: inset 3px 0 0 oklch(0.75 0.15 140) !important;
+
 					&:hover {
 						background: linear-gradient(90deg, oklch(0.65 0.15 140 / 0.25), oklch(0.65 0.15 140 / 0.07)) !important;
 					}
 				}
+
 				&--active-saved {
 					background: linear-gradient(90deg, oklch(0.6 0.16 300 / 0.25), oklch(0.6 0.16 300 / 0.07)) !important;
 					color: oklch(0.7 0.14 300) !important;
 					box-shadow: inset 3px 0 0 oklch(0.7 0.14 300) !important;
+
 					&:hover {
 						background: linear-gradient(90deg, oklch(0.6 0.16 300 / 0.25), oklch(0.6 0.16 300 / 0.07)) !important;
 					}
@@ -148,6 +160,7 @@
 				&-name {
 					color: var(--text);
 				}
+
 				&-meta {
 					color: var(--muted);
 				}
@@ -254,39 +267,67 @@
 			box-shadow 0.18s;
 		user-select: none;
 
+		.header-menu-item {
+			padding: 0 !important;
+			height: auto !important;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			line-height: 1;
+
+			.noti_badge {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+
 		&:not(.stu-sidebar__nav-item--active):hover {
 			&.stu-sidebar__nav-item--home {
 				background: oklch(0.62 0.16 264 / 0.09);
 			}
+
 			&.stu-sidebar__nav-item--my-labs {
 				background: oklch(0.6 0.18 350 / 0.09);
 			}
+
 			&.stu-sidebar__nav-item--progress {
 				background: oklch(0.58 0.13 195 / 0.1);
 			}
+
 			&.stu-sidebar__nav-item--leaderboard {
 				background: oklch(0.72 0.15 70 / 0.12);
 			}
+
 			&.stu-sidebar__nav-item--classes {
 				background: oklch(0.65 0.15 140 / 0.1);
 			}
+
 			&.stu-sidebar__nav-item--saved {
 				background: oklch(0.6 0.16 300 / 0.09);
 			}
+
 			&.stu-sidebar__nav-item--settings {
 				background: oklch(0.62 0.05 280 / 0.1);
 			}
-			&.stu-sidebar__nav-item--logout {
-				background: oklch(0.55 0.18 25 / 0.08);
-				color: oklch(0.5 0.18 25);
+		}
+
+		&.stu-sidebar__nav-item--logout {
+			background: oklch(0.55 0.18 25 / 0.05);
+			/* Light red default */
+			color: oklch(0.5 0.18 25);
+
+			svg {
+				stroke: oklch(0.5 0.18 25);
+			}
+
+			&:not(.stu-sidebar__nav-item--active):hover {
+				background: oklch(0.55 0.18 25 / 0.15);
+				/* Darker red hover */
+				color: oklch(0.4 0.18 25);
 
 				svg {
-					stroke: oklch(0.5 0.18 25);
-				}
-
-				&:hover {
-					background: oklch(0.55 0.18 25 / 0.15);
-					color: oklch(0.4 0.18 25);
+					stroke: oklch(0.4 0.18 25);
 				}
 			}
 		}
@@ -299,46 +340,57 @@
 				background: linear-gradient(90deg, oklch(0.62 0.16 264 / 0.2), oklch(0.62 0.16 264 / 0.05)) !important;
 				color: oklch(0.46 0.16 264) !important;
 				box-shadow: inset 3px 0 0 oklch(0.62 0.16 264) !important;
+
 				&:hover {
 					background: linear-gradient(90deg, oklch(0.62 0.16 264 / 0.2), oklch(0.62 0.16 264 / 0.05)) !important;
 				}
 			}
+
 			&-my-labs {
 				background: linear-gradient(90deg, oklch(0.6 0.18 350 / 0.2), oklch(0.6 0.18 350 / 0.05)) !important;
 				color: oklch(0.46 0.18 350) !important;
 				box-shadow: inset 3px 0 0 oklch(0.6 0.18 350) !important;
+
 				&:hover {
 					background: linear-gradient(90deg, oklch(0.6 0.18 350 / 0.2), oklch(0.6 0.18 350 / 0.05)) !important;
 				}
 			}
+
 			&-progress {
 				background: linear-gradient(90deg, oklch(0.58 0.13 195 / 0.2), oklch(0.58 0.13 195 / 0.05)) !important;
 				color: oklch(0.43 0.12 200) !important;
 				box-shadow: inset 3px 0 0 oklch(0.58 0.13 195) !important;
+
 				&:hover {
 					background: linear-gradient(90deg, oklch(0.58 0.13 195 / 0.2), oklch(0.58 0.13 195 / 0.05)) !important;
 				}
 			}
+
 			&-leaderboard {
 				background: linear-gradient(90deg, oklch(0.72 0.15 70 / 0.2), oklch(0.72 0.15 70 / 0.05)) !important;
 				color: oklch(0.52 0.13 65) !important;
 				box-shadow: inset 3px 0 0 oklch(0.72 0.15 70) !important;
+
 				&:hover {
 					background: linear-gradient(90deg, oklch(0.72 0.15 70 / 0.2), oklch(0.72 0.15 70 / 0.05)) !important;
 				}
 			}
+
 			&-classes {
 				background: linear-gradient(90deg, oklch(0.65 0.15 140 / 0.2), oklch(0.65 0.15 140 / 0.05)) !important;
 				color: oklch(0.48 0.14 140) !important;
 				box-shadow: inset 3px 0 0 oklch(0.65 0.15 140) !important;
+
 				&:hover {
 					background: linear-gradient(90deg, oklch(0.65 0.15 140 / 0.2), oklch(0.65 0.15 140 / 0.05)) !important;
 				}
 			}
+
 			&-saved {
 				background: linear-gradient(90deg, oklch(0.6 0.16 300 / 0.2), oklch(0.6 0.16 300 / 0.05)) !important;
 				color: oklch(0.46 0.16 300) !important;
 				box-shadow: inset 3px 0 0 oklch(0.6 0.16 300) !important;
+
 				&:hover {
 					background: linear-gradient(90deg, oklch(0.6 0.16 300 / 0.2), oklch(0.6 0.16 300 / 0.05)) !important;
 				}
@@ -471,7 +523,7 @@
 		.stu-sidebar__logo {
 			justify-content: center;
 
-			& > div:last-child {
+			&>div:last-child {
 				display: none;
 			}
 		}

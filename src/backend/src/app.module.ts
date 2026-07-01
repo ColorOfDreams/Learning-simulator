@@ -10,6 +10,7 @@ import { AiModule } from './modules/ai/ai.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { SceneModule } from './modules/scene/scene.module';
 import { ClassroomsModule } from './modules/classrooms/classrooms.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ClassroomsModule } from './modules/classrooms/classrooms.module';
     ChatModule,
     SceneModule,
     ClassroomsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

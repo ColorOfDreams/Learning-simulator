@@ -22,6 +22,7 @@ import {
   CreateAssignmentDto,
   SubmitAssignmentDto,
 } from './dto/classrooms.dto';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class ClassroomsService {
@@ -34,6 +35,7 @@ export class ClassroomsService {
     private readonly assignmentRepo: Repository<ClassAssignmentEntity>,
     @InjectRepository(AssignmentSubmissionEntity)
     private readonly submissionRepo: Repository<AssignmentSubmissionEntity>,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async generateInviteCode(): Promise<string> {
@@ -113,7 +115,18 @@ export class ClassroomsService {
       studentCode: dto.studentCode,
       status: ClassMemberStatus.PENDING,
     });
-    return this.memberRepo.save(member);
+    const savedMember = await this.memberRepo.save(member);
+
+    // Notify teacher
+    await this.notificationsService.createNotification(
+      cls.teacherId,
+      'Yêu cầu tham gia lớp',
+      `Học sinh ${dto.studentName} (${dto.studentCode}) xin tham gia lớp ${cls.name}`,
+      'CLASS_INVITE',
+      { classId: cls.id, memberId: savedMember.id }
+    );
+
+    return savedMember;
   }
 
   async updateMemberStatus(
@@ -130,7 +143,21 @@ export class ClassroomsService {
     if (member.status === ClassMemberStatus.APPROVED) {
       member.joinedAt = new Date();
     }
-    return this.memberRepo.save(member);
+    const savedMember = await this.memberRepo.save(member);
+
+    // Notify student if they were approved
+    if (member.status === ClassMemberStatus.APPROVED && member.userId) {
+      const cls = await this.classRepo.findOne({ where: { id: classId } });
+      await this.notificationsService.createNotification(
+        member.userId,
+        'Yêu cầu được duyệt',
+        `Giáo viên đã duyệt yêu cầu tham gia lớp ${cls?.name} của bạn`,
+        'CLASS_APPROVED',
+        { classId: classId }
+      );
+    }
+
+    return savedMember;
   }
 
   async createAssignment(classId: string, dto: CreateAssignmentDto) {
@@ -138,7 +165,27 @@ export class ClassroomsService {
       ...dto,
       classId,
     });
-    return this.assignmentRepo.save(assignment);
+    const savedAssignment = await this.assignmentRepo.save(assignment);
+
+    // Notify all approved students in the class
+    const members = await this.memberRepo.find({
+      where: { classId, status: ClassMemberStatus.APPROVED },
+    });
+    const cls = await this.classRepo.findOne({ where: { id: classId } });
+    
+    for (const member of members) {
+      if (member.userId) {
+        await this.notificationsService.createNotification(
+          member.userId,
+          'Bài tập mới',
+          `Giáo viên vừa giao bài tập: ${dto.title} trong lớp ${cls?.name}`,
+          'ASSIGNMENT_NEW',
+          { classId, assignmentId: savedAssignment.id }
+        );
+      }
+    }
+
+    return savedAssignment;
   }
 
   async submitAssignment(assignmentId: string, dto: SubmitAssignmentDto) {
