@@ -10227,6 +10227,23 @@ const Workspace: React.FC = () => {
 											style={getTrackStyle(cubicD, -5, 5, '#4f6ef7')}
 											onChange={e => setCubicD(+e.target.value)} />
 									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("f(x) = ax^3+bx^2+cx+d")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("f'(x) = 3ax^2+2bx+c")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("f'(x)=0 \\Rightarrow \\text{cực trị} \\quad f''(x)=0 \\Rightarrow \\text{điểm uốn}")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("a,b,c,d")} /><span className='stu-ws__symbol-desc'>hệ số của đa thức bậc 3</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f'(x)")} /><span className='stu-ws__symbol-desc'>đạo hàm — xác định khoảng đơn điệu</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f''(x)=6ax+2b")} /><span className='stu-ws__symbol-desc'>đạo hàm cấp 2 — xác định điểm uốn</span></div>
+									</div>
 								</>
 							)}
 							{/* MATH12-02 */}
@@ -10256,6 +10273,23 @@ const Workspace: React.FC = () => {
 											style={getTrackStyle(ratD, -4, 4, '#4f6ef7')}
 											onChange={e => setRatD(+e.target.value)} />
 									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("y = \\dfrac{ax+b}{cx+d} \\quad (c \\neq 0)")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("\\text{TCĐ}: x = -\\dfrac{d}{c} \\quad \\text{TCN}: y = \\dfrac{a}{c}")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("y' = \\dfrac{ad-bc}{(cx+d)^2}")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\text{TCĐ}")} /><span className='stu-ws__symbol-desc'>tiệm cận đứng (vertical asymptote)</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\text{TCN}")} /><span className='stu-ws__symbol-desc'>tiệm cận ngang (horizontal asymptote)</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("ad-bc")} /><span className='stu-ws__symbol-desc'>điều kiện để hàm không hằng (≠ 0)</span></div>
+									</div>
 								</>
 							)}
 							{/* MATH12-03 */}
@@ -10267,6 +10301,23 @@ const Workspace: React.FC = () => {
 											style={getTrackStyle(expBase, 0.1, 4, '#4f6ef7')}
 											onChange={e => setExpBase(+e.target.value)} />
 									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("y = a^x \\quad (a>0,\\, a \\neq 1)")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("a>1: \\text{đồng biến} \\quad 0<a<1: \\text{nghịch biến}")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("\\lim_{x\\to-\\infty} a^x = 0 \\quad a^0=1 \\quad a^1=a")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("a")} /><span className='stu-ws__symbol-desc'>cơ số (a > 0, a ≠ 1)</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("a^x")} /><span className='stu-ws__symbol-desc'>hàm mũ</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("e \\approx 2.718")} /><span className='stu-ws__symbol-desc'>số Euler — cơ số tự nhiên</span></div>
+									</div>
 								</>
 							)}
 							{/* MATH12-04 */}
@@ -10277,6 +10328,23 @@ const Workspace: React.FC = () => {
 										<input type='range' min={1.01} max={10} step={0.1} value={logBaseVal}
 											style={getTrackStyle(logBaseVal, 1.01, 10, '#4f6ef7')}
 											onChange={e => setLogBaseVal(+e.target.value)} />
+									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("y = \\log_a x \\quad (a>0,\\, a\\neq 1,\\, x>0)")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("\\log_a(xy)=\\log_a x+\\log_a y")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("\\log_a\\dfrac{x}{y}=\\log_a x-\\log_a y \\quad \\log_a x^n = n\\log_a x")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\ln x = \\log_e x")} /><span className='stu-ws__symbol-desc'>logarit tự nhiên (cơ số e)</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("D = (0,+\\infty)")} /><span className='stu-ws__symbol-desc'>tập xác định</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\log_a 1 = 0")} /><span className='stu-ws__symbol-desc'>điểm qua (1, 0)</span></div>
 									</div>
 								</>
 							)}
@@ -10326,6 +10394,23 @@ const Workspace: React.FC = () => {
 											style={getTrackStyle(intN, 1, 20, '#4ade80')}
 											onChange={e => setIntN(+e.target.value)} />
 									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("\\int_a^b f(x)\\,dx = F(b) - F(a)")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("F'(x) = f(x) \\quad \\text{(F là nguyên hàm của f)}")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("\\int_a^b f\\,dx = -\\int_b^a f\\,dx")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("F(x)")} /><span className='stu-ws__symbol-desc'>nguyên hàm của f(x)</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\int_a^b")} /><span className='stu-ws__symbol-desc'>tích phân xác định từ a đến b</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("N")} /><span className='stu-ws__symbol-desc'>số dải Riemann</span></div>
+									</div>
 								</>
 							)}
 							{/* MATH12-06 */}
@@ -10356,6 +10441,22 @@ const Workspace: React.FC = () => {
 												</button>
 										</div>
 									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("S = \\int_a^b |f(x)-g(x)|\\,dx")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("\\text{Giao điểm: } f(x)=g(x) \\Rightarrow \\text{biên a, b}")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f(x)")} /><span className='stu-ws__symbol-desc'>đường cong trên (màu xanh)</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("g(x)")} /><span className='stu-ws__symbol-desc'>đường cong dưới (màu cam)</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("S")} /><span className='stu-ws__symbol-desc'>diện tích miền kẹp giữa hai đường</span></div>
+									</div>
 								</>
 							)}
 							{/* MATH12-07 */}
@@ -10372,6 +10473,23 @@ const Workspace: React.FC = () => {
 										<input type='range' min={-5} max={5} step={0.5} value={cxIm}
 											style={getTrackStyle(cxIm, -5, 5, '#4f6ef7')}
 											onChange={e => setCxIm(+e.target.value)} />
+									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("z = a+bi = r(\\cos\\theta + i\\sin\\theta)")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("|z| = r = \\sqrt{a^2+b^2} \\quad \\arg(z)=\\theta")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("z^2 = (a^2-b^2)+2abi \\quad \\bar{z} = a-bi")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\text{Re}(z)=a")} /><span className='stu-ws__symbol-desc'>phần thực</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\text{Im}(z)=b")} /><span className='stu-ws__symbol-desc'>phần ảo</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("|z| \\cdot |w| = |zw|")} /><span className='stu-ws__symbol-desc'>nhân trên mp phức = scale + quay</span></div>
 									</div>
 								</>
 							)}
@@ -10409,6 +10527,23 @@ const Workspace: React.FC = () => {
 										<input type='range' min={0.5} max={6} step={0.1} value={revH}
 											style={getTrackStyle(revH, 0.5, 6, '#4f6ef7')}
 											onChange={e => setRevH(+e.target.value)} />
+									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("V_{\\text{cầu}}=\\tfrac{4}{3}\\pi R^3 \\quad S_{\\text{cầu}}=4\\pi R^2")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("V_{\\text{trụ}}=\\pi R^2 h \\quad S_{\\text{xq,trụ}}=2\\pi Rh")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("V_{\\text{nón}}=\\tfrac{1}{3}\\pi R^2 h \\quad S_{\\text{xq,nón}}=\\pi Rl")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("R")} /><span className='stu-ws__symbol-desc'>bán kính đáy</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("h")} /><span className='stu-ws__symbol-desc'>chiều cao</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("l=\\sqrt{R^2+h^2}")} /><span className='stu-ws__symbol-desc'>đường sinh mặt nón</span></div>
 									</div>
 								</>
 							)}
@@ -10459,6 +10594,23 @@ const Workspace: React.FC = () => {
 											style={getTrackStyle(ph3R2, 0.1, 3, '#4f6ef7')}
 											onChange={e => setPh3R2(+e.target.value)} />
 									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("V_{\\text{lăng trụ}} = S_{\\text{đáy}} \\cdot h")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("V_{\\text{chóp}} = \\tfrac{1}{3}S_{\\text{đáy}} \\cdot h")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("V_{\\text{chóp cụt}} = \\tfrac{h}{3}(S_1+S_2+\\sqrt{S_1 S_2})")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("S_{n\\text{-giác}}=\\tfrac{nR^2}{2}\\sin\\tfrac{2\\pi}{n}")} /><span className='stu-ws__symbol-desc'>diện tích đa giác đều n cạnh</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("h")} /><span className='stu-ws__symbol-desc'>chiều cao khối</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("R, r")} /><span className='stu-ws__symbol-desc'>bán kính đáy lớn và đáy nhỏ (chóp cụt)</span></div>
+									</div>
 								</>
 							)}
 							{/* MATH12-10 */}
@@ -10487,6 +10639,22 @@ const Workspace: React.FC = () => {
 										<input type='range' min={-5} max={5} step={0.5} value={plD}
 											style={getTrackStyle(plD, -5, 5, '#4f6ef7')}
 											onChange={e => setPlD(+e.target.value)} />
+									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("ax+by+cz+d=0 \\quad \\vec{n}=(a,b,c) \\text{ là pháp vectơ}")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("d(M_0,P) = \\dfrac{|ax_0+by_0+cz_0+d|}{\\sqrt{a^2+b^2+c^2}}")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\vec{n}=(a,b,c)")} /><span className='stu-ws__symbol-desc'>pháp vectơ mặt phẳng</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("d(M,P)")} /><span className='stu-ws__symbol-desc'>khoảng cách từ điểm M đến mặt phẳng P</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("d(O,P)=|d|/|\\vec{n}|")} /><span className='stu-ws__symbol-desc'>khoảng cách từ gốc đến mặt phẳng</span></div>
 									</div>
 								</>
 							)}
@@ -10528,6 +10696,23 @@ const Workspace: React.FC = () => {
 										<input type='range' min={-4} max={4} step={0.5} value={ln3Uz}
 											style={getTrackStyle(ln3Uz, -4, 4, '#f97316')}
 											onChange={e => setLn3Uz(+e.target.value)} />
+									</div>
+
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+									</div>
+									<div className='stu-ws__formula-box'>
+										<div dangerouslySetInnerHTML={renderTex("\\dfrac{x-x_0}{a}=\\dfrac{y-y_0}{b}=\\dfrac{z-z_0}{c}=t")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("\\vec{r}(t)=M_0+t\\vec{u} \\quad \\vec{u}=(a,b,c) \\text{ vtcp}")} style={{ marginBottom: '6px' }} />
+										<div dangerouslySetInnerHTML={renderTex("d(O,d)=\\dfrac{|\\overrightarrow{OM_0}\\times\\vec{u}|}{|\\vec{u}|}")} style={{ marginBottom: '6px' }} />
+									</div>
+									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+									</div>
+									<div className='stu-ws__symbols-list'>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("M_0(x_0,y_0,z_0)")} /><span className='stu-ws__symbol-desc'>điểm thuộc đường thẳng</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\vec{u}=(a,b,c)")} /><span className='stu-ws__symbol-desc'>vectơ chỉ phương (vtcp)</span></div>
+										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("t \\in \\mathbb{R}")} /><span className='stu-ws__symbol-desc'>tham số</span></div>
 									</div>
 								</>
 							)}
