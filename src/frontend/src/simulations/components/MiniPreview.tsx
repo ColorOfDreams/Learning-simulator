@@ -24,8 +24,6 @@ const PreviewModel: React.FC<{ modelName: string }> = ({ modelName }) => {
     'VatNang': 'MassBlock',
     'LoXo': 'Spring',
     'DongHoNangLuong': 'EnergyMeter',
-    'ThuocDo': 'Ruler',
-    'ThuocDoGoc': 'Protractor',
     'BoGiamChan': 'Dashpot',
     'DongHoBamGiay': 'Stopwatch',
     'ConLacLoXo': 'SpringPendulum',
@@ -75,8 +73,6 @@ const PreviewModel: React.FC<{ modelName: string }> = ({ modelName }) => {
     case 'MassBlock': return (<group position={[0, 0, 0]}><mesh position={[0, 0.35, 0]}><torusGeometry args={[0.1, 0.03, 8, 12]} /><meshStandardMaterial color="#94a3b8" metalness={0.9} roughness={0.1} /></mesh><mesh><boxGeometry args={[0.7, 0.7, 0.7]} /><meshStandardMaterial color="#f97316" roughness={0.3} metalness={0.6} /></mesh><mesh position={[0, -0.35, 0]}><torusGeometry args={[0.1, 0.03, 8, 12]} /><meshStandardMaterial color="#94a3b8" metalness={0.9} roughness={0.1} /></mesh></group>);
     case 'WoodenBlock': return (<mesh><boxGeometry args={[1.2, 1.2, 1.2]} /><meshStandardMaterial color="#feca57" roughness={0.6} metalness={0.1} /></mesh>);
     case 'Stopwatch': return (<group><mesh><boxGeometry args={[0.25, 0.16, 0.4]} /><meshStandardMaterial color="#1e293b" roughness={0.2} metalness={0.5} /></mesh><mesh position={[0, 0.1, 0]}><boxGeometry args={[0.18, 0.03, 0.28]} /><meshStandardMaterial color="#0f172a" roughness={0.1} /></mesh></group>);
-    case 'Ruler': return (<mesh><boxGeometry args={[0.8, 0.08, 0.08]} /><meshStandardMaterial color="#fef3c7" roughness={0.4} /></mesh>);
-    case 'Protractor': return (<group rotation={[0, 0, -Math.PI / 2]}><mesh><ringGeometry args={[0.2, 0.24, 64, 1, Math.PI]} /><meshStandardMaterial color="#fef3c7" roughness={0.3} side={2} /></mesh><mesh><cylinderGeometry args={[0.015, 0.015, 0.05]} /><meshStandardMaterial color="#374151" metalness={0.8} roughness={0.2} /></mesh></group>);
     case 'Dashpot': return (<group position={[0, 0.8, 0]}><mesh position={[0, 0.8, 0]}><boxGeometry args={[0.4, 0.06, 0.4]} /><meshStandardMaterial color="#374151" metalness={0.8} roughness={0.2} /></mesh><mesh position={[0, 0.2, 0]}><cylinderGeometry args={[0.2, 0.2, 1.0]} /><meshStandardMaterial color="#94a3b8" metalness={0.7} roughness={0.3} transparent opacity={0.6} /></mesh><mesh position={[0, -0.5, 0]}><cylinderGeometry args={[0.1, 0.1, 0.5]} /><meshStandardMaterial color="#64748b" metalness={0.9} roughness={0.1} /></mesh></group>);
     case 'DrivingMotor': return (<group><mesh><boxGeometry args={[0.6, 0.5, 0.5]} /><meshStandardMaterial color="#475569" roughness={0.3} metalness={0.8} /></mesh><mesh position={[0.35, 0, 0]}><cylinderGeometry args={[0.12, 0.12, 0.06, 32]} /><meshStandardMaterial color="#ef4444" roughness={0.2} metalness={0.9} /></mesh></group>);
     case 'EnergyMeter': return (<group><mesh><boxGeometry args={[0.5, 0.35, 0.08]} /><meshStandardMaterial color="#1e293b" roughness={0.2} metalness={0.5} /></mesh><mesh position={[-0.12, -0.17, 0.05]}><boxGeometry args={[0.12, 0.35, 0.015]} /><meshStandardMaterial color="#ef4444" roughness={0.2} /></mesh><mesh position={[0.12, -0.17, 0.05]}><boxGeometry args={[0.12, 0.35, 0.015]} /><meshStandardMaterial color="#3b82f6" roughness={0.2} /></mesh></group>);

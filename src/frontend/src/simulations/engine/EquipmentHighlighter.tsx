@@ -10,7 +10,7 @@ interface Props {
 }
 
 const getInitY = (m: string) => {
-  const map: Record<string, number> = { WoodenBlock:0.15, Beaker:0.4, Stand:1.9, SimplePendulum:1.5, SpringPendulum:1.5, Spring:1.5, MassBlock:0.2, Dashpot:0.5, DrivingMotor:0.2, Stopwatch:0.1, Ruler:0.05, Protractor:0.05, EnergyMeter:0.05, TestTube:0.2, ErlenmeyerFlask:0.3, RoundFlask:0.4, BunsenBurner:0.1, ChemicalSolid:0.1, ChemicalLiquid:0.2, ChemicalGas:0.5, ChatLong:0.2, ChatRan:0.25, ChatKhi:0.25, NuocCat:0.2, AxitClohidric:0.2, NatriHidroxit:0.2, AxitSunfuric:0.2, DongSunfat:0.2, Phenolphtalein:0.2, QuyTim:0.2 };
+  const map: Record<string, number> = { WoodenBlock:0.15, Beaker:0.4, Stand:1.9, SimplePendulum:1.5, SpringPendulum:1.5, Spring:1.5, MassBlock:0.2, Dashpot:0.5, DrivingMotor:0.2, Stopwatch:0.1, EnergyMeter:0.05, TestTube:0.2, ErlenmeyerFlask:0.3, RoundFlask:0.4, BunsenBurner:0.1, ChemicalSolid:0.1, ChemicalLiquid:0.2, ChemicalGas:0.5, ChatLong:0.2, ChatRan:0.25, ChatKhi:0.25, NuocCat:0.2, AxitClohidric:0.2, NatriHidroxit:0.2, AxitSunfuric:0.2, DongSunfat:0.2, Phenolphtalein:0.2, QuyTim:0.2 };
   return map[m] ?? 0;
 };
 

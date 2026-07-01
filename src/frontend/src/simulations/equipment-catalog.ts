@@ -1,4 +1,4 @@
-﻿export interface EquipmentDef {
+export interface EquipmentDef {
   id: string;
   name: string;
   subject: 'physics' | 'chemistry' | 'math';
@@ -105,18 +105,6 @@ export const ALL_EQUIPMENT: EquipmentDef[] = [
   },
   {
     id: 'Stopwatch', name: 'Đồng hồ bấm giờ', subject: 'physics', grade: 11,
-    chapter: 'chuong-1-dao-dong', chapterName: 'Chương 1: Dao động',
-    topic: 'dao-dong-dieu-hoa', topicName: 'Dao động điều hòa',
-    type: 'do-luong', connections: [],
-  },
-  {
-    id: 'Ruler', name: 'Thước đo', subject: 'physics', grade: 11,
-    chapter: 'chuong-1-dao-dong', chapterName: 'Chương 1: Dao động',
-    topic: 'dao-dong-dieu-hoa', topicName: 'Dao động điều hòa',
-    type: 'do-luong', connections: [],
-  },
-  {
-    id: 'Protractor', name: 'Thước đo góc', subject: 'physics', grade: 11,
     chapter: 'chuong-1-dao-dong', chapterName: 'Chương 1: Dao động',
     topic: 'dao-dong-dieu-hoa', topicName: 'Dao động điều hòa',
     type: 'do-luong', connections: [],
@@ -282,7 +270,7 @@ export const ALL_EQUIPMENT: EquipmentDef[] = [
 export const INITIAL_Y: Record<string, number> = {
   WoodenBlock: 0.15, Beaker: 0.4, Stand: 1.9,
   SimplePendulum: 1.5, SpringPendulum: 1.5, Spring: 1.5,
-  MassBlock: 0.2, Stopwatch: 0.1, Ruler: 0.05, Protractor: 0.05,
+  MassBlock: 0.2, Stopwatch: 0.1,
   Dashpot: 0.5, DrivingMotor: 0.2, EnergyMeter: 0.05,
   TestTube: 0.2, ErlenmeyerFlask: 0.3, RoundFlask: 0.4, BunsenBurner: 0.1, ChemicalSolid: 0.1, ChemicalLiquid: 0.2, ChemicalGas: 0.5,
   NuocCat: 0.2, AxitClohidric: 0.2, NatriHidroxit: 0.2, AxitSunfuric: 0.2, AxitSunfuricDac: 0.2, DongSunfat: 0.2, Phenolphtalein: 0.2, QuyTim: 0.2,

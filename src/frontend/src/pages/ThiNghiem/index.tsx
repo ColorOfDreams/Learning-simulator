@@ -55,8 +55,6 @@ const ThiNghiem: React.FC = () => {
           'MassBlock': 'quả nặng',
           'WoodenBlock': 'khối gỗ',
           'Stopwatch': 'đồng hồ bấm giây',
-          'Ruler': 'thước kẻ',
-          'Protractor': 'thước đo góc',
           'Dashpot': 'bộ giảm chấn',
           'DrivingMotor': 'động cơ',
           'EnergyMeter': 'đồng hồ năng lượng',

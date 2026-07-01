@@ -12,21 +12,21 @@ const LABELS: Record<string, string> = {
   WoodenBlock: 'Khối gỗ', Beaker: 'Cốc thủy tinh', Stand: 'Giá đỡ',
   SimplePendulum: 'Con lắc đơn', SpringPendulum: 'Con lắc lò xo',
   Spring: 'Lò xo', MassBlock: 'Vật nặng', Stopwatch: 'Đồng hồ',
-  Ruler: 'Thước', Protractor: 'Thước đo góc', Dashpot: 'Bộ giảm chấn',
+  Dashpot: 'Bộ giảm chấn',
   DrivingMotor: 'Động cơ', EnergyMeter: 'Năng lượng',
 };
 
 const COLORS: Record<string, string> = {
   WoodenBlock: '#f59e0b', Beaker: '#06b6d4', Stand: '#6b7280',
   SimplePendulum: '#ef4444', SpringPendulum: '#3b82f6', Spring: '#64748b',
-  MassBlock: '#f97316', Stopwatch: '#22c55e', Ruler: '#eab308',
-  Protractor: '#a855f7', Dashpot: '#78716c', DrivingMotor: '#dc2626', EnergyMeter: '#8b5cf6',
+  MassBlock: '#f97316', Stopwatch: '#22c55e',
+  Dashpot: '#78716c', DrivingMotor: '#dc2626', EnergyMeter: '#8b5cf6',
 };
 
 const EMOJIS: Record<string, string> = {
   Stand: '🏗️', SimplePendulum: '⏳', SpringPendulum: '🪩', Spring: '🪀',
-  MassBlock: '🧱', WoodenBlock: '🪵', Stopwatch: '⏱️', Ruler: '📏',
-  Protractor: '📐', Dashpot: '🪫', DrivingMotor: '⚙️', EnergyMeter: '📊', Beaker: '🧫',
+  MassBlock: '🧱', WoodenBlock: '🪵', Stopwatch: '⏱️',
+  Dashpot: '🪫', DrivingMotor: '⚙️', EnergyMeter: '📊', Beaker: '🧫',
 };
 
 const Step3Properties: React.FC<Props> = ({ data, onChange, onBack }) => {

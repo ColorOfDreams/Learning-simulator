@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import * as THREE from 'three';
 import DoiTuongKeoTha from '@/simulations/engine/DraggablePhysicsObject';
 import { VatLieuThuyTinh } from '@/dung-cu/dung-chung/VatLieuThuyTinh';
@@ -161,8 +161,9 @@ const COMPOUND_NAMES: Record<string, string> = {
   'quy-tim': 'Quỳ tím',
 };
 const useChemColor = (doiTuong: Scene.Object, fallback: string) => {
-  const symbol = doiTuong.thuocTinh?.kyHieu || doiTuong.properties?.kyHieu || doiTuong.properties?.symbol;
-  if (!symbol) return fallback;
+  const rawSymbol = doiTuong.thuocTinh?.kyHieu || doiTuong.properties?.kyHieu || doiTuong.properties?.symbol;
+  if (!rawSymbol) return fallback;
+  const symbol = String(rawSymbol).trim();
   if (COMPOUND_COLORS[symbol]) return COMPOUND_COLORS[symbol];
   const comp = findCompoundChemical(symbol);
   if (comp) return comp.color;
@@ -170,8 +171,9 @@ const useChemColor = (doiTuong: Scene.Object, fallback: string) => {
   return chem && chem.color !== 'transparent' ? chem.color : fallback;
 };
 
-export const getChemColor = (symbol: string, fallback: string = '#00a8ff') => {
-  if (!symbol) return fallback;
+export const getChemColor = (rawSymbol: string, fallback: string = '#00a8ff') => {
+  if (!rawSymbol) return fallback;
+  const symbol = String(rawSymbol).trim();
   if (COMPOUND_COLORS[symbol]) return COMPOUND_COLORS[symbol];
   const comp = findCompoundChemical(symbol);
   if (comp) return comp.color;
@@ -182,14 +184,14 @@ export const getChemColor = (symbol: string, fallback: string = '#00a8ff') => {
 const resolveChemSymbol = (obj: Scene.Object | null, props?: Record<string, any>): string => {
   if (!obj && !props) return '';
   const p = props || {};
-  return (obj as any)?.thuocTinh?.kyHieu || (obj as any)?.properties?.symbol || (obj as any)?.properties?.kyHieu || p.symbol || p.kyHieu || '';
+  return (String((obj as any)?.thuocTinh?.kyHieu || (obj as any)?.properties?.symbol || (obj as any)?.properties?.kyHieu || p.symbol || p.kyHieu || '')).trim();
 };
 
 export const resolveChemColor = (symbol: string, fallback: string = '#00a8ff') => getChemColor(symbol, fallback);
 
 export const processPouring = (sourceProps: Record<string, any>, targetProps: Record<string, any>, equipmentContext?: { hasHeat?: boolean; hasCatalyst?: string | null; temperature?: number }) => {
-  const sSym = sourceProps.symbol || sourceProps.kyHieu;
-  const tSym = targetProps.symbol || targetProps.kyHieu;
+  const sSym = (sourceProps.symbol || sourceProps.kyHieu || '').trim();
+  const tSym = (targetProps.symbol || targetProps.kyHieu || '').trim();
 
   const sVol = sourceProps.theTich || sourceProps.khoiLuong || sourceProps.liquidVolume || sourceProps.chemicalLevel || 100;
   const tVol = targetProps.theTich || targetProps.khoiLuong || targetProps.liquidVolume || targetProps.chemicalLevel || 0;
@@ -411,12 +413,12 @@ export const ChatRan: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doT
   const chem = symbol ? findChemical(symbol) : null;
   const comp = symbol ? findCompoundChemical(symbol) : null;
   const compoundName = symbol ? COMPOUND_NAMES[symbol] : null;
-  const displayName = chem?.name || comp?.name || compoundName;
-  const nhan = displayName ? `${displayName} (${symbol})` : (doiTuong.nhan || "Chat ran");
+  const displayName = chem?.name || comp?.name || compoundName || doiTuong.properties?.name;
+  const nhan = displayName ? (symbol ? `${displayName} (${symbol})` : displayName as string) : (doiTuong.nhan || "Chat ran");
   const level = doiTuong.properties?.khoiLuong ?? doiTuong.thuocTinh?.khoiLuong ?? doiTuong.properties?.chemicalLevel ?? doiTuong.thuocTinh?.chemicalLevel ?? 100;
   return (
     <DoiTuongKeoTha doiTuong={doiTuong} nhan={nhan} kichThuocVaCham={[0.4, 0.6, 0.4]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene}>
-      <ChemicalJar label={symbol}>
+      <ChemicalJar label={symbol || (doiTuong.properties?.name as string)}>
         {level > 0 && (() => {
           const h = (level / 500) * 0.2;
           return (
@@ -438,12 +440,12 @@ export const ChatLong: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, do
   const chem = symbol ? findChemical(symbol) : null;
   const comp = symbol ? findCompoundChemical(symbol) : null;
   const compoundName = symbol ? COMPOUND_NAMES[symbol] : null;
-  const displayName = chem?.name || comp?.name || compoundName;
-  const nhan = displayName ? `${displayName} (${symbol})` : (doiTuong.nhan || "Chat long");
+  const displayName = chem?.name || comp?.name || compoundName || doiTuong.properties?.name;
+  const nhan = displayName ? (symbol ? `${displayName} (${symbol})` : displayName as string) : (doiTuong.nhan || "Chat long");
   const level = doiTuong.properties?.theTich ?? doiTuong.thuocTinh?.theTich ?? doiTuong.properties?.chemicalLevel ?? doiTuong.thuocTinh?.chemicalLevel ?? 100;
   return (
     <DoiTuongKeoTha doiTuong={doiTuong} nhan={nhan} kichThuocVaCham={[0.4, 0.6, 0.4]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene}>
-      <ChemicalJar label={symbol} isGas>
+      <ChemicalJar label={symbol || (doiTuong.properties?.name as string)} isGas>
         {level > 0 && (() => {
           const opacity = 0.1 + (level / 500) * 0.4;
           return (

@@ -23,7 +23,7 @@ export function validateExperiment(objects: Scene.Object[]): ValidationResult {
   const chemicals = objects.filter((o) => chemicalTypes.includes(o.modelName));
   const containers = ['Beaker', 'TestTube', 'ErlenmeyerFlask', 'RoundFlask', 'Burette'];
   const hasContainer = objects.some((o) => containers.includes(o.modelName));
-  const hasMeasuringTool = ids.has('Stopwatch') || ids.has('Ruler') || ids.has('Protractor') || ids.has('Thermometer');
+  const hasMeasuringTool = ids.has('Stopwatch') || ids.has('Thermometer');
   const mathTypes = ['CoordinatePlane', 'ParabolaGraph', 'TrigWave', 'GeometryTriangle', 'GeometryCircle', 'Vector2D', 'FunctionPlotter', 'StatisticsChart'];
   const mathObjects = objects.filter((o) => mathTypes.includes(o.modelName));
   const physicsTypes = ['WoodenBlock', 'Stand', 'SimplePendulum', 'SpringPendulum', 'Spring', 'MassBlock', 'Dashpot', 'DrivingMotor', 'EnergyMeter'];

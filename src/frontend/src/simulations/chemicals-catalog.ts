@@ -1,4 +1,4 @@
-﻿export interface Chemical {
+export interface Chemical {
   symbol: string; name: string; atomicNumber: number; atomicMass: number;
   state: 'solid' | 'liquid' | 'gas'; color: string;
   group: string; groupLabel: string; period: number; appearance: string;
@@ -232,9 +232,12 @@ export const REACTION_RULES: ReactionRule[] = [
   { id:'mg-hcl', reactants:['Mg','HCl'], products:['MgCl2','H2'], effect:'bubble', description:'Mg + 2HCl → MgCl2 + H2↑. Magie tan nhanh, sủi bọt mạnh, tỏa nhiệt' },
   { id:'fe-h2so4', reactants:['Fe','H2SO4'], products:['FeSO4','H2'], effect:'bubble', newColor:'#a0d080', description:'Fe + H2SO4(loãng) → FeSO4 + H2↑. Sắt tan, sủi bọt, dd xanh lục nhạt' },
   { id:'al-h2so4', reactants:['Al','H2SO4'], products:['Al2(SO4)3','H2'], effect:'bubble', description:'2Al + 3H2SO4(loãng) → Al2(SO4)3 + 3H2↑. Nhôm tan, sủi bọt' },
+  { id:'al-h2so4-dac', reactants:['Al','H2SO4(dac)'], products:['Al2(SO4)3','SO2','H2O'], effect:'bubble', newColor:'#ffffff', description:'2Al + 6H2SO4(đặc, t°) → Al2(SO4)3 + 3SO2↑ + 6H2O. Nhôm tan, sủi bọt (Lưu ý: thụ động ở đk thường)' },
   { id:'na-hcl', reactants:['Na','HCl'], products:['NaCl','H2'], effect:'bubble', description:'2Na + 2HCl → 2NaCl + H2↑. Natri phản ứng mãnh liệt với axit, nổ nhẹ' },
   { id:'k-hcl', reactants:['K','HCl'], products:['KCl','H2'], effect:'explosion', description:'2K + 2HCl → 2KCl + H2↑. Kali phản ứng cực mạnh với axit, lửa tím, nổ' },
   { id:'mg-h2so4', reactants:['Mg','H2SO4'], products:['MgSO4','H2'], effect:'bubble', description:'Mg + H2SO4(loãng) → MgSO4 + H2↑. Magie tan nhanh, sủi bọt' },
+  { id:'mg-h2so4-dac', reactants:['Mg','H2SO4(dac)'], products:['MgSO4','SO2','H2O'], effect:'bubble', newColor:'#ffffff', description:'Mg + 2H2SO4(đặc, t°) → MgSO4 + SO2↑ + 2H2O. Magie tan, sủi bọt khí SO2' },
+  { id:'zn-h2so4-dac', reactants:['Zn','H2SO4(dac)'], products:['ZnSO4','SO2','H2O'], effect:'bubble', newColor:'#ffffff', description:'Zn + 2H2SO4(đặc, t°) → ZnSO4 + SO2↑ + 2H2O. Kẽm tan, sủi bọt khí SO2' },
   { id:'cao-water', reactants:['CaO','H2O'], products:['Ca(OH)2'], effect:'explosion', description:'CaO + H2O → Ca(OH)2. Vôi sống tan, tỏa nhiệt mạnh, dung dịch đục màu sữa' },
   { id:'na2o-water', reactants:['Na2O','H2O'], products:['NaOH'], effect:'bubble', description:'Na2O + H2O → 2NaOH. Natri oxit tan mạnh, tỏa nhiệt, dd kiềm' },
   { id:'cuo-hcl', reactants:['CuO','HCl'], products:['CuCl2','H2O'], effect:'dissolve', newColor:'#00cc88', description:'CuO + 2HCl → CuCl2 + H2O. CuO đen tan dần, dung dịch chuyển xanh lục' },

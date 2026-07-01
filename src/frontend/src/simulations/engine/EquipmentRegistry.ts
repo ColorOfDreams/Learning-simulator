@@ -102,18 +102,6 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
     getSnapPoints: () => [],
     tags: [],
   },
-  Ruler: {
-    getCollider: () => [0.5, 0.05, 0.05],
-    initY: 0.05,
-    getSnapPoints: () => [],
-    tags: [],
-  },
-  Protractor: {
-    getCollider: () => [0.3, 0.3, 0.05],
-    initY: 0.05,
-    getSnapPoints: () => [],
-    tags: [],
-  },
   Dashpot: {
     getCollider: () => [0.3, 1.0, 0.3],
     initY: 0.5,

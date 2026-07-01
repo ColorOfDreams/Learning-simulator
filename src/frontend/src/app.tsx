@@ -32,8 +32,6 @@ import '@/dung-cu/vat-ly/GiaDo';
 import '@/dung-cu/vat-ly/LoXo';
 import '@/dung-cu/vat-ly/VatNang';
 import '@/dung-cu/vat-ly/KhoiGo';
-import '@/dung-cu/vat-ly/ThuocDo';
-import '@/dung-cu/vat-ly/ThuocDoGoc';
 import '@/dung-cu/vat-ly/BoGiamChan';
 import '@/dung-cu/vat-ly/DongHoNangLuong';
 import '@/dung-cu/hoa-hoc/CocThuyTinh';

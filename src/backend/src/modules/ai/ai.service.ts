@@ -1588,9 +1588,9 @@ export class AiService {
     }
 
     const equipmentList = [
-      'Vật lý: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
-      'Hóa học: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
-      'Toán học: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
+      'Vật lý: Giá đỡ (Stand), Con lắc đơn (SimplePendulum), Con lắc lò xo (SpringPendulum), Lò xo (Spring), Quả nặng (MassBlock), Khối gỗ (WoodenBlock), Đồng hồ bấm giây (Stopwatch), Bộ giảm chấn (Dashpot), Động cơ (DrivingMotor), Đồng hồ đo điện (EnergyMeter)',
+      'Hóa học: Cốc mỏ (Beaker), Ống nghiệm (TestTube), Bình tam giác (ErlenmeyerFlask), Bình cầu (RoundFlask), Buret (Burette), Pipet (Pipette), Nhiệt kế (Thermometer), Đèn cồn (BunsenBurner), Máy đo pH (pHMeter), Ống sinh hàn (Condenser), Cối chày (Mortar), Bảng tuần hoàn (PeriodicTable), Hóa chất rắn (ChemicalSolid), Hóa chất lỏng (ChemicalLiquid), Hóa chất khí (ChemicalGas)',
+      'Toán học: Mặt phẳng tọa độ (CoordinatePlane), Đồ thị Parabol (ParabolaGraph), Đồ thị Lượng giác (TrigWave), Hình tam giác (GeometryTriangle), Hình tròn (GeometryCircle), Vectơ 2D (Vector2D), Đồ thị hàm số (FunctionPlotter), Biểu đồ thống kê (StatisticsChart)',
     ].join('\n');
 
     try {
@@ -1599,7 +1599,9 @@ export class AiService {
           role: 'system',
           content: `Bạn là trợ lý thiết kế thí nghiệm 3D cho học sinh lớp 11. 
 Dụng cụ có sẵn:\n${equipmentList}\n
-Dựa trên mô tả của học sinh, hãy chọn dụng cụ và thông số phù hợp. Đồng thời, tự động tạo các bước hướng dẫn thực hành (steps).
+Dựa trên mô tả của học sinh, hãy chọn dụng cụ và thông số phù hợp.
+CHỈ ĐƯỢC PHÉP SỬ DỤNG CÁC DỤNG CỤ TRONG DANH SÁCH TRÊN. TUYỆT ĐỐI KHÔNG TỰ BỊA RA DỤNG CỤ KHÁC (ví dụ: không tạo Que diêm, Bật lửa, Muỗng, Găng tay, v.v. nếu không có trong danh sách).
+Đồng thời, tự động tạo các bước hướng dẫn thực hành (steps).
 Lưu ý: Giá đỡ (Stand) đã có sẵn trên bàn, KHÔNG tạo bước yêu cầu kéo giá đỡ lên bàn.
 Trả về CHỈ JSON (không markdown, không giải thích):
 {
@@ -1607,7 +1609,7 @@ Trả về CHỈ JSON (không markdown, không giải thích):
   "roomType": "physics|chemistry|math",
   "explanation": "giải thích ngắn 1-2 câu",
   "objects": [
-    { "modelName": "tên dụng cụ", "properties": { "key": value } }
+    { "modelName": "tên dụng cụ TIẾNG ANH trong ngoặc đơn (VD: Beaker)", "properties": { "name": "Tên tiếng Việt hiển thị", "symbol": "Ký hiệu hóa học nếu là hóa chất (VD: Fe, H2SO4)" } }
   ],
   "steps": [
     { 
@@ -1680,9 +1682,9 @@ Quy định expectedAction.type: "drag_and_drop" (khi kéo thả lên bàn), "po
     });
 
     const equipmentList = [
-      'Vật lý: Stand, SimplePendulum, SpringPendulum, Spring, MassBlock, WoodenBlock, Stopwatch, Ruler, Protractor, Dashpot, DrivingMotor, EnergyMeter',
-      'Hóa học: Beaker, TestTube, ErlenmeyerFlask, RoundFlask, Burette, Pipette, Thermometer, BunsenBurner, pHMeter, Condenser, Mortar, PeriodicTable, ChemicalSolid, ChemicalLiquid, ChemicalGas',
-      'Toán học: CoordinatePlane, ParabolaGraph, TrigWave, GeometryTriangle, GeometryCircle, Vector2D, FunctionPlotter, StatisticsChart',
+      'Vật lý: Giá đỡ (Stand), Con lắc đơn (SimplePendulum), Con lắc lò xo (SpringPendulum), Lò xo (Spring), Quả nặng (MassBlock), Khối gỗ (WoodenBlock), Đồng hồ bấm giây (Stopwatch), Thước kẻ (Ruler), Thước đo góc (Protractor), Bộ giảm chấn (Dashpot), Động cơ (DrivingMotor), Đồng hồ đo điện (EnergyMeter)',
+      'Hóa học: Cốc mỏ (Beaker), Ống nghiệm (TestTube), Bình tam giác (ErlenmeyerFlask), Bình cầu (RoundFlask), Buret (Burette), Pipet (Pipette), Nhiệt kế (Thermometer), Đèn cồn (BunsenBurner), Máy đo pH (pHMeter), Ống sinh hàn (Condenser), Cối chày (Mortar), Bảng tuần hoàn (PeriodicTable), Hóa chất rắn (ChemicalSolid), Hóa chất lỏng (ChemicalLiquid), Hóa chất khí (ChemicalGas)',
+      'Toán học: Mặt phẳng tọa độ (CoordinatePlane), Đồ thị Parabol (ParabolaGraph), Đồ thị Lượng giác (TrigWave), Hình tam giác (GeometryTriangle), Hình tròn (GeometryCircle), Vectơ 2D (Vector2D), Đồ thị hàm số (FunctionPlotter), Biểu đồ thống kê (StatisticsChart)',
     ].join('\n');
 
     const references = ragChunks
@@ -1712,8 +1714,8 @@ QUY TRÌNH 2 BƯỚC:
 - TỰ đề xuất thông số mặc định hợp lý, KHÔNG hỏi lại chi tiết
 - Trình bày gọn trong 4-5 câu:
   1 dòng tên thí nghiệm
-  1 danh sách dụng cụ (dùng dấu -)
-  1-2 dòng thông số chính
+  1 danh sách dụng cụ đã được DỊCH SANG TIẾNG VIỆT (dùng dấu -) (Tuyệt đối KHÔNG giữ lại tên tiếng Anh trong câu trả lời)
+  1-2 dòng thông số chính (dịch sang tiếng Việt)
   Kết thúc: "Bạn có muốn tôi tạo thí nghiệm này không?"
 - TUYỆT ĐỐI KHÔNG trả JSON ở bước này
 
@@ -1724,10 +1726,10 @@ QUY TRÌNH 2 BƯỚC:
   "name": "tên thí nghiệm",
   "roomType": "physics|chemistry|math",
   "objects": [
-    { "modelName": "tên dụng cụ trong danh sách", "properties": { "key": "value" } }
+    { "modelName": "tên dụng cụ (tiếng Anh)", "properties": { "name": "Tên tiếng Việt để hiển thị", "symbol": "Ký hiệu hóa học nếu là hóa chất (VD: Fe, H2SO4)" } }
   ]
 }
-- Chỉ dùng modelName CÓ TRONG danh sách dụng cụ có sẵn
+- Bắt buộc dùng TÊN TIẾNG ANH (từ nằm trong ngoặc đơn) cho trường modelName CÓ TRONG danh sách dụng cụ có sẵn. VD: "Beaker", KHÔNG dùng "Cốc mỏ".
 - Sau JSON có thể kèm 1 dòng chúc mừng ngắn`;
 
     const userPrompt = `CONTEXT:

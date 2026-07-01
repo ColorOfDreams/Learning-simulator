@@ -17,12 +17,13 @@ const TYPE_COLORS: Record<string, string> = {
 };
 
 const CHEM_GENERICS = ['ChemicalSolid', 'ChemicalLiquid', 'ChemicalGas'];
-const CHEM_BOTTLES = ['NuocCat','AxitClohidric','NatriHidroxit','AxitSunfuric','DongSunfat','Phenolphtalein','QuyTim'];
+const CHEM_BOTTLES = ['NuocCat', 'Phenolphtalein', 'QuyTim'];
+const REDUNDANT_COMPOUNDS = ['AxitClohidric', 'NatriHidroxit', 'AxitSunfuric', 'AxitSunfuricDac', 'DongSunfat'];
 const isChem = (id: string) => CHEM_GENERICS.includes(id) || CHEM_BOTTLES.includes(id);
 
 const BOTTLE_PROPS: Record<string, any> = {
   NuocCat: { symbol: 'H2O' }, AxitClohidric: { symbol: 'HCl' }, NatriHidroxit: { symbol: 'NaOH' },
-  AxitSunfuric: { symbol: 'H2SO4' }, DongSunfat: { symbol: 'CuSO4' },
+  AxitSunfuric: { symbol: 'H2SO4' }, AxitSunfuricDac: { symbol: 'H2SO4(dac)' }, DongSunfat: { symbol: 'CuSO4' },
   Phenolphtalein: { symbol: 'phenolphtalein' }, QuyTim: { symbol: 'quy-tim' },
 };
 
@@ -58,6 +59,7 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange, filterMode = 'both' 
         if (topic && eq.topic !== topic) return false;
         if (type && eq.type !== type) return false;
         if (search && !eq.name.toLowerCase().includes(search.toLowerCase())) return false;
+        if (REDUNDANT_COMPOUNDS.includes(eq.id)) return false;
         return true;
       });
   }, [data.roomType, grade, chapter, topic, type, search]);
@@ -100,11 +102,16 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange, filterMode = 'both' 
 
   const addChemical = (chem: Chemical | CompoundChemical) => {
     if (!chemPicker) return;
-    const c = { id: `${chemPicker.type}_${chem.symbol}_${Date.now()}`, modelName: chemPicker.type,
-      position: [0,5,0] as [number,number,number], rotation: [0,0,0] as [number,number,number], scale: [1,1,1] as [number,number,number],
-      properties: { symbol: chem.symbol, color: chem.color !== 'transparent' ? chem.color : '#94a3b8', khoiLuong: (chem as Chemical).atomicMass || 100, theTich: 100 } };
-    onChange({ ...data, objects: [...(data.objects || []), c] });
-    setChemPicker(null); setChemSearch('');
+    const isSelected = data.objects?.some(o => o.properties?.symbol === chem.symbol && o.modelName === chemPicker.type);
+    if (isSelected) {
+      const newObjs = data.objects?.filter(o => !(o.properties?.symbol === chem.symbol && o.modelName === chemPicker.type)) || [];
+      onChange({ ...data, objects: newObjs });
+    } else {
+      const c = { id: `${chemPicker.type}_${chem.symbol}_${Date.now()}`, modelName: chemPicker.type,
+        position: [0,5,0] as [number,number,number], rotation: [0,0,0] as [number,number,number], scale: [1,1,1] as [number,number,number],
+        properties: { symbol: chem.symbol, color: chem.color !== 'transparent' ? chem.color : '#94a3b8', khoiLuong: (chem as Chemical).atomicMass || 100, theTich: 100 } };
+      onChange({ ...data, objects: [...(data.objects || []), c] });
+    }
   };
 
   const renderCard = (eq: EquipmentDef) => {
@@ -177,40 +184,48 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange, filterMode = 'both' 
         {filteredChems.elements.length > 0 && (
           <>
             <div style={{ fontSize: 12, fontWeight: 600, color: '#64748b', marginBottom: 6 }}>NGUYÊN TỐ ({filteredChems.elements.length})</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, maxHeight: 200, overflow: 'auto', marginBottom: 12 }}>
-              {filteredChems.elements.map(chem => (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: 10, maxHeight: 240, overflow: 'auto', marginBottom: 16 }}>
+              {filteredChems.elements.map(chem => {
+                const isSelected = data.objects?.some(o => o.properties?.symbol === chem.symbol && o.modelName === chemPicker.type);
+                return (
                 <Tooltip key={chem.symbol} title={`${chem.name} - ${chem.appearance}`}>
-                  <div onClick={() => addChemical(chem)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '6px 8px', borderRadius: 8, border: '1.5px solid #e2e8f0', cursor: 'pointer', minWidth: 48, transition: 'all 0.15s', background: '#fff' }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = GROUP_COLORS[chem.group] || '#3b82f6'; e.currentTarget.style.background = '#f8fafc'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.background = '#fff'; }}>
-                    <div style={{ width: 28, height: 28, borderRadius: 6, background: chem.color === 'transparent' ? '#e2e8f0' : chem.color, border: chem.color === 'transparent' ? '2px dashed #94a3b8' : 'none', marginBottom: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <span style={{ fontSize: 9, fontWeight: 800, color: chem.color === 'transparent' ? '#64748b' : '#fff', textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>{chem.atomicNumber}</span>
+                  <div onClick={() => addChemical(chem)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px 8px', borderRadius: 12, border: `1.5px solid ${isSelected ? '#3b82f6' : '#e2e8f0'}`, cursor: 'pointer', transition: 'all 0.2s', background: isSelected ? '#eff6ff' : '#fff', boxShadow: '0 1px 2px rgba(0,0,0,0.02)', position: 'relative' }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = isSelected ? '#2563eb' : (GROUP_COLORS[chem.group] || '#3b82f6'); e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = isSelected ? '#3b82f6' : '#e2e8f0'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.02)'; }}>
+                    {isSelected && <div style={{ position: 'absolute', top: -6, right: -6, background: '#3b82f6', color: '#fff', borderRadius: '50%', padding: 2, display: 'flex' }}><CheckCircleFilled style={{ fontSize: 14 }} /></div>}
+                    <div style={{ width: 32, height: 32, borderRadius: 8, background: chem.color === 'transparent' ? '#f1f5f9' : chem.color, border: chem.color === 'transparent' ? '1px dashed #cbd5e1' : 'none', marginBottom: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: chem.color === 'transparent' ? '#64748b' : '#fff' }}>{chem.atomicNumber}</span>
                     </div>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: '#1e293b' }}>{chem.symbol}</span>
-                    <span style={{ fontSize: 7, color: '#94a3b8', marginTop: 1 }}>{chem.name}</span>
+                    <span style={{ fontSize: 15, fontWeight: 700, color: isSelected ? '#1e40af' : '#0f172a' }}>{chem.symbol}</span>
+                    <span style={{ fontSize: 11, color: '#64748b', marginTop: 4, textAlign: 'center', lineHeight: 1.2 }}>{chem.name}</span>
                   </div>
                 </Tooltip>
-              ))}
+              )})}
             </div>
           </>
         )}
         {filteredChems.compounds.length > 0 && (
           <>
             <div style={{ fontSize: 12, fontWeight: 600, color: '#0ea5e9', marginBottom: 6 }}>HỢP CHẤT ({filteredChems.compounds.length})</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, maxHeight: 200, overflow: 'auto' }}>
-              {filteredChems.compounds.map(chem => (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: 10, maxHeight: 240, overflow: 'auto' }}>
+              {filteredChems.compounds.map(chem => {
+                const isConcentrated = chem.symbol.includes('(dac)');
+                const isSelected = data.objects?.some(o => o.properties?.symbol === chem.symbol && o.modelName === chemPicker.type);
+                return (
                 <Tooltip key={chem.symbol} title={`${chem.name} (${chem.category}) - ${chem.appearance}`}>
-                  <div onClick={() => addChemical(chem)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '6px 10px', borderRadius: 8, border: '1.5px solid #bae6fd', cursor: 'pointer', minWidth: 52, transition: 'all 0.15s', background: '#f0f9ff' }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#0ea5e9'; e.currentTarget.style.background = '#e0f2fe'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#bae6fd'; e.currentTarget.style.background = '#f0f9ff'; }}>
-                    <div style={{ width: 28, height: 28, borderRadius: 6, background: chem.color || '#94a3b8', marginBottom: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <span style={{ fontSize: 8, fontWeight: 700, color: '#fff', textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>{chem.category}</span>
+                  <div onClick={() => addChemical(chem)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px 8px', borderRadius: 12, border: `1.5px solid ${isSelected ? (isConcentrated ? '#ef4444' : '#0ea5e9') : (isConcentrated ? '#fca5a5' : '#bae6fd')}`, cursor: 'pointer', transition: 'all 0.2s', background: isSelected ? (isConcentrated ? '#fef2f2' : '#e0f2fe') : (isConcentrated ? '#fef2f2' : '#f0f9ff'), boxShadow: '0 1px 2px rgba(0,0,0,0.02)', position: 'relative' }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = isConcentrated ? '#ef4444' : '#0ea5e9'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = isSelected ? (isConcentrated ? '#ef4444' : '#0ea5e9') : (isConcentrated ? '#fca5a5' : '#bae6fd'); e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.02)'; }}>
+                    {isSelected && <div style={{ position: 'absolute', top: -6, left: -6, background: isConcentrated ? '#ef4444' : '#0ea5e9', color: '#fff', borderRadius: '50%', padding: 2, display: 'flex', zIndex: 10 }}><CheckCircleFilled style={{ fontSize: 14 }} /></div>}
+                    {isConcentrated && <div style={{ position: 'absolute', top: -6, right: -6, background: '#ef4444', color: '#fff', fontSize: 9, fontWeight: 800, padding: '2px 6px', borderRadius: 10, boxShadow: '0 2px 4px rgba(239,68,68,0.3)' }}>ĐẶC</div>}
+                    <div style={{ width: 32, height: 32, borderRadius: 8, background: chem.color || '#94a3b8', marginBottom: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <span style={{ fontSize: 10, fontWeight: 700, color: '#fff', textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>{chem.category}</span>
                     </div>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: '#0369a1' }}>{chem.symbol}</span>
-                    <span style={{ fontSize: 7, color: '#64748b', marginTop: 1, maxWidth: 60, textAlign: 'center' }}>{chem.name}</span>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: isSelected ? (isConcentrated ? '#991b1b' : '#0284c7') : (isConcentrated ? '#b91c1c' : '#0369a1'), textAlign: 'center' }}>{chem.symbol}</span>
+                    <span style={{ fontSize: 11, color: '#64748b', marginTop: 4, textAlign: 'center', lineHeight: 1.2 }}>{chem.name}</span>
                   </div>
                 </Tooltip>
-              ))}
+              )})}
             </div>
           </>
         )}

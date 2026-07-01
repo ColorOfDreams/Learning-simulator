@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, InputNumber, Popconfirm, Switch } from 'antd';
 import {
   CloseOutlined, SettingOutlined, PlayCircleOutlined, PauseCircleOutlined,
@@ -180,15 +180,22 @@ const EquipmentDetail: React.FC<Props> = ({ objectId, sceneGraph, isPlaying, onC
   };
 
   const renderChemicalInfo = () => {
-    if (!chemical) return null;
+    if (!chemical && !props.reactionDescription && !props.name && !sym) return null;
     return (
       <div className="ed-prop" key="chem-info">
-        <div className="ed-chem-card" style={{ borderColor: chemical.color === 'transparent' ? '#e2e8f0' : chemical.color }}>
-          <div className="ed-chem-symbol">{chemical.symbol}</div>
-          <div className="ed-chem-name">{chemical.name}</div>
-          <div className="ed-chem-meta"><span>Số {chemical.atomicNumber}</span><span>·</span><span>Khối {chemical.atomicMass.toFixed(1)}u</span></div>
-          <div className="ed-chem-meta"><span>{chemical.state === 'solid' ? 'Rắn' : chemical.state === 'liquid' ? 'Lỏng' : chemical.state === 'solution' ? 'Dung dịch' : 'Khí'}</span><span>·</span><span>{chemical.groupLabel}</span></div>
-        </div>
+        {chemical ? (
+          <div className="ed-chem-card" style={{ borderColor: chemical.color === 'transparent' ? '#e2e8f0' : chemical.color }}>
+            <div className="ed-chem-symbol">{chemical.symbol}</div>
+            <div className="ed-chem-name">{chemical.name}</div>
+            <div className="ed-chem-meta"><span>Số {chemical.atomicNumber}</span><span>·</span><span>Khối {chemical.atomicMass.toFixed(1)}u</span></div>
+            <div className="ed-chem-meta"><span>{chemical.state === 'solid' ? 'Rắn' : chemical.state === 'liquid' ? 'Lỏng' : chemical.state === 'solution' ? 'Dung dịch' : 'Khí'}</span><span>·</span><span>{chemical.groupLabel}</span></div>
+          </div>
+        ) : (sym || props.name) ? (
+          <div className="ed-chem-card" style={{ borderColor: '#e2e8f0' }}>
+            <div className="ed-chem-symbol">{sym || 'Hỗn hợp'}</div>
+            <div className="ed-chem-name">{props.name || 'Dung dịch'}</div>
+          </div>
+        ) : null}
         {props.reactionDescription && (
           <div className="ed-chem-reaction" style={{ marginTop: 8, padding: 8, background: '#f8fafc', borderRadius: 4, border: '1px solid #e2e8f0' }}>
             <div style={{ fontSize: 12, fontWeight: 600, color: '#64748b', marginBottom: 4 }}>Phương trình phản ứng:</div>
