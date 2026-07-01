@@ -12,12 +12,14 @@ import './TeacherClassDetails.less';
 const { Title, Text } = Typography;
 
 const BUILT_IN_SIMULATIONS = [
-  { value: 'MATH10-01', label: 'Đồ thị hàm số bậc hai (Toán)' },
-  { value: 'MATH10-02', label: 'Chuyển động ném xiên & Parabol (Toán)' },
-  { value: 'MATH10-03', label: 'Bất phương trình bậc nhất hai ẩn (Toán)' },
-  { value: 'MATH10-04', label: 'Hệ thức lượng trong tam giác (Toán)' },
-  { value: 'MATH10-05', label: 'Phương trình đường tròn và Ellipse (Toán)' },
-  { value: 'MATH10-06', label: 'Thống kê (Toán)' },
+  { value: 'MATH10-01', label: 'Đồ thị hàm số bậc hai – Đỉnh & Trục (Toán 10)' },
+  { value: 'MATH10-02', label: 'Vectơ và các phép toán vectơ (Toán 10)' },
+  { value: 'MATH10-03', label: 'Phương trình đường thẳng (Toán 10)' },
+  { value: 'MATH10-04', label: 'Đường tròn và phương trình đường tròn (Toán 10)' },
+  { value: 'MATH10-05', label: 'Định lý cosin và sin trong tam giác (Toán 10)' },
+  { value: 'MATH10-06', label: 'Hệ bất phương trình hai ẩn (Toán 10)' },
+  { value: 'MATH10-07', label: 'Giá trị lượng giác – Tam giác vuông (Toán 10)' },
+  { value: 'MATH10-08', label: 'Thống kê mô tả – Phân phối & Box plot (Toán 10)' },
   { value: 'CHEM10-04', label: 'Đốt cháy dây magnesium (Hóa học 10)' },
   { value: 'CHEM11-01', label: 'Độ pH và Chất chỉ thị (Hóa học 11)' },
   { value: 'CHEM11-02', label: 'Chuẩn độ Acid - Base (Hóa học 11)' },
