@@ -228,7 +228,7 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
 
   return (
     <div style={{ width: '100%', height: '100%', background: '#0f172a' }}>
-      <Canvas dpr={[1, 1.5]} camera={{ position: [0, 5, 10], fov: 50 }}>
+      <Canvas dpr={[1, 1.5]} camera={{ position: [0, 5, 10], fov: 50 }} onContextMenu={(e) => e.preventDefault()}>
         <InteractionContext.Provider value={interaction}>
           <color attach="background" args={['#0f172a']} />
           <ambientLight intensity={0.8} />

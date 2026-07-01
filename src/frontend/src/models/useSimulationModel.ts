@@ -165,19 +165,27 @@ export default function useSimulationModel() {
                (o.id && o.id.toLowerCase().includes(str));
       };
 
-      const sourceObj = sceneGraph.objects.find(o => o.id === sourceId);
-      const targetObj = sceneGraph.objects.find(o => o.id === targetId);
+      const sourceObj = sceneGraph?.objects.find(o => o.id === sourceId);
+      const targetObj = sceneGraph?.objects.find(o => o.id === targetId);
       const expectedSource = currentStep.expectedAction.sourceModel;
       const expectedTarget = currentStep.expectedAction.targetModel;
       
-      let sourceMatch = !expectedSource || (sourceObj && isMatch(sourceObj, expectedSource));
+      const isPendulumTarget = (exp: string, act: any) => {
+        const e = exp.toLowerCase();
+        const a = act?.modelName?.toLowerCase() || '';
+        return (e.includes('simplependulum') || e.includes('stand')) && 
+               (a.includes('stand') || a.includes('simplependulum'));
+      };
+
+      let sourceMatch = !expectedSource || expectedSource === 'none' || (sourceObj && isMatch(sourceObj, expectedSource));
       let isTargetTable = expectedTarget && ['table', 'ban', 'bàn', 'bàn thí nghiệm'].includes(expectedTarget.toLowerCase());
-      let targetMatch = !expectedTarget || isTargetTable || (targetObj && isMatch(targetObj, expectedTarget));
+      let targetMatch = !expectedTarget || expectedTarget === 'none' || isTargetTable || (targetObj && isMatch(targetObj, expectedTarget)) || (targetObj && isPendulumTarget(expectedTarget, targetObj));
 
       if (sourceMatch && targetMatch) {
         nextStep();
       } else {
         // Mismatch!
+        if (actionType === 'drag_and_drop' && targetId === 'table') return;
         setWrongActionData({
           id: Date.now().toString(),
           expected: currentStep.expectedAction,
@@ -190,8 +198,9 @@ export default function useSimulationModel() {
       }
     } else if (['pour', 'drag_and_drop', 'update_property'].includes(actionType)) {
       // Performed a major action but it wasn't the expected action type
-      const sourceObj = sceneGraph.objects.find(o => o.id === sourceId);
-      const targetObj = sceneGraph.objects.find(o => o.id === targetId);
+      if (actionType === 'drag_and_drop' && targetId === 'table') return;
+      const sourceObj = sceneGraph?.objects.find(o => o.id === sourceId);
+      const targetObj = sceneGraph?.objects.find(o => o.id === targetId);
       setWrongActionData({
         id: Date.now().toString(),
         expected: currentStep.expectedAction,

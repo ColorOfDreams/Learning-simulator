@@ -1512,12 +1512,18 @@ export class AiService {
           {
             role: 'user',
             content: [
-              'Tạo 4-5 bước hướng dẫn RẤT NGẮN GỌN (ví dụ: "Đặt các chất lên bàn", "Cho Cu vào", "Cho H2SO4 vào", "Quan sát hiện tượng").',
+              'Bạn là trợ lý hướng dẫn thực hành. Dụng cụ hiện có:',
+              equipDesc,
+              'Môn học: ' + subj,
+              'Dựa vào dụng cụ trên, tạo một số bước hướng dẫn (khoảng 3-5 bước).',
+              'Lưu ý: Giá đỡ (Stand) đã có sẵn trên bàn, KHÔNG tạo bước yêu cầu kéo giá đỡ lên bàn.',
               'Quy định về expectedAction.type:',
-              '- "drag_and_drop": khi yêu cầu kéo thả dụng cụ từ kệ (ví dụ: targetModel là "Beaker" hoặc "ChemicalSolid").',
-              '- "pour": khi yêu cầu đổ hóa chất A vào dụng cụ B (ví dụ: sourceModel là "ChemicalSolid", targetModel là "Beaker").',
+              '- "drag_and_drop": khi yêu cầu kéo thả dụng cụ/hóa chất lên bàn.',
+              '- "pour": khi yêu cầu đổ hóa chất A vào dụng cụ B.',
+              '- "update_property": khi yêu cầu tương tác, bật công tắc, kéo thanh trượt, hoặc chuẩn bị bắt đầu.',
+              '- "observe": khi yêu cầu quan sát hiện tượng.',
               '- Không dùng từ khác ngoài 2 từ này.',
-              'Trả về CHỈ JSON: { "steps": [{ "id":"...", "title":"Ngắn gọn", "description":"Mô tả ngắn gọn", "targetEquipment":"...", "expectedAction": { "type": "pour hoặc drag_and_drop", "sourceModel": "tên tiếng Anh dụng cụ nguồn/kéo", "targetModel": "tên tiếng Anh dụng cụ đích/nhận" } }] }',
+              'Trả về CHỈ JSON: { "steps": [{ "id":"...", "title":"Tiêu đề ngắn", "description":"Mô tả ngắn", "targetEquipment":"...", "expectedAction": { "type": "pour hoặc drag_and_drop", "sourceModel": "tên tiếng Anh dụng cụ nguồn/kéo", "targetModel": "tên tiếng Anh dụng cụ đích/nhận" } }] }',
             ].join('\n'),
           },
         ]);
@@ -1594,6 +1600,7 @@ export class AiService {
           content: `Bạn là trợ lý thiết kế thí nghiệm 3D cho học sinh lớp 11. 
 Dụng cụ có sẵn:\n${equipmentList}\n
 Dựa trên mô tả của học sinh, hãy chọn dụng cụ và thông số phù hợp. Đồng thời, tự động tạo các bước hướng dẫn thực hành (steps).
+Lưu ý: Giá đỡ (Stand) đã có sẵn trên bàn, KHÔNG tạo bước yêu cầu kéo giá đỡ lên bàn.
 Trả về CHỈ JSON (không markdown, không giải thích):
 {
   "name": "tên thí nghiệm",
@@ -1605,9 +1612,9 @@ Trả về CHỈ JSON (không markdown, không giải thích):
   "steps": [
     { 
       "id": "step_1", 
-      "title": "Ngắn gọn (vd: Cho Cu vào)", 
+      "title": "Ngắn gọn (vd: Lấy quả nặng / Lấy hóa chất)", 
       "description": "Mô tả ngắn gọn", 
-      "expectedAction": { "type": "pour hoặc drag_and_drop", "sourceModel": "tên model kéo", "targetModel": "tên model đích" } 
+      "expectedAction": { "type": "pour hoặc drag_and_drop hoặc update_property hoặc observe", "sourceModel": "tên model kéo", "targetModel": "tên model đích" } 
     }
   ]
 }
@@ -1626,10 +1633,15 @@ Quy định expectedAction.type: "drag_and_drop" (khi kéo thả lên bàn), "po
           (obj: {
             modelName: string;
             properties: Record<string, unknown>;
-          }) => ({
-            modelName: obj.modelName,
-            properties: obj.properties || {},
-          }),
+          }) => {
+            const props = obj.properties || {};
+            delete props.position;
+            delete props.viTri;
+            return {
+              modelName: obj.modelName,
+              properties: props,
+            };
+          }
         ),
         steps: parsed.steps || [],
       };

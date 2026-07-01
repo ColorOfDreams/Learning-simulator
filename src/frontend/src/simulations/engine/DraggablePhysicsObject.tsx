@@ -341,6 +341,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         onUpdatePosition?.(object.id, startPosRef.current);
       } else if (updateObjectProperty) {
         updateObjectProperty(object.id, 'attachedTo', null);
+        if (checkRuleAndAdvance) checkRuleAndAdvance('drag_and_drop', object.id, 'table');
       }
     }
   }, [object, rotationAxis, selectedEquipmentId, onUpdatePosition, setIsDragging, setSelectedEquipmentId, updateObjectProperty, updateAllProperties, allObjects, setPouringAction, checkRuleAndAdvance]);
@@ -451,6 +452,10 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         }}
         onContextMenu={(e) => {
           e.stopPropagation();
+          // Prevent browser context menu
+          if (e.nativeEvent && typeof e.nativeEvent.preventDefault === 'function') {
+            e.nativeEvent.preventDefault();
+          }
           const mName = getModel(object);
           if (mName === 'BunsenBurner' || mName === 'DenCon') {
             const curBatDen = object.properties?.batDen ?? (object as any).thuocTinh?.batDen ?? false;

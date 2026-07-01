@@ -3,9 +3,9 @@ import { BulbOutlined, CheckCircleFilled } from '@ant-design/icons';
 
 interface GuidanceStep { id: string; title: string; description: string; expectedAction?: any; targetEquipment?: string; }
 
-interface Props { steps?: GuidanceStep[]; currentStepIndex?: number; isOverlay?: boolean; onClose?: () => void; }
+interface Props { steps?: GuidanceStep[]; currentStepIndex?: number; isOverlay?: boolean; onClose?: () => void; onNextStep?: () => void; }
 
-const GuidanceCard: React.FC<Props> = ({ steps, currentStepIndex = 0, isOverlay = false, onClose }) => {
+const GuidanceCard: React.FC<Props> = ({ steps, currentStepIndex = 0, isOverlay = false, onClose, onNextStep }) => {
   if (!steps?.length) return null;
 
   return (
@@ -90,6 +90,25 @@ const GuidanceCard: React.FC<Props> = ({ steps, currentStepIndex = 0, isOverlay 
               <div style={{ fontSize: 11, color: '#a16207', lineHeight: 1.6 }}>
                 {step.description}
               </div>
+              {isActive && step.expectedAction && ['observe', 'update_property'].includes(step.expectedAction.type) && (
+                <div style={{ marginTop: 8 }}>
+                  <button 
+                    onClick={() => onNextStep && onNextStep()}
+                    style={{
+                      background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                      border: 'none',
+                      color: '#fff',
+                      padding: '4px 12px',
+                      borderRadius: 12,
+                      fontSize: 11,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      boxShadow: '0 2px 4px rgba(245, 158, 11, 0.3)'
+                    }}>
+                    Hoàn thành
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         );

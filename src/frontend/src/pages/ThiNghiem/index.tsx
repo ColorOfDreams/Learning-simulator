@@ -22,7 +22,7 @@ const ThiNghiem: React.FC = () => {
   const [rotationAxis, setRotationAxis] = useState<'x' | 'y' | 'z' | null>(null);
   const [showGuidanceOverlay, setShowGuidanceOverlay] = useState(true);
 
-  const { sceneGraph, initScene, clearScene, updateObjectPosition, updateObjectRotation, updateObjectProperty, updateAllProperties, wrongActionData, guidanceSteps, setGuidanceSteps, currentStepIndex } = useModel('useSimulationModel');
+  const { sceneGraph, initScene, clearScene, updateObjectPosition, updateObjectRotation, updateObjectProperty, updateAllProperties, wrongActionData, guidanceSteps, setGuidanceSteps, currentStepIndex, nextStep } = useModel('useSimulationModel');
   const { openChatbot, closeChatbot, requestGuidance, sendMessage, messages } = useModel('useAIChatBotModel');
 
   const prevStepRef = useRef(currentStepIndex);
@@ -44,11 +44,23 @@ const ThiNghiem: React.FC = () => {
           'ChemicalSolid': 'hóa chất rắn',
           'ChemicalLiquid': 'hóa chất lỏng',
           'ChemicalGas': 'chất khí',
-          'Beaker': 'cốc mỏ (beaker)',
+          'Beaker': 'cốc mỏ',
           'TestTube': 'ống nghiệm',
           'ErlenmeyerFlask': 'bình tam giác',
           'BunsenBurner': 'đèn cồn',
-          // Add more if needed
+          'Stand': 'giá đỡ',
+          'SimplePendulum': 'con lắc đơn',
+          'SpringPendulum': 'con lắc lò xo',
+          'Spring': 'lò xo',
+          'MassBlock': 'quả nặng',
+          'WoodenBlock': 'khối gỗ',
+          'Stopwatch': 'đồng hồ bấm giây',
+          'Ruler': 'thước kẻ',
+          'Protractor': 'thước đo góc',
+          'Dashpot': 'bộ giảm chấn',
+          'DrivingMotor': 'động cơ',
+          'EnergyMeter': 'đồng hồ năng lượng',
+          'Table': 'bàn',
         };
         return map[model] || model;
       };
@@ -178,6 +190,7 @@ Nhưng học sinh lại làm: "${actualText}".
                   currentStepIndex={currentStepIndex} 
                   isOverlay={true} 
                   onClose={() => setShowGuidanceOverlay(false)}
+                  onNextStep={nextStep}
                 />
               )}
             </div>
