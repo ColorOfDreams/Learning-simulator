@@ -41,7 +41,7 @@
     "id": "lib_004",
     "subject": "physics",
     "topic": "newton_second_law",
-    "simulation_id": "CHEM12-02",
+    "simulation_id": "SIM-24",
     "title": "Định luật II Newton",
     "text": "Một vật có khối lượng 5 kg chịu tác dụng của lực F = 20 N. Tính gia tốc của vật.",
     "parameters": [
@@ -53,7 +53,7 @@
     "id": "lib_005",
     "subject": "physics",
     "topic": "circuit_series",
-    "simulation_id": "SIM-04",
+    "simulation_id": "SIM-51",
     "title": "Mạch điện nối tiếp",
     "text": "Ba điện trở R1=10Ω, R2=20Ω, R3=30Ω mắc nối tiếp vào nguồn 12V. Tính cường độ dòng điện và điện áp trên mỗi điện trở.",
     "parameters": [
@@ -67,7 +67,7 @@
     "id": "lib_006",
     "subject": "physics",
     "topic": "pendulum",
-    "simulation_id": "SIM-05",
+    "simulation_id": "SIM-27",
     "title": "Con lắc đơn",
     "text": "Con lắc đơn có chiều dài dây l = 1 m, g = 9.8 m/s². Tính chu kỳ dao động và tần số.",
     "parameters": [
@@ -117,7 +117,7 @@
     "id": "lib_010",
     "subject": "math",
     "topic": "trigonometry",
-    "simulation_id": "SIM-09",
+    "simulation_id": "MATH11-01",
     "title": "Hàm sin cơ bản",
     "text": "Vẽ đồ thị hàm số y = 2sin(x) + 1. Xác định biên độ, chu kỳ và độ dịch đứng.",
     "parameters": [

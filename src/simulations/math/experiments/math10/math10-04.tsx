@@ -1,172 +1,121 @@
 import type { SimulationProps } from '../../types';
 
-export default function TriangulationSimulation({ config }: SimulationProps) {
-  const params = config.parameters;
-  const dist = params.find(p => p.key === 'dist')?.value ?? 12;
-  const angleDeg = params.find(p => p.key === 'angle')?.value ?? 35;
-  const h0 = params.find(p => p.key === 'h0')?.value ?? 1.6;
+export default function CircleSimulation({ config }: SimulationProps) {
+  const h = config.parameters?.find(p => p.key === 'h')?.value ?? 0;
+  const k = config.parameters?.find(p => p.key === 'k')?.value ?? 0;
+  const r = Math.max(0.3, config.parameters?.find(p => p.key === 'r')?.value ?? 2.5);
+  const tDeg = config.parameters?.find(p => p.key === 't')?.value ?? 45;
 
-  const width = 600;
-  const height = 400;
+  const W = 600; const H = 400;
+  const scale = 50;
+  const ox = W / 2; const oy = H / 2;
+  const toSX = (x: number) => ox + x * scale;
+  const toSY = (y: number) => oy - y * scale;
 
-  // Render scaling factors
-  const originX = 80;
-  const originY = height - 60;
-  // Let 12 meters be about 360 pixels, i.e., 30 pixels per meter
-  const scale = 25; 
+  const fmtN = (v: number) => {
+    const rv = Math.round(v * 100) / 100;
+    return Number.isInteger(rv) ? rv.toString() : rv.toFixed(2);
+  };
 
-  const toScreenX = (x: number) => originX + x * scale;
-  const toScreenY = (y: number) => originY - y * scale;
+  const tRad = tDeg * Math.PI / 180;
+  const Px = h + r * Math.cos(tRad);
+  const Py = k + r * Math.sin(tRad);
 
-  const rad = (angleDeg * Math.PI) / 180;
-  const hTriangle = dist * Math.tan(rad);
-  const hTotal = h0 + hTriangle;
+  // Tangent direction at P: perpendicular to radius = (-sin t, cos t)
+  const tangLen = 1.8;
+  const tx = -Math.sin(tRad) * tangLen;
+  const ty = Math.cos(tRad) * tangLen;
+
+  const xTicks = [-5,-4,-3,-2,-1,1,2,3,4,5];
+  const yTicks = [-3,-2,-1,1,2,3];
+
+  const rSX = r * scale;
+  const hSX = toSX(h); const kSY = toSY(k);
+  const PSX = toSX(Px); const PSY = toSY(Py);
+  const T1SX = toSX(Px - tx); const T1SY = toSY(Py - ty);
+  const T2SX = toSX(Px + tx); const T2SY = toSY(Py + ty);
 
   return (
-    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#0a0f1d', overflow: 'hidden', display: 'flex', flexDirection: 'column', color: '#fff', boxSizing: 'border-box' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
-          {/* Ground line */}
-          <line x1={0} y1={originY} x2={width} y2={originY} stroke="#475569" strokeWidth="3" />
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+        <rect width={W} height={H} fill="#090d16" />
 
-          {/* Grass/ground decorative band */}
-          <rect x={0} y={originY} width={width} height={60} fill="#1e293b" opacity="0.4" />
+        {/* Grid */}
+        {xTicks.map(x => <line key={`gx${x}`} x1={toSX(x)} y1={0} x2={toSX(x)} y2={H} stroke="#1e293b" strokeWidth="1" />)}
+        {yTicks.map(y => <line key={`gy${y}`} x1={0} y1={toSY(y)} x2={W} y2={toSY(y)} stroke="#1e293b" strokeWidth="1" />)}
 
-          {/* Building/Tower at the target distance */}
-          <g>
-            {/* The main tower block */}
-            <rect
-              x={toScreenX(dist) - 20}
-              y={toScreenY(hTotal)}
-              width="40"
-              height={hTotal * scale}
-              fill="#1e293b"
-              stroke="#64748b"
-              strokeWidth="2"
-            />
-            {/* Windows */}
-            <rect x={toScreenX(dist) - 10} y={toScreenY(hTotal) + 20} width="8" height="12" fill="#fbbf24" opacity="0.8" />
-            <rect x={toScreenX(dist) + 2} y={toScreenY(hTotal) + 20} width="8" height="12" fill="#fbbf24" opacity="0.8" />
-            <rect x={toScreenX(dist) - 10} y={toScreenY(hTotal) + 50} width="8" height="12" fill="#fbbf24" opacity="0.8" />
-            <rect x={toScreenX(dist) + 2} y={toScreenY(hTotal) + 50} width="8" height="12" fill="#fbbf24" opacity="0.8" />
-            
-            {/* Red flag on top */}
-            <line x1={toScreenX(dist)} y1={toScreenY(hTotal)} x2={toScreenX(dist)} y2={toScreenY(hTotal) - 30} stroke="#cbd5e1" strokeWidth="2" />
-            <polygon points={`${toScreenX(dist)},${toScreenY(hTotal) - 30} ${toScreenX(dist) + 15},${toScreenY(hTotal) - 24} ${toScreenX(dist)},${toScreenY(hTotal) - 18}`} fill="#ef4444" />
-          </g>
+        {/* Circle */}
+        <circle cx={hSX} cy={kSY} r={rSX} fill="none" stroke="#38bdf8" strokeWidth="2.5" />
 
-          {/* Observer / Transit at x = 0, height = h0 */}
-          <g>
-            {/* Simple Tripod stand */}
-            <line x1={toScreenX(0)} y1={toScreenY(h0)} x2={toScreenX(0) - 15} y2={originY} stroke="#94a3b8" strokeWidth="2" />
-            <line x1={toScreenX(0)} y1={toScreenY(h0)} x2={toScreenX(0) + 15} y2={originY} stroke="#94a3b8" strokeWidth="2" />
-            <line x1={toScreenX(0)} y1={toScreenY(h0)} x2={toScreenX(0)} y2={originY} stroke="#475569" strokeWidth="1.5" />
-            
-            {/* Transit instrument */}
-            <circle cx={toScreenX(0)} cy={toScreenY(h0)} r="6" fill="#fbbf24" />
-            <line
-              x1={toScreenX(0) - 8}
-              y1={toScreenY(h0)}
-              x2={toScreenX(0) + 12 * Math.cos(rad)}
-              y2={toScreenY(h0 + 12 * Math.sin(rad) / scale)}
-              stroke="#fbbf24"
-              strokeWidth="4"
-            />
-          </g>
+        {/* Axes */}
+        <line x1={0} y1={oy} x2={W} y2={oy} stroke="#475569" strokeWidth="1.5" />
+        <line x1={ox} y1={0} x2={ox} y2={H} stroke="#475569" strokeWidth="1.5" />
+        <polygon points={`${W-6},${oy-4} ${W},${oy} ${W-6},${oy+4}`} fill="#475569" />
+        <polygon points={`${ox-4},6 ${ox},0 ${ox+4},6`} fill="#475569" />
+        <text x={W-8} y={oy-6} fill="#64748b" fontSize="12" textAnchor="end">x</text>
+        <text x={ox+6} y={13} fill="#64748b" fontSize="12">y</text>
+        <text x={ox-8} y={oy+14} fill="#475569" fontSize="10" textAnchor="end">O</text>
 
-          {/* Triangular lines */}
-          {/* Horizontal base at height h0 */}
-          <line
-            x1={toScreenX(0)}
-            y1={toScreenY(h0)}
-            x2={toScreenX(dist)}
-            y2={toScreenY(h0)}
-            stroke="#cbd5e1"
-            strokeWidth="1.5"
-            strokeDasharray="4 4"
-          />
+        {/* Tick labels */}
+        {xTicks.filter((_,i)=>i%2===0).map(x => (
+          <text key={`xl${x}`} x={toSX(x)} y={oy+14} fill="#64748b" fontSize="10" textAnchor="middle">{x}</text>
+        ))}
+        {yTicks.map(y => (
+          <text key={`yl${y}`} x={ox-5} y={toSY(y)+4} fill="#64748b" fontSize="10" textAnchor="end">{y}</text>
+        ))}
 
-          {/* Line of sight to the top */}
-          <line
-            x1={toScreenX(0)}
-            y1={toScreenY(h0)}
-            x2={toScreenX(dist)}
-            y2={toScreenY(hTotal)}
-            stroke="#ef4444"
-            strokeWidth="2"
-            opacity="0.85"
-          />
+        {/* Radius line M→P */}
+        <line x1={hSX} y1={kSY} x2={PSX} y2={PSY} stroke="#fbbf24" strokeWidth="1.8" strokeDasharray="5 3" />
 
-          {/* Vertical right triangle leg */}
-          <line
-            x1={toScreenX(dist)}
-            y1={toScreenY(h0)}
-            x2={toScreenX(dist)}
-            y2={toScreenY(hTotal)}
-            stroke="#38bdf8"
-            strokeWidth="2"
-          />
+        {/* Tangent line at P */}
+        <line x1={T1SX} y1={T1SY} x2={T2SX} y2={T2SY} stroke="#f97316" strokeWidth="2" />
 
-          {/* Angle arc symbol */}
-          <path
-            d={`M ${toScreenX(1.8)} ${toScreenY(h0)} A 45 45 0 0 0 ${toScreenX(1.8 * Math.cos(rad))} ${toScreenY(h0 + 1.8 * Math.sin(rad))}`}
-            fill="none"
-            stroke="#f59e0b"
-            strokeWidth="2"
-          />
-          <text x={toScreenX(2.2)} y={toScreenY(h0 + 0.5)} fill="#fbbf24" fontSize="12" fontWeight="bold">
-            α = {angleDeg}°
-          </text>
+        {/* Right-angle mark at P */}
+        <g>
+          {(() => {
+            const rx = (hSX - PSX); const ry = (kSY - PSY);
+            const rLen = Math.sqrt(rx*rx+ry*ry);
+            if (rLen < 2) return null;
+            const rux = rx/rLen; const ruy = ry/rLen;
+            const tux = -Math.sin(tRad); const tuy = Math.cos(tRad);
+            const sq = 8;
+            const qx1 = PSX + rux*sq; const qy1 = PSY + ruy*sq;
+            const qx2 = qx1 + tux*sq; const qy2 = qy1 - tuy*sq*scale/scale;
+            const qx3 = PSX + tux*sq; const qy3 = PSY - tuy*sq*scale/scale;
+            return (
+              <polyline points={`${qx1.toFixed(1)},${qy1.toFixed(1)} ${qx2.toFixed(1)},${qy2.toFixed(1)} ${qx3.toFixed(1)},${qy3.toFixed(1)}`}
+                fill="none" stroke="#94a3b8" strokeWidth="1" opacity="0.7" />
+            );
+          })()}
+        </g>
 
-          {/* Horizontal Dimension Labels (a = distance) */}
-          <line x1={toScreenX(0)} y1={originY + 20} x2={toScreenX(dist)} y2={originY + 20} stroke="#94a3b8" strokeWidth="1" />
-          <polygon points={`${toScreenX(0)},${originY + 20} ${toScreenX(0) + 6},${originY + 16} ${toScreenX(0) + 6},${originY + 24}`} fill="#94a3b8" />
-          <polygon points={`${toScreenX(dist)},${originY + 20} ${toScreenX(dist) - 6},${originY + 16} ${toScreenX(dist) - 6},${originY + 24}`} fill="#94a3b8" />
-          <text x={toScreenX(dist / 2)} y={originY + 36} fill="#cbd5e1" fontSize="12" textAnchor="middle">
-            Khoảng cách a = {dist}m
-          </text>
+        {/* Center M */}
+        <circle cx={hSX} cy={kSY} r={5} fill="#e879f9" />
+        <text x={hSX+8} y={kSY-5} fill="#e879f9" fontSize="11" fontWeight="500">M({fmtN(h)},{fmtN(k)})</text>
 
-          {/* Vertical labels (h0 = instrument height) */}
-          <line x1={toScreenX(0) - 25} y1={originY} x2={toScreenX(0) - 25} y2={toScreenY(h0)} stroke="#94a3b8" strokeWidth="1" />
-          <text x={toScreenX(0) - 32} y={toScreenY(h0 / 2) + 4} fill="#cbd5e1" fontSize="11" textAnchor="end">
-            h₀ = {h0.toFixed(2)}m
-          </text>
+        {/* Point P */}
+        <circle cx={PSX} cy={PSY} r={5} fill="#4ade80" />
+        {PSX > 10 && PSX < W-80 && PSY > 10 && PSY < H-10 && (
+          <text x={PSX+8} y={PSY-4} fill="#4ade80" fontSize="11">P({fmtN(Px)},{fmtN(Py)})</text>
+        )}
 
-          {/* Triangle height leg label (a * tan(alpha)) */}
-          <text x={toScreenX(dist) + 12} y={toScreenY(h0 + hTriangle / 2) + 4} fill="#38bdf8" fontSize="12" fontWeight="bold">
-            a·tan(α) = {hTriangle.toFixed(2)}m
-          </text>
+        {/* Tangent label */}
+        {T2SX > 20 && T2SX < W-10 && T2SY > 5 && T2SY < H-5 && (
+          <text x={T2SX+5} y={T2SY} fill="#f97316" fontSize="10">tiếp tuyến</text>
+        )}
 
-          {/* Height Dimension label (H_total) */}
-          <line x1={toScreenX(dist) - 35} y1={toScreenY(0)} x2={toScreenX(dist) - 35} y2={toScreenY(hTotal)} stroke="#ef4444" strokeWidth="1.5" />
-          <polygon points={`${toScreenX(dist) - 35},${toScreenY(0)} ${toScreenX(dist) - 39},${toScreenY(0) + 6} ${toScreenX(dist) - 31},${toScreenY(0) + 6}`} fill="#ef4444" />
-          <polygon points={`${toScreenX(dist) - 35},${toScreenY(hTotal)} ${toScreenX(dist) - 39},${toScreenY(hTotal) - 6} ${toScreenX(dist) - 31},${toScreenY(hTotal) - 6}`} fill="#ef4444" />
-          <text
-            x={toScreenX(dist) - 42}
-            y={toScreenY(hTotal / 2) + 4}
-            fill="#f8fafc"
-            fontSize="12"
-            fontWeight="bold"
-            textAnchor="end"
-          >
-            H = {hTotal.toFixed(2)}m
-          </text>
-        </svg>
+        {/* Radius label */}
+        <text x={(hSX+PSX)/2+4} y={(kSY+PSY)/2-6} fill="#fbbf24" fontSize="10">r={fmtN(r)}</text>
 
-        {/* Dynamic Calculations Overlay */}
-        <div style={{ position: 'absolute', top: '12px', left: '12px', padding: '12px 16px', background: 'rgba(15, 23, 42, 0.85)', borderRadius: '8px', border: '1px solid #334155', fontSize: '13px', lineHeight: '1.6' }}>
-          <div style={{ borderBottom: '1px solid #334155', paddingBottom: '6px', marginBottom: '6px', fontWeight: 'bold', color: '#fbbf24' }}>
-            Ứng dụng Hệ thức lượng:
-          </div>
-          <div>Khoảng cách (a): <b>{dist} m</b></div>
-          <div>Góc nâng (α): <b>{angleDeg}°</b></div>
-          <div>Chiều cao giác kế (h₀): <b>{h0.toFixed(2)} m</b></div>
-          <div style={{ marginTop: '6px', color: '#38bdf8', fontFamily: 'monospace' }}>
-            H = h₀ + a · tan(α)
-          </div>
-          <div style={{ fontSize: '15px', color: '#10b981', fontWeight: 'bold', marginTop: '4px' }}>
-            H = {h0.toFixed(2)} + {dist} · tan({angleDeg}°) = {hTotal.toFixed(2)} m
-          </div>
-        </div>
+        {/* Info box */}
+        <rect x={8} y={8} width={230} height={80} rx={6} fill="#0f172a" fillOpacity={0.9} />
+        <text x={16} y={27} fill="#38bdf8" fontSize="12" fontFamily="monospace">
+          (x{h>=0?'-':'+'}·{fmtN(Math.abs(h))})² + (y{k>=0?'-':'+'}·{fmtN(Math.abs(k))})² = {fmtN(r*r)}
+        </text>
+        <text x={16} y={45} fill="#e879f9" fontSize="11">Tâm M({fmtN(h)}, {fmtN(k)})</text>
+        <text x={16} y={62} fill="#fbbf24" fontSize="11">Bán kính r = {fmtN(r)}</text>
+        <text x={16} y={79} fill="#f97316" fontSize="11">Điểm P tại góc {fmtN(tDeg)}°</text>
+      </svg>
     </div>
   );
 }

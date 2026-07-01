@@ -1,233 +1,134 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
 
-interface TickItem {
-  isX: boolean;
-  val: number;
-  s: number;
-}
+export default function TriangleSimulation({ config }: SimulationProps) {
+  const a = Math.max(0.5, config.parameters?.find(p => p.key === 'a')?.value ?? 4);
+  const b = Math.max(0.5, config.parameters?.find(p => p.key === 'b')?.value ?? 5);
+  const Cdeg = Math.min(170, Math.max(5, config.parameters?.find(p => p.key === 'C')?.value ?? 60));
 
-export default function ConicSimulation({
-  config,
-  isPlaying = false,
-  onAnimationEnd,
-}: SimulationProps) {
-  const params = config.parameters;
-  const cVal = params.find(p => p.key === 'c')?.value ?? 3;
-  const aVal = params.find(p => p.key === 'a')?.value ?? 5;
+  const W = 600; const H = 400;
 
-  // Enforce ellipse math constraint: a > c
-  const c = Math.max(0.5, cVal);
-  const a = Math.max(c + 0.5, aVal);
-  const b = Math.sqrt(a * a - c * c);
+  const { c, Arad, Brad, Crad, Ax, Ay, Bx, By, Cx, Cy, area, R, valid } = useMemo(() => {
+    const Cr = Cdeg * Math.PI / 180;
+    const c2 = a*a + b*b - 2*a*b*Math.cos(Cr);
+    if (c2 <= 0) return { c:0, Arad:0, Brad:0, Crad:Cr, Ax:0, Ay:0, Bx:0, By:0, Cx:0, Cy:0, area:0, R:0, valid:false };
+    const cv = Math.sqrt(c2);
+    // sinA / a = sinC / c
+    const sinA = a * Math.sin(Cr) / cv;
+    const sinB = b * Math.sin(Cr) / cv;
+    const Ar = Math.asin(Math.min(1, Math.max(-1, sinA)));
+    const Br = Math.asin(Math.min(1, Math.max(-1, sinB)));
+    const S = 0.5 * a * b * Math.sin(Cr);
+    const Rv = cv / (2 * Math.sin(Cr));
 
-  const [theta, setTheta] = useState(0);
-  const [trail, setTrail] = useState<{ x: number; y: number }[]>([]);
-  const animationRef = useRef<number | null>(null);
+    // Place B at left, C at right on the base, A at top
+    // base BC = a (side opposite A), but we want to visualize: let's use the triangle with
+    // B at bottom-left, C at bottom-right, A at top
+    // Place B=(0,0), C=(a,0), and find A using angles
+    // BA = c (given), angle B = Brad
+    // A = B + c*(cos B, sin B) but we need angle at B
+    // Angle B is Brad
+    const scale = Math.min(120, 240 / Math.max(a, b, cv));
+    const cx2 = W/2 - a*scale/2;
+    const cy2 = H*0.7;
+    const Bx2 = cx2;
+    const By2 = cy2;
+    const Cx2 = cx2 + a * scale;
+    const Cy2 = cy2;
+    // A position: from B, angle Brad, length c
+    const Ax2 = Bx2 + cv * scale * Math.cos(Br);
+    const Ay2 = By2 - cv * scale * Math.sin(Br);
 
-  const width = 600;
-  const height = 400;
-  const scale = 30; // pixels per unit
-  const originX = width / 2;
-  const originY = height / 2;
+    return { c: cv, Arad: Ar, Brad: Br, Crad: Cr, Ax:Ax2, Ay:Ay2, Bx:Bx2, By:By2, Cx:Cx2, Cy:Cy2, area:S, R:Rv, valid:true };
+  }, [a, b, Cdeg]);
 
-  const toScreenX = (x: number) => originX + x * scale;
-  const toScreenY = (y: number) => originY - y * scale;
+  const fmtN = (v: number) => (Math.round(v * 100) / 100).toFixed(2).replace(/\.?0+$/, '');
+  const fmtDeg = (r: number) => (r * 180 / Math.PI).toFixed(1) + '°';
 
-  // Reset tracing when parameters change or play state resets
-  useEffect(() => {
-    if (!isPlaying) {
-      setTheta(0);
-      setTrail([]);
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    } else {
-      setTheta(0);
-      setTrail([]);
+  const angleArc = (cx: number, cy: number, x1: number, y1: number, x2: number, y2: number, rad: number) => {
+    const a1 = Math.atan2(y1-cy, x1-cx);
+    const a2 = Math.atan2(y2-cy, x2-cx);
+    const r = 22;
+    const sx = cx + r*Math.cos(a1); const sy = cy + r*Math.sin(a1);
+    const ex = cx + r*Math.cos(a2); const ey = cy + r*Math.sin(a2);
+    const large = Math.abs(a2-a1) > Math.PI ? 1 : 0;
+    const sweep = (a2-a1+2*Math.PI)%(2*Math.PI) < Math.PI ? 1 : 0;
+    return `M ${sx.toFixed(1)} ${sy.toFixed(1)} A ${r} ${r} 0 ${large} ${sweep} ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+  };
+
+  // Circumscribed circle center (circumcenter)
+  let ccx = W/2; let ccy = H/2; let ccR = 0;
+  if (valid) {
+    const D = 2*(Ax*(By-Cy)+Bx*(Cy-Ay)+Cx*(Ay-By));
+    if (Math.abs(D) > 0.01) {
+      ccx = ((Ax*Ax+Ay*Ay)*(By-Cy)+(Bx*Bx+By*By)*(Cy-Ay)+(Cx*Cx+Cy*Cy)*(Ay-By))/D;
+      ccy = ((Ax*Ax+Ay*Ay)*(Cx-Bx)+(Bx*Bx+By*By)*(Ax-Cx)+(Cx*Cx+Cy*Cy)*(Bx-Ax))/D;
+      ccR = Math.sqrt((Ax-ccx)**2+(Ay-ccy)**2);
     }
-  }, [isPlaying, aVal, cVal]);
-
-  // Run the drawing loop
-  useEffect(() => {
-    if (!isPlaying) return;
-
-    let startTime = performance.now();
-    const duration = 8000; // 8 seconds for a complete trace
-
-    const loop = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = (elapsed % duration) / duration; // 0 to 1
-      const currentTheta = progress * Math.PI * 2;
-
-      const px = a * Math.cos(currentTheta);
-      const py = b * Math.sin(currentTheta);
-
-      setTheta(currentTheta);
-      setTrail(prev => {
-        // Only append unique/new points
-        const sx = toScreenX(px);
-        const sy = toScreenY(py);
-        if (prev.length === 0 || Math.hypot(prev[prev.length - 1].x - sx, prev[prev.length - 1].y - sy) > 2) {
-          return [...prev, { x: sx, y: sy }];
-        }
-        return prev;
-      });
-
-      if (elapsed >= duration) {
-        if (onAnimationEnd) onAnimationEnd();
-        return;
-      }
-
-      animationRef.current = requestAnimationFrame(loop);
-    };
-
-    animationRef.current = requestAnimationFrame(loop);
-
-    return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
-  }, [isPlaying, a, b]);
-
-  // Current drawing point coordinates
-  const curX = a * Math.cos(theta);
-  const curY = b * Math.sin(theta);
-
-  // Foci coordinates
-  const f1X = -c;
-  const f1Y = 0;
-  const f2X = c;
-  const f2Y = 0;
-
-  // Distances
-  const d1 = Math.hypot(curX - f1X, curY - f1Y);
-  const d2 = Math.hypot(curX - f2X, curY - f2Y);
-  const sumD = d1 + d2;
-
-  // Grid tick marks
-  const ticks = useMemo(() => {
-    const arr: TickItem[] = [];
-    const xRange = Math.floor(width / (2 * scale));
-    const yRange = Math.floor(height / (2 * scale));
-
-    for (let i = -xRange; i <= xRange; i += 2) {
-      if (i !== 0) arr.push({ isX: true, val: i, s: toScreenX(i) });
-    }
-    for (let i = -yRange; i <= yRange; i += 2) {
-      if (i !== 0) arr.push({ isX: false, val: i, s: toScreenY(i) });
-    }
-    return arr;
-  }, []);
+  }
 
   return (
-    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#0a0f1d', overflow: 'hidden', display: 'flex', flexDirection: 'column', color: '#fff', boxSizing: 'border-box' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
-          {/* Grid lines */}
-          <g stroke="#1e293b" strokeWidth="0.5">
-            {ticks.map((t: TickItem, idx: number) =>
-              t.isX ? (
-                <line key={`gl-x-${idx}`} x1={t.s} y1={0} x2={t.s} y2={height} />
-              ) : (
-                <line key={`gl-y-${idx}`} x1={0} y1={t.s} x2={width} y2={t.s} />
-              )
-            )}
-          </g>
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+        <rect width={W} height={H} fill="#090d16" />
 
-          {/* Axes */}
-          <line x1={0} y1={originY} x2={width} y2={originY} stroke="#475569" strokeWidth="1.5" />
-          <line x1={originX} y1={0} x2={originX} y2={height} stroke="#475569" strokeWidth="1.5" />
+        {!valid ? (
+          <text x={W/2} y={H/2} fill="#ef4444" fontSize="16" textAnchor="middle">Không tạo được tam giác hợp lệ</text>
+        ) : (
+          <>
+            {/* Circumscribed circle */}
+            <circle cx={ccx.toFixed(1)} cy={ccy.toFixed(1)} r={ccR.toFixed(1)}
+              fill="none" stroke="#334155" strokeWidth="1" strokeDasharray="6 4" opacity="0.6" />
 
-          {/* Grid ticks values */}
-          <g fill="#475569" fontSize="9" textAnchor="middle">
-            {ticks.map((t: TickItem, idx: number) =>
-              t.isX ? (
-                <text key={`tx-${idx}`} x={t.s} y={originY + 12}>{t.val}</text>
-              ) : (
-                <text key={`ty-${idx}`} x={originX - 8} y={t.s + 3} textAnchor="end">{t.val}</text>
-              )
-            )}
-          </g>
+            {/* Triangle fill */}
+            <polygon points={`${Ax.toFixed(1)},${Ay.toFixed(1)} ${Bx.toFixed(1)},${By.toFixed(1)} ${Cx.toFixed(1)},${Cy.toFixed(1)}`}
+              fill="#1e3a5f" opacity="0.35" />
 
-          {/* Ideal Ellipse Path (Faint background) */}
-          <ellipse
-            cx={originX}
-            cy={originY}
-            rx={a * scale}
-            ry={b * scale}
-            fill="none"
-            stroke="#475569"
-            strokeWidth="1"
-            strokeDasharray="2 2"
-          />
+            {/* Triangle edges */}
+            {/* BC = a (bottom) */}
+            <line x1={Bx.toFixed(1)} y1={By.toFixed(1)} x2={Cx.toFixed(1)} y2={Cy.toFixed(1)} stroke="#f97316" strokeWidth="2.5" />
+            {/* AC = b */}
+            <line x1={Ax.toFixed(1)} y1={Ay.toFixed(1)} x2={Cx.toFixed(1)} y2={Cy.toFixed(1)} stroke="#38bdf8" strokeWidth="2.5" />
+            {/* AB = c */}
+            <line x1={Ax.toFixed(1)} y1={Ay.toFixed(1)} x2={Bx.toFixed(1)} y2={By.toFixed(1)} stroke="#4ade80" strokeWidth="2.5" />
 
-          {/* Traced trail */}
-          {trail.length > 1 && (
-            <path
-              d={`M ${trail.map(p => `${p.x} ${p.y}`).join(' L ')}`}
-              fill="none"
-              stroke="#06b6d4"
-              strokeWidth="3"
-            />
-          )}
+            {/* Side labels */}
+            <text x={((Bx+Cx)/2).toFixed(1)} y={(By+12).toFixed(1)} fill="#f97316" fontSize="13" textAnchor="middle" fontWeight="600">a={fmtN(a)}</text>
+            <text x={((Ax+Cx)/2+14).toFixed(1)} y={((Ay+Cy)/2).toFixed(1)} fill="#38bdf8" fontSize="13" fontWeight="600">b={fmtN(b)}</text>
+            <text x={((Ax+Bx)/2-14).toFixed(1)} y={((Ay+By)/2).toFixed(1)} fill="#4ade80" fontSize="13" textAnchor="end" fontWeight="600">c={fmtN(c)}</text>
 
-          {/* String lines (F1 - M - F2) */}
-          <line
-            x1={toScreenX(f1X)}
-            y1={toScreenY(f1Y)}
-            x2={toScreenX(curX)}
-            y2={toScreenY(curY)}
-            stroke="#f43f5e"
-            strokeWidth="2"
-            opacity="0.85"
-          />
-          <line
-            x1={toScreenX(f2X)}
-            y1={toScreenY(f2Y)}
-            x2={toScreenX(curX)}
-            y2={toScreenY(curY)}
-            stroke="#f43f5e"
-            strokeWidth="2"
-            opacity="0.85"
-          />
+            {/* Angle arcs */}
+            <path d={angleArc(Ax, Ay, Bx, By, Cx, Cy, Arad)} fill="none" stroke="#e879f9" strokeWidth="1.5" />
+            <path d={angleArc(Bx, By, Ax, Ay, Cx, Cy, Brad)} fill="none" stroke="#fbbf24" strokeWidth="1.5" />
+            <path d={angleArc(Cx, Cy, Bx, By, Ax, Ay, Crad)} fill="none" stroke="#a78bfa" strokeWidth="1.5" />
 
-          {/* Focus 1 Point */}
-          <circle cx={toScreenX(f1X)} cy={toScreenY(f1Y)} r="5" fill="#e2e8f0" stroke="#f43f5e" strokeWidth="1.5" />
-          <text x={toScreenX(f1X)} y={toScreenY(f1Y) + 18} fill="#94a3b8" fontSize="10" textAnchor="middle" fontWeight="bold">
-            F₁(-{c.toFixed(1)}, 0)
-          </text>
+            {/* Vertices */}
+            {[
+              { x: Ax, y: Ay, label: 'A', angle: `A=${fmtDeg(Arad)}`, color: '#e879f9', dx:-14, dy:-10 },
+              { x: Bx, y: By, label: 'B', angle: `B=${fmtDeg(Brad)}`, color: '#fbbf24', dx:-18, dy:14 },
+              { x: Cx, y: Cy, label: 'C', angle: `C=${fmtDeg(Cdeg)}°`, color: '#a78bfa', dx:8, dy:14 },
+            ].map(({ x, y, label, angle, color, dx, dy }) => (
+              <g key={label}>
+                <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r={5} fill={color} />
+                <text x={(x+dx).toFixed(1)} y={(y+dy).toFixed(1)} fill={color} fontSize="12" fontWeight="600">{label}</text>
+                <text x={(x+dx).toFixed(1)} y={(y+dy+14).toFixed(1)} fill={color} fontSize="10">{angle}</text>
+              </g>
+            ))}
 
-          {/* Focus 2 Point */}
-          <circle cx={toScreenX(f2X)} cy={toScreenY(f2Y)} r="5" fill="#e2e8f0" stroke="#f43f5e" strokeWidth="1.5" />
-          <text x={toScreenX(f2X)} y={toScreenY(f2Y) + 18} fill="#94a3b8" fontSize="10" textAnchor="middle" fontWeight="bold">
-            F₂( {c.toFixed(1)}, 0)
-          </text>
+            {/* Circumcenter R */}
+            <circle cx={ccx.toFixed(1)} cy={ccy.toFixed(1)} r={3} fill="#475569" />
 
-          {/* Tracer Peg M */}
-          <g>
-            <circle cx={toScreenX(curX)} cy={toScreenY(curY)} r="6" fill="#06b6d4" />
-            <circle cx={toScreenX(curX)} cy={toScreenY(curY)} r="12" fill="none" stroke="#06b6d4" strokeWidth="1.5" opacity="0.5" />
-            <text x={toScreenX(curX) + 10} y={toScreenY(curY) - 10} fill="#22d3ee" fontSize="11" fontWeight="bold">
-              M({curX.toFixed(2)}, {curY.toFixed(2)})
-            </text>
-          </g>
-        </svg>
-
-        {/* Dynamic Locus Info Display */}
-        <div style={{ position: 'absolute', top: '12px', left: '12px', padding: '12px 16px', background: 'rgba(15, 23, 42, 0.85)', borderRadius: '8px', border: '1px solid #334155', fontSize: '13px', lineHeight: '1.6' }}>
-          <div style={{ borderBottom: '1px solid #334155', paddingBottom: '6px', marginBottom: '6px', fontWeight: 'bold', color: '#06b6d4' }}>
-            Định nghĩa Elip (Quỹ tích):
-          </div>
-          <div>Bán trục lớn (a): <b>{a.toFixed(1)}</b></div>
-          <div>Bán trục nhỏ (b): <b>{b.toFixed(2)}</b></div>
-          <div>Tiêu cự (2c): <b>{(2 * c).toFixed(1)}</b></div>
-          <div style={{ marginTop: '6px', color: '#f43f5e', borderTop: '1px dashed #334155', paddingTop: '6px' }}>
-            MF₁ (d₁) = {d1.toFixed(2)}
-          </div>
-          <div style={{ color: '#f43f5e' }}>
-            MF₂ (d₂) = {d2.toFixed(2)}
-          </div>
-          <div style={{ fontSize: '14px', color: '#10b981', fontWeight: 'bold', marginTop: '2px' }}>
-            d₁ + d₂ = {sumD.toFixed(2)} (= 2a = {(2 * a).toFixed(1)})
-          </div>
-        </div>
+            {/* Info box */}
+            <rect x={8} y={8} width={220} height={110} rx={6} fill="#0f172a" fillOpacity={0.9} />
+            <text x={16} y={27} fill="#64748b" fontSize="12" fontWeight="600">Định lý cosin:</text>
+            <text x={16} y={44} fill="#94a3b8" fontSize="11">c² = a²+b²-2ab·cosC = {fmtN(c*c)}</text>
+            <text x={16} y={61} fill="#64748b" fontSize="12" fontWeight="600">Định lý sin:</text>
+            <text x={16} y={78} fill="#94a3b8" fontSize="11">a/sinA = b/sinB = c/sinC = 2R</text>
+            <text x={16} y={95} fill="#fbbf24" fontSize="11">S = ½ab·sinC = {fmtN(area)}</text>
+            <text x={16} y={112} fill="#64748b" fontSize="11">R (ngoại tiếp) = {fmtN(R)}</text>
+          </>
+        )}
+      </svg>
     </div>
   );
 }

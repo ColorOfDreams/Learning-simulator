@@ -1,341 +1,161 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
 
-export default function StatisticsSimulation({ config }: SimulationProps) {
-  // Let the user edit numbers dynamically in a text box
-  const [dataInput, setDataInput] = useState('8, 9, 7, 6, 8, 9, 10, 8, 7, 9, 8, 6, 7, 8, 9');
+export default function InequalitySimulation({ config }: SimulationProps) {
+  const a1 = config.parameters?.find(p => p.key === 'a1')?.value ?? 1;
+  const b1 = config.parameters?.find(p => p.key === 'b1')?.value ?? 1;
+  const c1 = config.parameters?.find(p => p.key === 'c1')?.value ?? 4;
+  const a2 = config.parameters?.find(p => p.key === 'a2')?.value ?? 2;
+  const b2 = config.parameters?.find(p => p.key === 'b2')?.value ?? -1;
+  const c2 = config.parameters?.find(p => p.key === 'c2')?.value ?? 3;
 
-  // Preset datasets
-  const presets = [
-    { label: 'Điểm Toán', data: '8, 9, 7, 6, 8, 9, 10, 8, 7, 9, 8, 6, 7, 8, 9' },
-    { label: 'Chiều cao (cm)', data: '150, 155, 152, 160, 158, 154, 156, 162, 150, 158' },
-    { label: 'Nhiệt độ (°C)', data: '32, 34, 31, 35, 33, 32, 30' },
-  ];
+  const W = 600; const H = 400;
+  const scale = 45;
+  const ox = 220; const oy = H / 2;
+  const toSX = (x: number) => ox + x * scale;
+  const toSY = (y: number) => oy - y * scale;
 
-  // Parse input
-  const parsedData = useMemo(() => {
-    return dataInput
-      .split(',')
-      .map(v => parseFloat(v.trim()))
-      .filter(v => !isNaN(v));
-  }, [dataInput]);
+  const fmtN = (v: number) => {
+    const r = Math.round(v * 100) / 100;
+    return Number.isInteger(r) ? r.toString() : r.toFixed(2);
+  };
 
-  // Calculations
-  const stats = useMemo(() => {
-    if (parsedData.length === 0) return null;
+  const fmtLine = (a: number, b: number, c: number) => {
+    const as = a === 1 ? 'x' : a === -1 ? '-x' : `${fmtN(a)}x`;
+    const bs = b === 0 ? '' : b === 1 ? ' + y' : b === -1 ? ' - y' : b > 0 ? ` + ${fmtN(b)}y` : ` - ${fmtN(Math.abs(b))}y`;
+    return `${as}${bs} ≤ ${fmtN(c)}`;
+  };
 
-    const n = parsedData.length;
-    const sorted = [...parsedData].sort((a, b) => a - b);
-    const minVal = sorted[0];
-    const maxVal = sorted[n - 1];
+  const { poly1, poly2, intersectionPts } = useMemo(() => {
+    const xMin = -ox / scale;
+    const xMax = (W - ox) / scale;
+    const yMax = oy / scale;
+    const yMin = -yMax;
 
-    // Mean
-    const sum = sorted.reduce((a, b) => a + b, 0);
-    const mean = sum / n;
+    const corners: [number, number][] = [
+      [xMin, yMin], [xMax, yMin], [xMax, yMax], [xMin, yMax]
+    ];
 
-    // Median function
-    const getMedian = (arr: number[]) => {
-      const len = arr.length;
-      if (len === 0) return 0;
-      const mid = Math.floor(len / 2);
-      if (len % 2 !== 0) {
-        return arr[mid];
-      } else {
-        return (arr[mid - 1] + arr[mid]) / 2;
+    function clipToHalfPlane(poly: [number, number][], a: number, b: number, c: number): [number, number][] {
+      if (poly.length === 0) return [];
+      const inside = (p: [number, number]) => a * p[0] + b * p[1] <= c + 1e-9;
+      const intersect = (p1: [number, number], p2: [number, number]): [number, number] => {
+        const dx = p2[0] - p1[0]; const dy = p2[1] - p1[1];
+        const denom = a * dx + b * dy;
+        if (Math.abs(denom) < 1e-12) return p1;
+        const t = (c - a * p1[0] - b * p1[1]) / denom;
+        return [p1[0] + t * dx, p1[1] + t * dy];
+      };
+      const out: [number, number][] = [];
+      for (let i = 0; i < poly.length; i++) {
+        const cur = poly[i]; const next = poly[(i + 1) % poly.length];
+        const ci = inside(cur); const ni = inside(next);
+        if (ci) out.push(cur);
+        if (ci !== ni) out.push(intersect(cur, next));
       }
-    };
-
-    const q2 = getMedian(sorted);
-
-    // Q1 and Q3 according to high school standards
-    let lowerHalf: number[] = [];
-    let upperHalf: number[] = [];
-
-    if (n % 2 !== 0) {
-      const midIdx = Math.floor(n / 2);
-      lowerHalf = sorted.slice(0, midIdx);
-      upperHalf = sorted.slice(midIdx + 1);
-    } else {
-      const midIdx = n / 2;
-      lowerHalf = sorted.slice(0, midIdx);
-      upperHalf = sorted.slice(midIdx);
+      return out;
     }
 
-    const q1 = getMedian(lowerHalf);
-    const q3 = getMedian(upperHalf);
+    const clip1 = clipToHalfPlane(corners, a1, b1, c1);
+    const clip2 = clipToHalfPlane(corners, a2, b2, c2);
 
-    const range = maxVal - minVal;
-    const iqr = q3 - q1;
+    const toPoints = (pts: [number, number][]) =>
+      pts.map(([x, y]) => `${toSX(x).toFixed(1)},${toSY(y).toFixed(1)}`).join(' ');
 
-    // Variance & Standard Deviation (sample division by n)
-    const variance = sorted.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / n;
-    const stdDev = Math.sqrt(variance);
+    const ipts: [number, number][] = [];
+    const det = a1 * b2 - a2 * b1;
+    if (Math.abs(det) > 1e-9) {
+      const xi = (c1 * b2 - c2 * b1) / det;
+      const yi = (a1 * c2 - a2 * c1) / det;
+      ipts.push([xi, yi]);
+    }
 
-    // Frequency distribution for Bar Chart
-    const frequencies: Record<number, number> = {};
-    sorted.forEach(val => {
-      frequencies[val] = (frequencies[val] || 0) + 1;
-    });
+    return { poly1: toPoints(clip1), poly2: toPoints(clip2), intersectionPts: ipts };
+  }, [a1, b1, c1, a2, b2, c2]);
 
-    const frequencyList = Object.entries(frequencies)
-      .map(([val, freq]) => ({
-        val: parseFloat(val),
-        freq,
-      }))
-      .sort((a, b) => a.val - b.val);
+  const xTicks = [-4,-3,-2,-1,0,1,2,3,4,5,6,7];
+  const yTicks = [-3,-2,-1,1,2,3];
 
-    return {
-      n,
-      sorted,
-      minVal,
-      maxVal,
-      mean,
-      q1,
-      q2,
-      q3,
-      range,
-      iqr,
-      stdDev,
-      frequencyList,
-    };
-  }, [parsedData]);
+  const lineEndpoints = (a: number, b: number, c: number): [[number,number],[number,number]] | null => {
+    const xL = -ox / scale; const xR = (W - ox) / scale;
+    if (Math.abs(b) > 1e-9) {
+      return [[xL, (c - a * xL) / b], [xR, (c - a * xR) / b]];
+    } else if (Math.abs(a) > 1e-9) {
+      const xv = c / a; return [[xv, -5], [xv, 5]];
+    }
+    return null;
+  };
 
-  // Width & height of the visualization area
-  const svgWidth = 560;
-  const svgHeight = 280;
-
-  // Render visualizations
-  const visualContent = useMemo(() => {
-    if (!stats) return null;
-
-    const { minVal, maxVal, q1, q2, q3, frequencyList } = stats;
-
-    // Scales
-    const paddingX = 40;
-    const plotWidth = svgWidth - 2 * paddingX;
-
-    const dataRange = maxVal - minVal || 1;
-    // Map value to Screen X
-    const getScreenX = (val: number) => {
-      return paddingX + ((val - minVal) / dataRange) * plotWidth;
-    };
-
-    // 1. Box Plot dimensions (top part)
-    const boxY = 60;
-    const boxHeight = 30;
-
-    // 2. Bar Chart dimensions (bottom part)
-    const chartYBottom = svgHeight - 40; // baseline
-    const chartHeightMax = 100;
-    const maxFreq = Math.max(...frequencyList.map(f => f.freq)) || 1;
-
-    return (
-      <svg width="100%" height="100%" viewBox={`0 0 ${svgWidth} ${svgHeight}`} style={{ background: '#0a0f1d' }}>
-        {/* Grids and Axes */}
-        <line x1={paddingX} y1={chartYBottom} x2={svgWidth - paddingX} y2={chartYBottom} stroke="#334155" strokeWidth="2" />
-        
-        {/* Draw Box Plot */}
-        <g stroke="#64748b" strokeWidth="1.5">
-          {/* Main whiskers line */}
-          <line x1={getScreenX(minVal)} y1={boxY} x2={getScreenX(maxVal)} y2={boxY} stroke="#06b6d4" strokeWidth="2" />
-          
-          {/* Min whisker */}
-          <line x1={getScreenX(minVal)} y1={boxY - boxHeight/2} x2={getScreenX(minVal)} y2={boxY + boxHeight/2} stroke="#06b6d4" strokeWidth="2" />
-          
-          {/* Max whisker */}
-          <line x1={getScreenX(maxVal)} y1={boxY - boxHeight/2} x2={getScreenX(maxVal)} y2={boxY + boxHeight/2} stroke="#06b6d4" strokeWidth="2" />
-          
-          {/* Main Box */}
-          <rect
-            x={getScreenX(q1)}
-            y={boxY - boxHeight/2}
-            width={Math.max(2, getScreenX(q3) - getScreenX(q1))}
-            height={boxHeight}
-            fill="#1e293b"
-            stroke="#06b6d4"
-            strokeWidth="2"
-            rx="4"
-          />
-
-          {/* Median line (Q2) */}
-          <line x1={getScreenX(q2)} y1={boxY - boxHeight/2} x2={getScreenX(q2)} y2={boxY + boxHeight/2} stroke="#ef4444" strokeWidth="3" />
-        </g>
-
-        {/* Labels for Box Plot */}
-        <g fill="#94a3b8" fontSize="10" textAnchor="middle">
-          <text x={getScreenX(minVal)} y={boxY - boxHeight/2 - 6} fill="#38bdf8">Min: {minVal}</text>
-          <text x={getScreenX(q1)} y={boxY + boxHeight/2 + 14} fill="#a5f3fc">Q₁: {q1.toFixed(1)}</text>
-          <text x={getScreenX(q2)} y={boxY - boxHeight/2 - 6} fill="#f87171" fontWeight="bold">Q₂ (Med): {q2.toFixed(1)}</text>
-          <text x={getScreenX(q3)} y={boxY + boxHeight/2 + 14} fill="#a5f3fc">Q₃: {q3.toFixed(1)}</text>
-          <text x={getScreenX(maxVal)} y={boxY - boxHeight/2 - 6} fill="#38bdf8">Max: {maxVal}</text>
-        </g>
-
-        {/* Title for Box Plot */}
-        <text x={paddingX} y={20} fill="#64748b" fontSize="11" fontWeight="bold" textAnchor="start">
-          BIỂU ĐỒ HỘP (BOX PLOT)
-        </text>
-
-        {/* Title for Bar Chart */}
-        <text x={paddingX} y={chartYBottom - chartHeightMax - 15} fill="#64748b" fontSize="11" fontWeight="bold" textAnchor="start">
-          BIỂU ĐỒ TẦN SỐ (FREQUENCY BAR CHART)
-        </text>
-
-        {/* Draw Bar Chart (Frequency representation) */}
-        {frequencyList.map((item, idx) => {
-          const x = getScreenX(item.val);
-          const barHeight = (item.freq / maxFreq) * chartHeightMax;
-          const barWidth = Math.min(24, Math.max(12, plotWidth / (frequencyList.length * 2)));
-
-          return (
-            <g key={idx}>
-              {/* Bar */}
-              <rect
-                x={x - barWidth / 2}
-                y={chartYBottom - barHeight}
-                width={barWidth}
-                height={barHeight}
-                fill="#10b981"
-                opacity="0.8"
-                rx="3"
-              />
-              
-              {/* Value label on X-axis */}
-              <text x={x} y={chartYBottom + 16} fill="#94a3b8" fontSize="10" textAnchor="middle" fontWeight="bold">
-                {item.val}
-              </text>
-
-              {/* Frequency count above the bar */}
-              <text x={x} y={chartYBottom - barHeight - 6} fill="#34d399" fontSize="10" textAnchor="middle">
-                n={item.freq}
-              </text>
-            </g>
-          );
-        })}
-      </svg>
-    );
-  }, [stats]);
+  const ep1 = lineEndpoints(a1, b1, c1);
+  const ep2 = lineEndpoints(a2, b2, c2);
 
   return (
-    <div style={{ width: '100%', height: '100%', padding: '12px', background: '#090d16', display: 'flex', flexDirection: 'column', color: '#fff', boxSizing: 'border-box' }}>
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '12px', flexWrap: 'wrap' }}>
-        {/* Preset quick buttons */}
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <span style={{ fontSize: '12px', color: '#94a3b8' }}>Mẫu nhanh:</span>
-          {presets.map(p => (
-            <button
-              key={p.label}
-              onClick={() => setDataInput(p.data)}
-              style={{
-                background: dataInput === p.data ? '#06b6d4' : '#1e293b',
-                color: '#fff',
-                border: 'none',
-                padding: '4px 10px',
-                borderRadius: '6px',
-                fontSize: '11px',
-                cursor: 'pointer',
-                fontWeight: '500',
-                transition: 'background 0.2s',
-              }}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+        <rect width={W} height={H} fill="#090d16" />
 
-        {/* Input box */}
-        <div style={{ flex: 1, minWidth: '240px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '12px', color: '#94a3b8', whiteSpace: 'nowrap' }}>Dữ liệu:</span>
-          <input
-            type="text"
-            value={dataInput}
-            onChange={(e) => setDataInput(e.target.value)}
-            placeholder="Nhập các số cách nhau bằng dấu phẩy"
-            style={{
-              flex: 1,
-              background: '#090d16',
-              border: '1px solid #334155',
-              borderRadius: '6px',
-              padding: '4px 10px',
-              fontSize: '12px',
-              color: '#fff',
-              outline: 'none',
-            }}
-          />
-        </div>
-      </div>
+        {/* Grid */}
+        {xTicks.map(x => <line key={`gx${x}`} x1={toSX(x)} y1={0} x2={toSX(x)} y2={H} stroke="#1e293b" strokeWidth="1" />)}
+        {yTicks.map(y => <line key={`gy${y}`} x1={0} y1={toSY(y)} x2={W} y2={toSY(y)} stroke="#1e293b" strokeWidth="1" />)}
 
-      {stats ? (
-        <div style={{ display: 'flex', flex: 1, gap: '16px', flexWrap: 'wrap', minHeight: 0 }}>
-          {/* Spreadsheet Table of calculations */}
-          <div style={{
-            width: '200px',
-            background: '#090d16',
-            border: '1px solid #334155',
-            borderRadius: '12px',
-            padding: '12px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            fontSize: '12px',
-            overflowY: 'auto'
-          }}>
-            <div style={{ fontWeight: 'bold', color: '#38bdf8', borderBottom: '1px solid #1e293b', paddingBottom: '4px' }}>
-              Đặc trưng mẫu (n={stats.n})
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#94a3b8' }}>Số trung bình:</span>
-              <span style={{ fontWeight: 'bold', color: '#10b981' }}>{stats.mean.toFixed(2)}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#94a3b8' }}>Trung vị (Q₂):</span>
-              <span style={{ fontWeight: 'bold', color: '#ef4444' }}>{stats.q2.toFixed(1)}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#94a3b8' }}>Tứ phân vị Q₁:</span>
-              <span style={{ fontWeight: 'bold' }}>{stats.q1.toFixed(1)}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#94a3b8' }}>Tứ phân vị Q₃:</span>
-              <span style={{ fontWeight: 'bold' }}>{stats.q3.toFixed(1)}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#94a3b8' }}>K.biến thiên (R):</span>
-              <span style={{ fontWeight: 'bold' }}>{stats.range}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#94a3b8' }}>Khoảng IQR:</span>
-              <span style={{ fontWeight: 'bold' }}>{stats.iqr.toFixed(1)}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px dashed #334155', paddingTop: '4px' }}>
-              <span style={{ color: '#94a3b8' }}>Độ lệch chuẩn:</span>
-              <span style={{ fontWeight: 'bold', color: '#fb923c' }}>{stats.stdDev.toFixed(3)}</span>
-            </div>
+        {/* Half-plane shading */}
+        {poly1 && <polygon points={poly1} fill="#ef4444" fillOpacity={0.18} />}
+        {poly2 && <polygon points={poly2} fill="#38bdf8" fillOpacity={0.18} />}
 
-            <div style={{ borderTop: '1px solid #1e293b', paddingTop: '4px', marginTop: 'auto', fontSize: '10px', color: '#475569' }}>
-              * Q₁, Q₂, Q₃ áp dụng cách tính phân vị chương trình GDPT 2018.
-            </div>
-          </div>
+        {/* Axes */}
+        <line x1={0} y1={oy} x2={W} y2={oy} stroke="#475569" strokeWidth="1.5" />
+        <line x1={ox} y1={0} x2={ox} y2={H} stroke="#475569" strokeWidth="1.5" />
+        <polygon points={`${W-6},${oy-4} ${W},${oy} ${W-6},${oy+4}`} fill="#475569" />
+        <polygon points={`${ox-4},6 ${ox},0 ${ox+4},6`} fill="#475569" />
+        <text x={W-8} y={oy-6} fill="#64748b" fontSize="12" textAnchor="end">x</text>
+        <text x={ox+6} y={13} fill="#64748b" fontSize="12">y</text>
+        <text x={ox-8} y={oy+14} fill="#475569" fontSize="10" textAnchor="end">O</text>
 
-          {/* Visualization slot */}
-          <div style={{
-            flex: 1,
-            position: 'relative',
-            border: '1px solid #334155',
-            borderRadius: '12px',
-            background: '#090d16',
-            overflow: 'hidden',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            {visualContent}
-          </div>
-        </div>
-      ) : (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>
-          Vui lòng nhập danh sách số liệu mẫu hợp lệ (ví dụ: 1, 2, 3)
-        </div>
-      )}
+        {/* Tick labels */}
+        {xTicks.filter(x => x !== 0).map(x => (
+          <text key={`xl${x}`} x={toSX(x)} y={oy+14} fill="#64748b" fontSize="9" textAnchor="middle">{x}</text>
+        ))}
+        {yTicks.map(y => (
+          <text key={`yl${y}`} x={ox-5} y={toSY(y)+4} fill="#64748b" fontSize="9" textAnchor="end">{y}</text>
+        ))}
+
+        {/* Boundary lines */}
+        {ep1 && (
+          <line x1={toSX(ep1[0][0])} y1={toSY(ep1[0][1])} x2={toSX(ep1[1][0])} y2={toSY(ep1[1][1])}
+            stroke="#ef4444" strokeWidth="2.2" strokeLinecap="round" />
+        )}
+        {ep2 && (
+          <line x1={toSX(ep2[0][0])} y1={toSY(ep2[0][1])} x2={toSX(ep2[1][0])} y2={toSY(ep2[1][1])}
+            stroke="#38bdf8" strokeWidth="2.2" strokeLinecap="round" />
+        )}
+
+        {/* Intersection point */}
+        {intersectionPts.map(([x, y], i) => (
+          x > -ox/scale && x < (W-ox)/scale && Math.abs(y) < oy/scale ? (
+            <g key={i}>
+              <circle cx={toSX(x)} cy={toSY(y)} r={5} fill="#fbbf24" />
+              <text x={toSX(x)+8} y={toSY(y)-5} fill="#fbbf24" fontSize="10">({fmtN(x)}, {fmtN(y)})</text>
+            </g>
+          ) : null
+        ))}
+
+        {/* Info box */}
+        <rect x={W-210} y={8} width={202} height={82} rx={6} fill="#0f172a" fillOpacity={0.92} />
+        <text x={W-202} y={26} fill="#ef4444" fontSize="12">{fmtLine(a1, b1, c1)}</text>
+        <text x={W-202} y={43} fill="#38bdf8" fontSize="12">{fmtLine(a2, b2, c2)}</text>
+        <text x={W-202} y={60} fill="#94a3b8" fontSize="10">Miền đỏ: nửa mặt phẳng 1</text>
+        <text x={W-202} y={75} fill="#94a3b8" fontSize="10">Miền xanh: nửa mặt phẳng 2</text>
+        <text x={W-202} y={88} fill="#a78bfa" fontSize="10">Phần giao: miền nghiệm chung</text>
+
+        {/* Legend */}
+        <rect x={8} y={H-68} width={195} height={60} rx={4} fill="#0f172a" fillOpacity={0.85} />
+        <rect x={16} y={H-58} width={14} height={10} fill="#ef4444" fillOpacity={0.5} />
+        <text x={36} y={H-50} fill="#ef4444" fontSize="10">{fmtLine(a1, b1, c1)}</text>
+        <rect x={16} y={H-44} width={14} height={10} fill="#38bdf8" fillOpacity={0.5} />
+        <text x={36} y={H-36} fill="#38bdf8" fontSize="10">{fmtLine(a2, b2, c2)}</text>
+        <rect x={16} y={H-30} width={14} height={10} fill="#a78bfa" fillOpacity={0.65} />
+        <text x={36} y={H-22} fill="#a78bfa" fontSize="10">Giao = miền nghiệm hệ bất pt</text>
+      </svg>
     </div>
   );
 }

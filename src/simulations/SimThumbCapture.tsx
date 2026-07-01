@@ -51,6 +51,8 @@ const MATH_REGISTRY: Record<string, React.LazyExoticComponent<SimComponent>> = {
   'MATH10-04': lazy(() => import('./math/experiments/math10/math10-04')),
   'MATH10-05': lazy(() => import('./math/experiments/math10/math10-05')),
   'MATH10-06': lazy(() => import('./math/experiments/math10/math10-06')),
+  'MATH10-07': lazy(() => import('./math/experiments/math10/math10-07')),
+  'MATH10-08': lazy(() => import('./math/experiments/math10/math10-08')),
 
   'MATH11-01': lazy(() => import('./math/experiments/math11/math11-01-trig')),
   'MATH11-02': lazy(() => import('./math/experiments/math11/math11-02-unit-circle')),
