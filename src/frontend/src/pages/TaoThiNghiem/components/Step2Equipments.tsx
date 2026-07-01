@@ -186,7 +186,7 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange, filterMode = 'both' 
             <div style={{ fontSize: 12, fontWeight: 600, color: '#64748b', marginBottom: 6 }}>NGUYÊN TỐ ({filteredChems.elements.length})</div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: 10, maxHeight: 240, overflow: 'auto', marginBottom: 16 }}>
               {filteredChems.elements.map(chem => {
-                const isSelected = data.objects?.some(o => o.properties?.symbol === chem.symbol && o.modelName === chemPicker.type);
+                const isSelected = data.objects?.some(o => o.properties?.symbol === chem.symbol && o.modelName === chemPicker?.type);
                 return (
                 <Tooltip key={chem.symbol} title={`${chem.name} - ${chem.appearance}`}>
                   <div onClick={() => addChemical(chem)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px 8px', borderRadius: 12, border: `1.5px solid ${isSelected ? '#3b82f6' : '#e2e8f0'}`, cursor: 'pointer', transition: 'all 0.2s', background: isSelected ? '#eff6ff' : '#fff', boxShadow: '0 1px 2px rgba(0,0,0,0.02)', position: 'relative' }}
@@ -210,7 +210,7 @@ const Step2Equipments: React.FC<Props> = ({ data, onChange, filterMode = 'both' 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: 10, maxHeight: 240, overflow: 'auto' }}>
               {filteredChems.compounds.map(chem => {
                 const isConcentrated = chem.symbol.includes('(dac)');
-                const isSelected = data.objects?.some(o => o.properties?.symbol === chem.symbol && o.modelName === chemPicker.type);
+                const isSelected = data.objects?.some(o => o.properties?.symbol === chem.symbol && o.modelName === chemPicker?.type);
                 return (
                 <Tooltip key={chem.symbol} title={`${chem.name} (${chem.category}) - ${chem.appearance}`}>
                   <div onClick={() => addChemical(chem)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px 8px', borderRadius: 12, border: `1.5px solid ${isSelected ? (isConcentrated ? '#ef4444' : '#0ea5e9') : (isConcentrated ? '#fca5a5' : '#bae6fd')}`, cursor: 'pointer', transition: 'all 0.2s', background: isSelected ? (isConcentrated ? '#fef2f2' : '#e0f2fe') : (isConcentrated ? '#fef2f2' : '#f0f9ff'), boxShadow: '0 1px 2px rgba(0,0,0,0.02)', position: 'relative' }}
