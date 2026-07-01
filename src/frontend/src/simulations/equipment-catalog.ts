@@ -1,4 +1,4 @@
-export interface EquipmentDef {
+﻿export interface EquipmentDef {
   id: string;
   name: string;
   subject: 'physics' | 'chemistry' | 'math';
@@ -164,43 +164,7 @@ export const ALL_EQUIPMENT: EquipmentDef[] = [
     type: 'thuy-tinh', connections: [],
   },
   {
-    id: 'Burette', name: 'Buret', subject: 'chemistry', grade: 11,
-    chapter: 'chuong-1-axit-bazo', chapterName: 'Chương 1: Axit - Bazơ',
-    topic: 'axit-bazo', topicName: 'Axit - Bazơ',
-    type: 'thuy-tinh', connections: [],
-  },
-  {
-    id: 'Pipette', name: 'Pipet', subject: 'chemistry', grade: 11,
-    chapter: 'chuong-1-axit-bazo', chapterName: 'Chương 1: Axit - Bazơ',
-    topic: 'axit-bazo', topicName: 'Axit - Bazơ',
-    type: 'thuy-tinh', connections: [],
-  },
-  {
-    id: 'Thermometer', name: 'Nhiệt kế', subject: 'chemistry', grade: 11,
-    chapter: 'chuong-3-phan-ung-hoa-hoc', chapterName: 'Chương 3: Phản ứng hóa học',
-    topic: 'phan-ung-hoa-hoc', topicName: 'Phản ứng hóa học',
-    type: 'do-luong', connections: [],
-  },
-  {
     id: 'BunsenBurner', name: 'Đèn cồn', subject: 'chemistry', grade: 11,
-    chapter: 'chuong-3-phan-ung-hoa-hoc', chapterName: 'Chương 3: Phản ứng hóa học',
-    topic: 'phan-ung-hoa-hoc', topicName: 'Phản ứng hóa học',
-    type: 'co-dinh', connections: [],
-  },
-  {
-    id: 'pHMeter', name: 'Máy đo pH', subject: 'chemistry', grade: 11,
-    chapter: 'chuong-1-axit-bazo', chapterName: 'Chương 1: Axit - Bazơ',
-    topic: 'axit-bazo', topicName: 'Axit - Bazơ',
-    type: 'do-luong', connections: [],
-  },
-  {
-    id: 'Condenser', name: 'Ống sinh hàn', subject: 'chemistry', grade: 11,
-    chapter: 'chuong-3-phan-ung-hoa-hoc', chapterName: 'Chương 3: Phản ứng hóa học',
-    topic: 'phan-ung-hoa-hoc', topicName: 'Phản ứng hóa học',
-    type: 'thuy-tinh', connections: [],
-  },
-  {
-    id: 'Mortar', name: 'Cối chày', subject: 'chemistry', grade: 11,
     chapter: 'chuong-3-phan-ung-hoa-hoc', chapterName: 'Chương 3: Phản ứng hóa học',
     topic: 'phan-ung-hoa-hoc', topicName: 'Phản ứng hóa học',
     type: 'co-dinh', connections: [],
@@ -222,6 +186,48 @@ export const ALL_EQUIPMENT: EquipmentDef[] = [
     chapter: 'chuong-3-phan-ung-hoa-hoc', chapterName: 'Chương 3: Phản ứng hóa học',
     topic: 'phan-ung-hoa-hoc', topicName: 'Phản ứng hóa học',
     type: 'chat-khi', connections: ['chemical'],
+  },
+  {
+    id: 'NuocCat', name: 'Nước cất (H2O)', subject: 'chemistry', grade: 11,
+    chapter: 'chuong-1-axit-bazo', chapterName: 'Chương 1: Axit - Bazơ',
+    topic: 'axit-bazo', topicName: 'Axit - Bazơ',
+    type: 'chat-long', connections: ['chemical'],
+  },
+  {
+    id: 'AxitClohidric', name: 'Axit clohidric (HCl)', subject: 'chemistry', grade: 10,
+    chapter: 'chuong-3-phan-ung-hoa-hoc', chapterName: 'Chương 3: Phản ứng hóa học',
+    topic: 'phan-ung-hoa-hoc', topicName: 'Phản ứng hóa học',
+    type: 'chat-long', connections: ['chemical'],
+  },
+  {
+    id: 'NatriHidroxit', name: 'Natri hidroxit (NaOH)', subject: 'chemistry', grade: 10,
+    chapter: 'chuong-3-phan-ung-hoa-hoc', chapterName: 'Chương 3: Phản ứng hóa học',
+    topic: 'phan-ung-hoa-hoc', topicName: 'Phản ứng hóa học',
+    type: 'chat-long', connections: ['chemical'],
+  },
+  {
+    id: 'AxitSunfuric', name: 'Axit sunfuric (H2SO4)', subject: 'chemistry', grade: 10,
+    chapter: 'chuong-3-phan-ung-hoa-hoc', chapterName: 'Chương 3: Phản ứng hóa học',
+    topic: 'phan-ung-hoa-hoc', topicName: 'Phản ứng hóa học',
+    type: 'chat-long', connections: ['chemical'],
+  },
+  {
+    id: 'DongSunfat', name: 'Đồng (II) sunfat (CuSO4)', subject: 'chemistry', grade: 10,
+    chapter: 'chuong-3-phan-ung-hoa-hoc', chapterName: 'Chương 3: Phản ứng hóa học',
+    topic: 'phan-ung-hoa-hoc', topicName: 'Phản ứng hóa học',
+    type: 'chat-long', connections: ['chemical'],
+  },
+  {
+    id: 'Phenolphtalein', name: 'Phenolphthalein', subject: 'chemistry', grade: 11,
+    chapter: 'chuong-1-axit-bazo', chapterName: 'Chương 1: Axit - Bazơ',
+    topic: 'axit-bazo', topicName: 'Axit - Bazơ',
+    type: 'chat-long', connections: ['chemical'],
+  },
+  {
+    id: 'QuyTim', name: 'Quỳ tím', subject: 'chemistry', grade: 11,
+    chapter: 'chuong-1-axit-bazo', chapterName: 'Chương 1: Axit - Bazơ',
+    topic: 'axit-bazo', topicName: 'Axit - Bazơ',
+    type: 'chat-long', connections: ['chemical'],
   },
   {
     id: 'CoordinatePlane', name: 'Mặt phẳng tọa độ', subject: 'math', grade: 11,
@@ -278,6 +284,8 @@ export const INITIAL_Y: Record<string, number> = {
   SimplePendulum: 1.5, SpringPendulum: 1.5, Spring: 1.5,
   MassBlock: 0.2, Stopwatch: 0.1, Ruler: 0.05, Protractor: 0.05,
   Dashpot: 0.5, DrivingMotor: 0.2, EnergyMeter: 0.05,
-  TestTube: 0.2, ErlenmeyerFlask: 0.3, RoundFlask: 0.4, Burette: 1.5, Pipette: 0.05, Thermometer: 0.05, BunsenBurner: 0.1, pHMeter: 0.05, Condenser: 0.3, Mortar: 0.05, ChemicalSolid: 0.1, ChemicalLiquid: 0.2, ChemicalGas: 0.5,
+  TestTube: 0.2, ErlenmeyerFlask: 0.3, RoundFlask: 0.4, BunsenBurner: 0.1, ChemicalSolid: 0.1, ChemicalLiquid: 0.2, ChemicalGas: 0.5,
+  NuocCat: 0.2, AxitClohidric: 0.2, NatriHidroxit: 0.2, AxitSunfuric: 0.2, AxitSunfuricDac: 0.2, DongSunfat: 0.2, Phenolphtalein: 0.2, QuyTim: 0.2,
   CoordinatePlane: 0.05, ParabolaGraph: 0.05, TrigWave: 0.05, GeometryTriangle: 0.05, GeometryCircle: 0.05, Vector2D: 0.05, FunctionPlotter: 0.05, StatisticsChart: 0.05,
 };
+

@@ -130,26 +130,28 @@ export default function useSimulationModel() {
   }, []);
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [wrongActionData, setWrongActionData] = useState<{ id: string, expected: any, actual: any } | null>(null);
+  const [guidanceSteps, setGuidanceSteps] = useState<any[]>([]);
 
   const nextStep = useCallback(() => {
     setCurrentStepIndex((prev) => {
-      const max = sceneGraph?.steps?.length ? sceneGraph.steps.length - 1 : 0;
+      const max = guidanceSteps.length ? guidanceSteps.length - 1 : 0;
       return Math.min(prev + 1, max);
     });
-  }, [sceneGraph]);
+  }, [guidanceSteps]);
 
   const prevStep = useCallback(() => {
     setCurrentStepIndex((prev) => Math.max(prev - 1, 0));
   }, []);
 
   const setStep = useCallback((index: number) => {
-    const max = sceneGraph?.steps?.length ? sceneGraph.steps.length - 1 : 0;
+    const max = guidanceSteps.length ? guidanceSteps.length - 1 : 0;
     setCurrentStepIndex(Math.max(0, Math.min(index, max)));
-  }, [sceneGraph]);
+  }, [guidanceSteps]);
 
   const checkRuleAndAdvance = useCallback((actionType: string, sourceId?: string, targetId?: string) => {
-    if (!sceneGraph || !sceneGraph.steps) return;
-    const currentStep = sceneGraph.steps[currentStepIndex];
+    if (!guidanceSteps || guidanceSteps.length === 0) return;
+    const currentStep = guidanceSteps[currentStepIndex];
     if (!currentStep || !currentStep.expectedAction) return;
 
     if (currentStep.expectedAction.type === actionType || (actionType === 'pour' && currentStep.expectedAction.type === 'drag_and_drop')) {
@@ -169,11 +171,36 @@ export default function useSimulationModel() {
       const expectedTarget = currentStep.expectedAction.targetModel;
       
       let sourceMatch = !expectedSource || (sourceObj && isMatch(sourceObj, expectedSource));
-      let targetMatch = !expectedTarget || (targetObj && isMatch(targetObj, expectedTarget));
+      let isTargetTable = expectedTarget && ['table', 'ban', 'bàn', 'bàn thí nghiệm'].includes(expectedTarget.toLowerCase());
+      let targetMatch = !expectedTarget || isTargetTable || (targetObj && isMatch(targetObj, expectedTarget));
 
       if (sourceMatch && targetMatch) {
         nextStep();
+      } else {
+        // Mismatch!
+        setWrongActionData({
+          id: Date.now().toString(),
+          expected: currentStep.expectedAction,
+          actual: {
+            actionType,
+            source: sourceObj?.nhan || sourceObj?.modelName || sourceId,
+            target: targetObj?.nhan || targetObj?.modelName || targetId
+          }
+        });
       }
+    } else if (['pour', 'drag_and_drop', 'update_property'].includes(actionType)) {
+      // Performed a major action but it wasn't the expected action type
+      const sourceObj = sceneGraph.objects.find(o => o.id === sourceId);
+      const targetObj = sceneGraph.objects.find(o => o.id === targetId);
+      setWrongActionData({
+        id: Date.now().toString(),
+        expected: currentStep.expectedAction,
+        actual: {
+          actionType,
+          source: sourceObj?.nhan || sourceObj?.modelName || sourceId,
+          target: targetObj?.nhan || targetObj?.modelName || targetId
+        }
+      });
     }
   }, [sceneGraph, currentStepIndex, nextStep]);
 
@@ -192,5 +219,9 @@ export default function useSimulationModel() {
     prevStep,
     setStep,
     checkRuleAndAdvance,
+    wrongActionData,
+    setWrongActionData,
+    guidanceSteps,
+    setGuidanceSteps,
   };
 }

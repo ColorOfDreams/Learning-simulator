@@ -11,6 +11,8 @@ import EquipmentHighlighter from './EquipmentHighlighter';
 import { SnapIndicator } from './SnapIndicator';
 import { layDungCu } from '@/dung-cu/thanh-ghi';
 import { getEquipmentConfig } from './EquipmentRegistry';
+import { processPouring } from '@/dung-cu/hoa-hoc/dung-cu-hoa-hoc';
+import { ChemicalEngine } from './ChemicalEngine';
 
 const COMPONENT_MAP: Record<string, React.FC<any>> = {};
 
@@ -157,42 +159,52 @@ const SandboxEngine: React.FC<Props> = ({ sceneGraph, isPlaying, onUpdatePositio
         const objects = objectsRef.current;
         const sourceObj = objects.find((o: any) => o.id === pouringAction.sourceId);
         const targetObj = objects.find((o: any) => o.id === pouringAction.targetId);
-        
+
         if (sourceObj && targetObj) {
-          const sProps: any = sourceObj.properties || {};
           const tProps: any = targetObj.properties || {};
-          
+
+          // If DragObj already handled this pour (reactionEffect already set), skip overwriting
+          if (tProps.reactionEffect) {
+            setPouringAction(null);
+            return;
+          }
+
+          const sProps: any = sourceObj.properties || {};
+
           let sChem = sProps.symbol || sProps.kyHieu;
           if (sourceObj.modelName === 'NuocCat') sChem = 'H2O';
-          
+
           const tColor = tProps.liquidColor || tProps.mauChatLong || '#00a8ff';
           let tContents = Array.isArray(tProps.contents) ? tProps.contents : [];
           if (targetObj.modelName === 'Beaker' && tProps.liquidVolume > 0 && tContents.length === 0) {
-            // Assume pre-filled beaker has H2O
             tContents = ['H2O'];
           }
           const tTemp = tProps.temperature || 25;
-          
+
           if (sChem) {
-            const { ChemicalEngine } = require('./ChemicalEngine');
-            ChemicalEngine.mix(tContents, sChem, tTemp, tColor).then((result: any) => {
-              const { updatedContents, updatedColor, effect } = result;
+            // Use processPouring which checks full REACTION_RULES instead of just acid-base
+            const sourceProps = { symbol: sChem, kyHieu: sChem, theTich: 100 };
+            const targetSurface = { symbol: tProps.symbol, kyHieu: tProps.kyHieu, liquidColor: tColor, chemicalLevel: tProps.liquidVolume || tProps.chemicalLevel || 0, liquidVolume: tProps.liquidVolume || 0, theTich: tProps.liquidVolume || 0 };
+            const result = processPouring(sourceProps, targetSurface);
+            if (result.liquidColor) updateObjectProperty(targetObj.id, 'liquidColor', result.liquidColor);
+            if (result.symbol) updateObjectProperty(targetObj.id, 'symbol', result.symbol);
+            if (result.kyHieu) updateObjectProperty(targetObj.id, 'kyHieu', result.kyHieu);
+            if (result.reactionEffect) {
+              updateObjectProperty(targetObj.id, 'reactionEffect', { effect: result.reactionEffect, precipitateColor: result.precipitateColor || '#ffffff', timestamp: Date.now() });
+            }
+            
+            // Also run ChemicalEngine for acid-base-indicator detection (supplementary)
+            ChemicalEngine.mix(tContents, sChem, tTemp, tColor).then((chemResult: any) => {
+              const updatedContents = chemResult.updatedContents || tContents;
               updateObjectProperty(targetObj.id, 'contents', updatedContents);
-              updateObjectProperty(targetObj.id, 'liquidColor', updatedColor);
-              
-              // Increment volume
-              const curVol = tProps.liquidVolume || 0;
-              if (curVol < 500) { // arbitrary max volume
-                updateObjectProperty(targetObj.id, 'liquidVolume', curVol + 20);
-              }
-              
-              if (effect) {
-                 updateObjectProperty(targetObj.id, 'reactionEffect', { ...effect, timestamp: Date.now() });
+              if (chemResult.updatedColor) updateObjectProperty(targetObj.id, 'liquidColor', chemResult.updatedColor);
+              if (chemResult.effect && !result.reactionEffect) {
+                updateObjectProperty(targetObj.id, 'reactionEffect', { ...chemResult.effect, timestamp: Date.now() });
               }
             });
           }
         }
-        
+
         setPouringAction(null);
       }, 2500);
       return () => clearTimeout(timer);

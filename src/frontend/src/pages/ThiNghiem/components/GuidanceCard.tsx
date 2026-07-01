@@ -3,9 +3,9 @@ import { BulbOutlined, CheckCircleFilled } from '@ant-design/icons';
 
 interface GuidanceStep { id: string; title: string; description: string; expectedAction?: any; targetEquipment?: string; }
 
-interface Props { steps?: GuidanceStep[]; currentStepIndex?: number; }
+interface Props { steps?: GuidanceStep[]; currentStepIndex?: number; isOverlay?: boolean; onClose?: () => void; }
 
-const GuidanceCard: React.FC<Props> = ({ steps, currentStepIndex = 0 }) => {
+const GuidanceCard: React.FC<Props> = ({ steps, currentStepIndex = 0, isOverlay = false, onClose }) => {
   if (!steps?.length) return null;
 
   return (
@@ -14,9 +14,11 @@ const GuidanceCard: React.FC<Props> = ({ steps, currentStepIndex = 0 }) => {
       border: '1px solid #fcd34d',
       borderRadius: 14,
       padding: 14,
-      boxShadow: '0 2px 12px rgba(245, 158, 11, 0.08)',
+      boxShadow: isOverlay ? '0 10px 25px rgba(0, 0, 0, 0.15)' : '0 2px 12px rgba(245, 158, 11, 0.08)',
       animation: 'guidanceIn 0.4s ease-out',
       width: '100%',
+      maxWidth: isOverlay ? 320 : '100%',
+      pointerEvents: 'auto',
     }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8,
@@ -35,8 +37,27 @@ const GuidanceCard: React.FC<Props> = ({ steps, currentStepIndex = 0 }) => {
           <div style={{ fontSize: 13, fontWeight: 700, color: '#92400e' }}>Các bước hướng dẫn</div>
           <div style={{ fontSize: 10, color: '#a16207', opacity: 0.7 }}>Làm theo từng bước</div>
         </div>
+        {isOverlay && onClose && (
+          <div 
+            onClick={onClose}
+            style={{ 
+              marginLeft: 'auto', 
+              cursor: 'pointer', 
+              color: '#d97706', 
+              fontSize: 16, 
+              padding: 4 
+            }}
+          >
+            ✕
+          </div>
+        )}
       </div>
 
+      <div style={{ 
+        maxHeight: isOverlay ? 300 : 'none', 
+        overflowY: isOverlay ? 'auto' : 'visible',
+        paddingRight: isOverlay ? 4 : 0
+      }}>
       {steps.map((step, index) => {
         const isActive = index === currentStepIndex;
         const isPast = index < currentStepIndex;
@@ -73,6 +94,7 @@ const GuidanceCard: React.FC<Props> = ({ steps, currentStepIndex = 0 }) => {
           </div>
         );
       })}
+      </div>
 
       <style>{`
         @keyframes guidanceIn {

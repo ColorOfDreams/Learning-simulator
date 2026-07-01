@@ -74,6 +74,16 @@ const TaoThiNghiem: React.FC = () => {
   };
 
   const selectedCount = sceneData.objects?.length || 0;
+  const isChemistry = sceneData.roomType === 'chemistry';
+  const totalSteps = isChemistry ? 4 : 3;
+
+  const handleNextStep = () => {
+    if (step === 0 && !sceneData.name?.trim()) {
+      message.warning('Vui lòng nhập tên thí nghiệm trước khi tiếp tục');
+      return;
+    }
+    setStep((s) => s + 1);
+  };
 
   return (
     <div className="ttn-page">
@@ -112,18 +122,18 @@ const TaoThiNghiem: React.FC = () => {
             </div>
 
             <div className="ttn-progress">
-              {[0, 1, 2].map((i) => (
+              {Array.from({ length: totalSteps }).map((_, i) => (
                 <div key={i} className={`ttn-dot ${i === step ? 'active' : i < step ? 'done' : ''}`} />
               ))}
             </div>
 
             <div className="ttn-topbar-right">
-              {step === 2 ? (
+              {step === (totalSteps - 1) ? (
                 <Button type="primary" onClick={() => handleSave()} loading={submitting} icon={<CheckOutlined />}>
                   {selectedCount > 0 ? `Hoàn tất (${selectedCount})` : 'Hoàn tất'}
                 </Button>
               ) : (
-                <Button type="primary" onClick={() => setStep((s) => s + 1)} icon={<ArrowRightOutlined />}>
+                <Button type="primary" onClick={handleNextStep} icon={<ArrowRightOutlined />}>
                   Tiếp tục
                 </Button>
               )}
@@ -133,8 +143,9 @@ const TaoThiNghiem: React.FC = () => {
           <div className="ttn-body">
             <div className={`ttn-panel ${step === 0 ? 'enter' : ''}`} key={step}>
               {step === 0 && <Step1Subject data={sceneData} onChange={update} />}
-              {step === 1 && <Step2Equipments data={sceneData} onChange={update} />}
-              {step === 2 && <Step3Properties data={sceneData} onChange={update} onBack={() => setStep(1)} />}
+              {step === 1 && <Step2Equipments data={sceneData} onChange={update} filterMode="equipment" />}
+              {step === 2 && isChemistry && <Step2Equipments data={sceneData} onChange={update} filterMode="chemicals" />}
+              {step === (isChemistry ? 3 : 2) && <Step3Properties data={sceneData} onChange={update} onBack={() => setStep(isChemistry ? 2 : 1)} />}
             </div>
           </div>
         </>

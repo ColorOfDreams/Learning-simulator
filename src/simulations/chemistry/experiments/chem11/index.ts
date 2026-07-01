@@ -9,6 +9,10 @@ import chem1108 from './chem11-08-ethanol-na';
 import chem1109 from './chem11-09-phenol-bromine';
 import chem1110 from './chem11-10-glycerol-cu';
 import chem1111 from './chem11-11-acetic-acid';
+import chem1112 from './chem11-12-cu-h2so4';
+import chem1113 from './chem11-13-halogen-displacement';
+import chem1114 from './chem11-14-al2o3-amphoteric';
+import chem1115 from './chem11-15-k2cr2o7-redox';
 
 export const experiments = {
   'CHEM11-01': chem1101,
@@ -22,4 +26,8 @@ export const experiments = {
   'CHEM11-09': chem1109,
   'CHEM11-10': chem1110,
   'CHEM11-11': chem1111,
+  'CHEM11-12': chem1112,
+  'CHEM11-13': chem1113,
+  'CHEM11-14': chem1114,
+  'CHEM11-15': chem1115,
 };

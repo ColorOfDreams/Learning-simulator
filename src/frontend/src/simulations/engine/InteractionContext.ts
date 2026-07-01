@@ -23,6 +23,8 @@ export interface InteractionState {
   checkRuleAndAdvance?: (actionType: string, sourceId?: string, targetId?: string) => void;
   isDraggingPourable: string | null;
   setIsDraggingPourable?: (val: string | null) => void;
+  wrongActionData?: { id: string, expected: any, actual: any } | null;
+  setWrongActionData?: (data: { id: string, expected: any, actual: any } | null) => void;
 }
 
 export const InteractionContext = createContext<InteractionState>({
@@ -36,6 +38,7 @@ export const InteractionContext = createContext<InteractionState>({
   pouringAction: null, setPouringAction: () => {},
   updateObjectProperty: undefined,
   isDraggingPourable: null, setIsDraggingPourable: () => {},
+  wrongActionData: null, setWrongActionData: () => {},
 });
 
 export const useInteraction = () => useContext(InteractionContext);

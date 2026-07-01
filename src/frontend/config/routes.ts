@@ -83,7 +83,6 @@ export default [
 	// 		},
 	// 	],
 	// },
-
 	// ─── GIAO DIỆN HỌC SINH & LỚP HỌC ───
 	{
 		path: '/join',

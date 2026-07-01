@@ -39,6 +39,11 @@ interface GuidanceStep {
   description: string;
   targetEquipment?: string;
   condition?: unknown;
+  expectedAction?: {
+    type: string;
+    sourceModel?: string;
+    targetModel?: string;
+  };
 }
 
 interface ExperimentSpec {
@@ -1507,10 +1512,12 @@ export class AiService {
           {
             role: 'user',
             content: [
-              'Ban la tro ly huong dan thi nghiem. Dung cu hien co:',
-              equipDesc,
-              'Mon: ' + subj,
-              'Tao 3-5 buoc huong dan. Tra ve CHI JSON: { "steps": [{ "id":"...", "title":"...", "description":"...", "targetEquipment":"..." }] }',
+              'Tạo 4-5 bước hướng dẫn RẤT NGẮN GỌN (ví dụ: "Đặt các chất lên bàn", "Cho Cu vào", "Cho H2SO4 vào", "Quan sát hiện tượng").',
+              'Quy định về expectedAction.type:',
+              '- "drag_and_drop": khi yêu cầu kéo thả dụng cụ từ kệ (ví dụ: targetModel là "Beaker" hoặc "ChemicalSolid").',
+              '- "pour": khi yêu cầu đổ hóa chất A vào dụng cụ B (ví dụ: sourceModel là "ChemicalSolid", targetModel là "Beaker").',
+              '- Không dùng từ khác ngoài 2 từ này.',
+              'Trả về CHỈ JSON: { "steps": [{ "id":"...", "title":"Ngắn gọn", "description":"Mô tả ngắn gọn", "targetEquipment":"...", "expectedAction": { "type": "pour hoặc drag_and_drop", "sourceModel": "tên tiếng Anh dụng cụ nguồn/kéo", "targetModel": "tên tiếng Anh dụng cụ đích/nhận" } }] }',
             ].join('\n'),
           },
         ]);
@@ -1519,16 +1526,17 @@ export class AiService {
           const match = cleaned.match(/\{[\s\S]*\}/);
           if (match) {
             const parsed = JSON.parse(match[0]) as {
-              steps?: GuidanceStep[];
+              steps?: any[];
             };
             return {
               text: 'Chao ban! Hay lam theo huong dan ben duoi.',
-              steps: (parsed.steps || []).map((s: GuidanceStep, i: number) => ({
+              steps: (parsed.steps || []).map((s: any, i: number) => ({
                 id: s.id || 'step_' + (i + 1),
                 title: s.title || '',
                 description: s.description || '',
                 targetEquipment: s.targetEquipment,
                 condition: s.condition || null,
+                expectedAction: s.expectedAction || null,
               })),
             };
           }
@@ -1597,12 +1605,13 @@ Trả về CHỈ JSON (không markdown, không giải thích):
   "steps": [
     { 
       "id": "step_1", 
-      "title": "Tiêu đề bước", 
-      "description": "Mô tả chi tiết thao tác", 
-      "expectedAction": { "type": "drag_and_drop", "sourceModel": "tên model kéo", "targetModel": "tên model đích" } 
+      "title": "Ngắn gọn (vd: Cho Cu vào)", 
+      "description": "Mô tả ngắn gọn", 
+      "expectedAction": { "type": "pour hoặc drag_and_drop", "sourceModel": "tên model kéo", "targetModel": "tên model đích" } 
     }
   ]
-}`,
+}
+Quy định expectedAction.type: "drag_and_drop" (khi kéo thả lên bàn), "pour" (khi đổ hóa chất). KHÔNG DÙNG TỪ KHÁC.`,
         },
         { role: 'user', content: message },
       ]);

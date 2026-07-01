@@ -1,10 +1,10 @@
-export interface Chemical {
+﻿export interface Chemical {
   symbol: string; name: string; atomicNumber: number; atomicMass: number;
   state: 'solid' | 'liquid' | 'gas'; color: string;
   group: string; groupLabel: string; period: number; appearance: string;
   density: number; meltingPoint: number; boilingPoint: number;
 }
-export interface ReactionRule { id: string; reactants: string[]; products: string[]; effect: 'color_change'|'precipitate'|'bubble'|'dissolve'|'explosion'|'none'; newColor?: string; precipitateColor?: string; description: string; }
+export interface ReactionRule { id: string; reactants: string[]; products: string[]; effect: 'color_change'|'precipitate'|'bubble'|'dissolve'|'explosion'|'smoke'|'steam'|'flame'|'flash'|'none'; newColor?: string; precipitateColor?: string; description: string; requiresHeat?: boolean; requiresCatalyst?: string; }
 
 export const GROUP_COLORS: Record<string, string> = {
   'kim-loai-kiem':'#ff6b6b','kim-loai-kiem-tho':'#ffa94d','kim-loai-chuyen-tiep':'#ffd43b',
@@ -134,7 +134,77 @@ export const ALL_CHEMICALS: Chemical[] = [
   { symbol:'PCl5', name:'Photpho pentaclorua', atomicNumber:0, atomicMass:208, state:'gas', color:'#ffffff', group:'khac', groupLabel:'Khác', period:0, appearance:'Khói trắng', density:0, meltingPoint:null as any, boilingPoint:null as any },
 ];
 
+export interface CompoundChemical {
+  symbol: string;
+  name: string;
+  state: 'solid' | 'liquid' | 'gas' | 'solution';
+  color: string;
+  category: string;
+  appearance: string;
+}
+
+export const COMPOUND_CHEMICALS: CompoundChemical[] = [
+    { symbol:'H2SO4(dac)', name:'Axit sunfuric đặc', state:'solution', color:'#fefce8', category:'Axit', appearance:'Dung dịch sánh đặc, háo nước cực mạnh' },
+  { symbol:'H2O', name:'Nước cất', state:'liquid', color:'#38bdf8', category:'Dung môi', appearance:'Chất lỏng không màu, không mùi' },
+  { symbol:'HCl', name:'Axit clohidric', state:'solution', color:'#f8fafc', category:'Axit', appearance:'Dung dịch không màu, mùi xốc' },
+  { symbol:'H2SO4', name:'Axit sunfuric', state:'solution', color:'#fefce8', category:'Axit', appearance:'Dung dịch sánh không màu, háo nước' },
+  { symbol:'HNO3', name:'Axit nitric', state:'solution', color:'#fef08a', category:'Axit', appearance:'Dung dịch không màu hoặc vàng nhạt' },
+  { symbol:'CH3COOH', name:'Axit axetic', state:'solution', color:'#f8fafc', category:'Axit', appearance:'Dung dịch không màu, mùi giấm đặc trưng' },
+  { symbol:'NaOH', name:'Natri hidroxit', state:'solution', color:'#ffffff', category:'Bazơ', appearance:'Dung dịch không màu, nhờn' },
+  { symbol:'KOH', name:'Kali hidroxit', state:'solution', color:'#ffffff', category:'Bazơ', appearance:'Dung dịch không màu, nhờn' },
+  { symbol:'Ca(OH)2', name:'Canxi hidroxit', state:'solution', color:'#f8f8ff', category:'Bazơ', appearance:'Dung dịch trắng đục (nước vôi trong)' },
+  { symbol:'NH4OH', name:'Amoniac (dd)', state:'solution', color:'#f0f4ff', category:'Bazơ', appearance:'Dung dịch không màu, mùi khai' },
+  { symbol:'NaCl', name:'Natri clorua', state:'solution', color:'#ffffff', category:'Muối', appearance:'Dung dịch không màu (nước muối)' },
+  { symbol:'CuSO4', name:'Đồng (II) sunfat', state:'solution', color:'#2563eb', category:'Muối', appearance:'Dung dịch xanh lam đặc trưng' },
+  { symbol:'AgNO3', name:'Bạc nitrat', state:'solution', color:'#ffffff', category:'Muối', appearance:'Dung dịch không màu, nhạy sáng' },
+  { symbol:'BaCl2', name:'Bari clorua', state:'solution', color:'#ffffff', category:'Muối', appearance:'Dung dịch không màu' },
+  { symbol:'Na2CO3', name:'Natri cacbonat', state:'solution', color:'#ffffff', category:'Muối', appearance:'Dung dịch không màu (nước xô đa)' },
+  { symbol:'KMnO4', name:'Kali pemanganat', state:'solution', color:'#8b5cf6', category:'Muối', appearance:'Dung dịch tím đặc trưng (thuốc tím)' },
+  { symbol:'FeCl3', name:'Sắt (III) clorua', state:'solution', color:'#c48820', category:'Muối', appearance:'Dung dịch vàng nâu' },
+  { symbol:'FeCl2', name:'Sắt (II) clorua', state:'solution', color:'#b0e0b0', category:'Muối', appearance:'Dung dịch xanh lục nhạt' },
+  { symbol:'NaBr', name:'Natri bromua', state:'solution', color:'#ffffff', category:'Muối', appearance:'Dung dịch không màu' },
+  { symbol:'NaI', name:'Natri iodua', state:'solution', color:'#ffffff', category:'Muối', appearance:'Dung dịch không màu' },
+  { symbol:'KI', name:'Kali iodua', state:'solution', color:'#ffffff', category:'Muối', appearance:'Dung dịch không màu' },
+  { symbol:'CaCl2', name:'Canxi clorua', state:'solution', color:'#ffffff', category:'Muối', appearance:'Dung dịch không màu' },
+  { symbol:'NH4Cl', name:'Amoni clorua', state:'solid', color:'#ffffff', category:'Muối', appearance:'Tinh thể trắng, tan trong nước' },
+  { symbol:'NaHCO3', name:'Natri bicacbonat', state:'solid', color:'#ffffff', category:'Muối', appearance:'Bột trắng mịn (baking soda)' },
+  { symbol:'CaCO3', name:'Canxi cacbonat', state:'solid', color:'#f1f5f9', category:'Muối', appearance:'Bột trắng (đá vôi nghiền), không tan nước' },
+  { symbol:'CaO', name:'Canxi oxit (Vôi sống)', state:'solid', color:'#eae6dc', category:'Oxit', appearance:'Bột trắng xám, phản ứng mạnh với nước' },
+  { symbol:'CuO', name:'Đồng (II) oxit', state:'solid', color:'#1a1a1a', category:'Oxit', appearance:'Bột đen, không tan nước' },
+  { symbol:'Fe2O3', name:'Sắt (III) oxit', state:'solid', color:'#8b4513', category:'Oxit', appearance:'Bột nâu đỏ (gỉ sắt), không tan nước' },
+  { symbol:'MnO2', name:'Mangan dioxit', state:'solid', color:'#2a2a2a', category:'Xúc tác', appearance:'Bột đen, xúc tác phân hủy H2O2' },
+  { symbol:'C2H5OH', name:'Rượu etylic', state:'liquid', color:'#f8fafc', category:'Hữu cơ', appearance:'Chất lỏng không màu, mùi thơm cồn' },
+];
+
+export function findCompoundChemical(symbol: string): CompoundChemical | undefined {
+  return COMPOUND_CHEMICALS.find(c => c.symbol === symbol);
+}
+
+export function findAllChemicals(query: string = ''): { symbol: string; name: string; state: string; color: string }[] {
+  const elements = ALL_CHEMICALS.map(c => ({
+    symbol: c.symbol, name: c.name, state: c.state, color: c.color !== 'transparent' ? c.color : '#94a3b8',
+  }));
+  const compounds = COMPOUND_CHEMICALS.map(c => ({
+    symbol: c.symbol, name: c.name, state: c.state === 'solution' ? 'liquid' : c.state, color: c.color,
+  }));
+  const all = [...elements, ...compounds];
+  if (!query) return all;
+  const q = query.toLowerCase();
+  return all.filter(c => c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q));
+}
+
 export const REACTION_RULES: ReactionRule[] = [
+  { id:'fe-h2so4-dac', reactants:['Fe','H2SO4(dac)'], products:['Fe2(SO4)3','SO2','H2O'], effect:'bubble', newColor:'#fcd34d', description:'2Fe + 6H2SO4(đặc, t°) → Fe2(SO4)3 + 3SO2↑ + 6H2O. Sắt tan, sủi bọt, dd màu vàng nâu' },
+  { id:'ag-h2so4-dac', reactants:['Ag','H2SO4(dac)'], products:['Ag2SO4','SO2','H2O'], effect:'bubble', newColor:'#ffffff', description:'2Ag + 2H2SO4(đặc, t°) → Ag2SO4 + SO2↑ + 2H2O. Bạc tan, sủi bọt khí' },
+  { id:'cu-h2so4-dac', reactants:['Cu','H2SO4(dac)'], products:['CuSO4','SO2','H2O'], effect:'bubble', newColor:'#3b82f6', description:'Cu + 2H2SO4(đặc) → CuSO4 + SO2↑ + 2H2O. Đồng tan, sủi bọt khí SO2, dung dịch hóa xanh lam' },
+  { id:'cu-h2so4-loang', reactants:['Cu','H2SO4'], products:['Cu','H2SO4'], effect:'none', description:'Cu + H2SO4(loãng) → Không phản ứng (Cu đứng sau H trong dãy hoạt động)' },
+  { id:'cu-hcl', reactants:['Cu','HCl'], products:['Cu','HCl'], effect:'none', description:'Cu + HCl → Không phản ứng (Cu đứng sau H trong dãy hoạt động)' },
+  { id:'ag-hcl', reactants:['Ag','HCl'], products:['Ag','HCl'], effect:'none', description:'Ag + HCl → Không phản ứng (Ag đứng sau H trong dãy hoạt động)' },
+  { id:'ag-h2so4-loang', reactants:['Ag','H2SO4'], products:['Ag','H2SO4'], effect:'none', description:'Ag + H2SO4(loãng) → Không phản ứng' },
+  { id:'phenol-naoh', reactants:['phenolphtalein','NaOH'], products:['NaOH'], effect:'color_change', newColor:'#ff00ff', description:'Phenolphtalein + NaOH → Dung dịch hóa hồng (môi trường bazơ)' },
+  { id:'phenol-koh', reactants:['phenolphtalein','KOH'], products:['KOH'], effect:'color_change', newColor:'#ff00ff', description:'Phenolphtalein + KOH → Dung dịch hóa hồng (môi trường bazơ)' },
+  { id:'phenol-caoh2', reactants:['phenolphtalein','Ca(OH)2'], products:['Ca(OH)2'], effect:'color_change', newColor:'#ff00ff', description:'Phenolphtalein + Ca(OH)2 → Dung dịch hóa hồng (môi trường bazơ)' },
+  { id:'phenol-baoh2', reactants:['phenolphtalein','Ba(OH)2'], products:['Ba(OH)2'], effect:'color_change', newColor:'#ff00ff', description:'Phenolphtalein + Ba(OH)2 → Dung dịch hóa hồng (môi trường bazơ)' },
   { id:'na-water', reactants:['Na','H2O'], products:['NaOH','H2'], effect:'bubble', description:'Na + H2O → NaOH + H2↑. Natri phản ứng mạnh, chạy trên mặt nước, sủi bọt khí hydro' },
   { id:'k-water', reactants:['K','H2O'], products:['KOH','H2'], effect:'bubble', description:'K + H2O → KOH + H2↑. Kali phản ứng mãnh liệt, lửa tím, nổ nhẹ' },
   { id:'ca-water', reactants:['Ca','H2O'], products:['Ca(OH)2','H2'], effect:'bubble', description:'Ca + 2H2O → Ca(OH)2 + H2↑. Canxi tan chậm, sủi bọt, dung dịch đục' },
@@ -159,6 +229,97 @@ export const REACTION_RULES: ReactionRule[] = [
   { id:'kmno4-hcl', reactants:['KMnO4','HCl'], products:['MnCl2','Cl2','KCl','H2O'], effect:'bubble', description:'2KMnO4 + 16HCl → 2MnCl2 + 5Cl2↑ + 2KCl + 8H2O. Tím→không màu, khí vàng lục' },
   { id:'naoh-cuso4', reactants:['NaOH','CuSO4'], products:['Cu(OH)2','Na2SO4'], effect:'precipitate', precipitateColor:'#4488ff', description:'2NaOH + CuSO4 → Cu(OH)2↓ + Na2SO4. Kết tủa xanh lam' },
   { id:'i-starch', reactants:['I'], products:['I'], effect:'color_change', newColor:'#0000aa', description:'Iot + hồ tinh bột → xanh tím đặc trưng (phản ứng nhận biết)' },
+  { id:'mg-hcl', reactants:['Mg','HCl'], products:['MgCl2','H2'], effect:'bubble', description:'Mg + 2HCl → MgCl2 + H2↑. Magie tan nhanh, sủi bọt mạnh, tỏa nhiệt' },
+  { id:'fe-h2so4', reactants:['Fe','H2SO4'], products:['FeSO4','H2'], effect:'bubble', newColor:'#a0d080', description:'Fe + H2SO4(loãng) → FeSO4 + H2↑. Sắt tan, sủi bọt, dd xanh lục nhạt' },
+  { id:'al-h2so4', reactants:['Al','H2SO4'], products:['Al2(SO4)3','H2'], effect:'bubble', description:'2Al + 3H2SO4(loãng) → Al2(SO4)3 + 3H2↑. Nhôm tan, sủi bọt' },
+  { id:'na-hcl', reactants:['Na','HCl'], products:['NaCl','H2'], effect:'bubble', description:'2Na + 2HCl → 2NaCl + H2↑. Natri phản ứng mãnh liệt với axit, nổ nhẹ' },
+  { id:'k-hcl', reactants:['K','HCl'], products:['KCl','H2'], effect:'explosion', description:'2K + 2HCl → 2KCl + H2↑. Kali phản ứng cực mạnh với axit, lửa tím, nổ' },
+  { id:'mg-h2so4', reactants:['Mg','H2SO4'], products:['MgSO4','H2'], effect:'bubble', description:'Mg + H2SO4(loãng) → MgSO4 + H2↑. Magie tan nhanh, sủi bọt' },
+  { id:'cao-water', reactants:['CaO','H2O'], products:['Ca(OH)2'], effect:'explosion', description:'CaO + H2O → Ca(OH)2. Vôi sống tan, tỏa nhiệt mạnh, dung dịch đục màu sữa' },
+  { id:'na2o-water', reactants:['Na2O','H2O'], products:['NaOH'], effect:'bubble', description:'Na2O + H2O → 2NaOH. Natri oxit tan mạnh, tỏa nhiệt, dd kiềm' },
+  { id:'cuo-hcl', reactants:['CuO','HCl'], products:['CuCl2','H2O'], effect:'dissolve', newColor:'#00cc88', description:'CuO + 2HCl → CuCl2 + H2O. CuO đen tan dần, dung dịch chuyển xanh lục' },
+  { id:'fe2o3-hcl', reactants:['Fe2O3','HCl'], products:['FeCl3','H2O'], effect:'dissolve', newColor:'#c48820', description:'Fe2O3 + 6HCl → 2FeCl3 + 3H2O. Chất rắn nâu đỏ tan, dung dịch vàng nâu' },
+  { id:'cuo-h2so4', reactants:['CuO','H2SO4'], products:['CuSO4','H2O'], effect:'dissolve', newColor:'#2563eb', description:'CuO + H2SO4 → CuSO4 + H2O. CuO đen tan, dung dịch xanh lam CuSO4' },
+  { id:'co2-caoh2', reactants:['CO2','Ca(OH)2'], products:['CaCO3','H2O'], effect:'precipitate', precipitateColor:'#ffffff', description:'CO2 + Ca(OH)2 → CaCO3↓ + H2O. Nước vôi trong vẩn đục (phản ứng nhận biết CO2)' },
+  { id:'co2-naoh', reactants:['CO2','NaOH'], products:['Na2CO3','H2O'], effect:'none', description:'CO2 + 2NaOH → Na2CO3 + H2O. CO2 bị hấp thụ bởi dung dịch kiềm' },
+  { id:'so2-caoh2', reactants:['SO2','Ca(OH)2'], products:['CaSO3','H2O'], effect:'precipitate', precipitateColor:'#ffffff', description:'SO2 + Ca(OH)2 → CaSO3↓ + H2O. Khí SO2 làm vẩn đục nước vôi trong' },
+  { id:'cl2-nabr', reactants:['Cl','NaBr'], products:['NaCl','Br2'], effect:'color_change', newColor:'#a62929', description:'Cl2 + 2NaBr → 2NaCl + Br2. Dung dịch chuyển vàng nâu do Br2 sinh ra' },
+  { id:'cl2-ki', reactants:['Cl','KI'], products:['KCl','I2'], effect:'color_change', newColor:'#5c005c', description:'Cl2 + 2KI → 2KCl + I2. Dung dịch chuyển tím nâu do I2 sinh ra' },
+  { id:'br2-nai', reactants:['Br2','NaI'], products:['NaBr','I2'], effect:'color_change', newColor:'#5c005c', description:'Br2 + 2NaI → 2NaBr + I2. Dung dịch chuyển tím do I2 sinh ra' },
+  { id:'pbno32-ki', reactants:['Pb(NO3)2','KI'], products:['PbI2','KNO3'], effect:'precipitate', precipitateColor:'#ffd700', description:'Pb(NO3)2 + 2KI → PbI2↓ + 2KNO3. Kết tủa vàng tươi rực rỡ đặc trưng' },
+  { id:'fecl3-naoh', reactants:['FeCl3','NaOH'], products:['Fe(OH)3','NaCl'], effect:'precipitate', precipitateColor:'#8b4513', description:'FeCl3 + 3NaOH → Fe(OH)3↓ + 3NaCl. Kết tủa keo nâu đỏ' },
+  { id:'cuso4-na2co3', reactants:['CuSO4','Na2CO3'], products:['CuCO3','Na2SO4'], effect:'precipitate', precipitateColor:'#4488aa', description:'CuSO4 + Na2CO3 → CuCO3↓ + Na2SO4. Kết tủa xanh lam nhạt' },
+  { id:'cacl2-na2co3', reactants:['CaCl2','Na2CO3'], products:['CaCO3','NaCl'], effect:'precipitate', precipitateColor:'#ffffff', description:'CaCl2 + Na2CO3 → CaCO3↓ + 2NaCl. Kết tủa trắng' },
+  { id:'nh3-hcl', reactants:['NH3','HCl'], products:['NH4Cl'], effect:'color_change', newColor:'#f0f0f0', description:'NH3 + HCl → NH4Cl. Khói trắng NH4Cl bay lên (phản ứng nhận biết NH3)' },
+  { id:'nh3-water', reactants:['NH3','H2O'], products:['NH4OH'], effect:'none', description:'NH3 + H2O → NH4OH. Amoniac tan trong nước tạo dung dịch bazơ yếu' },
+  { id:'etoh-na', reactants:['C2H5OH','Na'], products:['C2H5ONa','H2'], effect:'bubble', description:'2C2H5OH + 2Na → 2C2H5ONa + H2↑. Natri tan, sủi bọt khí H2 chậm' },
+  { id:'ch3cooh-nahco3', reactants:['CH3COOH','NaHCO3'], products:['CH3COONa','CO2','H2O'], effect:'bubble', description:'CH3COOH + NaHCO3 → CH3COONa + CO2↑ + H2O. Giấm + baking soda, sủi bọt mạnh' },
+  { id:'ch3cooh-naoh', reactants:['CH3COOH','NaOH'], products:['CH3COONa','H2O'], effect:'none', description:'CH3COOH + NaOH → CH3COONa + H2O. Phản ứng trung hòa, phenolphthalein hồng→không màu' },
+  { id:'baoh2-nh4cl', reactants:['Ba(OH)2','NH4Cl'], products:['BaCl2','NH3','H2O'], effect:'bubble', description:'Ba(OH)2 + 2NH4Cl → BaCl2 + 2NH3↑ + 2H2O. Phản ứng thu nhiệt, khí NH3 mùi khai bay ra' },
+  { id:'caco3-decomp', reactants:['CaCO3'], products:['CaO','CO2'], effect:'bubble', requiresHeat:true, description:'CaCO3 → CaO + CO2↑. Nhiệt phân đá vôi, cần đun nóng mạnh' },
+  { id:'nahco3-decomp', reactants:['NaHCO3'], products:['Na2CO3','CO2','H2O'], effect:'bubble', requiresHeat:true, description:'2NaHCO3 → Na2CO3 + CO2↑ + H2O. Nhiệt phân baking soda, cần đun nóng' },
+  { id:'ch3cooh-mg', reactants:['CH3COOH','Mg'], products:['Mg(CH3COO)2','H2'], effect:'bubble', description:'2CH3COOH + Mg → Mg(CH3COO)2 + H2↑. Magie tan, sủi bọt trong giấm' },
+  { id:'h2so4-c12h22o11', reactants:['H2SO4','C12H22O11'], products:['C','H2O'], effect:'color_change', newColor:'#1a1a1a', description:'C12H22O11 + H2SO4đ → 12C + 11H2O. Axit sunfuric đặc hóa than đường, cột than đen trồi lên' },
+  { id:'zn-h2so4', reactants:['Zn','H2SO4'], products:['ZnSO4','H2'], effect:'bubble', description:'Zn + H2SO4(loãng) → ZnSO4 + H2↑. Kẽm tan, sủi bọt mạnh - điều chế H2 trong PTN' },
+  { id:'cu-h2so4-dac', reactants:['Cu','H2SO4'], products:['CuSO4','SO2','H2O'], effect:'bubble', newColor:'#2563eb', requiresHeat:true, description:'Cu + 2H2SO4(đặc,nóng) → CuSO4 + SO2↑ + 2H2O. Đồng tan, khí SO2 mùi hắc, dd xanh lam' },
+  { id:'fe-hno3-dac', reactants:['Fe','HNO3'], products:['Fe(NO3)3','NO2','H2O'], effect:'bubble', newColor:'#c48820', requiresHeat:true, description:'Fe + 6HNO3(đặc,nóng) → Fe(NO3)3 + 3NO2↑ + 3H2O. Sắt tan, khí NO2 nâu đỏ, dd vàng nâu' },
+  { id:'al-hno3-loang', reactants:['Al','HNO3'], products:['Al(NO3)3','NO','H2O'], effect:'bubble', description:'Al + 4HNO3(loãng) → Al(NO3)3 + NO↑ + 2H2O. Nhôm tan, khí NO không màu hóa nâu trong không khí' },
+  { id:'zn-hno3', reactants:['Zn','HNO3'], products:['Zn(NO3)2','N2O','H2O'], effect:'bubble', description:'4Zn + 10HNO3(loãng) → 4Zn(NO3)2 + N2O↑ + 5H2O. Kẽm tan, khí N2O không màu' },
+  { id:'fe-hno3-loang', reactants:['Fe','HNO3'], products:['Fe(NO3)3','NO','H2O'], effect:'bubble', newColor:'#c48820', description:'Fe + 4HNO3(loãng) → Fe(NO3)3 + NO↑ + 2H2O. Sắt tan, dd vàng nâu' },
+  { id:'li-water', reactants:['Li','H2O'], products:['LiOH','H2'], effect:'bubble', description:'2Li + 2H2O → 2LiOH + H2↑. Liti phản ứng êm dịu hơn Na, sủi bọt khí H2' },
+  { id:'ba-water', reactants:['Ba','H2O'], products:['Ba(OH)2','H2'], effect:'bubble', description:'Ba + 2H2O → Ba(OH)2 + H2↑. Bari tan, sủi bọt, dd kiềm mạnh' },
+  { id:'mg-cuso4', reactants:['Mg','CuSO4'], products:['MgSO4','Cu'], effect:'color_change', newColor:'#e0e0e0', description:'Mg + CuSO4 → MgSO4 + Cu↓. Magie tan, đồng đỏ bám, dd mất màu xanh' },
+  { id:'al-cuso4', reactants:['Al','CuSO4'], products:['Al2(SO4)3','Cu'], effect:'color_change', newColor:'#e0e0e0', description:'2Al + 3CuSO4 → Al2(SO4)3 + 3Cu↓. Nhôm tan, đồng đỏ bám, dd nhạt màu' },
+  { id:'fe-agno3', reactants:['Fe','AgNO3'], products:['Fe(NO3)2','Ag'], effect:'color_change', newColor:'#b0e0b0', description:'Fe + 2AgNO3 → Fe(NO3)2 + 2Ag↓. Sắt tan, bạc kết tinh sáng, dd xanh lục nhạt Fe2+' },
+  { id:'zn-pbno32', reactants:['Zn','Pb(NO3)2'], products:['Zn(NO3)2','Pb'], effect:'color_change', newColor:'#e0e0e0', description:'Zn + Pb(NO3)2 → Zn(NO3)2 + Pb↓. Kẽm tan, chì xám bám trên bề mặt' },
+  { id:'mg-feso4', reactants:['Mg','FeSO4'], products:['MgSO4','Fe'], effect:'color_change', newColor:'#e0e0e0', description:'Mg + FeSO4 → MgSO4 + Fe↓. Magie tan, sắt bột đen bám ra' },
+  { id:'zn-feso4', reactants:['Zn','FeSO4'], products:['ZnSO4','Fe'], effect:'color_change', newColor:'#e0e0e0', description:'Zn + FeSO4 → ZnSO4 + Fe↓. Kẽm tan, sắt bột bám ra' },
+  { id:'koh-hcl', reactants:['KOH','HCl'], products:['KCl','H2O'], effect:'none', description:'KOH + HCl → KCl + H2O. Phản ứng trung hòa, phenolphthalein hồng→không màu' },
+  { id:'caoh2-hcl', reactants:['Ca(OH)2','HCl'], products:['CaCl2','H2O'], effect:'none', description:'Ca(OH)2 + 2HCl → CaCl2 + 2H2O. Nước vôi trong mất màu phenolphthalein' },
+  { id:'naoh-h2so4', reactants:['NaOH','H2SO4'], products:['Na2SO4','H2O'], effect:'none', description:'2NaOH + H2SO4 → Na2SO4 + 2H2O. Trung hòa tạo muối trung tính' },
+  { id:'naoh-hno3', reactants:['NaOH','HNO3'], products:['NaNO3','H2O'], effect:'none', description:'NaOH + HNO3 → NaNO3 + H2O. Phản ứng trung hòa' },
+  { id:'nh3-h2so4', reactants:['NH3','H2SO4'], products:['(NH4)2SO4'], effect:'none', description:'2NH3 + H2SO4 → (NH4)2SO4. Amoniac trung hòa axit sunfuric tạo muối amoni' },
+  { id:'agno3-hcl', reactants:['AgNO3','HCl'], products:['AgCl','HNO3'], effect:'precipitate', precipitateColor:'#ffffff', description:'AgNO3 + HCl → AgCl↓ + HNO3. Kết tủa trắng bông AgCl không tan trong axit' },
+  { id:'agno3-kbr', reactants:['AgNO3','KBr'], products:['AgBr','KNO3'], effect:'precipitate', precipitateColor:'#f5e6c8', description:'AgNO3 + KBr → AgBr↓ + KNO3. Kết tủa vàng nhạt AgBr' },
+  { id:'agno3-ki', reactants:['AgNO3','KI'], products:['AgI','KNO3'], effect:'precipitate', precipitateColor:'#f2d23a', description:'AgNO3 + KI → AgI↓ + KNO3. Kết tủa vàng đậm AgI' },
+  { id:'bacl2-na2so4', reactants:['BaCl2','Na2SO4'], products:['BaSO4','NaCl'], effect:'precipitate', precipitateColor:'#ffffff', description:'BaCl2 + Na2SO4 → BaSO4↓ + 2NaCl. Kết tủa trắng mịn BaSO4' },
+  { id:'alcl3-naoh', reactants:['AlCl3','NaOH'], products:['Al(OH)3','NaCl'], effect:'precipitate', precipitateColor:'#f0f0f0', description:'AlCl3 + 3NaOH → Al(OH)3↓ + 3NaCl. Kết tủa keo trắng Al(OH)3 (lưỡng tính)' },
+  { id:'feso4-naoh', reactants:['FeSO4','NaOH'], products:['Fe(OH)2','Na2SO4'], effect:'precipitate', precipitateColor:'#b0e0b0', description:'FeSO4 + 2NaOH → Fe(OH)2↓ + Na2SO4. Kết tủa trắng xanh, hóa nâu đỏ trong không khí' },
+  { id:'mgcl2-naoh', reactants:['MgCl2','NaOH'], products:['Mg(OH)2','NaCl'], effect:'precipitate', precipitateColor:'#ffffff', description:'MgCl2 + 2NaOH → Mg(OH)2↓ + 2NaCl. Kết tủa trắng Mg(OH)2' },
+  { id:'cacl2-na2so4', reactants:['CaCl2','Na2SO4'], products:['CaSO4','NaCl'], effect:'precipitate', precipitateColor:'#ffffff', description:'CaCl2 + Na2SO4 → CaSO4↓ + 2NaCl. Kết tủa trắng CaSO4 ít tan' },
+  { id:'zno-hcl', reactants:['ZnO','HCl'], products:['ZnCl2','H2O'], effect:'dissolve', description:'ZnO + 2HCl → ZnCl2 + H2O. ZnO trắng tan dần, dd không màu' },
+  { id:'al2o3-hcl', reactants:['Al2O3','HCl'], products:['AlCl3','H2O'], effect:'dissolve', description:'Al2O3 + 6HCl → 2AlCl3 + 3H2O. Al2O3 trắng tan, dd không màu' },
+  { id:'feo-hcl', reactants:['FeO','HCl'], products:['FeCl2','H2O'], effect:'dissolve', newColor:'#b0e0b0', description:'FeO + 2HCl → FeCl2 + H2O. FeO đen tan, dd xanh lục nhạt' },
+  { id:'mgo-hcl', reactants:['MgO','HCl'], products:['MgCl2','H2O'], effect:'dissolve', description:'MgO + 2HCl → MgCl2 + H2O. MgO trắng tan, dd không màu' },
+  { id:'cao-hcl', reactants:['CaO','HCl'], products:['CaCl2','H2O'], effect:'dissolve', description:'CaO + 2HCl → CaCl2 + H2O. Vôi sống tan trong axit, tỏa nhiệt' },
+  { id:'al2o3-naoh', reactants:['Al2O3','NaOH'], products:['NaAlO2','H2O'], effect:'dissolve', description:'Al2O3 + 2NaOH → 2NaAlO2 + H2O. Al2O3 lưỡng tính tan trong kiềm' },
+  { id:'zno-naoh', reactants:['ZnO','NaOH'], products:['Na2ZnO2','H2O'], effect:'dissolve', description:'ZnO + 2NaOH → Na2ZnO2 + H2O. ZnO lưỡng tính tan trong kiềm' },
+  { id:'aloh3-naoh', reactants:['Al(OH)3','NaOH'], products:['NaAlO2','H2O'], effect:'dissolve', description:'Al(OH)3 + NaOH → NaAlO2 + 2H2O. Al(OH)3 kết tủa keo trắng tan trong NaOH dư' },
+  { id:'znoh2-naoh', reactants:['Zn(OH)2','NaOH'], products:['Na2ZnO2','H2O'], effect:'dissolve', description:'Zn(OH)2 + 2NaOH → Na2ZnO2 + 2H2O. Zn(OH)2 trắng tan trong kiềm dư' },
+  { id:'na2co3-hcl', reactants:['Na2CO3','HCl'], products:['NaCl','CO2','H2O'], effect:'bubble', description:'Na2CO3 + 2HCl → 2NaCl + CO2↑ + H2O. Xô đa sủi bọt mạnh trong axit' },
+  { id:'mgco3-hcl', reactants:['MgCO3','HCl'], products:['MgCl2','CO2','H2O'], effect:'bubble', description:'MgCO3 + 2HCl → MgCl2 + CO2↑ + H2O. Magie cacbonat tan, sủi bọt CO2' },
+  { id:'caco3-ch3cooh', reactants:['CaCO3','CH3COOH'], products:['Ca(CH3COO)2','CO2','H2O'], effect:'bubble', description:'CaCO3 + 2CH3COOH → Ca(CH3COO)2 + CO2↑ + H2O. Đá vôi tan trong giấm, sủi bọt chậm' },
+  { id:'c-o2', reactants:['C','O2'], products:['CO2'], effect:'color_change', newColor:'#b0d0b0', description:'C + O2 → CO2. Carbon cháy hồng trong oxi, tạo khí CO2 không màu' },
+  { id:'h2-o2', reactants:['H2','O2'], products:['H2O'], effect:'explosion', description:'2H2 + O2 → 2H2O. Khí hidro cháy nổ trong oxi, ngọn lửa xanh nhạt' },
+  { id:'p-o2', reactants:['P','O2'], products:['P2O5'], effect:'color_change', newColor:'#ffffff', description:'4P + 5O2 → 2P2O5. Photpho cháy sáng trong oxi tạo khói trắng P2O5' },
+  { id:'cl2-kbr', reactants:['Cl','KBr'], products:['KCl','Br2'], effect:'color_change', newColor:'#a62929', description:'Cl2 + 2KBr → 2KCl + Br2. Dung dịch chuyển vàng nâu do Br2 sinh ra' },
+  { id:'br2-ki', reactants:['Br2','KI'], products:['KBr','I2'], effect:'color_change', newColor:'#5c005c', description:'Br2 + 2KI → 2KBr + I2. Dung dịch chuyển tím do I2 sinh ra' },
+  { id:'k2cr2o7-hcl', reactants:['K2Cr2O7','HCl'], products:['CrCl3','Cl2','KCl','H2O'], effect:'bubble', description:'K2Cr2O7 + 14HCl → 2CrCl3 + 3Cl2↑ + 2KCl + 7H2O. Dd cam→xanh lục, khí Cl2 vàng lục' },
+  { id:'no-o2', reactants:['NO','O2'], products:['NO2'], effect:'color_change', newColor:'#a0522d', description:'2NO + O2 → 2NO2. Khí NO không màu hóa nâu đỏ NO2 ngay trong không khí' },
+  { id:'fecl2-cl2', reactants:['FeCl2','Cl2'], products:['FeCl3'], effect:'color_change', newColor:'#c48820', description:'2FeCl2 + Cl2 → 2FeCl3. Dd FeCl2 xanh lục chuyển vàng nâu FeCl3' },
+  { id:'so2-br2-water', reactants:['SO2','Br2'], products:['H2SO4','HBr'], effect:'color_change', newColor:'#f8fafc', description:'SO2 + Br2 + 2H2O → H2SO4 + 2HBr. Nước brom màu vàng nâu bị mất màu bởi SO2' },
+  { id:'nh3-cuo', reactants:['NH3','CuO'], products:['Cu','N2','H2O'], effect:'color_change', newColor:'#C88033', description:'2NH3 + 3CuO → 3Cu + N2↑ + 3H2O. CuO đen chuyển thành Cu đỏ khi đun nóng với NH3' },
+  { id:'etoh-o2', reactants:['C2H5OH','O2'], products:['CO2','H2O'], effect:'explosion', description:'C2H5OH + 3O2 → 2CO2 + 3H2O. Rượu etylic cháy với ngọn lửa xanh nhạt' },
+  { id:'etoh-cuo', reactants:['C2H5OH','CuO'], products:['CH3CHO','Cu','H2O'], effect:'color_change', newColor:'#C88033', description:'C2H5OH + CuO → CH3CHO + Cu + H2O. CuO đen→Cu đỏ, sinh andehit axetic' },
+  { id:'glucose-agno3', reactants:['C6H12O6','AgNO3'], products:['Ag','NH3'], effect:'color_change', newColor:'#c0c0c0', description:'C6H12O6 + 2AgNO3 + 2NH3 + H2O → 2Ag↓ (tráng gương). Phản ứng tráng bạc của glucozơ' },
+  { id:'glucose-cuoh2', reactants:['C6H12O6','Cu(OH)2'], products:['Cu2O','C6H12O7','H2O'], effect:'color_change', newColor:'#cc3300', description:'C6H12O6 + 2Cu(OH)2 → Cu2O↓ + C6H12O7 + 2H2O. Kết tủa đỏ gạch Cu2O khi đun nóng' },
+  { id:'kclo3-decomp', reactants:['KClO3'], products:['KCl','O2'], effect:'bubble', requiresHeat:true, requiresCatalyst:'MnO2', description:'2KClO3 → 2KCl + 3O2↑. Nhiệt phân KClO3 (MnO2 xúc tác) - điều chế O2 trong PTN' },
+  { id:'cuoh2-decomp', reactants:['Cu(OH)2'], products:['CuO','H2O'], effect:'color_change', newColor:'#1a1a1a', requiresHeat:true, description:'Cu(OH)2 → CuO + H2O. Cu(OH)2 xanh lam → CuO đen khi đun nóng' },
+  { id:'feoh3-decomp', reactants:['Fe(OH)3'], products:['Fe2O3','H2O'], effect:'color_change', newColor:'#8b4513', requiresHeat:true, description:'2Fe(OH)3 → Fe2O3 + 3H2O. Fe(OH)3 nâu đỏ → Fe2O3 nâu đỏ khi nung' },
+  { id:'mgco3-decomp', reactants:['MgCO3'], products:['MgO','CO2'], effect:'bubble', requiresHeat:true, description:'MgCO3 → MgO + CO2↑. Nhiệt phân magie cacbonat' },
+  { id:'al-fe2o3', reactants:['Al','Fe2O3'], products:['Al2O3','Fe'], effect:'explosion', description:'2Al + Fe2O3 → Al2O3 + 2Fe. Phản ứng nhiệt nhôm - tỏa nhiệt cực mạnh, sắt nóng chảy' },
+  { id:'fe-s', reactants:['Fe','S'], products:['FeS'], effect:'color_change', newColor:'#333333', description:'Fe + S → FeS. Bột sắt + lưu huỳnh → FeS đen khi đun nóng, tỏa nhiệt' },
+  { id:'na-cl2', reactants:['Na','Cl2'], products:['NaCl'], effect:'explosion', description:'2Na + Cl2 → 2NaCl. Natri cháy sáng trong khí clo tạo khói trắng NaCl' },
 ];
 
 export function findChemical(symbol: string): Chemical | undefined { return ALL_CHEMICALS.find(c=>c.symbol===symbol); }
@@ -166,3 +327,15 @@ export function findReaction(symbols: string[]): ReactionRule | undefined {
   const sorted=[...symbols].sort();
   return REACTION_RULES.find(r=>{const rs=[...r.reactants].sort();return rs.length===sorted.length&&rs.every((s,i)=>s===sorted[i]);});
 }
+
+export function findAnyChemical(symbol: string): { symbol: string; name: string; state: string; color: string } | undefined {
+  const elem = ALL_CHEMICALS.find(c => c.symbol === symbol);
+  if (elem) return { symbol: elem.symbol, name: elem.name, state: elem.state, color: elem.color };
+  const comp = COMPOUND_CHEMICALS.find(c => c.symbol === symbol);
+  if (comp) return { symbol: comp.symbol, name: comp.name, state: comp.state === 'solution' ? 'liquid' : comp.state, color: comp.color };
+  return undefined;
+}
+
+
+
+

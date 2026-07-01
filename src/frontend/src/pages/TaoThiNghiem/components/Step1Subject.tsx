@@ -22,8 +22,9 @@ const Step1Subject: React.FC<Props> = ({ data, onChange }) => {
       <p className="s1-desc">Chọn môn học và đặt tên cho thí nghiệm của bạn</p>
 
       <div className="s1-name">
-        <Input size="large" placeholder="Tên thí nghiệm..." value={data.name}
-          onChange={(e) => onChange({ name: e.target.value })} maxLength={100} />
+        <label style={{ fontWeight: 500, marginBottom: 6, display: 'block' }}>Tên thí nghiệm <span style={{ color: '#ef4444' }}>*</span></label>
+        <Input size="large" placeholder="Nhập tên thí nghiệm..." value={data.name}
+          onChange={(e) => onChange({ name: e.target.value })} maxLength={100} status={!data.name?.trim() ? 'warning' : ''} />
       </div>
 
       <div className="s1-subjects">

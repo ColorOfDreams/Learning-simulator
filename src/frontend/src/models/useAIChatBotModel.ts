@@ -145,9 +145,11 @@ export default function useAIChatBotModel() {
     addNext();
   }, []);
 
-  const sendMessage = useCallback(async (text: string) => {
+  const sendMessage = useCallback(async (text: string, options?: { hidden?: boolean }) => {
     const userMsg: ChatMessage = { id: Date.now().toString(), sender: 'user', text };
-    setMessages((prev) => [...prev, userMsg]);
+    if (!options?.hidden) {
+      setMessages((prev) => [...prev, userMsg]);
+    }
     setLoading(true); setLogs([]); streamActiveRef.current = false;
     const abort = new AbortController(); abortRef.current = abort;
     startLogStream(3000 + Math.random() * 3000);

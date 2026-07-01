@@ -49,12 +49,6 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
     getSnapPoints: () => [{ id: 'chemical', position: [0, 0, 0], type: 'chemical', label: 'Hóa chất', connectsTo: ['container'] }],
     tags: ['pourable'],
   },
-  ChatBot: {
-    getCollider: () => [0.4, 0.6, 0.4],
-    initY: 0.25,
-    getSnapPoints: () => [{ id: 'chemical', position: [0, 0, 0], type: 'chemical', label: 'Hóa chất', connectsTo: ['container'] }],
-    tags: ['pourable'],
-  },
   Stand: {
     getCollider: () => [1.0, 2.5, 1.0],
     initY: 1.9,
@@ -189,46 +183,10 @@ export const EquipmentRegistry: Record<string, EquipmentConfig> = {
     getSnapPoints: () => [{ id: 'chem', position: [0, 0, 0], type: 'chemical', label: 'Chất', connectsTo: ['container'] }],
     tags: ['pourable'],
   },
-  Burette: {
-    getCollider: () => defaultCollider,
-    initY: 0,
-    getSnapPoints: () => [{ id: 'container', position: [0, -0.1, 0], type: 'container', label: 'Bình chứa', connectsTo: ['chemical'] }],
-    tags: ['pourable', 'container'],
-  },
-  Pipette: {
-    getCollider: () => defaultCollider,
-    initY: 0,
-    getSnapPoints: () => [{ id: 'container', position: [0, -0.1, 0], type: 'container', label: 'Bình chứa', connectsTo: ['chemical'] }],
-    tags: ['pourable', 'container'],
-  },
-  Mortar: {
-    getCollider: () => defaultCollider,
-    initY: 0,
-    getSnapPoints: () => [{ id: 'container', position: [0, -0.1, 0], type: 'container', label: 'Cối', connectsTo: ['chemical'] }],
-    tags: ['container'],
-  },
   BunsenBurner: {
     getCollider: () => [0.4, 0.8, 0.4],
     initY: 0.4,
     getSnapPoints: () => [{ id: 'heater_top', position: [0, 0.7, 0], type: 'heater', label: 'Kệ đun', connectsTo: ['heater_target'] }],
-    tags: [],
-  },
-  pHMeter: {
-    getCollider: () => defaultCollider,
-    initY: 0,
-    getSnapPoints: () => [],
-    tags: [],
-  },
-  Thermometer: {
-    getCollider: () => defaultCollider,
-    initY: 0,
-    getSnapPoints: () => [],
-    tags: [],
-  },
-  Condenser: {
-    getCollider: () => defaultCollider,
-    initY: 0,
-    getSnapPoints: () => [],
     tags: [],
   },
   ParabolaGraph: {
@@ -251,11 +209,16 @@ export const getEquipmentConfig = (modelName: string): EquipmentConfig => {
     'CocThuyTinh': 'Beaker',
     'BinhTamGiac': 'ErlenmeyerFlask',
     'BinhCau': 'RoundFlask',
-    'Buret': 'Burette',
-    'Pipet': 'Pipette',
-    'CoiChay': 'Mortar',
     'OngNghiem': 'TestTube',
     'GiaDo': 'Stand',
+    'AxitClohidric': 'ChatLong',
+    'NatriHidroxit': 'ChatLong',
+    'AxitSunfuric': 'ChatLong',
+    'DongSunfat': 'ChatLong',
+    'Phenolphtalein': 'ChatLong',
+    'QuyTim': 'ChatLong',
+    'DenCon': 'BunsenBurner',
+    'NuocCat': 'ChatLong',
   };
   
   const resolvedName = aliasMap[modelName] || modelName;

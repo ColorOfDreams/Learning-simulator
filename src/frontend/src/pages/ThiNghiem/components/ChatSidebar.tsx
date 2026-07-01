@@ -181,23 +181,26 @@ const ChatSidebar: React.FC<Props> = ({ collapsed, onToggle, subject, simId, tit
             </div>
           ) : (
             <div className="cs-body" ref={listRef}>
-              {messages.length === 0 && !loading && (
+              {messages.filter(m => m.sender !== 'guidance').length === 0 && !loading && (
                 <div className="cs-empty">
                   <div className="cs-empty-icon"><ThunderboltOutlined /></div>
                   <div className="cs-empty-title">AI Trợ giảng sẵn sàng</div>
                   <div className="cs-empty-desc">Hỏi tôi bất cứ điều gì về thí nghiệm</div>
                   <div className="cs-empty-hints">
-                    {['Dao động điều hòa là gì?', 'Cách tính chu kì con lắc?', 'Giải thích năng lượng dao động'].map((h, i) => (
+                    {(subject === 'chemistry' 
+                      ? ['Phản ứng này tạo ra chất gì?', 'Tại sao lại đổi màu?', 'Giải thích phương trình hóa học']
+                      : subject === 'math'
+                        ? ['Làm sao để giải phương trình này?', 'Vẽ đồ thị hàm số này thế nào?', 'Giải thích các bước giải']
+                        : ['Dao động điều hòa là gì?', 'Cách tính chu kì con lắc?', 'Giải thích năng lượng dao động']
+                    ).map((h, i) => (
                       <div key={i} className="cs-hint" onClick={() => { sendMessage(h); }}>{h}</div>
                     ))}
                   </div>
                 </div>
               )}
               {messages.map((msg) => (
-                <div key={msg.id} className={`cs-msg-row ${msg.sender === 'user' ? 'user' : ''}`}>
-                  {msg.sender === 'guidance' ? (
-                    <GuidanceCard steps={msg.metadata?.steps as any[]} currentStepIndex={currentStepIndex} />
-                  ) : (
+                msg.sender === 'guidance' ? null : (
+                  <div key={msg.id} className={`cs-msg-row ${msg.sender === 'user' ? 'user' : ''}`}>
                     <div className={`cs-bubble ${msg.sender}`}>
                       <div className="cs-bubble-avatar">{msg.sender === 'user' ? <UserOutlined /> : <RobotOutlined />}</div>
                       <div className="cs-bubble-body">
@@ -217,8 +220,8 @@ const ChatSidebar: React.FC<Props> = ({ collapsed, onToggle, subject, simId, tit
                         )}
                       </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )
               ))}
               {loading && (
                 <div className="cs-logs">

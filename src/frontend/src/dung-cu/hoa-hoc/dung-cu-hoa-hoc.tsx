@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import * as THREE from 'three';
 import DoiTuongKeoTha from '@/simulations/engine/DraggablePhysicsObject';
 import { VatLieuThuyTinh } from '@/dung-cu/dung-chung/VatLieuThuyTinh';
@@ -58,19 +58,6 @@ const binhCauPoints = (() => {
   return pts;
 })();
 
-const buretPoints = [
-  new THREE.Vector2(0.04, -1.5), new THREE.Vector2(0.05, -1.5),
-  new THREE.Vector2(0.05, 1.5), new THREE.Vector2(0.04, 1.5)
-];
-const pipetPoints = [
-  new THREE.Vector2(0.02, -0.8), new THREE.Vector2(0.03, -0.8),
-  new THREE.Vector2(0.03, 0.8), new THREE.Vector2(0.02, 0.8)
-];
-const ongSinhHanPoints = [
-  new THREE.Vector2(0.05, -0.6), new THREE.Vector2(0.06, -0.6),
-  new THREE.Vector2(0.06, 0.6), new THREE.Vector2(0.05, 0.6)
-];
-
 interface Props { doiTuong: Scene.Object; dangChay?: boolean; capNhatViTri?: (id: string, viTri: [number, number, number]) => void; doThiScene?: Scene.IRecord | null; }
 
 export const OngNghiem: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiScene }) => (
@@ -97,66 +84,8 @@ export const BinhCau: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doT
     </group>
   </DoiTuongKeoTha>
 );
-export const Buret: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiScene }) => (
-  <DoiTuongKeoTha doiTuong={doiTuong} nhan="Buret" kichThuocVaCham={[0.06, 1.5, 0.06]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene} coDinh>
-    <mesh castShadow><latheGeometry args={[buretPoints, 16]} /><VatLieuThuyTinh /></mesh>
-  </DoiTuongKeoTha>
-);
-export const Pipet: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiScene }) => (
-  <DoiTuongKeoTha doiTuong={doiTuong} nhan="Pipet" kichThuocVaCham={[0.04, 0.8, 0.04]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene} coDinh>
-    <mesh castShadow><latheGeometry args={[pipetPoints, 16]} /><VatLieuThuyTinh /></mesh>
-  </DoiTuongKeoTha>
-);
-export const NhietKe: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiScene }) => {
-  const nhietDo = doiTuong.thuocTinh?.nhietDo || doiTuong.properties?.temperature || 25;
-  const height = 1.2;
-  const redHeight = (nhietDo / 100) * (height * 0.8) + 0.1;
-
-  return (
-    <DoiTuongKeoTha doiTuong={doiTuong} nhan="Nhiệt Kế" kichThuocVaCham={[0.05, height / 2, 0.05]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene} coDinh>
-      <group>
-        {/* Outer glass tube */}
-        <mesh castShadow><cylinderGeometry args={[0.04, 0.04, height, 16]} /><VatLieuThuyTinh /></mesh>
-        
-        {/* Red liquid inside */}
-        <mesh position={[0, -height / 2 + redHeight / 2, 0]}>
-          <cylinderGeometry args={[0.015, 0.015, redHeight, 16]} />
-          <meshBasicMaterial color="#ef4444" />
-        </mesh>
-        
-        {/* Bottom bulb */}
-        <mesh position={[0, -height / 2, 0]}>
-          <sphereGeometry args={[0.05, 16, 16]} />
-          <meshBasicMaterial color="#ef4444" />
-        </mesh>
-
-        {/* Temperature Text */}
-        <Text
-          position={[0, height / 2 + 0.1, 0]}
-          fontSize={0.15}
-          color="#ef4444"
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0.01}
-          outlineColor="#ffffff"
-        >
-          {`${nhietDo}°C`}
-        </Text>
-      </group>
-    </DoiTuongKeoTha>
-  );
-};
-export const OngSinhHan: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiScene }) => (
-  <DoiTuongKeoTha doiTuong={doiTuong} nhan="Ống Sinh Hàn" kichThuocVaCham={[0.08, 0.6, 0.08]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene} coDinh>
-    <mesh castShadow><latheGeometry args={[ongSinhHanPoints, 16]} /><VatLieuThuyTinh /></mesh>
-  </DoiTuongKeoTha>
-);
-export const CoiChay: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiScene }) => (
-  <DoiTuongKeoTha doiTuong={doiTuong} nhan="Cối Chày" kichThuocVaCham={[0.2, 0.15, 0.2]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene}>
-    <mesh castShadow><cylinderGeometry args={[0.2, 0.15, 0.3, 32]} /><meshStandardMaterial color="#e2e8f0" roughness={0.3} /></mesh>
-  </DoiTuongKeoTha>
-);
-import { findChemical, findReaction } from '@/simulations/chemicals-catalog';
+import { findChemical, findReaction, findCompoundChemical } from '@/simulations/chemicals-catalog';
+import type { ReactionRule } from '@/simulations/chemicals-catalog';
 const ChemicalJar: React.FC<{ children: React.ReactNode; label?: string; isGas?: boolean }> = ({ children, label, isGas }) => (
   <group position={[0, -0.25, 0]}>
     {/* Vỏ bình thủy tinh (lọ đựng hóa chất) */}
@@ -194,9 +123,9 @@ const ChemicalJar: React.FC<{ children: React.ReactNode; label?: string; isGas?:
 
 const COMPOUND_COLORS: Record<string, string> = {
   'H2O': '#38bdf8',
-  'HCl': '#f8fafc',
+  'HCl': '#ffffff',
   'H2SO4': '#ffffff',
-  'HNO3': '#fef08a',
+  'HNO3': '#ffffff',
   'NaOH': '#ffffff',
   'CuSO4': '#2563eb',
   'NaCl': '#ffffff',
@@ -208,11 +137,13 @@ const COMPOUND_COLORS: Record<string, string> = {
   'C': '#1a1a1a',
   'S': '#facc15',
   'P': '#ef4444',
+  'phenolphtalein': '#ffffff',
+  'quy-tim': '#8b5cf6',
 };
 
 const COMPOUND_NAMES: Record<string, string> = {
   'H2O': 'Nước cất',
-  'HCl': 'Axit clohidric',
+  'HCl': 'Axit clohiđric',
   'H2SO4': 'Axit sunfuric',
   'NaOH': 'Natri hiđroxit',
   'Ca(OH)2': 'Canxi hiđroxit',
@@ -226,11 +157,15 @@ const COMPOUND_NAMES: Record<string, string> = {
   'CO2': 'Cacbon đioxit',
   'SO2': 'Lưu huỳnh đioxit',
   'CuO': 'Đồng (II) oxit',
+  'phenolphtalein': 'Phenolphtalein',
+  'quy-tim': 'Quỳ tím',
 };
 const useChemColor = (doiTuong: Scene.Object, fallback: string) => {
   const symbol = doiTuong.thuocTinh?.kyHieu || doiTuong.properties?.kyHieu || doiTuong.properties?.symbol;
   if (!symbol) return fallback;
   if (COMPOUND_COLORS[symbol]) return COMPOUND_COLORS[symbol];
+  const comp = findCompoundChemical(symbol);
+  if (comp) return comp.color;
   const chem = findChemical(symbol);
   return chem && chem.color !== 'transparent' ? chem.color : fallback;
 };
@@ -238,20 +173,81 @@ const useChemColor = (doiTuong: Scene.Object, fallback: string) => {
 export const getChemColor = (symbol: string, fallback: string = '#00a8ff') => {
   if (!symbol) return fallback;
   if (COMPOUND_COLORS[symbol]) return COMPOUND_COLORS[symbol];
+  const comp = findCompoundChemical(symbol);
+  if (comp) return comp.color;
   const chem = findChemical(symbol);
   return chem && chem.color !== 'transparent' ? chem.color : fallback;
 };
 
-export const processPouring = (sourceProps: Record<string, any>, targetProps: Record<string, any>) => {
+const resolveChemSymbol = (obj: Scene.Object | null, props?: Record<string, any>): string => {
+  if (!obj && !props) return '';
+  const p = props || {};
+  return (obj as any)?.thuocTinh?.kyHieu || (obj as any)?.properties?.symbol || (obj as any)?.properties?.kyHieu || p.symbol || p.kyHieu || '';
+};
+
+export const resolveChemColor = (symbol: string, fallback: string = '#00a8ff') => getChemColor(symbol, fallback);
+
+export const processPouring = (sourceProps: Record<string, any>, targetProps: Record<string, any>, equipmentContext?: { hasHeat?: boolean; hasCatalyst?: string | null; temperature?: number }) => {
   const sSym = sourceProps.symbol || sourceProps.kyHieu;
   const tSym = targetProps.symbol || targetProps.kyHieu;
-  
+
   const sVol = sourceProps.theTich || sourceProps.khoiLuong || sourceProps.liquidVolume || sourceProps.chemicalLevel || 100;
   const tVol = targetProps.theTich || targetProps.khoiLuong || targetProps.liquidVolume || targetProps.chemicalLevel || 0;
-  
-  // Find chemical definitions
-  const sChem = findChemical(sSym);
-  const tChem = findChemical(tSym);
+
+  // Find chemical definitions (elements + compounds)
+  const sElem = findChemical(sSym);
+  const sComp = findCompoundChemical(sSym);
+  const sChem = sElem || (sComp ? { state: sComp.state === 'solution' ? 'liquid' as const : sComp.state as 'solid'|'liquid'|'gas', color: sComp.color } : undefined);
+  const tElem = findChemical(tSym);
+  const tComp = findCompoundChemical(tSym);
+  const tChem = tElem || (tComp ? { state: tComp.state === 'solution' ? 'liquid' as const : tComp.state as 'solid'|'liquid'|'gas', color: tComp.color } : undefined);
+
+  // Temperature from equipment context or default
+  const ambientTemp = equipmentContext?.temperature || 25;
+  const hasHeat = equipmentContext?.hasHeat || false;
+  const hasCatalyst = equipmentContext?.hasCatalyst || null;
+
+  // Check for reaction BEFORE any early returns
+  let rxnMatch: ReactionRule | undefined;
+  if (tSym && tSym !== sSym) {
+    rxnMatch = findReaction([sSym, tSym]);
+  }
+  // Also check single-reactant reactions (decomposition, indicator tests)
+  if (!rxnMatch && sSym) {
+    rxnMatch = findReaction([sSym]);
+  }
+
+  // Filter out reactions requiring heat/catalyst that aren't available
+  if (rxnMatch) {
+    if (rxnMatch.requiresHeat && !hasHeat) {
+      rxnMatch = undefined;
+    }
+    if (rxnMatch && rxnMatch.requiresCatalyst && hasCatalyst !== rxnMatch.requiresCatalyst) {
+      rxnMatch = undefined;
+    }
+  }
+
+  if (rxnMatch) {
+    const rxn = rxnMatch;
+    const prodSym = rxn.products[0] || sSym;
+    const newColor = rxn.newColor || rxn.precipitateColor || getChemColor(prodSym);
+    const prodComp = findCompoundChemical(prodSym);
+    const prodElem = findChemical(prodSym);
+    const prodState = prodElem?.state || prodComp?.state === 'solution' ? 'liquid' : (prodComp?.state || 'liquid');
+    return {
+      symbol: prodSym,
+      kyHieu: prodSym,
+      liquidColor: newColor,
+      mauChatLong: newColor,
+      chemicalLevel: Math.min(100, tVol + sVol),
+      liquidVolume: Math.min(500, tVol + sVol),
+      theTich: Math.min(500, tVol + sVol),
+      reactionEffect: rxn.effect,
+      reactionDescription: rxn.description,
+      precipitateColor: rxn.precipitateColor || rxn.newColor || '#ffffff',
+      state: prodState
+    };
+  }
 
   // If target is empty, just copy source properties
   if (tVol === 0 || !tSym) {
@@ -264,27 +260,6 @@ export const processPouring = (sourceProps: Record<string, any>, targetProps: Re
       liquidVolume: Math.min(500, tVol + sVol),
       theTich: Math.min(500, tVol + sVol),
       state: sChem?.state || 'liquid'
-    };
-  }
-
-  // Check for reaction
-  const rxn = findReaction([sSym, tSym]);
-  if (rxn) {
-    // A reaction occurred! We use the first product as the new symbol
-    const prodSym = rxn.products[0];
-    const newColor = rxn.newColor || rxn.precipitateColor || getChemColor(prodSym);
-    const prodChem = findChemical(prodSym);
-    return {
-      symbol: prodSym,
-      kyHieu: prodSym,
-      liquidColor: newColor,
-      mauChatLong: newColor,
-      chemicalLevel: Math.min(100, tVol + sVol),
-      liquidVolume: Math.min(500, tVol + sVol),
-      theTich: Math.min(500, tVol + sVol),
-      reactionEffect: rxn.effect,
-      precipitateColor: rxn.precipitateColor || rxn.newColor || '#ffffff',
-      state: prodChem?.state || 'liquid'
     };
   }
 
@@ -339,12 +314,12 @@ export const processPouring = (sourceProps: Record<string, any>, targetProps: Re
 
   // Default fallback (liquid into liquid, solid into solid, etc.)
   return {
-    symbol: tSym,
-    kyHieu: tSym,
+    symbol: tSym || sSym,
+    kyHieu: tSym || sSym,
     chemicalLevel: Math.min(100, tVol + sVol),
     liquidVolume: Math.min(500, tVol + sVol),
     theTich: Math.min(500, tVol + sVol),
-    state: tChem?.state || 'liquid'
+    state: tChem?.state || sChem?.state || 'liquid'
   };
 };
 
@@ -356,6 +331,8 @@ const ContainerLiquid: React.FC<{ doiTuong: Scene.Object, radius: number, maxH: 
   const effect = doiTuong.properties?.reactionEffect;
   const precipitateColor = doiTuong.properties?.precipitateColor || '#ffffff';
   const state = doiTuong.properties?.state || doiTuong.thuocTinh?.state || 'liquid';
+  const temperature = doiTuong.properties?.temperature || doiTuong.thuocTinh?.nhietDo || 25;
+  const isHeated = temperature > 80;
 
   const isGas = state === 'gas';
   const isSolid = state === 'solid';
@@ -379,17 +356,49 @@ const ContainerLiquid: React.FC<{ doiTuong: Scene.Object, radius: number, maxH: 
         )}
       </mesh>
       
+      {/* Heat steam / boiling indicator */}
+      {isHeated && !isSolid && !isGas && (
+        <group position={[0, h / 2, 0]}>
+          <Sparkles count={20} scale={[radius * 1.0, h * 0.4, radius * 1.0]} size={5} speed={1.8} opacity={0.3} color="#ffffff" />
+        </group>
+      )}
+      
       {/* Bubbles */}
       {effect === 'bubble' && (
         <Sparkles count={isGas ? 50 : 40} scale={[radius * 1.5, h, radius * 1.5]} size={isGas ? 6 : 4} speed={0.8} opacity={0.6} position={[0, h / 2, 0]} color="#ffffff" />
       )}
       
-      {/* Precipitate */}
+      {/* Precipitate - enhanced cloud formation at bottom */}
       {effect === 'precipitate' && !isSolid && !isGas && (
-        <mesh position={[0, h * 0.05, 0]}>
-          <cylinderGeometry args={[radius * 0.9, radius * 0.9, h * 0.1, 32]} />
-          <meshStandardMaterial color={precipitateColor} roughness={0.9} />
-        </mesh>
+        <group position={[0, h * 0.03, 0]}>
+          <mesh>
+            <cylinderGeometry args={[radius * 0.85, radius * 0.92, h * 0.12, 32]} />
+            <meshStandardMaterial color={precipitateColor} roughness={0.85} />
+          </mesh>
+          <Sparkles count={20} scale={[radius * 1.2, h * 0.15, radius * 1.2]} size={2} speed={0.3} opacity={0.5} color={precipitateColor} />
+        </group>
+      )}
+      
+      {/* Color Change - lighting sparkle overlay */}
+      {effect === 'color_change' && !isSolid && !isGas && (
+        <group position={[0, h / 2, 0]}>
+          <Sparkles count={25} scale={[radius * 1.3, h * 0.8, radius * 1.3]} size={3} speed={0.5} opacity={0.4} color={precipitateColor || color} />
+        </group>
+      )}
+      
+      {/* Dissolve - swirling effect at bottom */}
+      {effect === 'dissolve' && !isSolid && !isGas && (
+        <group position={[0, h * 0.1, 0]}>
+          <Sparkles count={30} scale={[radius * 1.0, h * 0.3, radius * 1.0]} size={5} speed={1.2} opacity={0.5} color={precipitateColor || color} />
+        </group>
+      )}
+      
+      {/* Explosion - intense spark burst */}
+      {effect === 'explosion' && !isSolid && !isGas && (
+        <group position={[0, h / 2, 0]}>
+          <Sparkles count={60} scale={[radius * 1.5, h, radius * 1.5]} size={8} speed={2.5} opacity={0.8} color="#ff6600" />
+          <Sparkles count={30} scale={[radius * 1.0, h * 0.5, radius * 1.0]} size={3} speed={1.5} opacity={0.5} color="#ffcc00" />
+        </group>
       )}
     </group>
   );
@@ -400,9 +409,10 @@ export const ChatRan: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doT
   const color = useChemColor(doiTuong, '#a855f7');
   const symbol = doiTuong.properties?.symbol || doiTuong.thuocTinh?.kyHieu;
   const chem = symbol ? findChemical(symbol) : null;
+  const comp = symbol ? findCompoundChemical(symbol) : null;
   const compoundName = symbol ? COMPOUND_NAMES[symbol] : null;
-  const displayName = chem ? chem.name : compoundName;
-  const nhan = displayName ? `${displayName} (${symbol})` : (doiTuong.nhan || "Chất rắn");
+  const displayName = chem?.name || comp?.name || compoundName;
+  const nhan = displayName ? `${displayName} (${symbol})` : (doiTuong.nhan || "Chat ran");
   const level = doiTuong.properties?.khoiLuong ?? doiTuong.thuocTinh?.khoiLuong ?? doiTuong.properties?.chemicalLevel ?? doiTuong.thuocTinh?.chemicalLevel ?? 100;
   return (
     <DoiTuongKeoTha doiTuong={doiTuong} nhan={nhan} kichThuocVaCham={[0.4, 0.6, 0.4]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene}>
@@ -426,19 +436,20 @@ export const ChatLong: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, do
   let symbol = doiTuong.properties?.symbol || doiTuong.thuocTinh?.kyHieu;
   if (!symbol && doiTuong.modelName === 'NuocCat') symbol = 'H2O';
   const chem = symbol ? findChemical(symbol) : null;
+  const comp = symbol ? findCompoundChemical(symbol) : null;
   const compoundName = symbol ? COMPOUND_NAMES[symbol] : null;
-  const displayName = chem ? chem.name : compoundName;
-  const nhan = displayName ? `${displayName} (${symbol})` : (doiTuong.nhan || "Chất lỏng");
+  const displayName = chem?.name || comp?.name || compoundName;
+  const nhan = displayName ? `${displayName} (${symbol})` : (doiTuong.nhan || "Chat long");
   const level = doiTuong.properties?.theTich ?? doiTuong.thuocTinh?.theTich ?? doiTuong.properties?.chemicalLevel ?? doiTuong.thuocTinh?.chemicalLevel ?? 100;
   return (
     <DoiTuongKeoTha doiTuong={doiTuong} nhan={nhan} kichThuocVaCham={[0.4, 0.6, 0.4]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene}>
-      <ChemicalJar label={symbol}>
+      <ChemicalJar label={symbol} isGas>
         {level > 0 && (() => {
-          const h = (level / 500) * 0.3;
+          const opacity = 0.1 + (level / 500) * 0.4;
           return (
-            <mesh position={[0, -0.25 + h / 2, 0]}>
-              <cylinderGeometry args={[0.18, 0.18, h, 32]} />
-              <meshPhysicalMaterial color={color} transparent opacity={0.7} roughness={0.1} />
+            <mesh position={[0, -0.05, 0]}>
+              <cylinderGeometry args={[0.18, 0.18, 0.4, 32]} />
+              <meshPhysicalMaterial color={color} transparent opacity={opacity} roughness={0.1} />
             </mesh>
           );
         })()}
@@ -451,9 +462,10 @@ export const ChatKhi: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doT
   const color = useChemColor(doiTuong, '#ffffff');
   const symbol = doiTuong.properties?.symbol || doiTuong.thuocTinh?.kyHieu;
   const chem = symbol ? findChemical(symbol) : null;
+  const comp = symbol ? findCompoundChemical(symbol) : null;
   const compoundName = symbol ? COMPOUND_NAMES[symbol] : null;
-  const displayName = chem ? chem.name : compoundName;
-  const nhan = displayName ? `${displayName} (${symbol})` : (doiTuong.nhan || "Chất khí");
+  const displayName = chem?.name || comp?.name || compoundName;
+  const nhan = displayName ? `${displayName} (${symbol})` : (doiTuong.nhan || "Chat khi");
   const level = doiTuong.properties?.theTich ?? doiTuong.thuocTinh?.theTich ?? doiTuong.properties?.chemicalLevel ?? doiTuong.thuocTinh?.chemicalLevel ?? 100;
   return (
     <DoiTuongKeoTha doiTuong={doiTuong} nhan={nhan} kichThuocVaCham={[0.4, 0.6, 0.4]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene}>
@@ -469,6 +481,25 @@ export const ChatKhi: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doT
           );
         })()}
       </ChemicalJar>
+    </DoiTuongKeoTha>
+  );
+};
+
+
+export const GiayQuy: React.FC<Props> = ({ doiTuong, dangChay, capNhatViTri, doThiScene }) => {
+  const color = doiTuong.properties?.color || '#a855f7'; // Purple default
+  return (
+    <DoiTuongKeoTha doiTuong={doiTuong} nhan="Qu? t�m" kichThuocVaCham={[0.1, 0.02, 0.3]} dangChay={dangChay} capNhatViTri={capNhatViTri} doThiScene={doThiScene}>
+      {/* Strip of paper */}
+      <mesh position={[0, 0, 0]} castShadow>
+        <boxGeometry args={[0.08, 0.005, 0.25]} />
+        <meshStandardMaterial color={color} roughness={1} />
+      </mesh>
+      {/* Small label or grip area */}
+      <mesh position={[0, 0.0026, 0.1]} castShadow>
+        <boxGeometry args={[0.082, 0.001, 0.05]} />
+        <meshStandardMaterial color="#f8fafc" roughness={0.8} />
+      </mesh>
     </DoiTuongKeoTha>
   );
 };

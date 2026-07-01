@@ -279,9 +279,53 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         const targetObj = allObjects.find(o => o.id === pourTargetRef.current);
         const targetProps = targetObj ? { ...(targetObj as any).thuocTinh, ...targetObj.properties } : {};
         const sourceProps = { ...(object as any).thuocTinh, ...object.properties };
-        
-        const mixedProps = processPouring(sourceProps, targetProps);
+
+        // Detect equipment context: is container on a heater? Any catalyst nearby?
+        const targetAttachedTo = (targetObj as any)?.properties?.attachedTo || (targetObj as any)?.thuocTinh?.attachedTo;
+        const heaterObj = targetAttachedTo ? allObjects.find(o => o.id === targetAttachedTo) : null;
+        const hasHeat = heaterObj && (heaterObj.modelName === 'BunsenBurner' || heaterObj.modelName === 'DenCon');
+        const tSym = targetProps.symbol || targetProps.kyHieu || '';
+        const sSym = sourceProps.symbol || sourceProps.kyHieu || '';
+
+        if (sSym === 'quy-tim') {
+          let newColor = '#a855f7'; // default purple
+          let reactionDescription = '';
+          if (['HCl', 'H2SO4', 'HNO3', 'CH3COOH'].includes(tSym)) {
+              newColor = '#ef4444'; // red
+              reactionDescription = 'Quỳ tím hóa đỏ (Môi trường Axit)';
+          }
+          else if (['NaOH', 'KOH', 'Ca(OH)2', 'Ba(OH)2', 'NH4OH'].includes(tSym)) {
+              newColor = '#3b82f6'; // blue
+              reactionDescription = 'Quỳ tím hóa xanh (Môi trường Bazơ)';
+          } else {
+              reactionDescription = 'Quỳ tím không đổi màu (Môi trường Trung tính)';
+          }
+          
+          updateObjectProperty(object.id, 'color', newColor);
+          updateObjectProperty(object.id, 'reactionDescription', reactionDescription);
+          setPouringAction(null);
+          if (checkRuleAndAdvance) checkRuleAndAdvance('pour', object.id, pourTargetRef.current);
+          
+          // Return the paper to its original position
+          posRef.current = [...startPosRef.current];
+          if (groupRef.current) {
+            groupRef.current.position.set(startPosRef.current[0], startPosRef.current[1], startPosRef.current[2]);
+          }
+          onUpdatePosition?.(object.id, startPosRef.current);
+          return;
+        }
+
+        const hasMnOCatalyst = sSym === 'MnO2' || tSym === 'MnO2';
+
+        const equipmentContext = {
+          hasHeat: !!hasHeat,
+          temperature: hasHeat ? 200 : 25,
+          hasCatalyst: hasMnOCatalyst ? 'MnO2' as string | null : null
+        };
+
+        const mixedProps = processPouring(sourceProps, targetProps, equipmentContext);
         updateAllProperties(pourTargetRef.current, mixedProps);
+        setPouringAction(null);
         
         updateObjectProperty(object.id, 'chemicalLevel', 0);
         updateObjectProperty(object.id, 'liquidVolume', 0);
@@ -299,7 +343,7 @@ const DraggablePhysicsObject: React.FC<Props> = (props) => {
         updateObjectProperty(object.id, 'attachedTo', null);
       }
     }
-  }, [object, rotationAxis, selectedEquipmentId, onUpdatePosition, setIsDragging, setSelectedEquipmentId, updateObjectProperty, checkRuleAndAdvance]);
+  }, [object, rotationAxis, selectedEquipmentId, onUpdatePosition, setIsDragging, setSelectedEquipmentId, updateObjectProperty, updateAllProperties, allObjects, setPouringAction, checkRuleAndAdvance]);
 
   useFrame((state, delta) => {
     if (!groupRef.current) return;

@@ -10,6 +10,10 @@ import chem1009 from './chem10-09';
 import chem1010 from './chem10-10';
 import chem1011 from './chem10-11';
 import chem1012 from './chem10-12';
+import chem1013 from './chem10-13';
+import chem1014 from './chem10-14';
+import chem1015 from './chem10-15';
+import chem1016 from './chem10-16';
 
 export const experiments = {
   'CHEM10-01': chem1001,
@@ -24,4 +28,8 @@ export const experiments = {
   'CHEM10-10': chem1010,
   'CHEM10-11': chem1011,
   'CHEM10-12': chem1012,
+  'CHEM10-13': chem1013,
+  'CHEM10-14': chem1014,
+  'CHEM10-15': chem1015,
+  'CHEM10-16': chem1016,
 };

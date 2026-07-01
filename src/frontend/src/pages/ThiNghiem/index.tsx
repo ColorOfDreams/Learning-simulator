@@ -1,12 +1,14 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useSearchParams } from 'umi';
 import { useModel } from '@umijs/max';
 import SandboxEngine from '@/simulations/engine/SandboxEngine';
 import ChatSidebar from './components/ChatSidebar';
 import FooterBar from './components/FooterBar';
 import EquipmentDetail from './components/EquipmentDetail';
+import GuidanceCard from './components/GuidanceCard';
 import useInitModel from '@/hooks/useInitModel';
-import { Spin } from 'antd';
+import { Spin, message, notification, Button } from 'antd';
+import { BulbOutlined } from '@ant-design/icons';
 import { openLabSession } from '@/services/base/api';
 
 const ThiNghiem: React.FC = () => {
@@ -18,9 +20,78 @@ const ThiNghiem: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedEquipmentId, setSelectedEquipmentId] = useState<string | null>(null);
   const [rotationAxis, setRotationAxis] = useState<'x' | 'y' | 'z' | null>(null);
+  const [showGuidanceOverlay, setShowGuidanceOverlay] = useState(true);
 
-  const { sceneGraph, initScene, clearScene, updateObjectPosition, updateObjectRotation, updateObjectProperty, updateAllProperties } = useModel('useSimulationModel');
-  const { openChatbot, closeChatbot, requestGuidance } = useModel('useAIChatBotModel');
+  const { sceneGraph, initScene, clearScene, updateObjectPosition, updateObjectRotation, updateObjectProperty, updateAllProperties, wrongActionData, guidanceSteps, setGuidanceSteps, currentStepIndex } = useModel('useSimulationModel');
+  const { openChatbot, closeChatbot, requestGuidance, sendMessage, messages } = useModel('useAIChatBotModel');
+
+  const prevStepRef = useRef(currentStepIndex);
+
+  useEffect(() => {
+    if (wrongActionData) {
+      setSidebarCollapsed(false);
+
+      const translateAction = (action: string) => {
+        if (action === 'pour') return 'đổ / cho';
+        if (action === 'drag_and_drop') return 'kéo thả';
+        if (action === 'update_property') return 'điều chỉnh / tương tác';
+        return action;
+      };
+
+      const translateModel = (model: string) => {
+        if (!model) return '';
+        const map: Record<string, string> = {
+          'ChemicalSolid': 'hóa chất rắn',
+          'ChemicalLiquid': 'hóa chất lỏng',
+          'ChemicalGas': 'chất khí',
+          'Beaker': 'cốc mỏ (beaker)',
+          'TestTube': 'ống nghiệm',
+          'ErlenmeyerFlask': 'bình tam giác',
+          'BunsenBurner': 'đèn cồn',
+          // Add more if needed
+        };
+        return map[model] || model;
+      };
+
+      const expType = translateAction(wrongActionData.expected.type);
+      const expSource = translateModel(wrongActionData.expected.sourceModel);
+      const expTarget = translateModel(wrongActionData.expected.targetModel);
+      
+      const actType = translateAction(wrongActionData.actual.actionType);
+      const actSource = translateModel(wrongActionData.actual.source);
+      const actTarget = translateModel(wrongActionData.actual.target);
+
+      const expectedText = expTarget 
+        ? `${expType} ${expSource} vào ${expTarget}` 
+        : `${expType} ${expSource}`;
+      
+      const actualText = `${actType} ${actSource || 'dụng cụ'} vào ${actTarget || '...'}`;
+
+      const sysPrompt = `Hệ thống: Học sinh thao tác sai so với yêu cầu của bước hiện tại. 
+Bước hiện tại yêu cầu: "${expectedText}" 
+Nhưng học sinh lại làm: "${actualText}". 
+Đóng vai AI trợ giảng, hãy đưa ra lời khuyên ngắn gọn (dưới 50 chữ), nhắc nhở nhẹ nhàng học sinh làm theo đúng yêu cầu của bước hiện tại. KHÔNG bịa ra các quy tắc an toàn hóa học sai lệch hay yêu cầu các dụng cụ (như cốc có nắp, khay chuyên dụng) không có trong bài.`;
+
+      sendMessage(sysPrompt, { hidden: true });
+    }
+  }, [wrongActionData]);
+
+  useEffect(() => {
+    if (prevStepRef.current !== currentStepIndex) {
+      if (currentStepIndex > prevStepRef.current) {
+        message.success(`🎉 Đã hoàn thành bước ${currentStepIndex}, chuyển sang bước tiếp theo!`, 3);
+      }
+      prevStepRef.current = currentStepIndex;
+    }
+  }, [currentStepIndex]);
+
+  useEffect(() => {
+    const guidanceMsg = messages.find(m => m.sender === 'guidance');
+    if (guidanceMsg && guidanceMsg.metadata?.steps) {
+      setGuidanceSteps(guidanceMsg.metadata.steps as any[]);
+      setShowGuidanceOverlay(true);
+    }
+  }, [messages]);
 
   useEffect(() => {
     const load = async () => {
@@ -88,6 +159,29 @@ const ThiNghiem: React.FC = () => {
             rotationAxis={rotationAxis}
             onSetRotationAxis={setRotationAxis}
           />
+
+          {/* Hướng dẫn Overlay */}
+          {guidanceSteps && guidanceSteps.length > 0 && (
+            <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+              {!showGuidanceOverlay ? (
+                <Button 
+                  type="primary" 
+                  shape="circle" 
+                  icon={<BulbOutlined />} 
+                  size="large"
+                  onClick={() => setShowGuidanceOverlay(true)}
+                  style={{ background: '#f59e0b', borderColor: '#f59e0b', boxShadow: '0 4px 12px rgba(245, 158, 11, 0.4)' }}
+                />
+              ) : (
+                <GuidanceCard 
+                  steps={guidanceSteps} 
+                  currentStepIndex={currentStepIndex} 
+                  isOverlay={true} 
+                  onClose={() => setShowGuidanceOverlay(false)}
+                />
+              )}
+            </div>
+          )}
         </div>
         <FooterBar
           isPlaying={isPlaying}

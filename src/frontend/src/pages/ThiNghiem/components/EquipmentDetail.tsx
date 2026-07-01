@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Button, InputNumber, Popconfirm, Switch } from 'antd';
 import {
   CloseOutlined, SettingOutlined, PlayCircleOutlined, PauseCircleOutlined,
   FieldTimeOutlined, UndoOutlined, DeleteOutlined, RotateRightOutlined,
 } from '@ant-design/icons';
 import MiniPreview from '@/simulations/components/MiniPreview';
-import { findChemical } from '@/simulations/chemicals-catalog';
+import { findChemical, findCompoundChemical } from '@/simulations/chemicals-catalog';
 import { layDungCu } from '@/dung-cu/thanh-ghi';
 import './EquipmentDetail.less';
 
@@ -36,7 +36,10 @@ const EquipmentDetail: React.FC<Props> = ({ objectId, sceneGraph, isPlaying, onC
   const modelName = object.modelName || (object as any).maDungCu;
   const def = layDungCu(modelName);
   const props = { ...object.properties, ...((object as any).thuocTinh || {}) };
-  const chemical = props?.kyHieu || props?.symbol ? findChemical(props?.kyHieu || props?.symbol) : undefined;
+  const sym = props?.kyHieu || props?.symbol;
+  const rawChem = sym ? findChemical(sym) : undefined;
+  const rawComp = sym ? findCompoundChemical(sym) : undefined;
+  const chemical = rawChem || (rawComp ? { symbol: rawComp.symbol, name: rawComp.name, color: rawComp.color, state: rawComp.state, groupLabel: rawComp.category, atomicNumber: '-', atomicMass: 0 } : undefined);
   const label = def?.tenDungCu || modelName;
   const pos = object.position || (object as any).viTri || [0, 0, 0];
 
@@ -184,8 +187,14 @@ const EquipmentDetail: React.FC<Props> = ({ objectId, sceneGraph, isPlaying, onC
           <div className="ed-chem-symbol">{chemical.symbol}</div>
           <div className="ed-chem-name">{chemical.name}</div>
           <div className="ed-chem-meta"><span>Số {chemical.atomicNumber}</span><span>·</span><span>Khối {chemical.atomicMass.toFixed(1)}u</span></div>
-          <div className="ed-chem-meta"><span>{chemical.state === 'solid' ? 'Rắn' : chemical.state === 'liquid' ? 'Lỏng' : 'Khí'}</span><span>·</span><span>{chemical.groupLabel}</span></div>
+          <div className="ed-chem-meta"><span>{chemical.state === 'solid' ? 'Rắn' : chemical.state === 'liquid' ? 'Lỏng' : chemical.state === 'solution' ? 'Dung dịch' : 'Khí'}</span><span>·</span><span>{chemical.groupLabel}</span></div>
         </div>
+        {props.reactionDescription && (
+          <div className="ed-chem-reaction" style={{ marginTop: 8, padding: 8, background: '#f8fafc', borderRadius: 4, border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: '#64748b', marginBottom: 4 }}>Phương trình phản ứng:</div>
+            <div style={{ fontSize: 13, color: '#0f172a' }}>{props.reactionDescription}</div>
+          </div>
+        )}
       </div>
     );
   };
@@ -242,3 +251,5 @@ const EquipmentDetail: React.FC<Props> = ({ objectId, sceneGraph, isPlaying, onC
 };
 
 export default EquipmentDetail;
+
+

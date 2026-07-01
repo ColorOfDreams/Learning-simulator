@@ -137,53 +137,183 @@ const PouringGasParticles: React.FC<{ start: THREE.Vector3, end: THREE.Vector3, 
 
 const ReactionVisual: React.FC<{ objectId: string, effect: any, position: THREE.Vector3 }> = ({ objectId, effect, position }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const particleCount = effect.effect === 'bubble' ? 50 : (effect.effect === 'precipitate' ? 100 : 0);
+  const sparkRef = useRef<THREE.InstancedMesh>(null);
+  const smokeRef = useRef<THREE.InstancedMesh>(null);
+  const timeRef = useRef(0);
   const dummy = useMemo(() => new THREE.Object3D(), []);
+
+  const eType = effect.effect || effect.type || 'none';
+
+  const particleCount = eType === 'bubble' ? 60
+    : eType === 'precipitate' ? 120
+    : eType === 'color_change' ? 30
+    : eType === 'dissolve' ? 50
+    : eType === 'explosion' ? 80
+    : eType === 'smoke' ? 50
+    : eType === 'steam' ? 40
+    : eType === 'flame' ? 60
+    : eType === 'flash' ? 20
+    : 0;
 
   const particles = useMemo(() => {
     return Array.from({ length: particleCount }, () => ({
       progress: Math.random(),
-      speed: 0.2 + Math.random() * 0.4,
-      offset: new THREE.Vector3((Math.random() - 0.5) * 0.25, (Math.random() - 0.5) * 0.1, (Math.random() - 0.5) * 0.25),
+      speed: 0.15 + Math.random() * 0.45,
+      angle: Math.random() * Math.PI * 2,
+      radius: 0.05 + Math.random() * 0.25,
+      offset: new THREE.Vector3((Math.random() - 0.5) * 0.3, (Math.random() - 0.5) * 0.15, (Math.random() - 0.5) * 0.3),
     }));
-  }, [particleCount]);
+  }, [particleCount, eType]);
 
   useFrame((_, delta) => {
+    timeRef.current += delta;
     if (!meshRef.current || particleCount === 0) return;
-    const isBubble = effect.effect === 'bubble';
+
     particles.forEach((p, i) => {
       p.progress += delta * p.speed;
       if (p.progress > 1) {
         p.progress = 0;
-        p.offset.set((Math.random() - 0.5) * 0.25, (Math.random() - 0.5) * 0.1, (Math.random() - 0.5) * 0.25);
+        p.angle = Math.random() * Math.PI * 2;
+        p.radius = 0.05 + Math.random() * 0.25;
+        p.offset.set((Math.random() - 0.5) * 0.3, (Math.random() - 0.5) * 0.15, (Math.random() - 0.5) * 0.3);
       }
-      
+
       dummy.position.copy(position).add(p.offset);
-      if (isBubble) {
-        dummy.position.y += p.progress * 0.4; // rise up
-        dummy.scale.setScalar(0.4 + p.progress * 0.6);
-      } else {
-        dummy.position.y -= p.progress * 0.3; // fall down
-        dummy.scale.setScalar(0.5);
+
+      switch (eType) {
+        case 'bubble':
+          dummy.position.y += p.progress * 0.5;
+          dummy.scale.setScalar(0.3 + p.progress * 0.7);
+          break;
+        case 'precipitate':
+          dummy.position.y -= p.progress * 0.35;
+          dummy.scale.setScalar(0.4);
+          break;
+        case 'color_change':
+          dummy.position.x += Math.sin(p.angle + timeRef.current * 2) * p.radius * p.progress;
+          dummy.position.y += p.progress * 0.15;
+          dummy.scale.setScalar(0.3 + p.progress * 0.4);
+          break;
+        case 'dissolve':
+          dummy.position.x += Math.sin(p.angle * 3 + timeRef.current) * p.radius * p.progress;
+          dummy.position.y += p.progress * 0.1;
+          dummy.position.z += Math.cos(p.angle * 3 + timeRef.current) * p.radius * p.progress;
+          dummy.scale.setScalar(0.5 - p.progress * 0.3);
+          break;
+        case 'explosion':
+          dummy.position.x += Math.cos(p.angle) * p.progress * 0.6;
+          dummy.position.y += p.progress * 0.4 + Math.sin(p.progress * Math.PI) * 0.2;
+          dummy.position.z += Math.sin(p.angle) * p.progress * 0.6;
+          dummy.scale.setScalar(0.2 + p.progress * 0.5);
+          break;
+        case 'smoke':
+          dummy.position.y += p.progress * 0.6;
+          dummy.position.x += Math.sin(p.angle + timeRef.current) * p.radius * p.progress * 0.5;
+          dummy.position.z += Math.cos(p.angle + timeRef.current) * p.radius * p.progress * 0.5;
+          dummy.scale.setScalar(0.2 + p.progress * 2.5);
+          break;
+        case 'steam':
+          dummy.position.y += p.progress * 0.8;
+          dummy.position.x += Math.sin(p.angle * 0.5 + timeRef.current) * p.progress * 0.6;
+          dummy.position.z += Math.cos(p.angle * 0.5 + timeRef.current * 0.7) * p.progress * 0.6;
+          dummy.scale.setScalar(0.5 + p.progress * 1.5);
+          break;
+        case 'flame':
+          dummy.position.y += p.progress * 0.35;
+          dummy.position.x += Math.cos(p.angle) * (0.5 - p.progress * 0.3) * 0.3;
+          dummy.position.z += Math.sin(p.angle) * (0.5 - p.progress * 0.3) * 0.3;
+          dummy.scale.setScalar(0.4 + Math.sin(p.progress * Math.PI) * 0.6);
+          break;
+        case 'flash':
+          dummy.position.y += p.progress * 0.2;
+          dummy.position.x += Math.cos(p.angle) * p.progress * 0.4;
+          dummy.position.z += Math.sin(p.angle) * p.progress * 0.4;
+          dummy.scale.setScalar(1.0 + p.progress * 1.5);
+          break;
       }
-      
+
+      dummy.rotation.x += delta * 2;
+      dummy.rotation.y += delta * 1.5;
       dummy.updateMatrix();
       meshRef.current!.setMatrixAt(i, dummy.matrix);
     });
     meshRef.current.instanceMatrix.needsUpdate = true;
+
+    if (sparkRef.current && (eType === 'explosion' || eType === 'flame')) {
+      particles.forEach((p, i) => {
+        const sp = p.progress;
+        dummy.position.copy(position);
+        dummy.position.x += Math.cos(p.angle) * sp * (eType === 'flame' ? 0.4 : 0.8);
+        dummy.position.y += sp * 0.5 + Math.sin(sp * Math.PI) * 0.3;
+        dummy.position.z += Math.sin(p.angle) * sp * (eType === 'flame' ? 0.4 : 0.8);
+        dummy.scale.setScalar(Math.max(0, 1 - sp * 2) * 0.06);
+        dummy.updateMatrix();
+        sparkRef.current!.setMatrixAt(i, dummy.matrix);
+      });
+      sparkRef.current.instanceMatrix.needsUpdate = true;
+    }
   });
 
   if (particleCount === 0) return null;
 
+  const getColor = () => {
+    switch (eType) {
+      case 'bubble': return '#ffffff';
+      case 'precipitate': return effect.precipitateColor || '#a8a29e';
+      case 'color_change': return effect.color || effect.newColor || '#ffcc00';
+      case 'dissolve': return effect.color || '#88ccff';
+      case 'explosion': return '#ff6600';
+      case 'smoke': return '#c8c8c8';
+      case 'steam': return '#f0f0f0';
+      case 'flame': return '#ffaa00';
+      case 'flash': return '#ffffcc';
+      default: return '#ffffff';
+    }
+  };
+
+  const getOpacity = () => {
+    switch (eType) {
+      case 'bubble': return 0.5;
+      case 'precipitate': return 0.85;
+      case 'color_change': return 0.6;
+      case 'dissolve': return 0.5;
+      case 'explosion': return 0.7;
+      case 'smoke': return 0.3;
+      case 'steam': return 0.15;
+      case 'flame': return 0.8;
+      case 'flash': return 0.6;
+      default: return 0.5;
+    }
+  };
+
+  const getSize = () => {
+    switch (eType) {
+      case 'bubble': return 0.022;
+      case 'precipitate': return 0.012;
+      case 'color_change': return 0.015;
+      case 'dissolve': return 0.018;
+      case 'explosion': return 0.025;
+      case 'smoke': return 0.035;
+      case 'steam': return 0.03;
+      case 'flame': return 0.02;
+      case 'flash': return 0.015;
+      default: return 0.015;
+    }
+  };
+
   return (
-    <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, particleCount]}>
-      <sphereGeometry args={[effect.effect === 'bubble' ? 0.02 : 0.015, 8, 8]} />
-      <meshStandardMaterial 
-        color={effect.effect === 'bubble' ? '#ffffff' : (effect.precipitateColor || '#a8a29e')} 
-        transparent 
-        opacity={effect.effect === 'bubble' ? 0.6 : 0.9} 
-      />
-    </instancedMesh>
+    <group>
+      <instancedMesh ref={meshRef} args={[undefined as any, undefined as any, particleCount]}>
+        <sphereGeometry args={[getSize(), 8, 8]} />
+        <meshStandardMaterial color={getColor()} transparent opacity={getOpacity()} depthWrite={eType !== 'flame'} />
+      </instancedMesh>
+      {(eType === 'explosion' || eType === 'flame') && (
+        <instancedMesh ref={sparkRef} args={[undefined as any, undefined as any, particleCount]}>
+          <boxGeometry args={[0.015, 0.015, 0.015]} />
+          <meshBasicMaterial color="#ffaa00" transparent opacity={0.9} />
+        </instancedMesh>
+      )}
+    </group>
   );
 };
 
@@ -302,7 +432,7 @@ const InteractionEffects: React.FC<Props> = ({ objects, isPlaying }) => {
       }
     });
     return result;
-  }, [snaps.length]);
+  }, [snaps]);
 
   return (
     <group ref={groupRef}>

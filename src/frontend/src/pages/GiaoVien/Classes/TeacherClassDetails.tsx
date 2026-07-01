@@ -33,14 +33,14 @@ const TeacherClassDetails: React.FC = () => {
   const [isAssignmentModalVisible, setAssignmentModalVisible] = useState(false);
   const [submittingAssignment, setSubmittingAssignment] = useState(false);
   const [form] = Form.useForm();
-  
+
   const [simType, setSimType] = useState<'SYSTEM' | 'CUSTOM'>('SYSTEM');
   const [scenes, setScenes] = useState<Scene.IRecord[]>([]);
   const { getModel: getScenes } = useModel('scene');
 
   useEffect(() => {
     if (getScenes) {
-      getScenes({ page: 1, limit: 1000, sort: { createdAt: -1 } }).then((res: any) => {
+      (getScenes as any)({ page: 1, limit: 1000, sort: { createdAt: -1 } }).then((res: any) => {
         if (res?.data?.result) {
           setScenes(res.data.result);
         } else if (Array.isArray(res?.data)) {
@@ -48,7 +48,7 @@ const TeacherClassDetails: React.FC = () => {
         } else if (Array.isArray(res)) {
           setScenes(res);
         }
-      }).catch(() => {});
+      }).catch(() => { });
     }
   }, []);
 
@@ -286,13 +286,13 @@ const TeacherClassDetails: React.FC = () => {
               />
             </Form.Item>
 
-            <Form.Item 
-              name="simulationId" 
-              label="Mã thí nghiệm" 
+            <Form.Item
+              name="simulationId"
+              label="Mã thí nghiệm"
               rules={[{ required: true, message: 'Vui lòng chọn hoặc nhập mã thí nghiệm' }]}
               tooltip="Chọn từ danh sách hoặc nhập mã SIM- (nhấn Enter để thêm mã tự do)"
             >
-              <Select 
+              <Select
                 showSearch
                 mode="tags"
                 maxCount={1}
@@ -301,12 +301,12 @@ const TeacherClassDetails: React.FC = () => {
                 filterOption={(input, option) =>
                   (option?.label ?? '').toString().toLowerCase().includes(input.toLowerCase())
                 }
-                options={simType === 'SYSTEM' 
-                  ? BUILT_IN_SIMULATIONS 
+                options={simType === 'SYSTEM'
+                  ? BUILT_IN_SIMULATIONS
                   : (scenes?.map(s => ({
-                      value: s.id,
-                      label: `${s.name} ${s.roomType ? `(${s.roomType})` : ''}`
-                    })) || [])
+                    value: s.id,
+                    label: `${s.name} ${s.roomType ? `(${s.roomType})` : ''}`
+                  })) || [])
                 }
               />
             </Form.Item>
