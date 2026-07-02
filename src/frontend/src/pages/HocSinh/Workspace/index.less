@@ -501,8 +501,8 @@
 		flex-direction: column;
 		gap: 7px;
 		padding: 14px;
-		background: rgba(30, 41, 59, 0.25);
-		border: 1px solid rgba(255, 255, 255, 0.04);
+		background: @stu-bg-panel;
+		border: 1px solid @stu-border;
 		border-radius: 12px;
 	}
 
@@ -515,7 +515,7 @@
 
 	&__symbol-sym {
 		font-weight: 700;
-		color: #38bdf8;
+		color: @stu-accent;
 		min-width: 28px;
 		display: inline-block;
 
@@ -525,7 +525,46 @@
 	}
 
 	&__symbol-desc {
-		color: #94a3b8;
+		color: @stu-text-secondary;
+	}
+
+	&__param-btn {
+		padding: 6px 12px;
+		border-radius: 8px;
+		border: 1px solid @stu-border;
+		background: @stu-bg-card;
+		color: @stu-text-primary;
+		cursor: pointer;
+		font-size: 14px;
+		font-family: inherit;
+		transition: all 0.15s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 36px;
+		white-space: nowrap;
+
+		&:hover {
+			background: @stu-bg-panel;
+		}
+
+		&--active {
+			background: @stu-accent;
+			border-color: @stu-accent;
+			color: #fff;
+
+			&:hover {
+				background: @stu-accent-deep;
+			}
+
+			.katex, .katex * {
+				color: #fff !important;
+			}
+		}
+
+		.katex {
+			font-size: 14px !important;
+		}
 	}
 
 	// Chem steps

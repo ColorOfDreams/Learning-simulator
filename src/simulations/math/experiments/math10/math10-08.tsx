@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function StatisticsSimulation({ config }: SimulationProps) {
   const v1 = config.parameters?.find(p => p.key === 'v1')?.value ?? 5;
@@ -10,6 +11,7 @@ export default function StatisticsSimulation({ config }: SimulationProps) {
   const v6 = config.parameters?.find(p => p.key === 'v6')?.value ?? 10;
 
   const W = 600; const H = 400;
+  const { svgHandlers, groupTransform, resetView, isDirty } = useMathPanZoom(1, W, H);
 
   const { mean, std, q1, q2, q3, iqr, whiskerLow, whiskerHigh, fmtN } = useMemo(() => {
     const data = [v1, v2, v3, v4, v5, v6];
@@ -54,8 +56,9 @@ export default function StatisticsSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
+        <g transform={groupTransform}>
 
         {/* === Histogram === */}
         <text x={chartLeft} y={18} fill="#94a3b8" fontSize="12" fontWeight="600">Biểu đồ tần số</text>
@@ -140,7 +143,16 @@ export default function StatisticsSimulation({ config }: SimulationProps) {
         <text x={W-192} y={H-38} fill="#fbbf24" fontSize="11">Q2 / Trung vị = {fmtN(q2)}</text>
         <text x={W-192} y={H-22} fill="#38bdf8" fontSize="11">Q3 (75%) = {fmtN(q3)}</text>
         <text x={W-192} y={H-7} fill="#e879f9" fontSize="11">Các điểm: {data.join(', ')}</text>
+        </g>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

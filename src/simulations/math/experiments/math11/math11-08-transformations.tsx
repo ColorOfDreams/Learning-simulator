@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function TransformationsSimulation({ config }: SimulationProps) {
   const transType = Math.round(config.parameters?.find(p => p.key === 'transType')?.value ?? 0);
@@ -9,12 +10,12 @@ export default function TransformationsSimulation({ config }: SimulationProps) {
 
   const W = 600;
   const H = 400;
-  const scale = 35;
-  const originX = W / 2;
-  const originY = H / 2;
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } = useMathPanZoom(35, W, H);
+  const originX = ox;
+  const originY = oy;
 
-  const toSX = (x: number) => originX + x * scale;
-  const toSY = (y: number) => originY - y * scale;
+  const toSX = (x: number) => ox + x * scale;
+  const toSY = (y: number) => oy - y * scale;
 
   type Pt = { x: number; y: number };
 
@@ -52,17 +53,12 @@ export default function TransformationsSimulation({ config }: SimulationProps) {
   const triPath = (pts: Pt[]) =>
     `M ${toSX(pts[0].x)} ${toSY(pts[0].y)} L ${toSX(pts[1].x)} ${toSY(pts[1].y)} L ${toSX(pts[2].x)} ${toSY(pts[2].y)} Z`;
 
-  const xMin = -Math.floor(originX / scale);
-  const xMax = Math.floor((W - originX) / scale);
-  const yMin = -Math.floor(originY / scale);
-  const yMax = Math.floor((H - originY) / scale);
-
   const xTicks: number[] = [];
-  for (let x = xMin; x <= xMax; x++) {
+  for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
     if (x !== 0) xTicks.push(x);
   }
   const yTicks: number[] = [];
-  for (let y = yMin; y <= yMax; y++) {
+  for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
     if (y !== 0) yTicks.push(y);
   }
 
@@ -100,7 +96,7 @@ export default function TransformationsSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', color: '#f8fafc', fontFamily: 'sans-serif', boxSizing: 'border-box', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
 
         <g stroke="#1e293b" strokeWidth="0.5">
@@ -227,6 +223,14 @@ export default function TransformationsSimulation({ config }: SimulationProps) {
         ))}
         <text x={W - 150} y={82} fill="#64748b" fontSize="9">Phép dời hình bảo toàn khoảng cách</text>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

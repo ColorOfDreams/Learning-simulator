@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function QuadraticSimulation({ config }: SimulationProps) {
   const a = config.parameters?.find(p => p.key === 'a')?.value ?? 1;
@@ -7,8 +8,7 @@ export default function QuadraticSimulation({ config }: SimulationProps) {
   const c = config.parameters?.find(p => p.key === 'c')?.value ?? -3;
 
   const W = 600; const H = 400;
-  const scale = 50;
-  const ox = W / 2; const oy = H / 2;
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } = useMathPanZoom(50, W, H);
   const toSX = (x: number) => ox + x * scale;
   const toSY = (y: number) => oy - y * scale;
 
@@ -17,8 +17,16 @@ export default function QuadraticSimulation({ config }: SimulationProps) {
   const k = c - (b * b) / (4 * aSafe);
   const delta = b * b - 4 * aSafe * c;
 
-  const xTicks = [-5,-4,-3,-2,-1,1,2,3,4,5];
-  const yTicks = [-3,-2,-1,1,2,3];
+  const xTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [xMin, xMax]);
+  const yTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [yMin, yMax]);
 
   const { curvePath, x1Root, x2Root } = useMemo(() => {
     const pts: string[] = [];
@@ -38,7 +46,7 @@ export default function QuadraticSimulation({ config }: SimulationProps) {
       r2 = (-b + Math.sqrt(delta)) / (2 * aSafe);
     }
     return { curvePath: pts.join(' '), x1Root: r1, x2Root: r2 };
-  }, [a, b, c]);
+  }, [a, b, c, ox, oy, scale]);
 
   const fmtN = (v: number) => {
     const r = Math.round(v * 100) / 100;
@@ -50,7 +58,7 @@ export default function QuadraticSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
 
         {/* Grid */}
@@ -85,13 +93,13 @@ export default function QuadraticSimulation({ config }: SimulationProps) {
         {/* X-intercepts */}
         {x1Root !== null && x2Root !== null && (
           <>
-            {Math.abs(x1Root) <= 5.5 && (
+            {x1Root >= xMin && x1Root <= xMax && (
               <g>
                 <circle cx={toSX(x1Root)} cy={oy} r={5} fill="#f97316" />
                 <text x={toSX(x1Root)} y={oy+18} fill="#f97316" fontSize="10" textAnchor="middle">x₁={fmtN(x1Root)}</text>
               </g>
             )}
-            {Math.abs(x2Root) <= 5.5 && Math.abs(x1Root - x2Root) > 0.05 && (
+            {x2Root >= xMin && x2Root <= xMax && Math.abs(x1Root - x2Root) > 0.05 && (
               <g>
                 <circle cx={toSX(x2Root)} cy={oy} r={5} fill="#f97316" />
                 <text x={toSX(x2Root)} y={oy+18} fill="#f97316" fontSize="10" textAnchor="middle">x₂={fmtN(x2Root)}</text>
@@ -101,7 +109,7 @@ export default function QuadraticSimulation({ config }: SimulationProps) {
         )}
 
         {/* Y-intercept */}
-        {Math.abs(c) <= 4 && (
+        {c >= yMin && c <= yMax && (
           <g>
             <circle cx={ox} cy={toSY(c)} r={4} fill="#4ade80" />
             <text x={ox+8} y={toSY(c)+4} fill="#4ade80" fontSize="10">(0, {fmtN(c)})</text>
@@ -141,6 +149,14 @@ export default function QuadraticSimulation({ config }: SimulationProps) {
         <line x1={W-120} y1={H-20} x2={W-100} y2={H-20} stroke="#7c3aed" strokeWidth="1.5" strokeDasharray="6 3" />
         <text x={W-96} y={H-16} fill="#7c3aed" fontSize="10">Trục đối xứng</text>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 type FnDef = { label: string; f: (x: number) => number; F: (x: number) => number };
 
@@ -22,6 +23,7 @@ export default function IntegralAreaSimulation({ config }: SimulationProps) {
   const integral = F(b) - F(a);
 
   const W = 600; const H = 400;
+  const { svgHandlers, groupTransform, resetView, isDirty } = useMathPanZoom(1, W, H);
   const scale = 60;
   const ox = W / 2; const oy = H * 0.6;
   const toSX = (x: number) => ox + x * scale;
@@ -55,8 +57,9 @@ export default function IntegralAreaSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
+        <g transform={groupTransform}>
 
         {/* Grid */}
         {xTicks.map(x => <line key={`gx${x}`} x1={toSX(x)} y1={0} x2={toSX(x)} y2={H} stroke="#1e293b" strokeWidth="1" />)}
@@ -97,7 +100,16 @@ export default function IntegralAreaSimulation({ config }: SimulationProps) {
         <text x={16} y={26} fill="#94a3b8" fontSize="12">{label}</text>
         <text x={16} y={44} fill="#4ade80" fontSize="12">∫[{a.toFixed(2)},{b.toFixed(2)}] f(x)dx ≈ {integral.toFixed(4)}</text>
         <text x={16} y={62} fill="#64748b" fontSize="11">Riemann strips N={N}</text>
+        </g>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

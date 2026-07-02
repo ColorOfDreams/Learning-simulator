@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function FuncLimitsSimulation({ config }: SimulationProps) {
   const funcType = Math.round(config.parameters?.find(p => p.key === 'funcType')?.value ?? 0);
@@ -7,12 +8,12 @@ export default function FuncLimitsSimulation({ config }: SimulationProps) {
 
   const W = 600;
   const H = 400;
-  const originX = W / 2;
-  const originY = H / 2;
-  const scale = 55;
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } = useMathPanZoom(55, W, H);
+  const originX = ox;
+  const originY = oy;
 
-  const toSX = (x: number) => originX + x * scale;
-  const toSY = (y: number) => originY - y * scale;
+  const toSX = (x: number) => ox + x * scale;
+  const toSY = (y: number) => oy - y * scale;
 
   type FuncDef = {
     label: string;
@@ -71,11 +72,6 @@ export default function FuncLimitsSimulation({ config }: SimulationProps) {
   const limExists = leftLim !== null && rightLim !== null && Math.abs(leftLim - rightLim) < 0.0001;
   const limValue = limExists ? leftLim : null;
 
-  const xMin = -originX / scale;
-  const xMax = (W - originX) / scale;
-  const yMin = -originY / scale;
-  const yMax = originY / scale;
-
   const segments = useMemo(() => {
     const steps = 300;
     const dx = (xMax - xMin) / steps;
@@ -104,7 +100,7 @@ export default function FuncLimitsSimulation({ config }: SimulationProps) {
       current.push(`${cmd} ${toSX(x).toFixed(2)} ${toSY(y).toFixed(2)}`);
     }
     return segs.filter(s => s.length > 1).map(s => s.join(' '));
-  }, [funcType, approach]);
+  }, [funcType, approach, ox, oy, scale, xMin, xMax, yMin, yMax]);
 
   const xTicks: number[] = [];
   for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
@@ -121,7 +117,7 @@ export default function FuncLimitsSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', color: '#f8fafc', fontFamily: 'sans-serif', boxSizing: 'border-box', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
 
         <g stroke="#1e293b" strokeWidth="0.5">
@@ -235,6 +231,14 @@ export default function FuncLimitsSimulation({ config }: SimulationProps) {
           </g>
         )}
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

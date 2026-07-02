@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function ComplexSimulation({ config }: SimulationProps) {
   const re = config.parameters?.find(p => p.key === 're')?.value ?? 3;
   const im = config.parameters?.find(p => p.key === 'im')?.value ?? 2;
 
   const W = 600; const H = 400;
-  const scale = 45;
-  const ox = W / 2; const oy = H / 2;
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } = useMathPanZoom(45, W, H);
   const toSX = (x: number) => ox + x * scale;
   const toSY = (y: number) => oy - y * scale;
 
@@ -32,10 +32,18 @@ export default function ComplexSimulation({ config }: SimulationProps) {
       pts.push(`${i===0?'M':'L'} ${toSX(arcR*Math.cos(t)).toFixed(1)} ${toSY(arcR*Math.sin(t)).toFixed(1)}`);
     }
     return { arcPath: pts.join(' ') };
-  }, [re, im]);
+  }, [re, im, ox, oy, scale]);
 
-  const xTicks = Array.from({length: 13}, (_, i) => i - 6).filter(x => x !== 0);
-  const yTicks = Array.from({length: 11}, (_, i) => i - 5).filter(y => y !== 0);
+  const xTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [xMin, xMax]);
+  const yTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [yMin, yMax]);
 
   const sz  = { x: toSX(re),   y: toSY(im)   };
   const sz2 = { x: toSX(re2),  y: toSY(im2)  };
@@ -46,7 +54,7 @@ export default function ComplexSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
 
         {/* Grid */}
@@ -121,6 +129,14 @@ export default function ComplexSimulation({ config }: SimulationProps) {
         <text x={16} y={62} fill="#f97316" fontSize="12">arg(z) = {thetaDeg.toFixed(2)}°</text>
         <text x={16} y={80} fill="#64748b" fontSize="11">z = {r.toFixed(2)}(cos{thetaDeg.toFixed(1)}° + i·sin{thetaDeg.toFixed(1)}°)</text>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

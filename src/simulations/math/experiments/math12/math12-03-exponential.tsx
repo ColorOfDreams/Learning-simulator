@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function ExponentialSimulation({ config }: SimulationProps) {
   const base = Math.max(0.1, config.parameters?.find(p => p.key === 'base')?.value ?? 2);
 
   const W = 600; const H = 400;
-  const scale = 50;
-  const ox = W / 2; const oy = H / 2;
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } = useMathPanZoom(50, W, H);
   const toSX = (x: number) => ox + x * scale;
   const toSY = (y: number) => oy - y * scale;
 
@@ -26,16 +26,24 @@ export default function ExponentialSimulation({ config }: SimulationProps) {
   const { mainPath, invPath } = useMemo(() => ({
     mainPath: makeExpPath(base, '#38bdf8'),
     invPath: makeExpPath(1 / base, '#f97316'),
-  }), [base]);
+  }), [base, ox, oy, scale]);
 
-  const xTicks = Array.from({length: 11}, (_, i) => i - 5).filter(x => x !== 0);
-  const yTicks = [1, 2, 3, 4, 5, 6];
+  const xTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [xMin, xMax]);
+  const yTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i++) if (i !== 0 && i > 0) t.push(i);
+    return t;
+  }, [yMin, yMax]);
 
   const pts1 = toSY(1); const pt2 = toSY(base);
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
 
         {/* Grid */}
@@ -88,6 +96,14 @@ export default function ExponentialSimulation({ config }: SimulationProps) {
         <line x1={W-120} y1={H-10} x2={W-100} y2={H-10} stroke="#f97316" strokeWidth="2" strokeDasharray="5 3" />
         <text x={W-96} y={H-6} fill="#f97316" fontSize="11">(1/a)^x</text>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

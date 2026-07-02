@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function CubicSimulation({ config }: SimulationProps) {
   const a = config.parameters?.find(p => p.key === 'a')?.value ?? 1;
@@ -8,6 +9,7 @@ export default function CubicSimulation({ config }: SimulationProps) {
   const d = config.parameters?.find(p => p.key === 'd')?.value ?? 0;
 
   const W = 600; const H = 400;
+  const { svgHandlers, groupTransform, resetView, isDirty } = useMathPanZoom(1, W, H);
   const mainH = 270; const scale = 40;
   const ox = W / 2; const oy = mainH / 2;
 
@@ -65,8 +67,9 @@ export default function CubicSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
+        <g transform={groupTransform}>
 
         {/* Grid lines */}
         {xTicks.map(x => <line key={`gx${x}`} x1={toSX(x)} y1={0} x2={toSX(x)} y2={mainH} stroke="#1e293b" strokeWidth="1" />)}
@@ -131,7 +134,16 @@ export default function CubicSimulation({ config }: SimulationProps) {
         {/* Derivative curve */}
         <path d={derivPath} fill="none" stroke="#c084fc" strokeWidth="2" />
         <text x={W-6} y={derivY+12} fill="#c084fc" fontSize="11" textAnchor="end">f′(x)</text>
+        </g>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

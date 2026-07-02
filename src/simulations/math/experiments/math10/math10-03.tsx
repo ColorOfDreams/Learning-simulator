@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function LineSimulation({ config }: SimulationProps) {
   const a = config.parameters?.find(p => p.key === 'a')?.value ?? 1;
@@ -7,8 +8,7 @@ export default function LineSimulation({ config }: SimulationProps) {
   const c = config.parameters?.find(p => p.key === 'c')?.value ?? -3;
 
   const W = 600; const H = 400;
-  const scale = 50;
-  const ox = W / 2; const oy = H / 2;
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } = useMathPanZoom(50, W, H);
   const toSX = (x: number) => ox + x * scale;
   const toSY = (y: number) => oy - y * scale;
 
@@ -21,17 +21,19 @@ export default function LineSimulation({ config }: SimulationProps) {
     const norm = Math.sqrt(a * a + b * b);
     const d = norm > 0 ? Math.abs(c) / norm : 0;
 
+    const extY = oy / scale + 1;
     let pt1: [number, number] | null = null;
     let pt2: [number, number] | null = null;
     if (Math.abs(b) > 1e-9) {
-      const yLeft = (-a * (-6) - c) / b;
-      const yRight = (-a * 6 - c) / b;
-      pt1 = [-6, yLeft];
-      pt2 = [6, yRight];
+      const xL = -ox / scale - 1; const xR = (W - ox) / scale + 1;
+      const yLeft = (-a * xL - c) / b;
+      const yRight = (-a * xR - c) / b;
+      pt1 = [xL, yLeft];
+      pt2 = [xR, yRight];
     } else if (Math.abs(a) > 1e-9) {
       const x0 = -c / a;
-      pt1 = [x0, -4];
-      pt2 = [x0, 4];
+      pt1 = [x0, -extY];
+      pt2 = [x0, extY];
     }
 
     const path = pt1 && pt2
@@ -53,7 +55,7 @@ export default function LineSimulation({ config }: SimulationProps) {
     const nty = ny + b / norm * normalScale;
 
     return { linePath: path, xInt: xInter, yInt: yInter, dist: d, normalPt: { foot: [nx, ny], tip: [ntx, nty] } };
-  }, [a, b, c]);
+  }, [a, b, c, ox, oy, scale, xMin, xMax]);
 
   // Arrow helper
   const Arrow = ({ x1, y1, x2, y2, color }: { x1:number; y1:number; x2:number; y2:number; color:string }) => {
@@ -72,8 +74,16 @@ export default function LineSimulation({ config }: SimulationProps) {
     );
   };
 
-  const xTicks = [-5,-4,-3,-2,-1,1,2,3,4,5];
-  const yTicks = [-3,-2,-1,1,2,3];
+  const xTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [xMin, xMax]);
+  const yTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [yMin, yMax]);
   const norm = Math.sqrt(a*a+b*b);
   const showNormal = norm > 0.5;
 
@@ -87,7 +97,7 @@ export default function LineSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
 
         {/* Grid */}
@@ -135,13 +145,13 @@ export default function LineSimulation({ config }: SimulationProps) {
         )}
 
         {/* Intercepts */}
-        {xInt !== null && Math.abs(xInt) <= 5.5 && (
+        {xInt !== null && xInt >= xMin && xInt <= xMax && (
           <g>
             <circle cx={toSX(xInt)} cy={oy} r={5} fill="#4ade80" />
             <text x={toSX(xInt)} y={oy-8} fill="#4ade80" fontSize="10" textAnchor="middle">({fmtN(xInt)},0)</text>
           </g>
         )}
-        {yInt !== null && Math.abs(yInt) <= 3.5 && (
+        {yInt !== null && yInt >= yMin && yInt <= yMax && (
           <g>
             <circle cx={ox} cy={toSY(yInt)} r={5} fill="#f97316" />
             <text x={ox+10} y={toSY(yInt)+4} fill="#f97316" fontSize="10">(0,{fmtN(yInt)})</text>
@@ -168,6 +178,14 @@ export default function LineSimulation({ config }: SimulationProps) {
           </text>
         )}
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

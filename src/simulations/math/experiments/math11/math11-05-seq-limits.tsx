@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function SeqLimitsSimulation({ config }: SimulationProps) {
   const seqType = config.parameters?.find(p => p.key === 'seqType')?.value ?? 0;
@@ -7,6 +8,7 @@ export default function SeqLimitsSimulation({ config }: SimulationProps) {
 
   const W = 600;
   const H = 380;
+  const { svgHandlers, groupTransform, resetView, isDirty } = useMathPanZoom(1, W, H);
   const padL = 60;
   const padR = 20;
   const padT = 50;
@@ -74,8 +76,9 @@ export default function SeqLimitsSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', color: '#f8fafc', fontFamily: 'sans-serif', boxSizing: 'border-box', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
+        <g transform={groupTransform}>
 
         <rect
           x={padL}
@@ -157,7 +160,16 @@ export default function SeqLimitsSimulation({ config }: SimulationProps) {
         <text x={W - 93} y={48} fill="#94a3b8" fontSize="10">Ngoài dải ε</text>
 
         <text x={W / 2} y={H - 8} fill="#475569" fontSize="10" textAnchor="middle">Giới hạn dãy số: lim aₙ = {def.limitLabel} khi n → ∞</text>
+        </g>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

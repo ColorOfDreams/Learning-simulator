@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function TriangleSimulation({ config }: SimulationProps) {
   const a = Math.max(0.5, config.parameters?.find(p => p.key === 'a')?.value ?? 4);
@@ -7,6 +8,7 @@ export default function TriangleSimulation({ config }: SimulationProps) {
   const Cdeg = Math.min(170, Math.max(5, config.parameters?.find(p => p.key === 'C')?.value ?? 60));
 
   const W = 600; const H = 400;
+  const { svgHandlers, groupTransform, resetView, isDirty } = useMathPanZoom(1, W, H);
 
   const { c, Arad, Brad, Crad, Ax, Ay, Bx, By, Cx, Cy, area, R, valid } = useMemo(() => {
     const Cr = Cdeg * Math.PI / 180;
@@ -69,8 +71,9 @@ export default function TriangleSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
+        <g transform={groupTransform}>
 
         {!valid ? (
           <text x={W/2} y={H/2} fill="#ef4444" fontSize="16" textAnchor="middle">Không tạo được tam giác hợp lệ</text>
@@ -128,7 +131,16 @@ export default function TriangleSimulation({ config }: SimulationProps) {
             <text x={16} y={112} fill="#64748b" fontSize="11">R (ngoại tiếp) = {fmtN(R)}</text>
           </>
         )}
+        </g>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

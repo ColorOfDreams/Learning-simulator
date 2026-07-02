@@ -1,4 +1,6 @@
+import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function CircleSimulation({ config }: SimulationProps) {
   const h = config.parameters?.find(p => p.key === 'h')?.value ?? 0;
@@ -7,8 +9,7 @@ export default function CircleSimulation({ config }: SimulationProps) {
   const tDeg = config.parameters?.find(p => p.key === 't')?.value ?? 45;
 
   const W = 600; const H = 400;
-  const scale = 50;
-  const ox = W / 2; const oy = H / 2;
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } = useMathPanZoom(50, W, H);
   const toSX = (x: number) => ox + x * scale;
   const toSY = (y: number) => oy - y * scale;
 
@@ -26,8 +27,16 @@ export default function CircleSimulation({ config }: SimulationProps) {
   const tx = -Math.sin(tRad) * tangLen;
   const ty = Math.cos(tRad) * tangLen;
 
-  const xTicks = [-5,-4,-3,-2,-1,1,2,3,4,5];
-  const yTicks = [-3,-2,-1,1,2,3];
+  const xTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [xMin, xMax]);
+  const yTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [yMin, yMax]);
 
   const rSX = r * scale;
   const hSX = toSX(h); const kSY = toSY(k);
@@ -37,7 +46,7 @@ export default function CircleSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
 
         {/* Grid */}
@@ -116,6 +125,14 @@ export default function CircleSimulation({ config }: SimulationProps) {
         <text x={16} y={62} fill="#fbbf24" fontSize="11">Bán kính r = {fmtN(r)}</text>
         <text x={16} y={79} fill="#f97316" fontSize="11">Điểm P tại góc {fmtN(tDeg)}°</text>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }
