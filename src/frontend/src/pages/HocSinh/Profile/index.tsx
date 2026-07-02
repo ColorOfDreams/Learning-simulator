@@ -27,9 +27,24 @@ const HocSinhProfile: React.FC = () => {
 	const [leaderboard, setLeaderboard] = useState<any[]>([]);
 
 	useEffect(() => {
-		getUserStats().then((res: any) => setStats(res?.data ?? res)).catch(() => {});
-		getMyLabs().then((res: any) => setLabs(res?.data ?? res)).catch(() => {});
-		getLeaderboard(100).then((res: any) => setLeaderboard(res?.data ?? res ?? [])).catch(() => {});
+		getUserStats()
+			.then((res: any) => setStats(res?.data?.data ?? res?.data ?? null))
+			.catch(() => {});
+		getMyLabs()
+			.then((res: any) => {
+				const d = res?.data?.data ?? res?.data ?? {};
+				setLabs({
+					inProgress: Array.isArray(d.inProgress) ? d.inProgress : [],
+					completed: Array.isArray(d.completed) ? d.completed : [],
+				});
+			})
+			.catch(() => {});
+		getLeaderboard(100)
+			.then((res: any) => {
+				const list = res?.data?.data ?? res?.data ?? [];
+				setLeaderboard(Array.isArray(list) ? list : []);
+			})
+			.catch(() => {});
 	}, []);
 
 	const rank = useMemo(() => {
