@@ -3,11 +3,11 @@ import type { ChemExperimentDef } from '../types';
 const experiment = {
     id: 'CHEM12-10',
     setup: [
-      { type: 'tray_sand', x: 1.5, z: 1.1 },
-      { type: 'crucible', id: 'crucible', x: 0, z: 0.3 },
+      { type: 'tray_sand', x: 0, z: 1.2 },
+      { type: 'crucible', id: 'crucible', x: 0, z: 1.2 },
       { type: 'bottle', id: 'fe2o3', label: 'Bột Fe₂O₃', color: 0x8a3b22, op: 1, powder: true, fs: 30, cap: 0x6a2a18 },
       { type: 'bottle', id: 'alpowder', label: 'Bột Al', color: 0xb8bcc4, op: 1, powder: true, fs: 34, cap: 0x7a8088 },
-      { type: 'dish_mg', id: 'mg', label: 'Dải Mg mồi', x: -4.8, z: 1.7 }
+      { type: 'dish_mg', id: 'mg', label: 'Dải Mg mồi', x: 3.5, z: 0.0 }
     ],
     steps: [
       { text: 'Đổ bột Fe₂O₃ màu nâu đỏ vào chén sứ.', type: 'pour', src: 'fe2o3', dst: 'crucible', pour: { level: 0.45, color: 0x8a3b22, opacity: 1 } },

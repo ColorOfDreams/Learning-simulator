@@ -1,7 +1,8 @@
+import CelebrationOverlay from '@/components/CelebrationOverlay';
 import { chatWithAiPrompt, generateAiQuiz } from '@/services/ai/api';
 import { completeActivity, completeLabSession, getUserInfo, openLabSession } from '@/services/base/api';
 import GenericChemSimulation from '@simulations/chemistry/GenericChemSimulation';
-import { EXPERIMENTS_CONFIG, CHEM_EXPERIMENT_ALIASES } from '@simulations/chemistry/experiments';
+import { CHEM_EXPERIMENT_ALIASES, EXPERIMENTS_CONFIG } from '@simulations/chemistry/experiments';
 import ProjectileSimulation from '@simulations/physics/SIM-02-projectile';
 import KinematicsSimulation from '@simulations/physics/SIM-21-kinematics';
 import FreefallSimulation from '@simulations/physics/SIM-22-freefall';
@@ -38,7 +39,6 @@ import FullCircuitSimulation from '@simulations/physics/SIM-52-fullcircuit';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { history, useLocation, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
-import CelebrationOverlay from '@/components/CelebrationOverlay';
 
 // Math 10 Simulations
 import GenericMathSimulation from '@simulations/math/GenericMathSimulation';
@@ -87,34 +87,159 @@ const CHEM_SIM_ALIASES: Record<string, string> = {
 const normalizeLabSimId = (simId: string) => CHEM_SIM_ALIASES[simId] || simId;
 
 const CHEM10_META = {
-	'CHEM10-01': { label: 'Hóa học 10', title: 'Thí nghiệm bắn phá lá vàng – Rutherford', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-02': { label: 'Hóa học 10', title: 'Thử màu ngọn lửa của các kim loại', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-03': { label: 'Hóa học 10', title: 'Kẽm tác dụng với dung dịch HCl', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-04': { label: 'Hóa học 10', title: 'Đốt cháy dây magnesium trong không khí', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-05': { label: 'Hóa học 10', title: 'Phản ứng tỏa nhiệt – tôi vôi (CaO + H₂O)', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-06': { label: 'Hóa học 10', title: 'Phản ứng thu nhiệt (NH₄Cl + Ba(OH)₂)', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-07': { label: 'Hóa học 10', title: 'Ảnh hưởng của nồng độ đến tốc độ phản ứng', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-08': { label: 'Hóa học 10', title: 'Ảnh hưởng của chất xúc tác – phân hủy H₂O₂', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-09': { label: 'Hóa học 10', title: 'Ảnh hưởng của diện tích bề mặt tiếp xúc', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-10': { label: 'Hóa học 10', title: 'Nhận biết ion halide bằng dung dịch AgNO₃', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-11': { label: 'Hóa học 10', title: 'Tính tẩy màu của nước chlorine', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM10-12': { label: 'Hóa học 10', title: 'Chlorine đẩy bromine ra khỏi muối bromide', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM10-01': {
+		label: 'Hóa học 10',
+		title: 'Thí nghiệm bắn phá lá vàng – Rutherford',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-02': {
+		label: 'Hóa học 10',
+		title: 'Thử màu ngọn lửa của các kim loại',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-03': {
+		label: 'Hóa học 10',
+		title: 'Kẽm tác dụng với dung dịch HCl',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-04': {
+		label: 'Hóa học 10',
+		title: 'Đốt cháy dây magnesium trong không khí',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-05': {
+		label: 'Hóa học 10',
+		title: 'Phản ứng tỏa nhiệt – tôi vôi (CaO + H₂O)',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-06': {
+		label: 'Hóa học 10',
+		title: 'Phản ứng thu nhiệt (NH₄Cl + Ba(OH)₂)',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-07': {
+		label: 'Hóa học 10',
+		title: 'Ảnh hưởng của nồng độ đến tốc độ phản ứng',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-08': {
+		label: 'Hóa học 10',
+		title: 'Ảnh hưởng của chất xúc tác – phân hủy H₂O₂',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-09': {
+		label: 'Hóa học 10',
+		title: 'Ảnh hưởng của diện tích bề mặt tiếp xúc',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-10': {
+		label: 'Hóa học 10',
+		title: 'Nhận biết ion halide bằng dung dịch AgNO₃',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-11': {
+		label: 'Hóa học 10',
+		title: 'Tính tẩy màu của nước chlorine',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM10-12': {
+		label: 'Hóa học 10',
+		title: 'Chlorine đẩy bromine ra khỏi muối bromide',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
 };
 
 const CHEM12_META = {
-	'CHEM12-01': { label: 'Hóa học 12', title: 'Điều chế ethyl acetate (phản ứng ester hóa)', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-02': { label: 'Hóa học 12', title: 'Phản ứng xà phòng hóa chất béo', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-03': { label: 'Hóa học 12', title: 'Glucose tác dụng với Cu(OH)₂', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-04': { label: 'Hóa học 12', title: 'Phản ứng tráng bạc của glucose', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-05': { label: 'Hóa học 12', title: 'Phản ứng màu của tinh bột với iodine', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-06': { label: 'Hóa học 12', title: 'Phản ứng màu biuret của protein', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-07': { label: 'Hóa học 12', title: 'Sodium tác dụng với nước', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-08': { label: 'Hóa học 12', title: 'Đinh sắt tác dụng với dung dịch CuSO₄', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-09': { label: 'Hóa học 12', title: 'Nhôm tác dụng với dung dịch NaOH', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-10': { label: 'Hóa học 12', title: 'Phản ứng nhiệt nhôm (Al + Fe₂O₃)', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-11': { label: 'Hóa học 12', title: 'Điều chế Fe(OH)₂ và Fe(OH)₃', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-12': { label: 'Hóa học 12', title: 'Điện phân dung dịch CuSO₄', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
-	'CHEM12-13': { label: 'Hóa học 12', title: 'Ăn mòn điện hóa học (pin Zn-Cu)', tutor: 'Trợ lý thí nghiệm AI', className: 'chem' },
+	'CHEM12-01': {
+		label: 'Hóa học 12',
+		title: 'Điều chế ethyl acetate (phản ứng ester hóa)',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-02': {
+		label: 'Hóa học 12',
+		title: 'Phản ứng xà phòng hóa chất béo',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-03': {
+		label: 'Hóa học 12',
+		title: 'Glucose tác dụng với Cu(OH)₂',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-04': {
+		label: 'Hóa học 12',
+		title: 'Phản ứng tráng bạc của glucose',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-05': {
+		label: 'Hóa học 12',
+		title: 'Phản ứng màu của tinh bột với iodine',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-06': {
+		label: 'Hóa học 12',
+		title: 'Phản ứng màu biuret của protein',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-07': {
+		label: 'Hóa học 12',
+		title: 'Sodium tác dụng với nước',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-08': {
+		label: 'Hóa học 12',
+		title: 'Đinh sắt tác dụng với dung dịch CuSO₄',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-09': {
+		label: 'Hóa học 12',
+		title: 'Nhôm tác dụng với dung dịch NaOH',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-10': {
+		label: 'Hóa học 12',
+		title: 'Phản ứng nhiệt nhôm (Al + Fe₂O₃)',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-11': {
+		label: 'Hóa học 12',
+		title: 'Điều chế Fe(OH)₂ và Fe(OH)₃',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-12': {
+		label: 'Hóa học 12',
+		title: 'Điện phân dung dịch CuSO₄',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
+	'CHEM12-13': {
+		label: 'Hóa học 12',
+		title: 'Ăn mòn điện hóa học (pin Zn-Cu)',
+		tutor: 'Trợ lý thí nghiệm AI',
+		className: 'chem',
+	},
 };
 
 // ── Lab metadata ──
@@ -292,36 +417,126 @@ const LAB_META = {
 	'SIM-18': { label: 'Toán 10', title: 'Hệ thức lượng tam giác cột cờ', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'SIM-19': { label: 'Toán 10', title: 'Định nghĩa Elip ghim đinh', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'SIM-20': { label: 'Toán 10', title: 'Thống kê số liệu mẫu và biểu đồ', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH10-01': { label: 'Toán 10', title: 'Đồ thị hàm số bậc hai – Đỉnh & Trục đối xứng', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH10-01': {
+		label: 'Toán 10',
+		title: 'Đồ thị hàm số bậc hai – Đỉnh & Trục đối xứng',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
 	'MATH10-02': { label: 'Toán 10', title: 'Vectơ và các phép toán vectơ', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'MATH10-03': { label: 'Toán 10', title: 'Phương trình đường thẳng', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH10-04': { label: 'Toán 10', title: 'Đường tròn và phương trình đường tròn', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH10-05': { label: 'Toán 10', title: 'Định lý cosin và sin trong tam giác', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH10-04': {
+		label: 'Toán 10',
+		title: 'Đường tròn và phương trình đường tròn',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
+	'MATH10-05': {
+		label: 'Toán 10',
+		title: 'Định lý cosin và sin trong tam giác',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
 	'MATH10-06': { label: 'Toán 10', title: 'Hệ bất phương trình hai ẩn', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH10-07': { label: 'Toán 10', title: 'Giá trị lượng giác – Tam giác vuông', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH10-08': { label: 'Toán 10', title: 'Thống kê mô tả – Phân phối & Box plot', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH10-07': {
+		label: 'Toán 10',
+		title: 'Giá trị lượng giác – Tam giác vuông',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
+	'MATH10-08': {
+		label: 'Toán 10',
+		title: 'Thống kê mô tả – Phân phối & Box plot',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
 	'MATH11-01': { label: 'Toán 11', title: 'Đồ thị hàm lượng giác', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH11-02': { label: 'Toán 11', title: 'Vòng tròn đơn vị & phương trình lượng giác', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH11-03': { label: 'Toán 11', title: 'Hoán vị, tổ hợp & Nhị thức Newton', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-02': {
+		label: 'Toán 11',
+		title: 'Vòng tròn đơn vị & phương trình lượng giác',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
+	'MATH11-03': {
+		label: 'Toán 11',
+		title: 'Hoán vị, tổ hợp & Nhị thức Newton',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
 	'MATH11-04': { label: 'Toán 11', title: 'Xác suất sự kiện & biến cố', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'MATH11-05': { label: 'Toán 11', title: 'Giới hạn dãy số', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH11-06': { label: 'Toán 11', title: 'Giới hạn hàm số & hàm liên tục', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH11-07': { label: 'Toán 11', title: 'Đạo hàm & tiếp tuyến đường cong', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH11-08': { label: 'Toán 11', title: 'Phép dời hình & phép đồng dạng', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH11-09': { label: 'Toán 11', title: 'Đường thẳng & mặt phẳng trong không gian', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH11-10': { label: 'Toán 11', title: 'Quan hệ vuông góc trong không gian', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH11-06': {
+		label: 'Toán 11',
+		title: 'Giới hạn hàm số & hàm liên tục',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
+	'MATH11-07': {
+		label: 'Toán 11',
+		title: 'Đạo hàm & tiếp tuyến đường cong',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
+	'MATH11-08': {
+		label: 'Toán 11',
+		title: 'Phép dời hình & phép đồng dạng',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
+	'MATH11-09': {
+		label: 'Toán 11',
+		title: 'Đường thẳng & mặt phẳng trong không gian',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
+	'MATH11-10': {
+		label: 'Toán 11',
+		title: 'Quan hệ vuông góc trong không gian',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
 	'MATH11-11': { label: 'Toán 11', title: 'Hình lăng trụ & hình chóp', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH12-01': { label: 'Toán 12', title: 'Đồ thị hàm số bậc 3 & bảng biến thiên', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-01': {
+		label: 'Toán 12',
+		title: 'Đồ thị hàm số bậc 3 & bảng biến thiên',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
 	'MATH12-02': { label: 'Toán 12', title: 'Hàm phân thức & tiệm cận', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'MATH12-03': { label: 'Toán 12', title: 'Hàm số mũ & lũy thừa', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH12-04': { label: 'Toán 12', title: 'Hàm logarit – đồ thị & tính chất', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH12-05': { label: 'Toán 12', title: 'Tích phân – diện tích dưới đường cong', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH12-06': { label: 'Toán 12', title: 'Diện tích miền giữa hai đường cong', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-04': {
+		label: 'Toán 12',
+		title: 'Hàm logarit – đồ thị & tính chất',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
+	'MATH12-05': {
+		label: 'Toán 12',
+		title: 'Tích phân – diện tích dưới đường cong',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
+	'MATH12-06': {
+		label: 'Toán 12',
+		title: 'Diện tích miền giữa hai đường cong',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
 	'MATH12-07': { label: 'Toán 12', title: 'Số phức – mặt phẳng Argand', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'MATH12-08': { label: 'Toán 12', title: 'Mặt cầu – mặt trụ – mặt nón', tutor: 'Trợ lý Toán AI', className: 'math' },
 	'MATH12-09': { label: 'Toán 12', title: 'Khối đa diện & thể tích', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH12-10': { label: 'Toán 12', title: 'Phương trình mặt phẳng trong Oxyz', tutor: 'Trợ lý Toán AI', className: 'math' },
-	'MATH12-11': { label: 'Toán 12', title: 'Đường thẳng trong không gian Oxyz', tutor: 'Trợ lý Toán AI', className: 'math' },
+	'MATH12-10': {
+		label: 'Toán 12',
+		title: 'Phương trình mặt phẳng trong Oxyz',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
+	'MATH12-11': {
+		label: 'Toán 12',
+		title: 'Đường thẳng trong không gian Oxyz',
+		tutor: 'Trợ lý Toán AI',
+		className: 'math',
+	},
 	default_math: { label: 'Toán 10', title: 'Hàm bậc hai', tutor: 'Trợ lý Toán AI', className: 'math' },
 	default_physics: {
 		label: 'Vật lý',
@@ -400,18 +615,40 @@ const LAB_INITIAL_CHATS: Record<string, ChatMessage[]> = {
 			text: 'Chào bạn! Axit acetic phản ứng với đá vôi (CaCO₃) giải phóng khí gì?',
 		},
 	],
-	'CHEM10-01': [{ role: 'ai', text: 'Chào bạn! Tại sao Rutherford bắn hạt α vào lá vàng lại thấy một số hạt bị bật ngược?' }],
-	'CHEM10-02': [{ role: 'ai', text: 'Chào bạn! Mỗi nguyên tố kim loại cho ngọn lửa màu khác nhau — điều gì tạo ra sự khác biệt đó?' }],
-	'CHEM10-03': [{ role: 'ai', text: 'Chào bạn! Trong phản ứng Zn + HCl, chất nào đóng vai trò chất khử và chất oxi hóa?' }],
+	'CHEM10-01': [
+		{ role: 'ai', text: 'Chào bạn! Tại sao Rutherford bắn hạt α vào lá vàng lại thấy một số hạt bị bật ngược?' },
+	],
+	'CHEM10-02': [
+		{
+			role: 'ai',
+			text: 'Chào bạn! Mỗi nguyên tố kim loại cho ngọn lửa màu khác nhau — điều gì tạo ra sự khác biệt đó?',
+		},
+	],
+	'CHEM10-03': [
+		{ role: 'ai', text: 'Chào bạn! Trong phản ứng Zn + HCl, chất nào đóng vai trò chất khử và chất oxi hóa?' },
+	],
 	'CHEM10-04': [{ role: 'ai', text: 'Chào bạn! Khi đốt Mg trong không khí, sản phẩm tạo thành là gì và có màu gì?' }],
-	'CHEM10-05': [{ role: 'ai', text: 'Chào bạn! Vì sao phản ứng tôi vôi tỏa nhiệt rất mạnh? Nhiệt lượng đó đến từ đâu?' }],
-	'CHEM10-06': [{ role: 'ai', text: 'Chào bạn! Phản ứng NH₄Cl + Ba(OH)₂ thu nhiệt — điều đó có nghĩa là gì với năng lượng hệ?' }],
+	'CHEM10-05': [
+		{ role: 'ai', text: 'Chào bạn! Vì sao phản ứng tôi vôi tỏa nhiệt rất mạnh? Nhiệt lượng đó đến từ đâu?' },
+	],
+	'CHEM10-06': [
+		{ role: 'ai', text: 'Chào bạn! Phản ứng NH₄Cl + Ba(OH)₂ thu nhiệt — điều đó có nghĩa là gì với năng lượng hệ?' },
+	],
 	'CHEM10-07': [{ role: 'ai', text: 'Chào bạn! Tại sao tăng nồng độ lại làm tốc độ phản ứng nhanh hơn?' }],
 	'CHEM10-08': [{ role: 'ai', text: 'Chào bạn! MnO₂ là chất xúc tác — sau phản ứng nó có bị tiêu hao không?' }],
-	'CHEM10-09': [{ role: 'ai', text: 'Chào bạn! Vì sao bột đá vôi phản ứng với HCl nhanh hơn cục đá vôi cùng khối lượng?' }],
+	'CHEM10-09': [
+		{ role: 'ai', text: 'Chào bạn! Vì sao bột đá vôi phản ứng với HCl nhanh hơn cục đá vôi cùng khối lượng?' },
+	],
 	'CHEM10-10': [{ role: 'ai', text: 'Chào bạn! AgCl, AgBr, AgI có màu khác nhau — bạn dự đoán màu của từng kết tủa?' }],
-	'CHEM10-11': [{ role: 'ai', text: 'Chào bạn! Tại sao nước chlorine lại có khả năng tẩy màu? Chất nào là tác nhân tẩy màu thực sự?' }],
-	'CHEM10-12': [{ role: 'ai', text: 'Chào bạn! Chlorine đẩy bromine ra khỏi NaBr vì lý do gì? Đây là loại phản ứng gì?' }],
+	'CHEM10-11': [
+		{
+			role: 'ai',
+			text: 'Chào bạn! Tại sao nước chlorine lại có khả năng tẩy màu? Chất nào là tác nhân tẩy màu thực sự?',
+		},
+	],
+	'CHEM10-12': [
+		{ role: 'ai', text: 'Chào bạn! Chlorine đẩy bromine ra khỏi NaBr vì lý do gì? Đây là loại phản ứng gì?' },
+	],
 	'CHEM12-01': [{ role: 'ai', text: 'Chào bạn! H₂SO₄ đặc đóng vai trò gì khi điều chế ethyl acetate?' }],
 	'CHEM12-02': [{ role: 'ai', text: 'Chào bạn! Vì sao thêm NaCl bão hòa lại giúp xà phòng tách ra?' }],
 	'CHEM12-03': [{ role: 'ai', text: 'Chào bạn! Vì sao glucose tạo dung dịch xanh lam với Cu(OH)₂?' }],
@@ -1325,7 +1562,7 @@ const CHEM12_STEPS = {
 		{ n: 1, title: 'Rót điện li', sub: 'Nhúng hai thanh Zn và Cu' },
 		{ n: 2, title: 'Quan sát Zn', sub: 'Khí H₂ thoát ra ở thanh Zn' },
 		{ n: 3, title: 'Đóng mạch', sub: 'Nối mạch pin Zn-Cu' },
-		{ n: 4, title: 'Ăn mòn điện hóa', sub: 'Khí H₂ chuyển sang thanh Cu' },
+		{ n: 4, title: 'Ăn mòn điện hóa', sub: 'H₂ thoát ở điện cực Cu, Zn bị ăn mòn' },
 	],
 };
 
@@ -1466,7 +1703,7 @@ const CHEM12_OBSERVATIONS: Record<string, Array<{ key: number; label: string; st
 	'CHEM12-13': [
 		{ key: 1, label: 'Hai thanh Zn và Cu cùng nhúng trong dung dịch điện li', step: 1 },
 		{ key: 2, label: 'Trước khi nối dây, khí H₂ thoát ra ở thanh Zn', step: 2 },
-		{ key: 3, label: 'Sau khi nối dây, khí H₂ chuyển sang thoát ở thanh Cu', step: 4 },
+		{ key: 3, label: 'Sau khi nối mạch, H₂ thoát ở điện cực Cu — Zn bị ăn mòn điện hóa', step: 4 },
 	],
 };
 
@@ -1655,6 +1892,7 @@ const renderRichText = (html: string) => ({
 	}),
 });
 
+// Trigger rebuild to apply new CSS specificity
 const getTrackStyle = (val: number, min: number, max: number, accent: string) => {
 	const pct = ((val - min) / (max - min)) * 100;
 	return {
@@ -2093,8 +2331,8 @@ const Workspace: React.FC = () => {
 	const [chemStep, setChemStep] = useState(1);
 	const [isAutoRunning, setIsAutoRunning] = useState(false);
 	const [showChemCelebration, setShowChemCelebration] = useState(false);
-	const chemExperimentId = simId ? (CHEM_EXPERIMENT_ALIASES[simId] || simId) : null;
-	const resolvedMathSimId = simId ? (CHEM_SIM_ALIASES[simId] || simId) : 'MATH10-01';
+	const chemExperimentId = simId ? CHEM_EXPERIMENT_ALIASES[simId] || simId : null;
+	const resolvedMathSimId = simId ? CHEM_SIM_ALIASES[simId] || simId : 'MATH10-01';
 	const simPanZoomEnabled = false; // Math sims handle pan/zoom via useMathPanZoom hook
 	const totalChemSteps = chemExperimentId ? (EXPERIMENTS_CONFIG[chemExperimentId]?.steps?.length ?? 0) : 0;
 	const isExperimentDone = subject !== 'chem' || (totalChemSteps > 0 && chemStep > totalChemSteps);
@@ -2616,24 +2854,47 @@ const Workspace: React.FC = () => {
 				setMB(-2);
 				setMC(-3);
 			} else if (simId === 'SIM-16' || simId === 'MATH10-02') {
-				setMAngle(45); setMVel(15); setIsMPlaying(false);
-				setVecUx(3); setVecUy(1); setVecVx(1); setVecVy(3);
+				setMAngle(45);
+				setMVel(15);
+				setIsMPlaying(false);
+				setVecUx(3);
+				setVecUy(1);
+				setVecVx(1);
+				setVecVy(3);
 			} else if (simId === 'SIM-17' || simId === 'MATH10-03') {
-				setLine10a(1); setLine10b(-2); setLine10c(-3);
+				setLine10a(1);
+				setLine10b(-2);
+				setLine10c(-3);
 			} else if (simId === 'SIM-18' || simId === 'MATH10-04') {
-				setTriA(10); setTriAlpha(45);
-				setCirc10h(0); setCirc10k(0); setCirc10r(2.5); setCirc10t(45);
+				setTriA(10);
+				setTriAlpha(45);
+				setCirc10h(0);
+				setCirc10k(0);
+				setCirc10r(2.5);
+				setCirc10t(45);
 			} else if (simId === 'MATH10-05' || simId === 'SIM-19') {
-				setConicC(3); setConicA(5); setIsCPlaying(false);
-				setTri10a(4); setTri10b(5); setTri10C(60);
+				setConicC(3);
+				setConicA(5);
+				setIsCPlaying(false);
+				setTri10a(4);
+				setTri10b(5);
+				setTri10C(60);
 			} else if (simId === 'MATH10-06') {
-				setIq10a1(1); setIq10b1(1); setIq10c1(4);
-				setIq10a2(2); setIq10b2(-1); setIq10c2(3);
+				setIq10a1(1);
+				setIq10b1(1);
+				setIq10c1(4);
+				setIq10a2(2);
+				setIq10b2(-1);
+				setIq10c2(3);
 			} else if (simId === 'MATH10-07') {
 				setTrig10alpha(45);
 			} else if (simId === 'MATH10-08') {
-				setStat10v1(5); setStat10v2(6); setStat10v3(7);
-				setStat10v4(8); setStat10v5(9); setStat10v6(10);
+				setStat10v1(5);
+				setStat10v2(6);
+				setStat10v3(7);
+				setStat10v4(8);
+				setStat10v5(9);
+				setStat10v6(10);
 			}
 		} else {
 			setChemStep(1);
@@ -2754,123 +3015,123 @@ const Workspace: React.FC = () => {
 										: resolvedMathSimId === 'MATH10-08'
 											? '\\bar{x}=\\frac{\\sum x_i}{n} \\quad \\vert \\quad s=\\sqrt{\\frac{\\sum(x_i-\\bar{x})^2}{n}} \\quad \\vert \\quad \\text{IQR}=Q_3-Q_1'
 											: resolvedMathSimId === 'MATH11-01'
-										? `y = A\\sin(Bx+C)+D \\quad T = \\frac{2\\pi}{|B|}`
-										: resolvedMathSimId === 'MATH11-02'
-											? `\\sin x = a \\Rightarrow x = \\arcsin a + 2k\\pi \\quad \\text{hoặc} \\quad x = \\pi - \\arcsin a + 2k\\pi`
-											: resolvedMathSimId === 'MATH11-03'
-												? `C_n^k = \\frac{n!}{k!(n-k)!} \\quad A_n^k = \\frac{n!}{(n-k)!}`
-												: resolvedMathSimId === 'MATH11-04'
-													? `P(A \\cup B) = P(A) + P(B) - P(A \\cap B)`
-													: resolvedMathSimId === 'MATH11-05'
-														? `\\lim_{n\\to\\infty} u_n = L \\quad \\forall \\varepsilon > 0,\\, \\exists N: n > N \\Rightarrow |u_n - L| < \\varepsilon`
-														: resolvedMathSimId === 'MATH11-06'
-															? `\\lim_{x\\to a} f(x) = L \\quad f \\text{ liên tục tại } a \\Leftrightarrow \\lim_{x\\to a}f(x)=f(a)`
-															: resolvedMathSimId === 'MATH11-07'
-																? `f'(x_0) = \\lim_{h\\to 0}\\frac{f(x_0+h)-f(x_0)}{h}`
-																: resolvedMathSimId === 'MATH11-08'
-																	? `T_{\\vec{v}}(M) = M' \\quad \\overrightarrow{MM'} = \\vec{v}`
-																	: resolvedMathSimId === 'MATH11-09'
-																		? `\\vec{n_1} \\parallel \\vec{n_2} \\Leftrightarrow \\text{hai mặt phẳng song song}`
-																		: resolvedMathSimId === 'MATH11-10'
-																			? `d \\perp (P) \\Leftrightarrow d \\perp \\vec{n}_{(P)}`
-																			: resolvedMathSimId === 'MATH11-11'
-																				? `V_{\\text{lăng trụ}} = S_{đáy} \\cdot h \\quad V_{\\text{chóp}} = \\tfrac{1}{3}S_{đáy} \\cdot h`
-																				: resolvedMathSimId === 'MATH12-01'
-																					? `f(x)=ax^3+bx^2+cx+d \\quad f'(x)=3ax^2+2bx+c`
-																				: resolvedMathSimId === 'MATH12-02'
-																					? `y=\\dfrac{ax+b}{cx+d} \\quad TCĐ:\\,x=-\\tfrac{d}{c} \\quad TCN:\\,y=\\tfrac{a}{c}`
-																				: resolvedMathSimId === 'MATH12-03'
-																					? `y=a^x\\;(a>0,a\\neq1)\\quad \\lim_{x\\to-\\infty}a^x=0`
-																				: resolvedMathSimId === 'MATH12-04'
-																					? `y=\\log_a x\\quad D=(0,+\\infty)\\quad \\log_a(xy)=\\log_a x+\\log_a y`
-																				: resolvedMathSimId === 'MATH12-05'
-																					? `\\int_a^b f(x)\\,dx = F(b)-F(a)`
-																				: resolvedMathSimId === 'MATH12-06'
-																					? `S=\\int_a^b |f(x)-g(x)|\\,dx`
-																				: resolvedMathSimId === 'MATH12-07'
-																					? `z=a+bi=r(\\cos\\theta+i\\sin\\theta)\\quad|z|=\\sqrt{a^2+b^2}`
-																				: resolvedMathSimId === 'MATH12-08'
-																					? `V_{\\text{cầu}}=\\tfrac{4}{3}\\pi R^3\\quad V_{\\text{trụ}}=\\pi R^2h\\quad V_{\\text{nón}}=\\tfrac{1}{3}\\pi R^2h`
-																				: resolvedMathSimId === 'MATH12-09'
-																					? `V_{\\text{chóp}}=\\tfrac{1}{3}Sh\\quad V_{\\text{cụt}}=\\tfrac{h}{3}(S_1+S_2+\\sqrt{S_1 S_2})`
-																				: resolvedMathSimId === 'MATH12-10'
-																					? `ax+by+cz+d=0\\quad d(M,P)=\\dfrac{|ax_0+by_0+cz_0+d|}{\\sqrt{a^2+b^2+c^2}}`
-																				: resolvedMathSimId === 'MATH12-11'
-																					? `\\dfrac{x-x_0}{a}=\\dfrac{y-y_0}{b}=\\dfrac{z-z_0}{c}`
-																				: `y = ${f(mA)}x^2 ${mB >= 0 ? '+' : '-'} ${Math.abs(f(mB))}x ${mC >= 0 ? '+' : '-'} ${Math.abs(f(mC))}`
-			: chemExperimentId === 'CHEM12-01'
-				? '\\text{CH}_3\\text{COOH} + \\text{C}_2\\text{H}_5\\text{OH} \\rightleftharpoons \\text{CH}_3\\text{COOC}_2\\text{H}_5 + \\text{H}_2\\text{O}'
-				: chemExperimentId === 'CHEM12-02'
-					? '\\text{(C}_{17}\\text{H}_{35}\\text{COO)}_3\\text{C}_3\\text{H}_5 + 3\\text{NaOH} \\xrightarrow{t^\\circ} 3\\text{C}_{17}\\text{H}_{35}\\text{COONa} + \\text{C}_3\\text{H}_5\\text{(OH)}_3'
-				: chemExperimentId === 'CHEM12-03'
-					? '\\text{CH}_2\\text{OH[CHOH]}_4\\text{CHO} + 2\\text{Cu(OH)}_2 + \\text{NaOH} \\xrightarrow{t^\\circ} \\text{CH}_2\\text{OH[CHOH]}_4\\text{COONa} + \\text{Cu}_2\\text{O}\\downarrow + 3\\text{H}_2\\text{O}'
-				: chemExperimentId === 'CHEM12-04'
-					? '\\text{CH}_2\\text{OH[CHOH]}_4\\text{CHO} + 2\\text{[Ag(NH}_3\\text{)}_2\\text{]OH} \\xrightarrow{t^\\circ} \\text{CH}_2\\text{OH[CHOH]}_4\\text{COONH}_4 + 2\\text{Ag}\\downarrow + 3\\text{NH}_3 + \\text{H}_2\\text{O}'
-				: chemExperimentId === 'CHEM12-05'
-					? '\\text{Tinh bột} + \\text{I}_2 \\rightleftharpoons \\text{Hợp chất màu xanh tím (hấp phụ)}'
-				: chemExperimentId === 'CHEM12-06'
-					? '\\text{Protein} + \\text{Cu(OH)}_2 \\xrightarrow{\\text{NaOH}} \\text{Phức chất màu tím đặc trưng}'
-				: chemExperimentId === 'CHEM12-07'
-					? '2\\text{Na} + 2\\text{H}_2\\text{O} \\rightarrow 2\\text{NaOH} + \\text{H}_2\\uparrow \\text{ (tỏa nhiệt mạnh)}'
-				: chemExperimentId === 'CHEM12-08'
-					? '\\text{Fe} + \\text{CuSO}_4 \\rightarrow \\text{FeSO}_4 + \\text{Cu}\\downarrow'
-				: chemExperimentId === 'CHEM12-09'
-					? '2\\text{Al} + 2\\text{NaOH} + 6\\text{H}_2\\text{O} \\rightarrow 2\\text{Na[Al(OH)}_4\\text{]} + 3\\text{H}_2\\uparrow'
-				: chemExperimentId === 'CHEM12-10'
-					? '2\\text{Al} + \\text{Fe}_2\\text{O}_3 \\xrightarrow{t^\\circ} \\text{Al}_2\\text{O}_3 + 2\\text{Fe}'
-				: chemExperimentId === 'CHEM12-11'
-					? '\\text{Fe}^{2+} \\xrightarrow{\\text{OH}^-} \\text{Fe(OH)}_2\\downarrow\\text{ (xanh trắng)} \\quad \\vert \\quad \\text{Fe}^{3+} \\xrightarrow{\\text{OH}^-} \\text{Fe(OH)}_3\\downarrow\\text{ (nâu đỏ)}'
-				: chemExperimentId === 'CHEM12-12'
-					? '2\\text{CuSO}_4 + 2\\text{H}_2\\text{O} \\xrightarrow{\\text{điện phân}} 2\\text{Cu}\\downarrow\\text{ (cathode)} + \\text{O}_2\\uparrow\\text{ (anode)} + 2\\text{H}_2\\text{SO}_4'
-				: chemExperimentId === 'CHEM12-13'
-					? '\\text{Cực âm (Zn): } \\text{Zn} \\rightarrow \\text{Zn}^{2+} + 2\\text{e} \\quad \\vert \\quad \\text{Cực dương (Cu): } 2\\text{H}^+ + 2\\text{e} \\rightarrow \\text{H}_2\\uparrow'
-				: chemExperimentId === 'CHEM11-01'
-					? '\\text{pH} = -\\log[\\text{H}^+] \\quad \\vert \\quad \\text{Chất chỉ thị đổi màu theo môi trường acid/base}'
-				: chemExperimentId === 'CHEM11-02'
-					? '\\text{HCl} + \\text{NaOH} \\rightarrow \\text{NaCl} + \\text{H}_2\\text{O} \\quad \\vert \\quad n_{\\text{acid}} = n_{\\text{base}}'
-				: chemExperimentId === 'CHEM11-03'
-					? '\\text{Cu} + 4\\text{HNO}_3 \\rightarrow \\text{Cu(NO}_3\\text{)}_2 + 2\\text{NO}_2\\uparrow + 2\\text{H}_2\\text{O}'
-				: chemExperimentId === 'CHEM11-04'
-					? '\\text{NH}_3 + \\text{HCl} \\rightarrow \\text{NH}_4\\text{Cl}\\downarrow \\quad \\text{(khói trắng)}'
-				: chemExperimentId === 'CHEM11-05'
-					? '\\text{C}_{12}\\text{H}_{22}\\text{O}_{11} \\xrightarrow{\\text{H}_2\\text{SO}_4\\,\\text{đặc}} 12\\text{C} + 11\\text{H}_2\\text{O}'
-				: chemExperimentId === 'CHEM11-06'
-					? '\\text{CH}_2=\\text{CH}_2 + \\text{Br}_2 \\rightarrow \\text{CH}_2\\text{Br}-\\text{CH}_2\\text{Br}'
-				: chemExperimentId === 'CHEM11-07'
-					? '\\text{HC}\\equiv\\text{CH} + 2\\text{[Ag(NH}_3\\text{)}_2\\text{]OH} \\rightarrow \\text{AgC}\\equiv\\text{CAg}\\downarrow + 4\\text{NH}_3 + 2\\text{H}_2\\text{O}'
-				: chemExperimentId === 'CHEM11-08'
-					? '2\\text{C}_2\\text{H}_5\\text{OH} + 2\\text{Na} \\rightarrow 2\\text{C}_2\\text{H}_5\\text{ONa} + \\text{H}_2\\uparrow'
-				: chemExperimentId === 'CHEM11-09'
-					? '\\text{C}_6\\text{H}_5\\text{OH} + 3\\text{Br}_2 \\rightarrow \\text{C}_6\\text{H}_2\\text{Br}_3\\text{OH}\\downarrow + 3\\text{HBr}'
-				: chemExperimentId === 'CHEM11-10'
-					? '\\text{Glycerol} + \\text{Cu(OH)}_2 \\rightarrow \\text{phức đồng màu xanh lam}'
-				: chemExperimentId === 'CHEM11-11'
-					? '2\\text{CH}_3\\text{COOH} + \\text{CaCO}_3 \\rightarrow (\\text{CH}_3\\text{COO})_2\\text{Ca} + \\text{CO}_2\\uparrow + \\text{H}_2\\text{O}'
-				: chemExperimentId === 'CHEM10-01'
-					? '\\alpha\\text{ (He}^{2+}\\text{)} \\rightarrow \\text{Bắn phá hạt Au} \\quad \\vert \\quad \\text{Hầu hết hạt truyền thẳng}'
-				: chemExperimentId === 'CHEM10-02'
-					? '\\text{Na}^+\\text{ (vàng), } \\text{K}^+\\text{ (tím), } \\text{Cu}^{2+}\\text{ (xanh lá), } \\text{Ca}^{2+}\\text{ (đỏ cam)}'
-				: chemExperimentId === 'CHEM10-03'
-					? '\\text{Zn} + 2\\text{HCl} \\rightarrow \\text{ZnCl}_2 + \\text{H}_2\\uparrow'
-				: chemExperimentId === 'CHEM10-04'
-					? '2\\text{Mg} + \\text{O}_2 \\xrightarrow{t^\\circ} 2\\text{MgO}'
-				: chemExperimentId === 'CHEM10-05'
-					? '\\text{CaO} + \\text{H}_2\\text{O} \\rightarrow \\text{Ca(OH)}_2 \\quad \\vert \\quad \\Delta_r H^\\circ < 0\\text{ (tỏa nhiệt)}'
-				: chemExperimentId === 'CHEM10-06'
-					? '\\text{Ba(OH)}_2\\cdot8\\text{H}_2\\text{O} + 2\\text{NH}_4\\text{Cl} \\rightarrow \\text{BaCl}_2 + 2\\text{NH}_3\\uparrow + 10\\text{H}_2\\text{O} \\quad \\vert \\quad \\Delta_r H^\\circ > 0'
-				: chemExperimentId === 'CHEM10-07'
-					? '\\text{Na}_2\\text{S}_2\\text{O}_3 + \\text{H}_2\\text{SO}_4 \\rightarrow \\text{Na}_2\\text{SO}_4 + \\text{S}\\downarrow + \\text{SO}_2\\uparrow + \\text{H}_2\\text{O}'
-				: chemExperimentId === 'CHEM10-08'
-					? '2\\text{H}_2\\text{O}_2 \\xrightarrow{\\text{MnO}_2} 2\\text{H}_2\\text{O} + \\text{O}_2\\uparrow'
-				: chemExperimentId === 'CHEM10-09'
-					? '\\text{CaCO}_3 + 2\\text{HCl} \\rightarrow \\text{CaCl}_2 + \\text{CO}_2\\uparrow + \\text{H}_2\\text{O}'
-				: chemExperimentId === 'CHEM10-10'
-					? '\\text{Ag}^+ + \\text{Cl}^- \\rightarrow \\text{AgCl}\\downarrow\\text{ (trắng)} \\quad \\vert \\quad \\text{Ag}^+ + \\text{Br}^- \\rightarrow \\text{AgBr}\\downarrow\\text{ (vàng nhạt)}'
-				: chemExperimentId === 'CHEM10-11'
-					? '\\text{Cl}_2 + \\text{H}_2\\text{O} \\rightleftharpoons \\text{HCl} + \\text{HClO (tính oxy hóa tẩy màu)}'
-				: chemExperimentId === 'CHEM10-12'
-					? '\\text{Cl}_2 + 2\\text{NaBr} \\rightarrow 2\\text{NaCl} + \\text{Br}_2'
-				: '\\text{CH}_3\\text{COOH} + \\text{C}_2\\text{H}_5\\text{OH} \\rightleftharpoons \\text{CH}_3\\text{COOC}_2\\text{H}_5 + \\text{H}_2\\text{O}';
+												? `y = A\\sin(Bx+C)+D \\quad T = \\frac{2\\pi}{|B|}`
+												: resolvedMathSimId === 'MATH11-02'
+													? `\\sin x = a \\Rightarrow x = \\arcsin a + 2k\\pi \\quad \\text{hoặc} \\quad x = \\pi - \\arcsin a + 2k\\pi`
+													: resolvedMathSimId === 'MATH11-03'
+														? `C_n^k = \\frac{n!}{k!(n-k)!} \\quad A_n^k = \\frac{n!}{(n-k)!}`
+														: resolvedMathSimId === 'MATH11-04'
+															? `P(A \\cup B) = P(A) + P(B) - P(A \\cap B)`
+															: resolvedMathSimId === 'MATH11-05'
+																? `\\lim_{n\\to\\infty} u_n = L \\quad \\forall \\varepsilon > 0,\\, \\exists N: n > N \\Rightarrow |u_n - L| < \\varepsilon`
+																: resolvedMathSimId === 'MATH11-06'
+																	? `\\lim_{x\\to a} f(x) = L \\quad f \\text{ liên tục tại } a \\Leftrightarrow \\lim_{x\\to a}f(x)=f(a)`
+																	: resolvedMathSimId === 'MATH11-07'
+																		? `f'(x_0) = \\lim_{h\\to 0}\\frac{f(x_0+h)-f(x_0)}{h}`
+																		: resolvedMathSimId === 'MATH11-08'
+																			? `T_{\\vec{v}}(M) = M' \\quad \\overrightarrow{MM'} = \\vec{v}`
+																			: resolvedMathSimId === 'MATH11-09'
+																				? `\\vec{n_1} \\parallel \\vec{n_2} \\Leftrightarrow \\text{hai mặt phẳng song song}`
+																				: resolvedMathSimId === 'MATH11-10'
+																					? `d \\perp (P) \\Leftrightarrow d \\perp \\vec{n}_{(P)}`
+																					: resolvedMathSimId === 'MATH11-11'
+																						? `V_{\\text{lăng trụ}} = S_{đáy} \\cdot h \\quad V_{\\text{chóp}} = \\tfrac{1}{3}S_{đáy} \\cdot h`
+																						: resolvedMathSimId === 'MATH12-01'
+																							? `f(x)=ax^3+bx^2+cx+d \\quad f'(x)=3ax^2+2bx+c`
+																							: resolvedMathSimId === 'MATH12-02'
+																								? `y=\\dfrac{ax+b}{cx+d} \\quad TCĐ:\\,x=-\\tfrac{d}{c} \\quad TCN:\\,y=\\tfrac{a}{c}`
+																								: resolvedMathSimId === 'MATH12-03'
+																									? `y=a^x\\;(a>0,a\\neq1)\\quad \\lim_{x\\to-\\infty}a^x=0`
+																									: resolvedMathSimId === 'MATH12-04'
+																										? `y=\\log_a x\\quad D=(0,+\\infty)\\quad \\log_a(xy)=\\log_a x+\\log_a y`
+																										: resolvedMathSimId === 'MATH12-05'
+																											? `\\int_a^b f(x)\\,dx = F(b)-F(a)`
+																											: resolvedMathSimId === 'MATH12-06'
+																												? `S=\\int_a^b |f(x)-g(x)|\\,dx`
+																												: resolvedMathSimId === 'MATH12-07'
+																													? `z=a+bi=r(\\cos\\theta+i\\sin\\theta)\\quad|z|=\\sqrt{a^2+b^2}`
+																													: resolvedMathSimId === 'MATH12-08'
+																														? `V_{\\text{cầu}}=\\tfrac{4}{3}\\pi R^3\\quad V_{\\text{trụ}}=\\pi R^2h\\quad V_{\\text{nón}}=\\tfrac{1}{3}\\pi R^2h`
+																														: resolvedMathSimId === 'MATH12-09'
+																															? `V_{\\text{chóp}}=\\tfrac{1}{3}Sh\\quad V_{\\text{cụt}}=\\tfrac{h}{3}(S_1+S_2+\\sqrt{S_1 S_2})`
+																															: resolvedMathSimId === 'MATH12-10'
+																																? `ax+by+cz+d=0\\quad d(M,P)=\\dfrac{|ax_0+by_0+cz_0+d|}{\\sqrt{a^2+b^2+c^2}}`
+																																: resolvedMathSimId === 'MATH12-11'
+																																	? `\\dfrac{x-x_0}{a}=\\dfrac{y-y_0}{b}=\\dfrac{z-z_0}{c}`
+																																	: `y = ${f(mA)}x^2 ${mB >= 0 ? '+' : '-'} ${Math.abs(f(mB))}x ${mC >= 0 ? '+' : '-'} ${Math.abs(f(mC))}`
+				: chemExperimentId === 'CHEM12-01'
+					? '\\text{CH}_3\\text{COOH} + \\text{C}_2\\text{H}_5\\text{OH} \\rightleftharpoons \\text{CH}_3\\text{COOC}_2\\text{H}_5 + \\text{H}_2\\text{O}'
+					: chemExperimentId === 'CHEM12-02'
+						? '\\text{(C}_{17}\\text{H}_{35}\\text{COO)}_3\\text{C}_3\\text{H}_5 + 3\\text{NaOH} \\xrightarrow{t^\\circ} 3\\text{C}_{17}\\text{H}_{35}\\text{COONa} + \\text{C}_3\\text{H}_5\\text{(OH)}_3'
+						: chemExperimentId === 'CHEM12-03'
+							? '\\text{CH}_2\\text{OH[CHOH]}_4\\text{CHO} + 2\\text{Cu(OH)}_2 + \\text{NaOH} \\xrightarrow{t^\\circ} \\text{CH}_2\\text{OH[CHOH]}_4\\text{COONa} + \\text{Cu}_2\\text{O}\\downarrow + 3\\text{H}_2\\text{O}'
+							: chemExperimentId === 'CHEM12-04'
+								? '\\text{CH}_2\\text{OH[CHOH]}_4\\text{CHO} + 2\\text{[Ag(NH}_3\\text{)}_2\\text{]OH} \\xrightarrow{t^\\circ} \\text{CH}_2\\text{OH[CHOH]}_4\\text{COONH}_4 + 2\\text{Ag}\\downarrow + 3\\text{NH}_3 + \\text{H}_2\\text{O}'
+								: chemExperimentId === 'CHEM12-05'
+									? '\\text{Tinh bột} + \\text{I}_2 \\rightleftharpoons \\text{Hợp chất màu xanh tím (hấp phụ)}'
+									: chemExperimentId === 'CHEM12-06'
+										? '\\text{Protein} + \\text{Cu(OH)}_2 \\xrightarrow{\\text{NaOH}} \\text{Phức chất màu tím đặc trưng}'
+										: chemExperimentId === 'CHEM12-07'
+											? '2\\text{Na} + 2\\text{H}_2\\text{O} \\rightarrow 2\\text{NaOH} + \\text{H}_2\\uparrow \\text{ (tỏa nhiệt mạnh)}'
+											: chemExperimentId === 'CHEM12-08'
+												? '\\text{Fe} + \\text{CuSO}_4 \\rightarrow \\text{FeSO}_4 + \\text{Cu}\\downarrow'
+												: chemExperimentId === 'CHEM12-09'
+													? '2\\text{Al} + 2\\text{NaOH} + 6\\text{H}_2\\text{O} \\rightarrow 2\\text{Na[Al(OH)}_4\\text{]} + 3\\text{H}_2\\uparrow'
+													: chemExperimentId === 'CHEM12-10'
+														? '2\\text{Al} + \\text{Fe}_2\\text{O}_3 \\xrightarrow{t^\\circ} \\text{Al}_2\\text{O}_3 + 2\\text{Fe}'
+														: chemExperimentId === 'CHEM12-11'
+															? '\\text{Fe}^{2+} \\xrightarrow{\\text{OH}^-} \\text{Fe(OH)}_2\\downarrow\\text{ (xanh trắng)} \\quad \\vert \\quad \\text{Fe}^{3+} \\xrightarrow{\\text{OH}^-} \\text{Fe(OH)}_3\\downarrow\\text{ (nâu đỏ)}'
+															: chemExperimentId === 'CHEM12-12'
+																? '2\\text{CuSO}_4 + 2\\text{H}_2\\text{O} \\xrightarrow{\\text{điện phân}} 2\\text{Cu}\\downarrow\\text{ (cathode)} + \\text{O}_2\\uparrow\\text{ (anode)} + 2\\text{H}_2\\text{SO}_4'
+																: chemExperimentId === 'CHEM12-13'
+																	? '\\text{Cực âm (Zn): } \\text{Zn} \\rightarrow \\text{Zn}^{2+} + 2\\text{e} \\quad \\vert \\quad \\text{Cực dương (Cu): } 2\\text{H}^+ + 2\\text{e} \\rightarrow \\text{H}_2\\uparrow'
+																	: chemExperimentId === 'CHEM11-01'
+																		? '\\text{pH} = -\\log[\\text{H}^+] \\quad \\vert \\quad \\text{Chất chỉ thị đổi màu theo môi trường acid/base}'
+																		: chemExperimentId === 'CHEM11-02'
+																			? '\\text{HCl} + \\text{NaOH} \\rightarrow \\text{NaCl} + \\text{H}_2\\text{O} \\quad \\vert \\quad n_{\\text{acid}} = n_{\\text{base}}'
+																			: chemExperimentId === 'CHEM11-03'
+																				? '\\text{Cu} + 4\\text{HNO}_3 \\rightarrow \\text{Cu(NO}_3\\text{)}_2 + 2\\text{NO}_2\\uparrow + 2\\text{H}_2\\text{O}'
+																				: chemExperimentId === 'CHEM11-04'
+																					? '\\text{NH}_3 + \\text{HCl} \\rightarrow \\text{NH}_4\\text{Cl}\\downarrow \\quad \\text{(khói trắng)}'
+																					: chemExperimentId === 'CHEM11-05'
+																						? '\\text{C}_{12}\\text{H}_{22}\\text{O}_{11} \\xrightarrow{\\text{H}_2\\text{SO}_4\\,\\text{đặc}} 12\\text{C} + 11\\text{H}_2\\text{O}'
+																						: chemExperimentId === 'CHEM11-06'
+																							? '\\text{CH}_2=\\text{CH}_2 + \\text{Br}_2 \\rightarrow \\text{CH}_2\\text{Br}-\\text{CH}_2\\text{Br}'
+																							: chemExperimentId === 'CHEM11-07'
+																								? '\\text{HC}\\equiv\\text{CH} + 2\\text{[Ag(NH}_3\\text{)}_2\\text{]OH} \\rightarrow \\text{AgC}\\equiv\\text{CAg}\\downarrow + 4\\text{NH}_3 + 2\\text{H}_2\\text{O}'
+																								: chemExperimentId === 'CHEM11-08'
+																									? '2\\text{C}_2\\text{H}_5\\text{OH} + 2\\text{Na} \\rightarrow 2\\text{C}_2\\text{H}_5\\text{ONa} + \\text{H}_2\\uparrow'
+																									: chemExperimentId === 'CHEM11-09'
+																										? '\\text{C}_6\\text{H}_5\\text{OH} + 3\\text{Br}_2 \\rightarrow \\text{C}_6\\text{H}_2\\text{Br}_3\\text{OH}\\downarrow + 3\\text{HBr}'
+																										: chemExperimentId === 'CHEM11-10'
+																											? '\\text{Glycerol} + \\text{Cu(OH)}_2 \\rightarrow \\text{phức đồng màu xanh lam}'
+																											: chemExperimentId === 'CHEM11-11'
+																												? '2\\text{CH}_3\\text{COOH} + \\text{CaCO}_3 \\rightarrow (\\text{CH}_3\\text{COO})_2\\text{Ca} + \\text{CO}_2\\uparrow + \\text{H}_2\\text{O}'
+																												: chemExperimentId === 'CHEM10-01'
+																													? '\\alpha\\text{ (He}^{2+}\\text{)} \\rightarrow \\text{Bắn phá hạt Au} \\quad \\vert \\quad \\text{Hầu hết hạt truyền thẳng}'
+																													: chemExperimentId === 'CHEM10-02'
+																														? '\\text{Na}^+\\text{ (vàng), } \\text{K}^+\\text{ (tím), } \\text{Cu}^{2+}\\text{ (xanh lá), } \\text{Ca}^{2+}\\text{ (đỏ cam)}'
+																														: chemExperimentId === 'CHEM10-03'
+																															? '\\text{Zn} + 2\\text{HCl} \\rightarrow \\text{ZnCl}_2 + \\text{H}_2\\uparrow'
+																															: chemExperimentId === 'CHEM10-04'
+																																? '2\\text{Mg} + \\text{O}_2 \\xrightarrow{t^\\circ} 2\\text{MgO}'
+																																: chemExperimentId === 'CHEM10-05'
+																																	? '\\text{CaO} + \\text{H}_2\\text{O} \\rightarrow \\text{Ca(OH)}_2 \\quad \\vert \\quad \\Delta_r H^\\circ < 0\\text{ (tỏa nhiệt)}'
+																																	: chemExperimentId === 'CHEM10-06'
+																																		? '\\text{Ba(OH)}_2\\cdot8\\text{H}_2\\text{O} + 2\\text{NH}_4\\text{Cl} \\rightarrow \\text{BaCl}_2 + 2\\text{NH}_3\\uparrow + 10\\text{H}_2\\text{O} \\quad \\vert \\quad \\Delta_r H^\\circ > 0'
+																																		: chemExperimentId === 'CHEM10-07'
+																																			? '\\text{Na}_2\\text{S}_2\\text{O}_3 + \\text{H}_2\\text{SO}_4 \\rightarrow \\text{Na}_2\\text{SO}_4 + \\text{S}\\downarrow + \\text{SO}_2\\uparrow + \\text{H}_2\\text{O}'
+																																			: chemExperimentId === 'CHEM10-08'
+																																				? '2\\text{H}_2\\text{O}_2 \\xrightarrow{\\text{MnO}_2} 2\\text{H}_2\\text{O} + \\text{O}_2\\uparrow'
+																																				: chemExperimentId === 'CHEM10-09'
+																																					? '\\text{CaCO}_3 + 2\\text{HCl} \\rightarrow \\text{CaCl}_2 + \\text{CO}_2\\uparrow + \\text{H}_2\\text{O}'
+																																					: chemExperimentId === 'CHEM10-10'
+																																						? '\\text{Ag}^+ + \\text{Cl}^- \\rightarrow \\text{AgCl}\\downarrow\\text{ (trắng)} \\quad \\vert \\quad \\text{Ag}^+ + \\text{Br}^- \\rightarrow \\text{AgBr}\\downarrow\\text{ (vàng nhạt)}'
+																																						: chemExperimentId === 'CHEM10-11'
+																																							? '\\text{Cl}_2 + \\text{H}_2\\text{O} \\rightleftharpoons \\text{HCl} + \\text{HClO (tính oxy hóa tẩy màu)}'
+																																							: chemExperimentId === 'CHEM10-12'
+																																								? '\\text{Cl}_2 + 2\\text{NaBr} \\rightarrow 2\\text{NaCl} + \\text{Br}_2'
+																																								: '\\text{CH}_3\\text{COOH} + \\text{C}_2\\text{H}_5\\text{OH} \\rightleftharpoons \\text{CH}_3\\text{COOC}_2\\text{H}_5 + \\text{H}_2\\text{O}';
 
 	const centerTitle =
 		subject === 'physics'
@@ -2923,39 +3184,53 @@ const Workspace: React.FC = () => {
 
 	const unusedBundle = { liveT, liveX, liveV, physicsCalc, mathCalc };
 
-	const handleSimWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
-		if (!simPanZoomEnabled) return;
-		e.preventDefault();
-		const rect = e.currentTarget.getBoundingClientRect();
-		const cx = e.clientX - rect.left;
-		const cy = e.clientY - rect.top;
-		const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
-		setSimZoom(prev => {
-			const next = Math.min(Math.max(prev * factor, 0.2), 10);
-			const ratio = next / prev;
-			setSimPan(pan => ({ x: cx - ratio * (cx - pan.x), y: cy - ratio * (cy - pan.y) }));
-			return next;
-		});
-	}, [simPanZoomEnabled]);
+	const handleSimWheel = useCallback(
+		(e: React.WheelEvent<HTMLDivElement>) => {
+			if (!simPanZoomEnabled) return;
+			e.preventDefault();
+			const rect = e.currentTarget.getBoundingClientRect();
+			const cx = e.clientX - rect.left;
+			const cy = e.clientY - rect.top;
+			const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+			setSimZoom((prev) => {
+				const next = Math.min(Math.max(prev * factor, 0.2), 10);
+				const ratio = next / prev;
+				setSimPan((pan) => ({ x: cx - ratio * (cx - pan.x), y: cy - ratio * (cy - pan.y) }));
+				return next;
+			});
+		},
+		[simPanZoomEnabled],
+	);
 
-	const handleSimMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-		if (!simPanZoomEnabled || e.button !== 0) return;
-		e.preventDefault();
-		setSimIsDragging(true);
-		simDragRef.current = { startX: e.clientX, startY: e.clientY, panX: simPan.x, panY: simPan.y };
-	}, [simPanZoomEnabled, simPan]);
+	const handleSimMouseDown = useCallback(
+		(e: React.MouseEvent<HTMLDivElement>) => {
+			if (!simPanZoomEnabled || e.button !== 0) return;
+			e.preventDefault();
+			setSimIsDragging(true);
+			simDragRef.current = { startX: e.clientX, startY: e.clientY, panX: simPan.x, panY: simPan.y };
+		},
+		[simPanZoomEnabled, simPan],
+	);
 
-	const handleSimMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-		if (!simIsDragging) return;
-		setSimPan({
-			x: simDragRef.current.panX + (e.clientX - simDragRef.current.startX),
-			y: simDragRef.current.panY + (e.clientY - simDragRef.current.startY),
-		});
-	}, [simIsDragging]);
+	const handleSimMouseMove = useCallback(
+		(e: React.MouseEvent<HTMLDivElement>) => {
+			if (!simIsDragging) return;
+			setSimPan({
+				x: simDragRef.current.panX + (e.clientX - simDragRef.current.startX),
+				y: simDragRef.current.panY + (e.clientY - simDragRef.current.startY),
+			});
+		},
+		[simIsDragging],
+	);
 
-	const handleSimMouseUp = useCallback(() => { setSimIsDragging(false); }, []);
+	const handleSimMouseUp = useCallback(() => {
+		setSimIsDragging(false);
+	}, []);
 
-	const resetSimView = useCallback(() => { setSimZoom(1); setSimPan({ x: 0, y: 0 }); }, []);
+	const resetSimView = useCallback(() => {
+		setSimZoom(1);
+		setSimPan({ x: 0, y: 0 });
+	}, []);
 
 	return (
 		<StudentLayout hideSidebar>
@@ -2997,9 +3272,7 @@ const Workspace: React.FC = () => {
 				</div>
 
 				{submitToast && (
-					<div className={`stu-ws__submit-toast stu-ws__submit-toast--${submitToast.type}`}>
-						{submitToast.msg}
-					</div>
+					<div className={`stu-ws__submit-toast stu-ws__submit-toast--${submitToast.type}`}>{submitToast.msg}</div>
 				)}
 
 				{/* 3-Panel Layout */}
@@ -9724,8 +9997,14 @@ const Workspace: React.FC = () => {
 										</div>
 										<div className='stu-ws__formula-box'>
 											<div dangerouslySetInnerHTML={renderTex('y = a\\,x^2 + b\\,x + c \\quad (a \\neq 0)')} />
-											<div dangerouslySetInnerHTML={renderTex('I\\left(-\\frac{b}{2a}; -\\frac{\\Delta}{4a}\\right)')} style={{ marginTop: '6px' }} />
-											<div dangerouslySetInnerHTML={renderTex('\\text{Trục đối xứng: } x = -\\frac{b}{2a}')} style={{ marginTop: '6px' }} />
+											<div
+												dangerouslySetInnerHTML={renderTex('I\\left(-\\frac{b}{2a}; -\\frac{\\Delta}{4a}\\right)')}
+												style={{ marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\text{Trục đối xứng: } x = -\\frac{b}{2a}')}
+												style={{ marginTop: '6px' }}
+											/>
 										</div>
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
@@ -9749,1232 +10028,2557 @@ const Workspace: React.FC = () => {
 									</>
 								)}
 
-																{/* MATH10-02: Vector Operations */}
+								{/* MATH10-02: Vector Operations */}
 								{resolvedMathSimId === 'MATH10-02' && (
 									<>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>ux</span><span className='stu-ws__param-val'>{vecUx}</span></div>
-									<input type='range' min={-5} max={5} step={0.5} value={vecUx} style={getTrackStyle(vecUx,-5,5,'#4f6ef7')} onChange={(e)=>setVecUx(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>uy</span><span className='stu-ws__param-val'>{vecUy}</span></div>
-									<input type='range' min={-5} max={5} step={0.5} value={vecUy} style={getTrackStyle(vecUy,-5,5,'#4f6ef7')} onChange={(e)=>setVecUy(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>vx</span><span className='stu-ws__param-val'>{vecVx}</span></div>
-									<input type='range' min={-5} max={5} step={0.5} value={vecVx} style={getTrackStyle(vecVx,-5,5,'#6d54e8')} onChange={(e)=>setVecVx(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param stu-ws__param--a'>
-									<div className='stu-ws__param-row'><span>vy</span><span className='stu-ws__param-val'>{vecVy}</span></div>
-									<input type='range' min={-5} max={5} step={0.5} value={vecVy} style={getTrackStyle(vecVy,-5,5,'#6d54e8')} onChange={(e)=>setVecVy(+e.target.value)} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Công thức & Lý thuyết</span>
-								</div>
-								<div className='stu-ws__formula-box'>
-									<div dangerouslySetInnerHTML={renderTex('\\vec{u}+\\vec{v}=(u_x+v_x,\\,u_y+v_y)')} />
-									<div dangerouslySetInnerHTML={renderTex('\\vec{u}\\cdot\\vec{v}=u_x v_x+u_y v_y')} style={{ marginTop: '6px' }} />
-									<div dangerouslySetInnerHTML={renderTex('\\cos\\theta=\\frac{\\vec{u}\\cdot\\vec{v}}{|\\vec{u}||\\vec{v}|}')} style={{ marginTop: '6px' }} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Ký hiệu</span>
-								</div>
-								<div className='stu-ws__symbols-list'>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{u},\\vec{v}')} /><span className='stu-ws__symbol-desc'>hai vectơ trong mặt phẳng</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('|\\vec{u}|')} /><span className='stu-ws__symbol-desc'>độ dài (mô-đun) của vectơ</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{u}\\cdot\\vec{v}')} /><span className='stu-ws__symbol-desc'>tích vô hướng (dot product)</span></div>
-								</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>ux</span>
+												<span className='stu-ws__param-val'>{vecUx}</span>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={vecUx}
+												style={getTrackStyle(vecUx, -5, 5, '#4f6ef7')}
+												onChange={(e) => setVecUx(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>uy</span>
+												<span className='stu-ws__param-val'>{vecUy}</span>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={vecUy}
+												style={getTrackStyle(vecUy, -5, 5, '#4f6ef7')}
+												onChange={(e) => setVecUy(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>vx</span>
+												<span className='stu-ws__param-val'>{vecVx}</span>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={vecVx}
+												style={getTrackStyle(vecVx, -5, 5, '#6d54e8')}
+												onChange={(e) => setVecVx(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--a'>
+											<div className='stu-ws__param-row'>
+												<span>vy</span>
+												<span className='stu-ws__param-val'>{vecVy}</span>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={vecVy}
+												style={getTrackStyle(vecVy, -5, 5, '#6d54e8')}
+												onChange={(e) => setVecVy(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\vec{u}+\\vec{v}=(u_x+v_x,\\,u_y+v_y)')} />
+											<div
+												dangerouslySetInnerHTML={renderTex('\\vec{u}\\cdot\\vec{v}=u_x v_x+u_y v_y')}
+												style={{ marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\cos\\theta=\\frac{\\vec{u}\\cdot\\vec{v}}{|\\vec{u}||\\vec{v}|}',
+												)}
+												style={{ marginTop: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{u},\\vec{v}')} />
+												<span className='stu-ws__symbol-desc'>hai vectơ trong mặt phẳng</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('|\\vec{u}|')} />
+												<span className='stu-ws__symbol-desc'>độ dài (mô-đun) của vectơ</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span
+													className='stu-ws__symbol-sym'
+													dangerouslySetInnerHTML={renderTex('\\vec{u}\\cdot\\vec{v}')}
+												/>
+												<span className='stu-ws__symbol-desc'>tích vô hướng (dot product)</span>
+											</div>
+										</div>
 									</>
 								)}
 
 								{/* MATH10-03: Line Equation */}
 								{resolvedMathSimId === 'MATH10-03' && (
 									<>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>a</span><span className='stu-ws__param-val'>{line10a}</span></div>
-									<input type='range' min={-5} max={5} step={0.5} value={line10a} style={getTrackStyle(line10a,-5,5,'#4f6ef7')} onChange={(e)=>setLine10a(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>b</span><span className='stu-ws__param-val'>{line10b}</span></div>
-									<input type='range' min={-5} max={5} step={0.5} value={line10b} style={getTrackStyle(line10b,-5,5,'#4f6ef7')} onChange={(e)=>setLine10b(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param stu-ws__param--a'>
-									<div className='stu-ws__param-row'><span>c</span><span className='stu-ws__param-val'>{line10c}</span></div>
-									<input type='range' min={-10} max={10} step={0.5} value={line10c} style={getTrackStyle(line10c,-10,10,'#6d54e8')} onChange={(e)=>setLine10c(+e.target.value)} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Công thức & Lý thuyết</span>
-								</div>
-								<div className='stu-ws__formula-box'>
-									<div dangerouslySetInnerHTML={renderTex('ax + by + c = 0')} />
-									<div dangerouslySetInnerHTML={renderTex('d(O,\\Delta)=\\frac{|c|}{\\sqrt{a^2+b^2}}')} style={{ marginTop: '6px' }} />
-									<div dangerouslySetInnerHTML={renderTex('\\vec{n}=(a,b)\\text{ – pháp vectơ}')} style={{ marginTop: '6px' }} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Ký hiệu</span>
-								</div>
-								<div className='stu-ws__symbols-list'>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a,b,c')} /><span className='stu-ws__symbol-desc'>hệ số phương trình đường thẳng</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{n}')} /><span className='stu-ws__symbol-desc'>pháp vectơ</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('d(O,\\Delta)')} /><span className='stu-ws__symbol-desc'>khoảng cách từ O đến đường thẳng</span></div>
-								</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>a</span>
+												<span className='stu-ws__param-val'>{line10a}</span>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={line10a}
+												style={getTrackStyle(line10a, -5, 5, '#4f6ef7')}
+												onChange={(e) => setLine10a(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>b</span>
+												<span className='stu-ws__param-val'>{line10b}</span>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={line10b}
+												style={getTrackStyle(line10b, -5, 5, '#4f6ef7')}
+												onChange={(e) => setLine10b(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--a'>
+											<div className='stu-ws__param-row'>
+												<span>c</span>
+												<span className='stu-ws__param-val'>{line10c}</span>
+											</div>
+											<input
+												type='range'
+												min={-10}
+												max={10}
+												step={0.5}
+												value={line10c}
+												style={getTrackStyle(line10c, -10, 10, '#6d54e8')}
+												onChange={(e) => setLine10c(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('ax + by + c = 0')} />
+											<div
+												dangerouslySetInnerHTML={renderTex('d(O,\\Delta)=\\frac{|c|}{\\sqrt{a^2+b^2}}')}
+												style={{ marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\vec{n}=(a,b)\\text{ – pháp vectơ}')}
+												style={{ marginTop: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a,b,c')} />
+												<span className='stu-ws__symbol-desc'>hệ số phương trình đường thẳng</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{n}')} />
+												<span className='stu-ws__symbol-desc'>pháp vectơ</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('d(O,\\Delta)')} />
+												<span className='stu-ws__symbol-desc'>khoảng cách từ O đến đường thẳng</span>
+											</div>
+										</div>
 									</>
 								)}
 
 								{/* MATH10-04: Circle */}
 								{resolvedMathSimId === 'MATH10-04' && (
 									<>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>h (tâm x)</span><span className='stu-ws__param-val'>{circ10h}</span></div>
-									<input type='range' min={-3} max={3} step={0.5} value={circ10h} style={getTrackStyle(circ10h,-3,3,'#4f6ef7')} onChange={(e)=>setCirc10h(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>k (tâm y)</span><span className='stu-ws__param-val'>{circ10k}</span></div>
-									<input type='range' min={-3} max={3} step={0.5} value={circ10k} style={getTrackStyle(circ10k,-3,3,'#4f6ef7')} onChange={(e)=>setCirc10k(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>r (bán kính)</span><span className='stu-ws__param-val'>{circ10r}</span></div>
-									<input type='range' min={0.5} max={4} step={0.1} value={circ10r} style={getTrackStyle(circ10r,0.5,4,'#4f6ef7')} onChange={(e)=>setCirc10r(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param stu-ws__param--a'>
-									<div className='stu-ws__param-row'><span>t (góc P °)</span><span className='stu-ws__param-val'>{circ10t}°</span></div>
-									<input type='range' min={0} max={360} step={5} value={circ10t} style={getTrackStyle(circ10t,0,360,'#6d54e8')} onChange={(e)=>setCirc10t(+e.target.value)} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Công thức & Lý thuyết</span>
-								</div>
-								<div className='stu-ws__formula-box'>
-									<div dangerouslySetInnerHTML={renderTex('(x-h)^2+(y-k)^2=r^2')} />
-									<div dangerouslySetInnerHTML={renderTex('\\text{Tiếp tuyến tại }P\\perp MP')} style={{ marginTop: '6px' }} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Ký hiệu</span>
-								</div>
-								<div className='stu-ws__symbols-list'>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('M(h,k)')} /><span className='stu-ws__symbol-desc'>tâm của đường tròn</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('r')} /><span className='stu-ws__symbol-desc'>bán kính đường tròn</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('t')} /><span className='stu-ws__symbol-desc'>góc xác định điểm P trên đường tròn</span></div>
-								</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>h (tâm x)</span>
+												<span className='stu-ws__param-val'>{circ10h}</span>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.5}
+												value={circ10h}
+												style={getTrackStyle(circ10h, -3, 3, '#4f6ef7')}
+												onChange={(e) => setCirc10h(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>k (tâm y)</span>
+												<span className='stu-ws__param-val'>{circ10k}</span>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.5}
+												value={circ10k}
+												style={getTrackStyle(circ10k, -3, 3, '#4f6ef7')}
+												onChange={(e) => setCirc10k(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>r (bán kính)</span>
+												<span className='stu-ws__param-val'>{circ10r}</span>
+											</div>
+											<input
+												type='range'
+												min={0.5}
+												max={4}
+												step={0.1}
+												value={circ10r}
+												style={getTrackStyle(circ10r, 0.5, 4, '#4f6ef7')}
+												onChange={(e) => setCirc10r(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--a'>
+											<div className='stu-ws__param-row'>
+												<span>t (góc P °)</span>
+												<span className='stu-ws__param-val'>{circ10t}°</span>
+											</div>
+											<input
+												type='range'
+												min={0}
+												max={360}
+												step={5}
+												value={circ10t}
+												style={getTrackStyle(circ10t, 0, 360, '#6d54e8')}
+												onChange={(e) => setCirc10t(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('(x-h)^2+(y-k)^2=r^2')} />
+											<div
+												dangerouslySetInnerHTML={renderTex('\\text{Tiếp tuyến tại }P\\perp MP')}
+												style={{ marginTop: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('M(h,k)')} />
+												<span className='stu-ws__symbol-desc'>tâm của đường tròn</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('r')} />
+												<span className='stu-ws__symbol-desc'>bán kính đường tròn</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('t')} />
+												<span className='stu-ws__symbol-desc'>góc xác định điểm P trên đường tròn</span>
+											</div>
+										</div>
 									</>
 								)}
 
 								{/* MATH10-05: Triangle cosine/sine */}
 								{resolvedMathSimId === 'MATH10-05' && (
 									<>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>a (cạnh đối A)</span><span className='stu-ws__param-val'>{tri10a}</span></div>
-									<input type='range' min={1} max={8} step={0.5} value={tri10a} style={getTrackStyle(tri10a,1,8,'#4f6ef7')} onChange={(e)=>setTri10a(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>b (cạnh đối B)</span><span className='stu-ws__param-val'>{tri10b}</span></div>
-									<input type='range' min={1} max={8} step={0.5} value={tri10b} style={getTrackStyle(tri10b,1,8,'#4f6ef7')} onChange={(e)=>setTri10b(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param stu-ws__param--a'>
-									<div className='stu-ws__param-row'><span>C (góc tại C °)</span><span className='stu-ws__param-val'>{tri10C}°</span></div>
-									<input type='range' min={5} max={170} step={1} value={tri10C} style={getTrackStyle(tri10C,5,170,'#6d54e8')} onChange={(e)=>setTri10C(+e.target.value)} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Công thức & Lý thuyết</span>
-								</div>
-								<div className='stu-ws__formula-box'>
-									<div dangerouslySetInnerHTML={renderTex('c^2=a^2+b^2-2ab\\cos C')} />
-									<div dangerouslySetInnerHTML={renderTex('\\frac{a}{\\sin A}=\\frac{b}{\\sin B}=\\frac{c}{\\sin C}=2R')} style={{ marginTop: '6px' }} />
-									<div dangerouslySetInnerHTML={renderTex('S=\\tfrac{1}{2}ab\\sin C')} style={{ marginTop: '6px' }} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Ký hiệu</span>
-								</div>
-								<div className='stu-ws__symbols-list'>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a,b,c')} /><span className='stu-ws__symbol-desc'>ba cạnh tam giác ABC</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A,B,C')} /><span className='stu-ws__symbol-desc'>ba góc đối diện tương ứng</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('R')} /><span className='stu-ws__symbol-desc'>bán kính đường tròn ngoại tiếp</span></div>
-								</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>a (cạnh đối A)</span>
+												<span className='stu-ws__param-val'>{tri10a}</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={8}
+												step={0.5}
+												value={tri10a}
+												style={getTrackStyle(tri10a, 1, 8, '#4f6ef7')}
+												onChange={(e) => setTri10a(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>b (cạnh đối B)</span>
+												<span className='stu-ws__param-val'>{tri10b}</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={8}
+												step={0.5}
+												value={tri10b}
+												style={getTrackStyle(tri10b, 1, 8, '#4f6ef7')}
+												onChange={(e) => setTri10b(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--a'>
+											<div className='stu-ws__param-row'>
+												<span>C (góc tại C °)</span>
+												<span className='stu-ws__param-val'>{tri10C}°</span>
+											</div>
+											<input
+												type='range'
+												min={5}
+												max={170}
+												step={1}
+												value={tri10C}
+												style={getTrackStyle(tri10C, 5, 170, '#6d54e8')}
+												onChange={(e) => setTri10C(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('c^2=a^2+b^2-2ab\\cos C')} />
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\frac{a}{\\sin A}=\\frac{b}{\\sin B}=\\frac{c}{\\sin C}=2R',
+												)}
+												style={{ marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('S=\\tfrac{1}{2}ab\\sin C')}
+												style={{ marginTop: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a,b,c')} />
+												<span className='stu-ws__symbol-desc'>ba cạnh tam giác ABC</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A,B,C')} />
+												<span className='stu-ws__symbol-desc'>ba góc đối diện tương ứng</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('R')} />
+												<span className='stu-ws__symbol-desc'>bán kính đường tròn ngoại tiếp</span>
+											</div>
+										</div>
 									</>
 								)}
 
 								{/* MATH10-06: System of Inequalities */}
 								{resolvedMathSimId === 'MATH10-06' && (
 									<>
-									<div style={{ fontSize: '11px', fontWeight: '600', color: '#ef4444', marginBottom: '4px' }}>Bất phương trình 1:</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>a₁</span><span className='stu-ws__param-val'>{iq10a1}</span></div>
-									<input type='range' min={-4} max={4} step={0.5} value={iq10a1} style={getTrackStyle(iq10a1,-4,4,'#4f6ef7')} onChange={(e)=>setIq10a1(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>b₁</span><span className='stu-ws__param-val'>{iq10b1}</span></div>
-									<input type='range' min={-4} max={4} step={0.5} value={iq10b1} style={getTrackStyle(iq10b1,-4,4,'#4f6ef7')} onChange={(e)=>setIq10b1(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param stu-ws__param--a'>
-									<div className='stu-ws__param-row'><span>c₁</span><span className='stu-ws__param-val'>{iq10c1}</span></div>
-									<input type='range' min={-8} max={8} step={0.5} value={iq10c1} style={getTrackStyle(iq10c1,-8,8,'#6d54e8')} onChange={(e)=>setIq10c1(+e.target.value)} />
-								</div>
-									<div style={{ fontSize: '11px', fontWeight: '600', color: '#38bdf8', margin: '10px 0 4px 0' }}>Bất phương trình 2:</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>a₂</span><span className='stu-ws__param-val'>{iq10a2}</span></div>
-									<input type='range' min={-4} max={4} step={0.5} value={iq10a2} style={getTrackStyle(iq10a2,-4,4,'#4f6ef7')} onChange={(e)=>setIq10a2(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>b₂</span><span className='stu-ws__param-val'>{iq10b2}</span></div>
-									<input type='range' min={-4} max={4} step={0.5} value={iq10b2} style={getTrackStyle(iq10b2,-4,4,'#4f6ef7')} onChange={(e)=>setIq10b2(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param stu-ws__param--a'>
-									<div className='stu-ws__param-row'><span>c₂</span><span className='stu-ws__param-val'>{iq10c2}</span></div>
-									<input type='range' min={-8} max={8} step={0.5} value={iq10c2} style={getTrackStyle(iq10c2,-8,8,'#6d54e8')} onChange={(e)=>setIq10c2(+e.target.value)} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Công thức & Lý thuyết</span>
-								</div>
-								<div className='stu-ws__formula-box'>
-									<div dangerouslySetInnerHTML={renderTex('a_1 x+b_1 y\\le c_1')} />
-									<div dangerouslySetInnerHTML={renderTex('a_2 x+b_2 y\\le c_2')} style={{ marginTop: '6px' }} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Ký hiệu</span>
-								</div>
-								<div className='stu-ws__symbols-list'>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('x,y')} /><span className='stu-ws__symbol-desc'>ẩn số cần tìm</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a_i,b_i,c_i')} /><span className='stu-ws__symbol-desc'>hệ số của bất phương trình</span></div>
-								</div>
+										<div style={{ fontSize: '11px', fontWeight: '600', color: '#ef4444', marginBottom: '4px' }}>
+											Bất phương trình 1:
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>a₁</span>
+												<span className='stu-ws__param-val'>{iq10a1}</span>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={iq10a1}
+												style={getTrackStyle(iq10a1, -4, 4, '#4f6ef7')}
+												onChange={(e) => setIq10a1(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>b₁</span>
+												<span className='stu-ws__param-val'>{iq10b1}</span>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={iq10b1}
+												style={getTrackStyle(iq10b1, -4, 4, '#4f6ef7')}
+												onChange={(e) => setIq10b1(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--a'>
+											<div className='stu-ws__param-row'>
+												<span>c₁</span>
+												<span className='stu-ws__param-val'>{iq10c1}</span>
+											</div>
+											<input
+												type='range'
+												min={-8}
+												max={8}
+												step={0.5}
+												value={iq10c1}
+												style={getTrackStyle(iq10c1, -8, 8, '#6d54e8')}
+												onChange={(e) => setIq10c1(+e.target.value)}
+											/>
+										</div>
+										<div style={{ fontSize: '11px', fontWeight: '600', color: '#38bdf8', margin: '10px 0 4px 0' }}>
+											Bất phương trình 2:
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>a₂</span>
+												<span className='stu-ws__param-val'>{iq10a2}</span>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={iq10a2}
+												style={getTrackStyle(iq10a2, -4, 4, '#4f6ef7')}
+												onChange={(e) => setIq10a2(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>b₂</span>
+												<span className='stu-ws__param-val'>{iq10b2}</span>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={iq10b2}
+												style={getTrackStyle(iq10b2, -4, 4, '#4f6ef7')}
+												onChange={(e) => setIq10b2(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--a'>
+											<div className='stu-ws__param-row'>
+												<span>c₂</span>
+												<span className='stu-ws__param-val'>{iq10c2}</span>
+											</div>
+											<input
+												type='range'
+												min={-8}
+												max={8}
+												step={0.5}
+												value={iq10c2}
+												style={getTrackStyle(iq10c2, -8, 8, '#6d54e8')}
+												onChange={(e) => setIq10c2(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('a_1 x+b_1 y\\le c_1')} />
+											<div dangerouslySetInnerHTML={renderTex('a_2 x+b_2 y\\le c_2')} style={{ marginTop: '6px' }} />
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('x,y')} />
+												<span className='stu-ws__symbol-desc'>ẩn số cần tìm</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a_i,b_i,c_i')} />
+												<span className='stu-ws__symbol-desc'>hệ số của bất phương trình</span>
+											</div>
+										</div>
 									</>
 								)}
 
 								{/* MATH10-07: Trig Ratios */}
 								{resolvedMathSimId === 'MATH10-07' && (
 									<>
-								<div className='stu-ws__param stu-ws__param--a'>
-									<div className='stu-ws__param-row'><span>Góc α (°)</span><span className='stu-ws__param-val'>{trig10alpha}°</span></div>
-									<input type='range' min={1} max={89} step={1} value={trig10alpha} style={getTrackStyle(trig10alpha,1,89,'#4f6ef7')} onChange={(e)=>setTrig10alpha(+e.target.value)} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Công thức & Lý thuyết</span>
-								</div>
-								<div className='stu-ws__formula-box'>
-									<div dangerouslySetInnerHTML={renderTex('\\sin\\alpha=\\frac{\\text{đối}}{\\text{huyền}}')} />
-									<div dangerouslySetInnerHTML={renderTex('\\cos\\alpha=\\frac{\\text{kề}}{\\text{huyền}}')} style={{ marginTop: '6px' }} />
-									<div dangerouslySetInnerHTML={renderTex('\\tan\\alpha=\\frac{\\sin\\alpha}{\\cos\\alpha}')} style={{ marginTop: '6px' }} />
-									<div dangerouslySetInnerHTML={renderTex('\\sin^2\\alpha+\\cos^2\\alpha=1')} style={{ marginTop: '6px' }} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Ký hiệu</span>
-								</div>
-								<div className='stu-ws__symbols-list'>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\sin\\alpha')} /><span className='stu-ws__symbol-desc'>cạnh đối / cạnh huyền</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\cos\\alpha')} /><span className='stu-ws__symbol-desc'>cạnh kề / cạnh huyền</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\tan\\alpha')} /><span className='stu-ws__symbol-desc'>cạnh đối / cạnh kề</span></div>
-								</div>
+										<div className='stu-ws__param stu-ws__param--a'>
+											<div className='stu-ws__param-row'>
+												<span>Góc α (°)</span>
+												<span className='stu-ws__param-val'>{trig10alpha}°</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={89}
+												step={1}
+												value={trig10alpha}
+												style={getTrackStyle(trig10alpha, 1, 89, '#4f6ef7')}
+												onChange={(e) => setTrig10alpha(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\sin\\alpha=\\frac{\\text{đối}}{\\text{huyền}}')} />
+											<div
+												dangerouslySetInnerHTML={renderTex('\\cos\\alpha=\\frac{\\text{kề}}{\\text{huyền}}')}
+												style={{ marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\tan\\alpha=\\frac{\\sin\\alpha}{\\cos\\alpha}')}
+												style={{ marginTop: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\sin^2\\alpha+\\cos^2\\alpha=1')}
+												style={{ marginTop: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\sin\\alpha')} />
+												<span className='stu-ws__symbol-desc'>cạnh đối / cạnh huyền</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\cos\\alpha')} />
+												<span className='stu-ws__symbol-desc'>cạnh kề / cạnh huyền</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\tan\\alpha')} />
+												<span className='stu-ws__symbol-desc'>cạnh đối / cạnh kề</span>
+											</div>
+										</div>
 									</>
 								)}
 
 								{/* MATH10-08: Statistics */}
 								{resolvedMathSimId === 'MATH10-08' && (
 									<>
-									<div style={{ fontSize: '11px', fontWeight: '600', color: '#94a3b8', marginBottom: '6px' }}>6 điểm số:</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>x₁</span><span className='stu-ws__param-val'>{stat10v1}</span></div>
-									<input type='range' min={1} max={20} step={0.5} value={stat10v1} style={getTrackStyle(stat10v1,1,20,'#4f6ef7')} onChange={(e)=>setStat10v1(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>x₂</span><span className='stu-ws__param-val'>{stat10v2}</span></div>
-									<input type='range' min={1} max={20} step={0.5} value={stat10v2} style={getTrackStyle(stat10v2,1,20,'#4f6ef7')} onChange={(e)=>setStat10v2(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>x₃</span><span className='stu-ws__param-val'>{stat10v3}</span></div>
-									<input type='range' min={1} max={20} step={0.5} value={stat10v3} style={getTrackStyle(stat10v3,1,20,'#4f6ef7')} onChange={(e)=>setStat10v3(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>x₄</span><span className='stu-ws__param-val'>{stat10v4}</span></div>
-									<input type='range' min={1} max={20} step={0.5} value={stat10v4} style={getTrackStyle(stat10v4,1,20,'#6d54e8')} onChange={(e)=>setStat10v4(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param--v0'>
-									<div className='stu-ws__param-row'><span>x₅</span><span className='stu-ws__param-val'>{stat10v5}</span></div>
-									<input type='range' min={1} max={20} step={0.5} value={stat10v5} style={getTrackStyle(stat10v5,1,20,'#6d54e8')} onChange={(e)=>setStat10v5(+e.target.value)} />
-								</div>
-								<div className='stu-ws__param stu-ws__param--a'>
-									<div className='stu-ws__param-row'><span>x₆</span><span className='stu-ws__param-val'>{stat10v6}</span></div>
-									<input type='range' min={1} max={20} step={0.5} value={stat10v6} style={getTrackStyle(stat10v6,1,20,'#6d54e8')} onChange={(e)=>setStat10v6(+e.target.value)} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Công thức & Lý thuyết</span>
-								</div>
-								<div className='stu-ws__formula-box'>
-									<div dangerouslySetInnerHTML={renderTex('\\bar{x}=\\frac{\\sum x_i}{n}')} />
-									<div dangerouslySetInnerHTML={renderTex('s=\\sqrt{\\frac{\\sum(x_i-\\bar{x})^2}{n}}')} style={{ marginTop: '6px' }} />
-									<div dangerouslySetInnerHTML={renderTex('\\text{IQR}=Q_3-Q_1')} style={{ marginTop: '6px' }} />
-								</div>
-								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-									<div className='stu-ws__section-label-bar' />
-									<span>Ký hiệu</span>
-								</div>
-								<div className='stu-ws__symbols-list'>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\bar{x}')} /><span className='stu-ws__symbol-desc'>số trung bình cộng</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('s')} /><span className='stu-ws__symbol-desc'>độ lệch chuẩn</span></div>
-									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('Q_1,Q_2,Q_3')} /><span className='stu-ws__symbol-desc'>các tứ phân vị</span></div>
-								</div>
+										<div style={{ fontSize: '11px', fontWeight: '600', color: '#94a3b8', marginBottom: '6px' }}>
+											6 điểm số:
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>x₁</span>
+												<span className='stu-ws__param-val'>{stat10v1}</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={20}
+												step={0.5}
+												value={stat10v1}
+												style={getTrackStyle(stat10v1, 1, 20, '#4f6ef7')}
+												onChange={(e) => setStat10v1(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>x₂</span>
+												<span className='stu-ws__param-val'>{stat10v2}</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={20}
+												step={0.5}
+												value={stat10v2}
+												style={getTrackStyle(stat10v2, 1, 20, '#4f6ef7')}
+												onChange={(e) => setStat10v2(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>x₃</span>
+												<span className='stu-ws__param-val'>{stat10v3}</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={20}
+												step={0.5}
+												value={stat10v3}
+												style={getTrackStyle(stat10v3, 1, 20, '#4f6ef7')}
+												onChange={(e) => setStat10v3(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>x₄</span>
+												<span className='stu-ws__param-val'>{stat10v4}</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={20}
+												step={0.5}
+												value={stat10v4}
+												style={getTrackStyle(stat10v4, 1, 20, '#6d54e8')}
+												onChange={(e) => setStat10v4(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>x₅</span>
+												<span className='stu-ws__param-val'>{stat10v5}</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={20}
+												step={0.5}
+												value={stat10v5}
+												style={getTrackStyle(stat10v5, 1, 20, '#6d54e8')}
+												onChange={(e) => setStat10v5(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--a'>
+											<div className='stu-ws__param-row'>
+												<span>x₆</span>
+												<span className='stu-ws__param-val'>{stat10v6}</span>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={20}
+												step={0.5}
+												value={stat10v6}
+												style={getTrackStyle(stat10v6, 1, 20, '#6d54e8')}
+												onChange={(e) => setStat10v6(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\bar{x}=\\frac{\\sum x_i}{n}')} />
+											<div
+												dangerouslySetInnerHTML={renderTex('s=\\sqrt{\\frac{\\sum(x_i-\\bar{x})^2}{n}}')}
+												style={{ marginTop: '6px' }}
+											/>
+											<div dangerouslySetInnerHTML={renderTex('\\text{IQR}=Q_3-Q_1')} style={{ marginTop: '6px' }} />
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\bar{x}')} />
+												<span className='stu-ws__symbol-desc'>số trung bình cộng</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('s')} />
+												<span className='stu-ws__symbol-desc'>độ lệch chuẩn</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('Q_1,Q_2,Q_3')} />
+												<span className='stu-ws__symbol-desc'>các tứ phân vị</span>
+											</div>
+										</div>
 									</>
 								)}
 
 								{/* MATH11-01: Đồ thị hàm lượng giác */}
-							{resolvedMathSimId === 'MATH11-01' && (
-								<>
-									{[
-										{ label: 'A (biên độ)', val: trigA, set: setTrigA, min: 0.1, max: 3, step: 0.1 },
-										{ label: 'B (tần số)', val: trigB, set: setTrigB, min: 0.1, max: 4, step: 0.1 },
-										{ label: 'C (pha rad)', val: trigC, set: setTrigC, min: -3.14, max: 3.14, step: 0.1 },
-										{ label: 'D (dịch dọc)', val: trigD, set: setTrigD, min: -3, max: 3, step: 0.1 },
-									].map(({ label, val, set, min, max, step }) => (
-										<div key={label} className='stu-ws__param stu-ws__param--v0'>
-											<div className='stu-ws__param-row'>
-												<span>{label}</span>
-												<span className='stu-ws__param-val'>{val.toFixed(1)}</span>
+								{resolvedMathSimId === 'MATH11-01' && (
+									<>
+										{[
+											{ label: 'A (biên độ)', val: trigA, set: setTrigA, min: 0.1, max: 3, step: 0.1 },
+											{ label: 'B (tần số)', val: trigB, set: setTrigB, min: 0.1, max: 4, step: 0.1 },
+											{ label: 'C (pha rad)', val: trigC, set: setTrigC, min: -3.14, max: 3.14, step: 0.1 },
+											{ label: 'D (dịch dọc)', val: trigD, set: setTrigD, min: -3, max: 3, step: 0.1 },
+										].map(({ label, val, set, min, max, step }) => (
+											<div key={label} className='stu-ws__param stu-ws__param--v0'>
+												<div className='stu-ws__param-row'>
+													<span>{label}</span>
+													<span className='stu-ws__param-val'>{val.toFixed(1)}</span>
+												</div>
+												<input
+													type='range'
+													min={min}
+													max={max}
+													step={step}
+													value={val}
+													style={getTrackStyle(val, min, max, '#4f6ef7')}
+													onChange={(e) => set(+e.target.value)}
+												/>
 											</div>
-											<input type='range' min={min} max={max} step={step} value={val}
-												style={getTrackStyle(val, min, max, '#4f6ef7')}
-												onChange={e => set(+e.target.value)} />
-										</div>
-									))}
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Hàm số</span></div>
-										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-											{['sin', 'cos', 'tan'].map((fn, i) => (
-												<button key={fn} onClick={() => setTrigFnIdx(i)}
-													className={`stu-ws__param-btn${trigFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
-													style={{ flex: 1 }}
-												>
-													{fn}
-												</button>
-											))}
-										</div>
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex('y = A\\sin(Bx + C) + D')} />
-										<div dangerouslySetInnerHTML={renderTex('T = \\dfrac{2\\pi}{|B|}')} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A')} /><span className='stu-ws__symbol-desc'>biên độ dao động</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('B')} /><span className='stu-ws__symbol-desc'>hệ số tần số, chu kỳ T=2π/|B|</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('C')} /><span className='stu-ws__symbol-desc'>pha ban đầu (rad)</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('D')} /><span className='stu-ws__symbol-desc'>dịch chuyển dọc trục y</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-01 */}
-							{resolvedMathSimId === 'MATH12-01' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>a</span><strong>{cubicA.toFixed(2)}</strong></div>
-										<input type='range' min={-3} max={3} step={0.5} value={cubicA}
-											style={getTrackStyle(cubicA, -3, 3, '#4f6ef7')}
-											onChange={e => setCubicA(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>b</span><strong>{cubicB.toFixed(2)}</strong></div>
-										<input type='range' min={-5} max={5} step={0.5} value={cubicB}
-											style={getTrackStyle(cubicB, -5, 5, '#4f6ef7')}
-											onChange={e => setCubicB(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>c</span><strong>{cubicC.toFixed(2)}</strong></div>
-										<input type='range' min={-5} max={5} step={0.5} value={cubicC}
-											style={getTrackStyle(cubicC, -5, 5, '#4f6ef7')}
-											onChange={e => setCubicC(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>d</span><strong>{cubicD.toFixed(2)}</strong></div>
-										<input type='range' min={-5} max={5} step={0.5} value={cubicD}
-											style={getTrackStyle(cubicD, -5, 5, '#4f6ef7')}
-											onChange={e => setCubicD(+e.target.value)} />
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("f(x) = ax^3+bx^2+cx+d")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("f'(x) = 3ax^2+2bx+c")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("f'(x)=0 \\Rightarrow \\text{cực trị} \\quad f''(x)=0 \\Rightarrow \\text{điểm uốn}")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("a,b,c,d")} /><span className='stu-ws__symbol-desc'>hệ số của đa thức bậc 3</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f'(x)")} /><span className='stu-ws__symbol-desc'>đạo hàm — xác định khoảng đơn điệu</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f''(x)=6ax+2b")} /><span className='stu-ws__symbol-desc'>đạo hàm cấp 2 — xác định điểm uốn</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-02 */}
-							{resolvedMathSimId === 'MATH12-02' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>a (tử số)</span><strong>{ratA.toFixed(2)}</strong></div>
-										<input type='range' min={-4} max={4} step={0.5} value={ratA}
-											style={getTrackStyle(ratA, -4, 4, '#4f6ef7')}
-											onChange={e => setRatA(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>b (tử số)</span><strong>{ratB.toFixed(2)}</strong></div>
-										<input type='range' min={-4} max={4} step={0.5} value={ratB}
-											style={getTrackStyle(ratB, -4, 4, '#4f6ef7')}
-											onChange={e => setRatB(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>c (mẫu số)</span><strong>{ratC.toFixed(2)}</strong></div>
-										<input type='range' min={-4} max={4} step={0.5} value={ratC}
-											style={getTrackStyle(ratC, -4, 4, '#4f6ef7')}
-											onChange={e => setRatC(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>d (mẫu số)</span><strong>{ratD.toFixed(2)}</strong></div>
-										<input type='range' min={-4} max={4} step={0.5} value={ratD}
-											style={getTrackStyle(ratD, -4, 4, '#4f6ef7')}
-											onChange={e => setRatD(+e.target.value)} />
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("y = \\dfrac{ax+b}{cx+d} \\quad (c \\neq 0)")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("\\text{TCĐ}: x = -\\dfrac{d}{c} \\quad \\text{TCN}: y = \\dfrac{a}{c}")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("y' = \\dfrac{ad-bc}{(cx+d)^2}")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\text{TCĐ}")} /><span className='stu-ws__symbol-desc'>tiệm cận đứng (vertical asymptote)</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\text{TCN}")} /><span className='stu-ws__symbol-desc'>tiệm cận ngang (horizontal asymptote)</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("ad-bc")} /><span className='stu-ws__symbol-desc'>điều kiện để hàm không hằng (≠ 0)</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-03 */}
-							{resolvedMathSimId === 'MATH12-03' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Cơ số a</span><strong>{expBase.toFixed(2)}</strong></div>
-										<input type='range' min={0.1} max={4} step={0.1} value={expBase}
-											style={getTrackStyle(expBase, 0.1, 4, '#4f6ef7')}
-											onChange={e => setExpBase(+e.target.value)} />
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("y = a^x \\quad (a>0,\\, a \\neq 1)")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("a>1: \\text{đồng biến} \\quad 0<a<1: \\text{nghịch biến}")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("\\lim_{x\\to-\\infty} a^x = 0 \\quad a^0=1 \\quad a^1=a")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("a")} /><span className='stu-ws__symbol-desc'>cơ số (a &gt; 0, a ≠ 1)</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("a^x")} /><span className='stu-ws__symbol-desc'>hàm mũ</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("e \\approx 2.718")} /><span className='stu-ws__symbol-desc'>số Euler — cơ số tự nhiên</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-04 */}
-							{resolvedMathSimId === 'MATH12-04' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Cơ số a</span><strong>{logBaseVal.toFixed(2)}</strong></div>
-										<input type='range' min={1.01} max={10} step={0.1} value={logBaseVal}
-											style={getTrackStyle(logBaseVal, 1.01, 10, '#4f6ef7')}
-											onChange={e => setLogBaseVal(+e.target.value)} />
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("y = \\log_a x \\quad (a>0,\\, a\\neq 1,\\, x>0)")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("\\log_a(xy)=\\log_a x+\\log_a y")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("\\log_a\\dfrac{x}{y}=\\log_a x-\\log_a y \\quad \\log_a x^n = n\\log_a x")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\ln x = \\log_e x")} /><span className='stu-ws__symbol-desc'>logarit tự nhiên (cơ số e)</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("D = (0,+\\infty)")} /><span className='stu-ws__symbol-desc'>tập xác định</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\log_a 1 = 0")} /><span className='stu-ws__symbol-desc'>điểm qua (1, 0)</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-05 */}
-							{resolvedMathSimId === 'MATH12-05' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Hàm số</span></div>
-										<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 4 }}>
-											{['\\sin x', 'x^2', 'x^3 - 2x', '\\dfrac{e^x}{4}'].map((tex, i) => (
-												<button key={i} onClick={() => setIntFnIdx(i)}
-													className={`stu-ws__param-btn${intFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
-													dangerouslySetInnerHTML={renderTex(tex)}
-												/>
-											))}
-										</div>
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>a (cận dưới)</span><strong>{intA.toFixed(2)}</strong></div>
-										<input type='range' min={-4} max={4} step={0.1} value={intA}
-											style={getTrackStyle(intA, -4, 4, '#4f6ef7')}
-											onChange={e => setIntA(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>b (cận trên)</span><strong>{intB.toFixed(2)}</strong></div>
-										<input type='range' min={-4} max={4} step={0.1} value={intB}
-											style={getTrackStyle(intB, -4, 4, '#4f6ef7')}
-											onChange={e => setIntB(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>N (số dải)</span><strong>{intN}</strong></div>
-										<input type='range' min={1} max={20} step={1} value={intN}
-											style={getTrackStyle(intN, 1, 20, '#4ade80')}
-											onChange={e => setIntN(+e.target.value)} />
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("\\int_a^b f(x)\\,dx = F(b) - F(a)")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("F'(x) = f(x) \\quad \\text{(F là nguyên hàm của f)}")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("\\int_a^b f\\,dx = -\\int_b^a f\\,dx")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("F(x)")} /><span className='stu-ws__symbol-desc'>nguyên hàm của f(x)</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\int_a^b")} /><span className='stu-ws__symbol-desc'>tích phân xác định từ a đến b</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("N")} /><span className='stu-ws__symbol-desc'>số dải Riemann</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-06 */}
-							{resolvedMathSimId === 'MATH12-06' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Cặp hàm số</span></div>
-										<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 4 }}>
-											{[
-												'x^2 \\text{ và } x+2',
-												'\\sin x \\text{ & } \\cos x',
-												'x^3 \\text{ và } x',
-												'\\sqrt{x} \\text{ và } x^2'
-											].map((tex, i) => (
-												<button key={i} onClick={() => setAbFnIdx(i)}
-													className={`stu-ws__param-btn${abFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
-													dangerouslySetInnerHTML={renderTex(tex)}
-												/>
-											))}
-										</div>
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("S = \\int_a^b |f(x)-g(x)|\\,dx")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("\\text{Giao điểm: } f(x)=g(x) \\Rightarrow \\text{biên a, b}")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f(x)")} /><span className='stu-ws__symbol-desc'>đường cong trên (màu xanh)</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("g(x)")} /><span className='stu-ws__symbol-desc'>đường cong dưới (màu cam)</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("S")} /><span className='stu-ws__symbol-desc'>diện tích miền kẹp giữa hai đường</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-07 */}
-							{resolvedMathSimId === 'MATH12-07' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Phần thực a</span><strong>{cxRe.toFixed(2)}</strong></div>
-										<input type='range' min={-5} max={5} step={0.5} value={cxRe}
-											style={getTrackStyle(cxRe, -5, 5, '#4f6ef7')}
-											onChange={e => setCxRe(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Phần ảo b</span><strong>{cxIm.toFixed(2)}</strong></div>
-										<input type='range' min={-5} max={5} step={0.5} value={cxIm}
-											style={getTrackStyle(cxIm, -5, 5, '#4f6ef7')}
-											onChange={e => setCxIm(+e.target.value)} />
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("z = a+bi = r(\\cos\\theta + i\\sin\\theta)")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("|z| = r = \\sqrt{a^2+b^2} \\quad \\arg(z)=\\theta")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("z^2 = (a^2-b^2)+2abi \\quad \\bar{z} = a-bi")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\text{Re}(z)=a")} /><span className='stu-ws__symbol-desc'>phần thực</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\text{Im}(z)=b")} /><span className='stu-ws__symbol-desc'>phần ảo</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("|z| \\cdot |w| = |zw|")} /><span className='stu-ws__symbol-desc'>nhân trên mp phức = scale + quay</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-08 */}
-							{resolvedMathSimId === 'MATH12-08' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Loại mặt tròn xoay</span></div>
-										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-											{['Mặt cầu', 'Mặt trụ', 'Mặt nón'].map((label, i) => (
-												<button key={i} onClick={() => setRevShape(i)}
-													className={`stu-ws__param-btn${revShape === i ? ' stu-ws__param-btn--active' : ''}`}
-													style={{ flex: 1 }}
-												>
-													{label}
-												</button>
-											))}
-										</div>
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Bán kính R</span><strong>{revR.toFixed(2)}</strong></div>
-										<input type='range' min={0.5} max={4} step={0.1} value={revR}
-											style={getTrackStyle(revR, 0.5, 4, '#4f6ef7')}
-											onChange={e => setRevR(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Chiều cao H</span><strong>{revH.toFixed(2)}</strong></div>
-										<input type='range' min={0.5} max={6} step={0.1} value={revH}
-											style={getTrackStyle(revH, 0.5, 6, '#4f6ef7')}
-											onChange={e => setRevH(+e.target.value)} />
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("V_{\\text{cầu}}=\\tfrac{4}{3}\\pi R^3 \\quad S_{\\text{cầu}}=4\\pi R^2")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("V_{\\text{trụ}}=\\pi R^2 h \\quad S_{\\text{xq,trụ}}=2\\pi Rh")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("V_{\\text{nón}}=\\tfrac{1}{3}\\pi R^2 h \\quad S_{\\text{xq,nón}}=\\pi Rl")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("R")} /><span className='stu-ws__symbol-desc'>bán kính đáy</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("h")} /><span className='stu-ws__symbol-desc'>chiều cao</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("l=\\sqrt{R^2+h^2}")} /><span className='stu-ws__symbol-desc'>đường sinh mặt nón</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-09 */}
-							{resolvedMathSimId === 'MATH12-09' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Loại khối</span></div>
-										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-											{['Lăng trụ', 'Hình chóp', 'Chóp cụt'].map((label, i) => (
-												<button key={i} onClick={() => setPh3Type(i)}
-													className={`stu-ws__param-btn${ph3Type === i ? ' stu-ws__param-btn--active' : ''}`}
-													style={{ flex: 1 }}
-												>
-													{label}
-												</button>
-											))}
-										</div>
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Số cạnh đáy n</span><strong>{ph3N}</strong></div>
-										<input type='range' min={3} max={8} step={1} value={ph3N}
-											style={getTrackStyle(ph3N, 3, 8, '#4ade80')}
-											onChange={e => setPh3N(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Bán kính R</span><strong>{ph3R.toFixed(2)}</strong></div>
-										<input type='range' min={0.5} max={4} step={0.1} value={ph3R}
-											style={getTrackStyle(ph3R, 0.5, 4, '#4f6ef7')}
-											onChange={e => setPh3R(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Chiều cao H</span><strong>{ph3H.toFixed(2)}</strong></div>
-										<input type='range' min={0.5} max={6} step={0.1} value={ph3H}
-											style={getTrackStyle(ph3H, 0.5, 6, '#4f6ef7')}
-											onChange={e => setPh3H(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Bán kính trên r</span><strong>{ph3R2.toFixed(2)}</strong></div>
-										<input type='range' min={0.1} max={3} step={0.1} value={ph3R2}
-											style={getTrackStyle(ph3R2, 0.1, 3, '#4f6ef7')}
-											onChange={e => setPh3R2(+e.target.value)} />
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("V_{\\text{lăng trụ}} = S_{\\text{đáy}} \\cdot h")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("V_{\\text{chóp}} = \\tfrac{1}{3}S_{\\text{đáy}} \\cdot h")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("V_{\\text{chóp cụt}} = \\tfrac{h}{3}(S_1+S_2+\\sqrt{S_1 S_2})")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("S_{n\\text{-giác}}=\\tfrac{nR^2}{2}\\sin\\tfrac{2\\pi}{n}")} /><span className='stu-ws__symbol-desc'>diện tích đa giác đều n cạnh</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("h")} /><span className='stu-ws__symbol-desc'>chiều cao khối</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("R, r")} /><span className='stu-ws__symbol-desc'>bán kính đáy lớn và đáy nhỏ (chóp cụt)</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-10 */}
-							{resolvedMathSimId === 'MATH12-10' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>nx (hệ số x)</span><strong>{plNx.toFixed(2)}</strong></div>
-										<input type='range' min={-3} max={3} step={0.5} value={plNx}
-											style={getTrackStyle(plNx, -3, 3, '#4f6ef7')}
-											onChange={e => setPlNx(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>ny (hệ số y)</span><strong>{plNy.toFixed(2)}</strong></div>
-										<input type='range' min={-3} max={3} step={0.5} value={plNy}
-											style={getTrackStyle(plNy, -3, 3, '#4f6ef7')}
-											onChange={e => setPlNy(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>nz (hệ số z)</span><strong>{plNz.toFixed(2)}</strong></div>
-										<input type='range' min={-3} max={3} step={0.5} value={plNz}
-											style={getTrackStyle(plNz, -3, 3, '#4f6ef7')}
-											onChange={e => setPlNz(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>d (hằng số)</span><strong>{plD.toFixed(2)}</strong></div>
-										<input type='range' min={-5} max={5} step={0.5} value={plD}
-											style={getTrackStyle(plD, -5, 5, '#4f6ef7')}
-											onChange={e => setPlD(+e.target.value)} />
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("ax+by+cz+d=0 \\quad \\vec{n}=(a,b,c) \\text{ là pháp vectơ}")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("d(M_0,P) = \\dfrac{|ax_0+by_0+cz_0+d|}{\\sqrt{a^2+b^2+c^2}}")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\vec{n}=(a,b,c)")} /><span className='stu-ws__symbol-desc'>pháp vectơ mặt phẳng</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("d(M,P)")} /><span className='stu-ws__symbol-desc'>khoảng cách từ điểm M đến mặt phẳng P</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("d(O,P)=|d|/|\\vec{n}|")} /><span className='stu-ws__symbol-desc'>khoảng cách từ gốc đến mặt phẳng</span></div>
-									</div>
-								</>
-							)}
-							{/* MATH12-11 */}
-							{resolvedMathSimId === 'MATH12-11' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>M.x₀</span><strong>{ln3Mx.toFixed(2)}</strong></div>
-										<input type='range' min={-3} max={3} step={0.5} value={ln3Mx}
-											style={getTrackStyle(ln3Mx, -3, 3, '#4f6ef7')}
-											onChange={e => setLn3Mx(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>M.y₀</span><strong>{ln3My.toFixed(2)}</strong></div>
-										<input type='range' min={-3} max={3} step={0.5} value={ln3My}
-											style={getTrackStyle(ln3My, -3, 3, '#4f6ef7')}
-											onChange={e => setLn3My(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>M.z₀</span><strong>{ln3Mz.toFixed(2)}</strong></div>
-										<input type='range' min={-3} max={3} step={0.5} value={ln3Mz}
-											style={getTrackStyle(ln3Mz, -3, 3, '#4f6ef7')}
-											onChange={e => setLn3Mz(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>u.a</span><strong>{ln3Ux.toFixed(2)}</strong></div>
-										<input type='range' min={-4} max={4} step={0.5} value={ln3Ux}
-											style={getTrackStyle(ln3Ux, -4, 4, '#f97316')}
-											onChange={e => setLn3Ux(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>u.b</span><strong>{ln3Uy.toFixed(2)}</strong></div>
-										<input type='range' min={-4} max={4} step={0.5} value={ln3Uy}
-											style={getTrackStyle(ln3Uy, -4, 4, '#f97316')}
-											onChange={e => setLn3Uy(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>u.c</span><strong>{ln3Uz.toFixed(2)}</strong></div>
-										<input type='range' min={-4} max={4} step={0.5} value={ln3Uz}
-											style={getTrackStyle(ln3Uz, -4, 4, '#f97316')}
-											onChange={e => setLn3Uz(+e.target.value)} />
-									</div>
-
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("\\dfrac{x-x_0}{a}=\\dfrac{y-y_0}{b}=\\dfrac{z-z_0}{c}=t")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("\\vec{r}(t)=M_0+t\\vec{u} \\quad \\vec{u}=(a,b,c) \\text{ vtcp}")} style={{ marginBottom: '6px' }} />
-										<div dangerouslySetInnerHTML={renderTex("d(O,d)=\\dfrac{|\\overrightarrow{OM_0}\\times\\vec{u}|}{|\\vec{u}|}")} style={{ marginBottom: '6px' }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("M_0(x_0,y_0,z_0)")} /><span className='stu-ws__symbol-desc'>điểm thuộc đường thẳng</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\vec{u}=(a,b,c)")} /><span className='stu-ws__symbol-desc'>vectơ chỉ phương (vtcp)</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("t \\in \\mathbb{R}")} /><span className='stu-ws__symbol-desc'>tham số</span></div>
-									</div>
-								</>
-							)}
-
-							{/* MATH11-02: Vòng tròn đơn vị */}
-							{resolvedMathSimId === 'MATH11-02' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Góc θ (độ)</span><span className='stu-ws__param-val'>{ucAngle}°</span></div>
-										<input type='range' min={0} max={360} step={1} value={ucAngle}
-											style={getTrackStyle(ucAngle, 0, 360, '#4f6ef7')}
-											onChange={e => setUcAngle(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Giá trị a (sin x = a)</span><span className='stu-ws__param-val'>{ucTarget.toFixed(2)}</span></div>
-										<input type='range' min={-1} max={1} step={0.01} value={ucTarget}
-											style={getTrackStyle(ucTarget, -1, 1, '#f59e0b')}
-											onChange={e => setUcTarget(+e.target.value)} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex('\\sin x = a,\\ -1\\le a\\le 1')} />
-										<div dangerouslySetInnerHTML={renderTex('x = \\arcsin a + 2k\\pi')} style={{ marginTop: 6 }} />
-										<div dangerouslySetInnerHTML={renderTex('x = \\pi - \\arcsin a + 2k\\pi')} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\theta')} /><span className='stu-ws__symbol-desc'>góc lượng giác</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\sin\\theta')} /><span className='stu-ws__symbol-desc'>tung độ điểm P trên vòng tròn</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('k\\in\\mathbb{Z}')} /><span className='stu-ws__symbol-desc'>số nguyên, chỉ các chu kỳ lặp</span></div>
-									</div>
-								</>
-							)}
-
-							{/* MATH11-03: Tổ hợp & Nhị thức Newton */}
-							{resolvedMathSimId === 'MATH11-03' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>n</span><span className='stu-ws__param-val'>{combN}</span></div>
-										<input type='range' min={0} max={10} step={1} value={combN}
-											style={getTrackStyle(combN, 0, 10, '#4f6ef7')}
-											onChange={e => { const v = +e.target.value; setCombN(v); if (combK > v) setCombK(v); }} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>k</span><span className='stu-ws__param-val'>{combK}</span></div>
-										<input type='range' min={0} max={combN} step={1} value={combK}
-											style={getTrackStyle(combK, 0, combN, '#f59e0b')}
-											onChange={e => setCombK(+e.target.value)} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex('P_n = n!')} />
-										<div dangerouslySetInnerHTML={renderTex('A_n^k = \\frac{n!}{(n-k)!}')} style={{ marginTop: 6 }} />
-										<div dangerouslySetInnerHTML={renderTex('C_n^k = \\frac{n!}{k!(n-k)!}')} style={{ marginTop: 6 }} />
-										<div dangerouslySetInnerHTML={renderTex('(a+b)^n=\\sum_{k=0}^{n}C_n^k a^{n-k}b^k')} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('P_n')} /><span className='stu-ws__symbol-desc'>hoán vị của n phần tử</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A_n^k')} /><span className='stu-ws__symbol-desc'>chỉnh hợp chập k của n phần tử</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('C_n^k')} /><span className='stu-ws__symbol-desc'>tổ hợp / hệ số nhị thức</span></div>
-									</div>
-								</>
-							)}
-
-							{/* MATH11-04: Xác suất sự kiện */}
-							{resolvedMathSimId === 'MATH11-04' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span style={{ color: '#3b82f6' }}>P(A)</span><span className='stu-ws__param-val'>{probPA.toFixed(2)}</span></div>
-										<input type='range' min={0.05} max={0.9} step={0.01} value={probPA}
-											style={getTrackStyle(probPA, 0.05, 0.9, '#3b82f6')}
-											onChange={e => setProbPA(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span style={{ color: '#8b5cf6' }}>P(B)</span><span className='stu-ws__param-val'>{probPB.toFixed(2)}</span></div>
-										<input type='range' min={0.05} max={0.9} step={0.01} value={probPB}
-											style={getTrackStyle(probPB, 0.05, 0.9, '#8b5cf6')}
-											onChange={e => setProbPB(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>P(A∩B)</span><span className='stu-ws__param-val'>{probPAB.toFixed(2)}</span></div>
-										<input type='range' min={0} max={Math.min(probPA, probPB)} step={0.01} value={probPAB}
-											style={getTrackStyle(probPAB, 0, Math.min(probPA, probPB), '#6366f1')}
-											onChange={e => setProbPAB(+e.target.value)} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex('P(A\\cup B)=P(A)+P(B)-P(A\\cap B)')} />
-										<div dangerouslySetInnerHTML={renderTex('P(A|B)=\\frac{P(A\\cap B)}{P(B)}')} style={{ marginTop: 6 }} />
-										<div dangerouslySetInnerHTML={renderTex('P(\\bar{A})=1-P(A)')} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A\\cap B')} /><span className='stu-ws__symbol-desc'>giao — cả A và B xảy ra</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A\\cup B')} /><span className='stu-ws__symbol-desc'>hợp — A hoặc B xảy ra</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('P(A|B)')} /><span className='stu-ws__symbol-desc'>xác suất có điều kiện</span></div>
-									</div>
-								</>
-							)}
-
-							{/* MATH11-05: Giới hạn dãy số */}
-							{resolvedMathSimId === 'MATH11-05' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Chọn dãy số</span></div>
-										<div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
-											{[
-												'a_n = \\frac{1}{n} \\to 0',
-												'a_n = \\frac{(-1)^n}{n} \\to 0',
-												'a_n = \\frac{n}{n+1} \\to 1',
-												'a_n = \\frac{2n+1}{n+1} \\to 2'
-											].map((tex, i) => (
-												<button key={i} onClick={() => setSeqType(i)}
-													className={`stu-ws__param-btn${seqType === i ? ' stu-ws__param-btn--active' : ''}`}
-													style={{ justifyContent: 'flex-start' }}
-													dangerouslySetInnerHTML={renderTex(tex)}
-												/>
-											))}
-										</div>
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>ε (độ chính xác)</span><span className='stu-ws__param-val'>{seqEps.toFixed(2)}</span></div>
-										<input type='range' min={0.05} max={1.0} step={0.05} value={seqEps}
-											style={getTrackStyle(seqEps, 0.05, 1.0, '#f59e0b')}
-											onChange={e => setSeqEps(+e.target.value)} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex('\\lim_{n\\to\\infty}a_n=L')} />
-										<div dangerouslySetInnerHTML={renderTex('\\forall\\varepsilon>0\\ \\exists N: n>N\\Rightarrow|a_n-L|<\\varepsilon')} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a_n')} /><span className='stu-ws__symbol-desc'>số hạng thứ n của dãy số</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('L')} /><span className='stu-ws__symbol-desc'>giới hạn của dãy số</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\varepsilon')} /><span className='stu-ws__symbol-desc'>epsilon — độ chính xác cho trước</span></div>
-									</div>
-								</>
-							)}
-
-							{/* MATH11-06: Giới hạn hàm số & hàm liên tục */}
-							{resolvedMathSimId === 'MATH11-06' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Chọn hàm số</span></div>
-										<div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
-											{[
-												'\\dfrac{x^2-1}{x-1} \\text{ (gián đoạn bỏ được)}',
-												'\\text{Hàm bậc thang (gián đoạn nhảy)}',
-												'\\dfrac{|x|}{x} \\text{ (gián đoạn tại 0)}',
-												'\\dfrac{\\sin x}{x} \\text{ (gián đoạn tại 0)}'
-											].map((tex, i) => (
-												<button key={i} onClick={() => setLimFuncType(i)}
-													className={`stu-ws__param-btn${limFuncType === i ? ' stu-ws__param-btn--active' : ''}`}
-													style={{ justifyContent: 'flex-start' }}
-													dangerouslySetInnerHTML={renderTex(tex)}
-												/>
-											))}
-										</div>
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a}f(x)=L')} />
-										<div dangerouslySetInnerHTML={renderTex('f\\ \\text{liên tục tại}\\ a\\Leftrightarrow\\lim_{x\\to a}f(x)=f(a)')} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a^-}')} /><span className='stu-ws__symbol-desc'>giới hạn trái</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a^+}')} /><span className='stu-ws__symbol-desc'>giới hạn phải</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('f(a)')} /><span className='stu-ws__symbol-desc'>giá trị hàm số tại a</span></div>
-									</div>
-								</>
-							)}
-
-							{/* MATH11-07: Đạo hàm & tiếp tuyến */}
-							{resolvedMathSimId === 'MATH11-07' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Hàm số f(x)</span></div>
-										<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 4 }}>
-											{['x^2', 'x^3', '\\sin x', 'x^3 - 3x'].map((tex, i) => (
-												<button key={i} onClick={() => setDerFnIdx(i)}
-													className={`stu-ws__param-btn${derFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
-													dangerouslySetInnerHTML={renderTex(tex)}
-												/>
-											))}
-										</div>
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>x₀ (điểm tiếp xúc)</span><span className='stu-ws__param-val'>{derX0.toFixed(1)}</span></div>
-										<input type='range' min={-3} max={3} step={0.1} value={derX0}
-											style={getTrackStyle(derX0, -3, 3, '#fb923c')}
-											onChange={e => setDerX0(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>h (cát tuyến → tiếp tuyến)</span><span className='stu-ws__param-val'>{derH.toFixed(2)}</span></div>
-										<input type='range' min={0.01} max={2} step={0.01} value={derH}
-											style={getTrackStyle(derH, 0.01, 2, '#fbbf24')}
-											onChange={e => setDerH(+e.target.value)} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex("f'(x_0)=\\lim_{h\\to 0}\\frac{f(x_0+h)-f(x_0)}{h}")} />
-										<div dangerouslySetInnerHTML={renderTex("y=f(x_0)+f'(x_0)(x-x_0)")} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f'(x_0)")} /><span className='stu-ws__symbol-desc'>đạo hàm của f tại x₀</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('h')} /><span className='stu-ws__symbol-desc'>gia số của biến độc lập</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("k=f'(x_0)")} /><span className='stu-ws__symbol-desc'>hệ số góc tiếp tuyến</span></div>
-									</div>
-								</>
-							)}
-
-							{/* MATH11-08: Phép dời hình & phép đồng dạng */}
-							{resolvedMathSimId === 'MATH11-08' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Phép biến đổi</span></div>
-										<div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
-											{[
-												'\\text{Tịnh tiến } T_{\\vec{v}} (t_x, t_y)',
-												'\\text{Đối xứng trục } D_{Ox}',
-												'\\text{Đối xứng trục } D_{Oy}',
-												'\\text{Đối xứng tâm } D_O',
-												'\\text{Phép quay } R_{O, \\alpha}'
-											].map((tex, i) => (
-												<button key={i} onClick={() => setTransType(i)}
-													className={`stu-ws__param-btn${transType === i ? ' stu-ws__param-btn--active' : ''}`}
-													style={{ justifyContent: 'flex-start' }}
-													dangerouslySetInnerHTML={renderTex(tex)}
-												/>
-											))}
-										</div>
-									</div>
-									{transType === 0 && (<>
+										))}
 										<div className='stu-ws__param stu-ws__param--v0'>
-											<div className='stu-ws__param-row'><span>tx</span><span className='stu-ws__param-val'>{transTx.toFixed(1)}</span></div>
-											<input type='range' min={-5} max={5} step={0.5} value={transTx}
-												style={getTrackStyle(transTx, -5, 5, '#4f6ef7')}
-												onChange={e => setTransTx(+e.target.value)} />
+											<div className='stu-ws__param-row'>
+												<span>Hàm số</span>
+											</div>
+											<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+												{['sin', 'cos', 'tan'].map((fn, i) => (
+													<button
+														key={fn}
+														onClick={() => setTrigFnIdx(i)}
+														className={`stu-ws__param-btn${trigFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
+														style={{ flex: 1 }}
+													>
+														{fn}
+													</button>
+												))}
+											</div>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('y = A\\sin(Bx + C) + D')} />
+											<div dangerouslySetInnerHTML={renderTex('T = \\dfrac{2\\pi}{|B|}')} style={{ marginTop: 6 }} />
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A')} />
+												<span className='stu-ws__symbol-desc'>biên độ dao động</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('B')} />
+												<span className='stu-ws__symbol-desc'>hệ số tần số, chu kỳ T=2π/|B|</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('C')} />
+												<span className='stu-ws__symbol-desc'>pha ban đầu (rad)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('D')} />
+												<span className='stu-ws__symbol-desc'>dịch chuyển dọc trục y</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-01 */}
+								{resolvedMathSimId === 'MATH12-01' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>a</span>
+												<strong>{cubicA.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.5}
+												value={cubicA}
+												style={getTrackStyle(cubicA, -3, 3, '#4f6ef7')}
+												onChange={(e) => setCubicA(+e.target.value)}
+											/>
 										</div>
 										<div className='stu-ws__param stu-ws__param--v0'>
-											<div className='stu-ws__param-row'><span>ty</span><span className='stu-ws__param-val'>{transTy.toFixed(1)}</span></div>
-											<input type='range' min={-5} max={5} step={0.5} value={transTy}
-												style={getTrackStyle(transTy, -5, 5, '#4f6ef7')}
-												onChange={e => setTransTy(+e.target.value)} />
+											<div className='stu-ws__param-row'>
+												<span>b</span>
+												<strong>{cubicB.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={cubicB}
+												style={getTrackStyle(cubicB, -5, 5, '#4f6ef7')}
+												onChange={(e) => setCubicB(+e.target.value)}
+											/>
 										</div>
-									</>)}
-									{transType === 4 && (
 										<div className='stu-ws__param stu-ws__param--v0'>
-											<div className='stu-ws__param-row'><span>Góc quay α</span><span className='stu-ws__param-val'>{transAngle}°</span></div>
-											<input type='range' min={0} max={360} step={5} value={transAngle}
-												style={getTrackStyle(transAngle, 0, 360, '#4f6ef7')}
-												onChange={e => setTransAngle(+e.target.value)} />
+											<div className='stu-ws__param-row'>
+												<span>c</span>
+												<strong>{cubicC.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={cubicC}
+												style={getTrackStyle(cubicC, -5, 5, '#4f6ef7')}
+												onChange={(e) => setCubicC(+e.target.value)}
+											/>
 										</div>
-									)}
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex('T_{\\vec{v}}(M)=M\':\\ M\'=M+\\vec{v}')} />
-										<div dangerouslySetInnerHTML={renderTex("R_{O,\\alpha}:\\ (x',y')=(x\\cos\\alpha-y\\sin\\alpha,\\,x\\sin\\alpha+y\\cos\\alpha)")} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('T_{\\vec{v}}')} /><span className='stu-ws__symbol-desc'>phép tịnh tiến theo vectơ v</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\Phi_O')} /><span className='stu-ws__symbol-desc'>phép đối xứng tâm O</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('R_{O,\\alpha}')} /><span className='stu-ws__symbol-desc'>phép quay tâm O góc α</span></div>
-									</div>
-								</>
-							)}
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>d</span>
+												<strong>{cubicD.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={cubicD}
+												style={getTrackStyle(cubicD, -5, 5, '#4f6ef7')}
+												onChange={(e) => setCubicD(+e.target.value)}
+											/>
+										</div>
 
-							{/* MATH11-09: Đường thẳng & mặt phẳng */}
-							{resolvedMathSimId === 'MATH11-09' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Góc nghiêng α (°)</span><span className='stu-ws__param-val'>{planeAlpha}°</span></div>
-										<input type='range' min={0} max={60} step={1} value={planeAlpha}
-											style={getTrackStyle(planeAlpha, 0, 60, '#3b82f6')}
-											onChange={e => setPlaneAlpha(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Góc nghiêng β (°)</span><span className='stu-ws__param-val'>{planeBeta}°</span></div>
-										<input type='range' min={0} max={60} step={1} value={planeBeta}
-											style={getTrackStyle(planeBeta, 0, 60, '#fb923c')}
-											onChange={e => setPlaneBeta(+e.target.value)} />
-									</div>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Quan hệ</span></div>
-										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-											{['Cắt nhau', 'Song song'].map((label, i) => (
-												<button key={i} onClick={() => setPlanesParallel(i)}
-													className={`stu-ws__param-btn${planesParallel === i ? ' stu-ws__param-btn--active' : ''}`}
-													style={{ flex: 1 }}
-												>
-													{label}
-												</button>
-											))}
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
 										</div>
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex('\\alpha\\parallel\\beta\\Leftrightarrow\\vec{n}_1\\parallel\\vec{n}_2')} />
-										<div dangerouslySetInnerHTML={renderTex('\\cos\\theta=\\frac{|\\vec{n}_1\\cdot\\vec{n}_2|}{|\\vec{n}_1||\\vec{n}_2|}')} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{n}')} /><span className='stu-ws__symbol-desc'>vectơ pháp tuyến của mặt phẳng</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\alpha\\cap\\beta')} /><span className='stu-ws__symbol-desc'>giao tuyến của hai mặt phẳng</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\theta')} /><span className='stu-ws__symbol-desc'>góc nhị diện giữa hai mặt phẳng</span></div>
-									</div>
-								</>
-							)}
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex('f(x) = ax^3+bx^2+cx+d')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div dangerouslySetInnerHTML={renderTex("f'(x) = 3ax^2+2bx+c")} style={{ marginBottom: '6px' }} />
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													"f'(x)=0 \\Rightarrow \\text{cực trị} \\quad f''(x)=0 \\Rightarrow \\text{điểm uốn}",
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a,b,c,d')} />
+												<span className='stu-ws__symbol-desc'>hệ số của đa thức bậc 3</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f'(x)")} />
+												<span className='stu-ws__symbol-desc'>đạo hàm — xác định khoảng đơn điệu</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f''(x)=6ax+2b")} />
+												<span className='stu-ws__symbol-desc'>đạo hàm cấp 2 — xác định điểm uốn</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-02 */}
+								{resolvedMathSimId === 'MATH12-02' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>a (tử số)</span>
+												<strong>{ratA.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={ratA}
+												style={getTrackStyle(ratA, -4, 4, '#4f6ef7')}
+												onChange={(e) => setRatA(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>b (tử số)</span>
+												<strong>{ratB.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={ratB}
+												style={getTrackStyle(ratB, -4, 4, '#4f6ef7')}
+												onChange={(e) => setRatB(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>c (mẫu số)</span>
+												<strong>{ratC.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={ratC}
+												style={getTrackStyle(ratC, -4, 4, '#4f6ef7')}
+												onChange={(e) => setRatC(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>d (mẫu số)</span>
+												<strong>{ratD.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={ratD}
+												style={getTrackStyle(ratD, -4, 4, '#4f6ef7')}
+												onChange={(e) => setRatD(+e.target.value)}
+											/>
+										</div>
 
-							{/* MATH11-10: Quan hệ vuông góc trong không gian */}
-							{resolvedMathSimId === 'MATH11-10' && (
-								<>
-									{[{ label: 'nx', val: perpNx, set: setPerpNx }, { label: 'ny', val: perpNy, set: setPerpNy }, { label: 'nz', val: perpNz, set: setPerpNz }].map(({ label, val, set }) => (
-										<div key={label} className='stu-ws__param stu-ws__param--v0'>
-											<div className='stu-ws__param-row'><span>Pháp tuyến {label}</span><span className='stu-ws__param-val'>{val.toFixed(1)}</span></div>
-											<input type='range' min={-1} max={1} step={0.1} value={val}
-												style={getTrackStyle(val, -1, 1, '#fbbf24')}
-												onChange={e => set(+e.target.value)} />
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
 										</div>
-									))}
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex('d\\perp\\alpha\\Leftrightarrow d\\perp a,d\\perp b\\ (a,b\\subset\\alpha)')} />
-										<div dangerouslySetInnerHTML={renderTex('\\alpha\\perp\\beta\\Leftrightarrow\\exists d\\subset\\alpha:\\ d\\perp\\beta')} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('d\\perp\\alpha')} /><span className='stu-ws__symbol-desc'>đường thẳng d vuông góc mặt phẳng α</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\alpha\\perp\\beta')} /><span className='stu-ws__symbol-desc'>hai mặt phẳng vuông góc nhau</span></div>
-									</div>
-								</>
-							)}
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex('y = \\dfrac{ax+b}{cx+d} \\quad (c \\neq 0)')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\text{TCĐ}: x = -\\dfrac{d}{c} \\quad \\text{TCN}: y = \\dfrac{a}{c}',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex("y' = \\dfrac{ad-bc}{(cx+d)^2}")}
+												style={{ marginBottom: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\text{TCĐ}')} />
+												<span className='stu-ws__symbol-desc'>tiệm cận đứng (vertical asymptote)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\text{TCN}')} />
+												<span className='stu-ws__symbol-desc'>tiệm cận ngang (horizontal asymptote)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('ad-bc')} />
+												<span className='stu-ws__symbol-desc'>điều kiện để hàm không hằng (≠ 0)</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-03 */}
+								{resolvedMathSimId === 'MATH12-03' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Cơ số a</span>
+												<strong>{expBase.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={0.1}
+												max={4}
+												step={0.1}
+												value={expBase}
+												style={getTrackStyle(expBase, 0.1, 4, '#4f6ef7')}
+												onChange={(e) => setExpBase(+e.target.value)}
+											/>
+										</div>
 
-							{/* MATH11-11: Hình lăng trụ & hình chóp */}
-							{resolvedMathSimId === 'MATH11-11' && (
-								<>
-									<div className='stu-ws__param stu-ws__param--v0'>
-										<div className='stu-ws__param-row'><span>Loại hình</span></div>
-										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-											{['Lăng trụ', 'Hình chóp'].map((label, i) => (
-												<button key={i} onClick={() => setPolyType11(i)}
-													className={`stu-ws__param-btn${polyType11 === i ? ' stu-ws__param-btn--active' : ''}`}
-													style={{ flex: 1 }}
-												>
-													{label}
-												</button>
-											))}
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
 										</div>
-									</div>
-									{[
-										{ label: 'Số cạnh đáy (n)', val: polyN11, set: setPolyN11, min: 3, max: 6, step: 1 },
-										{ label: 'Bán kính đáy (r)', val: polyBaseR, set: setPolyBaseR, min: 0.5, max: 2.5, step: 0.1 },
-										{ label: 'Chiều cao (h)', val: polyH11, set: setPolyH11, min: 0.5, max: 4, step: 0.1 },
-									].map(({ label, val, set, min, max, step }) => (
-										<div key={label} className='stu-ws__param stu-ws__param--v0'>
-											<div className='stu-ws__param-row'><span>{label}</span><span className='stu-ws__param-val'>{val.toFixed(step < 1 ? 1 : 0)}</span></div>
-											<input type='range' min={min} max={max} step={step} value={val}
-												style={getTrackStyle(val, min, max, '#4f6ef7')}
-												onChange={e => set(+e.target.value)} />
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex('y = a^x \\quad (a>0,\\, a \\neq 1)')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('a>1: \\text{đồng biến} \\quad 0<a<1: \\text{nghịch biến}')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\lim_{x\\to-\\infty} a^x = 0 \\quad a^0=1 \\quad a^1=a')}
+												style={{ marginBottom: '6px' }}
+											/>
 										</div>
-									))}
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
-									</div>
-									<div className='stu-ws__formula-box'>
-										<div dangerouslySetInnerHTML={renderTex(polyType11 === 0 ? 'V=S_{đáy}\\cdot h' : 'V=\\tfrac{1}{3}S_{đáy}\\cdot h')} />
-										<div dangerouslySetInnerHTML={renderTex('S_{n\\text{-giác đều}}=\\tfrac{n\\cdot r^2\\sin(2\\pi/n)}{2}')} style={{ marginTop: 6 }} />
-									</div>
-									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
-									</div>
-									<div className='stu-ws__symbols-list'>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('S_{đáy}')} /><span className='stu-ws__symbol-desc'>diện tích đa giác đều ở đáy</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('h')} /><span className='stu-ws__symbol-desc'>chiều cao của hình</span></div>
-										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('V')} /><span className='stu-ws__symbol-desc'>thể tích hình</span></div>
-									</div>
-								</>
-							)}
-						</>
-					)}
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a')} />
+												<span className='stu-ws__symbol-desc'>cơ số (a &gt; 0, a ≠ 1)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a^x')} />
+												<span className='stu-ws__symbol-desc'>hàm mũ</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('e \\approx 2.718')} />
+												<span className='stu-ws__symbol-desc'>số Euler — cơ số tự nhiên</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-04 */}
+								{resolvedMathSimId === 'MATH12-04' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Cơ số a</span>
+												<strong>{logBaseVal.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={1.01}
+												max={10}
+												step={0.1}
+												value={logBaseVal}
+												style={getTrackStyle(logBaseVal, 1.01, 10, '#4f6ef7')}
+												onChange={(e) => setLogBaseVal(+e.target.value)}
+											/>
+										</div>
 
-					{/* Chem Steps */}
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex('y = \\log_a x \\quad (a>0,\\, a\\neq 1,\\, x>0)')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\log_a(xy)=\\log_a x+\\log_a y')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\log_a\\dfrac{x}{y}=\\log_a x-\\log_a y \\quad \\log_a x^n = n\\log_a x',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span
+													className='stu-ws__symbol-sym'
+													dangerouslySetInnerHTML={renderTex('\\ln x = \\log_e x')}
+												/>
+												<span className='stu-ws__symbol-desc'>logarit tự nhiên (cơ số e)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('D = (0,+\\infty)')} />
+												<span className='stu-ws__symbol-desc'>tập xác định</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\log_a 1 = 0')} />
+												<span className='stu-ws__symbol-desc'>điểm qua (1, 0)</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-05 */}
+								{resolvedMathSimId === 'MATH12-05' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Hàm số</span>
+											</div>
+											<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 4 }}>
+												{['\\sin x', 'x^2', 'x^3 - 2x', '\\dfrac{e^x}{4}'].map((tex, i) => (
+													<button
+														key={i}
+														onClick={() => setIntFnIdx(i)}
+														className={`stu-ws__param-btn${intFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
+														dangerouslySetInnerHTML={renderTex(tex)}
+													/>
+												))}
+											</div>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>a (cận dưới)</span>
+												<strong>{intA.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.1}
+												value={intA}
+												style={getTrackStyle(intA, -4, 4, '#4f6ef7')}
+												onChange={(e) => setIntA(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>b (cận trên)</span>
+												<strong>{intB.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.1}
+												value={intB}
+												style={getTrackStyle(intB, -4, 4, '#4f6ef7')}
+												onChange={(e) => setIntB(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>N (số dải)</span>
+												<strong>{intN}</strong>
+											</div>
+											<input
+												type='range'
+												min={1}
+												max={20}
+												step={1}
+												value={intN}
+												style={getTrackStyle(intN, 1, 20, '#4ade80')}
+												onChange={(e) => setIntN(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\int_a^b f(x)\\,dx = F(b) - F(a)')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex("F'(x) = f(x) \\quad \\text{(F là nguyên hàm của f)}")}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\int_a^b f\\,dx = -\\int_b^a f\\,dx')}
+												style={{ marginBottom: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('F(x)')} />
+												<span className='stu-ws__symbol-desc'>nguyên hàm của f(x)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\int_a^b')} />
+												<span className='stu-ws__symbol-desc'>tích phân xác định từ a đến b</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('N')} />
+												<span className='stu-ws__symbol-desc'>số dải Riemann</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-06 */}
+								{resolvedMathSimId === 'MATH12-06' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Cặp hàm số</span>
+											</div>
+											<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 4 }}>
+												{[
+													'x^2 \\text{ và } x+2',
+													'\\sin x \\text{ và } \\cos x',
+													'x^3 \\text{ và } x',
+													'\\sqrt{x} \\text{ và } x^2',
+												].map((tex, i) => (
+													<button
+														key={i}
+														onClick={() => setAbFnIdx(i)}
+														className={`stu-ws__param-btn${abFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
+														dangerouslySetInnerHTML={renderTex(tex)}
+													/>
+												))}
+											</div>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex('S = \\int_a^b |f(x)-g(x)|\\,dx')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\text{Giao điểm: } f(x)=g(x) \\Rightarrow \\text{biên a, b}',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('f(x)')} />
+												<span className='stu-ws__symbol-desc'>đường cong trên (màu xanh)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('g(x)')} />
+												<span className='stu-ws__symbol-desc'>đường cong dưới (màu cam)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('S')} />
+												<span className='stu-ws__symbol-desc'>diện tích miền kẹp giữa hai đường</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-07 */}
+								{resolvedMathSimId === 'MATH12-07' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Phần thực a</span>
+												<strong>{cxRe.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={cxRe}
+												style={getTrackStyle(cxRe, -5, 5, '#4f6ef7')}
+												onChange={(e) => setCxRe(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Phần ảo b</span>
+												<strong>{cxIm.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={cxIm}
+												style={getTrackStyle(cxIm, -5, 5, '#4f6ef7')}
+												onChange={(e) => setCxIm(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex('z = a+bi = r(\\cos\\theta + i\\sin\\theta)')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('|z| = r = \\sqrt{a^2+b^2} \\quad \\arg(z)=\\theta')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('z^2 = (a^2-b^2)+2abi \\quad \\bar{z} = a-bi')}
+												style={{ marginBottom: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\text{Re}(z)=a')} />
+												<span className='stu-ws__symbol-desc'>phần thực</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\text{Im}(z)=b')} />
+												<span className='stu-ws__symbol-desc'>phần ảo</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span
+													className='stu-ws__symbol-sym'
+													dangerouslySetInnerHTML={renderTex('|z| \\cdot |w| = |zw|')}
+												/>
+												<span className='stu-ws__symbol-desc'>nhân trên mp phức = scale + quay</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-08 */}
+								{resolvedMathSimId === 'MATH12-08' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Loại mặt tròn xoay</span>
+											</div>
+											<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+												{['Mặt cầu', 'Mặt trụ', 'Mặt nón'].map((label, i) => (
+													<button
+														key={i}
+														onClick={() => setRevShape(i)}
+														className={`stu-ws__param-btn${revShape === i ? ' stu-ws__param-btn--active' : ''}`}
+														style={{ flex: 1 }}
+													>
+														{label}
+													</button>
+												))}
+											</div>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Bán kính R</span>
+												<strong>{revR.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={0.5}
+												max={4}
+												step={0.1}
+												value={revR}
+												style={getTrackStyle(revR, 0.5, 4, '#4f6ef7')}
+												onChange={(e) => setRevR(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Chiều cao H</span>
+												<strong>{revH.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={0.5}
+												max={6}
+												step={0.1}
+												value={revH}
+												style={getTrackStyle(revH, 0.5, 6, '#4f6ef7')}
+												onChange={(e) => setRevH(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'V_{\\text{cầu}}=\\tfrac{4}{3}\\pi R^3 \\quad S_{\\text{cầu}}=4\\pi R^2',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'V_{\\text{trụ}}=\\pi R^2 h \\quad S_{\\text{xq,trụ}}=2\\pi Rh',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'V_{\\text{nón}}=\\tfrac{1}{3}\\pi R^2 h \\quad S_{\\text{xq,nón}}=\\pi Rl',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('R')} />
+												<span className='stu-ws__symbol-desc'>bán kính đáy</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('h')} />
+												<span className='stu-ws__symbol-desc'>chiều cao</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('l=\\sqrt{R^2+h^2}')} />
+												<span className='stu-ws__symbol-desc'>đường sinh mặt nón</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-09 */}
+								{resolvedMathSimId === 'MATH12-09' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Loại khối</span>
+											</div>
+											<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+												{['Lăng trụ', 'Hình chóp', 'Chóp cụt'].map((label, i) => (
+													<button
+														key={i}
+														onClick={() => setPh3Type(i)}
+														className={`stu-ws__param-btn${ph3Type === i ? ' stu-ws__param-btn--active' : ''}`}
+														style={{ flex: 1 }}
+													>
+														{label}
+													</button>
+												))}
+											</div>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Số cạnh đáy n</span>
+												<strong>{ph3N}</strong>
+											</div>
+											<input
+												type='range'
+												min={3}
+												max={8}
+												step={1}
+												value={ph3N}
+												style={getTrackStyle(ph3N, 3, 8, '#4ade80')}
+												onChange={(e) => setPh3N(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Bán kính R</span>
+												<strong>{ph3R.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={0.5}
+												max={4}
+												step={0.1}
+												value={ph3R}
+												style={getTrackStyle(ph3R, 0.5, 4, '#4f6ef7')}
+												onChange={(e) => setPh3R(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Chiều cao H</span>
+												<strong>{ph3H.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={0.5}
+												max={6}
+												step={0.1}
+												value={ph3H}
+												style={getTrackStyle(ph3H, 0.5, 6, '#4f6ef7')}
+												onChange={(e) => setPh3H(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Bán kính trên r</span>
+												<strong>{ph3R2.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={0.1}
+												max={3}
+												step={0.1}
+												value={ph3R2}
+												style={getTrackStyle(ph3R2, 0.1, 3, '#4f6ef7')}
+												onChange={(e) => setPh3R2(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex('V_{\\text{lăng trụ}} = S_{\\text{đáy}} \\cdot h')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('V_{\\text{chóp}} = \\tfrac{1}{3}S_{\\text{đáy}} \\cdot h')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'V_{\\text{chóp cụt}} = \\tfrac{h}{3}(S_1+S_2+\\sqrt{S_1 S_2})',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span
+													className='stu-ws__symbol-sym'
+													dangerouslySetInnerHTML={renderTex(
+														'S_{n\\text{-giác}}=\\tfrac{nR^2}{2}\\sin\\tfrac{2\\pi}{n}',
+													)}
+												/>
+												<span className='stu-ws__symbol-desc'>diện tích đa giác đều n cạnh</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('h')} />
+												<span className='stu-ws__symbol-desc'>chiều cao khối</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('R, r')} />
+												<span className='stu-ws__symbol-desc'>bán kính đáy lớn và đáy nhỏ (chóp cụt)</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-10 */}
+								{resolvedMathSimId === 'MATH12-10' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>nx (hệ số x)</span>
+												<strong>{plNx.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.5}
+												value={plNx}
+												style={getTrackStyle(plNx, -3, 3, '#4f6ef7')}
+												onChange={(e) => setPlNx(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>ny (hệ số y)</span>
+												<strong>{plNy.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.5}
+												value={plNy}
+												style={getTrackStyle(plNy, -3, 3, '#4f6ef7')}
+												onChange={(e) => setPlNy(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>nz (hệ số z)</span>
+												<strong>{plNz.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.5}
+												value={plNz}
+												style={getTrackStyle(plNz, -3, 3, '#4f6ef7')}
+												onChange={(e) => setPlNz(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>d (hằng số)</span>
+												<strong>{plD.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-5}
+												max={5}
+												step={0.5}
+												value={plD}
+												style={getTrackStyle(plD, -5, 5, '#4f6ef7')}
+												onChange={(e) => setPlD(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'ax+by+cz+d=0 \\quad \\vec{n}=(a,b,c) \\text{ là pháp vectơ}',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'd(M_0,P) = \\dfrac{|ax_0+by_0+cz_0+d|}{\\sqrt{a^2+b^2+c^2}}',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{n}=(a,b,c)')} />
+												<span className='stu-ws__symbol-desc'>pháp vectơ mặt phẳng</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('d(M,P)')} />
+												<span className='stu-ws__symbol-desc'>khoảng cách từ điểm M đến mặt phẳng P</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span
+													className='stu-ws__symbol-sym'
+													dangerouslySetInnerHTML={renderTex('d(O,P)=|d|/|\\vec{n}|')}
+												/>
+												<span className='stu-ws__symbol-desc'>khoảng cách từ gốc đến mặt phẳng</span>
+											</div>
+										</div>
+									</>
+								)}
+								{/* MATH12-11 */}
+								{resolvedMathSimId === 'MATH12-11' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>M.x₀</span>
+												<strong>{ln3Mx.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.5}
+												value={ln3Mx}
+												style={getTrackStyle(ln3Mx, -3, 3, '#4f6ef7')}
+												onChange={(e) => setLn3Mx(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>M.y₀</span>
+												<strong>{ln3My.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.5}
+												value={ln3My}
+												style={getTrackStyle(ln3My, -3, 3, '#4f6ef7')}
+												onChange={(e) => setLn3My(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>M.z₀</span>
+												<strong>{ln3Mz.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.5}
+												value={ln3Mz}
+												style={getTrackStyle(ln3Mz, -3, 3, '#4f6ef7')}
+												onChange={(e) => setLn3Mz(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>u.a</span>
+												<strong>{ln3Ux.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={ln3Ux}
+												style={getTrackStyle(ln3Ux, -4, 4, '#f97316')}
+												onChange={(e) => setLn3Ux(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>u.b</span>
+												<strong>{ln3Uy.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={ln3Uy}
+												style={getTrackStyle(ln3Uy, -4, 4, '#f97316')}
+												onChange={(e) => setLn3Uy(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>u.c</span>
+												<strong>{ln3Uz.toFixed(2)}</strong>
+											</div>
+											<input
+												type='range'
+												min={-4}
+												max={4}
+												step={0.5}
+												value={ln3Uz}
+												style={getTrackStyle(ln3Uz, -4, 4, '#f97316')}
+												onChange={(e) => setLn3Uz(+e.target.value)}
+											/>
+										</div>
+
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex('\\dfrac{x-x_0}{a}=\\dfrac{y-y_0}{b}=\\dfrac{z-z_0}{c}=t')}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\vec{r}(t)=M_0+t\\vec{u} \\quad \\vec{u}=(a,b,c) \\text{ vtcp}',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'd(O,d)=\\dfrac{|\\overrightarrow{OM_0}\\times\\vec{u}|}{|\\vec{u}|}',
+												)}
+												style={{ marginBottom: '6px' }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('M_0(x_0,y_0,z_0)')} />
+												<span className='stu-ws__symbol-desc'>điểm thuộc đường thẳng</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{u}=(a,b,c)')} />
+												<span className='stu-ws__symbol-desc'>vectơ chỉ phương (vtcp)</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span
+													className='stu-ws__symbol-sym'
+													dangerouslySetInnerHTML={renderTex('t \\in \\mathbb{R}')}
+												/>
+												<span className='stu-ws__symbol-desc'>tham số</span>
+											</div>
+										</div>
+									</>
+								)}
+
+								{/* MATH11-02: Vòng tròn đơn vị */}
+								{resolvedMathSimId === 'MATH11-02' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Góc θ (độ)</span>
+												<span className='stu-ws__param-val'>{ucAngle}°</span>
+											</div>
+											<input
+												type='range'
+												min={0}
+												max={360}
+												step={1}
+												value={ucAngle}
+												style={getTrackStyle(ucAngle, 0, 360, '#4f6ef7')}
+												onChange={(e) => setUcAngle(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Giá trị a (sin x = a)</span>
+												<span className='stu-ws__param-val'>{ucTarget.toFixed(2)}</span>
+											</div>
+											<input
+												type='range'
+												min={-1}
+												max={1}
+												step={0.01}
+												value={ucTarget}
+												style={getTrackStyle(ucTarget, -1, 1, '#f59e0b')}
+												onChange={(e) => setUcTarget(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\sin x = a,\\ -1\\le a\\le 1')} />
+											<div dangerouslySetInnerHTML={renderTex('x = \\arcsin a + 2k\\pi')} style={{ marginTop: 6 }} />
+											<div
+												dangerouslySetInnerHTML={renderTex('x = \\pi - \\arcsin a + 2k\\pi')}
+												style={{ marginTop: 6 }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\theta')} />
+												<span className='stu-ws__symbol-desc'>góc lượng giác</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\sin\\theta')} />
+												<span className='stu-ws__symbol-desc'>tung độ điểm P trên vòng tròn</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('k\\in\\mathbb{Z}')} />
+												<span className='stu-ws__symbol-desc'>số nguyên, chỉ các chu kỳ lặp</span>
+											</div>
+										</div>
+									</>
+								)}
+
+								{/* MATH11-03: Tổ hợp & Nhị thức Newton */}
+								{resolvedMathSimId === 'MATH11-03' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>n</span>
+												<span className='stu-ws__param-val'>{combN}</span>
+											</div>
+											<input
+												type='range'
+												min={0}
+												max={10}
+												step={1}
+												value={combN}
+												style={getTrackStyle(combN, 0, 10, '#4f6ef7')}
+												onChange={(e) => {
+													const v = +e.target.value;
+													setCombN(v);
+													if (combK > v) setCombK(v);
+												}}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>k</span>
+												<span className='stu-ws__param-val'>{combK}</span>
+											</div>
+											<input
+												type='range'
+												min={0}
+												max={combN}
+												step={1}
+												value={combK}
+												style={getTrackStyle(combK, 0, combN, '#f59e0b')}
+												onChange={(e) => setCombK(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('P_n = n!')} />
+											<div dangerouslySetInnerHTML={renderTex('A_n^k = \\frac{n!}{(n-k)!}')} style={{ marginTop: 6 }} />
+											<div
+												dangerouslySetInnerHTML={renderTex('C_n^k = \\frac{n!}{k!(n-k)!}')}
+												style={{ marginTop: 6 }}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex('(a+b)^n=\\sum_{k=0}^{n}C_n^k a^{n-k}b^k')}
+												style={{ marginTop: 6 }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('P_n')} />
+												<span className='stu-ws__symbol-desc'>hoán vị của n phần tử</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A_n^k')} />
+												<span className='stu-ws__symbol-desc'>chỉnh hợp chập k của n phần tử</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('C_n^k')} />
+												<span className='stu-ws__symbol-desc'>tổ hợp / hệ số nhị thức</span>
+											</div>
+										</div>
+									</>
+								)}
+
+								{/* MATH11-04: Xác suất sự kiện */}
+								{resolvedMathSimId === 'MATH11-04' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span style={{ color: '#3b82f6' }}>P(A)</span>
+												<span className='stu-ws__param-val'>{probPA.toFixed(2)}</span>
+											</div>
+											<input
+												type='range'
+												min={0.05}
+												max={0.9}
+												step={0.01}
+												value={probPA}
+												style={getTrackStyle(probPA, 0.05, 0.9, '#3b82f6')}
+												onChange={(e) => setProbPA(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span style={{ color: '#8b5cf6' }}>P(B)</span>
+												<span className='stu-ws__param-val'>{probPB.toFixed(2)}</span>
+											</div>
+											<input
+												type='range'
+												min={0.05}
+												max={0.9}
+												step={0.01}
+												value={probPB}
+												style={getTrackStyle(probPB, 0.05, 0.9, '#8b5cf6')}
+												onChange={(e) => setProbPB(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>P(A∩B)</span>
+												<span className='stu-ws__param-val'>{probPAB.toFixed(2)}</span>
+											</div>
+											<input
+												type='range'
+												min={0}
+												max={Math.min(probPA, probPB)}
+												step={0.01}
+												value={probPAB}
+												style={getTrackStyle(probPAB, 0, Math.min(probPA, probPB), '#6366f1')}
+												onChange={(e) => setProbPAB(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('P(A\\cup B)=P(A)+P(B)-P(A\\cap B)')} />
+											<div
+												dangerouslySetInnerHTML={renderTex('P(A|B)=\\frac{P(A\\cap B)}{P(B)}')}
+												style={{ marginTop: 6 }}
+											/>
+											<div dangerouslySetInnerHTML={renderTex('P(\\bar{A})=1-P(A)')} style={{ marginTop: 6 }} />
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A\\cap B')} />
+												<span className='stu-ws__symbol-desc'>giao — cả A và B xảy ra</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A\\cup B')} />
+												<span className='stu-ws__symbol-desc'>hợp — A hoặc B xảy ra</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('P(A|B)')} />
+												<span className='stu-ws__symbol-desc'>xác suất có điều kiện</span>
+											</div>
+										</div>
+									</>
+								)}
+
+								{/* MATH11-05: Giới hạn dãy số */}
+								{resolvedMathSimId === 'MATH11-05' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Chọn dãy số</span>
+											</div>
+											<div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
+												{[
+													'a_n = \\frac{1}{n} \\to 0',
+													'a_n = \\frac{(-1)^n}{n} \\to 0',
+													'a_n = \\frac{n}{n+1} \\to 1',
+													'a_n = \\frac{2n+1}{n+1} \\to 2',
+												].map((tex, i) => (
+													<button
+														key={i}
+														onClick={() => setSeqType(i)}
+														className={`stu-ws__param-btn${seqType === i ? ' stu-ws__param-btn--active' : ''}`}
+														dangerouslySetInnerHTML={renderTex(tex)}
+													/>
+												))}
+											</div>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>ε (độ chính xác)</span>
+												<span className='stu-ws__param-val'>{seqEps.toFixed(2)}</span>
+											</div>
+											<input
+												type='range'
+												min={0.05}
+												max={1.0}
+												step={0.05}
+												value={seqEps}
+												style={getTrackStyle(seqEps, 0.05, 1.0, '#f59e0b')}
+												onChange={(e) => setSeqEps(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\lim_{n\\to\\infty}a_n=L')} />
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\forall\\varepsilon>0\\ \\exists N: n>N\\Rightarrow|a_n-L|<\\varepsilon',
+												)}
+												style={{ marginTop: 6 }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a_n')} />
+												<span className='stu-ws__symbol-desc'>số hạng thứ n của dãy số</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('L')} />
+												<span className='stu-ws__symbol-desc'>giới hạn của dãy số</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\varepsilon')} />
+												<span className='stu-ws__symbol-desc'>epsilon — độ chính xác cho trước</span>
+											</div>
+										</div>
+									</>
+								)}
+
+								{/* MATH11-06: Giới hạn hàm số & hàm liên tục */}
+								{resolvedMathSimId === 'MATH11-06' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Chọn hàm số</span>
+											</div>
+											<div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
+												{[
+													'\\dfrac{x^2-1}{x-1} \\text{ (gián đoạn bỏ được)}',
+													'\\text{Hàm bậc thang (gián đoạn nhảy)}',
+													'\\dfrac{|x|}{x} \\text{ (gián đoạn tại 0)}',
+													'\\dfrac{\\sin x}{x} \\text{ (gián đoạn tại 0)}',
+												].map((tex, i) => (
+													<button
+														key={i}
+														onClick={() => setLimFuncType(i)}
+														className={`stu-ws__param-btn${limFuncType === i ? ' stu-ws__param-btn--active' : ''}`}
+														dangerouslySetInnerHTML={renderTex(tex)}
+													/>
+												))}
+											</div>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a}f(x)=L')} />
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'f\\ \\text{liên tục tại}\\ a\\Leftrightarrow\\lim_{x\\to a}f(x)=f(a)',
+												)}
+												style={{ marginTop: 6 }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a^-}')} />
+												<span className='stu-ws__symbol-desc'>giới hạn trái</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a^+}')} />
+												<span className='stu-ws__symbol-desc'>giới hạn phải</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('f(a)')} />
+												<span className='stu-ws__symbol-desc'>giá trị hàm số tại a</span>
+											</div>
+										</div>
+									</>
+								)}
+
+								{/* MATH11-07: Đạo hàm & tiếp tuyến */}
+								{resolvedMathSimId === 'MATH11-07' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Hàm số f(x)</span>
+											</div>
+											<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 4 }}>
+												{['x^2', 'x^3', '\\sin x', 'x^3 - 3x'].map((tex, i) => (
+													<button
+														key={i}
+														onClick={() => setDerFnIdx(i)}
+														className={`stu-ws__param-btn${derFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
+														dangerouslySetInnerHTML={renderTex(tex)}
+													/>
+												))}
+											</div>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>x₀ (điểm tiếp xúc)</span>
+												<span className='stu-ws__param-val'>{derX0.toFixed(1)}</span>
+											</div>
+											<input
+												type='range'
+												min={-3}
+												max={3}
+												step={0.1}
+												value={derX0}
+												style={getTrackStyle(derX0, -3, 3, '#fb923c')}
+												onChange={(e) => setDerX0(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>h (cát tuyến → tiếp tuyến)</span>
+												<span className='stu-ws__param-val'>{derH.toFixed(2)}</span>
+											</div>
+											<input
+												type='range'
+												min={0.01}
+												max={2}
+												step={0.01}
+												value={derH}
+												style={getTrackStyle(derH, 0.01, 2, '#fbbf24')}
+												onChange={(e) => setDerH(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex("f'(x_0)=\\lim_{h\\to 0}\\frac{f(x_0+h)-f(x_0)}{h}")} />
+											<div dangerouslySetInnerHTML={renderTex("y=f(x_0)+f'(x_0)(x-x_0)")} style={{ marginTop: 6 }} />
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f'(x_0)")} />
+												<span className='stu-ws__symbol-desc'>đạo hàm của f tại x₀</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('h')} />
+												<span className='stu-ws__symbol-desc'>gia số của biến độc lập</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("k=f'(x_0)")} />
+												<span className='stu-ws__symbol-desc'>hệ số góc tiếp tuyến</span>
+											</div>
+										</div>
+									</>
+								)}
+
+								{/* MATH11-08: Phép dời hình & phép đồng dạng */}
+								{resolvedMathSimId === 'MATH11-08' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Phép biến đổi</span>
+											</div>
+											<div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
+												{[
+													'\\text{Tịnh tiến } T_{\\vec{v}} (t_x, t_y)',
+													'\\text{Đối xứng trục } D_{Ox}',
+													'\\text{Đối xứng trục } D_{Oy}',
+													'\\text{Đối xứng tâm } D_O',
+													'\\text{Phép quay } R_{O, \\alpha}',
+												].map((tex, i) => (
+													<button
+														key={i}
+														onClick={() => setTransType(i)}
+														className={`stu-ws__param-btn${transType === i ? ' stu-ws__param-btn--active' : ''}`}
+														dangerouslySetInnerHTML={renderTex(tex)}
+													/>
+												))}
+											</div>
+										</div>
+										{transType === 0 && (
+											<>
+												<div className='stu-ws__param stu-ws__param--v0'>
+													<div className='stu-ws__param-row'>
+														<span>tx</span>
+														<span className='stu-ws__param-val'>{transTx.toFixed(1)}</span>
+													</div>
+													<input
+														type='range'
+														min={-5}
+														max={5}
+														step={0.5}
+														value={transTx}
+														style={getTrackStyle(transTx, -5, 5, '#4f6ef7')}
+														onChange={(e) => setTransTx(+e.target.value)}
+													/>
+												</div>
+												<div className='stu-ws__param stu-ws__param--v0'>
+													<div className='stu-ws__param-row'>
+														<span>ty</span>
+														<span className='stu-ws__param-val'>{transTy.toFixed(1)}</span>
+													</div>
+													<input
+														type='range'
+														min={-5}
+														max={5}
+														step={0.5}
+														value={transTy}
+														style={getTrackStyle(transTy, -5, 5, '#4f6ef7')}
+														onChange={(e) => setTransTy(+e.target.value)}
+													/>
+												</div>
+											</>
+										)}
+										{transType === 4 && (
+											<div className='stu-ws__param stu-ws__param--v0'>
+												<div className='stu-ws__param-row'>
+													<span>Góc quay α</span>
+													<span className='stu-ws__param-val'>{transAngle}°</span>
+												</div>
+												<input
+													type='range'
+													min={0}
+													max={360}
+													step={5}
+													value={transAngle}
+													style={getTrackStyle(transAngle, 0, 360, '#4f6ef7')}
+													onChange={(e) => setTransAngle(+e.target.value)}
+												/>
+											</div>
+										)}
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div dangerouslySetInnerHTML={renderTex("T_{\\vec{v}}(M)=M':\\ M'=M+\\vec{v}")} />
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													"R_{O,\\alpha}:\\ (x',y')=(x\\cos\\alpha-y\\sin\\alpha,\\,x\\sin\\alpha+y\\cos\\alpha)",
+												)}
+												style={{ marginTop: 6 }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('T_{\\vec{v}}')} />
+												<span className='stu-ws__symbol-desc'>phép tịnh tiến theo vectơ v</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\Phi_O')} />
+												<span className='stu-ws__symbol-desc'>phép đối xứng tâm O</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('R_{O,\\alpha}')} />
+												<span className='stu-ws__symbol-desc'>phép quay tâm O góc α</span>
+											</div>
+										</div>
+									</>
+								)}
+
+								{/* MATH11-09: Đường thẳng & mặt phẳng */}
+								{resolvedMathSimId === 'MATH11-09' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Góc nghiêng α (°)</span>
+												<span className='stu-ws__param-val'>{planeAlpha}°</span>
+											</div>
+											<input
+												type='range'
+												min={0}
+												max={60}
+												step={1}
+												value={planeAlpha}
+												style={getTrackStyle(planeAlpha, 0, 60, '#3b82f6')}
+												onChange={(e) => setPlaneAlpha(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Góc nghiêng β (°)</span>
+												<span className='stu-ws__param-val'>{planeBeta}°</span>
+											</div>
+											<input
+												type='range'
+												min={0}
+												max={60}
+												step={1}
+												value={planeBeta}
+												style={getTrackStyle(planeBeta, 0, 60, '#fb923c')}
+												onChange={(e) => setPlaneBeta(+e.target.value)}
+											/>
+										</div>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Quan hệ</span>
+											</div>
+											<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+												{['Cắt nhau', 'Song song'].map((label, i) => (
+													<button
+														key={i}
+														onClick={() => setPlanesParallel(i)}
+														className={`stu-ws__param-btn${planesParallel === i ? ' stu-ws__param-btn--active' : ''}`}
+														style={{ flex: 1 }}
+													>
+														{label}
+													</button>
+												))}
+											</div>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\alpha\\parallel\\beta\\Leftrightarrow\\vec{n}_1\\parallel\\vec{n}_2',
+												)}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\cos\\theta=\\frac{|\\vec{n}_1\\cdot\\vec{n}_2|}{|\\vec{n}_1||\\vec{n}_2|}',
+												)}
+												style={{ marginTop: 6 }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{n}')} />
+												<span className='stu-ws__symbol-desc'>vectơ pháp tuyến của mặt phẳng</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span
+													className='stu-ws__symbol-sym'
+													dangerouslySetInnerHTML={renderTex('\\alpha\\cap\\beta')}
+												/>
+												<span className='stu-ws__symbol-desc'>giao tuyến của hai mặt phẳng</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\theta')} />
+												<span className='stu-ws__symbol-desc'>góc nhị diện giữa hai mặt phẳng</span>
+											</div>
+										</div>
+									</>
+								)}
+
+								{/* MATH11-10: Quan hệ vuông góc trong không gian */}
+								{resolvedMathSimId === 'MATH11-10' && (
+									<>
+										{[
+											{ label: 'nx', val: perpNx, set: setPerpNx },
+											{ label: 'ny', val: perpNy, set: setPerpNy },
+											{ label: 'nz', val: perpNz, set: setPerpNz },
+										].map(({ label, val, set }) => (
+											<div key={label} className='stu-ws__param stu-ws__param--v0'>
+												<div className='stu-ws__param-row'>
+													<span>Pháp tuyến {label}</span>
+													<span className='stu-ws__param-val'>{val.toFixed(1)}</span>
+												</div>
+												<input
+													type='range'
+													min={-1}
+													max={1}
+													step={0.1}
+													value={val}
+													style={getTrackStyle(val, -1, 1, '#fbbf24')}
+													onChange={(e) => set(+e.target.value)}
+												/>
+											</div>
+										))}
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'd\\perp\\alpha\\Leftrightarrow d\\perp a,d\\perp b\\ (a,b\\subset\\alpha)',
+												)}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'\\alpha\\perp\\beta\\Leftrightarrow\\exists d\\subset\\alpha:\\ d\\perp\\beta',
+												)}
+												style={{ marginTop: 6 }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('d\\perp\\alpha')} />
+												<span className='stu-ws__symbol-desc'>đường thẳng d vuông góc mặt phẳng α</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span
+													className='stu-ws__symbol-sym'
+													dangerouslySetInnerHTML={renderTex('\\alpha\\perp\\beta')}
+												/>
+												<span className='stu-ws__symbol-desc'>hai mặt phẳng vuông góc nhau</span>
+											</div>
+										</div>
+									</>
+								)}
+
+								{/* MATH11-11: Hình lăng trụ & hình chóp */}
+								{resolvedMathSimId === 'MATH11-11' && (
+									<>
+										<div className='stu-ws__param stu-ws__param--v0'>
+											<div className='stu-ws__param-row'>
+												<span>Loại hình</span>
+											</div>
+											<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
+												{['Lăng trụ', 'Hình chóp'].map((label, i) => (
+													<button
+														key={i}
+														onClick={() => setPolyType11(i)}
+														className={`stu-ws__param-btn${polyType11 === i ? ' stu-ws__param-btn--active' : ''}`}
+														style={{ flex: 1 }}
+													>
+														{label}
+													</button>
+												))}
+											</div>
+										</div>
+										{[
+											{ label: 'Số cạnh đáy (n)', val: polyN11, set: setPolyN11, min: 3, max: 6, step: 1 },
+											{ label: 'Bán kính đáy (r)', val: polyBaseR, set: setPolyBaseR, min: 0.5, max: 2.5, step: 0.1 },
+											{ label: 'Chiều cao (h)', val: polyH11, set: setPolyH11, min: 0.5, max: 4, step: 0.1 },
+										].map(({ label, val, set, min, max, step }) => (
+											<div key={label} className='stu-ws__param stu-ws__param--v0'>
+												<div className='stu-ws__param-row'>
+													<span>{label}</span>
+													<span className='stu-ws__param-val'>{val.toFixed(step < 1 ? 1 : 0)}</span>
+												</div>
+												<input
+													type='range'
+													min={min}
+													max={max}
+													step={step}
+													value={val}
+													style={getTrackStyle(val, min, max, '#4f6ef7')}
+													onChange={(e) => set(+e.target.value)}
+												/>
+											</div>
+										))}
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Công thức & Lý thuyết</span>
+										</div>
+										<div className='stu-ws__formula-box'>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													polyType11 === 0 ? 'V=S_{đáy}\\cdot h' : 'V=\\tfrac{1}{3}S_{đáy}\\cdot h',
+												)}
+											/>
+											<div
+												dangerouslySetInnerHTML={renderTex(
+													'S_{n\\text{-giác đều}}=\\tfrac{n\\cdot r^2\\sin(2\\pi/n)}{2}',
+												)}
+												style={{ marginTop: 6 }}
+											/>
+										</div>
+										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
+											<div className='stu-ws__section-label-bar' />
+											<span>Ký hiệu</span>
+										</div>
+										<div className='stu-ws__symbols-list'>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('S_{đáy}')} />
+												<span className='stu-ws__symbol-desc'>diện tích đa giác đều ở đáy</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('h')} />
+												<span className='stu-ws__symbol-desc'>chiều cao của hình</span>
+											</div>
+											<div className='stu-ws__symbol-item'>
+												<span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('V')} />
+												<span className='stu-ws__symbol-desc'>thể tích hình</span>
+											</div>
+										</div>
+									</>
+								)}
+							</>
+						)}
+
+						{/* Chem Steps */}
 						{subject === 'chem' && (
 							<>
 								<div className='stu-ws__section-label'>Các bước hướng dẫn</div>
@@ -11077,60 +12681,60 @@ const Workspace: React.FC = () => {
 								<div className={`stu-ws__sim-pill stu-ws__sim-pill--${meta.className}`}>
 									{subject === 'physics' &&
 										(simId === 'SIM-21'
-										? `v₀ ${kinV0} m/s  ·  a ${kinA} m/s²`
-										: simId === 'SIM-22'
-											? `h ${freefallH} m  ·  g ${f(freefallG)} m/s²`
-											: simId === 'SIM-23'
-												? `h ${horizH} m  ·  v₀ ${horizV0} m/s`
-												: simId === 'SIM-24'
-													? `F ${newtonF} N  ·  m ${newtonM} kg  ·  μ ${newtonMu}`
-													: simId === 'SIM-25'
-														? `α ${inclineAlpha}°  ·  μ ${inclineMu}  ·  m ${inclineM} kg`
-														: simId === 'SIM-26'
-															? `k ${springK} N/m  ·  m ${springM} kg  ·  A ${springA} m`
-															: simId === 'SIM-27'
-																? `L ${pendulumL} m  ·  θ₀ ${pendulumTh}°  ·  g ${pendulumG}`
-																: simId === 'SIM-28'
-																	? `r ${circularR} m  ·  ω ${circularW} rad/s  ·  m ${circularM} kg`
-																	: simId === 'SIM-29'
-																		? `m₁ ${collisionM1} kg  ·  m₂ ${collisionM2} kg  ·  e ${collisionE}`
-																		: simId === 'SIM-30'
-																			? `h₀ ${energyH0} m  ·  m ${energyM} kg`
-																			: simId === 'SIM-31'
-																				? `V ${boyleV} L  ·  p ${(10 / boyleV).toFixed(1)} atm`
-																				: simId === 'SIM-32'
-																					? `T ${charlesT} K  ·  V ${(charlesT * 0.01).toFixed(2)} L`
-																					: simId === 'SIM-33'
-																						? `T ${kineticT} K  ·  N ${kineticN} hạt`
-																						: simId === 'SIM-34'
-																							? `Công suất P ${stateChangeP} W`
-																							: simId === 'SIM-35'
-																								? `B ${magForceB.toFixed(1)} T  ·  I ${magForceI.toFixed(1)} A  ·  L ${magForceL.toFixed(1)} m`
-																								: simId === 'SIM-36'
-																									? `B ${lorentzB.toFixed(1)} T  ·  v ${lorentzV.toFixed(1)} m/s  ·  q ${lorentzQ.toFixed(1)} C  ·  m ${lorentzM.toFixed(1)} kg`
-																									: simId === 'SIM-37'
-																										? `Tốc độ v ${inductionSpd.toFixed(1)} m/s`
-																										: simId === 'SIM-38'
-																											? `ω ${acGenW.toFixed(1)} rad/s  ·  B ${acGenB.toFixed(1)} T  ·  N ${acGenN} vòng`
-																											: simId === 'SIM-39'
-																												? `T ${radioactiveT.toFixed(1)}s  ·  N₀ ${radioactiveN0} hạt`
-																												: simId === 'SIM-40'
-																													? `Loại: ${nuclearType === 0 ? 'Phân hạch' : 'Nhiệt hạch'}`
-																													: simId === 'SIM-41'
-																														? `Số khối A ${bindingEnergyA}`
-																														: `θ ${phAngle}°  ·  v ${phVel} m/s  ·  g ${f(phGrav)}`)}
+											? `v₀ ${kinV0} m/s  ·  a ${kinA} m/s²`
+											: simId === 'SIM-22'
+												? `h ${freefallH} m  ·  g ${f(freefallG)} m/s²`
+												: simId === 'SIM-23'
+													? `h ${horizH} m  ·  v₀ ${horizV0} m/s`
+													: simId === 'SIM-24'
+														? `F ${newtonF} N  ·  m ${newtonM} kg  ·  μ ${newtonMu}`
+														: simId === 'SIM-25'
+															? `α ${inclineAlpha}°  ·  μ ${inclineMu}  ·  m ${inclineM} kg`
+															: simId === 'SIM-26'
+																? `k ${springK} N/m  ·  m ${springM} kg  ·  A ${springA} m`
+																: simId === 'SIM-27'
+																	? `L ${pendulumL} m  ·  θ₀ ${pendulumTh}°  ·  g ${pendulumG}`
+																	: simId === 'SIM-28'
+																		? `r ${circularR} m  ·  ω ${circularW} rad/s  ·  m ${circularM} kg`
+																		: simId === 'SIM-29'
+																			? `m₁ ${collisionM1} kg  ·  m₂ ${collisionM2} kg  ·  e ${collisionE}`
+																			: simId === 'SIM-30'
+																				? `h₀ ${energyH0} m  ·  m ${energyM} kg`
+																				: simId === 'SIM-31'
+																					? `V ${boyleV} L  ·  p ${(10 / boyleV).toFixed(1)} atm`
+																					: simId === 'SIM-32'
+																						? `T ${charlesT} K  ·  V ${(charlesT * 0.01).toFixed(2)} L`
+																						: simId === 'SIM-33'
+																							? `T ${kineticT} K  ·  N ${kineticN} hạt`
+																							: simId === 'SIM-34'
+																								? `Công suất P ${stateChangeP} W`
+																								: simId === 'SIM-35'
+																									? `B ${magForceB.toFixed(1)} T  ·  I ${magForceI.toFixed(1)} A  ·  L ${magForceL.toFixed(1)} m`
+																									: simId === 'SIM-36'
+																										? `B ${lorentzB.toFixed(1)} T  ·  v ${lorentzV.toFixed(1)} m/s  ·  q ${lorentzQ.toFixed(1)} C  ·  m ${lorentzM.toFixed(1)} kg`
+																										: simId === 'SIM-37'
+																											? `Tốc độ v ${inductionSpd.toFixed(1)} m/s`
+																											: simId === 'SIM-38'
+																												? `ω ${acGenW.toFixed(1)} rad/s  ·  B ${acGenB.toFixed(1)} T  ·  N ${acGenN} vòng`
+																												: simId === 'SIM-39'
+																													? `T ${radioactiveT.toFixed(1)}s  ·  N₀ ${radioactiveN0} hạt`
+																													: simId === 'SIM-40'
+																														? `Loại: ${nuclearType === 0 ? 'Phân hạch' : 'Nhiệt hạch'}`
+																														: simId === 'SIM-41'
+																															? `Số khối A ${bindingEnergyA}`
+																															: `θ ${phAngle}°  ·  v ${phVel} m/s  ·  g ${f(phGrav)}`)}
 									{subject === 'math' &&
 										(simId === 'SIM-08' || simId === 'SIM-08-math' || !simId
-										? `a ${f(mA)}  ·  b ${f(mB)}  ·  c ${f(mC)}`
-										: simId === 'SIM-16'
-											? `θ ${mAngle}°  ·  v₀ ${mVel} m/s`
-											: simId === 'SIM-17'
-												? `Hệ BPT bậc nhất 2 ẩn`
-												: simId === 'SIM-18'
-													? `Giác kế  ·  a ${triA}m  ·  α ${triAlpha}°`
-													: simId === 'SIM-19'
-														? `Bút vẽ  ·  a ${conicA.toFixed(1)}  ·  c ${conicC.toFixed(1)}`
-														: `Thống kê mẫu số liệu`)}
+											? `a ${f(mA)}  ·  b ${f(mB)}  ·  c ${f(mC)}`
+											: simId === 'SIM-16'
+												? `θ ${mAngle}°  ·  v₀ ${mVel} m/s`
+												: simId === 'SIM-17'
+													? `Hệ BPT bậc nhất 2 ẩn`
+													: simId === 'SIM-18'
+														? `Giác kế  ·  a ${triA}m  ·  α ${triAlpha}°`
+														: simId === 'SIM-19'
+															? `Bút vẽ  ·  a ${conicA.toFixed(1)}  ·  c ${conicC.toFixed(1)}`
+															: `Thống kê mẫu số liệu`)}
 								</div>
 							)}
 							<div
@@ -11142,815 +12746,810 @@ const Workspace: React.FC = () => {
 								onMouseUp={handleSimMouseUp}
 								onMouseLeave={handleSimMouseUp}
 							>
-								<div style={{
-									position: 'absolute',
-									top: 0,
-									left: 0,
-									right: 0,
-									bottom: 0,
-									transform: `translate(${simPan.x}px, ${simPan.y}px) scale(${simZoom})`,
-									transformOrigin: '50% 50%',
-									willChange: 'transform',
-								}}>
-							{subject === 'physics' ? (
-								simId === 'SIM-21' ? (
-									<KinematicsSimulation
-										config={{
-											simulation_id: 'SIM-21',
-											subject: 'physics',
-											topic: 'kinematics',
-											parameters: [
-												{ key: 'v0', value: kinV0, unit: 'm/s', label: 'Vận tốc đầu' },
-												{ key: 'a', value: kinA, unit: 'm/s²', label: 'Gia tốc' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-										onStep={(t, x, v) => {
-											setLiveT(t);
-											setLiveX(x);
-											setLiveV(v);
-										}}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-22' ? (
-									<FreefallSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-22',
-											subject: 'physics',
-											topic: 'freefall',
-											parameters: [
-												{ key: 'h', value: freefallH, unit: 'm', label: 'Độ cao thả' },
-												{ key: 'g', value: freefallG, unit: 'm/s²', label: 'Gia tốc' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-										onStep={(t, y, v) => {
-											setLiveT(t);
-											setLiveX(y);
-											setLiveV(v);
-										}}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-23' ? (
-									<HorizontalSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-23',
-											subject: 'physics',
-											topic: 'horizontal',
-											parameters: [
-												{ key: 'h', value: horizH, unit: 'm', label: 'Độ cao' },
-												{ key: 'v0', value: horizV0, unit: 'm/s', label: 'Vận tốc đầu' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-24' ? (
-									<Newton2Simulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-24',
-											subject: 'physics',
-											topic: 'newton2',
-											parameters: [
-												{ key: 'F', value: newtonF, unit: 'N', label: 'Lực kéo' },
-												{ key: 'm', value: newtonM, unit: 'kg', label: 'Khối lượng xe' },
-												{ key: 'mu', value: newtonMu, unit: '', label: 'Hệ số ma sát' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-25' ? (
-									<InclineSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-25',
-											subject: 'physics',
-											topic: 'incline',
-											parameters: [
-												{ key: 'alpha', value: inclineAlpha, unit: '°', label: 'Góc nghiêng' },
-												{ key: 'mu', value: inclineMu, unit: '', label: 'Hệ số ma sát' },
-												{ key: 'm', value: inclineM, unit: 'kg', label: 'Khối lượng' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-26' ? (
-									<SpringSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-26',
-											subject: 'physics',
-											topic: 'spring',
-											parameters: [
-												{ key: 'k', value: springK, unit: 'N/m', label: 'Độ cứng lò xo' },
-												{ key: 'm', value: springM, unit: 'kg', label: 'Khối lượng' },
-												{ key: 'A', value: springA, unit: 'm', label: 'Biên độ' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-27' ? (
-									<PendulumSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-27',
-											subject: 'physics',
-											topic: 'pendulum',
-											parameters: [
-												{ key: 'L', value: pendulumL, unit: 'm', label: 'Chiều dài dây' },
-												{ key: 'g', value: pendulumG, unit: 'm/s²', label: 'Gia tốc' },
-												{ key: 'th', value: pendulumTh, unit: '°', label: 'Góc lệch' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-28' ? (
-									<CircularSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-28',
-											subject: 'physics',
-											topic: 'circular',
-											parameters: [
-												{ key: 'r', value: circularR, unit: 'm', label: 'Bán kính' },
-												{ key: 'w', value: circularW, unit: 'rad/s', label: 'Tốc độ góc' },
-												{ key: 'm', value: circularM, unit: 'kg', label: 'Khối lượng' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-29' ? (
-									<CollisionSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-29',
-											subject: 'physics',
-											topic: 'collision',
-											parameters: [
-												{ key: 'm1', value: collisionM1, unit: 'kg', label: 'Khối lượng m1' },
-												{ key: 'v1', value: collisionV1, unit: 'm/s', label: 'Vận tốc v1' },
-												{ key: 'm2', value: collisionM2, unit: 'kg', label: 'Khối lượng m2' },
-												{ key: 'v2', value: collisionV2, unit: 'm/s', label: 'Vận tốc v2' },
-												{ key: 'e', value: collisionE, unit: '', label: 'Độ đàn hồi' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-30' ? (
-									<EnergySimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-30',
-											subject: 'physics',
-											topic: 'energy',
-											parameters: [
-												{ key: 'h0', value: energyH0, unit: 'm', label: 'Độ cao thả' },
-												{ key: 'm', value: energyM, unit: 'kg', label: 'Khối lượng' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-31' ? (
-									<BoyleSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-31',
-											subject: 'physics',
-											topic: 'boyle',
-											parameters: [{ key: 'V', value: boyleV, unit: 'L', label: 'Thể tích' }],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-32' ? (
-									<CharlesSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-32',
-											subject: 'physics',
-											topic: 'charles',
-											parameters: [{ key: 'T', value: charlesT, unit: 'K', label: 'Nhiệt độ' }],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-33' ? (
-									<KineticSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-33',
-											subject: 'physics',
-											topic: 'kinetic',
-											parameters: [
-												{ key: 'T', value: kineticT, unit: 'K', label: 'Nhiệt độ' },
-												{ key: 'N', value: kineticN, unit: 'hạt', label: 'Số hạt' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-34' ? (
-									<StateChangeSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-34',
-											subject: 'physics',
-											topic: 'statechange',
-											parameters: [{ key: 'P', value: stateChangeP, unit: 'W', label: 'Công suất nung' }],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-35' ? (
-									<MagForceSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-35',
-											subject: 'physics',
-											topic: 'magforce',
-											parameters: [
-												{ key: 'B', value: magForceB, unit: 'T', label: 'Từ trường B' },
-												{ key: 'I', value: magForceI, unit: 'A', label: 'Dòng điện I' },
-												{ key: 'L', value: magForceL, unit: 'm', label: 'Chiều dài L' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-36' ? (
-									<LorentzSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-36',
-											subject: 'physics',
-											topic: 'lorentz',
-											parameters: [
-												{ key: 'B', value: lorentzB, unit: 'T', label: 'Từ trường B' },
-												{ key: 'v', value: lorentzV, unit: 'm/s', label: 'Vận tốc v' },
-												{ key: 'q', value: lorentzQ, unit: 'C', label: 'Điện tích q' },
-												{ key: 'm', value: lorentzM, unit: 'kg', label: 'Khối lượng m' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-37' ? (
-									<InductionSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-37',
-											subject: 'physics',
-											topic: 'induction',
-											parameters: [{ key: 'spd', value: inductionSpd, unit: 'm/s', label: 'Tốc độ nam châm' }],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-38' ? (
-									<ACGenSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-38',
-											subject: 'physics',
-											topic: 'acgen',
-											parameters: [
-												{ key: 'w', value: acGenW, unit: 'rad/s', label: 'Tốc độ quay' },
-												{ key: 'B', value: acGenB, unit: 'T', label: 'Từ trường B' },
-												{ key: 'N', value: acGenN, unit: 'vòng', label: 'Số vòng dây' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-39' ? (
-									<RadioactiveSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-39',
-											subject: 'physics',
-											topic: 'radioactive',
-											parameters: [
-												{ key: 'T', value: radioactiveT, unit: 's', label: 'Chu kỳ bán rã' },
-												{ key: 'N0', value: radioactiveN0, unit: 'hạt', label: 'Số hạt ban đầu' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-40' ? (
-									<NuclearSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-40',
-											subject: 'physics',
-											topic: 'nuclear',
-											parameters: [{ key: 'type', value: nuclearType, unit: '', label: 'Loại phản ứng' }],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-41' ? (
-									<BindingEnergySimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-41',
-											subject: 'physics',
-											topic: 'bindingenergy',
-											parameters: [{ key: 'A', value: bindingEnergyA, unit: '', label: 'Số khối A' }],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-42' ? (
-									<ShmSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-42',
-											subject: 'physics',
-											topic: 'shm',
-											parameters: [
-												{ key: 'A', value: shmA, unit: 'cm', label: 'Biên độ' },
-												{ key: 'omega', value: shmW, unit: 'rad/s', label: 'Tần số góc' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-43' ? (
-									<DampedSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-43',
-											subject: 'physics',
-											topic: 'damped',
-											parameters: [
-												{ key: 'A', value: dampedA, unit: 'cm', label: 'Biên độ đầu' },
-												{ key: 'omega', value: dampedW, unit: 'rad/s', label: 'Tần số riêng' },
-												{ key: 'b', value: dampedB, unit: '', label: 'Hệ số cản' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-44' ? (
-									<ResonanceSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-44',
-											subject: 'physics',
-											topic: 'resonance',
-											parameters: [
-												{ key: 'omega0', value: resonanceW0, unit: 'rad/s', label: 'Tần số riêng' },
-												{ key: 'omega', value: resonanceW, unit: 'rad/s', label: 'Tần số lực' },
-												{ key: 'F0', value: resonanceA0, unit: 'N', label: 'Biên độ lực' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-45' ? (
-									<WaveSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-45',
-											subject: 'physics',
-											topic: 'wave',
-											parameters: [
-												{ key: 'A', value: waveA, unit: 'cm', label: 'Biên độ' },
-												{ key: 'f', value: waveF, unit: 'Hz', label: 'Tần số' },
-												{ key: 'v', value: waveV, unit: 'm/s', label: 'Tốc độ sóng' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-46' ? (
-									<StandingSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-46',
-											subject: 'physics',
-											topic: 'standing',
-											parameters: [
-												{ key: 'n', value: standingF, unit: '', label: 'Số bụng' },
-												{ key: 'A', value: standingA, unit: 'cm', label: 'Biên độ nguồn' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-47' ? (
-									<InterferenceSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-47',
-											subject: 'physics',
-											topic: 'interference',
-											parameters: [
-												{ key: 'f', value: interfF, unit: 'Hz', label: 'Tần số' },
-												{ key: 'd', value: interfD, unit: 'cm', label: 'Khoảng cách' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-48' ? (
-									<CoulombSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-48',
-											subject: 'physics',
-											topic: 'coulomb',
-											parameters: [
-												{ key: 'q1', value: coulombQ1, unit: 'μC', label: 'Điện tích q1' },
-												{ key: 'q2', value: coulombQ2, unit: 'μC', label: 'Điện tích q2' },
-												{ key: 'r', value: coulombR, unit: 'm', label: 'Khoảng cách r' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-49' ? (
-									<EFieldSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-49',
-											subject: 'physics',
-											topic: 'efield',
-											parameters: [
-												{ key: 'q1', value: efieldQ1, unit: 'nC', label: 'Điện tích q1' },
-												{ key: 'q2', value: efieldQ2, unit: 'nC', label: 'Điện tích q2' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-50' ? (
-									<OhmSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-50',
-											subject: 'physics',
-											topic: 'ohm',
-											parameters: [
-												{ key: 'U', value: ohmU, unit: 'V', label: 'Hiệu điện thế' },
-												{ key: 'R', value: ohmR, unit: 'Ω', label: 'Điện trở R' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-51' ? (
-									<ResistorsSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-51',
-											subject: 'physics',
-											topic: 'resistors',
-											parameters: [
-												{ key: 'R1', value: resistorsR1, unit: 'Ω', label: 'Điện trở R1' },
-												{ key: 'R2', value: resistorsR2, unit: 'Ω', label: 'Điện trở R2' },
-												{ key: 'mode', value: resistorsMode === 'series' ? 0 : 1, unit: '', label: 'Kiểu mắc' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : simId === 'SIM-52' ? (
-									<FullCircuitSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-52',
-											subject: 'physics',
-											topic: 'fullcircuit',
-											parameters: [
-												{ key: 'E', value: fullCircuitE, unit: 'V', label: 'Suất điện động E' },
-												{ key: 'R', value: fullCircuitR, unit: 'Ω', label: 'Điện trở ngoài R' },
-												{ key: 'r', value: fullCircuitr, unit: 'Ω', label: 'Điện trở trong r' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										resetKey={physResetKey}
-									/>
-								) : (
-									<ProjectileSimulation
-										key={physResetKey}
-										config={{
-											simulation_id: 'SIM-02',
-											subject: 'physics',
-											topic: 'projectile',
-											parameters: [
-												{ key: 'theta', value: phAngle, unit: '°', label: 'Góc ném' },
-												{ key: 'v0', value: phVel, unit: 'm/s', label: 'Vận tốc đầu' },
-												{ key: 'g', value: phGrav, unit: 'm/s²', label: 'Gia tốc trọng trường' },
-												{ key: 'airResistance', value: phAir ? 1 : 0, unit: '', label: 'Sức cản không khí' },
-												{ key: 'showVectors', value: phVec ? 1 : 0, unit: '', label: 'Hiện vector vận tốc' },
-											],
-										}}
-										isPlaying={isPhPlaying}
-										isSlow={isPhSlow}
-										onAnimationEnd={() => setIsPhPlaying(false)}
-									/>
-								)
-							) : subject === 'chem' ? (
-								<GenericChemSimulation
-									config={{
-										simulation_id: simId || 'CHEM11-01',
-										subject: 'chemistry',
-										topic: 'generic',
-										parameters: [],
+								<div
+									style={{
+										position: 'absolute',
+										top: 0,
+										left: 0,
+										right: 0,
+										bottom: 0,
+										transform: `translate(${simPan.x}px, ${simPan.y}px) scale(${simZoom})`,
+										transformOrigin: '50% 50%',
+										willChange: 'transform',
 									}}
-									currentStep={chemStep}
-									onStepChange={(step: number) => setChemStep(step)}
-								/>
-							) : subject === 'math' ? (
-								(() => {
-									const activeSimId = simId || 'MATH10-01';
-									const resolvedSimId = CHEM_SIM_ALIASES[activeSimId] || activeSimId;
-									let mathParams: Array<{ key: string; value: number; unit: string; label: string }> = [];
-
-									if (resolvedSimId === 'MATH10-01') {
-										mathParams = [
-											{ key: 'a', value: mA, unit: '', label: 'a' },
-											{ key: 'b', value: mB, unit: '', label: 'b' },
-											{ key: 'c', value: mC, unit: '', label: 'c' },
-										];
-									} else if (resolvedSimId === 'MATH10-02') {
-									mathParams = [
-										{ key: 'ux', value: vecUx, unit: '', label: 'ux' },
-										{ key: 'uy', value: vecUy, unit: '', label: 'uy' },
-										{ key: 'vx', value: vecVx, unit: '', label: 'vx' },
-										{ key: 'vy', value: vecVy, unit: '', label: 'vy' },
-									];
-									} else if (resolvedSimId === 'MATH10-03') {
-									mathParams = [
-										{ key: 'a', value: line10a, unit: '', label: 'a' },
-										{ key: 'b', value: line10b, unit: '', label: 'b' },
-										{ key: 'c', value: line10c, unit: '', label: 'c' },
-									];
-									} else if (resolvedSimId === 'MATH10-04') {
-									mathParams = [
-										{ key: 'h', value: circ10h, unit: '', label: 'h' },
-										{ key: 'k', value: circ10k, unit: '', label: 'k' },
-										{ key: 'r', value: circ10r, unit: '', label: 'r' },
-										{ key: 't', value: circ10t, unit: '°', label: 't' },
-									];
-									} else if (resolvedSimId === 'MATH10-05') {
-									mathParams = [
-										{ key: 'a', value: tri10a, unit: '', label: 'a' },
-										{ key: 'b', value: tri10b, unit: '', label: 'b' },
-										{ key: 'C', value: tri10C, unit: '°', label: 'C' },
-									];
-									} else if (resolvedSimId === 'MATH10-06') {
-									mathParams = [
-										{ key: 'a1', value: iq10a1, unit: '', label: 'a1' },
-										{ key: 'b1', value: iq10b1, unit: '', label: 'b1' },
-										{ key: 'c1', value: iq10c1, unit: '', label: 'c1' },
-										{ key: 'a2', value: iq10a2, unit: '', label: 'a2' },
-										{ key: 'b2', value: iq10b2, unit: '', label: 'b2' },
-										{ key: 'c2', value: iq10c2, unit: '', label: 'c2' },
-									];
-									} else if (resolvedSimId === 'MATH10-07') {
-									mathParams = [
-										{ key: 'alpha', value: trig10alpha, unit: '°', label: 'Góc α' },
-									];
-									} else if (resolvedSimId === 'MATH10-08') {
-									mathParams = [
-										{ key: 'v1', value: stat10v1, unit: '', label: 'x1' },
-										{ key: 'v2', value: stat10v2, unit: '', label: 'x2' },
-										{ key: 'v3', value: stat10v3, unit: '', label: 'x3' },
-										{ key: 'v4', value: stat10v4, unit: '', label: 'x4' },
-										{ key: 'v5', value: stat10v5, unit: '', label: 'x5' },
-										{ key: 'v6', value: stat10v6, unit: '', label: 'x6' },
-									];
-									} else if (resolvedSimId === 'MATH11-01') {
-										mathParams = [
-											{ key: 'A', value: trigA, unit: '', label: 'A' },
-											{ key: 'B', value: trigB, unit: '', label: 'B' },
-											{ key: 'C', value: trigC, unit: 'rad', label: 'C' },
-											{ key: 'D', value: trigD, unit: '', label: 'D' },
-											{ key: 'fn', value: trigFnIdx, unit: '', label: 'Hàm' },
-										];
-									} else if (resolvedSimId === 'MATH11-02') {
-										mathParams = [
-											{ key: 'angle', value: ucAngle, unit: '°', label: 'Góc' },
-											{ key: 'target', value: ucTarget, unit: '', label: 'Giá trị a' },
-										];
-									} else if (resolvedSimId === 'MATH11-03') {
-										mathParams = [
-											{ key: 'n', value: combN, unit: '', label: 'n' },
-											{ key: 'k', value: combK, unit: '', label: 'k' },
-										];
-									} else if (resolvedSimId === 'MATH11-04') {
-										mathParams = [
-											{ key: 'PA', value: probPA, unit: '', label: 'P(A)' },
-											{ key: 'PB', value: probPB, unit: '', label: 'P(B)' },
-											{ key: 'PAB', value: probPAB, unit: '', label: 'P(A∩B)' },
-										];
-									} else if (resolvedSimId === 'MATH11-05') {
-										mathParams = [
-											{ key: 'seqType', value: seqType, unit: '', label: 'Dãy số' },
-											{ key: 'epsilon', value: seqEps, unit: '', label: 'ε' },
-										];
-									} else if (resolvedSimId === 'MATH11-06') {
-										mathParams = [
-											{ key: 'funcType', value: limFuncType, unit: '', label: 'Hàm số' },
-										];
-									} else if (resolvedSimId === 'MATH11-07') {
-										mathParams = [
-											{ key: 'fnIdx', value: derFnIdx, unit: '', label: 'Hàm số' },
-											{ key: 'x0', value: derX0, unit: '', label: 'x₀' },
-											{ key: 'h', value: derH, unit: '', label: 'h' },
-										];
-									} else if (resolvedSimId === 'MATH11-08') {
-										mathParams = [
-											{ key: 'transType', value: transType, unit: '', label: 'Phép biến đổi' },
-											{ key: 'tx', value: transTx, unit: '', label: 'tx' },
-											{ key: 'ty', value: transTy, unit: '', label: 'ty' },
-											{ key: 'angle', value: transAngle, unit: '°', label: 'Góc quay' },
-										];
-									} else if (resolvedSimId === 'MATH11-09') {
-										mathParams = [
-											{ key: 'alpha', value: planeAlpha, unit: '°', label: 'Góc mặt phẳng α' },
-											{ key: 'beta', value: planeBeta, unit: '°', label: 'Góc mặt phẳng β' },
-											{ key: 'parallel', value: planesParallel, unit: '', label: 'Song song' },
-										];
-									} else if (resolvedSimId === 'MATH11-10') {
-										mathParams = [
-											{ key: 'normalX', value: perpNx, unit: '', label: 'nx' },
-											{ key: 'normalY', value: perpNy, unit: '', label: 'ny' },
-											{ key: 'normalZ', value: perpNz, unit: '', label: 'nz' },
-										];
-									} else if (resolvedSimId === 'MATH11-11') {
-										mathParams = [
-											{ key: 'polyType', value: polyType11, unit: '', label: 'Loại hình' },
-											{ key: 'n', value: polyN11, unit: '', label: 'Số cạnh đáy' },
-											{ key: 'baseR', value: polyBaseR, unit: '', label: 'Bán kính đáy' },
-											{ key: 'height', value: polyH11, unit: '', label: 'Chiều cao' },
-										];
-									} else if (resolvedSimId === 'MATH12-01') {
-										mathParams = [
-											{ key: 'a', value: cubicA, unit: '', label: 'Hệ số a' },
-											{ key: 'b', value: cubicB, unit: '', label: 'Hệ số b' },
-											{ key: 'c', value: cubicC, unit: '', label: 'Hệ số c' },
-											{ key: 'd', value: cubicD, unit: '', label: 'Hệ số d' },
-										];
-									} else if (resolvedSimId === 'MATH12-02') {
-										mathParams = [
-											{ key: 'a', value: ratA, unit: '', label: 'Hệ số a' },
-											{ key: 'b', value: ratB, unit: '', label: 'Hệ số b' },
-											{ key: 'c', value: ratC, unit: '', label: 'Hệ số c' },
-											{ key: 'd', value: ratD, unit: '', label: 'Hệ số d' },
-										];
-									} else if (resolvedSimId === 'MATH12-03') {
-										mathParams = [{ key: 'base', value: expBase, unit: '', label: 'Cơ số a' }];
-									} else if (resolvedSimId === 'MATH12-04') {
-										mathParams = [{ key: 'base', value: logBaseVal, unit: '', label: 'Cơ số a' }];
-									} else if (resolvedSimId === 'MATH12-05') {
-										mathParams = [
-											{ key: 'fnIdx', value: intFnIdx, unit: '', label: 'Hàm số' },
-											{ key: 'a', value: intA, unit: '', label: 'Cận dưới a' },
-											{ key: 'b', value: intB, unit: '', label: 'Cận trên b' },
-											{ key: 'N', value: intN, unit: '', label: 'Số dải N' },
-										];
-									} else if (resolvedSimId === 'MATH12-06') {
-										mathParams = [{ key: 'pairIdx', value: abFnIdx, unit: '', label: 'Cặp hàm' }];
-									} else if (resolvedSimId === 'MATH12-07') {
-										mathParams = [
-											{ key: 're', value: cxRe, unit: '', label: 'Phần thực a' },
-											{ key: 'im', value: cxIm, unit: '', label: 'Phần ảo b' },
-										];
-									} else if (resolvedSimId === 'MATH12-08') {
-										mathParams = [
-											{ key: 'shape', value: revShape, unit: '', label: 'Loại mặt' },
-											{ key: 'R', value: revR, unit: '', label: 'Bán kính R' },
-											{ key: 'H', value: revH, unit: '', label: 'Chiều cao H' },
-										];
-									} else if (resolvedSimId === 'MATH12-09') {
-										mathParams = [
-											{ key: 'type', value: ph3Type, unit: '', label: 'Loại khối' },
-											{ key: 'n', value: ph3N, unit: '', label: 'Số cạnh đáy' },
-											{ key: 'R', value: ph3R, unit: '', label: 'Bán kính R' },
-											{ key: 'H', value: ph3H, unit: '', label: 'Chiều cao H' },
-											{ key: 'R2', value: ph3R2, unit: '', label: 'Bán kính trên r' },
-										];
-									} else if (resolvedSimId === 'MATH12-10') {
-										mathParams = [
-											{ key: 'nx', value: plNx, unit: '', label: 'nx' },
-											{ key: 'ny', value: plNy, unit: '', label: 'ny' },
-											{ key: 'nz', value: plNz, unit: '', label: 'nz' },
-											{ key: 'd', value: plD, unit: '', label: 'Hằng số d' },
-										];
-									} else if (resolvedSimId === 'MATH12-11') {
-										mathParams = [
-											{ key: 'mx', value: ln3Mx, unit: '', label: 'x₀' },
-											{ key: 'my', value: ln3My, unit: '', label: 'y₀' },
-											{ key: 'mz', value: ln3Mz, unit: '', label: 'z₀' },
-											{ key: 'ux', value: ln3Ux, unit: '', label: 'u.a' },
-											{ key: 'uy', value: ln3Uy, unit: '', label: 'u.b' },
-											{ key: 'uz', value: ln3Uz, unit: '', label: 'u.c' },
-										];
-									}
-
-									return (
-										<GenericMathSimulation
-											key={undefined}
+								>
+									{subject === 'physics' ? (
+										simId === 'SIM-21' ? (
+											<KinematicsSimulation
+												config={{
+													simulation_id: 'SIM-21',
+													subject: 'physics',
+													topic: 'kinematics',
+													parameters: [
+														{ key: 'v0', value: kinV0, unit: 'm/s', label: 'Vận tốc đầu' },
+														{ key: 'a', value: kinA, unit: 'm/s²', label: 'Gia tốc' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+												onStep={(t, x, v) => {
+													setLiveT(t);
+													setLiveX(x);
+													setLiveV(v);
+												}}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-22' ? (
+											<FreefallSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-22',
+													subject: 'physics',
+													topic: 'freefall',
+													parameters: [
+														{ key: 'h', value: freefallH, unit: 'm', label: 'Độ cao thả' },
+														{ key: 'g', value: freefallG, unit: 'm/s²', label: 'Gia tốc' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+												onStep={(t, y, v) => {
+													setLiveT(t);
+													setLiveX(y);
+													setLiveV(v);
+												}}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-23' ? (
+											<HorizontalSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-23',
+													subject: 'physics',
+													topic: 'horizontal',
+													parameters: [
+														{ key: 'h', value: horizH, unit: 'm', label: 'Độ cao' },
+														{ key: 'v0', value: horizV0, unit: 'm/s', label: 'Vận tốc đầu' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-24' ? (
+											<Newton2Simulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-24',
+													subject: 'physics',
+													topic: 'newton2',
+													parameters: [
+														{ key: 'F', value: newtonF, unit: 'N', label: 'Lực kéo' },
+														{ key: 'm', value: newtonM, unit: 'kg', label: 'Khối lượng xe' },
+														{ key: 'mu', value: newtonMu, unit: '', label: 'Hệ số ma sát' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-25' ? (
+											<InclineSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-25',
+													subject: 'physics',
+													topic: 'incline',
+													parameters: [
+														{ key: 'alpha', value: inclineAlpha, unit: '°', label: 'Góc nghiêng' },
+														{ key: 'mu', value: inclineMu, unit: '', label: 'Hệ số ma sát' },
+														{ key: 'm', value: inclineM, unit: 'kg', label: 'Khối lượng' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-26' ? (
+											<SpringSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-26',
+													subject: 'physics',
+													topic: 'spring',
+													parameters: [
+														{ key: 'k', value: springK, unit: 'N/m', label: 'Độ cứng lò xo' },
+														{ key: 'm', value: springM, unit: 'kg', label: 'Khối lượng' },
+														{ key: 'A', value: springA, unit: 'm', label: 'Biên độ' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-27' ? (
+											<PendulumSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-27',
+													subject: 'physics',
+													topic: 'pendulum',
+													parameters: [
+														{ key: 'L', value: pendulumL, unit: 'm', label: 'Chiều dài dây' },
+														{ key: 'g', value: pendulumG, unit: 'm/s²', label: 'Gia tốc' },
+														{ key: 'th', value: pendulumTh, unit: '°', label: 'Góc lệch' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-28' ? (
+											<CircularSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-28',
+													subject: 'physics',
+													topic: 'circular',
+													parameters: [
+														{ key: 'r', value: circularR, unit: 'm', label: 'Bán kính' },
+														{ key: 'w', value: circularW, unit: 'rad/s', label: 'Tốc độ góc' },
+														{ key: 'm', value: circularM, unit: 'kg', label: 'Khối lượng' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-29' ? (
+											<CollisionSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-29',
+													subject: 'physics',
+													topic: 'collision',
+													parameters: [
+														{ key: 'm1', value: collisionM1, unit: 'kg', label: 'Khối lượng m1' },
+														{ key: 'v1', value: collisionV1, unit: 'm/s', label: 'Vận tốc v1' },
+														{ key: 'm2', value: collisionM2, unit: 'kg', label: 'Khối lượng m2' },
+														{ key: 'v2', value: collisionV2, unit: 'm/s', label: 'Vận tốc v2' },
+														{ key: 'e', value: collisionE, unit: '', label: 'Độ đàn hồi' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-30' ? (
+											<EnergySimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-30',
+													subject: 'physics',
+													topic: 'energy',
+													parameters: [
+														{ key: 'h0', value: energyH0, unit: 'm', label: 'Độ cao thả' },
+														{ key: 'm', value: energyM, unit: 'kg', label: 'Khối lượng' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-31' ? (
+											<BoyleSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-31',
+													subject: 'physics',
+													topic: 'boyle',
+													parameters: [{ key: 'V', value: boyleV, unit: 'L', label: 'Thể tích' }],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-32' ? (
+											<CharlesSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-32',
+													subject: 'physics',
+													topic: 'charles',
+													parameters: [{ key: 'T', value: charlesT, unit: 'K', label: 'Nhiệt độ' }],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-33' ? (
+											<KineticSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-33',
+													subject: 'physics',
+													topic: 'kinetic',
+													parameters: [
+														{ key: 'T', value: kineticT, unit: 'K', label: 'Nhiệt độ' },
+														{ key: 'N', value: kineticN, unit: 'hạt', label: 'Số hạt' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-34' ? (
+											<StateChangeSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-34',
+													subject: 'physics',
+													topic: 'statechange',
+													parameters: [{ key: 'P', value: stateChangeP, unit: 'W', label: 'Công suất nung' }],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-35' ? (
+											<MagForceSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-35',
+													subject: 'physics',
+													topic: 'magforce',
+													parameters: [
+														{ key: 'B', value: magForceB, unit: 'T', label: 'Từ trường B' },
+														{ key: 'I', value: magForceI, unit: 'A', label: 'Dòng điện I' },
+														{ key: 'L', value: magForceL, unit: 'm', label: 'Chiều dài L' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-36' ? (
+											<LorentzSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-36',
+													subject: 'physics',
+													topic: 'lorentz',
+													parameters: [
+														{ key: 'B', value: lorentzB, unit: 'T', label: 'Từ trường B' },
+														{ key: 'v', value: lorentzV, unit: 'm/s', label: 'Vận tốc v' },
+														{ key: 'q', value: lorentzQ, unit: 'C', label: 'Điện tích q' },
+														{ key: 'm', value: lorentzM, unit: 'kg', label: 'Khối lượng m' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-37' ? (
+											<InductionSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-37',
+													subject: 'physics',
+													topic: 'induction',
+													parameters: [{ key: 'spd', value: inductionSpd, unit: 'm/s', label: 'Tốc độ nam châm' }],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-38' ? (
+											<ACGenSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-38',
+													subject: 'physics',
+													topic: 'acgen',
+													parameters: [
+														{ key: 'w', value: acGenW, unit: 'rad/s', label: 'Tốc độ quay' },
+														{ key: 'B', value: acGenB, unit: 'T', label: 'Từ trường B' },
+														{ key: 'N', value: acGenN, unit: 'vòng', label: 'Số vòng dây' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-39' ? (
+											<RadioactiveSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-39',
+													subject: 'physics',
+													topic: 'radioactive',
+													parameters: [
+														{ key: 'T', value: radioactiveT, unit: 's', label: 'Chu kỳ bán rã' },
+														{ key: 'N0', value: radioactiveN0, unit: 'hạt', label: 'Số hạt ban đầu' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-40' ? (
+											<NuclearSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-40',
+													subject: 'physics',
+													topic: 'nuclear',
+													parameters: [{ key: 'type', value: nuclearType, unit: '', label: 'Loại phản ứng' }],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-41' ? (
+											<BindingEnergySimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-41',
+													subject: 'physics',
+													topic: 'bindingenergy',
+													parameters: [{ key: 'A', value: bindingEnergyA, unit: '', label: 'Số khối A' }],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-42' ? (
+											<ShmSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-42',
+													subject: 'physics',
+													topic: 'shm',
+													parameters: [
+														{ key: 'A', value: shmA, unit: 'cm', label: 'Biên độ' },
+														{ key: 'omega', value: shmW, unit: 'rad/s', label: 'Tần số góc' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-43' ? (
+											<DampedSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-43',
+													subject: 'physics',
+													topic: 'damped',
+													parameters: [
+														{ key: 'A', value: dampedA, unit: 'cm', label: 'Biên độ đầu' },
+														{ key: 'omega', value: dampedW, unit: 'rad/s', label: 'Tần số riêng' },
+														{ key: 'b', value: dampedB, unit: '', label: 'Hệ số cản' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-44' ? (
+											<ResonanceSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-44',
+													subject: 'physics',
+													topic: 'resonance',
+													parameters: [
+														{ key: 'omega0', value: resonanceW0, unit: 'rad/s', label: 'Tần số riêng' },
+														{ key: 'omega', value: resonanceW, unit: 'rad/s', label: 'Tần số lực' },
+														{ key: 'F0', value: resonanceA0, unit: 'N', label: 'Biên độ lực' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-45' ? (
+											<WaveSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-45',
+													subject: 'physics',
+													topic: 'wave',
+													parameters: [
+														{ key: 'A', value: waveA, unit: 'cm', label: 'Biên độ' },
+														{ key: 'f', value: waveF, unit: 'Hz', label: 'Tần số' },
+														{ key: 'v', value: waveV, unit: 'm/s', label: 'Tốc độ sóng' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-46' ? (
+											<StandingSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-46',
+													subject: 'physics',
+													topic: 'standing',
+													parameters: [
+														{ key: 'n', value: standingF, unit: '', label: 'Số bụng' },
+														{ key: 'A', value: standingA, unit: 'cm', label: 'Biên độ nguồn' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-47' ? (
+											<InterferenceSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-47',
+													subject: 'physics',
+													topic: 'interference',
+													parameters: [
+														{ key: 'f', value: interfF, unit: 'Hz', label: 'Tần số' },
+														{ key: 'd', value: interfD, unit: 'cm', label: 'Khoảng cách' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-48' ? (
+											<CoulombSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-48',
+													subject: 'physics',
+													topic: 'coulomb',
+													parameters: [
+														{ key: 'q1', value: coulombQ1, unit: 'μC', label: 'Điện tích q1' },
+														{ key: 'q2', value: coulombQ2, unit: 'μC', label: 'Điện tích q2' },
+														{ key: 'r', value: coulombR, unit: 'm', label: 'Khoảng cách r' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-49' ? (
+											<EFieldSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-49',
+													subject: 'physics',
+													topic: 'efield',
+													parameters: [
+														{ key: 'q1', value: efieldQ1, unit: 'nC', label: 'Điện tích q1' },
+														{ key: 'q2', value: efieldQ2, unit: 'nC', label: 'Điện tích q2' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-50' ? (
+											<OhmSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-50',
+													subject: 'physics',
+													topic: 'ohm',
+													parameters: [
+														{ key: 'U', value: ohmU, unit: 'V', label: 'Hiệu điện thế' },
+														{ key: 'R', value: ohmR, unit: 'Ω', label: 'Điện trở R' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-51' ? (
+											<ResistorsSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-51',
+													subject: 'physics',
+													topic: 'resistors',
+													parameters: [
+														{ key: 'R1', value: resistorsR1, unit: 'Ω', label: 'Điện trở R1' },
+														{ key: 'R2', value: resistorsR2, unit: 'Ω', label: 'Điện trở R2' },
+														{ key: 'mode', value: resistorsMode === 'series' ? 0 : 1, unit: '', label: 'Kiểu mắc' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : simId === 'SIM-52' ? (
+											<FullCircuitSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-52',
+													subject: 'physics',
+													topic: 'fullcircuit',
+													parameters: [
+														{ key: 'E', value: fullCircuitE, unit: 'V', label: 'Suất điện động E' },
+														{ key: 'R', value: fullCircuitR, unit: 'Ω', label: 'Điện trở ngoài R' },
+														{ key: 'r', value: fullCircuitr, unit: 'Ω', label: 'Điện trở trong r' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												resetKey={physResetKey}
+											/>
+										) : (
+											<ProjectileSimulation
+												key={physResetKey}
+												config={{
+													simulation_id: 'SIM-02',
+													subject: 'physics',
+													topic: 'projectile',
+													parameters: [
+														{ key: 'theta', value: phAngle, unit: '°', label: 'Góc ném' },
+														{ key: 'v0', value: phVel, unit: 'm/s', label: 'Vận tốc đầu' },
+														{ key: 'g', value: phGrav, unit: 'm/s²', label: 'Gia tốc trọng trường' },
+														{ key: 'airResistance', value: phAir ? 1 : 0, unit: '', label: 'Sức cản không khí' },
+														{ key: 'showVectors', value: phVec ? 1 : 0, unit: '', label: 'Hiện vector vận tốc' },
+													],
+												}}
+												isPlaying={isPhPlaying}
+												isSlow={isPhSlow}
+												onAnimationEnd={() => setIsPhPlaying(false)}
+											/>
+										)
+									) : subject === 'chem' ? (
+										<GenericChemSimulation
 											config={{
-												simulation_id: resolvedSimId,
-												subject: 'math',
+												simulation_id: simId || 'CHEM11-01',
+												subject: 'chemistry',
 												topic: 'generic',
-												parameters: mathParams,
+												parameters: [],
 											}}
-											isPlaying={undefined}
-											onAnimationEnd={undefined}
+											currentStep={chemStep}
+											onStepChange={(step: number) => setChemStep(step)}
 										/>
-									);
-								})()
-							) : (
-								<div className='stu-ws__sim-placeholder'>
-									<div className='stu-ws__sim-icon'>
-										<svg
-											width='28'
-											height='28'
-											viewBox='0 0 24 24'
-											fill='none'
-											stroke='currentColor'
-											strokeWidth='1.6'
-											strokeLinecap='round'
-											strokeLinejoin='round'
-										>
-											<path d='M4 4v16h16' />
-											<path d='M7 16c3-9 7-9 10 0' />
-										</svg>
-									</div>
-									<div className='stu-ws__sim-label'>Điểm gắn Mô phỏng</div>
-								</div>
-							)}
+									) : subject === 'math' ? (
+										(() => {
+											const activeSimId = simId || 'MATH10-01';
+											const resolvedSimId = CHEM_SIM_ALIASES[activeSimId] || activeSimId;
+											let mathParams: Array<{ key: string; value: number; unit: string; label: string }> = [];
+
+											if (resolvedSimId === 'MATH10-01') {
+												mathParams = [
+													{ key: 'a', value: mA, unit: '', label: 'a' },
+													{ key: 'b', value: mB, unit: '', label: 'b' },
+													{ key: 'c', value: mC, unit: '', label: 'c' },
+												];
+											} else if (resolvedSimId === 'MATH10-02') {
+												mathParams = [
+													{ key: 'ux', value: vecUx, unit: '', label: 'ux' },
+													{ key: 'uy', value: vecUy, unit: '', label: 'uy' },
+													{ key: 'vx', value: vecVx, unit: '', label: 'vx' },
+													{ key: 'vy', value: vecVy, unit: '', label: 'vy' },
+												];
+											} else if (resolvedSimId === 'MATH10-03') {
+												mathParams = [
+													{ key: 'a', value: line10a, unit: '', label: 'a' },
+													{ key: 'b', value: line10b, unit: '', label: 'b' },
+													{ key: 'c', value: line10c, unit: '', label: 'c' },
+												];
+											} else if (resolvedSimId === 'MATH10-04') {
+												mathParams = [
+													{ key: 'h', value: circ10h, unit: '', label: 'h' },
+													{ key: 'k', value: circ10k, unit: '', label: 'k' },
+													{ key: 'r', value: circ10r, unit: '', label: 'r' },
+													{ key: 't', value: circ10t, unit: '°', label: 't' },
+												];
+											} else if (resolvedSimId === 'MATH10-05') {
+												mathParams = [
+													{ key: 'a', value: tri10a, unit: '', label: 'a' },
+													{ key: 'b', value: tri10b, unit: '', label: 'b' },
+													{ key: 'C', value: tri10C, unit: '°', label: 'C' },
+												];
+											} else if (resolvedSimId === 'MATH10-06') {
+												mathParams = [
+													{ key: 'a1', value: iq10a1, unit: '', label: 'a1' },
+													{ key: 'b1', value: iq10b1, unit: '', label: 'b1' },
+													{ key: 'c1', value: iq10c1, unit: '', label: 'c1' },
+													{ key: 'a2', value: iq10a2, unit: '', label: 'a2' },
+													{ key: 'b2', value: iq10b2, unit: '', label: 'b2' },
+													{ key: 'c2', value: iq10c2, unit: '', label: 'c2' },
+												];
+											} else if (resolvedSimId === 'MATH10-07') {
+												mathParams = [{ key: 'alpha', value: trig10alpha, unit: '°', label: 'Góc α' }];
+											} else if (resolvedSimId === 'MATH10-08') {
+												mathParams = [
+													{ key: 'v1', value: stat10v1, unit: '', label: 'x1' },
+													{ key: 'v2', value: stat10v2, unit: '', label: 'x2' },
+													{ key: 'v3', value: stat10v3, unit: '', label: 'x3' },
+													{ key: 'v4', value: stat10v4, unit: '', label: 'x4' },
+													{ key: 'v5', value: stat10v5, unit: '', label: 'x5' },
+													{ key: 'v6', value: stat10v6, unit: '', label: 'x6' },
+												];
+											} else if (resolvedSimId === 'MATH11-01') {
+												mathParams = [
+													{ key: 'A', value: trigA, unit: '', label: 'A' },
+													{ key: 'B', value: trigB, unit: '', label: 'B' },
+													{ key: 'C', value: trigC, unit: 'rad', label: 'C' },
+													{ key: 'D', value: trigD, unit: '', label: 'D' },
+													{ key: 'fn', value: trigFnIdx, unit: '', label: 'Hàm' },
+												];
+											} else if (resolvedSimId === 'MATH11-02') {
+												mathParams = [
+													{ key: 'angle', value: ucAngle, unit: '°', label: 'Góc' },
+													{ key: 'target', value: ucTarget, unit: '', label: 'Giá trị a' },
+												];
+											} else if (resolvedSimId === 'MATH11-03') {
+												mathParams = [
+													{ key: 'n', value: combN, unit: '', label: 'n' },
+													{ key: 'k', value: combK, unit: '', label: 'k' },
+												];
+											} else if (resolvedSimId === 'MATH11-04') {
+												mathParams = [
+													{ key: 'PA', value: probPA, unit: '', label: 'P(A)' },
+													{ key: 'PB', value: probPB, unit: '', label: 'P(B)' },
+													{ key: 'PAB', value: probPAB, unit: '', label: 'P(A∩B)' },
+												];
+											} else if (resolvedSimId === 'MATH11-05') {
+												mathParams = [
+													{ key: 'seqType', value: seqType, unit: '', label: 'Dãy số' },
+													{ key: 'epsilon', value: seqEps, unit: '', label: 'ε' },
+												];
+											} else if (resolvedSimId === 'MATH11-06') {
+												mathParams = [{ key: 'funcType', value: limFuncType, unit: '', label: 'Hàm số' }];
+											} else if (resolvedSimId === 'MATH11-07') {
+												mathParams = [
+													{ key: 'fnIdx', value: derFnIdx, unit: '', label: 'Hàm số' },
+													{ key: 'x0', value: derX0, unit: '', label: 'x₀' },
+													{ key: 'h', value: derH, unit: '', label: 'h' },
+												];
+											} else if (resolvedSimId === 'MATH11-08') {
+												mathParams = [
+													{ key: 'transType', value: transType, unit: '', label: 'Phép biến đổi' },
+													{ key: 'tx', value: transTx, unit: '', label: 'tx' },
+													{ key: 'ty', value: transTy, unit: '', label: 'ty' },
+													{ key: 'angle', value: transAngle, unit: '°', label: 'Góc quay' },
+												];
+											} else if (resolvedSimId === 'MATH11-09') {
+												mathParams = [
+													{ key: 'alpha', value: planeAlpha, unit: '°', label: 'Góc mặt phẳng α' },
+													{ key: 'beta', value: planeBeta, unit: '°', label: 'Góc mặt phẳng β' },
+													{ key: 'parallel', value: planesParallel, unit: '', label: 'Song song' },
+												];
+											} else if (resolvedSimId === 'MATH11-10') {
+												mathParams = [
+													{ key: 'normalX', value: perpNx, unit: '', label: 'nx' },
+													{ key: 'normalY', value: perpNy, unit: '', label: 'ny' },
+													{ key: 'normalZ', value: perpNz, unit: '', label: 'nz' },
+												];
+											} else if (resolvedSimId === 'MATH11-11') {
+												mathParams = [
+													{ key: 'polyType', value: polyType11, unit: '', label: 'Loại hình' },
+													{ key: 'n', value: polyN11, unit: '', label: 'Số cạnh đáy' },
+													{ key: 'baseR', value: polyBaseR, unit: '', label: 'Bán kính đáy' },
+													{ key: 'height', value: polyH11, unit: '', label: 'Chiều cao' },
+												];
+											} else if (resolvedSimId === 'MATH12-01') {
+												mathParams = [
+													{ key: 'a', value: cubicA, unit: '', label: 'Hệ số a' },
+													{ key: 'b', value: cubicB, unit: '', label: 'Hệ số b' },
+													{ key: 'c', value: cubicC, unit: '', label: 'Hệ số c' },
+													{ key: 'd', value: cubicD, unit: '', label: 'Hệ số d' },
+												];
+											} else if (resolvedSimId === 'MATH12-02') {
+												mathParams = [
+													{ key: 'a', value: ratA, unit: '', label: 'Hệ số a' },
+													{ key: 'b', value: ratB, unit: '', label: 'Hệ số b' },
+													{ key: 'c', value: ratC, unit: '', label: 'Hệ số c' },
+													{ key: 'd', value: ratD, unit: '', label: 'Hệ số d' },
+												];
+											} else if (resolvedSimId === 'MATH12-03') {
+												mathParams = [{ key: 'base', value: expBase, unit: '', label: 'Cơ số a' }];
+											} else if (resolvedSimId === 'MATH12-04') {
+												mathParams = [{ key: 'base', value: logBaseVal, unit: '', label: 'Cơ số a' }];
+											} else if (resolvedSimId === 'MATH12-05') {
+												mathParams = [
+													{ key: 'fnIdx', value: intFnIdx, unit: '', label: 'Hàm số' },
+													{ key: 'a', value: intA, unit: '', label: 'Cận dưới a' },
+													{ key: 'b', value: intB, unit: '', label: 'Cận trên b' },
+													{ key: 'N', value: intN, unit: '', label: 'Số dải N' },
+												];
+											} else if (resolvedSimId === 'MATH12-06') {
+												mathParams = [{ key: 'pairIdx', value: abFnIdx, unit: '', label: 'Cặp hàm' }];
+											} else if (resolvedSimId === 'MATH12-07') {
+												mathParams = [
+													{ key: 're', value: cxRe, unit: '', label: 'Phần thực a' },
+													{ key: 'im', value: cxIm, unit: '', label: 'Phần ảo b' },
+												];
+											} else if (resolvedSimId === 'MATH12-08') {
+												mathParams = [
+													{ key: 'shape', value: revShape, unit: '', label: 'Loại mặt' },
+													{ key: 'R', value: revR, unit: '', label: 'Bán kính R' },
+													{ key: 'H', value: revH, unit: '', label: 'Chiều cao H' },
+												];
+											} else if (resolvedSimId === 'MATH12-09') {
+												mathParams = [
+													{ key: 'type', value: ph3Type, unit: '', label: 'Loại khối' },
+													{ key: 'n', value: ph3N, unit: '', label: 'Số cạnh đáy' },
+													{ key: 'R', value: ph3R, unit: '', label: 'Bán kính R' },
+													{ key: 'H', value: ph3H, unit: '', label: 'Chiều cao H' },
+													{ key: 'R2', value: ph3R2, unit: '', label: 'Bán kính trên r' },
+												];
+											} else if (resolvedSimId === 'MATH12-10') {
+												mathParams = [
+													{ key: 'nx', value: plNx, unit: '', label: 'nx' },
+													{ key: 'ny', value: plNy, unit: '', label: 'ny' },
+													{ key: 'nz', value: plNz, unit: '', label: 'nz' },
+													{ key: 'd', value: plD, unit: '', label: 'Hằng số d' },
+												];
+											} else if (resolvedSimId === 'MATH12-11') {
+												mathParams = [
+													{ key: 'mx', value: ln3Mx, unit: '', label: 'x₀' },
+													{ key: 'my', value: ln3My, unit: '', label: 'y₀' },
+													{ key: 'mz', value: ln3Mz, unit: '', label: 'z₀' },
+													{ key: 'ux', value: ln3Ux, unit: '', label: 'u.a' },
+													{ key: 'uy', value: ln3Uy, unit: '', label: 'u.b' },
+													{ key: 'uz', value: ln3Uz, unit: '', label: 'u.c' },
+												];
+											}
+
+											return (
+												<GenericMathSimulation
+													key={undefined}
+													config={{
+														simulation_id: resolvedSimId,
+														subject: 'math',
+														topic: 'generic',
+														parameters: mathParams,
+													}}
+													isPlaying={undefined}
+													onAnimationEnd={undefined}
+												/>
+											);
+										})()
+									) : (
+										<div className='stu-ws__sim-placeholder'>
+											<div className='stu-ws__sim-icon'>
+												<svg
+													width='28'
+													height='28'
+													viewBox='0 0 24 24'
+													fill='none'
+													stroke='currentColor'
+													strokeWidth='1.6'
+													strokeLinecap='round'
+													strokeLinejoin='round'
+												>
+													<path d='M4 4v16h16' />
+													<path d='M7 16c3-9 7-9 10 0' />
+												</svg>
+											</div>
+											<div className='stu-ws__sim-label'>Điểm gắn Mô phỏng</div>
+										</div>
+									)}
 								</div>
 							</div>
 							{simPanZoomEnabled && (simZoom !== 1 || simPan.x !== 0 || simPan.y !== 0) && (
-								<button className='stu-ws__sim-reset' onClick={resetSimView}>↺ Reset</button>
-							)}
-							{subject === 'math' && (
-								<div className='stu-ws__math-formula-overlay' dangerouslySetInnerHTML={renderTex(formulaText)} />
+								<button className='stu-ws__sim-reset' onClick={resetSimView}>
+									↺ Reset
+								</button>
 							)}
 						</div>
 
-						{subject !== 'math' && (
-							<div className='stu-ws__formula-bar' dangerouslySetInnerHTML={renderTex(formulaText)} />
-						)}
+						<div className='stu-ws__formula-bar' dangerouslySetInnerHTML={renderTex(formulaText)} />
 					</div>
 
 					{/* RIGHT: AI Tutor + Quiz */}
@@ -12319,8 +13918,14 @@ const Workspace: React.FC = () => {
 				</div>
 			</div>
 			{showCelebration && dynQuizState === 'done' && (
-				<CelebrationOverlay 
-					score={dynQuestions.length > 0 ? Math.round((dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length / dynQuestions.length) * 100) : 0} 
+				<CelebrationOverlay
+					score={
+						dynQuestions.length > 0
+							? Math.round(
+									(dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length / dynQuestions.length) * 100,
+								)
+							: 0
+					}
 					onClose={() => setShowCelebration(false)}
 				/>
 			)}

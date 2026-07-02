@@ -262,13 +262,13 @@ export default function EFieldSimulation({
   const mountRef = useRef<HTMLDivElement | null>(null);
 
   const q = useMemo(() => {
-    const p = config.parameters.find((param) => param.key === 'q');
+    const p = config.parameters.find((param) => param.key === 'q1');
     return p ? p.value : 3;
   }, [config.parameters]);
 
   const q0 = useMemo(() => {
-    const p = config.parameters.find((param) => param.key === 'q0');
-    return p ? p.value : 1;
+    const p = config.parameters.find((param) => param.key === 'q2');
+    return p ? p.value : -3;
   }, [config.parameters]);
 
   const r0 = useMemo(() => {

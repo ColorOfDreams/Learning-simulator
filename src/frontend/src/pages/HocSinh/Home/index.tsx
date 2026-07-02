@@ -1,9 +1,9 @@
 import { analyzeAiPrompt } from '@/services/ai/api';
 import { getSceneAll } from '@/services/base/api';
-import { Pagination } from 'antd';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import GenericChemSimulation from '@simulations/chemistry/GenericChemSimulation';
 import SimThumbCapture from '@simulations/SimThumbCapture';
+import { Pagination } from 'antd';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { history, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
 import './index.less';
@@ -321,16 +321,6 @@ const ALL_LABS: LabItem[] = [
 		locked: false,
 		simId: 'SIM-02',
 		grade: 10,
-	},
-	{
-		id: 5,
-		title: 'Mạch RLC',
-		subject: 'physics',
-		level: 'Trung bình',
-		mins: '~15 phút',
-		xp: '+120 XP',
-		locked: false,
-		grade: 12,
 	},
 	{
 		id: 6,
@@ -1311,12 +1301,13 @@ const HocSinhHome: React.FC = () => {
 	const combinedLabs = useMemo(() => [...dynamicLabs, ...ALL_LABS], [dynamicLabs]);
 
 	const filteredLabs = useMemo(
-		() => combinedLabs.filter((l) => {
-			const isBuiltInMathOrChem = typeof l.id === 'string' && (l.id.startsWith('MATH') || l.id.startsWith('CHEM'));
-			const matchesGrade = l.grade === grade || (typeof l.id === 'string' && !isBuiltInMathOrChem);
-			const matchesFilter = filter === 'all' || l.subject === filter;
-			return matchesGrade && matchesFilter;
-		}),
+		() =>
+			combinedLabs.filter((l) => {
+				const isBuiltInMathOrChem = typeof l.id === 'string' && (l.id.startsWith('MATH') || l.id.startsWith('CHEM'));
+				const matchesGrade = l.grade === grade || (typeof l.id === 'string' && !isBuiltInMathOrChem);
+				const matchesFilter = filter === 'all' || l.subject === filter;
+				return matchesGrade && matchesFilter;
+			}),
 		[grade, filter, combinedLabs],
 	);
 
@@ -1327,14 +1318,18 @@ const HocSinhHome: React.FC = () => {
 	}, [grade, filter]);
 
 	// ── Thumbnail Pre-generation (chem + physics + math) ──
-	interface ThumbItem { simId: string; subject: 'chem' | 'physics' | 'math' }
+	interface ThumbItem {
+		simId: string;
+		subject: 'chem' | 'physics' | 'math';
+	}
 
 	const [allThumbs, setAllThumbs] = useState<Record<string, string>>(() => {
 		const map: Record<string, string> = {};
 		for (const lab of ALL_LABS) {
 			if (!lab.simId) continue;
-			const stored = localStorage.getItem(`sim-thumb-${lab.simId}`)
-				?? (lab.subject === 'chem' ? localStorage.getItem(`chem-thumb-${lab.simId}`) : null);
+			const stored =
+				localStorage.getItem(`sim-thumb-${lab.simId}`) ??
+				(lab.subject === 'chem' ? localStorage.getItem(`chem-thumb-${lab.simId}`) : null);
 			if (stored) map[lab.simId] = stored;
 		}
 		return map;
@@ -1345,8 +1340,9 @@ const HocSinhHome: React.FC = () => {
 		const queue: ThumbItem[] = [];
 		for (const lab of ALL_LABS) {
 			if (!lab.simId || seen.has(lab.simId)) continue;
-			const cached = localStorage.getItem(`sim-thumb-${lab.simId}`)
-				?? (lab.subject === 'chem' ? localStorage.getItem(`chem-thumb-${lab.simId}`) : null);
+			const cached =
+				localStorage.getItem(`sim-thumb-${lab.simId}`) ??
+				(lab.subject === 'chem' ? localStorage.getItem(`chem-thumb-${lab.simId}`) : null);
 			if (!cached) {
 				seen.add(lab.simId);
 				queue.push({ simId: lab.simId, subject: lab.subject as 'chem' | 'physics' | 'math' });
@@ -1364,9 +1360,9 @@ const HocSinhHome: React.FC = () => {
 
 	const handleThumbCapture = useCallback((simId: string, dataUrl: string) => {
 		localStorage.setItem(`sim-thumb-${simId}`, dataUrl);
-		setAllThumbs(prev => ({ ...prev, [simId]: dataUrl }));
+		setAllThumbs((prev) => ({ ...prev, [simId]: dataUrl }));
 		setCurrentThumb(null);
-		setThumbQueue(prev => prev.slice(1));
+		setThumbQueue((prev) => prev.slice(1));
 	}, []);
 
 	const paginatedLabs = useMemo(() => {
@@ -1388,40 +1384,43 @@ const HocSinhHome: React.FC = () => {
 		return () => window.cancelAnimationFrame(frame);
 	}, [restoredHomeState, filteredLabs.length]);
 
-	const openWorkspace = useCallback((subject: string, simId?: string) => {
-		const el = homeScrollRef.current;
-		sessionStorage.setItem(
-			HOME_SCROLL_RESTORE_KEY,
-			JSON.stringify({
-				scrollTop: el?.scrollTop ?? 0,
-				grade,
-				filter,
-			}),
-		);
+	const openWorkspace = useCallback(
+		(subject: string, simId?: string) => {
+			const el = homeScrollRef.current;
+			sessionStorage.setItem(
+				HOME_SCROLL_RESTORE_KEY,
+				JSON.stringify({
+					scrollTop: el?.scrollTop ?? 0,
+					grade,
+					filter,
+				}),
+			);
 
-		let path = `/hoc-sinh/workspace?subject=${subject}`;
-		if (simId) {
-			path += `&sim=${simId}`;
-			const matchedLab = ALL_LABS.find((l) => l.simId === simId);
-			if (matchedLab) {
-				setGrade(matchedLab.grade);
-				setFilter(matchedLab.subject);
-				localStorage.setItem('selected_grade', String(matchedLab.grade));
-				localStorage.setItem('selected_filter', matchedLab.subject);
-			} else {
-				// Dynamic lab, open sandbox viewer
-				path = `/thi-nghiem?id=${simId}&role=student`;
+			let path = `/hoc-sinh/workspace?subject=${subject}`;
+			if (simId) {
+				path += `&sim=${simId}`;
+				const matchedLab = ALL_LABS.find((l) => l.simId === simId);
+				if (matchedLab) {
+					setGrade(matchedLab.grade);
+					setFilter(matchedLab.subject);
+					localStorage.setItem('selected_grade', String(matchedLab.grade));
+					localStorage.setItem('selected_filter', matchedLab.subject);
+				} else {
+					// Dynamic lab, open sandbox viewer
+					path = `/thi-nghiem?id=${simId}&role=student`;
+				}
 			}
-		}
-		history.push(path);
-	}, [filter, grade]);
+			history.push(path);
+		},
+		[filter, grade],
+	);
 
 	const handleHeroRun = useCallback(
 		async (customPrompt?: string) => {
 			const prompt = (customPrompt || heroInput).trim();
 			if (!prompt) return;
 
-			const contextForApi = chatMessages.slice(-6).map(m => ({
+			const contextForApi = chatMessages.slice(-6).map((m) => ({
 				role: (m.role === 'ai' ? 'assistant' : 'user') as 'user' | 'assistant',
 				content: m.text,
 			}));
@@ -1499,321 +1498,327 @@ const HocSinhHome: React.FC = () => {
 
 	return (
 		<>
-		<StudentLayout>
-			<div ref={homeScrollRef} className='stu-home scl'>
-				{/* Grid overlay */}
-				<div className='stu-home__grid-overlay' />
+			<StudentLayout>
+				<div ref={homeScrollRef} className='stu-home scl'>
+					{/* Grid overlay */}
+					<div className='stu-home__grid-overlay' />
 
-				<div className='stu-home__content'>
-					{/* Header */}
-					<div className='stu-home__header'>
-						<div>
-							<div className='stu-home__welcome'>Chào mừng trở lại, {user?.firstName || 'bạn'}</div>
-							<div className='stu-home__subtitle'>Sẵn sàng cho thí nghiệm hôm nay?</div>
-						</div>
-						<div className='stu-home__badges'>
-							<div className='stu-home__badge'>
-								<div className='stu-home__badge-dot stu-home__badge-dot--level' />
-								<span>Level {user?.level ?? 1}</span>
-							</div>
-							<div className='stu-home__badge stu-home__badge--streak'>
-								<svg
-									className='stu-home__flame'
-									width='16'
-									height='16'
-									viewBox='0 0 24 24'
-									xmlns='http://www.w3.org/2000/svg'
-								>
-									<defs>
-										<linearGradient id='flameGrad' x1='0.5' y1='0' x2='0.5' y2='1'>
-											<stop offset='0%' stopColor='oklch(0.92 0.2 80)' />
-											<stop offset='55%' stopColor='oklch(0.76 0.22 48)' />
-											<stop offset='100%' stopColor='oklch(0.6 0.2 30)' />
-										</linearGradient>
-									</defs>
-									<path
-										d='M12 2c1.5 3-1.5 5 0 8 1 2 4 2 4 5a4 4 0 0 1-8 0c0-2 1-3 1-4-2 1-3 3-3 5a6 6 0 0 0 12 0c0-5-6-6-6-14Z'
-										fill='url(#flameGrad)'
-									/>
-								</svg>
-								<span>{user?.streak ?? 0} ngày liên tiếp</span>
-							</div>
-							{(() => {
-								const xp = user?.xp ?? 0;
-								const lvl = user?.level ?? 1;
-								const nextThreshold = lvl * lvl * 100;
-								const pct = Math.min(100, Math.round((xp / nextThreshold) * 100));
-								return (
-									<div className='stu-home__xp-bar'>
-										<div className='stu-home__xp-labels'>
-											<span>XP</span>
-											<span>{xp.toLocaleString('vi-VN')} / {nextThreshold.toLocaleString('vi-VN')}</span>
-										</div>
-										<div className='stu-home__xp-track'>
-											<div className='stu-home__xp-fill' style={{ width: `${pct}%` }} />
-										</div>
-									</div>
-								);
-							})()}
-						</div>
-					</div>
-
-					{/* AI Hero Bar */}
-					<div className='stu-home__hero'>
-						<div className='stu-home__hero-header'>
-							<div className='stu-home__hero-icon'>
-								<svg
-									width='22'
-									height='22'
-									viewBox='0 0 24 24'
-									fill='none'
-									stroke='#fff'
-									strokeWidth='1.8'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-								>
-									<path d='M12 3v3M12 18v3M3 12h3M18 12h3' />
-									<path d='M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z' />
-									<path d='M12 10.5v3M10.5 12h3' />
-								</svg>
-							</div>
+					<div className='stu-home__content'>
+						{/* Header */}
+						<div className='stu-home__header'>
 							<div>
-								<div className='stu-home__hero-title'>Trợ lý AI Phòng Thí Nghiệm</div>
-								<div className='stu-home__hero-desc'>
-									Nhập chủ đề hoặc dán đề bài tập để trợ lý chuẩn bị phòng thí nghiệm
+								<div className='stu-home__welcome'>Chào mừng trở lại, {user?.firstName || 'bạn'}</div>
+								<div className='stu-home__subtitle'>Sẵn sàng cho thí nghiệm hôm nay?</div>
+							</div>
+							<div className='stu-home__badges'>
+								<div className='stu-home__badge'>
+									<div className='stu-home__badge-dot stu-home__badge-dot--level' />
+									<span>Level {user?.level ?? 1}</span>
+								</div>
+								<div className='stu-home__badge stu-home__badge--streak'>
+									<svg
+										className='stu-home__flame'
+										width='16'
+										height='16'
+										viewBox='0 0 24 24'
+										xmlns='http://www.w3.org/2000/svg'
+									>
+										<defs>
+											<linearGradient id='flameGrad' x1='0.5' y1='0' x2='0.5' y2='1'>
+												<stop offset='0%' stopColor='oklch(0.92 0.2 80)' />
+												<stop offset='55%' stopColor='oklch(0.76 0.22 48)' />
+												<stop offset='100%' stopColor='oklch(0.6 0.2 30)' />
+											</linearGradient>
+										</defs>
+										<path
+											d='M12 2c1.5 3-1.5 5 0 8 1 2 4 2 4 5a4 4 0 0 1-8 0c0-2 1-3 1-4-2 1-3 3-3 5a6 6 0 0 0 12 0c0-5-6-6-6-14Z'
+											fill='url(#flameGrad)'
+										/>
+									</svg>
+									<span>{user?.streak ?? 0} ngày liên tiếp</span>
+								</div>
+								{(() => {
+									const xp = user?.xp ?? 0;
+									const lvl = user?.level ?? 1;
+									const nextThreshold = lvl * lvl * 100;
+									const pct = Math.min(100, Math.round((xp / nextThreshold) * 100));
+									return (
+										<div className='stu-home__xp-bar'>
+											<div className='stu-home__xp-labels'>
+												<span>XP</span>
+												<span>
+													{xp.toLocaleString('vi-VN')} / {nextThreshold.toLocaleString('vi-VN')}
+												</span>
+											</div>
+											<div className='stu-home__xp-track'>
+												<div className='stu-home__xp-fill' style={{ width: `${pct}%` }} />
+											</div>
+										</div>
+									);
+								})()}
+							</div>
+						</div>
+
+						{/* AI Hero Bar */}
+						<div className='stu-home__hero'>
+							<div className='stu-home__hero-header'>
+								<div className='stu-home__hero-icon'>
+									<svg
+										width='22'
+										height='22'
+										viewBox='0 0 24 24'
+										fill='none'
+										stroke='#fff'
+										strokeWidth='1.8'
+										strokeLinecap='round'
+										strokeLinejoin='round'
+									>
+										<path d='M12 3v3M12 18v3M3 12h3M18 12h3' />
+										<path d='M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z' />
+										<path d='M12 10.5v3M10.5 12h3' />
+									</svg>
+								</div>
+								<div>
+									<div className='stu-home__hero-title'>Trợ lý AI Phòng Thí Nghiệm</div>
+									<div className='stu-home__hero-desc'>
+										Nhập chủ đề hoặc dán đề bài tập để trợ lý chuẩn bị phòng thí nghiệm
+									</div>
 								</div>
 							</div>
-						</div>
 
-						{/* Scrollable Chat History */}
-						{chatMessages.length > 0 && (
-							<div id='hero-chat-scroll' className='stu-home__hero-chat-scroll scl'>
-								{chatMessages.map((msg, index) => (
-									<div
-										key={index}
-										className={`stu-home__hero-chat-row ${msg.role === 'user' ? 'stu-home__hero-chat-row--user' : 'stu-home__hero-chat-row--ai'
+							{/* Scrollable Chat History */}
+							{chatMessages.length > 0 && (
+								<div id='hero-chat-scroll' className='stu-home__hero-chat-scroll scl'>
+									{chatMessages.map((msg, index) => (
+										<div
+											key={index}
+											className={`stu-home__hero-chat-row ${
+												msg.role === 'user' ? 'stu-home__hero-chat-row--user' : 'stu-home__hero-chat-row--ai'
 											}`}
-									>
-										<div className='stu-home__hero-chat-bubble-container'>
-											<div className='stu-home__hero-chat-bubble'>{msg.text}</div>
-											{msg.simulation && (
-												<div className='stu-home__hero-chat-labs'>
-													<div
-														className='stu-home__hero-chat-lab-card'
-														onClick={() => openWorkspace(msg.simulation!.subject, msg.simulation!.simulation_id)}
-													>
+										>
+											<div className='stu-home__hero-chat-bubble-container'>
+												<div className='stu-home__hero-chat-bubble'>{msg.text}</div>
+												{msg.simulation && (
+													<div className='stu-home__hero-chat-labs'>
 														<div
-															className='stu-profile__achievement-badge-icon stu-profile__achievement-badge-icon--chem'
-															style={{ background: 'rgba(98, 43, 226, 0.15)', color: 'oklch(0.62 0.16 264)' }}
+															className='stu-home__hero-chat-lab-card'
+															onClick={() => openWorkspace(msg.simulation!.subject, msg.simulation!.simulation_id)}
 														>
-															<svg
-																width='21'
-																height='21'
-																viewBox='0 0 24 24'
-																fill='none'
-																stroke='currentColor'
-																strokeWidth='1.8'
-																strokeLinecap='round'
-																strokeLinejoin='round'
+															<div
+																className='stu-profile__achievement-badge-icon stu-profile__achievement-badge-icon--chem'
+																style={{ background: 'rgba(98, 43, 226, 0.15)', color: 'oklch(0.62 0.16 264)' }}
 															>
-																<path d='M9 3h6M10 3v5.5L5.2 16.8A2 2 0 0 0 7 20h10a2 2 0 0 0 1.8-3.2L14 8.5V3' />
-															</svg>
-														</div>
-														<div style={{ flex: 1, minWidth: 0 }}>
-															<div className='stu-home__hero-chat-lab-title'>{msg.simulation.title}</div>
-															<div className='stu-home__hero-chat-lab-meta'>
-																{msg.simulation.level} · {msg.simulation.mins} · {msg.simulation.xp}
+																<svg
+																	width='21'
+																	height='21'
+																	viewBox='0 0 24 24'
+																	fill='none'
+																	stroke='currentColor'
+																	strokeWidth='1.8'
+																	strokeLinecap='round'
+																	strokeLinejoin='round'
+																>
+																	<path d='M9 3h6M10 3v5.5L5.2 16.8A2 2 0 0 0 7 20h10a2 2 0 0 0 1.8-3.2L14 8.5V3' />
+																</svg>
+															</div>
+															<div style={{ flex: 1, minWidth: 0 }}>
+																<div className='stu-home__hero-chat-lab-title'>{msg.simulation.title}</div>
+																<div className='stu-home__hero-chat-lab-meta'>
+																	{msg.simulation.level} · {msg.simulation.mins} · {msg.simulation.xp}
+																</div>
+															</div>
+															<div className='stu-home__hero-chat-lab-btn'>
+																Bắt đầu
+																<svg
+																	width='13'
+																	height='13'
+																	viewBox='0 0 24 24'
+																	fill='none'
+																	stroke='currentColor'
+																	strokeWidth='2.4'
+																	strokeLinecap='round'
+																	strokeLinejoin='round'
+																>
+																	<path d='M5 12h14M13 6l6 6-6 6' />
+																</svg>
 															</div>
 														</div>
-														<div className='stu-home__hero-chat-lab-btn'>
-															Bắt đầu
-															<svg
-																width='13'
-																height='13'
-																viewBox='0 0 24 24'
-																fill='none'
-																stroke='currentColor'
-																strokeWidth='2.4'
-																strokeLinecap='round'
-																strokeLinejoin='round'
-															>
-																<path d='M5 12h14M13 6l6 6-6 6' />
-															</svg>
-														</div>
 													</div>
-												</div>
-											)}
+												)}
+											</div>
 										</div>
-									</div>
-								))}
+									))}
 
-								{aiLoading && (
-									<div className='stu-home__hero-chat-row stu-home__hero-chat-row--ai'>
-										<div className='stu-home__hero-chat-typing'>
-											<div className='stu-home__hero-chat-typing-dot' />
-											<div className='stu-home__hero-chat-typing-dot' />
-											<div className='stu-home__hero-chat-typing-dot' />
-										</div>
-									</div>
-								)}
-							</div>
-						)}
-
-						{/* Chat Input row */}
-						<div className='stu-home__hero-input-row'>
-							<input
-								className='stu-home__hero-input'
-								value={heroInput}
-								onChange={(e) => setHeroInput(e.target.value)}
-								onKeyDown={handleHeroKey}
-								placeholder='Ví dụ: "giúp mình bài chuẩn độ axit-bazơ" hoặc nhập yêu cầu...'
-							/>
-							<div className='stu-home__hero-btn' onClick={() => handleHeroRun()}>
-								<span>Chạy bằng AI</span>
-								<svg
-									width='16'
-									height='16'
-									viewBox='0 0 24 24'
-									fill='none'
-									stroke='currentColor'
-									strokeWidth='2.5'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-								>
-									<path d='M5 12h14M13 6l6 6-6 6' />
-								</svg>
-							</div>
-						</div>
-
-						{/* Chips */}
-						<div className='stu-home__hero-chips'>
-							<span className='stu-home__hero-chips-label'>Thử:</span>
-							{HERO_CHIPS.map((c) => (
-								<span key={c.label} className='stu-home__hero-chip' onClick={() => handleHeroRun(c.prompt)}>
-									{c.label}
-								</span>
-							))}
-						</div>
-					</div>
-
-					{/* Divider */}
-					<div className='stu-home__divider'>
-						<div className='stu-home__divider-line' />
-						<div className='stu-home__divider-text'></div>
-						<div className='stu-home__divider-line' />
-					</div>
-
-					{/* Controls */}
-					<div className='stu-home__controls'>
-						<div className='stu-home__grade-tabs'>
-							{GRADES.map((g) => (
-								<div
-									key={g}
-									className={`stu-home__grade-tab ${grade === g ? 'stu-home__grade-tab--active' : ''}`}
-									onClick={() => setGrade(g)}
-								>
-									Lớp {g}
-								</div>
-							))}
-						</div>
-						<div className='stu-home__filter-chips'>
-							{FILTERS.map((f) => (
-								<div
-									key={f.key}
-									className={`stu-home__filter-chip ${filter === f.key ? `stu-home__filter-chip--active stu-home__filter-chip--${f.key}` : ''}`}
-									onClick={() => setFilter(f.key)}
-								>
-									{f.label}
-								</div>
-							))}
-						</div>
-					</div>
-
-					{/* Lab Grid */}
-					<div className='stu-home__grid'>
-						{paginatedLabs.map((lab, idx) => (
-							<div
-								key={lab.id}
-								className='stu-home__card'
-								style={{ animationDelay: `${idx * 0.06}s` }}
-								onClick={() => !lab.locked && openWorkspace(lab.subject, lab.simId)}
-							>
-								<div className={`stu-home__card-thumb stu-home__card-thumb--${lab.subject}`}>
-									{lab.simId && allThumbs[lab.simId]
-										? <img className='stu-home__card-thumb-img' src={allThumbs[lab.simId]} alt={lab.title} />
-										: getSubjectIcon(lab.subject, idx)
-									}
-									<div className='stu-home__card-shine' style={{ animationDelay: `${1 + idx * 0.3}s` }} />
-									{lab.locked && (
-										<div className='stu-home__card-lock'>
-											<svg
-												width='22'
-												height='22'
-												viewBox='0 0 24 24'
-												fill='none'
-												stroke='#fff'
-												strokeWidth='2'
-												strokeLinecap='round'
-												strokeLinejoin='round'
-											>
-												<rect x='5' y='11' width='14' height='9' rx='2' />
-												<path d='M8 11V8a4 4 0 0 1 8 0v3' />
-											</svg>
+									{aiLoading && (
+										<div className='stu-home__hero-chat-row stu-home__hero-chat-row--ai'>
+											<div className='stu-home__hero-chat-typing'>
+												<div className='stu-home__hero-chat-typing-dot' />
+												<div className='stu-home__hero-chat-typing-dot' />
+												<div className='stu-home__hero-chat-typing-dot' />
+											</div>
 										</div>
 									)}
 								</div>
-								<div className='stu-home__card-body'>
-									<div className='stu-home__card-title-row'>
-										<div className={`stu-home__card-dot stu-home__card-dot--${lab.subject}`} />
-										<div className='stu-home__card-title'>{lab.title}</div>
-									</div>
-									<div className='stu-home__card-meta'>
-										<span className={`stu-home__card-level ${getLevelClass(lab.level)}`}>{lab.level}</span>
-										<span className='stu-home__card-mins'>{lab.mins}</span>
-										{lab.xp && <span className='stu-home__card-xp'>{lab.xp}</span>}
-									</div>
+							)}
+
+							{/* Chat Input row */}
+							<div className='stu-home__hero-input-row'>
+								<input
+									className='stu-home__hero-input'
+									value={heroInput}
+									onChange={(e) => setHeroInput(e.target.value)}
+									onKeyDown={handleHeroKey}
+									placeholder='Ví dụ: "giúp mình bài chuẩn độ axit-bazơ" hoặc nhập yêu cầu...'
+								/>
+								<div className='stu-home__hero-btn' onClick={() => handleHeroRun()}>
+									<span>Chạy bằng AI</span>
+									<svg
+										width='16'
+										height='16'
+										viewBox='0 0 24 24'
+										fill='none'
+										stroke='currentColor'
+										strokeWidth='2.5'
+										strokeLinecap='round'
+										strokeLinejoin='round'
+									>
+										<path d='M5 12h14M13 6l6 6-6 6' />
+									</svg>
 								</div>
 							</div>
-						))}
-					</div>
 
-					{/* Pagination */}
-					{filteredLabs.length > 9 && (
-						<div style={{ display: 'flex', justifyContent: 'center', marginTop: '32px', marginBottom: '24px' }}>
-							<Pagination
-								current={currentPage}
-								pageSize={9}
-								total={filteredLabs.length}
-								onChange={(page) => setCurrentPage(page)}
-								showSizeChanger={false}
-							/>
+							{/* Chips */}
+							<div className='stu-home__hero-chips'>
+								<span className='stu-home__hero-chips-label'>Thử:</span>
+								{HERO_CHIPS.map((c) => (
+									<span key={c.label} className='stu-home__hero-chip' onClick={() => handleHeroRun(c.prompt)}>
+										{c.label}
+									</span>
+								))}
+							</div>
 						</div>
+
+						{/* Divider */}
+						<div className='stu-home__divider'>
+							<div className='stu-home__divider-line' />
+							<div className='stu-home__divider-text'></div>
+							<div className='stu-home__divider-line' />
+						</div>
+
+						{/* Controls */}
+						<div className='stu-home__controls'>
+							<div className='stu-home__grade-tabs'>
+								{GRADES.map((g) => (
+									<div
+										key={g}
+										className={`stu-home__grade-tab ${grade === g ? 'stu-home__grade-tab--active' : ''}`}
+										onClick={() => setGrade(g)}
+									>
+										Lớp {g}
+									</div>
+								))}
+							</div>
+							<div className='stu-home__filter-chips'>
+								{FILTERS.map((f) => (
+									<div
+										key={f.key}
+										className={`stu-home__filter-chip ${filter === f.key ? `stu-home__filter-chip--active stu-home__filter-chip--${f.key}` : ''}`}
+										onClick={() => setFilter(f.key)}
+									>
+										{f.label}
+									</div>
+								))}
+							</div>
+						</div>
+
+						{/* Lab Grid */}
+						<div className='stu-home__grid'>
+							{paginatedLabs.map((lab, idx) => (
+								<div
+									key={lab.id}
+									className='stu-home__card'
+									style={{ animationDelay: `${idx * 0.06}s` }}
+									onClick={() => !lab.locked && openWorkspace(lab.subject, lab.simId)}
+								>
+									<div className={`stu-home__card-thumb stu-home__card-thumb--${lab.subject}`}>
+										{lab.simId && allThumbs[lab.simId] ? (
+											<img className='stu-home__card-thumb-img' src={allThumbs[lab.simId]} alt={lab.title} />
+										) : (
+											getSubjectIcon(lab.subject, idx)
+										)}
+										<div className='stu-home__card-shine' style={{ animationDelay: `${1 + idx * 0.3}s` }} />
+										{lab.locked && (
+											<div className='stu-home__card-lock'>
+												<svg
+													width='22'
+													height='22'
+													viewBox='0 0 24 24'
+													fill='none'
+													stroke='#fff'
+													strokeWidth='2'
+													strokeLinecap='round'
+													strokeLinejoin='round'
+												>
+													<rect x='5' y='11' width='14' height='9' rx='2' />
+													<path d='M8 11V8a4 4 0 0 1 8 0v3' />
+												</svg>
+											</div>
+										)}
+									</div>
+									<div className='stu-home__card-body'>
+										<div className='stu-home__card-title-row'>
+											<div className={`stu-home__card-dot stu-home__card-dot--${lab.subject}`} />
+											<div className='stu-home__card-title'>{lab.title}</div>
+										</div>
+										<div className='stu-home__card-meta'>
+											<span className={`stu-home__card-level ${getLevelClass(lab.level)}`}>{lab.level}</span>
+											<span className='stu-home__card-mins'>{lab.mins}</span>
+											{lab.xp && <span className='stu-home__card-xp'>{lab.xp}</span>}
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
+
+						{/* Pagination */}
+						{filteredLabs.length > 9 && (
+							<div style={{ display: 'flex', justifyContent: 'center', marginTop: '32px', marginBottom: '24px' }}>
+								<Pagination
+									current={currentPage}
+									pageSize={9}
+									total={filteredLabs.length}
+									onChange={(page) => setCurrentPage(page)}
+									showSizeChanger={false}
+								/>
+							</div>
+						)}
+					</div>
+				</div>
+			</StudentLayout>
+			{currentThumb && (
+				<div
+					style={{
+						position: 'fixed',
+						left: -9999,
+						top: -9999,
+						width: 320,
+						height: 180,
+						visibility: 'hidden',
+						pointerEvents: 'none',
+						zIndex: -1,
+					}}
+				>
+					{currentThumb.subject === 'chem' ? (
+						<GenericChemSimulation
+							config={{ simulation_id: currentThumb.simId, subject: 'chemistry', topic: 'generic', parameters: [] }}
+							currentStep={1}
+							onThumbnail={handleThumbCapture}
+						/>
+					) : (
+						<SimThumbCapture simId={currentThumb.simId} subject={currentThumb.subject} onCapture={handleThumbCapture} />
 					)}
 				</div>
-			</div>
-		</StudentLayout>
-		{currentThumb && (
-			<div style={{
-				position: 'fixed', left: -9999, top: -9999,
-				width: 320, height: 180,
-				visibility: 'hidden', pointerEvents: 'none',
-				zIndex: -1,
-			}}>
-				{currentThumb.subject === 'chem' ? (
-					<GenericChemSimulation
-						config={{ simulation_id: currentThumb.simId, subject: 'chemistry', topic: 'generic', parameters: [] }}
-						currentStep={1}
-						onThumbnail={handleThumbCapture}
-					/>
-				) : (
-					<SimThumbCapture
-						simId={currentThumb.simId}
-						subject={currentThumb.subject}
-						onCapture={handleThumbCapture}
-					/>
-				)}
-			</div>
-		)}
+			)}
 		</>
 	);
 };
