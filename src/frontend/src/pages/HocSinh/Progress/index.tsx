@@ -114,16 +114,22 @@ const Progress: React.FC = () => {
 	const currentUserId = (initialState?.currentUser as any)?.id;
 
 	useEffect(() => {
-		getUserStats().then(res => setStats(res.data?.data || res.data)).catch(() => {});
-		getMyLabs().then(res => {
-			const d = res.data?.data ?? res.data ?? {};
-			setLabData({ inProgress: d.inProgress ?? [], completed: d.completed ?? [] });
-		}).catch(() => {});
-		getLeaderboard(50).then(res => {
-			const list: any[] = res.data?.data ?? res.data ?? [];
-			const idx = list.findIndex((p: any) => p.id === currentUserId);
-			setRank(idx >= 0 ? idx + 1 : 0);
-		}).catch(() => {});
+		getUserStats()
+			.then((res) => setStats(res.data?.data || res.data))
+			.catch(() => {});
+		getMyLabs()
+			.then((res) => {
+				const d = res.data?.data ?? res.data ?? {};
+				setLabData({ inProgress: d.inProgress ?? [], completed: d.completed ?? [] });
+			})
+			.catch(() => {});
+		getLeaderboard(50)
+			.then((res) => {
+				const list: any[] = res.data?.data ?? res.data ?? [];
+				const idx = list.findIndex((p: any) => p.id === currentUserId);
+				setRank(idx >= 0 ? idx + 1 : 0);
+			})
+			.catch(() => {});
 	}, [currentUserId]);
 
 	const xp = stats?.xp ?? 0;
@@ -180,13 +186,19 @@ const Progress: React.FC = () => {
 								<div className='stu-progress__hero-xp-section'>
 									<div className='stu-progress__hero-xp-labels'>
 										<span>{xp.toLocaleString('vi-VN')} XP</span>
-										<span>{nextThreshold.toLocaleString('vi-VN')} → Lv.{level + 1}</span>
+										<span>
+											{nextThreshold.toLocaleString('vi-VN')} → Lv.{level + 1}
+										</span>
 									</div>
 									<div className='stu-progress__hero-xp-track'>
 										<div className='stu-progress__hero-xp-fill' style={{ width: `${pct}%` }} />
 									</div>
 									<div className='stu-progress__hero-hint'>
-										Chỉ còn <span style={{ color: '#cfccdd', fontWeight: 600 }}>{xpToNextLevel.toLocaleString('vi-VN')} XP</span> để lên cấp tiếp theo.
+										Chỉ còn{' '}
+										<span style={{ color: '#cfccdd', fontWeight: 600 }}>
+											{xpToNextLevel.toLocaleString('vi-VN')} XP
+										</span>{' '}
+										để lên cấp tiếp theo.
 									</div>
 								</div>
 							</div>

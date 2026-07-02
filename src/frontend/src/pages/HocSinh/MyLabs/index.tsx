@@ -88,7 +88,7 @@ const MyLabs: React.FC = () => {
 
 	useEffect(() => {
 		getMyLabs()
-			.then(res => {
+			.then((res) => {
 				const data = res.data?.data ?? res.data ?? {};
 				setInProgress(Array.isArray(data.inProgress) ? data.inProgress : []);
 				setCompleted(Array.isArray(data.completed) ? data.completed : []);
@@ -134,8 +134,21 @@ const MyLabs: React.FC = () => {
 					{activeTab === 0 && (
 						<div className='stu-labs__list'>
 							{inProgress.length === 0 && completed.length === 0 && (
-								<div className='stu-labs__empty' style={{ gridColumn: '1/-1', padding: '32px 0', textAlign: 'center', color: '#9a988f' }}>
-									<svg width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='#c0bdb4' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' style={{ display: 'block', margin: '0 auto 12px' }}>
+								<div
+									className='stu-labs__empty'
+									style={{ gridColumn: '1/-1', padding: '32px 0', textAlign: 'center', color: '#9a988f' }}
+								>
+									<svg
+										width='48'
+										height='48'
+										viewBox='0 0 24 24'
+										fill='none'
+										stroke='#c0bdb4'
+										strokeWidth='1.5'
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										style={{ display: 'block', margin: '0 auto 12px' }}
+									>
 										<path d='M9 3h6M10 3v5.5L5.2 16.8A2 2 0 0 0 7 20h10a2 2 0 0 0 1.8-3.2L14 8.5V3' />
 									</svg>
 									<p>Bạn chưa mở lab nào. Hãy chọn một thí nghiệm từ trang chủ!</p>
@@ -222,7 +235,10 @@ const MyLabs: React.FC = () => {
 													<div className='stu-labs__completed-name'>{lab.simulationTitle || lab.simulationId}</div>
 													<div className='stu-labs__completed-xp'>+{(lab.correctAnswers ?? 0) * 10} XP đã nhận</div>
 												</div>
-												<span className='stu-labs__completed-replay' onClick={() => openWorkspace(lab.subject, lab.simulationId)}>
+												<span
+													className='stu-labs__completed-replay'
+													onClick={() => openWorkspace(lab.subject, lab.simulationId)}
+												>
 													<svg
 														width='12'
 														height='12'

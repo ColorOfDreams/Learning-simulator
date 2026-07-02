@@ -1,147 +1,147 @@
 @import '../components/student-theme.less';
 
 .student-class-details {
-  flex: 1;
-  width: 100%;
-  padding: 34px 44px 56px;
-  max-width: 1020px;
-  margin: 0 auto;
-  text-align: left;
-  background: @stu-bg;
-  min-height: 100%;
-  overflow-y: auto;
-  .stu-scrollbar();
+	flex: 1;
+	width: 100%;
+	padding: 34px 44px 56px;
+	max-width: 1020px;
+	margin: 0 auto;
+	text-align: left;
+	background: @stu-bg;
+	min-height: 100%;
+	overflow-y: auto;
+	.stu-scrollbar();
 
-  // Override default PageCard styles to align with student theme
-  .ant-card {
-    background: @stu-bg-card !important;
-    border: 1px solid @stu-border !important;
-    border-radius: @stu-radius-2xl;
-    box-shadow: @stu-shadow-md;
+	// Override default PageCard styles to align with student theme
+	.ant-card {
+		background: @stu-bg-card !important;
+		border: 1px solid @stu-border !important;
+		border-radius: @stu-radius-2xl;
+		box-shadow: @stu-shadow-md;
 
-    .ant-card-head {
-      border-bottom: 1px solid @stu-border-light;
-      background: transparent;
-      padding: 20px 24px;
-      
-      .ant-card-head-title {
-        h3.ant-typography {
-          color: @stu-text-heading !important;
-          font-family: @font-heading;
-          font-weight: 800;
-          font-size: 24px;
-        }
-      }
-    }
-  }
+		.ant-card-head {
+			border-bottom: 1px solid @stu-border-light;
+			background: transparent;
+			padding: 20px 24px;
 
-  .assignments-section {
-    padding: 12px 0 24px 0;
-    
-    h4.ant-typography {
-      margin-bottom: 16px;
-      font-weight: 700;
-      color: @stu-text-heading !important;
-      font-size: 18px;
-    }
-  }
+			.ant-card-head-title {
+				h3.ant-typography {
+					color: @stu-text-heading !important;
+					font-family: @font-heading;
+					font-weight: 800;
+					font-size: 24px;
+				}
+			}
+		}
+	}
 
-  .assignments-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 20px;
-  }
+	.assignments-section {
+		padding: 12px 0 24px 0;
 
-  .assignment-card {
-    border-radius: @stu-radius-xl !important;
-    box-shadow: @stu-shadow-sm;
-    border: 1px solid @stu-border !important;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    .ant-card-body {
-      padding: 20px 24px !important;
-    }
+		h4.ant-typography {
+			margin-bottom: 16px;
+			font-weight: 700;
+			color: @stu-text-heading !important;
+			font-size: 18px;
+		}
+	}
 
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: @stu-shadow-lg;
-      border-color: @stu-accent !important;
-    }
+	.assignments-list {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		margin-top: 20px;
+	}
 
-    &__content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
+	.assignment-card {
+		border-radius: @stu-radius-xl !important;
+		box-shadow: @stu-shadow-sm;
+		border: 1px solid @stu-border !important;
+		transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
-      @media (max-width: 768px) {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
+		.ant-card-body {
+			padding: 20px 24px !important;
+		}
 
-    &__info {
-      flex: 1;
-      
-      h5.ant-typography {
-        margin-bottom: 6px;
-        font-size: 17px;
-        font-weight: 700;
-        color: @stu-text-heading !important;
-      }
+		&:hover {
+			transform: translateY(-2px);
+			box-shadow: @stu-shadow-lg;
+			border-color: @stu-accent !important;
+		}
 
-      .ant-typography {
-        display: block;
-        margin-bottom: 8px;
-        color: @stu-text-secondary !important;
-        font-size: 13.5px;
-      }
-    }
+		&__content {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 24px;
 
-    &__meta {
-      font-size: 13px;
-      color: @stu-text-muted;
-      strong {
-        color: @stu-text-primary;
-        font-weight: 600;
-      }
-    }
+			@media (max-width: 768px) {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+		}
 
-    &__action {
-      min-width: 150px;
-      text-align: right;
+		&__info {
+			flex: 1;
 
-      @media (max-width: 768px) {
-        text-align: left;
-        width: 100%;
-      }
+			h5.ant-typography {
+				margin-bottom: 6px;
+				font-size: 17px;
+				font-weight: 700;
+				color: @stu-text-heading !important;
+			}
 
-      .submission-status {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 8px;
+			.ant-typography {
+				display: block;
+				margin-bottom: 8px;
+				color: @stu-text-secondary !important;
+				font-size: 13.5px;
+			}
+		}
 
-        @media (max-width: 768px) {
-          align-items: flex-start;
-          flex-direction: row;
-          align-items: center;
-        }
+		&__meta {
+			font-size: 13px;
+			color: @stu-text-muted;
+			strong {
+				color: @stu-text-primary;
+				font-weight: 600;
+			}
+		}
 
-        .score-display {
-          font-size: 14px;
-          color: @stu-text-secondary;
-          strong {
-            font-size: 18px;
-            color: @stu-accent !important;
-          }
-        }
-      }
-    }
-  }
+		&__action {
+			min-width: 150px;
+			text-align: right;
 
-  .ant-empty-description {
-    color: @stu-text-muted !important;
-  }
+			@media (max-width: 768px) {
+				text-align: left;
+				width: 100%;
+			}
+
+			.submission-status {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-end;
+				gap: 8px;
+
+				@media (max-width: 768px) {
+					align-items: flex-start;
+					flex-direction: row;
+					align-items: center;
+				}
+
+				.score-display {
+					font-size: 14px;
+					color: @stu-text-secondary;
+					strong {
+						font-size: 18px;
+						color: @stu-accent !important;
+					}
+				}
+			}
+		}
+	}
+
+	.ant-empty-description {
+		color: @stu-text-muted !important;
+	}
 }

@@ -47,15 +47,16 @@ export default function TriangleSimulation({ config }: SimulationProps) {
   const fmtN = (v: number) => (Math.round(v * 100) / 100).toFixed(2).replace(/\.?0+$/, '');
   const fmtDeg = (r: number) => (r * 180 / Math.PI).toFixed(1) + '°';
 
-  const angleArc = (cx: number, cy: number, x1: number, y1: number, x2: number, y2: number, rad: number) => {
+  const angleArc = (cx: number, cy: number, x1: number, y1: number, x2: number, y2: number) => {
     const a1 = Math.atan2(y1-cy, x1-cx);
     const a2 = Math.atan2(y2-cy, x2-cx);
     const r = 22;
     const sx = cx + r*Math.cos(a1); const sy = cy + r*Math.sin(a1);
     const ex = cx + r*Math.cos(a2); const ey = cy + r*Math.sin(a2);
-    const large = Math.abs(a2-a1) > Math.PI ? 1 : 0;
-    const sweep = (a2-a1+2*Math.PI)%(2*Math.PI) < Math.PI ? 1 : 0;
-    return `M ${sx.toFixed(1)} ${sy.toFixed(1)} A ${r} ${r} 0 ${large} ${sweep} ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+    // cross product (P-V)×(Q-V): positive → CW on screen (y-down) → sweep=1
+    const cross = (x1-cx)*(y2-cy) - (y1-cy)*(x2-cx);
+    const sweep = cross > 0 ? 1 : 0;
+    return `M ${sx.toFixed(1)} ${sy.toFixed(1)} A ${r} ${r} 0 0 ${sweep} ${ex.toFixed(1)} ${ey.toFixed(1)}`;
   };
 
   // Circumscribed circle center (circumcenter)
@@ -101,27 +102,14 @@ export default function TriangleSimulation({ config }: SimulationProps) {
             <text x={((Ax+Bx)/2-14).toFixed(1)} y={((Ay+By)/2).toFixed(1)} fill="#4ade80" fontSize="13" textAnchor="end" fontWeight="600">c={fmtN(c)}</text>
 
             {/* Angle arcs */}
-            <path d={angleArc(Ax, Ay, Bx, By, Cx, Cy, Arad)} fill="none" stroke="#e879f9" strokeWidth="1.5" />
-            <path d={angleArc(Bx, By, Ax, Ay, Cx, Cy, Brad)} fill="none" stroke="#fbbf24" strokeWidth="1.5" />
-            <path d={angleArc(Cx, Cy, Bx, By, Ax, Ay, Crad)} fill="none" stroke="#a78bfa" strokeWidth="1.5" />
-
-            {/* Vertices */}
-            {[
-              { x: Ax, y: Ay, label: 'A', angle: `A=${fmtDeg(Arad)}`, color: '#e879f9', dx:-14, dy:-10 },
-              { x: Bx, y: By, label: 'B', angle: `B=${fmtDeg(Brad)}`, color: '#fbbf24', dx:-18, dy:14 },
-              { x: Cx, y: Cy, label: 'C', angle: `C=${fmtDeg(Cdeg)}°`, color: '#a78bfa', dx:8, dy:14 },
-            ].map(({ x, y, label, angle, color, dx, dy }) => (
-              <g key={label}>
-                <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r={5} fill={color} />
-                <text x={(x+dx).toFixed(1)} y={(y+dy).toFixed(1)} fill={color} fontSize="12" fontWeight="600">{label}</text>
-                <text x={(x+dx).toFixed(1)} y={(y+dy+14).toFixed(1)} fill={color} fontSize="10">{angle}</text>
-              </g>
-            ))}
+            <path d={angleArc(Ax, Ay, Bx, By, Cx, Cy)} fill="none" stroke="#e879f9" strokeWidth="1.5" />
+            <path d={angleArc(Bx, By, Ax, Ay, Cx, Cy)} fill="none" stroke="#fbbf24" strokeWidth="1.5" />
+            <path d={angleArc(Cx, Cy, Bx, By, Ax, Ay)} fill="none" stroke="#a78bfa" strokeWidth="1.5" />
 
             {/* Circumcenter R */}
             <circle cx={ccx.toFixed(1)} cy={ccy.toFixed(1)} r={3} fill="#475569" />
 
-            {/* Info box */}
+            {/* Info box — rendered before vertices so labels always appear on top */}
             <rect x={8} y={8} width={220} height={110} rx={6} fill="#0f172a" fillOpacity={0.9} />
             <text x={16} y={27} fill="#64748b" fontSize="12" fontWeight="600">Định lý cosin:</text>
             <text x={16} y={44} fill="#94a3b8" fontSize="11">c² = a²+b²-2ab·cosC = {fmtN(c*c)}</text>
@@ -129,6 +117,19 @@ export default function TriangleSimulation({ config }: SimulationProps) {
             <text x={16} y={78} fill="#94a3b8" fontSize="11">a/sinA = b/sinB = c/sinC = 2R</text>
             <text x={16} y={95} fill="#fbbf24" fontSize="11">S = ½ab·sinC = {fmtN(area)}</text>
             <text x={16} y={112} fill="#64748b" fontSize="11">R (ngoại tiếp) = {fmtN(R)}</text>
+
+            {/* Vertices — rendered last, always on top of info box */}
+            {[
+              { x: Ax, y: Ay, label: 'A', angle: `A=${fmtDeg(Arad)}`, color: '#e879f9', dx: Ax < W/2 ? 8 : -18, dy:-22 },
+              { x: Bx, y: By, label: 'B', angle: `B=${fmtDeg(Brad)}`, color: '#fbbf24', dx:-18, dy:14 },
+              { x: Cx, y: Cy, label: 'C', angle: `C=${fmtDeg(Crad)}`, color: '#a78bfa', dx:8, dy:14 },
+            ].map(({ x, y, label, angle, color, dx, dy }) => (
+              <g key={label}>
+                <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r={5} fill={color} />
+                <text x={(x+dx).toFixed(1)} y={(y+dy).toFixed(1)} fill={color} fontSize="12" fontWeight="600">{label}</text>
+                <text x={(x+dx).toFixed(1)} y={(y+dy+14).toFixed(1)} fill={color} fontSize="10">{angle}</text>
+              </g>
+            ))}
           </>
         )}
         </g>

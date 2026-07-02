@@ -1,6 +1,6 @@
+import { useAuthActions } from '@/hooks/useAuthActions';
 import React, { useEffect, useState } from 'react';
 import { history, useLocation, useModel } from 'umi';
-import { useAuthActions } from '@/hooks/useAuthActions';
 import './index.less';
 
 interface StudentLayoutProps {
@@ -98,7 +98,16 @@ const NAV_ITEMS: NavItem[] = [
 		label: 'Lớp học',
 		path: '/hoc-sinh/classes',
 		icon: (
-			<svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round'>
+			<svg
+				width='18'
+				height='18'
+				viewBox='0 0 24 24'
+				fill='none'
+				stroke='currentColor'
+				strokeWidth='1.8'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			>
 				<path d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2' />
 				<circle cx='9' cy='7' r='4' />
 				<path d='M23 21v-2a4 4 0 0 0-3-3.87' />
@@ -157,6 +166,18 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 			root.setAttribute('data-theme', theme);
 		}
 	}, [theme]);
+
+	useEffect(() => {
+		const origBodyOverflow = document.body.style.overflow;
+		const origHtmlOverflow = document.documentElement.style.overflow;
+		document.body.style.overflow = 'hidden';
+		document.documentElement.style.overflow = 'hidden';
+
+		return () => {
+			document.body.style.overflow = origBodyOverflow;
+			document.documentElement.style.overflow = origHtmlOverflow;
+		};
+	}, []);
 
 	const isActive = (path: string) => {
 		if (path === '/hoc-sinh') return location.pathname === '/hoc-sinh';
@@ -264,10 +285,16 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 						</div>
 
 						<div className='stu-sidebar__user' onClick={() => handleNav('/hoc-sinh/profile')}>
-							{user?.picture
-								? <img src={user.picture} alt={fullName} className='stu-sidebar__user-avatar stu-sidebar__user-avatar--img' style={{ borderRadius: '50%', objectFit: 'cover', width: 32, height: 32 }} />
-								: <div className='stu-sidebar__user-avatar'>{initials}</div>
-							}
+							{user?.picture ? (
+								<img
+									src={user.picture}
+									alt={fullName}
+									className='stu-sidebar__user-avatar stu-sidebar__user-avatar--img'
+									style={{ borderRadius: '50%', objectFit: 'cover', width: 32, height: 32 }}
+								/>
+							) : (
+								<div className='stu-sidebar__user-avatar'>{initials}</div>
+							)}
 							<div className='stu-sidebar__user-info'>
 								<div className='stu-sidebar__user-name'>{fullName}</div>
 								<div className='stu-sidebar__user-meta'>{levelLabel}</div>
@@ -286,8 +313,6 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 								<path d='M9 6l6 6-6 6' />
 							</svg>
 						</div>
-
-						
 					</div>
 				</aside>
 			)}

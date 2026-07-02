@@ -1,7 +1,6 @@
 @import '../components/student-theme.less';
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
 
-
 // ═══════════════════════════════════
 // Workspace Page — 3-Panel Lab
 // ═══════════════════════════════════
@@ -125,7 +124,9 @@
 			opacity: 0.55;
 			cursor: default;
 			box-shadow: none;
-			&:hover { transform: none; }
+			&:hover {
+				transform: none;
+			}
 		}
 	}
 
@@ -157,8 +158,14 @@
 	}
 
 	@keyframes submitToastIn {
-		from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
-		to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+		from {
+			opacity: 0;
+			transform: translateX(-50%) translateY(-8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(-50%) translateY(0);
+		}
 	}
 
 	&__btn-secondary {
@@ -219,7 +226,8 @@
 
 		font-family: 'Be Vietnam Pro', @font-heading, sans-serif;
 
-		.katex, .katex * {
+		.katex,
+		.katex * {
 			font-family: KaTeX_Main, KaTeX_Math, 'Times New Roman', serif !important;
 		}
 
@@ -244,7 +252,10 @@
 				border: 1.5px solid #4f6ef7;
 				box-shadow: 0 2px 4px rgba(40, 48, 90, 0.2);
 				cursor: pointer;
-				transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+				transition:
+					transform 0.12s ease,
+					border-color 0.12s ease,
+					box-shadow 0.12s ease;
 			}
 
 			&::-webkit-slider-thumb:hover {
@@ -404,12 +415,12 @@
 		text-align: center;
 
 		> div:not([style*='line-height']):not(.stu-ws__formula-note) {
-			font-size: 16px !important;
+			font-size: 18px !important;
 			color: @stu-text-primary !important;
 		}
 
 		.katex {
-			font-size: 16px !important;
+			font-size: 18px !important;
 			line-height: 1.45 !important;
 			color: @stu-text-primary !important;
 		}
@@ -519,8 +530,19 @@
 		min-width: 28px;
 		display: inline-block;
 
+		.katex,
+		.katex *,
+		.katex span,
+		.katex .mathnormal,
+		.katex .mord,
+		.katex .mbin,
+		.katex .mrel,
+		.katex .text {
+			color: inherit !important;
+		}
+
 		.katex {
-			font-size: 13.5px !important;
+			font-size: 16.5px !important;
 		}
 	}
 
@@ -556,14 +578,21 @@
 			&:hover {
 				background: @stu-accent-deep;
 			}
+		}
 
-			.katex, .katex * {
-				color: #fff !important;
-			}
+		.katex,
+		.katex *,
+		.katex span,
+		.katex .mathnormal,
+		.katex .mord,
+		.katex .mbin,
+		.katex .mrel,
+		.katex .text {
+			color: inherit !important;
 		}
 
 		.katex {
-			font-size: 14px !important;
+			font-size: 17px !important;
 		}
 	}
 
@@ -672,11 +701,13 @@
 	&__center {
 		flex: 1;
 		min-width: 0;
+		min-height: 0;
 		padding: 22px;
 		display: flex;
 		flex-direction: column;
 		gap: 14px;
 		background: @stu-bg-card;
+		overflow: hidden;
 
 		&-header {
 			display: flex;
@@ -852,7 +883,9 @@
 		font-size: 12px;
 		cursor: pointer;
 		backdrop-filter: blur(6px);
-		transition: color 0.15s, background 0.15s;
+		transition:
+			color 0.15s,
+			background 0.15s;
 		&:hover {
 			color: #f8fafc;
 			background: rgba(30, 41, 59, 0.9);
@@ -903,41 +936,6 @@
 		line-height: 1.6;
 	}
 
-	&__math-formula-overlay {
-		position: absolute;
-		bottom: 10px;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 5;
-		background: rgba(9, 13, 22, 0.84);
-		border: 1px solid rgba(56, 189, 248, 0.22);
-		border-radius: 10px;
-		padding: 6px 16px;
-		max-width: 92%;
-		text-align: center;
-		pointer-events: none;
-		backdrop-filter: blur(4px);
-
-		.katex {
-			font-size: 13px !important;
-			line-height: 1.6 !important;
-		}
-
-		.katex, .katex * {
-			color: #cbd5e1 !important;
-		}
-
-		.katex .mfrac {
-			line-height: 1.2 !important;
-		}
-
-		.katex .vlist-t,
-		.katex .vlist-r,
-		.katex .vlist {
-			line-height: normal !important;
-		}
-	}
-
 	&__formula-bar {
 		border: 1px solid @stu-border;
 		border-radius: 12px;
@@ -949,6 +947,7 @@
 		text-align: center;
 
 		.katex {
+			font-size: 16.5px !important;
 			line-height: 1.45 !important;
 		}
 
@@ -1893,10 +1892,14 @@
 		height: 124px;
 		border-radius: 13px;
 		background:
-			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 0 / 200% 13px no-repeat,
-			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 24px / 200% 13px no-repeat,
-			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 54px / 200% 42px no-repeat,
-			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 108px / 200% 42px no-repeat;
+			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 0 / 200% 13px
+				no-repeat,
+			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 24px / 200% 13px
+				no-repeat,
+			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 54px / 200% 42px
+				no-repeat,
+			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 108px / 200% 42px
+				no-repeat;
 		animation: stuRightSweep 1.4s linear infinite;
 	}
 }
@@ -2339,14 +2342,14 @@
 		}
 
 		span[style*="color: '#4a4f63'"],
-		span[style*="color: #4a4f63"],
+		span[style*='color: #4a4f63'],
 		span[style*="color: '#2b2f45'"],
-		span[style*="color: #2b2f45"],
+		span[style*='color: #2b2f45'],
 		span[style*="color: '#5a5f73'"],
-		span[style*="color: #5a5f73"],
+		span[style*='color: #5a5f73'],
 		span[style*="color: '#2d3748'"],
-		span[style*="color: #2d3748"] {
-			color: var(--text-secondary) !important;
+		span[style*='color: #2d3748'] {
+			color: var(--text) !important;
 		}
 
 		.stu-ws__param span,
@@ -2357,7 +2360,7 @@
 		.stu-ws__symbols-list span,
 		.stu-ws__symbol-row span,
 		.stu-ws__symbol-item span {
-			color: var(--text-secondary) !important;
+			color: var(--text) !important;
 		}
 
 		.stu-ws__param-val,
@@ -2378,11 +2381,11 @@
 		}
 
 		div[style*="background: '#eef3ff'"],
-		div[style*="background: #eef3ff"],
+		div[style*='background: #eef3ff'],
 		div[style*="background: '#f3eefb'"],
-		div[style*="background: #f3eefb"],
+		div[style*='background: #f3eefb'],
 		div[style*="background: '#f0fdf4'"],
-		div[style*="background: #f0fdf4"] {
+		div[style*='background: #f0fdf4'] {
 			background: var(--bg) !important;
 			border: 1px solid var(--border-light) !important;
 		}
@@ -2394,7 +2397,7 @@
 		}
 
 		.stu-ws__param span[style*='font-size: 13.5px'] {
-			color: var(--text-secondary) !important;
+			color: var(--text) !important;
 		}
 
 		.stu-ws__param span[style*='font-size: 15px'] {
@@ -2471,7 +2474,7 @@
 		}
 
 		.stu-ws__symbol-row span:last-child {
-			color: var(--text-secondary) !important;
+			color: var(--text) !important;
 		}
 	}
 }

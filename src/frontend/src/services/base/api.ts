@@ -19,11 +19,7 @@ export async function getLeaderboard(limit = 10) {
 	return axios.get(`${ip3}/users/leaderboard`, { params: { limit } });
 }
 
-export async function openLabSession(payload: {
-	simulationId: string;
-	simulationTitle?: string;
-	subject: string;
-}) {
+export async function openLabSession(payload: { simulationId: string; simulationTitle?: string; subject: string }) {
 	return axios.post(`${ip3}/users/me/labs/open`, payload);
 }
 

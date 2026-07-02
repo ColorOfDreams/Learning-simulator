@@ -10,7 +10,7 @@ export default function StatisticsSimulation({ config }: SimulationProps) {
   const v5 = config.parameters?.find(p => p.key === 'v5')?.value ?? 9;
   const v6 = config.parameters?.find(p => p.key === 'v6')?.value ?? 10;
 
-  const W = 600; const H = 400;
+  const W = 600; const H = 460;
   const { svgHandlers, groupTransform, resetView, isDirty } = useMathPanZoom(1, W, H);
 
   const { mean, std, q1, q2, q3, iqr, whiskerLow, whiskerHigh, fmtN } = useMemo(() => {

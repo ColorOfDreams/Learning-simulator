@@ -112,7 +112,9 @@ export default defineConfig({
 		APP_CONFIG_GA_ID: '',
 		APP_CONFIG_SENTRY_DSN: '',
 		APP_CONFIG_ONE_SIGNAL_ID: '',
-		APP_CONFIG_GOOGLE_CLIENT_ID: process.env.APP_CONFIG_GOOGLE_CLIENT_ID || '479455851124-pg3d9fbatkdpo9d1klf6uehecdi73eua.apps.googleusercontent.com',
+		APP_CONFIG_GOOGLE_CLIENT_ID:
+			process.env.APP_CONFIG_GOOGLE_CLIENT_ID ||
+			'479455851124-pg3d9fbatkdpo9d1klf6uehecdi73eua.apps.googleusercontent.com',
 		APP_CONFIG_PRIMARY_COLOR: '',
 		APP_CONFIG_HIGHLIGHT_COLOR: '',
 		APP_CONFIG_APP_VERSION: '',

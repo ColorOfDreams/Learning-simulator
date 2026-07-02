@@ -52,10 +52,16 @@ const HocSinhProfile: React.FC = () => {
 					<div className='stu-profile__identity'>
 						<div className='stu-profile__user-box'>
 							<div className='stu-profile__avatar-wrapper'>
-								{user?.picture
-									? <img src={user.picture} alt={fullName} className='stu-profile__avatar' style={{ borderRadius: '50%', objectFit: 'cover', width: '100%', height: '100%' }} />
-									: <div className='stu-profile__avatar'>{initials}</div>
-								}
+								{user?.picture ? (
+									<img
+										src={user.picture}
+										alt={fullName}
+										className='stu-profile__avatar'
+										style={{ borderRadius: '50%', objectFit: 'cover', width: '100%', height: '100%' }}
+									/>
+								) : (
+									<div className='stu-profile__avatar'>{initials}</div>
+								)}
 								<div className='stu-profile__level-badge'>{user?.level ?? 1}</div>
 							</div>
 							<div className='stu-profile__name-wrapper'>

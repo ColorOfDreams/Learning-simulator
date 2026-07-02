@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
+import React, { useEffect } from 'react';
 import './index.less';
 
 interface CelebrationOverlayProps {
@@ -12,7 +12,15 @@ interface CelebrationOverlayProps {
 	closeLabel?: string;
 }
 
-const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ score, onClose, icon, title, message, showScore, closeLabel }) => {
+const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({
+	score,
+	onClose,
+	icon,
+	title,
+	message,
+	showScore,
+	closeLabel,
+}) => {
 	useEffect(() => {
 		// Fire multiple confetti bursts
 		const duration = 3000;
@@ -25,7 +33,7 @@ const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ score, onClose,
 				spread: 55,
 				origin: { x: 0 },
 				colors: ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b'],
-				zIndex: 999999
+				zIndex: 999999,
 			});
 			confetti({
 				particleCount: 5,
@@ -33,7 +41,7 @@ const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ score, onClose,
 				spread: 55,
 				origin: { x: 1 },
 				colors: ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b'],
-				zIndex: 999999
+				zIndex: 999999,
 			});
 
 			if (Date.now() < end) {
@@ -49,9 +57,7 @@ const CelebrationOverlay: React.FC<CelebrationOverlayProps> = ({ score, onClose,
 			<div className='celebration-overlay__content'>
 				<div className='celebration-overlay__icon'>{icon ?? '🏆'}</div>
 				<h2 className='celebration-overlay__title'>{title ?? 'Tuyệt vời!'}</h2>
-				<p className='celebration-overlay__msg'>
-					{message ?? 'Bạn đã hoàn thành xuất sắc bài thực hành.'}
-				</p>
+				<p className='celebration-overlay__msg'>{message ?? 'Bạn đã hoàn thành xuất sắc bài thực hành.'}</p>
 				{(showScore ?? true) && (
 					<div className='celebration-overlay__score'>
 						Tỉ lệ đúng: <span>{score}%</span>

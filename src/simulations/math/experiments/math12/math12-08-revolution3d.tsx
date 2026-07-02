@@ -6,6 +6,7 @@ import type { SimulationProps } from '../../types';
 
 export default function Revolution3DSim({ config }: SimulationProps) {
   const mountRef = useRef<HTMLDivElement>(null);
+  const cameraRef = useRef<{ pos: THREE.Vector3Tuple; target: THREE.Vector3Tuple } | null>(null);
 
   const shape = Math.round(config.parameters?.find(p => p.key === 'shape')?.value ?? 0); // 0=sphere,1=cyl,2=cone
   const R     = Math.max(0.2, config.parameters?.find(p => p.key === 'R')?.value ?? 2);
@@ -33,6 +34,11 @@ export default function Revolution3DSim({ config }: SimulationProps) {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
+    if (cameraRef.current) {
+      camera.position.set(...cameraRef.current.pos);
+      controls.target.set(...cameraRef.current.target);
+      controls.update();
+    }
 
     scene.add(new THREE.AmbientLight(0x334155, 3));
     const dl = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -118,6 +124,7 @@ export default function Revolution3DSim({ config }: SimulationProps) {
     const animate = () => {
       reqId = requestAnimationFrame(animate);
       controls.update();
+      statsPlane.quaternion.copy(camera.quaternion);
       renderer.render(scene, camera);
     };
     animate();
@@ -133,6 +140,7 @@ export default function Revolution3DSim({ config }: SimulationProps) {
     window.addEventListener('resize', handleResize);
 
     return () => {
+      cameraRef.current = { pos: camera.position.toArray() as THREE.Vector3Tuple, target: controls.target.toArray() as THREE.Vector3Tuple };
       cancelAnimationFrame(reqId);
       window.removeEventListener('resize', handleResize);
       if (el && renderer.domElement.parentNode === el) el.removeChild(renderer.domElement);

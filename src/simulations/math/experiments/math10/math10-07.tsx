@@ -77,8 +77,8 @@ export default function TrigRatioSimulation({ config }: SimulationProps) {
 
         {/* Side labels */}
         <text x={(Ax+Cx)/2+6} y={(Ay+Cy)/2-8} fill="#f97316" fontSize="11" fontWeight="600">AC = 1</text>
-        <text x={(Bx+Cx)/2} y={Cy+16} fill="#38bdf8" fontSize="11" fontWeight="600">BC = cos α</text>
-        <text x={Bx-70} y={(Ay+By)/2+4} fill="#4ade80" fontSize="11" fontWeight="600">AB = sin α</text>
+        <text x={(Bx+Cx)/2} y={Cy-8} fill="#38bdf8" fontSize="11" fontWeight="600">BC = cos α</text>
+        <text x={6} y={(Ay+By)/2+4} fill="#4ade80" fontSize="11" fontWeight="600">AB = sin α</text>
 
         {/* Values box below triangle */}
         <rect x={55} y={355} width={290} height={38} rx={4} fill="#0f172a" fillOpacity={0.9} />
@@ -121,25 +121,24 @@ export default function TrigRatioSimulation({ config }: SimulationProps) {
 
         {/* Point P */}
         <circle cx={Px} cy={Py} r={5} fill="#fbbf24" />
-        <text x={Px + 7} y={Py - 5} fill="#fbbf24" fontSize="10">P(cosα, sinα)</text>
+        <text x={Px - 6} y={Py - 7} fill="#fbbf24" fontSize="10" textAnchor="end">P(cosα, sinα)</text>
 
         {/* Labels for projections */}
         <text x={(ucx + Px) / 2} y={ucy + 14} fill="#38bdf8" fontSize="10" textAnchor="middle">cosα={fmtN(cosA)}</text>
         <text x={ucx - 52} y={(ucy + Py) / 2 + 4} fill="#4ade80" fontSize="10">sinα={fmtN(sinA)}</text>
 
-        {/* Special angles table */}
-        <rect x={355} y={H-105} width={245} height={98} rx={4} fill="#0f172a" fillOpacity={0.92} />
-        <text x={365} y={H-89} fill="#64748b" fontSize="10" fontWeight="600">Góc đặc biệt</text>
-        {/* header */}
+        {/* Special angles table — starts at y=315, after unit circle bottom (ucy+ucR=310) */}
+        <rect x={355} y={315} width={245} height={78} rx={4} fill="#0f172a" fillOpacity={0.92} />
+        <text x={365} y={330} fill="#64748b" fontSize="10" fontWeight="600">Góc đặc biệt</text>
         {['Góc', 'sin', 'cos', 'tan'].map((h, i) => (
-          <text key={h} x={365 + i * 58} y={H-75} fill="#475569" fontSize="10" fontWeight="600">{h}</text>
+          <text key={h} x={365 + i * 58} y={344} fill="#475569" fontSize="10" fontWeight="600">{h}</text>
         ))}
         {specials.map(({ deg, sin, cos, tan }, ri) => (
           <g key={deg}>
-            <text x={365} y={H - 60 + ri * 18} fill={alphaDeg === deg ? '#fbbf24' : '#94a3b8'} fontSize="10" fontWeight={alphaDeg === deg ? '700' : '400'}>{deg}°</text>
-            <text x={365+58} y={H - 60 + ri * 18} fill={alphaDeg === deg ? '#4ade80' : '#64748b'} fontSize="10">{sin}</text>
-            <text x={365+116} y={H - 60 + ri * 18} fill={alphaDeg === deg ? '#38bdf8' : '#64748b'} fontSize="10">{cos}</text>
-            <text x={365+174} y={H - 60 + ri * 18} fill={alphaDeg === deg ? '#fbbf24' : '#64748b'} fontSize="10">{tan}</text>
+            <text x={365} y={360 + ri * 18} fill={alphaDeg === deg ? '#fbbf24' : '#94a3b8'} fontSize="10" fontWeight={alphaDeg === deg ? '700' : '400'}>{deg}°</text>
+            <text x={365+58} y={360 + ri * 18} fill={alphaDeg === deg ? '#4ade80' : '#64748b'} fontSize="10">{sin}</text>
+            <text x={365+116} y={360 + ri * 18} fill={alphaDeg === deg ? '#38bdf8' : '#64748b'} fontSize="10">{cos}</text>
+            <text x={365+174} y={360 + ri * 18} fill={alphaDeg === deg ? '#fbbf24' : '#64748b'} fontSize="10">{tan}</text>
           </g>
         ))}
         </g>

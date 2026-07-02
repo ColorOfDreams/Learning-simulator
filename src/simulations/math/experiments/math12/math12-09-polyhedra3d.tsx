@@ -77,6 +77,7 @@ function buildFrustum(n: number, R: number, r: number, h: number): THREE.BufferG
 
 export default function Polyhedra3DSim({ config }: SimulationProps) {
   const mountRef = useRef<HTMLDivElement>(null);
+  const cameraRef = useRef<{ pos: THREE.Vector3Tuple; target: THREE.Vector3Tuple } | null>(null);
 
   const type = Math.round(config.parameters?.find(p => p.key === 'type')?.value ?? 0); // 0=prism,1=pyramid,2=frustum
   const n    = Math.max(3, Math.round(config.parameters?.find(p => p.key === 'n')?.value ?? 4));
@@ -104,6 +105,11 @@ export default function Polyhedra3DSim({ config }: SimulationProps) {
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true; controls.dampingFactor = 0.1;
+    if (cameraRef.current) {
+      camera.position.set(...cameraRef.current.pos);
+      controls.target.set(...cameraRef.current.target);
+      controls.update();
+    }
 
     scene.add(new THREE.AmbientLight(0x334155, 3));
     const dl = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -173,7 +179,7 @@ export default function Polyhedra3DSim({ config }: SimulationProps) {
     scene.add(sp);
 
     let reqId = 0;
-    const animate = () => { reqId = requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); };
+    const animate = () => { reqId = requestAnimationFrame(animate); controls.update(); sp.quaternion.copy(camera.quaternion); renderer.render(scene, camera); };
     animate();
 
     const handleResize = () => {
@@ -185,6 +191,7 @@ export default function Polyhedra3DSim({ config }: SimulationProps) {
     window.addEventListener('resize', handleResize);
 
     return () => {
+      cameraRef.current = { pos: camera.position.toArray() as THREE.Vector3Tuple, target: controls.target.toArray() as THREE.Vector3Tuple };
       cancelAnimationFrame(reqId);
       window.removeEventListener('resize', handleResize);
       if (el && renderer.domElement.parentNode === el) el.removeChild(renderer.domElement);
