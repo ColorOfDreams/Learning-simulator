@@ -750,7 +750,7 @@ export default function GenericChemSimulation({
       const streamGeo = new THREE.SphereGeometry(0.09, 8, 6);
       const streamMat = new THREE.MeshBasicMaterial({ color: 0xffd24d });
       const stream = new THREE.Mesh(streamGeo, streamMat);
-      stream.position.set(wp.x, wp.y - 0.2, wp.z);
+      stream.position.set(wp.x, wp.y + 0.9, wp.z);
       sceneRef.current!.add(stream);
 
       // sandbox reaction site
@@ -994,7 +994,8 @@ export default function GenericChemSimulation({
         addTween(dish.position, { x: home.x, y: home.y, z: home.z }, 0.6);
         await dance;
       } else if (step.fx === 'basin_sparkle') {
-        Effects.sparkle(basin, new THREE.Vector3(0, 1.3, 0), { dur: 1.5 });
+        const sparkleTarget = basin || beaker;
+        if (sparkleTarget) Effects.sparkle(sparkleTarget, new THREE.Vector3(0, 1.3, 0), { dur: 1.5 });
       } else if (step.fx === 'nail_coat') {
         const nail = objMapRef.current['nail'];
         const coat = nail.userData.itemMesh.userData.coat;
@@ -1016,7 +1017,7 @@ export default function GenericChemSimulation({
         Effects.sparkler(crucible, new THREE.Vector3(0, 1.3, 0), 1.7);
         await delaySeconds(1.7);
         mg.visible = false;
-        await Effects.thermite(crucible, new THREE.Vector3(1.5, 0.3, 1.1));
+        await Effects.thermite(crucible, new THREE.Vector3(0, 0.3, 1.2));
       } else if (step.fx === 'feoh2_ppt') {
         await Effects.precip(tube, { color: 0xc9d8cc, tint: 0.5 });
       } else if (step.fx === 'feoh3_ppt') {
@@ -1036,12 +1037,34 @@ export default function GenericChemSimulation({
         const wire = cell.userData.wire;
         const bulb = cell.userData.bulb;
         if (wire) wire.visible = true;
-        if (bulb && bulb.material) {
+        if (bulb?.material) {
           bulb.material.emissive.setHex(0xffd24a);
           bulb.material.color.setHex(0xfff0a0);
         }
-        Effects.bubbles(cell, { dur: 3.0, rate: 12, r: 0.035, speed: 0.8 });
-        await Effects.tint(cell, { color: 0xd6e7ef, opacity: 0.55, dur: 2.0 });
+        // Electron dots traveling Zn→arc peak→Cu along wire
+        const cw = cell.getWorldPosition(new THREE.Vector3());
+        const eMat = new THREE.MeshStandardMaterial({ color: 0xaaddff, emissive: 0x4488ff, emissiveIntensity: 3.0 });
+        const eGeo = new THREE.SphereGeometry(0.09, 6, 5);
+        const p0 = { x: cw.x - 0.7, y: cw.y + 2.65, z: cw.z + 0.4 };
+        const p1 = { x: cw.x,       y: cw.y + 3.95, z: cw.z + 0.4 };
+        const p2 = { x: cw.x + 0.7, y: cw.y + 2.65, z: cw.z + 0.4 };
+        const fireE = (delay: number) => setTimeout(() => {
+          if (!sceneRef.current) return;
+          const e = new THREE.Mesh(eGeo, eMat);
+          e.position.set(p0.x, p0.y, p0.z);
+          sceneRef.current.add(e);
+          addTweenPromise(e.position, p1, 0.32)
+            .then(() => addTweenPromise(e.position, p2, 0.32))
+            .then(() => sceneRef.current?.remove(e));
+        }, delay);
+        [0, 340, 680, 1020, 1360].forEach(fireE);
+        await delaySeconds(2.4);
+      } else if (step.fx === 'cu_bubbles') {
+        // Bubbles at Cu strip (right side) — result of galvanic corrosion
+        const cell = objMapRef.current['cell'];
+        const cw = cell.getWorldPosition(new THREE.Vector3());
+        Effects.bubblesAt(sceneRef.current!, new THREE.Vector3(cw.x + 0.85, 0.4, cw.z + 0.4), 1.15, { rate: 20, r: 0.11, dur: 4.0 });
+        await delaySeconds(3.0);
       } else if (step.fx === 'zn_bubbles') {
         Effects.bubblesAt(sceneRef.current!, new THREE.Vector3(-0.85, 0.4, 0.4), 1.15, { rate: 14, r: 0.12, dur: 3.0 });
         await delaySeconds(2.0);

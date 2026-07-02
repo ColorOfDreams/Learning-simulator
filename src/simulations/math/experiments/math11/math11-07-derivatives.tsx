@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function DerivativesSimulation({ config }: SimulationProps) {
   const fnIdx = Math.round(config.parameters?.find(p => p.key === 'fnIdx')?.value ?? 0);
@@ -8,6 +9,7 @@ export default function DerivativesSimulation({ config }: SimulationProps) {
 
   const W = 600;
   const H = 400;
+  const { svgHandlers, groupTransform, resetView, isDirty } = useMathPanZoom(1, W, H);
   const mainH = 270;
   const derivH = 100;
   const derivY = mainH + 30;
@@ -124,9 +126,10 @@ export default function DerivativesSimulation({ config }: SimulationProps) {
   const y1pt = toSY(f(x0 + h));
 
   return (
-    <div style={{ width: '100%', height: '100%', background: '#090d16', color: '#f8fafc', fontFamily: 'sans-serif', position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet">
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', color: '#f8fafc', fontFamily: 'sans-serif', boxSizing: 'border-box', overflow: 'hidden' }}>
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
         <rect width={W} height={H} fill="#090d16" />
+        <g transform={groupTransform}>
 
         <clipPath id="mainClip">
           <rect x={0} y={0} width={W} height={mainH} />
@@ -207,7 +210,16 @@ export default function DerivativesSimulation({ config }: SimulationProps) {
 
         <text x={10} y={derivY + 13} fill="#a78bfa" fontSize="9">f'(x)</text>
         <text x={W - 14} y={derivOriginY + 3} fill="#64748b" fontSize="9">x</text>
+        </g>
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

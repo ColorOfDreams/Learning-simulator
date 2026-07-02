@@ -1,211 +1,191 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
-export default function InequalitySimulation({ config }: SimulationProps) {
-  const params = config.parameters;
-  const a1 = params.find(p => p.key === 'a1')?.value ?? 1;
-  const b1 = params.find(p => p.key === 'b1')?.value ?? 1;
-  const c1 = params.find(p => p.key === 'c1')?.value ?? 3;
+export default function LineSimulation({ config }: SimulationProps) {
+  const a = config.parameters?.find(p => p.key === 'a')?.value ?? 1;
+  const b = config.parameters?.find(p => p.key === 'b')?.value ?? -2;
+  const c = config.parameters?.find(p => p.key === 'c')?.value ?? -3;
 
-  const a2 = params.find(p => p.key === 'a2')?.value ?? -1;
-  const b2 = params.find(p => p.key === 'b2')?.value ?? 2;
-  const c2 = params.find(p => p.key === 'c2')?.value ?? 4;
+  const W = 600; const H = 400;
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } = useMathPanZoom(50, W, H);
+  const toSX = (x: number) => ox + x * scale;
+  const toSY = (y: number) => oy - y * scale;
 
-  const show1 = params.find(p => p.key === 'show1')?.value ?? 1;
-  const show2 = params.find(p => p.key === 'show2')?.value ?? 1;
-
-  const width = 600;
-  const height = 400;
-  const scale = 20; // 20 pixels per mathematical unit
-  const originX = width / 2;
-  const originY = height / 2;
-
-  const toScreenX = (x: number) => originX + x * scale;
-  const toScreenY = (y: number) => originY - y * scale;
-
-  // Function to build a large polygon representing Ax + By <= C
-  const getHalfPlanePath = (A: number, B: number, C: number) => {
-    const len = Math.sqrt(A * A + B * B);
-    if (len === 0) return '';
-
-    const nx = A / len;
-    const ny = B / len;
-
-    // Find point P0 on the line Ax + By = C
-    let x0 = 0;
-    let y0 = 0;
-    if (Math.abs(A) > Math.abs(B)) {
-      x0 = C / A;
-    } else {
-      y0 = C / B;
-    }
-
-    // Direction along the line: (-ny, nx)
-    const dx = -ny;
-    const dy = nx;
-
-    const R = 80; // Large radius to cover screen boundaries
-
-    // Four vertices of the large half-plane quadrilateral
-    const p1x = x0 + R * dx;
-    const p1y = y0 + R * dy;
-
-    const p2x = x0 - R * dx;
-    const p2y = y0 - R * dy;
-
-    // Shift in direction of inequality Ax + By <= C (opposite of normal vector nx, ny)
-    const p3x = p2x - R * nx;
-    const p3y = p2y - R * ny;
-
-    const p4x = p1x - R * nx;
-    const p4y = p1y - R * ny;
-
-    return `M ${toScreenX(p1x)} ${toScreenY(p1y)} L ${toScreenX(p2x)} ${toScreenY(p2y)} L ${toScreenX(p3x)} ${toScreenY(p3y)} L ${toScreenX(p4x)} ${toScreenY(p4y)} Z`;
+  const fmtN = (v: number) => {
+    const r = Math.round(v * 100) / 100;
+    return Number.isInteger(r) ? r.toString() : r.toFixed(2);
   };
 
-  // Helper to get line segment path endpoints for grid display
-  const getLinePathPoints = (A: number, B: number, C: number) => {
-    const len = Math.sqrt(A * A + B * B);
-    if (len === 0) return { x1: 0, y1: 0, x2: 0, y2: 0, visible: false };
+  const { linePath, xInt, yInt, dist, normalPt } = useMemo(() => {
+    const norm = Math.sqrt(a * a + b * b);
+    const d = norm > 0 ? Math.abs(c) / norm : 0;
 
-    const dx = -B / len;
-    const dy = A / len;
-
-    let x0 = 0;
-    let y0 = 0;
-    if (Math.abs(A) > Math.abs(B)) {
-      x0 = C / A;
-    } else {
-      y0 = C / B;
+    const extY = oy / scale + 1;
+    let pt1: [number, number] | null = null;
+    let pt2: [number, number] | null = null;
+    if (Math.abs(b) > 1e-9) {
+      const xL = -ox / scale - 1; const xR = (W - ox) / scale + 1;
+      const yLeft = (-a * xL - c) / b;
+      const yRight = (-a * xR - c) / b;
+      pt1 = [xL, yLeft];
+      pt2 = [xR, yRight];
+    } else if (Math.abs(a) > 1e-9) {
+      const x0 = -c / a;
+      pt1 = [x0, -extY];
+      pt2 = [x0, extY];
     }
 
-    const R = 40;
-    return {
-      x1: toScreenX(x0 + R * dx),
-      y1: toScreenY(y0 + R * dy),
-      x2: toScreenX(x0 - R * dx),
-      y2: toScreenY(y0 - R * dy),
-      visible: true
-    };
+    const path = pt1 && pt2
+      ? `M ${toSX(pt1[0]).toFixed(1)} ${toSY(pt1[1]).toFixed(1)} L ${toSX(pt2[0]).toFixed(1)} ${toSY(pt2[1]).toFixed(1)}`
+      : '';
+
+    const xInter = Math.abs(a) > 1e-9 ? -c / a : null;
+    const yInter = Math.abs(b) > 1e-9 ? -c / b : null;
+
+    // Point on line closest to origin (foot of perpendicular from O)
+    let nx = 0; let ny = 0;
+    if (norm > 1e-9) {
+      nx = -a * c / (norm * norm);
+      ny = -b * c / (norm * norm);
+    }
+    // Normal vector tip: from foot, extend in (a,b) direction
+    const normalScale = 1.2;
+    const ntx = nx + a / norm * normalScale;
+    const nty = ny + b / norm * normalScale;
+
+    return { linePath: path, xInt: xInter, yInt: yInter, dist: d, normalPt: { foot: [nx, ny], tip: [ntx, nty] } };
+  }, [a, b, c, ox, oy, scale, xMin, xMax]);
+
+  // Arrow helper
+  const Arrow = ({ x1, y1, x2, y2, color }: { x1:number; y1:number; x2:number; y2:number; color:string }) => {
+    const dx = x2-x1; const dy = y2-y1;
+    const len = Math.sqrt(dx*dx+dy*dy);
+    if (len < 4) return null;
+    const ux = dx/len; const uy = dy/len;
+    const AL = 10;
+    const p1x = x2 - AL*(ux*0.866-uy*0.5); const p1y = y2 - AL*(uy*0.866+ux*0.5);
+    const p2x = x2 - AL*(ux*0.866+uy*0.5); const p2y = y2 - AL*(uy*0.866-ux*0.5);
+    return (
+      <g stroke={color} fill="none" strokeWidth="2" strokeLinecap="round">
+        <line x1={x1} y1={y1} x2={x2} y2={y2} />
+        <polyline points={`${p1x.toFixed(1)},${p1y.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)} ${p2x.toFixed(1)},${p2y.toFixed(1)}`} />
+      </g>
+    );
   };
 
-  const poly1 = useMemo(() => getHalfPlanePath(a1, b1, c1), [a1, b1, c1]);
-  const poly2 = useMemo(() => getHalfPlanePath(a2, b2, c2), [a2, b2, c2]);
+  const xTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [xMin, xMax]);
+  const yTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [yMin, yMax]);
+  const norm = Math.sqrt(a*a+b*b);
+  const showNormal = norm > 0.5;
 
-  const line1 = useMemo(() => getLinePathPoints(a1, b1, c1), [a1, b1, c1]);
-  const line2 = useMemo(() => getLinePathPoints(a2, b2, c2), [a2, b2, c2]);
+  const footSX = toSX(normalPt.foot[0]);
+  const footSY = toSY(normalPt.foot[1]);
+  const tipSX = toSX(normalPt.tip[0]);
+  const tipSY = toSY(normalPt.tip[1]);
 
-  // Intersection points of two lines (A1x + B1y = C1 and A2x + B2y = C2)
-  const intersection = useMemo(() => {
-    const det = a1 * b2 - a2 * b1;
-    if (det === 0) return null; // Parallel lines
-    const ix = (c1 * b2 - c2 * b1) / det;
-    const iy = (a1 * c2 - a2 * c1) / det;
-    return { x: ix, y: iy };
-  }, [a1, b1, c1, a2, b2, c2]);
-
-  // Grid lines
-  const ticks = useMemo(() => {
-    const arr = [];
-    const xRange = Math.floor(width / (2 * scale));
-    const yRange = Math.floor(height / (2 * scale));
-
-    for (let i = -xRange; i <= xRange; i += 2) {
-      if (i !== 0) arr.push({ isX: true, val: i, s: toScreenX(i) });
-    }
-    for (let i = -yRange; i <= yRange; i += 2) {
-      if (i !== 0) arr.push({ isX: false, val: i, s: toScreenY(i) });
-    }
-    return arr;
-  }, []);
+  // Distance line from O to foot
+  const distLinePath = `M ${ox} ${oy} L ${footSX.toFixed(1)} ${footSY.toFixed(1)}`;
 
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#0a0f1d', overflow: 'hidden', display: 'flex', flexDirection: 'column', color: '#fff', boxSizing: 'border-box' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
-          {/* Grid lines */}
-          <g stroke="#1e293b" strokeWidth="0.5">
-            {ticks.map((t, idx) =>
-              t.isX ? (
-                <line key={`gl-x-${idx}`} x1={t.s} y1={0} x2={t.s} y2={height} />
-              ) : (
-                <line key={`gl-y-${idx}`} x1={0} y1={t.s} x2={width} y2={t.s} />
-              )
-            )}
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
+        <rect width={W} height={H} fill="#090d16" />
+
+        {/* Grid */}
+        {xTicks.map(x => <line key={`gx${x}`} x1={toSX(x)} y1={0} x2={toSX(x)} y2={H} stroke="#1e293b" strokeWidth="1" />)}
+        {yTicks.map(y => <line key={`gy${y}`} x1={0} y1={toSY(y)} x2={W} y2={toSY(y)} stroke="#1e293b" strokeWidth="1" />)}
+
+        {/* Distance from O to line */}
+        {dist > 0.05 && showNormal && (
+          <path d={distLinePath} stroke="#fbbf24" strokeWidth="1.5" strokeDasharray="5 3" opacity="0.8" />
+        )}
+
+        {/* Axes */}
+        <line x1={0} y1={oy} x2={W} y2={oy} stroke="#475569" strokeWidth="1.5" />
+        <line x1={ox} y1={0} x2={ox} y2={H} stroke="#475569" strokeWidth="1.5" />
+        <polygon points={`${W-6},${oy-4} ${W},${oy} ${W-6},${oy+4}`} fill="#475569" />
+        <polygon points={`${ox-4},6 ${ox},0 ${ox+4},6`} fill="#475569" />
+        <text x={W-8} y={oy-6} fill="#64748b" fontSize="12" textAnchor="end">x</text>
+        <text x={ox+6} y={13} fill="#64748b" fontSize="12">y</text>
+        <text x={ox-8} y={oy+14} fill="#475569" fontSize="10" textAnchor="end">O</text>
+
+        {/* Tick labels */}
+        {xTicks.filter((_,i)=>i%2===0).map(x => (
+          <text key={`xl${x}`} x={toSX(x)} y={oy+14} fill="#64748b" fontSize="10" textAnchor="middle">{x}</text>
+        ))}
+        {yTicks.map(y => (
+          <text key={`yl${y}`} x={ox-5} y={toSY(y)+4} fill="#64748b" fontSize="10" textAnchor="end">{y}</text>
+        ))}
+
+        {/* The line */}
+        {linePath && <path d={linePath} stroke="#38bdf8" strokeWidth="2.5" fill="none" strokeLinecap="round" />}
+
+        {/* Normal vector (pháp vectơ) */}
+        {showNormal && (
+          <Arrow x1={footSX} y1={footSY} x2={tipSX} y2={tipSY} color="#e879f9" />
+        )}
+        {showNormal && tipSX > 10 && tipSX < W-10 && tipSY > 10 && tipSY < H-10 && (
+          <text x={tipSX+8} y={tipSY} fill="#e879f9" fontSize="11">n=({a},{b})</text>
+        )}
+
+        {/* Right-angle mark at foot */}
+        {dist > 0.1 && showNormal && (
+          <>
+            <circle cx={footSX} cy={footSY} r={3} fill="#fbbf24" />
+          </>
+        )}
+
+        {/* Intercepts */}
+        {xInt !== null && xInt >= xMin && xInt <= xMax && (
+          <g>
+            <circle cx={toSX(xInt)} cy={oy} r={5} fill="#4ade80" />
+            <text x={toSX(xInt)} y={oy-8} fill="#4ade80" fontSize="10" textAnchor="middle">({fmtN(xInt)},0)</text>
           </g>
-
-          {/* Shaded Half-Planes */}
-          <g style={{ mixBlendMode: 'screen' }}>
-            {show1 === 1 && poly1 && (
-              <path d={poly1} fill="#1e3a8a" opacity="0.45" />
-            )}
-            {show2 === 1 && poly2 && (
-              <path d={poly2} fill="#78350f" opacity="0.45" />
-            )}
+        )}
+        {yInt !== null && yInt >= yMin && yInt <= yMax && (
+          <g>
+            <circle cx={ox} cy={toSY(yInt)} r={5} fill="#f97316" />
+            <text x={ox+10} y={toSY(yInt)+4} fill="#f97316" fontSize="10">(0,{fmtN(yInt)})</text>
           </g>
+        )}
 
-          {/* Axes */}
-          <line x1={0} y1={originY} x2={width} y2={originY} stroke="#475569" strokeWidth="1.5" />
-          <line x1={originX} y1={0} x2={originX} y2={height} stroke="#475569" strokeWidth="1.5" />
-
-          {/* X/Y Labels */}
-          <text x={width - 15} y={originY - 8} fill="#94a3b8" fontSize="11" fontWeight="bold">x</text>
-          <text x={originX + 8} y={15} fill="#94a3b8" fontSize="11" fontWeight="bold">y</text>
-
-          {/* Grid ticks values */}
-          <g fill="#475569" fontSize="9" textAnchor="middle">
-            {ticks.map((t, idx) =>
-              t.isX ? (
-                <text key={`tx-${idx}`} x={t.s} y={originY + 12}>{t.val}</text>
-              ) : (
-                <text key={`ty-${idx}`} x={originX - 8} y={t.s + 3} textAnchor="end">{t.val}</text>
-              )
-            )}
-          </g>
-
-          {/* Boundary lines */}
-          {show1 === 1 && line1.visible && (
-            <line x1={line1.x1} y1={line1.y1} x2={line1.x2} y2={line1.y2} stroke="#3b82f6" strokeWidth="2.5" />
-          )}
-          {show2 === 1 && line2.visible && (
-            <line x1={line2.x1} y1={line2.y1} x2={line2.x2} y2={line2.y2} stroke="#f59e0b" strokeWidth="2.5" />
-          )}
-
-          {/* Intersection point */}
-          {show1 === 1 && show2 === 1 && intersection && (
-            <g>
-              <circle cx={toScreenX(intersection.x)} cy={toScreenY(intersection.y)} r="5" fill="#10b981" stroke="#fff" strokeWidth="1.5" />
-              <text
-                x={toScreenX(intersection.x) + 8}
-                y={toScreenY(intersection.y) - 8}
-                fill="#34d399"
-                fontSize="11"
-                fontWeight="bold"
-                style={{ filter: 'drop-shadow(0px 1px 2px rgba(0,0,0,0.8))' }}
-              >
-                G({intersection.x.toFixed(1)}, {intersection.y.toFixed(1)})
-              </text>
-            </g>
-          )}
-        </svg>
-
-        {/* Dynamic Equations Display */}
-        <div style={{ position: 'absolute', top: '12px', left: '12px', padding: '10px 14px', background: 'rgba(15, 23, 42, 0.85)', borderRadius: '8px', border: '1px solid #334155', fontSize: '12px', lineHeight: '1.5', fontFamily: 'monospace' }}>
-          {show1 === 1 && (
-            <div style={{ color: '#38bdf8' }}>
-              d₁: {a1}x {b1 >= 0 ? '+' : '-'} {Math.abs(b1)}y = {c1} (Miền xanh)
-            </div>
-          )}
-          {show2 === 1 && (
-            <div style={{ color: '#fbbf24' }}>
-              d₂: {a2}x {b2 >= 0 ? '+' : '-'} {Math.abs(b2)}y = {c2} (Miền vàng)
-            </div>
-          )}
-          {show1 === 1 && show2 === 1 && (
-            <div style={{ color: '#10b981', marginTop: '4px', borderTop: '1px solid #334155', paddingTop: '4px' }}>
-              Miền giao: Hệ Bất phương trình
-            </div>
-          )}
-        </div>
+        {/* Info box */}
+        <rect x={8} y={8} width={230} height={90} rx={6} fill="#0f172a" fillOpacity={0.9} />
+        <text x={16} y={27} fill="#38bdf8" fontSize="13" fontFamily="monospace">
+          {fmtN(a)}x {b >= 0 ? '+' : '-'} {fmtN(Math.abs(b))}y {c >= 0 ? '+' : '-'} {fmtN(Math.abs(c))} = 0
+        </text>
+        <text x={16} y={46} fill="#64748b" fontSize="11">
+          Pháp vectơ: n = ({a}, {b})
+        </text>
+        <text x={16} y={63} fill="#fbbf24" fontSize="11">
+          d(O, đt) = |c|/|n| = {fmtN(dist)}
+        </text>
+        <text x={16} y={80} fill="#94a3b8" fontSize="11">
+          {xInt !== null ? `Cắt Ox tại: (${fmtN(xInt)}, 0)` : 'Song song / trùng Ox'}
+        </text>
+        {yInt !== null && (
+          <text x={16} y={97} fill="#94a3b8" fontSize="11">
+            Cắt Oy tại: (0, {fmtN(yInt)})
+          </text>
+        )}
+      </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

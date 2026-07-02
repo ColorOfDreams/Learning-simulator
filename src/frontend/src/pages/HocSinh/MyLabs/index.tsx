@@ -79,7 +79,9 @@ const getSubjectIcon = (subject: string, id: number) => {
 	);
 };
 
-const TABS = ['Đang làm', 'Hoàn thành', 'Đã lưu'];
+const TABS = ['Đang làm', 'Hoàn thành'];
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const MyLabs: React.FC = () => {
 	const [activeTab, setActiveTab] = useState(0);
@@ -88,7 +90,7 @@ const MyLabs: React.FC = () => {
 
 	useEffect(() => {
 		getMyLabs()
-			.then(res => {
+			.then((res) => {
 				const data = res.data?.data ?? res.data ?? {};
 				setInProgress(Array.isArray(data.inProgress) ? data.inProgress : []);
 				setCompleted(Array.isArray(data.completed) ? data.completed : []);
@@ -97,7 +99,7 @@ const MyLabs: React.FC = () => {
 	}, []);
 
 	const openWorkspace = (subject: string, simulationId?: string) => {
-		if (simulationId && !simulationId.startsWith('SIM-')) {
+		if (simulationId && UUID_RE.test(simulationId)) {
 			history.push(`/thi-nghiem?id=${simulationId}&role=student`);
 			return;
 		}
@@ -134,8 +136,21 @@ const MyLabs: React.FC = () => {
 					{activeTab === 0 && (
 						<div className='stu-labs__list'>
 							{inProgress.length === 0 && completed.length === 0 && (
-								<div className='stu-labs__empty' style={{ gridColumn: '1/-1', padding: '32px 0', textAlign: 'center', color: '#9a988f' }}>
-									<svg width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='#c0bdb4' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' style={{ display: 'block', margin: '0 auto 12px' }}>
+								<div
+									className='stu-labs__empty'
+									style={{ gridColumn: '1/-1', padding: '32px 0', textAlign: 'center', color: '#9a988f' }}
+								>
+									<svg
+										width='48'
+										height='48'
+										viewBox='0 0 24 24'
+										fill='none'
+										stroke='#c0bdb4'
+										strokeWidth='1.5'
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										style={{ display: 'block', margin: '0 auto 12px' }}
+									>
 										<path d='M9 3h6M10 3v5.5L5.2 16.8A2 2 0 0 0 7 20h10a2 2 0 0 0 1.8-3.2L14 8.5V3' />
 									</svg>
 									<p>Bạn chưa mở lab nào. Hãy chọn một thí nghiệm từ trang chủ!</p>
@@ -222,7 +237,10 @@ const MyLabs: React.FC = () => {
 													<div className='stu-labs__completed-name'>{lab.simulationTitle || lab.simulationId}</div>
 													<div className='stu-labs__completed-xp'>+{(lab.correctAnswers ?? 0) * 10} XP đã nhận</div>
 												</div>
-												<span className='stu-labs__completed-replay' onClick={() => openWorkspace(lab.subject, lab.simulationId)}>
+												<span
+													className='stu-labs__completed-replay'
+													onClick={() => openWorkspace(lab.subject, lab.simulationId)}
+												>
 													<svg
 														width='12'
 														height='12'
@@ -245,24 +263,6 @@ const MyLabs: React.FC = () => {
 						</>
 					)}
 
-					{/* Saved placeholder */}
-					{activeTab === 2 && (
-						<div className='stu-labs__empty'>
-							<svg
-								width='48'
-								height='48'
-								viewBox='0 0 24 24'
-								fill='none'
-								stroke='#c0bdb4'
-								strokeWidth='1.5'
-								strokeLinecap='round'
-								strokeLinejoin='round'
-							>
-								<path d='M7 4h10v16l-5-3.2L7 20V4Z' />
-							</svg>
-							<p>Chưa có thí nghiệm nào được lưu</p>
-						</div>
-					)}
 				</div>
 			</div>
 		</StudentLayout>

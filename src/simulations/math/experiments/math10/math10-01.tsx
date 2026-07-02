@@ -1,143 +1,162 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function QuadraticSimulation({ config }: SimulationProps) {
-  const params = config.parameters;
-  const aVal = params.find(p => p.key === 'a')?.value ?? 1;
-  const bVal = params.find(p => p.key === 'b')?.value ?? -2;
-  const cVal = params.find(p => p.key === 'c')?.value ?? -3;
+  const a = config.parameters?.find(p => p.key === 'a')?.value ?? 1;
+  const b = config.parameters?.find(p => p.key === 'b')?.value ?? -2;
+  const c = config.parameters?.find(p => p.key === 'c')?.value ?? -3;
 
-  // Safeguard: a should not be 0 for quadratic function
-  const a = aVal === 0 ? 0.1 : aVal;
-  const b = bVal;
-  const c = cVal;
+  const W = 600; const H = 400;
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } = useMathPanZoom(50, W, H);
+  const toSX = (x: number) => ox + x * scale;
+  const toSY = (y: number) => oy - y * scale;
 
-  const width = 600;
-  const height = 400;
-  const scale = 25; // pixels per unit
-  const originX = width / 2;
-  const originY = height / 2;
+  const aSafe = a === 0 ? 0.001 : a;
+  const h = -b / (2 * aSafe);
+  const k = c - (b * b) / (4 * aSafe);
+  const delta = b * b - 4 * aSafe * c;
 
-  const toScreenX = (x: number) => originX + x * scale;
-  const toScreenY = (y: number) => originY - y * scale;
+  const xTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [xMin, xMax]);
+  const yTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [yMin, yMax]);
 
-  // Calculate critical points
-  const vertexX = -b / (2 * a);
-  const vertexY = a * vertexX * vertexX + b * vertexX + c;
-
-  // Generate parabola path points
-  const pathD = useMemo(() => {
-    const points: string[] = [];
-    const minX = -width / (2 * scale);
-    const maxX = width / (2 * scale);
-    const steps = 120;
-    const stepSize = (maxX - minX) / steps;
-
-    for (let i = 0; i <= steps; i++) {
-      const xm = minX + i * stepSize;
-      const ym = a * xm * xm + b * xm + c;
-      const sx = toScreenX(xm);
-      const sy = toScreenY(ym);
-
-      // Clamp values slightly to prevent massive SVG coordinates
-      if (sy >= -100 && sy <= height + 100) {
-        if (points.length === 0) {
-          points.push(`M ${sx} ${sy}`);
-        } else {
-          points.push(`L ${sx} ${sy}`);
-        }
+  const { curvePath, x1Root, x2Root } = useMemo(() => {
+    const pts: string[] = [];
+    for (let px = 0; px <= W; px += 2) {
+      const xv = (px - ox) / scale;
+      const yv = aSafe * xv * xv + b * xv + c;
+      const sy = oy - yv * scale;
+      if (sy < -100 || sy > H + 100) {
+        if (pts.length && pts[pts.length - 1] !== 'Z') pts.push('Z');
+        continue;
       }
+      pts.push(`${!pts.length || pts[pts.length - 1] === 'Z' ? 'M' : 'L'} ${px.toFixed(1)} ${sy.toFixed(1)}`);
     }
-    return points.join(' ');
-  }, [a, b, c]);
+    let r1: number | null = null; let r2: number | null = null;
+    if (delta >= 0) {
+      r1 = (-b - Math.sqrt(delta)) / (2 * aSafe);
+      r2 = (-b + Math.sqrt(delta)) / (2 * aSafe);
+    }
+    return { curvePath: pts.join(' '), x1Root: r1, x2Root: r2 };
+  }, [a, b, c, ox, oy, scale]);
 
-  // Grid tick marks
-  const ticks = useMemo(() => {
-    const arr = [];
-    const xRange = Math.floor(width / (2 * scale));
-    const yRange = Math.floor(height / (2 * scale));
+  const fmtN = (v: number) => {
+    const r = Math.round(v * 100) / 100;
+    return Number.isInteger(r) ? r.toString() : r.toFixed(2);
+  };
 
-    for (let i = -xRange; i <= xRange; i++) {
-      if (i !== 0) arr.push({ isX: true, val: i, s: toScreenX(i) });
-    }
-    for (let i = -yRange; i <= yRange; i++) {
-      if (i !== 0) arr.push({ isX: false, val: i, s: toScreenY(i) });
-    }
-    return arr;
-  }, []);
+  const hSX = toSX(h); const kSY = toSY(k);
+  const vertexInView = hSX > -10 && hSX < W + 10 && kSY > -10 && kSY < H + 10;
 
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#090d16', overflow: 'hidden', display: 'flex', flexDirection: 'column', color: '#fff', boxSizing: 'border-box' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
-          {/* Grid lines */}
-          <g stroke="#1e293b" strokeWidth="0.5">
-            {ticks.map((t, idx) =>
-              t.isX ? (
-                <line key={`gl-x-${idx}`} x1={t.s} y1={0} x2={t.s} y2={height} />
-              ) : (
-                <line key={`gl-y-${idx}`} x1={0} y1={t.s} x2={width} y2={t.s} />
-              )
-            )}
-          </g>
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
+        <rect width={W} height={H} fill="#090d16" />
 
-          {/* Axes */}
-          <line x1={0} y1={originY} x2={width} y2={originY} stroke="#64748b" strokeWidth="2" />
-          <line x1={originX} y1={0} x2={originX} y2={height} stroke="#64748b" strokeWidth="2" />
+        {/* Grid */}
+        {xTicks.map(x => <line key={`gx${x}`} x1={toSX(x)} y1={0} x2={toSX(x)} y2={H} stroke="#1e293b" strokeWidth="1" />)}
+        {yTicks.map(y => <line key={`gy${y}`} x1={0} y1={toSY(y)} x2={W} y2={toSY(y)} stroke="#1e293b" strokeWidth="1" />)}
 
-          {/* X/Y Labels */}
-          <text x={width - 15} y={originY - 8} fill="#94a3b8" fontSize="12" fontWeight="bold">x</text>
-          <text x={originX + 10} y={18} fill="#94a3b8" fontSize="12" fontWeight="bold">y</text>
-          <text x={originX - 12} y={originY + 15} fill="#64748b" fontSize="11">0</text>
+        {/* Axis of symmetry */}
+        {hSX > 0 && hSX < W && (
+          <line x1={hSX} y1={0} x2={hSX} y2={H} stroke="#7c3aed" strokeWidth="1.5" strokeDasharray="8 4" opacity="0.7" />
+        )}
 
-          {/* Ticks values */}
-          <g fill="#475569" fontSize="10" textAnchor="middle">
-            {ticks.map((t, idx) =>
-              t.isX ? (
-                <text key={`tx-${idx}`} x={t.s} y={originY + 14}>{t.val}</text>
-              ) : (
-                <text key={`ty-${idx}`} x={originX - 12} y={t.s + 4} textAnchor="end">{t.val}</text>
-              )
-            )}
-          </g>
+        {/* Axes */}
+        <line x1={0} y1={oy} x2={W} y2={oy} stroke="#475569" strokeWidth="1.5" />
+        <line x1={ox} y1={0} x2={ox} y2={H} stroke="#475569" strokeWidth="1.5" />
+        <polygon points={`${W-6},${oy-4} ${W},${oy} ${W-6},${oy+4}`} fill="#475569" />
+        <polygon points={`${ox-4},6 ${ox},0 ${ox+4},6`} fill="#475569" />
+        <text x={W-8} y={oy-6} fill="#64748b" fontSize="12" textAnchor="end">x</text>
+        <text x={ox+6} y={13} fill="#64748b" fontSize="12">y</text>
+        <text x={ox-8} y={oy+14} fill="#475569" fontSize="10" textAnchor="end">O</text>
 
-          {/* Axis of Symmetry (Dashed line) */}
-          {Math.abs(vertexX) < width / (2 * scale) && (
-            <line
-              x1={toScreenX(vertexX)}
-              y1={0}
-              x2={toScreenX(vertexX)}
-              y2={height}
-              stroke="#e2e8f0"
-              strokeWidth="1.5"
-              strokeDasharray="4 4"
-            />
-          )}
+        {/* Tick labels */}
+        {xTicks.filter((_,i)=>i%2===0).map(x => (
+          <text key={`xl${x}`} x={toSX(x)} y={oy+14} fill="#64748b" fontSize="10" textAnchor="middle">{x}</text>
+        ))}
+        {yTicks.map(y => (
+          <text key={`yl${y}`} x={ox-5} y={toSY(y)+4} fill="#64748b" fontSize="10" textAnchor="end">{y}</text>
+        ))}
 
-          {/* Parabola Curve */}
-          <path d={pathD} fill="none" stroke="#38bdf8" strokeWidth="3" strokeLinecap="round" />
+        {/* Parabola */}
+        <path d={curvePath} fill="none" stroke="#38bdf8" strokeWidth="2.5" strokeLinecap="round" />
 
-          {/* Vertex Point */}
-          {Math.abs(vertexX) < width / (2 * scale) && Math.abs(vertexY) < height / (2 * scale) && (
-            <g>
-              <circle cx={toScreenX(vertexX)} cy={toScreenY(vertexY)} r="6" fill="#ef4444" />
-              <circle cx={toScreenX(vertexX)} cy={toScreenY(vertexY)} r="10" fill="none" stroke="#ef4444" strokeWidth="1" opacity="0.6">
-                <animate attributeName="r" values="6;12;6" dur="2s" repeatCount="indefinite" />
-              </circle>
-              {/* Vertex Coordinates Box */}
-              <g transform={`translate(${toScreenX(vertexX) + 12}, ${toScreenY(vertexY) - 15})`}>
-                <rect x="0" y="0" width="110" height="24" rx="4" fill="rgba(15, 23, 42, 0.85)" stroke="#ef4444" strokeWidth="1" />
-                <text x="55" y="15" fill="#f8fafc" fontSize="11" textAnchor="middle" fontWeight="500">
-                  I({vertexX.toFixed(2)}; {vertexY.toFixed(2)})
-                </text>
+        {/* X-intercepts */}
+        {x1Root !== null && x2Root !== null && (
+          <>
+            {x1Root >= xMin && x1Root <= xMax && (
+              <g>
+                <circle cx={toSX(x1Root)} cy={oy} r={5} fill="#f97316" />
+                <text x={toSX(x1Root)} y={oy+18} fill="#f97316" fontSize="10" textAnchor="middle">x₁={fmtN(x1Root)}</text>
               </g>
-            </g>
-          )}
-        </svg>
+            )}
+            {x2Root >= xMin && x2Root <= xMax && Math.abs(x1Root - x2Root) > 0.05 && (
+              <g>
+                <circle cx={toSX(x2Root)} cy={oy} r={5} fill="#f97316" />
+                <text x={toSX(x2Root)} y={oy+18} fill="#f97316" fontSize="10" textAnchor="middle">x₂={fmtN(x2Root)}</text>
+              </g>
+            )}
+          </>
+        )}
 
-        {/* Dynamic Formula Display */}
-        <div style={{ position: 'absolute', top: '12px', left: '12px', padding: '6px 12px', background: 'rgba(15, 23, 42, 0.85)', borderRadius: '6px', border: '1px solid #334155', fontSize: '13px', fontFamily: 'monospace' }}>
-          y = {a.toFixed(1)}x² {b >= 0 ? '+' : '-'} {Math.abs(b).toFixed(1)}x {c >= 0 ? '+' : '-'} {Math.abs(c).toFixed(1)}
-        </div>
+        {/* Y-intercept */}
+        {c >= yMin && c <= yMax && (
+          <g>
+            <circle cx={ox} cy={toSY(c)} r={4} fill="#4ade80" />
+            <text x={ox+8} y={toSY(c)+4} fill="#4ade80" fontSize="10">(0, {fmtN(c)})</text>
+          </g>
+        )}
+
+        {/* Vertex */}
+        {vertexInView && (
+          <g>
+            <circle cx={hSX} cy={kSY} r={6} fill="#e879f9" />
+            <text x={hSX+9} y={kSY-5} fill="#e879f9" fontSize="11" fontWeight="500">Đỉnh ({fmtN(h)}, {fmtN(k)})</text>
+          </g>
+        )}
+
+        {/* Axis label */}
+        {hSX > 20 && hSX < W-60 && (
+          <text x={hSX+5} y={14} fill="#7c3aed" fontSize="10" opacity="0.9">x={fmtN(h)}</text>
+        )}
+
+        {/* Info box */}
+        <rect x={8} y={8} width={225} height={100} rx={6} fill="#0f172a" fillOpacity={0.9} />
+        <text x={16} y={27} fill="#38bdf8" fontSize="13" fontFamily="monospace">
+          y = {fmtN(a)}x² {b >= 0 ? '+' : '-'} {fmtN(Math.abs(b))}x {c >= 0 ? '+' : '-'} {fmtN(Math.abs(c))}
+        </text>
+        <text x={16} y={45} fill="#e879f9" fontSize="11">Đỉnh: ({fmtN(h)}, {fmtN(k)})</text>
+        <text x={16} y={62} fill="#64748b" fontSize="11">Δ = {fmtN(delta)} → {delta > 0 ? '2 nghiệm' : delta === 0 ? '1 nghiệm kép' : 'vô nghiệm'}</text>
+        {x1Root !== null && (
+          <text x={16} y={79} fill="#f97316" fontSize="11">x₁={fmtN(x1Root!)}, x₂={fmtN(x2Root!)}</text>
+        )}
+        <text x={16} y={97} fill={a > 0 ? '#4ade80' : '#fb923c'} fontSize="11">
+          {a > 0 ? '⬆ Mở lên (a > 0)' : '⬇ Mở xuống (a < 0)'}
+        </text>
+
+        {/* Legend */}
+        <line x1={W-120} y1={H-36} x2={W-100} y2={H-36} stroke="#38bdf8" strokeWidth="2" />
+        <text x={W-96} y={H-32} fill="#38bdf8" fontSize="10">y=ax²+bx+c</text>
+        <line x1={W-120} y1={H-20} x2={W-100} y2={H-20} stroke="#7c3aed" strokeWidth="1.5" strokeDasharray="6 3" />
+        <text x={W-96} y={H-16} fill="#7c3aed" fontSize="10">Trục đối xứng</text>
+      </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

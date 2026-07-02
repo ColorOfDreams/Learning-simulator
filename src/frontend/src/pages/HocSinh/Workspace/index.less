@@ -1,7 +1,6 @@
 @import '../components/student-theme.less';
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
 
-
 // ═══════════════════════════════════
 // Workspace Page — 3-Panel Lab
 // ═══════════════════════════════════
@@ -125,7 +124,9 @@
 			opacity: 0.55;
 			cursor: default;
 			box-shadow: none;
-			&:hover { transform: none; }
+			&:hover {
+				transform: none;
+			}
 		}
 	}
 
@@ -157,8 +158,14 @@
 	}
 
 	@keyframes submitToastIn {
-		from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
-		to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+		from {
+			opacity: 0;
+			transform: translateX(-50%) translateY(-8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(-50%) translateY(0);
+		}
 	}
 
 	&__btn-secondary {
@@ -219,7 +226,8 @@
 
 		font-family: 'Be Vietnam Pro', @font-heading, sans-serif;
 
-		.katex, .katex * {
+		.katex,
+		.katex * {
 			font-family: KaTeX_Main, KaTeX_Math, 'Times New Roman', serif !important;
 		}
 
@@ -244,7 +252,10 @@
 				border: 1.5px solid #4f6ef7;
 				box-shadow: 0 2px 4px rgba(40, 48, 90, 0.2);
 				cursor: pointer;
-				transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+				transition:
+					transform 0.12s ease,
+					border-color 0.12s ease,
+					box-shadow 0.12s ease;
 			}
 
 			&::-webkit-slider-thumb:hover {
@@ -404,12 +415,12 @@
 		text-align: center;
 
 		> div:not([style*='line-height']):not(.stu-ws__formula-note) {
-			font-size: 16px !important;
+			font-size: 18px !important;
 			color: @stu-text-primary !important;
 		}
 
 		.katex {
-			font-size: 16px !important;
+			font-size: 18px !important;
 			line-height: 1.45 !important;
 			color: @stu-text-primary !important;
 		}
@@ -501,8 +512,8 @@
 		flex-direction: column;
 		gap: 7px;
 		padding: 14px;
-		background: rgba(30, 41, 59, 0.25);
-		border: 1px solid rgba(255, 255, 255, 0.04);
+		background: @stu-bg-panel;
+		border: 1px solid @stu-border;
 		border-radius: 12px;
 	}
 
@@ -515,17 +526,74 @@
 
 	&__symbol-sym {
 		font-weight: 700;
-		color: #38bdf8;
+		color: @stu-accent;
 		min-width: 28px;
 		display: inline-block;
 
+		.katex,
+		.katex *,
+		.katex span,
+		.katex .mathnormal,
+		.katex .mord,
+		.katex .mbin,
+		.katex .mrel,
+		.katex .text {
+			color: inherit !important;
+		}
+
 		.katex {
-			font-size: 13.5px !important;
+			font-size: 16.5px !important;
 		}
 	}
 
 	&__symbol-desc {
-		color: #94a3b8;
+		color: @stu-text-secondary;
+	}
+
+	&__param-btn {
+		padding: 6px 12px;
+		border-radius: 8px;
+		border: 1px solid @stu-border;
+		background: @stu-bg-card;
+		color: @stu-text-primary;
+		cursor: pointer;
+		font-size: 14px;
+		font-family: inherit;
+		transition: all 0.15s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 36px;
+		white-space: nowrap;
+
+		&:hover {
+			background: @stu-bg-panel;
+		}
+
+		&--active {
+			background: @stu-accent;
+			border-color: @stu-accent;
+			color: #fff;
+
+			&:hover {
+				background: @stu-accent-deep;
+			}
+		}
+
+		.katex,
+		.katex *,
+		.katex span,
+		.katex .mathnormal,
+		.katex .mord,
+		.katex .mbin,
+		.katex .mrel,
+		.katex .text {
+			color: inherit !important;
+		}
+
+		.katex {
+			font-size: 17px !important;
+		}
 	}
 
 	// Chem steps
@@ -633,11 +701,13 @@
 	&__center {
 		flex: 1;
 		min-width: 0;
+		min-height: 0;
 		padding: 22px;
 		display: flex;
 		flex-direction: column;
 		gap: 14px;
 		background: @stu-bg-card;
+		overflow: hidden;
 
 		&-header {
 			display: flex;
@@ -795,8 +865,8 @@
 		// Force sim outer div (direct child of transform-div) to fill absolutely
 		// so SVG height:100% resolves against a definite pixel height, not content size
 		> div > div {
-			position: absolute;
-			inset: 0;
+			position: absolute !important;
+			inset: 0 !important;
 		}
 	}
 
@@ -813,7 +883,9 @@
 		font-size: 12px;
 		cursor: pointer;
 		backdrop-filter: blur(6px);
-		transition: color 0.15s, background 0.15s;
+		transition:
+			color 0.15s,
+			background 0.15s;
 		&:hover {
 			color: #f8fafc;
 			background: rgba(30, 41, 59, 0.9);
@@ -875,6 +947,7 @@
 		text-align: center;
 
 		.katex {
+			font-size: 16.5px !important;
 			line-height: 1.45 !important;
 		}
 
@@ -1819,10 +1892,14 @@
 		height: 124px;
 		border-radius: 13px;
 		background:
-			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 0 / 200% 13px no-repeat,
-			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 24px / 200% 13px no-repeat,
-			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 54px / 200% 42px no-repeat,
-			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 108px / 200% 42px no-repeat;
+			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 0 / 200% 13px
+				no-repeat,
+			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 24px / 200% 13px
+				no-repeat,
+			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 54px / 200% 42px
+				no-repeat,
+			linear-gradient(90deg, var(--right-panel-soft), var(--right-border), var(--right-panel-soft)) 0 108px / 200% 42px
+				no-repeat;
 		animation: stuRightSweep 1.4s linear infinite;
 	}
 }
@@ -1995,18 +2072,32 @@
 
 .dqz-results {
 	&__score {
+		position: relative;
 		width: 132px;
 		height: 132px;
 		margin: 8px auto 12px;
 		border-radius: 50%;
 		background: conic-gradient(var(--right-accent) var(--score-pct, 72%), var(--right-border) 0);
 		text-align: center;
-		padding: 26px 0 0;
+		padding: 28px 0 0;
 		border-bottom: 0;
-		box-shadow: inset 0 0 0 14px var(--right-card);
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: 12px;
+			left: 12px;
+			right: 12px;
+			bottom: 12px;
+			border-radius: 50%;
+			background: var(--right-card);
+			z-index: 1;
+		}
 	}
 
 	&__pct {
+		position: relative;
+		z-index: 2;
 		font-size: 34px;
 		font-weight: 900;
 		background: var(--right-grad);
@@ -2018,6 +2109,8 @@
 	}
 
 	&__sub {
+		position: relative;
+		z-index: 2;
 		font-size: 13px;
 		color: var(--right-muted);
 		margin-top: 4px;
@@ -2231,6 +2324,12 @@
 		border-color: var(--right-border);
 	}
 
+	.dqz-nav-btn--primary {
+		background: var(--right-grad) !important;
+		border-color: transparent !important;
+		color: #fff !important;
+	}
+
 	.dqz-nav-btn--disabled {
 		background: #2a2d37 !important;
 		color: #a9adbc !important;
@@ -2244,12 +2343,41 @@
 	.stu-ws__quiz-opt {
 		background: #191b23;
 		border-color: rgba(255, 255, 255, 0.1);
+
+		&--dimmed {
+			opacity: 0.82;
+			color: #a4a8b6 !important;
+		}
+
+		&--correct {
+			background: var(--right-ok-bg) !important;
+			border-color: var(--right-ok-border) !important;
+			color: var(--right-text) !important;
+		}
+
+		&--wrong {
+			background: var(--right-bad-bg) !important;
+			border-color: var(--right-bad-border) !important;
+			color: var(--right-text) !important;
+		}
 	}
 
 	.stu-ws__quiz-radio {
 		background: #1f222c;
 		border-color: rgba(255, 255, 255, 0.12);
 		color: #b4b8c8;
+
+		&--correct {
+			background: var(--right-ok) !important;
+			border-color: var(--right-ok-border) !important;
+			color: #fff !important;
+		}
+
+		&--wrong {
+			background: var(--right-bad) !important;
+			border-color: var(--right-bad-border) !important;
+			color: #fff !important;
+		}
 	}
 
 	.stu-ws__right-bubbles span {
@@ -2265,14 +2393,14 @@
 		}
 
 		span[style*="color: '#4a4f63'"],
-		span[style*="color: #4a4f63"],
+		span[style*='color: #4a4f63'],
 		span[style*="color: '#2b2f45'"],
-		span[style*="color: #2b2f45"],
+		span[style*='color: #2b2f45'],
 		span[style*="color: '#5a5f73'"],
-		span[style*="color: #5a5f73"],
+		span[style*='color: #5a5f73'],
 		span[style*="color: '#2d3748'"],
-		span[style*="color: #2d3748"] {
-			color: var(--text-secondary) !important;
+		span[style*='color: #2d3748'] {
+			color: var(--text) !important;
 		}
 
 		.stu-ws__param span,
@@ -2283,7 +2411,7 @@
 		.stu-ws__symbols-list span,
 		.stu-ws__symbol-row span,
 		.stu-ws__symbol-item span {
-			color: var(--text-secondary) !important;
+			color: var(--text) !important;
 		}
 
 		.stu-ws__param-val,
@@ -2304,11 +2432,11 @@
 		}
 
 		div[style*="background: '#eef3ff'"],
-		div[style*="background: #eef3ff"],
+		div[style*='background: #eef3ff'],
 		div[style*="background: '#f3eefb'"],
-		div[style*="background: #f3eefb"],
+		div[style*='background: #f3eefb'],
 		div[style*="background: '#f0fdf4'"],
-		div[style*="background: #f0fdf4"] {
+		div[style*='background: #f0fdf4'] {
 			background: var(--bg) !important;
 			border: 1px solid var(--border-light) !important;
 		}
@@ -2320,7 +2448,7 @@
 		}
 
 		.stu-ws__param span[style*='font-size: 13.5px'] {
-			color: var(--text-secondary) !important;
+			color: var(--text) !important;
 		}
 
 		.stu-ws__param span[style*='font-size: 15px'] {
@@ -2397,7 +2525,7 @@
 		}
 
 		.stu-ws__symbol-row span:last-child {
-			color: var(--text-secondary) !important;
+			color: var(--text) !important;
 		}
 	}
 }

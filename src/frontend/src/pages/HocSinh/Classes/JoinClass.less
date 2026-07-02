@@ -1,130 +1,132 @@
 @import '../components/student-theme.less';
 
 .join-class-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100%;
-  padding: 40px 24px;
-  background: @stu-bg;
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100%;
+	padding: 40px 24px;
+	background: @stu-bg;
 
-  .join-class-card {
-    width: 100%;
-    max-width: 440px;
-    background: @stu-bg-card !important;
-    border: 1px solid @stu-border !important;
-    border-radius: @stu-radius-2xl;
-    box-shadow: @stu-shadow-xl;
-    
-    .ant-card-body {
-      padding: 32px 40px !important;
-      
-      @media (max-width: 480px) {
-        padding: 24px !important;
-      }
-    }
+	.join-class-card {
+		width: 100%;
+		max-width: 440px;
+		background: @stu-bg-card !important;
+		border: 1px solid @stu-border !important;
+		border-radius: @stu-radius-2xl;
+		box-shadow: @stu-shadow-xl;
 
-    .success-icon {
-      font-size: 64px;
-      text-align: center;
-      margin-bottom: 20px;
-    }
+		.ant-card-body {
+			padding: 32px 40px !important;
 
-    h3.ant-typography {
-      text-align: center;
-      margin-bottom: 8px;
-      font-weight: 800;
-      font-size: 24px;
-      color: @stu-text-heading !important;
-      font-family: @font-heading;
-      letter-spacing: -0.3px;
-    }
+			@media (max-width: 480px) {
+				padding: 24px !important;
+			}
+		}
 
-    .ant-typography-secondary {
-      display: block;
-      text-align: center;
-      margin-bottom: 24px;
-      color: @stu-text-secondary !important;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+		.success-icon {
+			font-size: 64px;
+			text-align: center;
+			margin-bottom: 20px;
+		}
 
-    .join-header {
-      margin-bottom: 30px;
-      text-align: center;
-    }
+		h3.ant-typography {
+			text-align: center;
+			margin-bottom: 8px;
+			font-weight: 800;
+			font-size: 24px;
+			color: @stu-text-heading !important;
+			font-family: @font-heading;
+			letter-spacing: -0.3px;
+		}
 
-    .join-form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+		.ant-typography-secondary {
+			display: block;
+			text-align: center;
+			margin-bottom: 24px;
+			color: @stu-text-secondary !important;
+			font-size: 14px;
+			line-height: 1.5;
+		}
 
-    .form-item {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      
-      label {
-        display: block;
-        font-weight: 600;
-        font-size: 13px;
-        color: @stu-text-secondary !important;
-        font-family: @font-heading;
-      }
+		.join-header {
+			margin-bottom: 30px;
+			text-align: center;
+		}
 
-      .ant-input {
-        background: @stu-bg-panel !important;
-        border-color: @stu-border !important;
-        color: @stu-text-primary !important;
-        border-radius: @stu-radius-sm;
+		.join-form {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+		}
 
-        &::placeholder {
-          color: @stu-text-hint !important;
-          opacity: 0.9 !important;
-        }
-        &::-webkit-input-placeholder {
-          color: @stu-text-hint !important;
-          opacity: 0.9 !important;
-        }
-        &:-ms-input-placeholder {
-          color: @stu-text-hint !important;
-          opacity: 0.9 !important;
-        }
-        &::-moz-placeholder {
-          color: @stu-text-hint !important;
-          opacity: 0.9 !important;
-        }
+		.form-item {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
 
-        &:focus, &:hover {
-          border-color: @stu-accent !important;
-          box-shadow: 0 0 0 2px oklch(0.62 0.16 264 / 0.1);
-        }
-      }
-    }
+			label {
+				display: block;
+				font-weight: 600;
+				font-size: 13px;
+				color: @stu-text-secondary !important;
+				font-family: @font-heading;
+			}
 
-    .ant-btn-primary {
-      height: 46px;
-      border-radius: @stu-radius-sm;
-      font-weight: 600;
-      font-size: 15px;
-      background: @stu-accent;
-      border-color: @stu-accent;
-      box-shadow: @stu-shadow-btn;
-      margin-top: 10px;
+			.ant-input {
+				background: @stu-bg-panel !important;
+				border-color: @stu-border !important;
+				color: @stu-text-primary !important;
+				border-radius: @stu-radius-sm;
 
-      &:hover, &:focus {
-        background: @stu-accent-deep !important;
-        border-color: @stu-accent-deep !important;
-      }
+				&::placeholder {
+					color: @stu-text-hint !important;
+					opacity: 0.9 !important;
+				}
+				&::-webkit-input-placeholder {
+					color: @stu-text-hint !important;
+					opacity: 0.9 !important;
+				}
+				&:-ms-input-placeholder {
+					color: @stu-text-hint !important;
+					opacity: 0.9 !important;
+				}
+				&::-moz-placeholder {
+					color: @stu-text-hint !important;
+					opacity: 0.9 !important;
+				}
 
-      &[disabled] {
-        background: @stu-border !important;
-        border-color: @stu-border !important;
-        color: @stu-text-placeholder !important;
-        box-shadow: none;
-      }
-    }
-  }
+				&:focus,
+				&:hover {
+					border-color: @stu-accent !important;
+					box-shadow: 0 0 0 2px oklch(0.62 0.16 264 / 0.1);
+				}
+			}
+		}
+
+		.ant-btn-primary {
+			height: 46px;
+			border-radius: @stu-radius-sm;
+			font-weight: 600;
+			font-size: 15px;
+			background: @stu-accent;
+			border-color: @stu-accent;
+			box-shadow: @stu-shadow-btn;
+			margin-top: 10px;
+
+			&:hover,
+			&:focus {
+				background: @stu-accent-deep !important;
+				border-color: @stu-accent-deep !important;
+			}
+
+			&[disabled] {
+				background: @stu-border !important;
+				border-color: @stu-border !important;
+				color: @stu-text-placeholder !important;
+				box-shadow: none;
+			}
+		}
+	}
 }

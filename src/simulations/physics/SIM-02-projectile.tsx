@@ -518,9 +518,16 @@ export default function ProjectileSimulation({
           v: spd.toFixed(2)
         });
       } else if (!activePlaying && state.t === 0) {
-        // Reset state
+        // Reset state — show initial velocity vector direction
         ball.position.set(startX, ballRadius, -1);
-        vArrow.set(new THREE.Vector3(0, 0, 0), 0, new THREE.Vector3(startX, ballRadius, -1));
+        const rad0 = (angle * Math.PI) / 180;
+        const vx0 = velocity * Math.cos(rad0);
+        const vy0 = velocity * Math.sin(rad0);
+        if (showVectors) {
+          vArrow.set(new THREE.Vector3(vx0, vy0, 0), velocity * 0.25, new THREE.Vector3(startX, ballRadius, -1));
+        } else {
+          vArrow.set(new THREE.Vector3(0, 0, 0), 0, new THREE.Vector3(startX, ballRadius, -1));
+        }
         trailGeo.setFromPoints([]);
 
         drawStats(statsPanel, roDefs, {

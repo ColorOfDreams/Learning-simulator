@@ -1,1 +1,5 @@
-import { dangKy } from '@/dung-cu/thanh-ghi'; import dinhNghia from './dinh-nghia'; export { BieuDoThongKe } from '@/dung-cu/toan-hoc/dung-cu-toan-hoc'; export { dinhNghia }; dangKy(dinhNghia);
+import { dangKy } from '@/dung-cu/thanh-ghi';
+import dinhNghia from './dinh-nghia';
+export { BieuDoThongKe } from '@/dung-cu/toan-hoc/dung-cu-toan-hoc';
+export { dinhNghia };
+dangKy(dinhNghia);

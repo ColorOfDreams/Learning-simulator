@@ -1,228 +1,145 @@
-import { useState, useEffect, useRef } from 'react';
+import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
-export default function ProjectileArchSimulation({
-  config,
-  isPlaying = false,
-  onAnimationEnd,
-}: SimulationProps) {
-  const params = config.parameters;
-  const v0 = params.find(p => p.key === 'v0')?.value ?? 15;
-  const alpha = params.find(p => p.key === 'alpha')?.value ?? 45;
-  const g = params.find(p => p.key === 'g')?.value ?? 9.8;
+export default function VectorSimulation({ config }: SimulationProps) {
+  const ux = config.parameters?.find(p => p.key === 'ux')?.value ?? 3;
+  const uy = config.parameters?.find(p => p.key === 'uy')?.value ?? 1;
+  const vx = config.parameters?.find(p => p.key === 'vx')?.value ?? 1;
+  const vy = config.parameters?.find(p => p.key === 'vy')?.value ?? 3;
 
-  const [t, setT] = useState(0);
-  const [trail, setTrail] = useState<{ x: number; y: number }[]>([]);
-  const [status, setStatus] = useState<'idle' | 'flying' | 'success' | 'fail'>('idle');
-  const animationRef = useRef<number | null>(null);
+  const W = 600; const H = 400;
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } = useMathPanZoom(50, W, H);
+  const toSX = (x: number) => ox + x * scale;
+  const toSY = (y: number) => oy - y * scale;
 
-  const width = 600;
-  const height = 400;
-  const scale = 25; // pixels per unit
-  const originX = 50; // shift to the left
-  const originY = height - 50; // shift down
+  const { modU, modV, dot, angle } = useMemo(() => {
+    const mU = Math.sqrt(ux * ux + uy * uy);
+    const mV = Math.sqrt(vx * vx + vy * vy);
+    const d = ux * vx + uy * vy;
+    const cosA = mU > 0 && mV > 0 ? d / (mU * mV) : 1;
+    const ang = Math.acos(Math.max(-1, Math.min(1, cosA))) * 180 / Math.PI;
+    return { modU: mU, modV: mV, dot: d, angle: ang };
+  }, [ux, uy, vx, vy]);
 
-  const toScreenX = (x: number) => originX + x * scale;
-  const toScreenY = (y: number) => originY - y * scale;
+  const fmtN = (v: number) => (Math.round(v * 100) / 100).toFixed(2).replace(/\.?0+$/, '');
 
-  // The gate equation: y = -0.25 * (x - 8)^2 + 9, spanning x in [2, 14]
-  // Gate peak is at x = 8, y = 9. Arch starts at x = 2, ends at x = 14.
-  const getGateY = (x: number) => {
-    if (x < 2 || x > 14) return 0;
-    return -0.25 * Math.pow(x - 8, 2) + 9;
+  const xTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [xMin, xMax]);
+  const yTicks = useMemo(() => {
+    const t: number[] = [];
+    for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i++) if (i !== 0) t.push(i);
+    return t;
+  }, [yMin, yMax]);
+
+  const arrow = (x1: number, y1: number, x2: number, y2: number, color: string, dashed = false, sw = 2.5) => {
+    const dx = x2 - x1; const dy = y2 - y1;
+    const len = Math.sqrt(dx*dx+dy*dy);
+    if (len < 2) return null;
+    const ux2 = dx/len; const uy2 = dy/len;
+    const AL = 12;
+    const p1x = x2 - AL*(ux2*0.866-uy2*0.5); const p1y = y2 - AL*(uy2*0.866+ux2*0.5);
+    const p2x = x2 - AL*(ux2*0.866+uy2*0.5); const p2y = y2 - AL*(uy2*0.866-ux2*0.5);
+    return (
+      <g stroke={color} fill="none" strokeWidth={sw} strokeLinecap="round">
+        <line x1={x1} y1={y1} x2={x2} y2={y2} strokeDasharray={dashed ? '8 4' : undefined} />
+        <polyline points={`${p1x.toFixed(1)},${p1y.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)} ${p2x.toFixed(1)},${p2y.toFixed(1)}`} />
+      </g>
+    );
   };
 
-  // Generate Arch Gate SVG Path
-  const archOuterPath = (() => {
-    const pts: string[] = [];
-    for (let x = 1.6; x <= 14.4; x += 0.2) {
-      // Outer arch is slightly taller/wider
-      const y = -0.27 * Math.pow(x - 8, 2) + 9.8;
-      pts.push(`${toScreenX(x)},${toScreenY(y)}`);
-    }
-    return pts.join(' ');
-  })();
-
-  const archInnerPath = (() => {
-    const pts: string[] = [];
-    for (let x = 14; x >= 2; x -= 0.2) {
-      const y = getGateY(x);
-      pts.push(`${toScreenX(x)},${toScreenY(y)}`);
-    }
-    return pts.join(' ');
-  })();
-
-  // Reset projectile on config/play changes
-  useEffect(() => {
-    if (!isPlaying) {
-      setT(0);
-      setTrail([]);
-      setStatus('idle');
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    } else {
-      setT(0);
-      setTrail([]);
-      setStatus('flying');
-    }
-  }, [isPlaying, v0, alpha, g]);
-
-  // Physics animation loop
-  useEffect(() => {
-    if (status !== 'flying') return;
-
-    const rad = (alpha * Math.PI) / 180;
-    const vx = v0 * Math.cos(rad);
-    const vy = v0 * Math.sin(rad);
-
-    let startTime = performance.now();
-
-    const loop = (now: number) => {
-      const elapsed = (now - startTime) / 1000; // seconds
-      const currentT = elapsed * 1.5; // speed up animation slightly
-
-      const curX = 2 + vx * currentT;
-      const curY = vy * currentT - 0.5 * g * currentT * currentT;
-
-      const gateY = getGateY(curX);
-
-      // Check for collision with the arch boundary
-      // The arch wall thickness is between getGateY(x) and the outer boundary
-      const outerY = -0.27 * Math.pow(curX - 8, 2) + 9.8;
-      let hit = false;
-      if (curX >= 1.6 && curX <= 14.4) {
-        if (curY >= gateY && curY <= outerY) {
-          hit = true;
-        }
-      }
-
-      if (hit) {
-        setStatus('fail');
-        if (onAnimationEnd) onAnimationEnd();
-        return;
-      }
-
-      // Check for success or hitting the ground
-      if (curY < 0 || curX > 20) {
-        // Evaluate if the trajectory matched the vòm arch
-        // The ideal match parameters: alpha ~ 71.6, v0 ~ 14
-        const isAngleMatch = Math.abs(alpha - 71.6) <= 2;
-        const isSpeedMatch = Math.abs(v0 - 14.0) <= 0.8;
-
-        if (isAngleMatch && isSpeedMatch) {
-          setStatus('success');
-        } else {
-          setStatus('fail');
-        }
-
-        if (onAnimationEnd) onAnimationEnd();
-        return;
-      }
-
-      setT(currentT);
-      setTrail(prev => [...prev, { x: toScreenX(curX), y: toScreenY(curY) }]);
-      animationRef.current = requestAnimationFrame(loop);
-    };
-
-    animationRef.current = requestAnimationFrame(loop);
-
-    return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
-  }, [status, v0, alpha, g]);
-
-  const rad = (alpha * Math.PI) / 180;
-  const currentX = 2 + v0 * Math.cos(rad) * t;
-  const currentY = v0 * Math.sin(rad) * t - 0.5 * g * t * t;
+  const SUX = toSX(ux); const SUY = toSY(uy);
+  const SVX = toSX(vx); const SVY = toSY(vy);
+  const SUVX = toSX(ux+vx); const SUVY = toSY(uy+vy);
+  const SDVX = toSX(ux-vx); const SDVY = toSY(uy-vy);
 
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#020617', overflow: 'hidden', display: 'flex', flexDirection: 'column', color: '#fff', boxSizing: 'border-box' }}>
-      <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
-          {/* Ground */}
-          <line x1={0} y1={originY} x2={width} y2={originY} stroke="#475569" strokeWidth="3" />
+    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
+      <svg width="100%" height="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" {...svgHandlers}>
+        <rect width={W} height={H} fill="#090d16" />
 
-          {/* Parabolic Arch Gateway (Drawn in stone gray) */}
-          <path
-            d={`M ${toScreenX(1.6)} ${originY} L ${archOuterPath} L ${toScreenX(14.4)} ${originY} L ${toScreenX(14)} ${originY} L ${archInnerPath} L ${toScreenX(2)} ${originY} Z`}
-            fill="#334155"
-            stroke="#475569"
-            strokeWidth="1"
-            opacity="0.85"
-          />
-          {/* Arch Gate Title */}
-          <text x={toScreenX(8)} y={toScreenY(10.5)} fill="#94a3b8" fontSize="11" textAnchor="middle" fontWeight="bold">
-            CỔNG PARABOL (Cao: 9m, Rộng: 12m)
-          </text>
+        {/* Grid */}
+        {xTicks.map(x => <line key={`gx${x}`} x1={toSX(x)} y1={0} x2={toSX(x)} y2={H} stroke="#1e293b" strokeWidth="1" />)}
+        {yTicks.map(y => <line key={`gy${y}`} x1={0} y1={toSY(y)} x2={W} y2={toSY(y)} stroke="#1e293b" strokeWidth="1" />)}
 
-          {/* Launching pad */}
-          <circle cx={toScreenX(2)} cy={toScreenY(0)} r="8" fill="#e2e8f0" />
-          <line
-            x1={toScreenX(2)}
-            y1={toScreenY(0)}
-            x2={toScreenX(2 + 1.2 * Math.cos(rad))}
-            y2={toScreenY(1.2 * Math.sin(rad))}
-            stroke="#ef4444"
-            strokeWidth="4"
-            strokeLinecap="round"
-          />
+        {/* Parallelogram dashed lines */}
+        <line x1={SUX} y1={SUY} x2={SUVX} y2={SUVY} stroke="#4ade80" strokeWidth="1" strokeDasharray="5 3" opacity="0.45" />
+        <line x1={SVX} y1={SVY} x2={SUVX} y2={SUVY} stroke="#4ade80" strokeWidth="1" strokeDasharray="5 3" opacity="0.45" />
 
-          {/* Traced path */}
-          {trail.length > 1 && (
-            <path
-              d={`M ${trail.map(p => `${p.x} ${p.y}`).join(' L ')}`}
-              fill="none"
-              stroke="#38bdf8"
-              strokeWidth="2.5"
-              strokeDasharray="3 3"
-            />
-          )}
+        {/* Axes */}
+        <line x1={0} y1={oy} x2={W} y2={oy} stroke="#475569" strokeWidth="1.5" />
+        <line x1={ox} y1={0} x2={ox} y2={H} stroke="#475569" strokeWidth="1.5" />
+        <polygon points={`${W-6},${oy-4} ${W},${oy} ${W-6},${oy+4}`} fill="#475569" />
+        <polygon points={`${ox-4},6 ${ox},0 ${ox+4},6`} fill="#475569" />
+        <text x={W-8} y={oy-6} fill="#64748b" fontSize="12" textAnchor="end">x</text>
+        <text x={ox+6} y={13} fill="#64748b" fontSize="12">y</text>
+        <text x={ox-8} y={oy+14} fill="#475569" fontSize="10" textAnchor="end">O</text>
 
-          {/* Target trajectory (Ideal trajectory in faint green) */}
-          <path
-            d={`M ${toScreenX(2)} ${toScreenY(0)} Q ${toScreenX(8)} ${toScreenY(9)} ${toScreenX(14)} ${toScreenY(0)}`}
-            fill="none"
-            stroke="#10b981"
-            strokeWidth="1.5"
-            opacity="0.25"
-          />
+        {/* Tick labels */}
+        {xTicks.filter((_,i)=>i%2===0).map(x => (
+          <text key={`xl${x}`} x={toSX(x)} y={oy+14} fill="#64748b" fontSize="10" textAnchor="middle">{x}</text>
+        ))}
+        {yTicks.map(y => (
+          <text key={`yl${y}`} x={ox-5} y={toSY(y)+4} fill="#64748b" fontSize="10" textAnchor="end">{y}</text>
+        ))}
 
-          {/* Projectile ball */}
-          {status === 'flying' && currentY >= 0 && (
-            <circle cx={toScreenX(currentX)} cy={toScreenY(currentY)} r="6" fill="#ef4444" />
-          )}
-
-          {/* Collision explosion effect */}
-          {status === 'fail' && currentY > 0.1 && (
-            <g transform={`translate(${toScreenX(currentX)}, ${toScreenY(currentY)})`}>
-              <circle cx="0" cy="0" r="14" fill="#ef4444" opacity="0.4" />
-              <circle cx="0" cy="0" r="8" fill="#f59e0b" />
-              <text x="0" y="4" fill="#fff" fontSize="10" textAnchor="middle" fontWeight="bold">💥</text>
-            </g>
-          )}
-        </svg>
-
-        {/* Victory and Fail banners */}
-        {status === 'success' && (
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', padding: '16px 24px', background: 'rgba(16, 185, 129, 0.95)', border: '2px solid #34d399', borderRadius: '12px', textAlign: 'center', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', zIndex: 10 }}>
-            <h3 style={{ margin: '0 0 8px 0', color: '#fff', fontSize: '18px' }}>🎉 THÀNH CÔNG!</h3>
-            <p style={{ margin: 0, fontSize: '13px', color: '#ecfdf5' }}>Quỹ đạo ném xiên đã trùng khớp hoàn hảo với vòm cổng parabol!</p>
-            <p style={{ margin: '4px 0 0 0', fontSize: '11px', color: '#a7f3d0', fontFamily: 'monospace' }}>
-              Thông số tối ưu: v₀ = 14.0 m/s, θ = 71.6°
-            </p>
-          </div>
+        {/* u-v (dashed purple) */}
+        {arrow(ox, oy, SDVX, SDVY, '#c084fc', true, 2)}
+        {SDVX > 10 && SDVX < W-10 && SDVY > 10 && SDVY < H-10 && (
+          <text x={SDVX+8} y={SDVY-4} fill="#c084fc" fontSize="11" fontWeight="500">u-v</text>
         )}
 
-        {status === 'fail' && (
-          <div style={{ position: 'absolute', top: '12px', right: '12px', padding: '10px 16px', background: 'rgba(239, 68, 68, 0.9)', border: '1px solid #f87171', borderRadius: '8px', fontSize: '12px' }}>
-            ❌ Lệch quỹ đạo. Điều chỉnh lại thông số!
-          </div>
+        {/* u+v (green) */}
+        {arrow(ox, oy, SUVX, SUVY, '#4ade80', false, 2.5)}
+        {SUVX > 10 && SUVX < W-10 && SUVY > 10 && SUVY < H-10 && (
+          <text x={SUVX+8} y={SUVY-4} fill="#4ade80" fontSize="11" fontWeight="500">u+v</text>
         )}
 
-        {/* Informative indicators */}
-        <div style={{ position: 'absolute', top: '12px', left: '12px', padding: '8px 12px', background: 'rgba(15, 23, 42, 0.8)', borderRadius: '6px', fontSize: '12px', border: '1px solid #334155' }}>
-          <div>Vận tốc đầu: <b>{v0} m/s</b></div>
-          <div>Góc ném: <b>{alpha}°</b></div>
-          <div>Quỹ đạo bay: {status === 'idle' ? 'Sẵn sàng' : status === 'flying' ? 'Đang bay...' : status === 'success' ? 'Chính xác!' : 'Không khớp'}</div>
-        </div>
+        {/* v (orange) */}
+        {arrow(ox, oy, SVX, SVY, '#f97316', false, 3)}
+        {SVX > 10 && SVX < W-10 && SVY > 10 && SVY < H-10 && (
+          <text x={SVX+8} y={SVY-4} fill="#f97316" fontSize="12" fontWeight="600">v</text>
+        )}
+
+        {/* u (cyan) */}
+        {arrow(ox, oy, SUX, SUY, '#38bdf8', false, 3)}
+        {SUX > 10 && SUX < W-10 && SUY > 10 && SUY < H-10 && (
+          <text x={SUX+8} y={SUY-4} fill="#38bdf8" fontSize="12" fontWeight="600">u</text>
+        )}
+
+        {/* Info box */}
+        <rect x={8} y={8} width={210} height={115} rx={6} fill="#0f172a" fillOpacity={0.9} />
+        <text x={16} y={27} fill="#38bdf8" fontSize="12">u = ({fmtN(ux)}, {fmtN(uy)})   |u| = {fmtN(modU)}</text>
+        <text x={16} y={44} fill="#f97316" fontSize="12">v = ({fmtN(vx)}, {fmtN(vy)})   |v| = {fmtN(modV)}</text>
+        <text x={16} y={61} fill="#4ade80" fontSize="12">u+v = ({fmtN(ux+vx)}, {fmtN(uy+vy)})</text>
+        <text x={16} y={78} fill="#c084fc" fontSize="12">u-v = ({fmtN(ux-vx)}, {fmtN(uy-vy)})</text>
+        <text x={16} y={95} fill="#94a3b8" fontSize="11">u·v = {fmtN(dot)}</text>
+        <text x={16} y={112} fill="#94a3b8" fontSize="11">Góc (u,v) = {fmtN(angle)}°</text>
+
+        {/* Legend */}
+        {[
+          { color: '#38bdf8', label: 'u', y: H-50 },
+          { color: '#f97316', label: 'v', y: H-36 },
+          { color: '#4ade80', label: 'u+v', y: H-22 },
+          { color: '#c084fc', label: 'u-v (nét đứt)', y: H-8 },
+        ].map(({ color, label, y }) => (
+          <g key={label}>
+            <line x1={W-130} y1={y} x2={W-112} y2={y} stroke={color} strokeWidth="2" />
+            <text x={W-108} y={y+4} fill={color} fontSize="10">{label}</text>
+          </g>
+        ))}
+      </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>↺ Reset</button>
+      )}
     </div>
   );
 }

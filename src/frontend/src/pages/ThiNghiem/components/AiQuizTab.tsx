@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { generateAiQuiz } from '@/services/ai/api';
 import CelebrationOverlay from '@/components/CelebrationOverlay';
+import { generateAiQuiz } from '@/services/ai/api';
 import { completeActivity, completeLabSession, getUserInfo } from '@/services/base/api';
 import { submitAssignment } from '@/services/classrooms/api';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useModel, useSearchParams } from 'umi';
 import '../../HocSinh/Workspace/index.less';
 
@@ -34,7 +34,7 @@ const AiQuizTab: React.FC<Props> = ({ simId, subject = 'physics', title = 'Thí 
 			const correct = dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length;
 			const pct = dynQuestions.length > 0 ? Math.round((correct / dynQuestions.length) * 100) : 0;
 			const xpEarned = correct * 10;
-			
+
 			// Submit assignment if doing a classroom assignment
 			const assignmentId = searchParams.get('assignmentId');
 			const memberId = searchParams.get('memberId');
@@ -203,25 +203,30 @@ const AiQuizTab: React.FC<Props> = ({ simId, subject = 'physics', title = 'Thí 
 	};
 
 	return (
-		<div className='stu-ws__quiz-tab-content' style={{ 
-			flex: 1, 
-			overflowY: 'auto', 
-			padding: '16px',
-			// Light theme variables to override Workspace's dark theme
-			'--right-text': '#1f2937',
-			'--right-muted': '#6b7280',
-			'--right-border': '#e5e7eb',
-			'--right-panel-soft': '#f3f4f6',
-			'--right-card': '#ffffff',
-			'--right-accent': '#6366f1',
-			'--right-grad': 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-			'--right-ok': '#10b981',
-			'--right-ok-bg': 'rgba(16, 185, 129, 0.1)',
-			'--right-ok-border': '#10b981',
-			'--right-bad': '#ef4444',
-			'--right-bad-bg': 'rgba(239, 68, 68, 0.1)',
-			'--right-bad-border': '#ef4444'
-		} as React.CSSProperties}>
+		<div
+			className='stu-ws__quiz-tab-content'
+			style={
+				{
+					flex: 1,
+					overflowY: 'auto',
+					padding: '16px',
+					// Light theme variables to override Workspace's dark theme
+					'--right-text': '#1f2937',
+					'--right-muted': '#6b7280',
+					'--right-border': '#e5e7eb',
+					'--right-panel-soft': '#f3f4f6',
+					'--right-card': '#ffffff',
+					'--right-accent': '#6366f1',
+					'--right-grad': 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+					'--right-ok': '#10b981',
+					'--right-ok-bg': 'rgba(16, 185, 129, 0.1)',
+					'--right-ok-border': '#10b981',
+					'--right-bad': '#ef4444',
+					'--right-bad-bg': 'rgba(239, 68, 68, 0.1)',
+					'--right-bad-border': '#ef4444',
+				} as React.CSSProperties
+			}
+		>
 			{dynQuizState === 'setup' && (
 				<div className='stu-ws__quiz dqz-setup'>
 					<div className='stu-ws__quiz-header'>
@@ -256,200 +261,200 @@ const AiQuizTab: React.FC<Props> = ({ simId, subject = 'physics', title = 'Thí 
 				</div>
 			)}
 
-			{dynQuizState === 'active' && dynQuestions.length > 0 && (() => {
-				const q = dynQuestions[dynCurrent];
-				const picked = dynAnswers[dynCurrent];
-				const progressPct = `${Math.round(((picked ? dynCurrent + 1 : dynCurrent) / dynQuestions.length) * 100)}%`;
-				return (
-					<div className='stu-ws__quiz stu-ws__quiz--active'>
-						<div className='stu-ws__quiz-header'>
-							<span
-								className='stu-ws__quiz-badge'
-								title={dynUsedLlm ? 'Câu hỏi tạo bởi AI' : 'Câu hỏi mẫu'}
-							>
-								AI
-							</span>
-							<span className='stu-ws__quiz-count'>
-								Câu {dynCurrent + 1}/{dynQuestions.length}
-							</span>
-							<div 
-								className='dqz-print-wrap' 
-								style={{ paddingBottom: '10px', marginBottom: '-10px' }}
-								onMouseEnter={() => setShowPrintMenu(true)} 
-								onMouseLeave={() => setShowPrintMenu(false)}
-							>
+			{dynQuizState === 'active' &&
+				dynQuestions.length > 0 &&
+				(() => {
+					const q = dynQuestions[dynCurrent];
+					const picked = dynAnswers[dynCurrent];
+					const progressPct = `${Math.round(((picked ? dynCurrent + 1 : dynCurrent) / dynQuestions.length) * 100)}%`;
+					return (
+						<div className='stu-ws__quiz stu-ws__quiz--active'>
+							<div className='stu-ws__quiz-header'>
+								<span className='stu-ws__quiz-badge' title={dynUsedLlm ? 'Câu hỏi tạo bởi AI' : 'Câu hỏi mẫu'}>
+									AI
+								</span>
+								<span className='stu-ws__quiz-count'>
+									Câu {dynCurrent + 1}/{dynQuestions.length}
+								</span>
 								<div
-									className='dqz-print-btn'
-									title='In / Xuất PDF'
+									className='dqz-print-wrap'
+									style={{ paddingBottom: '10px', marginBottom: '-10px' }}
+									onMouseEnter={() => setShowPrintMenu(true)}
+									onMouseLeave={() => setShowPrintMenu(false)}
 								>
-									In đề
+									<div className='dqz-print-btn' title='In / Xuất PDF'>
+										In đề
+									</div>
+									{showPrintMenu && (
+										<div className='dqz-print-menu'>
+											<div className='dqz-print-menu__item' onClick={() => triggerPrint(true)}>
+												In có đáp án
+											</div>
+											<div className='dqz-print-menu__item' onClick={() => triggerPrint(false)}>
+												In không đáp án
+											</div>
+										</div>
+									)}
 								</div>
-								{showPrintMenu && (
-									<div className='dqz-print-menu'>
-										<div className='dqz-print-menu__item' onClick={() => triggerPrint(true)}>
-											In có đáp án
+							</div>
+							<div className='stu-ws__quiz-progress'>
+								<span style={{ width: progressPct }} />
+							</div>
+							<div className='dqz-nav-dots'>
+								{dynQuestions.map((_, i) => (
+									<div
+										key={i}
+										className={`dqz-nav-dot ${i === dynCurrent ? 'dqz-nav-dot--active' : ''} ${dynAnswers[i] !== undefined ? (dynAnswers[i] === dynQuestions[i].correct ? 'dqz-nav-dot--correct' : 'dqz-nav-dot--wrong') : ''}`}
+										onClick={() => setDynCurrent(i)}
+									/>
+								))}
+							</div>
+							<div className='stu-ws__quiz-question'>{q.q}</div>
+							<div className='stu-ws__quiz-options'>
+								{q.opts.map((o) => {
+									const isSel = picked === o.k;
+									const isCorrect = o.k === q.correct;
+									let optClass = '';
+									if (!picked) optClass = '';
+									else if (isCorrect) optClass = 'stu-ws__quiz-opt--correct';
+									else if (isSel) optClass = 'stu-ws__quiz-opt--wrong';
+									else optClass = 'stu-ws__quiz-opt--dimmed';
+									return (
+										<div
+											key={o.k}
+											className={`stu-ws__quiz-opt ${optClass}`}
+											onClick={() => pickDynAnswer(dynCurrent, o.k)}
+										>
+											<div
+												className={`stu-ws__quiz-radio ${isCorrect && picked ? 'stu-ws__quiz-radio--correct' : ''} ${isSel && !isCorrect ? 'stu-ws__quiz-radio--wrong' : ''}`}
+											>
+												{picked ? (isCorrect ? '✓' : isSel ? '✗' : o.k.toUpperCase()) : o.k.toUpperCase()}
+											</div>
+											<span>{o.t}</span>
 										</div>
-										<div className='dqz-print-menu__item' onClick={() => triggerPrint(false)}>
-											In không đáp án
-										</div>
+									);
+								})}
+							</div>
+							{picked && (
+								<div
+									className={`stu-ws__quiz-feedback ${picked === q.correct ? 'stu-ws__quiz-feedback--correct' : 'stu-ws__quiz-feedback--wrong'}`}
+								>
+									{picked === q.correct ? '✓ Chính xác!' : '✗ Chưa đúng.'}
+									{q.explanation && (
+										<span
+											style={{
+												display: 'block',
+												fontWeight: 400,
+												marginTop: 3,
+												fontSize: 11.5,
+												lineHeight: 1.45,
+											}}
+										>
+											{q.explanation}
+										</span>
+									)}
+								</div>
+							)}
+							<div className='dqz-nav-btns'>
+								{dynCurrent > 0 && (
+									<div className='dqz-nav-btn' onClick={() => setDynCurrent((c) => c - 1)}>
+										← Trước
 									</div>
 								)}
-							</div>
-						</div>
-						<div className='stu-ws__quiz-progress'>
-							<span style={{ width: progressPct }} />
-						</div>
-						<div className='dqz-nav-dots'>
-							{dynQuestions.map((_, i) => (
-								<div
-									key={i}
-									className={`dqz-nav-dot ${i === dynCurrent ? 'dqz-nav-dot--active' : ''} ${dynAnswers[i] !== undefined ? (dynAnswers[i] === dynQuestions[i].correct ? 'dqz-nav-dot--correct' : 'dqz-nav-dot--wrong') : ''}`}
-									onClick={() => setDynCurrent(i)}
-								/>
-							))}
-						</div>
-						<div className='stu-ws__quiz-question'>{q.q}</div>
-						<div className='stu-ws__quiz-options'>
-							{q.opts.map((o) => {
-								const isSel = picked === o.k;
-								const isCorrect = o.k === q.correct;
-								let optClass = '';
-								if (!picked) optClass = '';
-								else if (isCorrect) optClass = 'stu-ws__quiz-opt--correct';
-								else if (isSel) optClass = 'stu-ws__quiz-opt--wrong';
-								else optClass = 'stu-ws__quiz-opt--dimmed';
-								return (
+								{dynCurrent < dynQuestions.length - 1 ? (
 									<div
-										key={o.k}
-										className={`stu-ws__quiz-opt ${optClass}`}
-										onClick={() => pickDynAnswer(dynCurrent, o.k)}
+										className={`dqz-nav-btn dqz-nav-btn--primary ${!picked ? 'dqz-nav-btn--disabled' : ''}`}
+										onClick={() => picked && setDynCurrent((c) => c + 1)}
 									>
-										<div
-											className={`stu-ws__quiz-radio ${isCorrect && picked ? 'stu-ws__quiz-radio--correct' : ''} ${isSel && !isCorrect ? 'stu-ws__quiz-radio--wrong' : ''}`}
-										>
-											{picked ? (isCorrect ? '✓' : isSel ? '✗' : o.k.toUpperCase()) : o.k.toUpperCase()}
-										</div>
-										<span>{o.t}</span>
+										Tiếp →
 									</div>
-								);
-							})}
-						</div>
-						{picked && (
-							<div
-								className={`stu-ws__quiz-feedback ${picked === q.correct ? 'stu-ws__quiz-feedback--correct' : 'stu-ws__quiz-feedback--wrong'}`}
-							>
-								{picked === q.correct ? '✓ Chính xác!' : '✗ Chưa đúng.'}
-								{q.explanation && (
-									<span
-										style={{
-											display: 'block',
-											fontWeight: 400,
-											marginTop: 3,
-											fontSize: 11.5,
-											lineHeight: 1.45,
+								) : (
+									<div
+										className={`stu-ws__quiz-btn ${picked ? 'stu-ws__quiz-btn--primary' : 'stu-ws__quiz-btn--disabled'}`}
+										onClick={() => {
+											if (picked) {
+												setDynQuizState('done');
+												setShowCelebration(true);
+											}
 										}}
 									>
-										{q.explanation}
-									</span>
-								)}
-							</div>
-						)}
-						<div className='dqz-nav-btns'>
-							{dynCurrent > 0 && (
-								<div className='dqz-nav-btn' onClick={() => setDynCurrent((c) => c - 1)}>
-									← Trước
-								</div>
-							)}
-							{dynCurrent < dynQuestions.length - 1 ? (
-								<div
-									className={`dqz-nav-btn dqz-nav-btn--primary ${!picked ? 'dqz-nav-btn--disabled' : ''}`}
-									onClick={() => picked && setDynCurrent((c) => c + 1)}
-								>
-									Tiếp →
-								</div>
-							) : (
-								<div
-									className={`stu-ws__quiz-btn ${picked ? 'stu-ws__quiz-btn--primary' : 'stu-ws__quiz-btn--disabled'}`}
-									onClick={() => {
-										if (picked) {
-											setDynQuizState('done');
-											setShowCelebration(true);
-										}
-									}}
-								>
-									Hoàn thành
-								</div>
-							)}
-						</div>
-					</div>
-				);
-			})()}
-
-			{dynQuizState === 'done' && (() => {
-				const totalCorrect = dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length;
-				const pct = Math.round((totalCorrect / dynQuestions.length) * 100);
-				return (
-					<div className='stu-ws__quiz dqz-results'>
-						<div className='stu-ws__quiz-header'>
-							<span className='stu-ws__quiz-badge'>KẾT QUẢ</span>
-							<div 
-								className='dqz-print-wrap'
-								style={{ paddingBottom: '10px', marginBottom: '-10px' }}
-								onMouseEnter={() => setShowPrintMenu(true)} 
-								onMouseLeave={() => setShowPrintMenu(false)}
-							>
-								<div
-									className='dqz-print-btn'
-									title='In / Xuất PDF'
-								>
-									🖨️
-								</div>
-								{showPrintMenu && (
-									<div className='dqz-print-menu'>
-										<div className='dqz-print-menu__item' onClick={() => triggerPrint(true)}>
-											In có đáp án
-										</div>
-										<div className='dqz-print-menu__item' onClick={() => triggerPrint(false)}>
-											In không đáp án
-										</div>
+										Hoàn thành
 									</div>
 								)}
 							</div>
 						</div>
-						<div
-							className='dqz-results__score'
-							style={{
-								background: `conic-gradient(var(--right-accent, #6366f1) ${pct}%, var(--right-border, #e2e8f0) 0)`,
-							}}
-						>
-							<div className='dqz-results__pct'>{pct}%</div>
-							<div className='dqz-results__sub'>
-								{totalCorrect}/{dynQuestions.length} câu đúng
+					);
+				})()}
+
+			{dynQuizState === 'done' &&
+				(() => {
+					const totalCorrect = dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length;
+					const pct = Math.round((totalCorrect / dynQuestions.length) * 100);
+					return (
+						<div className='stu-ws__quiz dqz-results'>
+							<div className='stu-ws__quiz-header'>
+								<span className='stu-ws__quiz-badge'>KẾT QUẢ</span>
+								<div
+									className='dqz-print-wrap'
+									style={{ paddingBottom: '10px', marginBottom: '-10px' }}
+									onMouseEnter={() => setShowPrintMenu(true)}
+									onMouseLeave={() => setShowPrintMenu(false)}
+								>
+									<div className='dqz-print-btn' title='In / Xuất PDF'>
+										🖨️
+									</div>
+									{showPrintMenu && (
+										<div className='dqz-print-menu'>
+											<div className='dqz-print-menu__item' onClick={() => triggerPrint(true)}>
+												In có đáp án
+											</div>
+											<div className='dqz-print-menu__item' onClick={() => triggerPrint(false)}>
+												In không đáp án
+											</div>
+										</div>
+									)}
+								</div>
+							</div>
+							<div
+								className='dqz-results__score'
+								style={{
+									background: `conic-gradient(var(--right-accent, #6366f1) ${pct}%, var(--right-border, #e2e8f0) 0)`,
+								}}
+							>
+								<div className='dqz-results__pct'>{pct}%</div>
+								<div className='dqz-results__sub'>
+									{totalCorrect}/{dynQuestions.length} câu đúng
+								</div>
+							</div>
+							<div className='dqz-results__list'>
+								{dynQuestions.map((q, i) => (
+									<div
+										key={i}
+										className={`dqz-results__item ${dynAnswers[i] === q.correct ? 'dqz-results__item--correct' : 'dqz-results__item--wrong'}`}
+									>
+										<span>{dynAnswers[i] === q.correct ? '✓' : '✗'}</span>
+										<span>
+											Câu {i + 1}: Đáp án đúng là <b>{q.correct.toUpperCase()}</b>
+										</span>
+									</div>
+								))}
+							</div>
+							<div className='dqz-setup__start-btn' style={{ marginTop: 8 }} onClick={resetDynQuiz}>
+								🔄 Làm lại bộ đề mới
 							</div>
 						</div>
-						<div className='dqz-results__list'>
-							{dynQuestions.map((q, i) => (
-								<div
-									key={i}
-									className={`dqz-results__item ${dynAnswers[i] === q.correct ? 'dqz-results__item--correct' : 'dqz-results__item--wrong'}`}
-								>
-									<span>{dynAnswers[i] === q.correct ? '✓' : '✗'}</span>
-									<span>
-										Câu {i + 1}: Đáp án đúng là <b>{q.correct.toUpperCase()}</b>
-									</span>
-								</div>
-							))}
-						</div>
-						<div className='dqz-setup__start-btn' style={{ marginTop: 8 }} onClick={resetDynQuiz}>
-							🔄 Làm lại bộ đề mới
-						</div>
-					</div>
-				);
-			})()}
+					);
+				})()}
 			{showCelebration && dynQuizState === 'done' && (
-				<CelebrationOverlay 
-					score={dynQuestions.length > 0 ? Math.round((dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length / dynQuestions.length) * 100) : 0} 
-					onClose={() => setShowCelebration(false)} 
+				<CelebrationOverlay
+					score={
+						dynQuestions.length > 0
+							? Math.round(
+									(dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length / dynQuestions.length) * 100,
+								)
+							: 0
+					}
+					onClose={() => setShowCelebration(false)}
 				/>
 			)}
 		</div>
