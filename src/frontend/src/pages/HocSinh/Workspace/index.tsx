@@ -2335,9 +2335,6 @@ const Workspace: React.FC = () => {
 	const resolvedMathSimId = simId ? CHEM_SIM_ALIASES[simId] || simId : 'MATH10-01';
 	const simPanZoomEnabled = false; // Math sims handle pan/zoom via useMathPanZoom hook
 	const totalChemSteps = chemExperimentId ? (EXPERIMENTS_CONFIG[chemExperimentId]?.steps?.length ?? 0) : 0;
-	const isExperimentDone = subject !== 'chem' || (totalChemSteps > 0 && chemStep > totalChemSteps);
-	const isQuizDone = dynQuizState === 'done';
-	const canSubmit = isExperimentDone && isQuizDone;
 	const [submitToast, setSubmitToast] = useState<{ msg: string; type: 'warn' | 'success' } | null>(null);
 	const submitToastRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -2367,6 +2364,11 @@ const Workspace: React.FC = () => {
 	const [dynUsedLlm, setDynUsedLlm] = useState(false);
 	const [showCelebration, setShowCelebration] = useState(false);
 	const xpAwardedRef = useRef(false);
+
+	const isExperimentDone = subject !== 'chem' || totalChemSteps === 0 || chemStep > totalChemSteps;
+	const allQuestionsAnswered = dynQuizState === 'active' && dynQuestions.length > 0 && Object.keys(dynAnswers).length >= dynQuestions.length;
+	const isQuizDone = dynQuizState === 'done' || allQuestionsAnswered;
+	const canSubmit = isExperimentDone && isQuizDone;
 
 	const openedLabRef = useRef<string | null>(null);
 	useEffect(() => {
@@ -2943,6 +2945,10 @@ const Workspace: React.FC = () => {
 			msg = 'Bạn chưa hoàn thành quiz. Hãy trả lời hết các câu hỏi!';
 			type = 'warn';
 		} else {
+			if (dynQuizState !== 'done') {
+				setDynQuizState('done');
+				setShowCelebration(true);
+			}
 			msg = '✓ Đã lưu & nộp thành công!';
 			type = 'success';
 		}
@@ -13678,7 +13684,7 @@ const Workspace: React.FC = () => {
 											AI sẽ sinh {dynQuizCount} câu trắc nghiệm có độ khó tăng dần về chủ đề đang mô phỏng.
 										</div>
 										<div className='dqz-setup__start-btn' onClick={startDynQuiz}>
-											✨ Sinh đề ngay
+											Sinh đề ngay
 										</div>
 									</div>
 								)}
@@ -13712,6 +13718,20 @@ const Workspace: React.FC = () => {
 															onClick={() => setShowPrintMenu((v) => !v)}
 															title='In / Xuất PDF'
 														>
+															<svg
+																width='13'
+																height='13'
+																viewBox='0 0 24 24'
+																fill='none'
+																stroke='currentColor'
+																strokeWidth='2'
+																strokeLinecap='round'
+																strokeLinejoin='round'
+																style={{ marginRight: '5px' }}
+															>
+																<path d='M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2' />
+																<path d='M6 14h12v8H6z' />
+															</svg>
 															In đề
 														</div>
 														{showPrintMenu && (
@@ -13803,7 +13823,6 @@ const Workspace: React.FC = () => {
 															onClick={() => {
 																if (picked) {
 																	setDynQuizState('done');
-																	setShowCelebration(true);
 																}
 															}}
 														>
@@ -13828,7 +13847,21 @@ const Workspace: React.FC = () => {
 															onClick={() => setShowPrintMenu((v) => !v)}
 															title='In / Xuất PDF'
 														>
-															🖨️
+															<svg
+																width='13'
+																height='13'
+																viewBox='0 0 24 24'
+																fill='none'
+																stroke='currentColor'
+																strokeWidth='2'
+																strokeLinecap='round'
+																strokeLinejoin='round'
+																style={{ marginRight: '5px' }}
+															>
+																<path d='M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2' />
+																<path d='M6 14h12v8H6z' />
+															</svg>
+															In đề
 														</div>
 														{showPrintMenu && (
 															<div className='dqz-print-menu'>
@@ -13867,7 +13900,20 @@ const Workspace: React.FC = () => {
 													))}
 												</div>
 												<div className='dqz-setup__start-btn' style={{ marginTop: 8 }} onClick={resetDynQuiz}>
-													🔄 Làm lại bộ đề mới
+													<svg
+														width='13'
+														height='13'
+														viewBox='0 0 24 24'
+														fill='none'
+														stroke='currentColor'
+														strokeWidth='2.2'
+														strokeLinecap='round'
+														strokeLinejoin='round'
+														style={{ marginRight: '6px', verticalAlign: 'middle' }}
+													>
+														<path d='M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67' />
+													</svg>
+													Làm lại bộ đề mới
 												</div>
 											</div>
 										);

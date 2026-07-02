@@ -81,6 +81,8 @@ const getSubjectIcon = (subject: string, id: number) => {
 
 const TABS = ['Đang làm', 'Hoàn thành'];
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 const MyLabs: React.FC = () => {
 	const [activeTab, setActiveTab] = useState(0);
 	const [inProgress, setInProgress] = useState<any[]>([]);
@@ -97,7 +99,7 @@ const MyLabs: React.FC = () => {
 	}, []);
 
 	const openWorkspace = (subject: string, simulationId?: string) => {
-		if (simulationId && !simulationId.startsWith('SIM-')) {
+		if (simulationId && UUID_RE.test(simulationId)) {
 			history.push(`/thi-nghiem?id=${simulationId}&role=student`);
 			return;
 		}

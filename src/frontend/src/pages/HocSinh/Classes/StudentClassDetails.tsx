@@ -10,6 +10,8 @@ import './StudentClassDetails.less';
 
 const { Title, Text } = Typography;
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 const StudentClassDetails: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
 	const { initialState } = useModel('@@initialState');
@@ -30,9 +32,9 @@ const StudentClassDetails: React.FC = () => {
 
 	const handleDoAssignment = (assignment: ClassroomsAPI.ClassAssignment) => {
 		// Determine target URL based on simulationId format
-		const url = assignment.simulationId.startsWith('SIM-')
-			? `/hoc-sinh/workspace?sim=${assignment.simulationId}`
-			: `/thi-nghiem?id=${assignment.simulationId}`;
+		const url = UUID_RE.test(assignment.simulationId)
+			? `/thi-nghiem?id=${assignment.simulationId}`
+			: `/hoc-sinh/workspace?sim=${assignment.simulationId}`;
 
 		// Find the member record for the current user
 		const member = cls?.members?.find(

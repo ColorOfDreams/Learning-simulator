@@ -2072,18 +2072,32 @@
 
 .dqz-results {
 	&__score {
+		position: relative;
 		width: 132px;
 		height: 132px;
 		margin: 8px auto 12px;
 		border-radius: 50%;
 		background: conic-gradient(var(--right-accent) var(--score-pct, 72%), var(--right-border) 0);
 		text-align: center;
-		padding: 26px 0 0;
+		padding: 28px 0 0;
 		border-bottom: 0;
-		box-shadow: inset 0 0 0 14px var(--right-card);
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: 12px;
+			left: 12px;
+			right: 12px;
+			bottom: 12px;
+			border-radius: 50%;
+			background: var(--right-card);
+			z-index: 1;
+		}
 	}
 
 	&__pct {
+		position: relative;
+		z-index: 2;
 		font-size: 34px;
 		font-weight: 900;
 		background: var(--right-grad);
@@ -2095,6 +2109,8 @@
 	}
 
 	&__sub {
+		position: relative;
+		z-index: 2;
 		font-size: 13px;
 		color: var(--right-muted);
 		margin-top: 4px;
@@ -2308,6 +2324,12 @@
 		border-color: var(--right-border);
 	}
 
+	.dqz-nav-btn--primary {
+		background: var(--right-grad) !important;
+		border-color: transparent !important;
+		color: #fff !important;
+	}
+
 	.dqz-nav-btn--disabled {
 		background: #2a2d37 !important;
 		color: #a9adbc !important;
@@ -2321,12 +2343,41 @@
 	.stu-ws__quiz-opt {
 		background: #191b23;
 		border-color: rgba(255, 255, 255, 0.1);
+
+		&--dimmed {
+			opacity: 0.82;
+			color: #a4a8b6 !important;
+		}
+
+		&--correct {
+			background: var(--right-ok-bg) !important;
+			border-color: var(--right-ok-border) !important;
+			color: var(--right-text) !important;
+		}
+
+		&--wrong {
+			background: var(--right-bad-bg) !important;
+			border-color: var(--right-bad-border) !important;
+			color: var(--right-text) !important;
+		}
 	}
 
 	.stu-ws__quiz-radio {
 		background: #1f222c;
 		border-color: rgba(255, 255, 255, 0.12);
 		color: #b4b8c8;
+
+		&--correct {
+			background: var(--right-ok) !important;
+			border-color: var(--right-ok-border) !important;
+			color: #fff !important;
+		}
+
+		&--wrong {
+			background: var(--right-bad) !important;
+			border-color: var(--right-bad-border) !important;
+			color: #fff !important;
+		}
 	}
 
 	.stu-ws__right-bubbles span {
