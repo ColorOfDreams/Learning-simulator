@@ -903,6 +903,41 @@
 		line-height: 1.6;
 	}
 
+	&__math-formula-overlay {
+		position: absolute;
+		bottom: 10px;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 5;
+		background: rgba(9, 13, 22, 0.84);
+		border: 1px solid rgba(56, 189, 248, 0.22);
+		border-radius: 10px;
+		padding: 6px 16px;
+		max-width: 92%;
+		text-align: center;
+		pointer-events: none;
+		backdrop-filter: blur(4px);
+
+		.katex {
+			font-size: 13px !important;
+			line-height: 1.6 !important;
+		}
+
+		.katex, .katex * {
+			color: #cbd5e1 !important;
+		}
+
+		.katex .mfrac {
+			line-height: 1.2 !important;
+		}
+
+		.katex .vlist-t,
+		.katex .vlist-r,
+		.katex .vlist {
+			line-height: normal !important;
+		}
+	}
+
 	&__formula-bar {
 		border: 1px solid @stu-border;
 		border-radius: 12px;

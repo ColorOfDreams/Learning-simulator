@@ -11943,9 +11943,14 @@ const Workspace: React.FC = () => {
 							{simPanZoomEnabled && (simZoom !== 1 || simPan.x !== 0 || simPan.y !== 0) && (
 								<button className='stu-ws__sim-reset' onClick={resetSimView}>↺ Reset</button>
 							)}
+							{subject === 'math' && (
+								<div className='stu-ws__math-formula-overlay' dangerouslySetInnerHTML={renderTex(formulaText)} />
+							)}
 						</div>
 
-						<div className='stu-ws__formula-bar' dangerouslySetInnerHTML={renderTex(formulaText)} />
+						{subject !== 'math' && (
+							<div className='stu-ws__formula-bar' dangerouslySetInnerHTML={renderTex(formulaText)} />
+						)}
 					</div>
 
 					{/* RIGHT: AI Tutor + Quiz */}
