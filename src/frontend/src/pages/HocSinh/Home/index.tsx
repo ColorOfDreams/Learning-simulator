@@ -1405,6 +1405,7 @@ const HocSinhHome: React.FC = () => {
 					setFilter(matchedLab.subject);
 					localStorage.setItem('selected_grade', String(matchedLab.grade));
 					localStorage.setItem('selected_filter', matchedLab.subject);
+					if (matchedLab.level) path += `&difficulty=${encodeURIComponent(matchedLab.level)}`;
 				} else {
 					// Dynamic lab, open sandbox viewer
 					path = `/thi-nghiem?id=${simId}&role=student`;
@@ -1773,7 +1774,7 @@ const HocSinhHome: React.FC = () => {
 										<div className='stu-home__card-meta'>
 											<span className={`stu-home__card-level ${getLevelClass(lab.level)}`}>{lab.level}</span>
 											<span className='stu-home__card-mins'>{lab.mins}</span>
-											{lab.xp && <span className='stu-home__card-xp'>{lab.xp}</span>}
+											<span className='stu-home__card-xp'>{{ 'Cơ bản': '+80 XP', 'Trung bình': '+120 XP', 'Nâng cao': '+180 XP' }[lab.level] ?? lab.xp ?? '+80 XP'}</span>
 										</div>
 									</div>
 								</div>

@@ -79,7 +79,7 @@ const getSubjectIcon = (subject: string, id: number) => {
 	);
 };
 
-const TABS = ['Đang làm', 'Hoàn thành', 'Đã lưu'];
+const TABS = ['Đang làm', 'Hoàn thành'];
 
 const MyLabs: React.FC = () => {
 	const [activeTab, setActiveTab] = useState(0);
@@ -261,24 +261,6 @@ const MyLabs: React.FC = () => {
 						</>
 					)}
 
-					{/* Saved placeholder */}
-					{activeTab === 2 && (
-						<div className='stu-labs__empty'>
-							<svg
-								width='48'
-								height='48'
-								viewBox='0 0 24 24'
-								fill='none'
-								stroke='#c0bdb4'
-								strokeWidth='1.5'
-								strokeLinecap='round'
-								strokeLinejoin='round'
-							>
-								<path d='M7 4h10v16l-5-3.2L7 20V4Z' />
-							</svg>
-							<p>Chưa có thí nghiệm nào được lưu</p>
-						</div>
-					)}
 				</div>
 			</div>
 		</StudentLayout>

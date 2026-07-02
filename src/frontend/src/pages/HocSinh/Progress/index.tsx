@@ -1,5 +1,5 @@
 import { getLeaderboard, getMyLabs, getUserStats } from '@/services/base/api';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
 import './index.less';
@@ -147,6 +147,36 @@ const Progress: React.FC = () => {
 	const subjectSet = new Set([...labData.inProgress, ...labData.completed].map((l: any) => l.subject));
 	const subjectCount = subjectSet.size;
 
+	const weeklyBars = useMemo(() => {
+		const today = new Date();
+		return Array.from({ length: 6 }, (_, i) => {
+			const anchor = new Date(today);
+			anchor.setDate(today.getDate() - (5 - i) * 7);
+			const day = anchor.getDay();
+			const diff = day === 0 ? -6 : 1 - day;
+			const weekStart = new Date(anchor);
+			weekStart.setDate(anchor.getDate() + diff);
+			weekStart.setHours(0, 0, 0, 0);
+			const weekEnd = new Date(weekStart);
+			weekEnd.setDate(weekStart.getDate() + 7);
+			const count = labData.completed.filter((l: any) => {
+				if (!l.completedAt) return false;
+				const d = new Date(l.completedAt);
+				return d >= weekStart && d < weekEnd;
+			}).length;
+			return { label: `${weekStart.getDate()}/${weekStart.getMonth() + 1}`, count };
+		});
+	}, [labData.completed]);
+	const maxBarCount = Math.max(...weeklyBars.map((w) => w.count), 1);
+
+	const computedBadges = useMemo(() => [
+		{ label: 'Hoàn thành đầu tiên', earned: labData.completed.length >= 1, variant: 'chem', Icon: FlaskIcon },
+		{ label: 'Chuỗi 5 ngày', earned: (stats?.maxStreak ?? 0) >= 5, variant: 'streak', Icon: StreakIcon },
+		{ label: 'Chinh phục 5 bài', earned: labData.completed.length >= 5, variant: 'learner', Icon: BoltIcon },
+		{ label: 'Nhà khoa học tập sự', earned: (stats?.level ?? 1) >= 7, variant: 'rank', Icon: BoltIcon },
+	], [labData.completed, stats]);
+	const earnedBadgeCount = computedBadges.filter((b) => b.earned).length;
+
 	const avgScore = (subject: string) => {
 		const done = labData.completed.filter((l: any) => l.subject === subject);
 		if (!done.length) return 0;
@@ -273,42 +303,39 @@ const Progress: React.FC = () => {
 						{/* XP Chart Card */}
 						<div className='stu-progress__chart-box stu-progress__chart-box--wide'>
 							<div className='stu-progress__chart-header'>
-								<span className='stu-progress__chart-title'>XP trong 6 tuần qua</span>
-								<span className='stu-progress__chart-badge'>Tổng {xp.toLocaleString('vi-VN')} XP</span>
+								<span className='stu-progress__chart-title'>Bài hoàn thành 6 tuần qua</span>
+								<span className='stu-progress__chart-badge'>Tổng {labData.completed.length} bài</span>
 							</div>
 							<div className='stu-progress__xp-chart'>
-								<div className='stu-progress__xp-axis-y' />
-								<div className='stu-progress__xp-axis-x' />
-
-								<svg viewBox='0 0 200 100' preserveAspectRatio='none' className='stu-progress__xp-svg'>
-									<defs>
-										<linearGradient id='xpg' x1='0' y1='0' x2='0' y2='1'>
-											<stop offset='0' stopColor='oklch(0.62 0.16 264 / 0.28)' />
-											<stop offset='1' stopColor='oklch(0.62 0.16 264 / 0)' />
-										</linearGradient>
-									</defs>
-									<path
-										d='M4,92 L40,78 L76,82 L112,54 L148,40 L196,16 L196,100 L4,100 Z'
-										fill='url(#xpg)'
-										className='stu-progress__xp-path-fill'
-									/>
-									<path
-										d='M4,92 L40,78 L76,82 L112,54 L148,40 L196,16'
-										fill='none'
-										stroke='oklch(0.6 0.16 264)'
-										strokeWidth='2.4'
-										strokeLinejoin='round'
-										strokeLinecap='round'
-										className='stu-progress__xp-path-line'
-									/>
-								</svg>
-
-								{/* Pulse Dot and Tooltip */}
-								<div className='stu-progress__chart-dot' />
-								<div className='stu-progress__chart-tooltip'>420 XP</div>
-
-								<div className='stu-progress__xp-label stu-progress__xp-label--start'>T1</div>
-								<div className='stu-progress__xp-label stu-progress__xp-label--end'>T6</div>
+								<div style={{ display: 'flex', alignItems: 'flex-end', gap: 6, height: '100%', padding: '8px 4px 24px' }}>
+									{weeklyBars.map((w, i) => (
+										<div
+											key={i}
+											style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, height: '100%' }}
+										>
+											<div style={{ fontSize: 11, color: '#9a9590', fontWeight: 600, minHeight: 16, textAlign: 'center' }}>
+												{w.count > 0 ? w.count : ''}
+											</div>
+											<div style={{ flex: 1, width: '100%', display: 'flex', alignItems: 'flex-end' }}>
+												<div
+													style={{
+														width: '100%',
+														height: `${Math.round((w.count / maxBarCount) * 100)}%`,
+														minHeight: w.count > 0 ? 4 : 0,
+														background: i === 5
+															? 'linear-gradient(to top, oklch(0.62 0.16 264), oklch(0.72 0.18 350))'
+															: 'oklch(0.62 0.16 264 / 0.22)',
+														borderRadius: '4px 4px 0 0',
+														transition: 'height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+													}}
+												/>
+											</div>
+											<div style={{ fontSize: 10, color: '#b8b5ad', fontWeight: 500, whiteSpace: 'nowrap' }}>
+												{w.label}
+											</div>
+										</div>
+									))}
+								</div>
 							</div>
 						</div>
 
@@ -366,37 +393,28 @@ const Progress: React.FC = () => {
 					<div className='stu-progress__badges-box'>
 						<div className='stu-progress__chart-header'>
 							<span className='stu-progress__chart-title'>Huy hiệu</span>
-							<span className='stu-progress__chart-desc'>3/4 đã đạt</span>
+							<span className='stu-progress__chart-desc'>{earnedBadgeCount}/{computedBadges.length} đã đạt</span>
 						</div>
 
 						<div className='stu-progress__badges-flex'>
-							<div className='stu-progress__badge-card stu-progress__badge-card--chem'>
-								<div className='stu-progress__badge-avatar stu-progress__badge-avatar--chem'>
-									<FlaskIcon />
-								</div>
-								<span className='stu-progress__badge-title'>Chuẩn độ đầu tiên</span>
-							</div>
-
-							<div className='stu-progress__badge-card stu-progress__badge-card--streak'>
-								<div className='stu-progress__badge-avatar stu-progress__badge-avatar--streak'>
-									<StreakIcon />
-								</div>
-								<span className='stu-progress__badge-title'>Chuỗi 5 ngày</span>
-							</div>
-
-							<div className='stu-progress__badge-card stu-progress__badge-card--learner'>
-								<div className='stu-progress__badge-avatar stu-progress__badge-avatar--learner'>
-									<BoltIcon />
-								</div>
-								<span className='stu-progress__badge-title'>Học nhanh</span>
-							</div>
-
-							<div className='stu-progress__badge-card stu-progress__badge-card--locked'>
-								<div className='stu-progress__badge-avatar stu-progress__badge-avatar--locked'>
-									<LockIcon />
-								</div>
-								<span className='stu-progress__badge-title stu-progress__badge-title--locked'>Điểm tuyệt đối</span>
-							</div>
+							{computedBadges.map((badge) => {
+								const { label, earned, variant, Icon } = badge;
+								return (
+									<div
+										key={label}
+										className={`stu-progress__badge-card stu-progress__badge-card--${earned ? variant : 'locked'}`}
+										style={{ opacity: earned ? 1 : 0.45, filter: earned ? 'none' : 'grayscale(0.6)' }}
+										title={earned ? 'Đã đạt được' : 'Chưa đạt'}
+									>
+										<div className={`stu-progress__badge-avatar stu-progress__badge-avatar--${earned ? variant : 'locked'}`}>
+											{earned ? <Icon /> : <LockIcon />}
+										</div>
+										<span className={`stu-progress__badge-title${earned ? '' : ' stu-progress__badge-title--locked'}`}>
+											{label}
+										</span>
+									</div>
+								);
+							})}
 						</div>
 					</div>
 				</div>

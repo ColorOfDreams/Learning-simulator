@@ -2391,7 +2391,10 @@ const Workspace: React.FC = () => {
 			xpAwardedRef.current = true;
 			const correct = dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length;
 			const pct = dynQuestions.length > 0 ? Math.round((correct / dynQuestions.length) * 100) : 0;
-			const xpEarned = correct * 10;
+			const difficultyParam = new URLSearchParams(location.search).get('difficulty') ?? 'Cơ bản';
+			const XP_MAX: Record<string, number> = { 'Cơ bản': 80, 'Trung bình': 120, 'Nâng cao': 180 };
+			const maxXp = XP_MAX[difficultyParam] ?? 80;
+			const xpEarned = dynQuestions.length > 0 ? Math.round(maxXp * correct / dynQuestions.length) : 0;
 			completeLabSession({
 				simulationId: simId || 'default',
 				simulationTitle: (meta as any)?.title,
