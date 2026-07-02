@@ -128,7 +128,7 @@ export default [
 		],
 	},
 
-	// ─── GIAO DIỆN GIÁO VIÊN (LỚP HỌC) ───
+	// ─── GIAO DIỆN GIÁO VIÊN (LỚP HỌC + THỐNG KÊ) ───
 	{
 		path: '/giao-vien/classes',
 		name: 'Lớp học',

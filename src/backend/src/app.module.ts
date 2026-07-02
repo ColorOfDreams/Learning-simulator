@@ -11,6 +11,7 @@ import { ChatModule } from './modules/chat/chat.module';
 import { SceneModule } from './modules/scene/scene.module';
 import { ClassroomsModule } from './modules/classrooms/classrooms.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     SceneModule,
     ClassroomsModule,
     NotificationsModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
