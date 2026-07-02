@@ -2095,8 +2095,7 @@ const Workspace: React.FC = () => {
 	const [showChemCelebration, setShowChemCelebration] = useState(false);
 	const chemExperimentId = simId ? (CHEM_EXPERIMENT_ALIASES[simId] || simId) : null;
 	const resolvedMathSimId = simId ? (CHEM_SIM_ALIASES[simId] || simId) : 'MATH10-01';
-	const MATH_3D_SIMS_SET = new Set(['MATH11-09', 'MATH11-10', 'MATH11-11', 'MATH12-08', 'MATH12-09', 'MATH12-10', 'MATH12-11']);
-	const simPanZoomEnabled = subject === 'math' && !MATH_3D_SIMS_SET.has(resolvedMathSimId);
+	const simPanZoomEnabled = false; // Math sims handle pan/zoom via useMathPanZoom hook
 	const totalChemSteps = chemExperimentId ? (EXPERIMENTS_CONFIG[chemExperimentId]?.steps?.length ?? 0) : 0;
 	const isExperimentDone = subject !== 'chem' || (totalChemSteps > 0 && chemStep > totalChemSteps);
 	const isQuizDone = dynQuizState === 'done';
@@ -9605,7 +9604,7 @@ const Workspace: React.FC = () => {
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
-											<span>📐 Công thức & Lý thuyết</span>
+											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
 											<div dangerouslySetInnerHTML={renderTex('v_x = v_0 \\cos\\theta')} />
@@ -9625,7 +9624,7 @@ const Workspace: React.FC = () => {
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
-											<span>🔤 Ký hiệu</span>
+											<span>Ký hiệu</span>
 										</div>
 										<div className='stu-ws__symbols-list'>
 											<div className='stu-ws__symbol-item'>
@@ -9721,7 +9720,7 @@ const Workspace: React.FC = () => {
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
-											<span>📐 Công thức & Lý thuyết</span>
+											<span>Công thức & Lý thuyết</span>
 										</div>
 										<div className='stu-ws__formula-box'>
 											<div dangerouslySetInnerHTML={renderTex('y = a\\,x^2 + b\\,x + c \\quad (a \\neq 0)')} />
@@ -9731,7 +9730,7 @@ const Workspace: React.FC = () => {
 
 										<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 											<div className='stu-ws__section-label-bar' />
-											<span>🔤 Ký hiệu</span>
+											<span>Ký hiệu</span>
 										</div>
 										<div className='stu-ws__symbols-list'>
 											<div className='stu-ws__symbol-item'>
@@ -9771,7 +9770,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>📐 Công thức & Lý thuyết</span>
+									<span>Công thức & Lý thuyết</span>
 								</div>
 								<div className='stu-ws__formula-box'>
 									<div dangerouslySetInnerHTML={renderTex('\\vec{u}+\\vec{v}=(u_x+v_x,\\,u_y+v_y)')} />
@@ -9780,7 +9779,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>🔤 Ký hiệu</span>
+									<span>Ký hiệu</span>
 								</div>
 								<div className='stu-ws__symbols-list'>
 									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{u},\\vec{v}')} /><span className='stu-ws__symbol-desc'>hai vectơ trong mặt phẳng</span></div>
@@ -9807,7 +9806,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>📐 Công thức & Lý thuyết</span>
+									<span>Công thức & Lý thuyết</span>
 								</div>
 								<div className='stu-ws__formula-box'>
 									<div dangerouslySetInnerHTML={renderTex('ax + by + c = 0')} />
@@ -9816,7 +9815,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>🔤 Ký hiệu</span>
+									<span>Ký hiệu</span>
 								</div>
 								<div className='stu-ws__symbols-list'>
 									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a,b,c')} /><span className='stu-ws__symbol-desc'>hệ số phương trình đường thẳng</span></div>
@@ -9847,7 +9846,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>📐 Công thức & Lý thuyết</span>
+									<span>Công thức & Lý thuyết</span>
 								</div>
 								<div className='stu-ws__formula-box'>
 									<div dangerouslySetInnerHTML={renderTex('(x-h)^2+(y-k)^2=r^2')} />
@@ -9855,7 +9854,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>🔤 Ký hiệu</span>
+									<span>Ký hiệu</span>
 								</div>
 								<div className='stu-ws__symbols-list'>
 									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('M(h,k)')} /><span className='stu-ws__symbol-desc'>tâm của đường tròn</span></div>
@@ -9882,7 +9881,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>📐 Công thức & Lý thuyết</span>
+									<span>Công thức & Lý thuyết</span>
 								</div>
 								<div className='stu-ws__formula-box'>
 									<div dangerouslySetInnerHTML={renderTex('c^2=a^2+b^2-2ab\\cos C')} />
@@ -9891,7 +9890,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>🔤 Ký hiệu</span>
+									<span>Ký hiệu</span>
 								</div>
 								<div className='stu-ws__symbols-list'>
 									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a,b,c')} /><span className='stu-ws__symbol-desc'>ba cạnh tam giác ABC</span></div>
@@ -9932,7 +9931,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>📐 Công thức & Lý thuyết</span>
+									<span>Công thức & Lý thuyết</span>
 								</div>
 								<div className='stu-ws__formula-box'>
 									<div dangerouslySetInnerHTML={renderTex('a_1 x+b_1 y\\le c_1')} />
@@ -9940,7 +9939,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>🔤 Ký hiệu</span>
+									<span>Ký hiệu</span>
 								</div>
 								<div className='stu-ws__symbols-list'>
 									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('x,y')} /><span className='stu-ws__symbol-desc'>ẩn số cần tìm</span></div>
@@ -9958,7 +9957,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>📐 Công thức & Lý thuyết</span>
+									<span>Công thức & Lý thuyết</span>
 								</div>
 								<div className='stu-ws__formula-box'>
 									<div dangerouslySetInnerHTML={renderTex('\\sin\\alpha=\\frac{\\text{đối}}{\\text{huyền}}')} />
@@ -9968,7 +9967,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>🔤 Ký hiệu</span>
+									<span>Ký hiệu</span>
 								</div>
 								<div className='stu-ws__symbols-list'>
 									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\sin\\alpha')} /><span className='stu-ws__symbol-desc'>cạnh đối / cạnh huyền</span></div>
@@ -10008,7 +10007,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>📐 Công thức & Lý thuyết</span>
+									<span>Công thức & Lý thuyết</span>
 								</div>
 								<div className='stu-ws__formula-box'>
 									<div dangerouslySetInnerHTML={renderTex('\\bar{x}=\\frac{\\sum x_i}{n}')} />
@@ -10017,7 +10016,7 @@ const Workspace: React.FC = () => {
 								</div>
 								<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
 									<div className='stu-ws__section-label-bar' />
-									<span>🔤 Ký hiệu</span>
+									<span>Ký hiệu</span>
 								</div>
 								<div className='stu-ws__symbols-list'>
 									<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\bar{x}')} /><span className='stu-ws__symbol-desc'>số trung bình cộng</span></div>
@@ -10051,22 +10050,23 @@ const Workspace: React.FC = () => {
 										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
 											{['sin', 'cos', 'tan'].map((fn, i) => (
 												<button key={fn} onClick={() => setTrigFnIdx(i)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer',
-														background: trigFnIdx === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 13 }}>
+													className={`stu-ws__param-btn${trigFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
+													style={{ flex: 1 }}
+												>
 													{fn}
 												</button>
 											))}
 										</div>
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex('y = A\\sin(Bx + C) + D')} />
 										<div dangerouslySetInnerHTML={renderTex('T = \\dfrac{2\\pi}{|B|}')} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A')} /><span className='stu-ws__symbol-desc'>biên độ dao động</span></div>
@@ -10105,7 +10105,7 @@ const Workspace: React.FC = () => {
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("f(x) = ax^3+bx^2+cx+d")} style={{ marginBottom: '6px' }} />
@@ -10113,7 +10113,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex("f'(x)=0 \\Rightarrow \\text{cực trị} \\quad f''(x)=0 \\Rightarrow \\text{điểm uốn}")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("a,b,c,d")} /><span className='stu-ws__symbol-desc'>hệ số của đa thức bậc 3</span></div>
@@ -10151,7 +10151,7 @@ const Workspace: React.FC = () => {
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("y = \\dfrac{ax+b}{cx+d} \\quad (c \\neq 0)")} style={{ marginBottom: '6px' }} />
@@ -10159,7 +10159,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex("y' = \\dfrac{ad-bc}{(cx+d)^2}")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\text{TCĐ}")} /><span className='stu-ws__symbol-desc'>tiệm cận đứng (vertical asymptote)</span></div>
@@ -10179,7 +10179,7 @@ const Workspace: React.FC = () => {
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("y = a^x \\quad (a>0,\\, a \\neq 1)")} style={{ marginBottom: '6px' }} />
@@ -10187,7 +10187,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex("\\lim_{x\\to-\\infty} a^x = 0 \\quad a^0=1 \\quad a^1=a")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("a")} /><span className='stu-ws__symbol-desc'>cơ số (a &gt; 0, a ≠ 1)</span></div>
@@ -10207,7 +10207,7 @@ const Workspace: React.FC = () => {
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("y = \\log_a x \\quad (a>0,\\, a\\neq 1,\\, x>0)")} style={{ marginBottom: '6px' }} />
@@ -10215,7 +10215,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex("\\log_a\\dfrac{x}{y}=\\log_a x-\\log_a y \\quad \\log_a x^n = n\\log_a x")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\ln x = \\log_e x")} /><span className='stu-ws__symbol-desc'>logarit tự nhiên (cơ số e)</span></div>
@@ -10229,27 +10229,13 @@ const Workspace: React.FC = () => {
 								<>
 									<div className='stu-ws__param stu-ws__param--v0'>
 										<div className='stu-ws__param-row'><span>Hàm số</span></div>
-										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-												<button key={0} onClick={() => setIntFnIdx(0)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: intFnIdx === 0 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'sin(x)'}
-												</button>
-												<button key={1} onClick={() => setIntFnIdx(1)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: intFnIdx === 1 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'x²'}
-												</button>
-												<button key={2} onClick={() => setIntFnIdx(2)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: intFnIdx === 2 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'x³−2x'}
-												</button>
-												<button key={3} onClick={() => setIntFnIdx(3)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: intFnIdx === 3 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'eˣ/4'}
-												</button>
+										<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 4 }}>
+											{['\\sin x', 'x^2', 'x^3 - 2x', '\\dfrac{e^x}{4}'].map((tex, i) => (
+												<button key={i} onClick={() => setIntFnIdx(i)}
+													className={`stu-ws__param-btn${intFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
+													dangerouslySetInnerHTML={renderTex(tex)}
+												/>
+											))}
 										</div>
 									</div>
 									<div className='stu-ws__param stu-ws__param--v0'>
@@ -10272,7 +10258,7 @@ const Workspace: React.FC = () => {
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("\\int_a^b f(x)\\,dx = F(b) - F(a)")} style={{ marginBottom: '6px' }} />
@@ -10280,7 +10266,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex("\\int_a^b f\\,dx = -\\int_b^a f\\,dx")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("F(x)")} /><span className='stu-ws__symbol-desc'>nguyên hàm của f(x)</span></div>
@@ -10294,39 +10280,30 @@ const Workspace: React.FC = () => {
 								<>
 									<div className='stu-ws__param stu-ws__param--v0'>
 										<div className='stu-ws__param-row'><span>Cặp hàm số</span></div>
-										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-												<button key={0} onClick={() => setAbFnIdx(0)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: abFnIdx === 0 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'x² và x+2'}
-												</button>
-												<button key={1} onClick={() => setAbFnIdx(1)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: abFnIdx === 1 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'sin & cos'}
-												</button>
-												<button key={2} onClick={() => setAbFnIdx(2)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: abFnIdx === 2 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'x³ và x'}
-												</button>
-												<button key={3} onClick={() => setAbFnIdx(3)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: abFnIdx === 3 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'√x và x²'}
-												</button>
+										<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 4 }}>
+											{[
+												'x^2 \\text{ và } x+2',
+												'\\sin x \\text{ & } \\cos x',
+												'x^3 \\text{ và } x',
+												'\\sqrt{x} \\text{ và } x^2'
+											].map((tex, i) => (
+												<button key={i} onClick={() => setAbFnIdx(i)}
+													className={`stu-ws__param-btn${abFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
+													dangerouslySetInnerHTML={renderTex(tex)}
+												/>
+											))}
 										</div>
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("S = \\int_a^b |f(x)-g(x)|\\,dx")} style={{ marginBottom: '6px' }} />
 										<div dangerouslySetInnerHTML={renderTex("\\text{Giao điểm: } f(x)=g(x) \\Rightarrow \\text{biên a, b}")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f(x)")} /><span className='stu-ws__symbol-desc'>đường cong trên (màu xanh)</span></div>
@@ -10352,7 +10329,7 @@ const Workspace: React.FC = () => {
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("z = a+bi = r(\\cos\\theta + i\\sin\\theta)")} style={{ marginBottom: '6px' }} />
@@ -10360,7 +10337,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex("z^2 = (a^2-b^2)+2abi \\quad \\bar{z} = a-bi")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\text{Re}(z)=a")} /><span className='stu-ws__symbol-desc'>phần thực</span></div>
@@ -10375,21 +10352,14 @@ const Workspace: React.FC = () => {
 									<div className='stu-ws__param stu-ws__param--v0'>
 										<div className='stu-ws__param-row'><span>Loại mặt tròn xoay</span></div>
 										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-												<button key={0} onClick={() => setRevShape(0)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: revShape === 0 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'Mặt cầu'}
+											{['Mặt cầu', 'Mặt trụ', 'Mặt nón'].map((label, i) => (
+												<button key={i} onClick={() => setRevShape(i)}
+													className={`stu-ws__param-btn${revShape === i ? ' stu-ws__param-btn--active' : ''}`}
+													style={{ flex: 1 }}
+												>
+													{label}
 												</button>
-												<button key={1} onClick={() => setRevShape(1)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: revShape === 1 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'Mặt trụ'}
-												</button>
-												<button key={2} onClick={() => setRevShape(2)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: revShape === 2 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'Mặt nón'}
-												</button>
+											))}
 										</div>
 									</div>
 									<div className='stu-ws__param stu-ws__param--v0'>
@@ -10406,7 +10376,7 @@ const Workspace: React.FC = () => {
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("V_{\\text{cầu}}=\\tfrac{4}{3}\\pi R^3 \\quad S_{\\text{cầu}}=4\\pi R^2")} style={{ marginBottom: '6px' }} />
@@ -10414,7 +10384,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex("V_{\\text{nón}}=\\tfrac{1}{3}\\pi R^2 h \\quad S_{\\text{xq,nón}}=\\pi Rl")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("R")} /><span className='stu-ws__symbol-desc'>bán kính đáy</span></div>
@@ -10429,21 +10399,14 @@ const Workspace: React.FC = () => {
 									<div className='stu-ws__param stu-ws__param--v0'>
 										<div className='stu-ws__param-row'><span>Loại khối</span></div>
 										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-												<button key={0} onClick={() => setPh3Type(0)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: ph3Type === 0 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'Lăng trụ'}
+											{['Lăng trụ', 'Hình chóp', 'Chóp cụt'].map((label, i) => (
+												<button key={i} onClick={() => setPh3Type(i)}
+													className={`stu-ws__param-btn${ph3Type === i ? ' stu-ws__param-btn--active' : ''}`}
+													style={{ flex: 1 }}
+												>
+													{label}
 												</button>
-												<button key={1} onClick={() => setPh3Type(1)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: ph3Type === 1 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'Hình chóp'}
-												</button>
-												<button key={2} onClick={() => setPh3Type(2)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12,
-														background: ph3Type === 2 ? '#4f6ef7' : '#1e293b', color: '#f8fafc' }}>
-													{'Chóp cụt'}
-												</button>
+											))}
 										</div>
 									</div>
 									<div className='stu-ws__param stu-ws__param--v0'>
@@ -10472,7 +10435,7 @@ const Workspace: React.FC = () => {
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("V_{\\text{lăng trụ}} = S_{\\text{đáy}} \\cdot h")} style={{ marginBottom: '6px' }} />
@@ -10480,7 +10443,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex("V_{\\text{chóp cụt}} = \\tfrac{h}{3}(S_1+S_2+\\sqrt{S_1 S_2})")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("S_{n\\text{-giác}}=\\tfrac{nR^2}{2}\\sin\\tfrac{2\\pi}{n}")} /><span className='stu-ws__symbol-desc'>diện tích đa giác đều n cạnh</span></div>
@@ -10518,14 +10481,14 @@ const Workspace: React.FC = () => {
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("ax+by+cz+d=0 \\quad \\vec{n}=(a,b,c) \\text{ là pháp vectơ}")} style={{ marginBottom: '6px' }} />
 										<div dangerouslySetInnerHTML={renderTex("d(M_0,P) = \\dfrac{|ax_0+by_0+cz_0+d|}{\\sqrt{a^2+b^2+c^2}}")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("\\vec{n}=(a,b,c)")} /><span className='stu-ws__symbol-desc'>pháp vectơ mặt phẳng</span></div>
@@ -10575,7 +10538,7 @@ const Workspace: React.FC = () => {
 									</div>
 
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("\\dfrac{x-x_0}{a}=\\dfrac{y-y_0}{b}=\\dfrac{z-z_0}{c}=t")} style={{ marginBottom: '6px' }} />
@@ -10583,7 +10546,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex("d(O,d)=\\dfrac{|\\overrightarrow{OM_0}\\times\\vec{u}|}{|\\vec{u}|}")} style={{ marginBottom: '6px' }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("M_0(x_0,y_0,z_0)")} /><span className='stu-ws__symbol-desc'>điểm thuộc đường thẳng</span></div>
@@ -10609,7 +10572,7 @@ const Workspace: React.FC = () => {
 											onChange={e => setUcTarget(+e.target.value)} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex('\\sin x = a,\\ -1\\le a\\le 1')} />
@@ -10617,7 +10580,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex('x = \\pi - \\arcsin a + 2k\\pi')} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\theta')} /><span className='stu-ws__symbol-desc'>góc lượng giác</span></div>
@@ -10643,7 +10606,7 @@ const Workspace: React.FC = () => {
 											onChange={e => setCombK(+e.target.value)} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex('P_n = n!')} />
@@ -10652,7 +10615,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex('(a+b)^n=\\sum_{k=0}^{n}C_n^k a^{n-k}b^k')} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('P_n')} /><span className='stu-ws__symbol-desc'>hoán vị của n phần tử</span></div>
@@ -10684,7 +10647,7 @@ const Workspace: React.FC = () => {
 											onChange={e => setProbPAB(+e.target.value)} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex('P(A\\cup B)=P(A)+P(B)-P(A\\cap B)')} />
@@ -10692,7 +10655,7 @@ const Workspace: React.FC = () => {
 										<div dangerouslySetInnerHTML={renderTex('P(\\bar{A})=1-P(A)')} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('A\\cap B')} /><span className='stu-ws__symbol-desc'>giao — cả A và B xảy ra</span></div>
@@ -10707,13 +10670,18 @@ const Workspace: React.FC = () => {
 								<>
 									<div className='stu-ws__param stu-ws__param--v0'>
 										<div className='stu-ws__param-row'><span>Chọn dãy số</span></div>
-										<div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 4 }}>
-											{['aₙ=1/n → 0', 'aₙ=(−1)ⁿ/n → 0', 'aₙ=n/(n+1) → 1', 'aₙ=(2n+1)/(n+1) → 2'].map((label, i) => (
+										<div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
+											{[
+												'a_n = \\frac{1}{n} \\to 0',
+												'a_n = \\frac{(-1)^n}{n} \\to 0',
+												'a_n = \\frac{n}{n+1} \\to 1',
+												'a_n = \\frac{2n+1}{n+1} \\to 2'
+											].map((tex, i) => (
 												<button key={i} onClick={() => setSeqType(i)}
-													style={{ padding: '4px 8px', borderRadius: 6, border: 'none', cursor: 'pointer', textAlign: 'left',
-														background: seqType === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 12 }}>
-													{label}
-												</button>
+													className={`stu-ws__param-btn${seqType === i ? ' stu-ws__param-btn--active' : ''}`}
+													style={{ justifyContent: 'flex-start' }}
+													dangerouslySetInnerHTML={renderTex(tex)}
+												/>
 											))}
 										</div>
 									</div>
@@ -10724,14 +10692,14 @@ const Workspace: React.FC = () => {
 											onChange={e => setSeqEps(+e.target.value)} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex('\\lim_{n\\to\\infty}a_n=L')} />
 										<div dangerouslySetInnerHTML={renderTex('\\forall\\varepsilon>0\\ \\exists N: n>N\\Rightarrow|a_n-L|<\\varepsilon')} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('a_n')} /><span className='stu-ws__symbol-desc'>số hạng thứ n của dãy số</span></div>
@@ -10746,25 +10714,30 @@ const Workspace: React.FC = () => {
 								<>
 									<div className='stu-ws__param stu-ws__param--v0'>
 										<div className='stu-ws__param-row'><span>Chọn hàm số</span></div>
-										<div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 4 }}>
-											{['(x²−1)/(x−1), gián đoạn bỏ được', 'Hàm bậc thang, gián đoạn nhảy', '|x|/x dấu, gián đoạn tại 0', 'sin(x)/x, gián đoạn bỏ được tại 0'].map((label, i) => (
+										<div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
+											{[
+												'\\dfrac{x^2-1}{x-1} \\text{ (gián đoạn bỏ được)}',
+												'\\text{Hàm bậc thang (gián đoạn nhảy)}',
+												'\\dfrac{|x|}{x} \\text{ (gián đoạn tại 0)}',
+												'\\dfrac{\\sin x}{x} \\text{ (gián đoạn tại 0)}'
+											].map((tex, i) => (
 												<button key={i} onClick={() => setLimFuncType(i)}
-													style={{ padding: '4px 8px', borderRadius: 6, border: 'none', cursor: 'pointer', textAlign: 'left',
-														background: limFuncType === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 11 }}>
-													{label}
-												</button>
+													className={`stu-ws__param-btn${limFuncType === i ? ' stu-ws__param-btn--active' : ''}`}
+													style={{ justifyContent: 'flex-start' }}
+													dangerouslySetInnerHTML={renderTex(tex)}
+												/>
 											))}
 										</div>
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a}f(x)=L')} />
 										<div dangerouslySetInnerHTML={renderTex('f\\ \\text{liên tục tại}\\ a\\Leftrightarrow\\lim_{x\\to a}f(x)=f(a)')} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\lim_{x\\to a^-}')} /><span className='stu-ws__symbol-desc'>giới hạn trái</span></div>
@@ -10779,13 +10752,12 @@ const Workspace: React.FC = () => {
 								<>
 									<div className='stu-ws__param stu-ws__param--v0'>
 										<div className='stu-ws__param-row'><span>Hàm số f(x)</span></div>
-										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-											{['x²', 'x³', 'sin x', 'x³−3x'].map((fn, i) => (
-												<button key={fn} onClick={() => setDerFnIdx(i)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer',
-														background: derFnIdx === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 12 }}>
-													{fn}
-												</button>
+										<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 4 }}>
+											{['x^2', 'x^3', '\\sin x', 'x^3 - 3x'].map((tex, i) => (
+												<button key={i} onClick={() => setDerFnIdx(i)}
+													className={`stu-ws__param-btn${derFnIdx === i ? ' stu-ws__param-btn--active' : ''}`}
+													dangerouslySetInnerHTML={renderTex(tex)}
+												/>
 											))}
 										</div>
 									</div>
@@ -10802,14 +10774,14 @@ const Workspace: React.FC = () => {
 											onChange={e => setDerH(+e.target.value)} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex("f'(x_0)=\\lim_{h\\to 0}\\frac{f(x_0+h)-f(x_0)}{h}")} />
 										<div dangerouslySetInnerHTML={renderTex("y=f(x_0)+f'(x_0)(x-x_0)")} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex("f'(x_0)")} /><span className='stu-ws__symbol-desc'>đạo hàm của f tại x₀</span></div>
@@ -10824,13 +10796,19 @@ const Workspace: React.FC = () => {
 								<>
 									<div className='stu-ws__param stu-ws__param--v0'>
 										<div className='stu-ws__param-row'><span>Phép biến đổi</span></div>
-										<div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 4 }}>
-											{['Tịnh tiến theo vectơ (tx,ty)', 'Đối xứng qua Ox', 'Đối xứng qua Oy', 'Đối xứng qua tâm O', 'Phép quay góc α'].map((label, i) => (
+										<div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
+											{[
+												'\\text{Tịnh tiến } T_{\\vec{v}} (t_x, t_y)',
+												'\\text{Đối xứng trục } D_{Ox}',
+												'\\text{Đối xứng trục } D_{Oy}',
+												'\\text{Đối xứng tâm } D_O',
+												'\\text{Phép quay } R_{O, \\alpha}'
+											].map((tex, i) => (
 												<button key={i} onClick={() => setTransType(i)}
-													style={{ padding: '4px 8px', borderRadius: 6, border: 'none', cursor: 'pointer', textAlign: 'left',
-														background: transType === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 11 }}>
-													{label}
-												</button>
+													className={`stu-ws__param-btn${transType === i ? ' stu-ws__param-btn--active' : ''}`}
+													style={{ justifyContent: 'flex-start' }}
+													dangerouslySetInnerHTML={renderTex(tex)}
+												/>
 											))}
 										</div>
 									</div>
@@ -10857,14 +10835,14 @@ const Workspace: React.FC = () => {
 										</div>
 									)}
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex('T_{\\vec{v}}(M)=M\':\\ M\'=M+\\vec{v}')} />
 										<div dangerouslySetInnerHTML={renderTex("R_{O,\\alpha}:\\ (x',y')=(x\\cos\\alpha-y\\sin\\alpha,\\,x\\sin\\alpha+y\\cos\\alpha)")} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('T_{\\vec{v}}')} /><span className='stu-ws__symbol-desc'>phép tịnh tiến theo vectơ v</span></div>
@@ -10892,24 +10870,25 @@ const Workspace: React.FC = () => {
 									<div className='stu-ws__param stu-ws__param--v0'>
 										<div className='stu-ws__param-row'><span>Quan hệ</span></div>
 										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-											{['Giao nhau', 'Song song'].map((label, i) => (
+											{['Cắt nhau', 'Song song'].map((label, i) => (
 												<button key={i} onClick={() => setPlanesParallel(i)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer',
-														background: planesParallel === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 13 }}>
+													className={`stu-ws__param-btn${planesParallel === i ? ' stu-ws__param-btn--active' : ''}`}
+													style={{ flex: 1 }}
+												>
 													{label}
 												</button>
 											))}
 										</div>
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex('\\alpha\\parallel\\beta\\Leftrightarrow\\vec{n}_1\\parallel\\vec{n}_2')} />
 										<div dangerouslySetInnerHTML={renderTex('\\cos\\theta=\\frac{|\\vec{n}_1\\cdot\\vec{n}_2|}{|\\vec{n}_1||\\vec{n}_2|}')} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('\\vec{n}')} /><span className='stu-ws__symbol-desc'>vectơ pháp tuyến của mặt phẳng</span></div>
@@ -10931,14 +10910,14 @@ const Workspace: React.FC = () => {
 										</div>
 									))}
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex('d\\perp\\alpha\\Leftrightarrow d\\perp a,d\\perp b\\ (a,b\\subset\\alpha)')} />
 										<div dangerouslySetInnerHTML={renderTex('\\alpha\\perp\\beta\\Leftrightarrow\\exists d\\subset\\alpha:\\ d\\perp\\beta')} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('d\\perp\\alpha')} /><span className='stu-ws__symbol-desc'>đường thẳng d vuông góc mặt phẳng α</span></div>
@@ -10955,8 +10934,9 @@ const Workspace: React.FC = () => {
 										<div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
 											{['Lăng trụ', 'Hình chóp'].map((label, i) => (
 												<button key={i} onClick={() => setPolyType11(i)}
-													style={{ flex: 1, padding: '4px 0', borderRadius: 6, border: 'none', cursor: 'pointer',
-														background: polyType11 === i ? '#4f6ef7' : '#1e293b', color: '#f8fafc', fontSize: 13 }}>
+													className={`stu-ws__param-btn${polyType11 === i ? ' stu-ws__param-btn--active' : ''}`}
+													style={{ flex: 1 }}
+												>
 													{label}
 												</button>
 											))}
@@ -10975,14 +10955,14 @@ const Workspace: React.FC = () => {
 										</div>
 									))}
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>📐 Công thức & Lý thuyết</span>
+										<div className='stu-ws__section-label-bar' /><span>Công thức & Lý thuyết</span>
 									</div>
 									<div className='stu-ws__formula-box'>
 										<div dangerouslySetInnerHTML={renderTex(polyType11 === 0 ? 'V=S_{đáy}\\cdot h' : 'V=\\tfrac{1}{3}S_{đáy}\\cdot h')} />
 										<div dangerouslySetInnerHTML={renderTex('S_{n\\text{-giác đều}}=\\tfrac{n\\cdot r^2\\sin(2\\pi/n)}{2}')} style={{ marginTop: 6 }} />
 									</div>
 									<div className='stu-ws__section-label' style={{ marginTop: '12px' }}>
-										<div className='stu-ws__section-label-bar' /><span>🔤 Ký hiệu</span>
+										<div className='stu-ws__section-label-bar' /><span>Ký hiệu</span>
 									</div>
 									<div className='stu-ws__symbols-list'>
 										<div className='stu-ws__symbol-item'><span className='stu-ws__symbol-sym' dangerouslySetInnerHTML={renderTex('S_{đáy}')} /><span className='stu-ws__symbol-desc'>diện tích đa giác đều ở đáy</span></div>

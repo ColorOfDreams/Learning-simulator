@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SimulationProps } from '../../types';
+import { useMathPanZoom } from '../../useMathPanZoom';
 
 export default function TrigSimulation({ config }: SimulationProps) {
   const params = config.parameters;
@@ -11,9 +12,9 @@ export default function TrigSimulation({ config }: SimulationProps) {
 
   const W = 600;
   const H = 400;
-  const scale = 35;
-  const ox = 300;
-  const oy = 200;
+
+  const { ox, oy, scale, xMin, xMax, yMin, yMax, svgHandlers, resetView, isDirty } =
+    useMathPanZoom(35, W, H);
 
   const fnIndex = Math.round(fn);
   const color = fnIndex === 0 ? '#38bdf8' : fnIndex === 1 ? '#fbbf24' : '#4ade80';
@@ -24,24 +25,22 @@ export default function TrigSimulation({ config }: SimulationProps) {
   const toSY = (y: number) => oy - y * scale;
 
   const gridLines = useMemo(() => {
-    const lines: { x1: number; y1: number; x2: number; y2: number; label?: string; isX: boolean }[] = [];
-    const xRange = Math.ceil(W / (2 * scale)) + 1;
-    const yRange = Math.ceil(H / (2 * scale)) + 1;
-    for (let i = -xRange; i <= xRange; i++) {
-      lines.push({ x1: toSX(i), y1: 0, x2: toSX(i), y2: H, isX: true });
+    const lines: { x1: number; y1: number; x2: number; y2: number }[] = [];
+    const iMin = Math.floor(xMin) - 1; const iMax = Math.ceil(xMax) + 1;
+    const jMin = Math.floor(yMin) - 1; const jMax = Math.ceil(yMax) + 1;
+    for (let i = iMin; i <= iMax; i++) {
+      lines.push({ x1: toSX(i), y1: 0, x2: toSX(i), y2: H });
     }
-    for (let i = -yRange; i <= yRange; i++) {
-      lines.push({ x1: 0, y1: toSY(i), x2: W, y2: toSY(i), isX: false });
+    for (let j = jMin; j <= jMax; j++) {
+      lines.push({ x1: 0, y1: toSY(j), x2: W, y2: toSY(j) });
     }
     return lines;
-  }, []);
+  }, [ox, oy, scale, xMin, xMax, yMin, yMax]);
 
   const curvePath = useMemo(() => {
     const Bsafe = B === 0 ? 0.001 : B;
     const segments: string[] = [];
     const steps = 600;
-    const xMin = -W / (2 * scale);
-    const xMax = W / (2 * scale);
     const dx = (xMax - xMin) / steps;
     let currentSeg = '';
     let prevY: number | null = null;
@@ -86,7 +85,7 @@ export default function TrigSimulation({ config }: SimulationProps) {
     }
     if (currentSeg) segments.push(currentSeg);
     return segments;
-  }, [A, B, C, D, fnIndex]);
+  }, [A, B, C, D, fnIndex, ox, oy, scale, xMin, xMax]);
 
   const period = useMemo(() => {
     const Babs = Math.abs(B) === 0 ? 0.001 : Math.abs(B);
@@ -103,28 +102,28 @@ export default function TrigSimulation({ config }: SimulationProps) {
 
   const xTicks = useMemo(() => {
     const ticks: { val: number; label: string }[] = [];
-    const xRange = Math.ceil(W / (2 * scale));
-    for (let i = -xRange; i <= xRange; i++) {
+    const iMin = Math.ceil(xMin); const iMax = Math.floor(xMax);
+    for (let i = iMin; i <= iMax; i++) {
       if (i !== 0) ticks.push({ val: i, label: `${i}` });
     }
-    const piSteps = [-2, -1, 1, 2];
+    const piSteps = [-6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6];
     piSteps.forEach(n => {
       const xv = n * Math.PI;
-      if (Math.abs(xv) <= W / (2 * scale)) {
+      if (xv >= xMin && xv <= xMax) {
         ticks.push({ val: xv, label: n === 1 ? 'π' : n === -1 ? '-π' : `${n}π` });
       }
     });
     return ticks;
-  }, []);
+  }, [xMin, xMax]);
 
   const yTicks = useMemo(() => {
     const ticks: { val: number }[] = [];
-    const yRange = Math.ceil(H / (2 * scale));
-    for (let i = -yRange; i <= yRange; i++) {
+    const jMin = Math.ceil(yMin); const jMax = Math.floor(yMax);
+    for (let i = jMin; i <= jMax; i++) {
       if (i !== 0) ticks.push({ val: i });
     }
     return ticks;
-  }, []);
+  }, [yMin, yMax]);
 
   const fmtNum = (v: number) => {
     if (Math.abs(v) < 0.001) return '0';
@@ -157,7 +156,8 @@ export default function TrigSimulation({ config }: SimulationProps) {
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: '#090d16', overflow: 'hidden' }}>
-      <svg width="100%" height="100%" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet">
+      <svg width="100%" height="100%" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet"
+        {...svgHandlers}>
         <g stroke="#1e293b" strokeWidth="0.5" opacity="0.8">
           {gridLines.map((l, i) => (
             <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
@@ -251,6 +251,16 @@ export default function TrigSimulation({ config }: SimulationProps) {
           </>
         )}
       </svg>
+      {isDirty && (
+        <button onClick={resetView} style={{
+          position: 'absolute', bottom: 8, right: 8, zIndex: 10,
+          padding: '3px 10px', background: 'rgba(15,23,42,0.9)',
+          border: '1px solid #334155', borderRadius: 6,
+          color: '#94a3b8', fontSize: 12, cursor: 'pointer',
+        }}>
+          ↺ Reset
+        </button>
+      )}
     </div>
   );
 }
