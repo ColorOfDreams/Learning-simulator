@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-07-01T11:01:45.675Z",
+  "theoryChunks": {
+    "totalTheoryChunks": 674,
+    "activeTheoryChunks": 674,
+    "embeddedTheoryChunks": 674,
+    "missingEmbeddings": 0,
+    "needsReviewTheoryChunks": 14,
+    "generatedCleanedTheoryChunks": 0
+  },
+  "subjectDistribution": [
+    {
+      "subject": "physics",
+      "count": 674
+    }
+  ],
+  "gradeDistribution": [
+    {
+      "grade": 11,
+      "count": 674
+    }
+  ],
+  "validationStatusDistribution": [
+    {
+      "validationStatus": "ai_generated",
+      "count": 656
+    },
+    {
+      "validationStatus": "needs_review",
+      "count": 14
+    },
+    {
+      "validationStatus": "null",
+      "count": 4
+    }
+  ]
+}

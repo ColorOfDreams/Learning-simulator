@@ -19,7 +19,7 @@ import type {
 import type { ExpectedEvaluationAnswer } from '../src/modules/ai/evaluation/eval-types';
 import type { RuleBasedAnswerMetrics } from '../src/modules/ai/evaluation/answer-metrics';
 
-type EvalSource = 'database' | 'smoke';
+type EvalSource = 'database' | 'smoke' | 'file';
 type EvalAiMethod = 'analyze' | 'chat';
 
 type AnswerEvalInputCase = {
@@ -69,6 +69,14 @@ type AnswerEvalReport = {
   source: EvalSource;
   ai_method: EvalAiMethod;
   llm_enabled: boolean;
+  llm_answer_enabled: boolean;
+  llm_answer_configured: boolean;
+  llm_judge_enabled: boolean;
+  llm_judge_configured: boolean;
+  llm_base_url?: string;
+  llm_model?: string;
+  judge_base_url?: string;
+  judge_model?: string;
   summary: {
     total_cases: number;
     evaluated_cases: number;
@@ -124,7 +132,10 @@ async function main() {
     console.log(JSON.stringify(report.summary, null, 2));
     console.log(`Answer eval source: ${evalSource}`);
     console.log(`Answer eval method: ${aiMethod}`);
-    console.log(`LLM enabled: ${report.llm_enabled}`);
+    console.log(`LLM answer enabled: ${report.llm_answer_enabled}`);
+    console.log(`LLM answer configured: ${report.llm_answer_configured}`);
+    console.log(`LLM judge enabled: ${report.llm_judge_enabled}`);
+    console.log(`LLM judge configured: ${report.llm_judge_configured}`);
     console.log(`Answer eval report written to ${reportPath}`);
     console.log(`Answer eval summary written to ${summaryPath}`);
     console.log(`LLM answer samples written to ${samplesPath}`);
@@ -218,8 +229,8 @@ async function evaluateCase(
 async function loadEvalCases(
   app: Awaited<ReturnType<typeof NestFactory.createApplicationContext>>,
   evalSource: EvalSource,
-) {
-  if (evalSource === 'smoke') {
+): Promise<Array<AnswerEvalInputCase | AiTestCaseEntity>> {
+  if (evalSource === 'smoke' || evalSource === 'file') {
     return readSmokeCases();
   }
 
@@ -246,11 +257,14 @@ async function readSmokeCases(): Promise<AnswerEvalInputCase[]> {
 }
 
 async function resolveSmokeFilePath() {
-  const envPath = process.env.EVAL_SMOKE_FILE?.trim();
+  const envPath =
+    process.env.EVAL_CASES_PATH?.trim() ?? process.env.EVAL_SMOKE_FILE?.trim();
   const candidates = [
-    ...(envPath ? [envPath] : []),
+    ...(envPath ? resolveEvalPathCandidates(envPath) : []),
     join(process.cwd(), '../../data/eval/answer-smoke-cases.json'),
     join(process.cwd(), '../../data/eval/rag-smoke-cases.json'),
+    join(process.cwd(), '../../../data/eval/answer-smoke-cases.json'),
+    join(process.cwd(), '../../../data/eval/rag-smoke-cases.json'),
     join(process.cwd(), 'data/eval/answer-smoke-cases.json'),
     join(process.cwd(), 'data/eval/rag-smoke-cases.json'),
   ];
@@ -308,6 +322,14 @@ function buildReport(
     source,
     ai_method: aiMethod,
     llm_enabled: isLlmEnabledForEval(),
+    llm_answer_enabled: isLlmEnabledForEval(),
+    llm_answer_configured: isLlmConfiguredForEval(),
+    llm_judge_enabled: isAnswerJudgeEnabled(),
+    llm_judge_configured: isAnswerJudgeConfiguredForEval(),
+    llm_base_url: readLlmBaseUrl(),
+    llm_model: readLlmModel(),
+    judge_base_url: readJudgeBaseUrl(),
+    judge_model: readJudgeModel(),
     summary: {
       total_cases: caseReports.length,
       evaluated_cases: evaluatedCases.length,
@@ -382,13 +404,32 @@ function buildMarkdownSummary(report: AnswerEvalReport) {
     `- Run time: ${report.generated_at}`,
     `- Source: ${report.source}`,
     `- AI method: ${report.ai_method}`,
-    `- LLM enabled: ${report.llm_enabled}`,
+    `- LLM answer enabled: ${report.llm_answer_enabled}`,
+    `- LLM answer configured: ${report.llm_answer_configured}`,
+    `- LLM judge enabled: ${report.llm_judge_enabled}`,
+    `- LLM judge configured: ${report.llm_judge_configured}`,
+    `- LLM base URL: ${report.llm_base_url ?? 'N/A'}`,
+    `- LLM model: ${report.llm_model ?? 'N/A'}`,
+    `- Judge base URL: ${report.judge_base_url ?? 'N/A'}`,
+    `- Judge model: ${report.judge_model ?? 'N/A'}`,
     `- Model: ${report.summary.model ?? 'N/A'}`,
     `- Avg latency: ${formatMetricIf(
       report.summary.avg_latency_ms,
       report.summary.evaluated_cases > 0 && report.summary.avg_latency_ms > 0,
     )} ms`,
     `- Answer judge enabled: ${isAnswerJudgeEnabled()}`,
+    ...(report.ai_method !== 'chat' || !report.llm_answer_enabled
+      ? [
+          '',
+          '> WARNING: Answer evaluation is not running full LLM chat generation. Metrics may reflect local/analyze fallback.',
+        ]
+      : []),
+    ...(report.llm_judge_enabled && !report.llm_judge_configured
+      ? [
+          '',
+          '> WARNING: Answer judge is enabled but no judge API key is configured.',
+        ]
+      : []),
     '',
     '## Cases',
     '',
@@ -632,21 +673,74 @@ function extractReferences(output: unknown): AnswerJudgeReference[] {
 }
 
 function configureLlmForEval() {
-  if (!process.env.LLM_API_KEY && process.env.OPENAI_API_KEY) {
-    process.env.LLM_API_KEY = process.env.OPENAI_API_KEY;
+  const sharedApiKey =
+    process.env.LLM_API_KEY ??
+    process.env.OPENAI_API_KEY ??
+    process.env.ANSWER_JUDGE_API_KEY ??
+    process.env.EMBEDDING_API_KEY;
+
+  if (!process.env.LLM_API_KEY && sharedApiKey) {
+    process.env.LLM_API_KEY = sharedApiKey;
   }
 
-  if (!isLlmEnabledForEval()) {
-    delete process.env.LLM_API_KEY;
+  if (process.env.ANSWER_JUDGE_ENABLED === undefined && isLlmEnabledForEval()) {
+    process.env.ANSWER_JUDGE_ENABLED = 'true';
   }
 }
 
 function isLlmEnabledForEval() {
   const explicit =
     process.env.EVAL_USE_LLM === 'true' || readEvalAiMethod() === 'chat';
-  const hasKey = Boolean(process.env.LLM_API_KEY || process.env.OPENAI_API_KEY);
+  const hasKey = Boolean(
+      process.env.LLM_API_KEY ||
+      process.env.OPENAI_API_KEY ||
+      process.env.ANSWER_JUDGE_API_KEY ||
+      process.env.EMBEDDING_API_KEY,
+  );
 
   return explicit && hasKey;
+}
+
+function isLlmConfiguredForEval() {
+  return Boolean(
+    process.env.LLM_API_KEY ||
+      process.env.OPENAI_API_KEY ||
+      process.env.ANSWER_JUDGE_API_KEY ||
+      process.env.EMBEDDING_API_KEY,
+  );
+}
+
+function isAnswerJudgeConfiguredForEval() {
+  return Boolean(
+    process.env.ANSWER_JUDGE_API_KEY ||
+      process.env.LLM_API_KEY ||
+      process.env.OPENAI_API_KEY ||
+      process.env.EMBEDDING_API_KEY,
+  );
+}
+
+function readLlmBaseUrl() {
+  return process.env.LLM_BASE_URL ?? 'https://api.openai.com/v1';
+}
+
+function readLlmModel() {
+  return process.env.LLM_MODEL ?? 'gpt-4o-mini';
+}
+
+function readJudgeBaseUrl() {
+  return (
+    process.env.ANSWER_JUDGE_BASE_URL ??
+    process.env.LLM_BASE_URL ??
+    'https://api.openai.com/v1'
+  );
+}
+
+function readJudgeModel() {
+  return (
+    process.env.ANSWER_JUDGE_MODEL ??
+    process.env.LLM_MODEL ??
+    'gpt-4o-mini'
+  );
 }
 
 function readQuestion(testCase: unknown) {
@@ -691,7 +785,20 @@ function readCaseId(testCase: unknown) {
 }
 
 function readEvalSource(): EvalSource {
+  if (process.env.EVAL_CASES_PATH?.trim()) {
+    return 'file';
+  }
+
   return process.env.EVAL_SOURCE === 'smoke' ? 'smoke' : 'database';
+}
+
+function resolveEvalPathCandidates(path: string) {
+  return [
+    path,
+    join(process.cwd(), path),
+    join(process.cwd(), '..', '..', path),
+    join(process.cwd(), '..', '..', '..', path),
+  ];
 }
 
 function readEvalAiMethod(): EvalAiMethod {
@@ -757,16 +864,77 @@ function formatSampleBlocks(cases: AnswerEvalCaseReport[]) {
     '',
     `Question: ${item.question}`,
     '',
+    'Expected:',
+    '',
+    formatExpectedAnswer(item.expected_answer),
+    '',
+    'Metrics:',
+    '',
+    `- Numeric correct: ${formatNullableBoolean(item.metrics.numericCorrect)}`,
+    `- Concept coverage: ${formatMetricIf(
+      item.metrics.conceptCoverage ?? 0,
+      item.metrics.conceptCoverage !== null,
+    )}`,
+    `- Matched concepts: ${item.metrics.matchedConcepts.join(', ') || 'N/A'}`,
+    `- Missing concepts: ${item.metrics.missingConcepts.join(', ') || 'N/A'}`,
+    `- Rule-based score: ${formatMetric(item.metrics.ruleBasedScore)}`,
+    ...(item.final_answer_score !== undefined
+      ? [`- Judge final score: ${formatMetric(item.final_answer_score)}`]
+      : []),
+    ...(item.judge_reason ? [`- Judge reason: ${item.judge_reason}`] : []),
+    '',
     `Confidence: ${item.confidence ?? 'N/A'}`,
     `Used references: ${(item.used_reference_ids ?? []).join(', ') || 'N/A'}`,
-    `Matched concepts: ${item.metrics.matchedConcepts.join(', ') || 'N/A'}`,
-    `Missing concepts: ${item.metrics.missingConcepts.join(', ') || 'N/A'}`,
     '',
     'Answer:',
     '',
     truncate(item.ai_answer, 1200),
     '',
   ]);
+}
+
+function formatExpectedAnswer(expected: ExpectedEvaluationAnswer | undefined) {
+  if (!expected) {
+    return 'N/A';
+  }
+
+  const reference =
+    typeof expected.reference_answer === 'string'
+      ? expected.reference_answer
+      : undefined;
+  const numeric =
+    expected.value !== undefined
+      ? `value=${String(expected.value)}${expected.unit ? ` ${expected.unit}` : ''}`
+      : undefined;
+  const concepts = expected.required_concepts ?? expected.requiredConcepts ?? [];
+  const conceptText = Array.isArray(concepts)
+    ? concepts
+        .map((item) =>
+          typeof item === 'string'
+            ? item
+            : item && typeof item === 'object' && 'label' in item
+              ? String(item.label)
+              : '',
+        )
+        .filter(Boolean)
+        .join(', ')
+    : '';
+
+  return [
+    reference ? `Reference answer: ${reference}` : '',
+    numeric ? `Expected numeric: ${numeric}` : '',
+    conceptText ? `Required concepts: ${conceptText}` : '',
+  ]
+    .filter(Boolean)
+    .join('\n');
+}
+
+function formatNullableBoolean(value: boolean | null) {
+  if (value === null) {
+    return 'N/A';
+  }
+
+  return value ? 'pass' : 'fail';
 }
 
 function inferExpectedAnswerType(item: AnswerEvalCaseReport) {

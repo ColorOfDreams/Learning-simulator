@@ -1,0 +1,3127 @@
+{
+  "generated_at": "2026-07-02T03:58:32.829Z",
+  "source": "file",
+  "ai_method": "chat",
+  "llm_enabled": true,
+  "summary": {
+    "total_cases": 50,
+    "evaluated_cases": 50,
+    "skipped_cases": 0,
+    "numeric_cases": 5,
+    "conceptual_cases": 45,
+    "mixed_cases": 5,
+    "numeric_accuracy": 0.6,
+    "avg_concept_coverage": 0.3333333333333335,
+    "avg_rule_based_score": 0.3300000000000001,
+    "avg_correctness": 3.64,
+    "avg_groundedness": 3.86,
+    "avg_completeness": 3.38,
+    "avg_clarity": 4.12,
+    "avg_citation_usage": 0.1,
+    "avg_final_answer_score": 3.5139999999999985,
+    "hallucination_rate": 0.02,
+    "avg_latency_ms": 3367.92,
+    "model": "gpt-4o-mini"
+  },
+  "cases": [
+    {
+      "case_id": "REAL_EVAL_PHY11_OSCILLATION_CONCEPT_001",
+      "question": "Dao động cơ là gì? Nêu đặc điểm chuyển động quanh vị trí cân bằng.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Dao động cơ là chuyển động qua lại của vật quanh vị trí cân bằng và có thể lặp đi lặp lại theo thời gian.",
+        "required_concepts": [
+          {
+            "label": "dao động cơ",
+            "anyOf": [
+              "dao động cơ"
+            ]
+          },
+          {
+            "label": "chuyển động qua lại",
+            "anyOf": [
+              "chuyển động qua lại",
+              "qua lại"
+            ]
+          },
+          {
+            "label": "vị trí cân bằng",
+            "anyOf": [
+              "vị trí cân bằng",
+              "quanh vị trí cân bằng"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Dao động cơ là chuyển động qua lại của vật quanh vị trí cân bằng. Đặc điểm của chuyển động này là vật thực hiện các dao động tuần hoàn hoặc không tuần hoàn, trong đó dao động tuần hoàn là khi vật trở lại vị trí cũ theo hướng cũ sau những khoảng thời gian bằng nhau.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "dao động cơ",
+          "chuyển động qua lại",
+          "vị trí cân bằng"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L01_017",
+        "GENCLN_PHY_G11_sgkvatli11_chuong1_bai1_sgkvatli_11_39203721_S004_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2510,
+        "latencyMs": 3261
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời đúng và dựa hoàn toàn vào thông tin trong CONTEXT, nêu rõ định nghĩa và đặc điểm của dao động cơ.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_SHM_EQUATION_001",
+      "question": "Trong phương trình dao động điều hòa x = A cos(ωt + φ), x, A, ω và φ có ý nghĩa gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "x là li độ tại thời điểm t, A là biên độ, ω là tần số góc, còn φ là pha ban đầu; ωt + φ là pha dao động.",
+        "required_concepts": [
+          {
+            "label": "x là li độ",
+            "anyOf": [
+              "x là li độ",
+              "li độ"
+            ]
+          },
+          {
+            "label": "A là biên độ",
+            "anyOf": [
+              "A là biên độ",
+              "biên độ"
+            ]
+          },
+          {
+            "label": "ω là tần số góc",
+            "anyOf": [
+              "ω là tần số góc",
+              "omega là tần số góc",
+              "tần số góc"
+            ]
+          },
+          {
+            "label": "φ là pha ban đầu",
+            "anyOf": [
+              "φ là pha ban đầu",
+              "phi là pha ban đầu",
+              "pha ban đầu"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Trong phương trình dao động điều hòa x = A cos(ωt + φ): x là li độ tại thời điểm t, A là biên độ (độ lớn tối đa của li độ), ω là tần số góc (đo bằng rad/s), và φ là pha ban đầu (cho biết trạng thái của dao động tại t=0).\nThay đổi các tham số A, ω, φ trong mô phỏng để quan sát ảnh hưởng đến dao động.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "x là li độ",
+          "A là biên độ",
+          "ω là tần số góc",
+          "φ là pha ban đầu"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "th_shm_002",
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L02_008",
+        "TH_PHY11_C01_L01_006"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2364,
+        "latencyMs": 3234
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời đúng và dựa hoàn toàn vào thông tin trong CONTEXT, giải thích rõ ràng ý nghĩa của từng đại lượng trong phương trình dao động điều hòa.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_SHM_PERIOD_001",
+      "question": "Một vật dao động điều hòa có ω = 4π rad/s. Tính chu kì T.",
+      "expected_answer": {
+        "type": "mixed",
+        "value": 0.5,
+        "unit": "s",
+        "tolerance": 0.000001,
+        "reference_answer": "Dùng ω = 2π/T nên T = 2π/ω = 2π/(4π) = 0,5 s.",
+        "required_concepts": [
+          {
+            "label": "ω = 2π/T",
+            "anyOf": [
+              "ω=2π/T",
+              "ω = 2π/T",
+              "omega = 2pi/T"
+            ]
+          },
+          {
+            "label": "T = 2π/ω",
+            "anyOf": [
+              "T=2π/ω",
+              "T = 2π/ω",
+              "T = 2pi/omega"
+            ]
+          },
+          {
+            "label": "0,5 s",
+            "anyOf": [
+              "0,5 s",
+              "0.5 s",
+              "0,5s",
+              "0.5s"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Chu kì T của vật dao động điều hòa được tính bằng công thức: T = 2π/ω. Với ω = 4π rad/s, ta có T = 2π/(4π) = 1/2 s.\nSử dụng công thức T = 2π/ω.\nThay ω = 4π vào công thức.\nTính toán: T = 2π/(4π) = 1/2 s.\nT = 2π/ω\nThay đổi giá trị omega trong mô phỏng để quan sát ảnh hưởng đến chu kỳ.",
+      "metrics": {
+        "numericCorrect": false,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "T = 2π/ω"
+        ],
+        "missingConcepts": [
+          "ω = 2π/T",
+          "0,5 s"
+        ],
+        "ruleBasedScore": 0.16666666666666666
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L02_029"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2394,
+        "latencyMs": 2863
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời đúng, dựa vào công thức trong CONTEXT và tính toán chính xác.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_SHM_POSITION_001",
+      "question": "Một vật dao động điều hòa có phương trình x = 2cos(4πt + π/2) cm. Tính li độ tại t = 2 s.",
+      "expected_answer": {
+        "type": "mixed",
+        "value": 0,
+        "unit": "cm",
+        "tolerance": 0.000001,
+        "reference_answer": "Thay t = 2 s vào x = 2cos(4πt + π/2), pha bằng 17π/2 nên cos(17π/2) = 0. Vậy x = 0 cm.",
+        "required_concepts": [
+          {
+            "label": "thay t = 2",
+            "anyOf": [
+              "t = 2",
+              "thay t"
+            ]
+          },
+          {
+            "label": "pha dao động",
+            "anyOf": [
+              "pha",
+              "4πt + π/2"
+            ]
+          },
+          {
+            "label": "x = 0 cm",
+            "anyOf": [
+              "x = 0 cm",
+              "0 cm",
+              "li độ bằng 0"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Li độ tại t = 2 s được tính bằng phương trình x = 2cos(4πt + π/2). Thay t = 2 s vào phương trình, ta có x = 2cos(4π*2 + π/2).\nThay t = 2 s vào phương trình: x = 2cos(4π*2 + π/2)\nTính 4π*2 = 8π, do đó x = 2cos(8π + π/2)\nBiết rằng cos(8π + π/2) = cos(π/2) = 0, nên x = 2*0 = 0 cm.\nx = A cos(ωt + φ)\nThay đổi thời gian t trong mô phỏng để xem sự thay đổi của li độ.",
+      "metrics": {
+        "numericCorrect": true,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "thay t = 2",
+          "pha dao động",
+          "x = 0 cm"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L01_007"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2220,
+        "latencyMs": 4057
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời đúng, dựa trên phương trình đã cho và tính toán chính xác li độ tại t = 2 s.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_SHM_VELOCITY_001",
+      "question": "Từ x = A cos(ωt + φ), hãy viết phương trình vận tốc của vật dao động điều hòa.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Vận tốc là đạo hàm của li độ theo thời gian: v = x' = -ωA sin(ωt + φ).",
+        "required_concepts": [
+          {
+            "label": "vận tốc là đạo hàm của li độ",
+            "anyOf": [
+              "đạo hàm của li độ",
+              "v = x'",
+              "v=x'"
+            ]
+          },
+          {
+            "label": "v = -ωA sin(ωt + φ)",
+            "anyOf": [
+              "v = -ωA sin",
+              "v=-ωA sin",
+              "v = -omega A sin"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Phương trình vận tốc của vật dao động điều hòa được viết là: v = -ωA sin(ωt + φ).\nXác định phương trình li độ: x = A cos(ωt + φ).\nTính đạo hàm của x theo thời gian t để tìm v: v = dx/dt = -ωA sin(ωt + φ).\nv = -ωA sin(ωt + φ)\nHãy điều chỉnh các tham số như biên độ, tần số góc và pha để quan sát sự thay đổi của vận tốc trong mô phỏng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.5,
+        "matchedConcepts": [
+          "v = -ωA sin(ωt + φ)"
+        ],
+        "missingConcepts": [
+          "vận tốc là đạo hàm của li độ"
+        ],
+        "ruleBasedScore": 0.5
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L03_004",
+        "TH_PHY11_C01_L03_021"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2172,
+        "latencyMs": 4375
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời đúng, dựa trên thông tin trong CONTEXT và đầy đủ các bước để đi đến kết quả.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_SHM_ACCELERATION_001",
+      "question": "Gia tốc trong dao động điều hòa liên hệ với li độ x theo công thức nào?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Gia tốc của dao động điều hòa thỏa mãn a = -ω²x, tức gia tốc luôn trái dấu với li độ và hướng về vị trí cân bằng.",
+        "required_concepts": [
+          {
+            "label": "a = -ω²x",
+            "anyOf": [
+              "a = -ω²x",
+              "a=-ω²x",
+              "a = -omega^2 x",
+              "a=-omega^2x"
+            ]
+          },
+          {
+            "label": "trái dấu với li độ",
+            "anyOf": [
+              "trái dấu với li độ",
+              "ngược chiều với li độ"
+            ]
+          },
+          {
+            "label": "vị trí cân bằng",
+            "anyOf": [
+              "vị trí cân bằng",
+              "hướng về vị trí cân bằng"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Gia tốc trong dao động điều hòa liên hệ với li độ x theo công thức: a = -ω²x.\nXác định công thức gia tốc từ tài liệu: a = -ω²Acos(ωt + φ).\nThay thế Acos(ωt + φ) bằng x: a = -ω²x.\na = -ω²x\nThay đổi li độ x trong mô phỏng để thấy sự thay đổi của gia tốc a.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "a = -ω²x"
+        ],
+        "missingConcepts": [
+          "trái dấu với li độ",
+          "vị trí cân bằng"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L03_011"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2198,
+        "latencyMs": 2575
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 4,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.55,
+      "judge_reason": "Câu trả lời đúng và dựa hoàn toàn vào thông tin trong CONTEXT. Công thức gia tốc a = -ω²x được nêu rõ và giải thích hợp lý.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_WAVE_SPEED_001",
+      "question": "Một sóng có tần số f = 5 Hz và tốc độ truyền sóng v = 2 m/s. Tính bước sóng.",
+      "expected_answer": {
+        "type": "mixed",
+        "value": 0.4,
+        "unit": "m",
+        "tolerance": 0.000001,
+        "reference_answer": "Dùng v = λf nên λ = v/f = 2/5 = 0,4 m.",
+        "required_concepts": [
+          {
+            "label": "v = λf",
+            "anyOf": [
+              "v = λf",
+              "v=λf",
+              "v = lambda f"
+            ]
+          },
+          {
+            "label": "λ = v/f",
+            "anyOf": [
+              "λ = v/f",
+              "lambda = v/f",
+              "bước sóng"
+            ]
+          },
+          {
+            "label": "0,4 m",
+            "anyOf": [
+              "0,4 m",
+              "0.4 m",
+              "0,4m",
+              "0.4m"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Bước sóng \\( \\lambda \\) được tính bằng công thức \\( \\lambda = \\frac{v}{f} \\). Với \\( v = 2 m/s \\) và \\( f = 5 Hz \\), ta có \\( \\lambda = \\frac{2}{5} = 0.4 m \\).\nSử dụng công thức \\( \\lambda = \\frac{v}{f} \\).\nThay số: \\( \\lambda = \\frac{2 m/s}{5 Hz} \\).\nTính: \\( \\lambda = 0.4 m \\).\n\\lambda = \\frac{v}{f}",
+      "metrics": {
+        "numericCorrect": true,
+        "conceptCoverage": 0.6666666666666666,
+        "matchedConcepts": [
+          "λ = v/f",
+          "0,4 m"
+        ],
+        "missingConcepts": [
+          "v = λf"
+        ],
+        "ruleBasedScore": 0.8333333333333333
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C02_L08_021"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2542,
+        "latencyMs": 3465
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời đúng, dựa vào công thức v = λf và tính toán chính xác bước sóng.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_OHM_001",
+      "question": "Một điện trở R = 10 Ω được đặt vào hiệu điện thế U = 5 V. Tính cường độ dòng điện.",
+      "expected_answer": {
+        "type": "mixed",
+        "value": 0.5,
+        "unit": "A",
+        "tolerance": 0.000001,
+        "reference_answer": "Từ R = U/I suy ra I = U/R = 5/10 = 0,5 A.",
+        "required_concepts": [
+          {
+            "label": "R = U/I",
+            "anyOf": [
+              "R = U/I",
+              "R=U/I"
+            ]
+          },
+          {
+            "label": "I = U/R",
+            "anyOf": [
+              "I = U/R",
+              "I=U/R"
+            ]
+          },
+          {
+            "label": "0,5 A",
+            "anyOf": [
+              "0,5 A",
+              "0.5 A",
+              "0,5A",
+              "0.5A"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Cường độ dòng điện là I = 0.5 A.\nSử dụng công thức từ định luật Ohm: I = U / R.\nThay số: I = 5 V / 10 Ω.\nTính toán: I = 0.5 A.\nI = U / R",
+      "metrics": {
+        "numericCorrect": true,
+        "conceptCoverage": 0.6666666666666666,
+        "matchedConcepts": [
+          "I = U/R",
+          "0,5 A"
+        ],
+        "missingConcepts": [
+          "R = U/I"
+        ],
+        "ruleBasedScore": 0.8333333333333333
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C04_L23_010",
+        "TH_PHY11_C04_L23_019"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 1979,
+        "latencyMs": 2131
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời đúng, dựa vào định luật Ohm và cung cấp đầy đủ các bước tính toán.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_CAPACITOR_001",
+      "question": "Một tụ điện có điện dung C = 2 μF được đặt vào hiệu điện thế U = 10 V. Tính điện tích của tụ.",
+      "expected_answer": {
+        "type": "mixed",
+        "value": 0.00002,
+        "unit": "C",
+        "tolerance": 1e-7,
+        "reference_answer": "Đổi C = 2 μF = 2×10^-6 F. Dùng Q = CU nên Q = 2×10^-6 × 10 = 2×10^-5 C = 0,00002 C.",
+        "required_concepts": [
+          {
+            "label": "Q = CU",
+            "anyOf": [
+              "Q = CU",
+              "Q=CU"
+            ]
+          },
+          {
+            "label": "đổi μF sang F",
+            "anyOf": [
+              "2 μF",
+              "2×10^-6 F",
+              "2.10^-6 F",
+              "0,000002 F"
+            ]
+          },
+          {
+            "label": "0,00002 C",
+            "anyOf": [
+              "0,00002 C",
+              "0.00002 C",
+              "2×10^-5 C",
+              "2.10^-5 C"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Điện tích của tụ điện là Q = CU = 2 μF * 10 V = 20 μC.\nSử dụng công thức Q = CU.\nThay số: C = 2 μF = 2 * 10^-6 F, U = 10 V.\nTính toán: Q = 2 * 10^-6 F * 10 V = 20 * 10^-6 C = 20 μC.\nQ = CU",
+      "metrics": {
+        "numericCorrect": false,
+        "conceptCoverage": 0.6666666666666666,
+        "matchedConcepts": [
+          "Q = CU",
+          "đổi μF sang F"
+        ],
+        "missingConcepts": [
+          "0,00002 C"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G11_sgkvatli11_chuong3_bai21_sgkvatli_11_9245764a_S016_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 1923,
+        "latencyMs": 4969
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 5,
+        "completeness": 4,
+        "clarity": 4,
+        "citationUsage": 5
+      },
+      "final_answer_score": 3.9,
+      "judge_reason": "Câu trả lời sử dụng đúng công thức Q = CU và có dẫn chứng từ CONTEXT. Tuy nhiên, kết quả tính toán là sai (20 μC thay vì 0,00002 C).",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_STANDING_WAVE_001",
+      "question": "Điều kiện để có sóng dừng trên dây có hai đầu cố định là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Với dây có hai đầu cố định, chiều dài dây phải bằng một số nguyên lần nửa bước sóng: L = nλ/2.",
+        "required_concepts": [
+          {
+            "label": "hai đầu cố định",
+            "anyOf": [
+              "hai đầu cố định"
+            ]
+          },
+          {
+            "label": "số nguyên lần nửa bước sóng",
+            "anyOf": [
+              "số nguyên lần nửa bước sóng",
+              "nguyên lần nửa bước sóng"
+            ]
+          },
+          {
+            "label": "L = nλ/2",
+            "anyOf": [
+              "L = nλ/2",
+              "L=nλ/2",
+              "L = n lambda/2"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Điều kiện để có sóng dừng trên dây có hai đầu cố định là chiều dài của dây phải bằng một số nguyên lần nửa bước sóng, được biểu diễn bằng công thức: L = n(λ/2) với n = 1, 2, 3,...\nL=n(λ/2)",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.6666666666666666,
+        "matchedConcepts": [
+          "hai đầu cố định",
+          "số nguyên lần nửa bước sóng"
+        ],
+        "missingConcepts": [
+          "L = nλ/2"
+        ],
+        "ruleBasedScore": 0.6666666666666666
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G11_sgkvatli11_chuong2_bai13_sgkvatli_11_8f5ae072_S010_P01",
+        "TH_PHY11_C02_L13_009"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2256,
+        "latencyMs": 2329
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời đúng và dựa hoàn toàn vào thông tin trong CONTEXT, cung cấp đầy đủ điều kiện và công thức cần thiết.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_001",
+      "question": "Theo học liệu, Hiện tượng cộng hưởng trong đời sống là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Cộng hưởng là một hiện tượng vật lí quan trọng có thể xuất hiện trong nhiều tình huống khác nhau. Trong một số trường hợp, hiện tượng cộng hưởng có lợi, như: * Hộp đàn của các đàn ghi ta, violon,... là những hộp cộng hưởng được cấu tạo sao cho không khí trong hộp có thể dao động cộng hưởng với nhiều tần số dao động khác nhau của dây đàn. * Nguyên tắc hoạt động của lò vi sóng dựa trên cộng hưởng. Ở các lò vi sóng này, sóng được sử dụng có tần số phù hợp với tần số dao động riêng của các phân t...",
+        "required_concepts": [
+          {
+            "label": "Hiện tượng cộng hưởng trong đời sống",
+            "anyOf": [
+              "Hiện tượng cộng hưởng trong đời sống"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Hiện tượng cộng hưởng là hiện tượng vật lý xảy ra khi biên độ dao động của một hệ tăng lên đáng kể khi tần số của lực cưỡng bức gần bằng tần số riêng của hệ. Cộng hưởng có thể có lợi, như trong các nhạc cụ (hộp cộng hưởng của đàn guitar) hoặc có hại (các công trình xây dựng bị sập do lực cưỡng bức).\nKhám phá mô phỏng để thấy rõ sự khác biệt giữa dao động cưỡng bức và cộng hưởng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Hiện tượng cộng hưởng trong đời sống"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G11_sgkvatli11_chuong1_bai6_sgkvatli_11_5ddd353a_S019_P01",
+        "TH_PHY11_C01_L06_019"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2527,
+        "latencyMs": 4339
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 4,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.8000000000000003,
+      "judge_reason": "Câu trả lời đúng về hiện tượng cộng hưởng và đưa ra ví dụ cụ thể, nhưng không hoàn toàn dựa vào các thông tin trong CONTEXT.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_002",
+      "question": "Nêu công thức hoặc quan hệ chính được trình bày trong mục Độ phóng xạ.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Để đặc trưng cho tính phóng xạ mạnh hay yếu của một lượng chất phóng xạ, người ta dùng đại lượng **độ phóng xạ**, hay **hoạt độ phóng xạ**, kí hiệu là: $$ H $$ Độ phóng xạ có giá trị bằng số hạt nhân phân rã trong một giây. Đơn vị độ phóng xạ là **becquerel**, kí hiệu là: $$ Bq $$ Ta có: $$ 1\\text{ Bq}=1\\text{ phân rã/s} $$ Trong thực tế, độ phóng xạ còn có đơn vị khác là **curie**, kí hiệu là: $$ Ci $$ Ta có: $$ 1\\text{ Ci}=3{,}7\\cdot10^{10}\\text{ Bq} $$ Giá trị này xấp xỉ bằng độ phóng xạ c...",
+        "required_concepts": [
+          {
+            "label": "độ phóng xạ",
+            "anyOf": [
+              "độ phóng xạ"
+            ]
+          },
+          {
+            "label": "hoạt độ phóng xạ",
+            "anyOf": [
+              "hoạt độ phóng xạ"
+            ]
+          },
+          {
+            "label": "becquerel",
+            "anyOf": [
+              "becquerel"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Công thức chính liên quan đến độ phóng xạ là: H = λN, trong đó H là độ phóng xạ, λ là hằng số phóng xạ, và N là số hạt nhân chưa phân rã.\nĐộ phóng xạ H đặc trưng cho tính phóng xạ của chất.\nH = λN cho thấy độ phóng xạ tỷ lệ thuận với số hạt nhân chưa phân rã.\nĐơn vị của H là becquerel (Bq), với 1 Bq = 1 phân rã/s.\nH = λN",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.6666666666666666,
+        "matchedConcepts": [
+          "độ phóng xạ",
+          "becquerel"
+        ],
+        "missingConcepts": [
+          "hoạt độ phóng xạ"
+        ],
+        "ruleBasedScore": 0.6666666666666666
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong4_bai23_sgkvatli12_e88f58e2_S023_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2379,
+        "latencyMs": 3359
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 4,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.8000000000000003,
+      "judge_reason": "Câu trả lời đúng về công thức H = λN và các thông tin liên quan đến độ phóng xạ, nhưng không đề cập đến các đơn vị khác như curie và không hoàn toàn dựa vào ngữ cảnh đã cung cấp.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_003",
+      "question": "Trình bày ý chính của mục Vật lí là cơ sở của khoa học tự nhiên.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Vật lí có quan hệ với mọi ngành khoa học và thường được coi là cơ sở của khoa học tự nhiên. Các khái niệm, định luật, nguyên lí của Vật lí được sử dụng rộng rãi trong mọi lĩnh vực của khoa học tự nhiên, đặc biệt là trong việc giải thích cơ chế của các hiện tượng tự nhiên, từ các hiện tượng xảy ra trong thế giới sinh học, các phản ứng hóa học đến các hiện tượng xảy ra trong vũ trụ. Không phải ngẫu nhiên mà càng ngày càng xuất hiện nhiều lĩnh vực liên môn như: * Vật lí sinh học. * Vật lí địa lí...",
+        "required_concepts": [
+          {
+            "label": "Vật lí là cơ sở của khoa học tự nhiên",
+            "anyOf": [
+              "Vật lí là cơ sở của khoa học tự nhiên"
+            ]
+          },
+          {
+            "label": "Vật lí có quan hệ với mọi ngành khoa học và thường được coi là cơ sở của khoa học tự nhiên",
+            "anyOf": [
+              "Vật lí có quan hệ với mọi ngành khoa học và thường được coi là cơ sở của khoa học tự nhiên"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Vật lí được coi là cơ sở của khoa học tự nhiên, có quan hệ mật thiết với mọi ngành khoa học. Các khái niệm và định luật vật lí giúp giải thích cơ chế của các hiện tượng tự nhiên, từ sinh học đến vũ trụ. Điều này dẫn đến sự phát triển của nhiều lĩnh vực liên môn như vật lí sinh học, vật lí địa lí, và hóa lí.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Vật lí là cơ sở của khoa học tự nhiên",
+          "Vật lí có quan hệ với mọi ngành khoa học và thường được coi là cơ sở của khoa học tự nhiên"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong1_bai1_sgkvatli10_4644c4e2_S011_P01",
+        "GENCLN_PHY_G10_sgkvatli10_chuong1_bai1_sgkvatli10_4644c4e2_S036_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 1999,
+        "latencyMs": 3806
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời đúng và dựa hoàn toàn vào thông tin trong CONTEXT, trình bày rõ ràng ý chính về vai trò của Vật lí trong khoa học tự nhiên và các lĩnh vực liên môn.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_004",
+      "question": "Trong mục Định luật bảo toàn động lượng, bài hoặc công thức đang yêu cầu xác định đại lượng nào và dựa trên quan hệ nào?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Xét một hệ kín gồm hai vật trượt trên một đệm khí đến va chạm với nhau. Vì các lực \\(\\vec{F}_1\\) và \\(\\vec{F}_2\\) là cặp nội lực trực đối nhau nên theo định luật III Newton: \\[ \\vec{F}_1=-\\vec{F}_2 \\tag{29.1} \\] Dưới tác dụng của các lực \\(\\vec{F}_1\\) và \\(\\vec{F}_2\\), trong khoảng thời gian \\(\\Delta t\\), động lượng của mỗi vật có độ biến thiên lần lượt là: \\[ \\Delta \\vec{p}_1 \\] và \\[ \\Delta \\vec{p}_2 \\] Áp dụng công thức: \\[ \\vec{F}\\Delta t=\\Delta \\vec{p} \\] cho từng vật, ta có: \\[ \\vec{F}_...",
+        "required_concepts": [
+          {
+            "label": "định luật bảo toàn động lượng",
+            "anyOf": [
+              "định luật bảo toàn động lượng"
+            ]
+          },
+          {
+            "label": "Định luật bảo toàn động lượng",
+            "anyOf": [
+              "Định luật bảo toàn động lượng"
+            ]
+          },
+          {
+            "label": "Xét một hệ kín gồm hai vật trượt trên một đệm khí đến va chạm với nhau",
+            "anyOf": [
+              "Xét một hệ kín gồm hai vật trượt trên một đệm khí đến va chạm với nhau"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Định luật bảo toàn động lượng phát biểu rằng động lượng toàn phần của một hệ kín không đổi. Đại lượng cần xác định là động lượng toàn phần của hệ, được tính bằng tổng động lượng của từng vật trong hệ.\nXác định động lượng của từng vật trong hệ.\nTính tổng động lượng để có động lượng toàn phần.\n\\vec{p}=\\vec{p}_1+\\vec{p}_2=\\text{không đổi}\nKhông có mô phỏng hiện có.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.6666666666666666,
+        "matchedConcepts": [
+          "định luật bảo toàn động lượng",
+          "Định luật bảo toàn động lượng"
+        ],
+        "missingConcepts": [
+          "Xét một hệ kín gồm hai vật trượt trên một đệm khí đến va chạm với nhau"
+        ],
+        "ruleBasedScore": 0.6666666666666666
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong5_bai29_sgkvatli10_1a742a5a_S004_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2745,
+        "latencyMs": 3156
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 4,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.8000000000000003,
+      "judge_reason": "Câu trả lời đúng về định luật bảo toàn động lượng và xác định đại lượng cần tính là động lượng toàn phần của hệ. Tuy nhiên, không hoàn toàn dựa vào CONTEXT được cung cấp.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_005",
+      "question": "Mô tả hiện tượng hoặc thí nghiệm được nêu trong mục Hiện tượng cộng hưởng trong đời sống.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Cộng hưởng là một hiện tượng vật lí quan trọng có thể xuất hiện trong nhiều tình huống khác nhau. Trong một số trường hợp, hiện tượng cộng hưởng có lợi, như: * Hộp đàn của các đàn ghi ta, violon,... là những hộp cộng hưởng được cấu tạo sao cho không khí trong hộp có thể dao động cộng hưởng với nhiều tần số dao động khác nhau của dây đàn. * Nguyên tắc hoạt động của lò vi sóng dựa trên cộng hưởng. Ở các lò vi sóng này, sóng được sử dụng có tần số phù hợp với tần số dao động riêng của các phân t...",
+        "required_concepts": [
+          {
+            "label": "Hiện tượng cộng hưởng trong đời sống",
+            "anyOf": [
+              "Hiện tượng cộng hưởng trong đời sống"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Hiện tượng cộng hưởng là hiện tượng vật lý quan trọng xảy ra khi tần số của lực cưỡng bức bằng tần số riêng của hệ dao động, dẫn đến biên độ dao động tăng lên. Ví dụ, hộp đàn của các nhạc cụ như đàn guitar được thiết kế để cộng hưởng với tần số của dây đàn, giúp khuếch đại âm thanh. Một ví dụ khác là lò vi sóng, nơi sóng điện từ cộng hưởng với tần số dao động của phân tử nước, làm nóng thực phẩm.\nKhám phá mô phỏng để thấy rõ cách thức cộng hưởng xảy ra trong các hệ dao động.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Hiện tượng cộng hưởng trong đời sống"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G11_sgkvatli11_chuong1_bai6_sgkvatli_11_5ddd353a_S019_P01",
+        "TH_PHY11_C02_L13_013"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2875,
+        "latencyMs": 3019
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời mô tả chính xác hiện tượng cộng hưởng và đưa ra ví dụ cụ thể từ ngữ cảnh đã cung cấp, bao gồm hộp đàn và lò vi sóng.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_006",
+      "question": "So sánh các khái niệm hoặc đại lượng chính được nêu trong mục Tác dụng của $N$ phân tử khí lên thành bình.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Vì số phân tử $N$ vô cùng lớn và các phân tử chuyển động hỗn loạn trong bình nên các hướng $Ox$, $Oy$ và $Oz$ là bình đẳng. Do đó, số phân tử chuyển động theo hướng $Ox$, từ mặt $EFOH$ sang mặt $ABCD$ và ngược lại để gây áp suất lên hai mặt này chỉ bằng: $$ \\frac{N}{3} $$ số phân tử có trong bình. Vì các phân tử chuyển động hỗn loạn nên tốc độ của các phân tử không bằng nhau. Do đó, áp suất của mỗi phân tử tác dụng lên thành bình cũng không bằng nhau. Trung bình, mỗi phân tử tác dụng lên thàn...",
+        "required_concepts": [
+          {
+            "label": "trung bình của các bình phương tốc độ",
+            "anyOf": [
+              "trung bình của các bình phương tốc độ"
+            ]
+          },
+          {
+            "label": "mật độ phân tử",
+            "anyOf": [
+              "mật độ phân tử"
+            ]
+          },
+          {
+            "label": "Tác dụng của N phân tử khí lên thành bình",
+            "anyOf": [
+              "Tác dụng của N phân tử khí lên thành bình"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Các khái niệm chính trong tác dụng của $N$ phân tử khí lên thành bình bao gồm: 1. **Áp suất ($p$)**: Là lực tác dụng lên một đơn vị diện tích, được tính bằng công thức $p = \\frac{1}{3}\\frac{Nm}{V}\\overline{v^2}$. 2. **Mật độ phân tử ($\\mu$)**: Là số phân tử trong một đơn vị thể tích, $\\mu = \\frac{N}{V}$. 3. **Động năng trung bình ($\\overline{E_k}$)**: Là động năng trung bình của một phân tử, $\\overline{E_k} = \\frac{1}{2}m\\overline{v^2}$. Những khái niệm này giúp hiểu rõ cách mà các phân tử khí tác dụng lên thành bình và ảnh hưởng đến áp suất khí.\np = \\frac{1}{3}\\frac{Nm}{V}\\overline{v^2}\n\\mu = \\frac{N}{V}\n\\overline{E_k} = \\frac{1}{2}m\\overline{v^2}\nKhám phá mô phỏng để thấy sự chuyển động của các phân tử khí trong bình.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "mật độ phân tử"
+        ],
+        "missingConcepts": [
+          "trung bình của các bình phương tốc độ",
+          "Tác dụng của N phân tử khí lên thành bình"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong2_bai12_sgkvatli12_34694ce1_S006_P01",
+        "GENCLN_PHY_G12_sgkvatli12_chuong2_bai12_sgkvatli12_34694ce1_S004_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2795,
+        "latencyMs": 6011
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 4,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.8000000000000003,
+      "judge_reason": "Câu trả lời đã nêu đúng các khái niệm chính liên quan đến tác dụng của N phân tử khí lên thành bình, bao gồm áp suất, mật độ phân tử và động năng trung bình. Tuy nhiên, không hoàn toàn dựa vào ngữ cảnh đã cung cấp, đặc biệt là công thức áp suất không hoàn toàn chính xác theo ngữ cảnh.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_007",
+      "question": "Bỏ qua các từ gây nhiễu như dao động, acid, phương trình bậc hai; theo đúng mục Giải, nội dung chính là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Chọn gốc tọa độ $O$ tại điểm electron bắt đầu bay vào điện trường đều. Trục $Ox$ có hướng trùng với vectơ vận tốc ban đầu. Trục $Oy$ hướng thẳng đứng lên trên. Đổi đơn vị: $$ d=24\\ cm=24 \\times 10^{-2}\\ m=0{,}24\\ m $$ Độ lớn cường độ điện trường giữa hai bản phẳng là: $$ E=\\frac{U}{d}=\\frac{48}{24 \\times 10^{-2}}=200\\ V/m $$ Vectơ cường độ điện trường hướng từ trên xuống dưới và ngược chiều với trục $Oy$. Lực điện tác dụng lên electron có phương thẳng đứng, chiều hướng lên trên. Độ lớn lực đi...",
+        "required_concepts": [
+          {
+            "label": "Giải",
+            "anyOf": [
+              "Giải"
+            ]
+          },
+          {
+            "label": "d=24\\ cm=24 10^{-2}\\ m=0{,}24\\ m",
+            "anyOf": [
+              "d=24\\ cm=24 10^{-2}\\ m=0{,}24\\ m"
+            ]
+          },
+          {
+            "label": "E={U}{d}={48}{24 10^{-2}}=200\\ V/m",
+            "anyOf": [
+              "E={U}{d}={48}{24 10^{-2}}=200\\ V/m"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Nội dung chính là mô hình nguyên nhân gây ra điện trở trong kim loại, bao gồm sự chuyển động của electron tự do và ảnh hưởng của nhiệt độ cũng như các nguyên tử tạp chất.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Giải",
+          "d=24\\ cm=24 10^{-2}\\ m=0{,}24\\ m",
+          "E={U}{d}={48}{24 10^{-2}}=200\\ V/m"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C04_L23_021",
+        "GENCLN_PHY_G11_sgkvatli11_chuong4_bai23_sgkvatli_11_a07c69c6_S021_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 1708,
+        "latencyMs": 2398
+      },
+      "judge_scores": {
+        "correctness": 2,
+        "groundedness": 3,
+        "completeness": 2,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 2.35,
+      "judge_reason": "Câu trả lời đề cập đến nội dung chính liên quan đến điện trở trong kim loại, nhưng không liên quan đến câu hỏi về nội dung chính trong mục Giải. Thông tin không phù hợp với ngữ cảnh yêu cầu.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_008",
+      "question": "Nêu công thức hoặc quan hệ chính được trình bày trong mục Biểu thức dòng điện xoay chiều.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Nếu nối hai đầu của khung dây dẫn $MNPQ$ với đoạn mạch tiêu thụ điện thì giữa hai đầu đoạn mạch có một hiệu điện thế. Hiệu điện thế này biến thiên theo thời gian theo quy luật dạng cosin hoặc sin, gọi là **hiệu điện thế xoay chiều** hay **điện áp xoay chiều**. Điện áp xoay chiều có cùng chu kì, tần số với suất điện động xoay chiều và có dạng: $$ u=U_0\\cos(\\omega t+\\varphi_u) \\tag{17.2} $$ Khi đó, dòng điện chạy qua mạch điện tiêu thụ là dòng điện xoay chiều có dạng: $$ i=I_0\\cos(\\omega t+\\var...",
+        "required_concepts": [
+          {
+            "label": "hiệu điện thế xoay chiều",
+            "anyOf": [
+              "hiệu điện thế xoay chiều"
+            ]
+          },
+          {
+            "label": "điện áp xoay chiều",
+            "anyOf": [
+              "điện áp xoay chiều"
+            ]
+          },
+          {
+            "label": "dòng điện xoay chiều",
+            "anyOf": [
+              "dòng điện xoay chiều"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Biểu thức dòng điện xoay chiều được mô tả bằng công thức: i = I_0 cos(ωt + φ_i), trong đó I_0 là giá trị cực đại của cường độ dòng điện, ω là tần số góc, t là thời gian, và φ_i là pha ban đầu của dòng điện. Mối liên hệ giữa giá trị hiệu dụng và giá trị cực đại của dòng điện xoay chiều là: I = I_0 / √2.\ni = I_0 cos(ωt + φ_i)\nI = I_0 / √2",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "dòng điện xoay chiều"
+        ],
+        "missingConcepts": [
+          "hiệu điện thế xoay chiều",
+          "điện áp xoay chiều"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong3_bai17_sgkvatli12_aecd69de_S007_P01",
+        "GENCLN_PHY_G12_sgkvatli12_chuong3_bai17_sgkvatli12_aecd69de_S025_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2882,
+        "latencyMs": 3772
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 4,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.55,
+      "judge_reason": "Câu trả lời đúng và dựa vào thông tin trong CONTEXT, tuy nhiên không đề cập đến điện áp xoay chiều.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_009",
+      "question": "Trình bày ý chính của mục Hiện tượng siêu dẫn.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Hiện tượng siêu dẫn là hiện tượng một số kim loại và hợp kim khi nhiệt độ thấp hơn một nhiệt độ tới hạn $T_c$ thì điện trở của nó đột ngột giảm xuống bằng $0$. Khi vật dẫn ở trạng thái siêu dẫn, điện trở gần bằng $0$. Vì vậy, nếu trong một vòng dây siêu dẫn có dòng điện chạy qua thì dòng điện này có thể duy trì rất lâu sau khi bỏ nguồn điện. Các vật liệu siêu dẫn có nhiều ứng dụng trong thực tế. Người ta chế tạo nam châm điện có cuộn dây bằng vật liệu siêu dẫn để tạo ra từ trường mạnh trong t...",
+        "required_concepts": [
+          {
+            "label": "Hiện tượng siêu dẫn",
+            "anyOf": [
+              "Hiện tượng siêu dẫn"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Hiện tượng siêu dẫn là hiện tượng một số kim loại và hợp kim khi nhiệt độ thấp hơn một nhiệt độ tới hạn $T_c$ thì điện trở của nó đột ngột giảm xuống bằng $0$. Khi ở trạng thái siêu dẫn, dòng điện có thể duy trì lâu dài mà không hao phí năng lượng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "Hiện tượng siêu dẫn"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G11_sgkvatli11_chuong4_bai23_sgkvatli_11_a07c69c6_S044_P01",
+        "TH_PHY11_C04_L23_043"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 1813,
+        "latencyMs": 2480
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 4,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.55,
+      "judge_reason": "Câu trả lời đúng và dựa vào thông tin trong CONTEXT, tuy nhiên thiếu một số chi tiết về ứng dụng của vật liệu siêu dẫn.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_010",
+      "question": "Theo học liệu, Đặc điểm của sóng dừng là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Sóng dừng được tạo thành mỗi khi có hai sóng cùng biên độ, cùng bước sóng lan truyền theo hai hướng ngược nhau. Hai sóng này gặp nhau, giao thoa nhau tạo nên sóng tổng hợp là **sóng dừng**. Những điểm tại đó hai sóng ngược pha nhau thì không dao động và được gọi là **nút sóng**. Những điểm tại đó hai sóng đồng pha với nhau thì dao động với biên độ cực đại và được gọi là **bụng sóng** như Hình 13.2. Trong thực tế, ta thường gặp một trong hai sóng là sóng phản xạ của sóng kia. Sóng dừng là tổng...",
+        "required_concepts": [
+          {
+            "label": "sóng dừng",
+            "anyOf": [
+              "sóng dừng"
+            ]
+          },
+          {
+            "label": "nút sóng",
+            "anyOf": [
+              "nút sóng"
+            ]
+          },
+          {
+            "label": "bụng sóng",
+            "anyOf": [
+              "bụng sóng"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Sóng dừng là sóng tổng hợp được tạo ra khi hai sóng cùng biên độ, cùng bước sóng lan truyền theo hai hướng ngược nhau. Trong sóng dừng, có những điểm không dao động gọi là nút sóng và những điểm dao động với biên độ cực đại gọi là bụng sóng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "sóng dừng",
+          "nút sóng",
+          "bụng sóng"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G11_sgkvatli11_chuong2_bai13_sgkvatli_11_8f5ae072_S007_P01",
+        "TH_PHY11_C02_L13_006"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2809,
+        "latencyMs": 2367
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 5,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.75,
+      "judge_reason": "Câu trả lời đúng và dựa hoàn toàn vào thông tin trong CONTEXT. Nó nêu rõ định nghĩa về sóng dừng, nút sóng và bụng sóng một cách chính xác.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_011",
+      "question": "Trong mục Phương trình Clapeyron, bài hoặc công thức đang yêu cầu xác định đại lượng nào và dựa trên quan hệ nào?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Có thể xác định được độ lớn của hằng số trong phương trình trạng thái của một lượng $n$ mol khí xác định. Số mol khí được xác định bởi: $$ n=\\frac{m}{M} $$ Trong đó: * $m$ là khối lượng khí. * $M$ là khối lượng mol của lượng khí. Trước hết, cần xác định độ lớn của hằng số này đối với $1$ mol khí. Ở điều kiện tiêu chuẩn, một mol của bất kì khí nào đều có: * Thể tích: $$ V=22{,}4\\cdot10^{-3}\\text{ m}^3 $$ * Áp suất: $$ p=1{,}013\\cdot10^5\\text{ Pa} $$ * Nhiệt độ: $$ T=273\\text{ K} $$ Do đó, đối...",
+        "required_concepts": [
+          {
+            "label": "hằng số khí lí tưởng",
+            "anyOf": [
+              "hằng số khí lí tưởng"
+            ]
+          },
+          {
+            "label": "phương trình trạng thái của một lượng n mol khí lí tưởng",
+            "anyOf": [
+              "phương trình trạng thái của một lượng n mol khí lí tưởng"
+            ]
+          },
+          {
+            "label": "phương trình trạng thái của khí lí tưởng",
+            "anyOf": [
+              "phương trình trạng thái của khí lí tưởng"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Phương trình Clapeyron mô tả mối quan hệ giữa áp suất (p), thể tích (V) và nhiệt độ (T) của một lượng khí lí tưởng. Công thức là: pV = nRT, trong đó n là số mol khí và R là hằng số khí lí tưởng. Ý nghĩa của phương trình này là nó cho phép xác định trạng thái của khí trong các điều kiện khác nhau.\nXác định áp suất p, thể tích V, nhiệt độ T của khí.\nSử dụng công thức pV = nRT để tính toán.\npV = nRT\nN/A",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "hằng số khí lí tưởng"
+        ],
+        "missingConcepts": [
+          "phương trình trạng thái của một lượng n mol khí lí tưởng",
+          "phương trình trạng thái của khí lí tưởng"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong2_bai12_sgkvatli12_34694ce1_S006_P01",
+        "GENCLN_PHY_G12_sgkvatli12_chuong2_bai11_sgkvatli12_52004a8e_S009_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2996,
+        "latencyMs": 3678
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.6,
+      "judge_reason": "Câu trả lời đúng về phương trình Clapeyron và các đại lượng liên quan, nhưng không hoàn toàn dựa vào CONTEXT được cung cấp. Câu trả lời thiếu thông tin về cách xác định hằng số khí lý tưởng và không đề cập đến điều kiện tiêu chuẩn.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_012",
+      "question": "Mô tả hiện tượng hoặc thí nghiệm được nêu trong mục Quy tắc an toàn trong phòng thực hành.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Để đảm bảo an toàn trong phòng thực hành, cần thực hiện các quy tắc sau: * Đọc kĩ hướng dẫn sử dụng thiết bị và quan sát các chỉ dẫn, các kí hiệu trên các thiết bị thí nghiệm. * Kiểm tra cẩn thận thiết bị, phương tiện, dụng cụ thí nghiệm trước khi sử dụng. * Chỉ tiến hành thí nghiệm khi được sự cho phép của giáo viên hướng dẫn thí nghiệm. * Tắt công tắc nguồn thiết bị điện trước khi cắm hoặc tháo thiết bị điện. * Chỉ cắm phích, giắc cắm của thiết bị điện vào ổ cắm khi hiệu điện thế của nguồn...",
+        "required_concepts": [
+          {
+            "label": "Quy tắc an toàn trong phòng thực hành",
+            "anyOf": [
+              "Quy tắc an toàn trong phòng thực hành"
+            ]
+          },
+          {
+            "label": "Để đảm bảo an toàn trong phòng thực hành",
+            "anyOf": [
+              "Để đảm bảo an toàn trong phòng thực hành"
+            ]
+          },
+          {
+            "label": "cần thực hiện các quy tắc sau",
+            "anyOf": [
+              "cần thực hiện các quy tắc sau"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Quy tắc an toàn trong phòng thực hành bao gồm việc đọc kĩ hướng dẫn sử dụng thiết bị, kiểm tra thiết bị trước khi sử dụng, chỉ tiến hành thí nghiệm khi có sự cho phép của giáo viên, và đảm bảo không có nguy cơ cháy nổ hay tiếp xúc với các vật nóng mà không có dụng cụ bảo hộ. Điều này giúp bảo vệ người sử dụng và thiết bị thí nghiệm.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "Quy tắc an toàn trong phòng thực hành"
+        ],
+        "missingConcepts": [
+          "Để đảm bảo an toàn trong phòng thực hành",
+          "cần thực hiện các quy tắc sau"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong1_bai2_sgkvatli10_5e318891_S024_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2147,
+        "latencyMs": 2284
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 4,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.9000000000000004,
+      "judge_reason": "Câu trả lời đúng và dựa vào thông tin trong CONTEXT, tuy nhiên không đầy đủ chi tiết như trong câu trả lời tham khảo.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_013",
+      "question": "So sánh các khái niệm hoặc đại lượng chính được nêu trong mục Phản ứng tổng hợp hạt nhân.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "**Phản ứng tổng hợp hạt nhân** là phản ứng hạt nhân trong đó hai hay nhiều hạt nhân nhẹ tổng hợp lại thành một hạt nhân nặng hơn. Từ đồ thị Hình 22.5, có thể thấy quá trình các hạt nhân nhẹ, ứng với đoạn đồ thị $MN$, tổng hợp thành hạt nhân có số khối nặng hơn, ứng với đoạn đồ thị $NT$, sẽ thu được hạt nhân bền vững hơn vì hạt nhân đó có năng lượng liên kết riêng lớn hơn. Vào năm 1927, **Oliphant** đã dùng máy gia tốc để các hạt nhân hydrogen tương tác với nhau, tạo ra phản ứng tổng hợp hạt n...",
+        "required_concepts": [
+          {
+            "label": "Phản ứng tổng hợp hạt nhân",
+            "anyOf": [
+              "Phản ứng tổng hợp hạt nhân"
+            ]
+          },
+          {
+            "label": "Oliphant",
+            "anyOf": [
+              "Oliphant"
+            ]
+          },
+          {
+            "label": "phản ứng nhiệt hạch",
+            "anyOf": [
+              "phản ứng nhiệt hạch"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Phản ứng tổng hợp hạt nhân là quá trình hai hay nhiều hạt nhân nhẹ kết hợp thành một hạt nhân nặng hơn, trong khi phản ứng phân hạch là quá trình một hạt nhân nặng vỡ thành hai hoặc nhiều hạt nhân nhẹ hơn. Điều kiện để phản ứng tổng hợp xảy ra là cần nhiệt độ cao (khoảng 10^7 đến 10^8 K) để vượt qua lực đẩy tĩnh điện giữa các hạt nhân. Phản ứng tổng hợp thường tỏa năng lượng lớn hơn so với phản ứng phân hạch do sự hình thành hạt nhân bền vững hơn.\nXác định khái niệm phản ứng tổng hợp hạt nhân và phân hạch.\nSo sánh nhiên liệu và điều kiện xảy ra của hai loại phản ứng.\nNêu rõ sự khác biệt về năng lượng tỏa ra.\nKhám phá các tham số dao động điều hòa trong mô phỏng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "Phản ứng tổng hợp hạt nhân"
+        ],
+        "missingConcepts": [
+          "Oliphant",
+          "phản ứng nhiệt hạch"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong4_bai22_sgkvatli12_f183c801_S033_P01",
+        "GENCLN_PHY_G12_sgkvatli12_chuong4_bai22_sgkvatli12_f183c801_S031_P01",
+        "GENCLN_PHY_G12_sgkvatli12_chuong4_bai22_sgkvatli12_f183c801_S034_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2779,
+        "latencyMs": 3904
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 4,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.8000000000000003,
+      "judge_reason": "Câu trả lời đúng về khái niệm phản ứng tổng hợp hạt nhân và phản ứng phân hạch, cũng như điều kiện xảy ra của phản ứng tổng hợp. Tuy nhiên, không có trích dẫn cụ thể từ CONTEXT.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_014",
+      "question": "Nêu công thức hoặc quan hệ chính được trình bày trong mục a) Thang nhiệt độ Celsius.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Thang nhiệt độ chúng ta vẫn dùng hằng ngày là **thang Celsius**. Hai nhiệt độ dùng làm mốc của thang này là: * Nhiệt độ đóng băng của nước tinh khiết. * Nhiệt độ sôi của nước tinh khiết. Các mốc nhiệt độ này được xác định ở áp suất tiêu chuẩn. Khoảng cách giữa hai nhiệt độ này được chia thành $100$ phần bằng nhau, mỗi phần là $1$ độ. Vì được chia thành $100$ phần bằng nhau nên ban đầu thang nhiệt độ này được gọi là **thang nhiệt độ bách phân**. Năm 1948, Hội đồng quốc tế về trọng lượng và đo...",
+        "required_concepts": [
+          {
+            "label": "thang Celsius",
+            "anyOf": [
+              "thang Celsius"
+            ]
+          },
+          {
+            "label": "thang nhiệt độ bách phân",
+            "anyOf": [
+              "thang nhiệt độ bách phân"
+            ]
+          },
+          {
+            "label": "thang nhiệt độ Celsius",
+            "anyOf": [
+              "thang nhiệt độ Celsius"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Công thức chuyển đổi từ thang Celsius sang thang Kelvin là: T(K) = t(°C) + 273.\nT(K) = t(°C) + 273",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "thang Celsius"
+        ],
+        "missingConcepts": [
+          "thang nhiệt độ bách phân",
+          "thang nhiệt độ Celsius"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong1_bai3_sgkvatli12_df06bfb6_S025_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2495,
+        "latencyMs": 1872
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 5,
+        "completeness": 2,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.25,
+      "judge_reason": "Câu trả lời cung cấp công thức chuyển đổi từ thang Celsius sang thang Kelvin, điều này là chính xác và có trong CONTEXT. Tuy nhiên, câu trả lời không đề cập đến các mốc nhiệt độ của thang Celsius như yêu cầu trong câu hỏi, do đó không hoàn toàn đầy đủ.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_PHYS_015",
+      "question": "Trình bày ý chính của mục a) Khái niệm áp lực.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Một cuốn sách nằm yên trên mặt bàn nằm ngang chịu tác dụng của hai lực cân bằng: - Lực hút của Trái Đất. - Lực đẩy của mặt bàn. Do mặt bàn tác dụng lên cuốn sách lực \\(\\vec{F}\\) có: - Phương thẳng đứng. - Chiều hướng lên trên. - Độ lớn bằng trọng lượng \\(P\\) của cuốn sách. Nên theo định luật III Newton, cuốn sách tác dụng lên mặt bàn lực \\(\\vec{F}_N\\) có: - Phương thẳng đứng. - Chiều hướng xuống dưới. - Độ lớn bằng \\(F\\). Lực \\(\\vec{F}_N\\) ép lên mặt bàn theo phương vuông góc với mặt bàn, đượ...",
+        "required_concepts": [
+          {
+            "label": "áp lực",
+            "anyOf": [
+              "áp lực"
+            ]
+          },
+          {
+            "label": "a) Khái niệm áp lực",
+            "anyOf": [
+              "a) Khái niệm áp lực"
+            ]
+          },
+          {
+            "label": "Một cuốn sách nằm yên trên mặt bàn nằm ngang chịu tác dụng của hai lực cân bằng",
+            "anyOf": [
+              "Một cuốn sách nằm yên trên mặt bàn nằm ngang chịu tác dụng của hai lực cân bằng"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Áp lực là lực tác dụng lên một đơn vị diện tích. Nó có ý nghĩa trong việc xác định cách mà lực phân bố trên bề mặt tiếp xúc. Ví dụ, khi một vật nặng đứng trên mặt đất, áp lực mà nó tạo ra lên mặt đất sẽ phụ thuộc vào trọng lượng của nó và diện tích tiếp xúc với mặt đất.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "áp lực"
+        ],
+        "missingConcepts": [
+          "a) Khái niệm áp lực",
+          "Một cuốn sách nằm yên trên mặt bàn nằm ngang chịu tác dụng của hai lực cân bằng"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [],
+      "confidence": "medium",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2071,
+        "latencyMs": 2424
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 3,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.35,
+      "judge_reason": "Câu trả lời đúng về khái niệm áp lực nhưng không hoàn toàn dựa vào CONTEXT được cung cấp. Nó thiếu thông tin cụ thể về ví dụ cuốn sách nằm yên trên mặt bàn và không đề cập đến lực cân bằng như trong CONTEXT.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_001",
+      "question": "Theo học liệu, HỆ THỐNG HOÁ KIẾN THỨC là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "| Nội dung | Amine | Amino acid | Peptide | Protein | | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------...",
+        "required_concepts": [
+          {
+            "label": "HỆ THỐNG HOÁ KIẾN THỨC",
+            "anyOf": [
+              "HỆ THỐNG HOÁ KIẾN THỨC"
+            ]
+          },
+          {
+            "label": "Nội dung Amine Amino acid Peptide Protein",
+            "anyOf": [
+              "Nội dung Amine Amino acid Peptide Protein"
+            ]
+          },
+          {
+            "label": "Khái niệm Dẫn xuất của ammonia",
+            "anyOf": [
+              "Khái niệm Dẫn xuất của ammonia"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Hệ thống hóa kiến thức là quá trình tổ chức và liên kết các thông tin, khái niệm trong một lĩnh vực học tập để tạo thành một bức tranh tổng thể, giúp người học hiểu rõ hơn về mối quan hệ giữa các phần kiến thức. Ý nghĩa vật lý của nó là giúp học sinh nắm vững các khái niệm và ứng dụng trong thực tiễn, từ đó phát triển tư duy phản biện và khả năng giải quyết vấn đề. Ví dụ, trong hóa học, việc hệ thống hóa kiến thức về các loại phản ứng hóa học giúp học sinh dễ dàng nhận biết và áp dụng chúng trong các bài tập thực hành.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "HỆ THỐNG HOÁ KIẾN THỨC"
+        ],
+        "missingConcepts": [
+          "Nội dung Amine Amino acid Peptide Protein",
+          "Khái niệm Dẫn xuất của ammonia"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [],
+      "confidence": "low",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2398,
+        "latencyMs": 2619
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 1,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 2.45,
+      "judge_reason": "Câu trả lời đưa ra một định nghĩa về hệ thống hóa kiến thức nhưng không dựa vào CONTEXT được cung cấp, do đó groundedness thấp. Nội dung có thể đúng nhưng không hoàn toàn chính xác với yêu cầu của câu hỏi.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_002",
+      "question": "Nêu công thức hoặc quan hệ chính được trình bày trong mục Một số vật liệu polymer phổ biến.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "| Vật liệu polymer | Thành phần, nguồn gốc | Tính chất | | --------------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- | | PE | Trùng hợp ethylene | Có tính dẻo | | PP | Trùng hợp propylene | Có tính dẻo | | PVC | Trùng hợp vinyl chloride | Có tính dẻo | | PS | Trùng hợp styrene | Có tính dẻo | | Poly(methyl methacrylate) | Trùng hợp methyl methacrylate | Có tí...",
+        "required_concepts": [
+          {
+            "label": "Một số vật liệu polymer phổ biến",
+            "anyOf": [
+              "Một số vật liệu polymer phổ biến"
+            ]
+          },
+          {
+            "label": "Vật liệu polymer Thành phần",
+            "anyOf": [
+              "Vật liệu polymer Thành phần"
+            ]
+          },
+          {
+            "label": "nguồn gốc Tính chất",
+            "anyOf": [
+              "nguồn gốc Tính chất"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Chưa đủ dữ kiện.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Một số vật liệu polymer phổ biến",
+          "Vật liệu polymer Thành phần",
+          "nguồn gốc Tính chất"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [],
+      "confidence": "low",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2654,
+        "latencyMs": 1368
+      },
+      "judge_scores": {
+        "correctness": 1,
+        "groundedness": 1,
+        "completeness": 1,
+        "clarity": 2,
+        "citationUsage": 0
+      },
+      "final_answer_score": 1.05,
+      "judge_reason": "Câu trả lời chỉ nêu rằng chưa đủ dữ kiện mà không cung cấp thông tin cụ thể nào về các vật liệu polymer, thành phần, nguồn gốc hay tính chất của chúng như yêu cầu trong câu hỏi.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_003",
+      "question": "Trình bày ý chính của mục KHÁI NIỆM, ĐẶC ĐIỂM CẤU TẠO CỦA XÀ PHÒNG VÀ CHẤT GIẶT RỬA.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Xà phòng là hỗn hợp muối sodium hoặc potassium của các acid béo và các chất phụ gia. Thành phần chủ yếu của xà phòng thường là muối sodium của palmitic acid hoặc stearic acid. Chất giặt rửa tổng hợp là các chất được tổng hợp hoá học, có tác dụng giặt rửa như xà phòng nhưng không phải là muối sodium, potassium của các acid béo. Những chất này thường là muối sodium alkylsulfate hoặc alkylbenzene sulfonate. Ngoài ra, một số sản phẩm từ thiên nhiên cũng có tác dụng giặt rửa như nước quả bồ kết, q...",
+        "required_concepts": [
+          {
+            "label": "KHÁI NIỆM, ĐẶC ĐIỂM CẤU TẠO CỦA XÀ PHÒNG VÀ CHẤT GIẶT RỬA",
+            "anyOf": [
+              "KHÁI NIỆM, ĐẶC ĐIỂM CẤU TẠO CỦA XÀ PHÒNG VÀ CHẤT GIẶT RỬA"
+            ]
+          },
+          {
+            "label": "Xà phòng là hỗn hợp muối sodium hoặc potassium của các acid béo và các chất phụ gia",
+            "anyOf": [
+              "Xà phòng là hỗn hợp muối sodium hoặc potassium của các acid béo và các chất phụ gia"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Xà phòng là muối của acid béo, có khả năng hòa tan trong nước và giúp làm sạch bằng cách giảm sức căng bề mặt nước. Chất giặt rửa tổng hợp là các hợp chất hữu cơ tổng hợp, có cấu trúc tương tự xà phòng nhưng hiệu quả hơn trong việc làm sạch và có khả năng hoạt động trong nước cứng. Xà phòng thường có cấu trúc đơn giản hơn, trong khi chất giặt rửa tổng hợp có thể có nhiều nhóm chức và cấu trúc phức tạp hơn.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "KHÁI NIỆM, ĐẶC ĐIỂM CẤU TẠO CỦA XÀ PHÒNG VÀ CHẤT GIẶT RỬA",
+          "Xà phòng là hỗn hợp muối sodium hoặc potassium của các acid béo và các chất phụ gia"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong1_bai2_sgkhoahoc12_6f1d2bc6_S001_P01",
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong1_bai2_sgkhoahoc12_6f1d2bc6_S004_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 3000,
+        "latencyMs": 3536
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 4,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.8000000000000003,
+      "judge_reason": "Câu trả lời trình bày đúng khái niệm và đặc điểm cấu tạo của xà phòng và chất giặt rửa tổng hợp, tuy nhiên không hoàn toàn dựa vào CONTEXT được cung cấp.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_004",
+      "question": "So sánh các khái niệm hoặc đại lượng chính được nêu trong mục Thế điện cực chuẩn.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "| Nguyên tố | Bán phản ứng | Thế điện cực chuẩn E°, V | | --------- | --------------------- | -----------------------: | | Li | Li⁺ + 1e ⇌ Li | -3,040 | | K | K⁺ + 1e ⇌ K | -2,924 | | Ba | Ba²⁺ + 2e ⇌ Ba | -2,92 | | Ca | Ca²⁺ + 2e ⇌ Ca | -2,84 | | Na | Na⁺ + 1e ⇌ Na | -2,713 | | Mg | Mg²⁺ + 2e ⇌ Mg | -2,356 | | Al | Al³⁺ + 3e ⇌ Al | -1,676 | | Zn | Zn²⁺ + 2e ⇌ Zn | -0,762 | | Cr | Cr³⁺ + 3e ⇌ Cr | -0,74 | | Fe | Fe²⁺ + 2e ⇌ Fe | -0,44 | | H₂ | 2H₂O + 2e ⇌ H₂ + 2OH⁻ | -0,414 | | Cd | Cd²⁺ + 2e...",
+        "required_concepts": [
+          {
+            "label": "Thế điện cực chuẩn",
+            "anyOf": [
+              "Thế điện cực chuẩn"
+            ]
+          },
+          {
+            "label": "Nguyên tố Bán phản ứng Thế điện cực chuẩn E°",
+            "anyOf": [
+              "Nguyên tố Bán phản ứng Thế điện cực chuẩn E°"
+            ]
+          },
+          {
+            "label": "Li Li⁺ + 1e ⇌ Li",
+            "anyOf": [
+              "Li Li⁺ + 1e ⇌ Li"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Thế điện cực chuẩn (E°) là đại lượng đánh giá khả năng khử và oxi hoá của các cặp oxi hoá – khử ở điều kiện chuẩn. Nó được xác định bằng cách quy ước thế điện cực chuẩn của hydro là 0 V. Các giá trị E° cho biết tính khử và tính oxi hoá của các ion trong phản ứng điện hóa. Ví dụ, E°Cu²⁺/Cu = +0,340 V cho thấy Cu²⁺ có tính oxi hoá yếu hơn Ag⁺ với E°Ag⁺/Ag = +0,799 V.\nThế điện cực chuẩn là đại lượng đánh giá khả năng khử và oxi hoá.\nGiá trị E° cho biết tính khử và oxi hoá của các cặp oxi hoá – khử.\nQuy ước thế điện cực chuẩn của hydro là 0 V.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "Thế điện cực chuẩn"
+        ],
+        "missingConcepts": [
+          "Nguyên tố Bán phản ứng Thế điện cực chuẩn E°",
+          "Li Li⁺ + 1e ⇌ Li"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong5_bai15_sgkhoahoc12_c9b589b8_S009_P01",
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong5_bai15_sgkhoahoc12_c9b589b8_S012_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2628,
+        "latencyMs": 4193
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 4,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.2,
+      "judge_reason": "Câu trả lời đúng về khái niệm thế điện cực chuẩn và cách xác định nó, nhưng không cung cấp thông tin cụ thể về các nguyên tố và giá trị thế điện cực chuẩn như trong yêu cầu. Một số thông tin về E° của Cu²⁺/Cu và Ag⁺/Ag là không có trong context.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_005",
+      "question": "Bỏ qua các từ gây nhiễu như dao động, acid, phương trình bậc hai; theo đúng mục Viết cấu hình electron của nguyên tử, nội dung chính là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "**Bước 1.** Xác định số electron trong nguyên tử. **Bước 2.** Viết thứ tự các lớp và phân lớp electron theo chiều tăng của năng lượng: ```text 1s 2s 2p 3s 3p 4s ... ```` **Bước 3.** Điền các electron vào các phân lớp theo nguyên lí vững bền cho đến electron cuối cùng. Ví dụ: Viết cấu hình electron của nguyên tử oxygen `(Z = 8)` và potassium `(Z = 19)`. Nguyên tử oxygen có tổng số electron là 8. Thứ tự các lớp và phân lớp electron đến phân lớp `4s` theo chiều tăng của năng lượng là: ```text 1s...",
+        "required_concepts": [
+          {
+            "label": "Bước 1.",
+            "anyOf": [
+              "Bước 1."
+            ]
+          },
+          {
+            "label": "Bước 2.",
+            "anyOf": [
+              "Bước 2."
+            ]
+          },
+          {
+            "label": "Bước 3.",
+            "anyOf": [
+              "Bước 3."
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Cấu hình electron của nguyên tử biểu diễn sự phân bố electron trên các phân lớp thuộc các lớp khác nhau, cho biết số lớp electron, thứ tự phân lớp, số electron trong mỗi lớp và phân lớp.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Bước 1.",
+          "Bước 2.",
+          "Bước 3."
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong1_bai3_sgkhoahoc10_54de3f11_S013_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2588,
+        "latencyMs": 2298
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 5,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.85,
+      "judge_reason": "Câu trả lời đúng về nội dung chính của cấu hình electron, nhưng chưa đầy đủ các bước cụ thể để viết cấu hình electron như trong câu trả lời mong đợi.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_006",
+      "question": "Theo học liệu, Khái niệm và đặc điểm cấu tạo là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Insulin, một loại hormone thuộc loại protein, được sản sinh bởi tuyến tụy, có chức năng điều hoà quá trình chuyển hoá glucose trong cơ thể. Insulin thúc đẩy sự hấp thu glucose của các tế bào và dự trữ glucose dư thừa trong gan và cơ. Insulin có cấu tạo được mô tả trong Hình 10.1. Hãy nhận xét về thành phần cấu tạo và phân tử khối của insulin. 📷 **Hình 10.1.** Cấu tạo của insulin. Protein là hợp chất cao phân tử được cấu tạo từ một hay nhiều chuỗi polypeptide. Mỗi chuỗi polypeptide gồm các đơ...",
+        "required_concepts": [
+          {
+            "label": "Khái niệm và đặc điểm cấu tạo",
+            "anyOf": [
+              "Khái niệm và đặc điểm cấu tạo"
+            ]
+          },
+          {
+            "label": "một loại hormone thuộc loại protein",
+            "anyOf": [
+              "một loại hormone thuộc loại protein"
+            ]
+          },
+          {
+            "label": "được sản sinh bởi tuyến tụy",
+            "anyOf": [
+              "được sản sinh bởi tuyến tụy"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Khái niệm là định nghĩa về một đối tượng hay hiện tượng nào đó, trong khi đặc điểm cấu tạo là những yếu tố cấu thành và hình thức của đối tượng đó. Ví dụ, amino acid là hợp chất hữu cơ tạp chức, có nhóm amino (-NH₂) và nhóm carboxyl (-COOH).",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Khái niệm và đặc điểm cấu tạo",
+          "một loại hormone thuộc loại protein",
+          "được sản sinh bởi tuyến tụy"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong3_bai9_sgkhoahoc12_f4bd23ac_S003_P01",
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong3_bai9_sgkhoahoc12_f4bd23ac_S002_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 3067,
+        "latencyMs": 2676
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 3,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 2.95,
+      "judge_reason": "Câu trả lời đưa ra khái niệm và đặc điểm cấu tạo một cách tổng quát, nhưng không cụ thể cho protein như trong CONTEXT. Ví dụ về amino acid là hợp lý nhưng không hoàn toàn liên quan đến protein.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_007",
+      "question": "Nêu công thức hoặc quan hệ chính được trình bày trong mục HỆ THỐNG HOÁ KIẾN THỨC.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Hoàn thành sơ đồ hệ thống hoá kiến thức sau: ```text NGUYÊN TỬ ├── Hạt nhân │ ├── Hạt proton │ │ ├── Khối lượng = ...?... │ │ └── Điện tích = ...?... │ └── Hạt neutron │ ├── Khối lượng = ...?... │ └── Điện tích = ...?... │ ├── Vỏ nguyên tử │ └── Hạt electron │ ├── Khối lượng = ...?... │ └── Điện tích = ...?... │ ├── Kích thước: ...?... ├── Khối lượng: ...?... └── Z = ...?... = ...?... ```` ```text NGUYÊN TỐ HOÁ HỌC Số khối (A) = ...?... + ...?... Kí hiệu nguyên tử: A X Z ``` ```text CẤU TRÚC...",
+        "required_concepts": [
+          {
+            "label": "HỆ THỐNG HOÁ KIẾN THỨC",
+            "anyOf": [
+              "HỆ THỐNG HOÁ KIẾN THỨC"
+            ]
+          },
+          {
+            "label": "Hoàn thành sơ đồ hệ thống hoá kiến thức sau",
+            "anyOf": [
+              "Hoàn thành sơ đồ hệ thống hoá kiến thức sau"
+            ]
+          },
+          {
+            "label": "text NGUYÊN TỬ ├── Hạt nhân │ ├── Hạt proton │ │ ├── Khối lượng = ...?..",
+            "anyOf": [
+              "text NGUYÊN TỬ ├── Hạt nhân │ ├── Hạt proton │ │ ├── Khối lượng = ...?.."
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Chưa đủ dữ liệu.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "HỆ THỐNG HOÁ KIẾN THỨC",
+          "Hoàn thành sơ đồ hệ thống hoá kiến thức sau",
+          "text NGUYÊN TỬ ├── Hạt nhân │ ├── Hạt proton │ │ ├── Khối lượng = ...?.."
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [],
+      "confidence": "low",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2317,
+        "latencyMs": 1628
+      },
+      "judge_scores": {
+        "correctness": 1,
+        "groundedness": 1,
+        "completeness": 1,
+        "clarity": 2,
+        "citationUsage": 0
+      },
+      "final_answer_score": 1.05,
+      "judge_reason": "Câu trả lời không cung cấp thông tin cụ thể về công thức hoặc quan hệ chính trong mục HỆ THỐNG HOÁ KIẾN THỨC, chỉ nêu rằng chưa đủ dữ liệu.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_008",
+      "question": "Trình bày ý chính của mục a) Khái niệm.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Hãy nhận xét đặc điểm chung về cấu tạo của các amino acid dưới đây: 📷 **Hình 9.1.** Cấu tạo, tên thông thường, kí hiệu của một số amino acid: glycine (Gly), alanine (Ala), valine (Val), lysine (Lys), glutamic acid (Glu). Amino acid là hợp chất hữu cơ tạp chức, trong phân tử chứa đồng thời nhóm amino (-NH₂) và nhóm carboxyl (-COOH). Các amino acid thiên nhiên hầu hết là α-amino acid, có công thức chung dạng: ```text H₂N-CH(R)-COOH ``` Trong đó, chỉ có khoảng 20 amino acid cấu thành nên phần l...",
+        "required_concepts": [
+          {
+            "label": "a) Khái niệm",
+            "anyOf": [
+              "a) Khái niệm"
+            ]
+          },
+          {
+            "label": "Hãy nhận xét đặc điểm chung về cấu tạo của các amino acid dưới đây",
+            "anyOf": [
+              "Hãy nhận xét đặc điểm chung về cấu tạo của các amino acid dưới đây"
+            ]
+          },
+          {
+            "label": "📷 Hình 9.1. Cấu tạo",
+            "anyOf": [
+              "📷 Hình 9.1. Cấu tạo"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Chưa đủ dữ liệu.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "a) Khái niệm",
+          "Hãy nhận xét đặc điểm chung về cấu tạo của các amino acid dưới đây",
+          "📷 Hình 9.1. Cấu tạo"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [],
+      "confidence": "low",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2640,
+        "latencyMs": 1475
+      },
+      "judge_scores": {
+        "correctness": 1,
+        "groundedness": 1,
+        "completeness": 1,
+        "clarity": 2,
+        "citationUsage": 0
+      },
+      "final_answer_score": 1.05,
+      "judge_reason": "Câu trả lời không cung cấp thông tin cụ thể về khái niệm mà chỉ nói rằng chưa đủ dữ liệu, điều này không đáp ứng yêu cầu của câu hỏi.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_009",
+      "question": "Mô tả hiện tượng hoặc thí nghiệm được nêu trong mục Thí nghiệm: Phản ứng của nhóm amine.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "**Chuẩn bị:** * **Hoá chất:** dung dịch methylamine 0,1 M, dung dịch HCl 0,1 M, dung dịch FeCl₃ 0,1 M, dung dịch CuSO₄ 0,1 M, giấy pH/giấy quỳ tím, phenolphthalein. * **Dụng cụ:** ống nghiệm, mặt kính đồng hồ. **Tiến hành:** **1. Phản ứng với chất chỉ thị** * Nhỏ một giọt dung dịch methylamine 0,1 M lên mẫu giấy pH hoặc giấy quỳ tím đặt trên mặt kính đồng hồ. * Quan sát và mô tả sự thay đổi màu sắc của giấy pH. **2. Phản ứng với dung dịch acid** * Cho 2 mL dung dịch methylamine 0,1 M vào ống...",
+        "required_concepts": [
+          {
+            "label": "Chuẩn bị:",
+            "anyOf": [
+              "Chuẩn bị:"
+            ]
+          },
+          {
+            "label": "Hoá chất:",
+            "anyOf": [
+              "Hoá chất:"
+            ]
+          },
+          {
+            "label": "Dụng cụ:",
+            "anyOf": [
+              "Dụng cụ:"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Thí nghiệm phản ứng của nhóm amine chủ yếu quan sát tính chất hóa học của methylamine. Trong thí nghiệm, methylamine phản ứng với giấy quỳ tím, HCl, FeCl₃ và Cu(OH)₂ để xác định tính base và tạo phức. Các hiện tượng như thay đổi màu sắc giấy quỳ, tạo kết tủa hoặc tan trong dung dịch được ghi nhận và giải thích dựa trên tính chất hóa học của amine.\nChuẩn bị dung dịch methylamine và các hóa chất khác.\nTiến hành từng phản ứng và quan sát hiện tượng.\nGhi lại kết quả và giải thích dựa trên tính chất hóa học của amine.\nThực hiện mô phỏng để quan sát dao động điều hòa của hệ vật lý liên quan.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Chuẩn bị:",
+          "Hoá chất:",
+          "Dụng cụ:"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong3_bai8_sgkhoahoc12_2133d6d3_S012_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 3465,
+        "latencyMs": 3525
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 3,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 2.95,
+      "judge_reason": "Câu trả lời không đầy đủ và không chính xác theo ngữ cảnh, đặc biệt là phần mô phỏng dao động điều hòa không liên quan đến thí nghiệm về nhóm amine.",
+      "hallucination": true
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_010",
+      "question": "So sánh các khái niệm hoặc đại lượng chính được nêu trong mục MỘT SỐ KHÁI NIỆM CƠ BẢN VỀ PHỨC CHẤT.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Phức chất là hợp chất có chứa nguyên tử trung tâm, thường được kí hiệu là **M**, và các phối tử, thường được kí hiệu là **L**. Trong đó, nguyên tử trung tâm là cation kim loại hoặc nguyên tử kim loại liên kết với các phối tử. Phối tử là anion hoặc phân tử. Phức chất có thể mang điện tích hoặc không mang điện tích. Trong công thức phức chất, nguyên tử trung tâm M và các phối tử L thường được đặt trong móc vuông. Ví dụ 1: ```text [Co(NH₃)₆]³⁺ ``` Phức chất có điện tích +3, nguyên tử trung tâm l...",
+        "required_concepts": [
+          {
+            "label": ", và các phối tử, thường được kí hiệu là",
+            "anyOf": [
+              ", và các phối tử, thường được kí hiệu là"
+            ]
+          },
+          {
+            "label": "MỘT SỐ KHÁI NIỆM CƠ BẢN VỀ PHỨC CHẤT",
+            "anyOf": [
+              "MỘT SỐ KHÁI NIỆM CƠ BẢN VỀ PHỨC CHẤT"
+            ]
+          },
+          {
+            "label": "Phức chất là hợp chất có chứa nguyên tử trung tâm",
+            "anyOf": [
+              "Phức chất là hợp chất có chứa nguyên tử trung tâm"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Phức chất là hợp chất có chứa nguyên tử trung tâm (M) và các phối tử (L). Nguyên tử trung tâm thường là cation kim loại, còn phối tử có thể là anion hoặc phân tử. Phức chất có thể mang điện tích hoặc không. Ví dụ: [Co(NH₃)₆]³⁺ có nguyên tử trung tâm Co³⁺ và phối tử NH₃, còn [Zn(OH)₄]²⁻ có nguyên tử trung tâm Zn²⁺ và phối tử OH⁻. Ý nghĩa vật lý của phức chất liên quan đến tính chất hóa học và ứng dụng trong nhiều lĩnh vực như hóa học phân tích, hóa học vô cơ.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "Phức chất là hợp chất có chứa nguyên tử trung tâm"
+        ],
+        "missingConcepts": [
+          ", và các phối tử, thường được kí hiệu là",
+          "MỘT SỐ KHÁI NIỆM CƠ BẢN VỀ PHỨC CHẤT"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong8_bai28_sgkhoahoc12_59fead8c_S003_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 3149,
+        "latencyMs": 5044
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 5,
+        "completeness": 4,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.15,
+      "judge_reason": "Câu trả lời đúng với khái niệm phức chất và các thành phần của nó, nhưng không hoàn toàn dựa vào các ví dụ trong CONTEXT. Câu trả lời cũng bổ sung thêm thông tin về ứng dụng của phức chất, điều này không có trong CONTEXT.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_011",
+      "question": "Theo học liệu, Khái niệm tốc độ phản ứng hoá học là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Khi phản ứng hoá học xảy ra, lượng chất đầu giảm dần theo thời gian, trong khi lượng chất sản phẩm tăng dần theo thời gian. 📷 **Hình 19.1.** Sự thay đổi lượng chất theo thời gian phản ứng. Tốc độ phản ứng được xác định bằng sự thay đổi lượng chất đầu hoặc chất sản phẩm trong một đơn vị thời gian. Đơn vị thời gian có thể là: - giây `(s)`; - phút `(min)`; - giờ `(h)`; - ngày `(d)`; - ... Lượng chất có thể được biểu diễn bằng: - số mol; - nồng độ mol; - khối lượng; - thể tích. Các phản ứng khác...",
+        "required_concepts": [
+          {
+            "label": "Khái niệm tốc độ phản ứng hoá học",
+            "anyOf": [
+              "Khái niệm tốc độ phản ứng hoá học"
+            ]
+          },
+          {
+            "label": "Khi phản ứng hoá học xảy ra",
+            "anyOf": [
+              "Khi phản ứng hoá học xảy ra"
+            ]
+          },
+          {
+            "label": "lượng chất đầu giảm dần theo thời gian",
+            "anyOf": [
+              "lượng chất đầu giảm dần theo thời gian"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Tốc độ phản ứng hoá học là sự thay đổi lượng chất đầu hoặc chất sản phẩm trong một đơn vị thời gian. Nó cho biết mức độ nhanh chậm của phản ứng hoá học.\nN/A",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Khái niệm tốc độ phản ứng hoá học",
+          "Khi phản ứng hoá học xảy ra",
+          "lượng chất đầu giảm dần theo thời gian"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong6_bai19_sgkhoahoc10_3f234005_S004_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2509,
+        "latencyMs": 1947
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.6,
+      "judge_reason": "Câu trả lời đúng về khái niệm tốc độ phản ứng hoá học, nhưng không hoàn toàn dựa vào thông tin trong CONTEXT. Câu trả lời thiếu thông tin về sự thay đổi lượng chất đầu và sản phẩm theo thời gian.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_012",
+      "question": "Nêu công thức hoặc quan hệ chính được trình bày trong mục Khái niệm tương tác van der Waals.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Cùng là phân tử không phân cực, ở nhiệt độ phòng: - fluorine và chlorine là chất khí; - bromine là chất lỏng. Như vậy, ở trạng thái lỏng, giữa các phân tử bromine tồn tại một tương tác yếu. Tương tác yếu đó gọi là tương tác van der Waals. Các khí hiếm như neon, argon,... tồn tại dưới dạng các nguyên tử độc lập. Tuy nhiên, ở nhiệt độ thấp, khí hiếm có thể hoá lỏng. Như vậy, ở nhiệt độ thấp, giữa các nguyên tử khí hiếm tồn tại một tương tác yếu để giữ các nguyên tử khí hiếm lại với nhau trong t...",
+        "required_concepts": [
+          {
+            "label": "Tương tác van der Waals",
+            "anyOf": [
+              "Tương tác van der Waals"
+            ]
+          },
+          {
+            "label": "Khái niệm tương tác van der Waals",
+            "anyOf": [
+              "Khái niệm tương tác van der Waals"
+            ]
+          },
+          {
+            "label": "Cùng là phân tử không phân cực",
+            "anyOf": [
+              "Cùng là phân tử không phân cực"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Tương tác van der Waals là tương tác tĩnh điện lưỡng cực - lưỡng cực giữa các nguyên tử hay phân tử. Nó ảnh hưởng đến nhiệt độ sôi và nhiệt độ nóng chảy của các chất.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "Tương tác van der Waals"
+        ],
+        "missingConcepts": [
+          "Khái niệm tương tác van der Waals",
+          "Cùng là phân tử không phân cực"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong3_bai13_sgkhoahoc10_e52c3adf_S011_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2454,
+        "latencyMs": 2068
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.6,
+      "judge_reason": "Câu trả lời đúng về khái niệm tương tác van der Waals và ảnh hưởng của nó đến nhiệt độ sôi và nóng chảy. Tuy nhiên, không đề cập đến các ví dụ cụ thể hoặc chi tiết hơn về các phân tử không phân cực như trong yêu cầu.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_013",
+      "question": "Trình bày ý chính của mục Khái niệm.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Nhiều carboxylic acid tồn tại trong tự nhiên. Ví dụ: | Công thức | Tên | Nguồn gốc | |---|---|---| | HCOOH | formic acid | có trong nọc kiến | | CH₃COOH | acetic acid | có trong giấm | | CH₃CH₂CH₂COOH | butyric acid | có trong bơ | | HOOC–COOH | oxalic acid | có trong quả khế | **Carboxylic acid** là các hợp chất hữu cơ trong phân tử có nhóm **–COOH** liên kết với nguyên tử carbon trong gốc hydrocarbon, nhóm –COOH hoặc nguyên tử hydrogen. Nhóm chức: ```text –COOH ``` được gọi là **nhóm carbox...",
+        "required_concepts": [
+          {
+            "label": "Carboxylic acid",
+            "anyOf": [
+              "Carboxylic acid"
+            ]
+          },
+          {
+            "label": "–COOH",
+            "anyOf": [
+              "–COOH"
+            ]
+          },
+          {
+            "label": "nhóm carboxyl",
+            "anyOf": [
+              "nhóm carboxyl"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Mục Khái niệm trong hóa học lớp 11 thường đề cập đến các khái niệm cơ bản về các loại hợp chất hữu cơ như alkane, carboxylic acid, phenol, và các khái niệm liên quan khác. Ý nghĩa vật lý của các khái niệm này giúp học sinh hiểu rõ hơn về cấu trúc, tính chất và ứng dụng của chúng trong thực tiễn.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "Carboxylic acid"
+        ],
+        "missingConcepts": [
+          "–COOH",
+          "nhóm carboxyl"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong4_bai15_sgkhoahoc11_12080d36_S002_P01",
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong6_bai24_sgkhoahoc11_e642343b_S001_P01",
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong3_bai13_sgkhoahoc11_6d238194_S002_P01",
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong5_bai21_sgkhoahoc11_3482a169_S001_P01",
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong5_bai19_sgkhoahoc11_dbd421d0_S001_P01",
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong6_bai23_sgkhoahoc11_8f0a3ee6_S001_P01",
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong4_bai16_sgkhoahoc11_a35b8329_S001_P01",
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai7_sgkhoahoc11_0351a2e5_S002_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2693,
+        "latencyMs": 4978
+      },
+      "judge_scores": {
+        "correctness": 2,
+        "groundedness": 2,
+        "completeness": 2,
+        "clarity": 3,
+        "citationUsage": 0
+      },
+      "final_answer_score": 2,
+      "judge_reason": "Câu trả lời đề cập đến các khái niệm trong hóa học hữu cơ nhưng không cụ thể về khái niệm carboxylic acid và nhóm –COOH như trong context yêu cầu. Thông tin không hoàn toàn chính xác và thiếu chi tiết cần thiết.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_014",
+      "question": "Trong mục Khái niệm về lipid, chất béo, acid béo, bài hoặc công thức đang yêu cầu xác định đại lượng nào và dựa trên quan hệ nào?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Lipid là các hợp chất hữu cơ có trong tế bào sống, không tan trong nước nhưng tan trong dung môi hữu cơ không phân cực. Dựa trên cấu tạo, lipid được phân loại thành: chất béo, sáp, steroid, phospholipid,... Chất béo là triester (ester ba chức) của glycerol với acid béo, gọi chung là triglyceride. ```text H₂C-O-CO-R₁ | HC-O-CO-R₂ | H₂C-O-CO-R₃ (R₁, R₂, R₃ là các gốc hydrocarbon giống hoặc khác nhau) ``` **Công thức cấu tạo chung của chất béo.** Acid béo là carboxylic acid đơn chức. Hầu hết chú...",
+        "required_concepts": [
+          {
+            "label": "Công thức cấu tạo chung của chất béo.",
+            "anyOf": [
+              "Công thức cấu tạo chung của chất béo."
+            ]
+          },
+          {
+            "label": "Acid béo no",
+            "anyOf": [
+              "Acid béo no"
+            ]
+          },
+          {
+            "label": "Acid béo không no",
+            "anyOf": [
+              "Acid béo không no"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Chưa đủ dữ liệu để xác định đại lượng cần tính và quan hệ liên quan trong mục Khái niệm về lipid, chất béo, acid béo.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Công thức cấu tạo chung của chất béo.",
+          "Acid béo no",
+          "Acid béo không no"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [],
+      "confidence": "low",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 3038,
+        "latencyMs": 1841
+      },
+      "judge_scores": {
+        "correctness": 1,
+        "groundedness": 2,
+        "completeness": 1,
+        "clarity": 3,
+        "citationUsage": 0
+      },
+      "final_answer_score": 1.4000000000000001,
+      "judge_reason": "Câu trả lời không cung cấp thông tin cụ thể về đại lượng cần xác định và quan hệ liên quan, mặc dù có nhắc đến việc thiếu dữ liệu. Tuy nhiên, nó không hoàn toàn sai vì có thể hiểu rằng thông tin trong CONTEXT không đủ để trả lời.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_CHEM_015",
+      "question": "Bỏ qua các từ gây nhiễu như dao động, acid, phương trình bậc hai; theo đúng mục Khái niệm, nội dung chính là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Thép để lâu ngoài không khí ẩm thường tạo thành gỉ sắt có màu nâu đỏ; vật bằng đồng để lâu trong tự nhiên có thể tạo thành gỉ đồng màu xanh. Nhiều kim loại và hợp kim để lâu trong tự nhiên cũng có hiện tượng tương tự như vậy. Hiện tượng này được gọi là sự ăn mòn kim loại. Ăn mòn kim loại là sự phá huỷ kim loại hoặc hợp kim dưới tác dụng của các chất trong môi trường, trong đó kim loại bị oxi hoá. 📷 **Hình 22.1.** Một số hiện tượng ăn mòn kim loại: a) ống thép bị gỉ; b) chuông đồng bị gỉ.",
+        "required_concepts": [
+          {
+            "label": "Khái niệm",
+            "anyOf": [
+              "Khái niệm"
+            ]
+          },
+          {
+            "label": "Thép để lâu ngoài không khí ẩm thường tạo thành gỉ sắt có màu nâu đỏ",
+            "anyOf": [
+              "Thép để lâu ngoài không khí ẩm thường tạo thành gỉ sắt có màu nâu đỏ"
+            ]
+          },
+          {
+            "label": "vật bằng đồng để lâu trong tự nhiên có thể tạo thành gỉ đồng màu xanh",
+            "anyOf": [
+              "vật bằng đồng để lâu trong tự nhiên có thể tạo thành gỉ đồng màu xanh"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Chưa đủ dữ liệu.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Khái niệm",
+          "Thép để lâu ngoài không khí ẩm thường tạo thành gỉ sắt có màu nâu đỏ",
+          "vật bằng đồng để lâu trong tự nhiên có thể tạo thành gỉ đồng màu xanh"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [],
+      "confidence": "low",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 3381,
+        "latencyMs": 1655
+      },
+      "judge_scores": {
+        "correctness": 1,
+        "groundedness": 1,
+        "completeness": 1,
+        "clarity": 2,
+        "citationUsage": 0
+      },
+      "final_answer_score": 1.05,
+      "judge_reason": "Câu trả lời không cung cấp thông tin cụ thể về khái niệm ăn mòn kim loại và không liên kết với các nội dung trong CONTEXT.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_MATH_001",
+      "question": "Theo học liệu, Giới thiệu chương là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Chương này cung cấp những khái niệm và kí hiệu lôgic thường dùng, củng cố và mở rộng hiểu biết ban đầu về lí thuyết tập hợp đã được học ở các lớp dưới. Từ đó góp phần hình thành khả năng suy luận có lí, khả năng tiếp nhận, diễn đạt các vấn đề một cách chính xác, tạo cơ sở để học tốt các nội dung toán học khác.",
+        "required_concepts": [
+          {
+            "label": "Giới thiệu chương",
+            "anyOf": [
+              "Giới thiệu chương"
+            ]
+          },
+          {
+            "label": "Chương này cung cấp những khái niệm và kí hiệu lôgic thường dùng",
+            "anyOf": [
+              "Chương này cung cấp những khái niệm và kí hiệu lôgic thường dùng"
+            ]
+          },
+          {
+            "label": "củng cố và mở rộng hiểu biết ban đầu về lí thuyết tập hợp đã được học ở các lớp dưới",
+            "anyOf": [
+              "củng cố và mở rộng hiểu biết ban đầu về lí thuyết tập hợp đã được học ở các lớp dưới"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Giới thiệu chương cung cấp những khái niệm và kí hiệu lôgic thường dùng, củng cố và mở rộng hiểu biết về lí thuyết tập hợp, từ đó giúp hình thành khả năng suy luận và diễn đạt chính xác trong toán học.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "Giới thiệu chương"
+        ],
+        "missingConcepts": [
+          "Chương này cung cấp những khái niệm và kí hiệu lôgic thường dùng",
+          "củng cố và mở rộng hiểu biết ban đầu về lí thuyết tập hợp đã được học ở các lớp dưới"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong1_bai1_sgktoan10_tap1_3b75b9bd_S001_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 1988,
+        "latencyMs": 2097
+      },
+      "judge_scores": {
+        "correctness": 5,
+        "groundedness": 5,
+        "completeness": 4,
+        "clarity": 5,
+        "citationUsage": 0
+      },
+      "final_answer_score": 4.55,
+      "judge_reason": "Câu trả lời đúng và dựa vào CONTEXT được cung cấp, tuy nhiên thiếu một phần nhỏ về việc 'đã được học ở các lớp dưới'.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_MATH_002",
+      "question": "Nêu công thức hoặc quan hệ chính được trình bày trong mục Giải.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Gọi $x$ là số lượng vé loại 1 bán được, $x \\in \\mathbb{N}$, và $y$ là số lượng vé loại 2 bán được, $y \\in \\mathbb{N}$. Số tiền bán vé thu được là: $$ 50x + 100y $$ nghìn đồng. Người ta sẽ phải bù lỗ trong trường hợp số tiền bán vé nhỏ hơn 20 triệu đồng, tức là: $$ 50x + 100y < 20000 $$ hay: $$ x + 2y < 400. $$ Như vậy, việc giải quyết bài toán mở đầu dẫn đến việc đi tìm miền nghiệm của bất phương trình: $$ x + 2y < 400. $$ Miền nghiệm của bất phương trình bậc nhất hai ẩn này được xác định như...",
+        "required_concepts": [
+          {
+            "label": "Chú ý",
+            "anyOf": [
+              "Chú ý"
+            ]
+          },
+          {
+            "label": "Nhận xét",
+            "anyOf": [
+              "Nhận xét"
+            ]
+          },
+          {
+            "label": "Giải",
+            "anyOf": [
+              "Giải"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Công thức chính được trình bày là bất phương trình bậc nhất hai ẩn có dạng tổng quát: ax + by ≤ c hoặc ax + by ≥ c, ax + by < c, ax + by > c, với a, b, c là các số thực đã cho, a và b không đồng thời bằng 0.\nax + by ≤ c\nax + by ≥ c\nax + by < c\nax + by > c",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Chú ý",
+          "Nhận xét",
+          "Giải"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong2_bai3_sgktoan10_tap1_984fc33e_S006_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2000,
+        "latencyMs": 2669
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 4,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.2,
+      "judge_reason": "Câu trả lời nêu đúng công thức của bất phương trình bậc nhất hai ẩn, nhưng không đề cập đến nội dung cụ thể của bài toán trong CONTEXT, dẫn đến thiếu sót trong việc liên kết với yêu cầu của câu hỏi.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_MATH_003",
+      "question": "Trình bày ý chính của mục Kiến thức, kĩ năng.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Sau bài học này, em có thể: * Nhận biết các khái niệm cơ bản về tập hợp. * Thực hiện các phép toán trên tập hợp và vận dụng giải một số bài toán có nội dung thực tiễn. * Sử dụng biểu đồ Ven để biểu diễn tập hợp và các phép toán trên tập hợp.",
+        "required_concepts": [
+          {
+            "label": "Kiến thức, kĩ năng",
+            "anyOf": [
+              "Kiến thức, kĩ năng"
+            ]
+          },
+          {
+            "label": "Sau bài học này",
+            "anyOf": [
+              "Sau bài học này"
+            ]
+          },
+          {
+            "label": "Nhận biết các khái niệm cơ bản về tập hợp",
+            "anyOf": [
+              "Nhận biết các khái niệm cơ bản về tập hợp"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Mục Kiến thức, kĩ năng giúp học sinh phát triển khả năng thiết lập và phát biểu các loại mệnh đề, xác định tính đúng sai của mệnh đề, và nhận biết bất phương trình bậc nhất hai ẩn cũng như miền nghiệm của chúng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "Kiến thức, kĩ năng"
+        ],
+        "missingConcepts": [
+          "Sau bài học này",
+          "Nhận biết các khái niệm cơ bản về tập hợp"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong1_bai1_sgktoan10_tap1_3b75b9bd_S003_P01",
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong2_bai3_sgktoan10_tap1_984fc33e_S003_P01",
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong2_bai4_sgktoan10_tap1_5a72087c_S010_P01",
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong2_bai4_sgktoan10_tap1_5a72087c_S002_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2079,
+        "latencyMs": 9177
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.6,
+      "judge_reason": "Câu trả lời đúng về nội dung kiến thức và kĩ năng nhưng không hoàn toàn đầy đủ so với yêu cầu, thiếu thông tin về việc sử dụng biểu đồ Ven và các phép toán trên tập hợp.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_MATH_004",
+      "question": "Trong mục Giải, bài hoặc công thức đang yêu cầu xác định đại lượng nào và dựa trên quan hệ nào?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "**Bước 1.** Xác định miền nghiệm $D_1$ của bất phương trình: $$ 7x + 4y \\le 2400 $$ và gạch bỏ miền còn lại. Vẽ đường thẳng: $$ d: 7x + 4y = 2400. $$ Vì: $$ 7 \\cdot 0 + 4 \\cdot 0 = 0 < 2400 $$ nên toạ độ điểm $O(0; 0)$ thoả mãn bất phương trình: $$ 7x + 4y \\le 2400. $$ Do đó, miền nghiệm $D_1$ của bất phương trình $7x + 4y \\le 2400$ là nửa mặt phẳng bờ $d$ chứa gốc toạ độ $O$. **Bước 2.** Tương tự, miền nghiệm $D_2$ của bất phương trình: $$ x + y \\le 100 $$ là nửa mặt phẳng bờ $d'$ chứa gốc t...",
+        "required_concepts": [
+          {
+            "label": "Bước 1.",
+            "anyOf": [
+              "Bước 1."
+            ]
+          },
+          {
+            "label": "Bước 2.",
+            "anyOf": [
+              "Bước 2."
+            ]
+          },
+          {
+            "label": "Bước 3.",
+            "anyOf": [
+              "Bước 3."
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Chưa đủ dữ liệu để xác định đại lượng và quan hệ cụ thể trong bài hoặc công thức.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Bước 1.",
+          "Bước 2.",
+          "Bước 3."
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [],
+      "confidence": "low",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 1915,
+        "latencyMs": 1323
+      },
+      "judge_scores": {
+        "correctness": 1,
+        "groundedness": 2,
+        "completeness": 1,
+        "clarity": 3,
+        "citationUsage": 0
+      },
+      "final_answer_score": 1.4000000000000001,
+      "judge_reason": "Câu trả lời chỉ ra rằng không đủ dữ liệu để xác định đại lượng và quan hệ, nhưng không dựa trên CONTEXT đã cung cấp, dẫn đến groundedness thấp.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_MATH_005",
+      "question": "So sánh các khái niệm hoặc đại lượng chính được nêu trong mục Kiến thức.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Nếu mọi phần tử của tập hợp $T$ đều là phần tử của tập hợp $S$ thì ta nói $T$ là một **tập hợp con** hay **tập con** của $S$ và viết là: $$ T \\subset S $$ Đọc là: $T$ chứa trong $S$, hoặc $T$ là tập con của $S$. **Nhận xét** Từ định nghĩa trên, $T$ là tập con của $S$ nếu mệnh đề sau đúng: $$ \\forall x,\\ x \\in T \\Rightarrow x \\in S. $$ Quy ước tập rỗng là tập con của mọi tập hợp. Người ta thường minh hoạ một tập hợp bằng một hình phẳng được bao quanh bởi một đường kín, gọi là **biểu đồ Ven**....",
+        "required_concepts": [
+          {
+            "label": "tập hợp con",
+            "anyOf": [
+              "tập hợp con"
+            ]
+          },
+          {
+            "label": "tập con",
+            "anyOf": [
+              "tập con"
+            ]
+          },
+          {
+            "label": "Nhận xét",
+            "anyOf": [
+              "Nhận xét"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Các khái niệm chính trong mục Kiến thức bao gồm: 1. **Tập hợp con**: Tập hợp T là tập con của S nếu mọi phần tử của T đều thuộc S, ký hiệu T ⊆ S. 2. **Mệnh đề lôgic**: Là câu khẳng định có tính đúng hoặc sai, ký hiệu bằng các chữ cái như P, Q, R. 3. **Hiệu của hai tập hợp**: Là tập hợp gồm các phần tử thuộc S nhưng không thuộc T, ký hiệu S \\setminus T. 4. **Mệnh đề tương đương**: Mệnh đề P tương đương với Q nếu P đúng khi và chỉ khi Q đúng, ký hiệu P ⇔ Q.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.6666666666666666,
+        "matchedConcepts": [
+          "tập hợp con",
+          "tập con"
+        ],
+        "missingConcepts": [
+          "Nhận xét"
+        ],
+        "ruleBasedScore": 0.6666666666666666
+      },
+      "used_reference_ids": [
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong1_bai2_sgktoan10_tap1_11c596e4_S012_P01",
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong1_bai1_sgktoan10_tap1_3b75b9bd_S006_P01",
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong1_bai2_sgktoan10_tap1_11c596e4_S046_P01",
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong1_bai1_sgktoan10_tap1_3b75b9bd_S030_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2271,
+        "latencyMs": 14339
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 4,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.2,
+      "judge_reason": "Câu trả lời đề cập đến các khái niệm chính trong mục Kiến thức, nhưng không hoàn toàn dựa vào thông tin trong CONTEXT. Một số khái niệm như 'mệnh đề tương đương' không có trong CONTEXT.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_MATH_006",
+      "question": "Bỏ qua các từ gây nhiễu như dao động, acid, phương trình bậc hai; theo đúng mục HĐ2, nội dung chính là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Cho đường thẳng: $$ d: x + y = 150 $$ trên mặt phẳng toạ độ $Oxy$. Đường thẳng này cắt hai trục toạ độ $Ox$ và $Oy$ tại hai điểm $A$ và $B$. a) Xác định các miền nghiệm $D_1$, $D_2$, $D_3$ của các bất phương trình tương ứng: $$ x \\ge 0;\\quad y \\ge 0;\\quad x + y \\le 150. $$ b) Miền tam giác $OAB$ có phải là giao của các miền $D_1$, $D_2$ và $D_3$ hay không? c) Lấy một điểm trong tam giác $OAB$, chẳng hạn điểm $(1; 2)$, hoặc một điểm trên cạnh nào đó của tam giác $OAB$, chẳng hạn điểm $(1; 149)...",
+        "required_concepts": [
+          {
+            "label": "HĐ2",
+            "anyOf": [
+              "HĐ2"
+            ]
+          },
+          {
+            "label": "d: x + y = 150",
+            "anyOf": [
+              "d: x + y = 150"
+            ]
+          },
+          {
+            "label": "x 0; y 0; x + y 150.",
+            "anyOf": [
+              "x 0; y 0; x + y 150."
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Nội dung chính trong HĐ2 là xác định miền nghiệm của hệ bất phương trình bậc nhất hai ẩn, trong đó có các điều kiện như x >= 0, y >= 0 và x + y < 150.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "HĐ2"
+        ],
+        "missingConcepts": [
+          "d: x + y = 150",
+          "x 0; y 0; x + y 150."
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong2_bai4_sgktoan10_tap1_5a72087c_S013_P01",
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong2_bai4_sgktoan10_tap1_5a72087c_S005_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2277,
+        "latencyMs": 2650
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 4,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.6,
+      "judge_reason": "Câu trả lời đúng về nội dung chính của HĐ2, tuy nhiên không hoàn toàn chính xác khi đề cập đến điều kiện x + y < 150, vì trong CONTEXT có đề cập đến x + y <= 150.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_MATH_007",
+      "question": "Nêu công thức hoặc quan hệ chính được trình bày trong mục Giải.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Giả sử cửa hàng cần nhập số máy điều hoà hai chiều là $x$ và số máy điều hoà một chiều là $y$. Khi đó ta có: $$ x \\ge 0,\\quad y \\ge 0. $$ Vì nhu cầu của thị trường không quá 100 máy nên: $$ x + y \\le 100. $$ Số tiền để nhập hai loại máy điều hoà với số lượng như trên là: $$ 20x + 10y $$ triệu đồng. Số tiền tối đa để đầu tư cho hai loại máy là 1,2 tỉ đồng, nên ta có: $$ 20x + 10y \\le 1200 $$ hay: $$ 2x + y \\le 120. $$ Từ đó ta thu được hệ bất phương trình bậc nhất hai ẩn sau: $$ \\begin{cases}...",
+        "required_concepts": [
+          {
+            "label": "Giải",
+            "anyOf": [
+              "Giải"
+            ]
+          },
+          {
+            "label": "x 0, y 0.",
+            "anyOf": [
+              "x 0, y 0."
+            ]
+          },
+          {
+            "label": "x + y 100.",
+            "anyOf": [
+              "x + y 100."
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Công thức chính được trình bày là bất phương trình bậc nhất hai ẩn có dạng tổng quát: ax + by ≤ c hoặc ax + by ≥ c, ax + by < c, ax + by > c, với a, b, c là số thực đã cho, a và b không đồng thời bằng 0.\nax + by ≤ c\nax + by ≥ c\nax + by < c\nax + by > c",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Giải",
+          "x 0, y 0.",
+          "x + y 100."
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong2_bai3_sgktoan10_tap1_984fc33e_S006_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2000,
+        "latencyMs": 3078
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 4,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.2,
+      "judge_reason": "Câu trả lời đúng về công thức bất phương trình bậc nhất hai ẩn, nhưng không hoàn toàn đáp ứng yêu cầu cụ thể từ ngữ cảnh về các điều kiện và hệ bất phương trình liên quan đến số lượng máy điều hòa.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_MATH_008",
+      "question": "Trình bày ý chính của mục ận dụng.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Một cửa hàng có kế hoạch nhập về hai loại máy tính $A$ và $B$, giá mỗi chiếc lần lượt là 10 triệu đồng và 20 triệu đồng với số vốn ban đầu không vượt quá 4 tỉ đồng. Loại máy $A$ mang lại lợi nhuận 2,5 triệu đồng cho mỗi máy bán được và loại máy $B$ mang lại lợi nhuận là 4 triệu đồng cho mỗi máy bán được. Cửa hàng ước tính rằng tổng nhu cầu hằng tháng sẽ không vượt quá 250 máy. Giả sử trong một tháng cửa hàng cần nhập số máy tính loại $A$ là $x$ và số máy tính loại $B$ là $y$. a) Viết các bất...",
+        "required_concepts": [
+          {
+            "label": "ận dụng",
+            "anyOf": [
+              "ận dụng"
+            ]
+          },
+          {
+            "label": "Một cửa hàng có kế hoạch nhập về hai loại máy tính A và B",
+            "anyOf": [
+              "Một cửa hàng có kế hoạch nhập về hai loại máy tính A và B"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Mục ận dụng trình bày cách xác định miền nghiệm của hệ bất phương trình bậc nhất hai ẩn, thông qua việc vẽ đường thẳng và xác định nửa mặt phẳng thỏa mãn bất phương trình. Ý nghĩa là giúp học sinh hiểu cách biểu diễn và giải quyết các bài toán liên quan đến bất phương trình trong không gian hai chiều.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.5,
+        "matchedConcepts": [
+          "ận dụng"
+        ],
+        "missingConcepts": [
+          "Một cửa hàng có kế hoạch nhập về hai loại máy tính A và B"
+        ],
+        "ruleBasedScore": 0.5
+      },
+      "used_reference_ids": [
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong2_bai4_sgktoan10_tap1_5a72087c_S012_P01",
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong2_bai3_sgktoan10_tap1_984fc33e_S018_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2510,
+        "latencyMs": 2806
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 4,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.2,
+      "judge_reason": "Câu trả lời đúng về nội dung ận dụng nhưng không hoàn toàn dựa vào context được cung cấp, thiếu thông tin cụ thể về cửa hàng và các loại máy tính A và B.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_MATH_009",
+      "question": "Theo học liệu, Luyện tập 1 là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Thay dấu “?” bằng dấu “✓” vào ô thích hợp trong bảng sau: | Câu | Không là mệnh đề | Mệnh đề đúng | Mệnh đề sai | | ------------------------------------------------------------------------- | ---------------- | ------------ | ----------- | | 13 là số nguyên tố. | ? | ? | ? | | Tổng độ dài hai cạnh bất kì của một tam giác nhỏ hơn độ dài cạnh còn lại. | ? | ? | ? | | Bạn đã làm bài tập chưa? | ? | ? | ? | | Thời tiết hôm nay thật đẹp! | ? | ? | ? |",
+        "required_concepts": [
+          {
+            "label": "Luyện tập 1",
+            "anyOf": [
+              "Luyện tập 1"
+            ]
+          },
+          {
+            "label": "Thay dấu “?” bằng dấu “✓” vào ô thích hợp trong bảng sau",
+            "anyOf": [
+              "Thay dấu “?” bằng dấu “✓” vào ô thích hợp trong bảng sau"
+            ]
+          },
+          {
+            "label": "Câu Không là mệnh đề Mệnh đề đúng Mệnh đề sai",
+            "anyOf": [
+              "Câu Không là mệnh đề Mệnh đề đúng Mệnh đề sai"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Luyện tập 1 là phần giúp củng cố và mở rộng hiểu biết về các khái niệm và kí hiệu lôgic, từ đó phát triển khả năng suy luận và diễn đạt chính xác trong toán học.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "Luyện tập 1"
+        ],
+        "missingConcepts": [
+          "Thay dấu “?” bằng dấu “✓” vào ô thích hợp trong bảng sau",
+          "Câu Không là mệnh đề Mệnh đề đúng Mệnh đề sai"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      },
+      "used_reference_ids": [
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong1_bai1_sgktoan10_tap1_3b75b9bd_S001_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 1969,
+        "latencyMs": 4478
+      },
+      "judge_scores": {
+        "correctness": 3,
+        "groundedness": 2,
+        "completeness": 2,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 2.5,
+      "judge_reason": "Câu trả lời đúng về mục đích của Luyện tập 1 nhưng không đề cập đến nội dung cụ thể của bài tập như trong CONTEXT.",
+      "hallucination": false
+    },
+    {
+      "case_id": "REAL_EVAL50_MATH_010",
+      "question": "Nêu công thức hoặc quan hệ chính được trình bày trong mục Giải.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "**Bước 1.** Vẽ đường thẳng: $$ d: 5x - 7y = 0 $$ trên mặt phẳng toạ độ $Oxy$. **Bước 2.** Lấy điểm $M_0(0; 1)$ không thuộc $d$ và thay $x = 0$, $y = 1$ vào biểu thức $5x - 7y$, ta được: $$ 5 \\cdot 0 - 7 \\cdot 1 = -7 < 0. $$ Do đó miền nghiệm của bất phương trình là nửa mặt phẳng bờ $d$ chứa điểm $M_0$, miền không bị gạch. *Hình 2.3. Miền nghiệm của bất phương trình $5x - 7y \\le 0$.* **Chú ý** Miền nghiệm của bất phương trình $ax + by < c$ là miền nghiệm của bất phương trình $ax + by \\le c$ bỏ...",
+        "required_concepts": [
+          {
+            "label": "Bước 1.",
+            "anyOf": [
+              "Bước 1."
+            ]
+          },
+          {
+            "label": "Bước 2.",
+            "anyOf": [
+              "Bước 2."
+            ]
+          },
+          {
+            "label": "Chú ý",
+            "anyOf": [
+              "Chú ý"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Công thức chính của bất phương trình bậc nhất hai ẩn là: ax + by ≤ c hoặc ax + by ≥ c, ax + by < c, ax + by > c, với a, b, c là các số thực đã cho, a và b không đồng thời bằng 0.\nax + by ≤ c\nax + by ≥ c\nax + by < c\nax + by > c",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "Bước 1.",
+          "Bước 2.",
+          "Chú ý"
+        ],
+        "ruleBasedScore": 0
+      },
+      "used_reference_ids": [
+        "GENCLN_MATH_G10_sgktoan10_tap1_chuong2_bai3_sgktoan10_tap1_984fc33e_S006_P01"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 8,
+        "promptTokensApprox": 2000,
+        "latencyMs": 2800
+      },
+      "judge_scores": {
+        "correctness": 4,
+        "groundedness": 5,
+        "completeness": 3,
+        "clarity": 4,
+        "citationUsage": 0
+      },
+      "final_answer_score": 3.85,
+      "judge_reason": "Câu trả lời đúng về công thức của bất phương trình bậc nhất hai ẩn, nhưng không đề cập đến các bước giải cụ thể như trong yêu cầu. Tuy nhiên, nó vẫn dựa trên thông tin trong CONTEXT.",
+      "hallucination": false
+    }
+  ]
+}

@@ -243,7 +243,7 @@ function buildFullSummary(
     '## 1. Run Information',
     '',
     `- Run time: ${new Date().toISOString()}`,
-    `- Eval source: ${process.env.EVAL_SOURCE === 'smoke' ? 'smoke' : 'database'}`,
+    `- Eval source: ${process.env.EVAL_CASES_PATH ? `file (${process.env.EVAL_CASES_PATH})` : process.env.EVAL_SOURCE === 'smoke' ? 'smoke' : 'database'}`,
     `- Retrieval run: ${formatRunStatus(runResults[0])}`,
     `- Answer run: ${formatRunStatus(runResults[1])}`,
     `- Total cases: retrieval ${formatCount(

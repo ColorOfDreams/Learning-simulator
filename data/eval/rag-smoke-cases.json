@@ -1,7 +1,7 @@
 [
   {
-    "id": "RAG_SMOKE_001",
-    "question": "Dao động cơ là gì? Cho biết đặc điểm chuyển động quanh vị trí cân bằng.",
+    "id": "REAL_EVAL_PHY11_OSCILLATION_CONCEPT_001",
+    "question": "Dao động cơ là gì? Nêu đặc điểm chuyển động quanh vị trí cân bằng.",
     "subject": "physics",
     "grade": 11,
     "topic": "oscillation",
@@ -9,146 +9,38 @@
       "relevant_chunk_ids": ["TH_PHY11_C01_L01_003"],
       "answer": {
         "type": "conceptual",
+        "reference_answer": "Dao động cơ là chuyển động qua lại của vật quanh vị trí cân bằng và có thể lặp đi lặp lại theo thời gian.",
         "required_concepts": [
-          "dao động cơ",
-          "chuyển động qua lại",
-          "quanh vị trí cân bằng",
-          {
-            "label": "lặp đi lặp lại",
-            "anyOf": ["lặp đi lặp lại", "tuần hoàn", "trở lại vị trí cũ"]
-          }
+          { "label": "dao động cơ", "anyOf": ["dao động cơ"] },
+          { "label": "chuyển động qua lại", "anyOf": ["chuyển động qua lại", "qua lại"] },
+          { "label": "vị trí cân bằng", "anyOf": ["vị trí cân bằng", "quanh vị trí cân bằng"] }
         ]
       }
     }
   },
   {
-    "id": "RAG_SMOKE_002",
-    "question": "Phương trình dao động điều hòa x = A cos(omega t + phi) có ý nghĩa như thế nào?",
+    "id": "REAL_EVAL_PHY11_SHM_EQUATION_001",
+    "question": "Trong phương trình dao động điều hòa x = A cos(ωt + φ), x, A, ω và φ có ý nghĩa gì?",
     "subject": "physics",
     "grade": 11,
     "topic": "simple_harmonic_motion",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L01_006", "th_shm_002"],
+      "relevant_chunk_ids": ["TH_PHY11_C01_L01_006"],
       "answer": {
         "type": "conceptual",
+        "reference_answer": "x là li độ tại thời điểm t, A là biên độ, ω là tần số góc, còn φ là pha ban đầu; ωt + φ là pha dao động.",
         "required_concepts": [
-          {
-            "label": "x là li độ",
-            "anyOf": ["x là li độ", "li độ x", "x cho biết vị trí", "phương trình dao động điều hòa x"]
-          },
-          "A là biên độ",
-          "omega là tần số góc",
-          "phi là pha ban đầu",
-          {
-            "label": "omega t + phi là pha dao động",
-            "anyOf": ["omega t + phi là pha dao động", "ωt + φ", "pha theo thời gian"]
-          }
+          { "label": "x là li độ", "anyOf": ["x là li độ", "li độ"] },
+          { "label": "A là biên độ", "anyOf": ["A là biên độ", "biên độ"] },
+          { "label": "ω là tần số góc", "anyOf": ["ω là tần số góc", "omega là tần số góc", "tần số góc"] },
+          { "label": "φ là pha ban đầu", "anyOf": ["φ là pha ban đầu", "phi là pha ban đầu", "pha ban đầu"] }
         ]
       }
     }
   },
   {
-    "id": "RAG_SMOKE_003",
-    "question": "Trong phương trình x = A cos(omega t + phi), A, omega và phi là các đại lượng gì?",
-    "subject": "physics",
-    "grade": 11,
-    "topic": "simple_harmonic_motion",
-    "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L01_006", "TH_PHY11_C01_L02_003", "th_shm_002"],
-      "answer": {
-        "type": "conceptual",
-        "required_concepts": ["A là biên độ", "omega là tần số góc", "phi là pha ban đầu"]
-      }
-    }
-  },
-  {
-    "id": "RAG_SMOKE_004",
-    "question": "Biên độ dao động điều hòa được định nghĩa như thế nào?",
-    "subject": "physics",
-    "grade": 11,
-    "topic": "simple_harmonic_motion",
-    "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003"],
-      "answer": {
-        "type": "conceptual",
-        "required_concepts": [
-          "biên độ",
-          {
-            "label": "li độ cực đại",
-            "anyOf": ["li độ cực đại", "độ dịch chuyển cực đại", "x_max"]
-          },
-          {
-            "label": "độ lệch lớn nhất",
-            "anyOf": ["độ lệch lớn nhất", "độ lớn tối đa", "độ lớn của dao động", "khoảng cách tối đa"]
-          },
-          "vị trí cân bằng"
-        ]
-      }
-    }
-  },
-  {
-    "id": "RAG_SMOKE_005",
-    "question": "Chu kì dao động là gì và đơn vị của chu kì là gì?",
-    "subject": "physics",
-    "grade": 11,
-    "topic": "simple_harmonic_motion",
-    "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003", "TH_PHY11_C01_L02_029"],
-      "answer": {
-        "type": "conceptual",
-        "required_concepts": [
-          {
-            "label": "chu kì",
-            "anyOf": ["chu kì", "chu kỳ", "T"]
-          },
-          {
-            "label": "thời gian thực hiện một dao động toàn phần",
-            "anyOf": [
-              "thời gian thực hiện một dao động toàn phần",
-              "thời gian để vật thực hiện một dao động",
-              "khoảng thời gian để vật thực hiện một dao động"
-            ]
-          },
-          {
-            "label": "đơn vị giây",
-            "anyOf": ["đơn vị giây", "đơn vị là giây", "giây (s)"]
-          },
-          {
-            "label": "kí hiệu T",
-            "anyOf": ["kí hiệu T", "chu kì (T)", "chu kỳ (T)"]
-          }
-        ]
-      }
-    }
-  },
-  {
-    "id": "RAG_SMOKE_006",
-    "question": "Tần số dao động là gì? Tần số liên hệ với chu kì theo công thức nào?",
-    "subject": "physics",
-    "grade": 11,
-    "topic": "simple_harmonic_motion",
-    "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_003", "TH_PHY11_C01_L02_029"],
-      "answer": {
-        "type": "mixed",
-        "required_concepts": [
-          "tần số",
-          {
-            "label": "số dao động trong một giây",
-            "anyOf": ["số dao động trong một giây", "số dao động mà vật thực hiện được trong một giây"]
-          },
-          "f = 1/T",
-          {
-            "label": "đơn vị Hz",
-            "anyOf": ["đơn vị Hz", "đơn vị là héc", "Hz", "héc"]
-          }
-        ]
-      }
-    }
-  },
-  {
-    "id": "RAG_SMOKE_007",
-    "question": "Tần số góc omega liên hệ với chu kì T và tần số f như thế nào?",
+    "id": "REAL_EVAL_PHY11_SHM_PERIOD_001",
+    "question": "Một vật dao động điều hòa có ω = 4π rad/s. Tính chu kì T.",
     "subject": "physics",
     "grade": 11,
     "topic": "simple_harmonic_motion",
@@ -156,78 +48,60 @@
       "relevant_chunk_ids": ["TH_PHY11_C01_L02_029"],
       "answer": {
         "type": "mixed",
+        "value": 0.5,
+        "unit": "s",
+        "tolerance": 0.000001,
+        "reference_answer": "Dùng ω = 2π/T nên T = 2π/ω = 2π/(4π) = 0,5 s.",
         "required_concepts": [
-          { "label": "omega", "anyOf": ["omega", "ω"] },
-          "tần số góc",
-          { "label": "ω = 2π/T", "anyOf": ["ω = 2π/T", "omega = 2pi/T", "ω=2π/T"] },
-          { "label": "ω = 2πf", "anyOf": ["ω = 2πf", "omega = 2pi f", "ω=2πf"] },
-          "rad/s"
+          { "label": "ω = 2π/T", "anyOf": ["ω=2π/T", "ω = 2π/T", "omega = 2pi/T"] },
+          { "label": "T = 2π/ω", "anyOf": ["T=2π/ω", "T = 2π/ω", "T = 2pi/omega"] },
+          { "label": "0,5 s", "anyOf": ["0,5 s", "0.5 s", "0,5s", "0.5s"] }
         ]
       }
     }
   },
   {
-    "id": "RAG_SMOKE_008",
-    "question": "Pha ban đầu trong dao động điều hòa cho biết điều gì?",
+    "id": "REAL_EVAL_PHY11_SHM_POSITION_001",
+    "question": "Một vật dao động điều hòa có phương trình x = 2cos(4πt + π/2) cm. Tính li độ tại t = 2 s.",
     "subject": "physics",
     "grade": 11,
     "topic": "simple_harmonic_motion",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_008"],
+      "relevant_chunk_ids": ["TH_PHY11_C01_L01_007", "TH_PHY11_C01_L01_006"],
       "answer": {
-        "type": "conceptual",
+        "type": "mixed",
+        "value": 0,
+        "unit": "cm",
+        "tolerance": 0.000001,
+        "reference_answer": "Thay t = 2 s vào x = 2cos(4πt + π/2), pha bằng 17π/2 nên cos(17π/2) = 0. Vậy x = 0 cm.",
         "required_concepts": [
-          "pha ban đầu",
-          { "label": "trạng thái ban đầu", "anyOf": ["trạng thái ban đầu", "thời điểm bắt đầu quan sát"] },
-          { "label": "thời điểm t = 0", "anyOf": ["thời điểm t = 0", "t=0", "ban đầu"] },
-          {
-            "label": "vị trí hoặc chiều chuyển động ban đầu",
-            "anyOf": ["vị trí hoặc chiều chuyển động ban đầu", "vị trí của vật", "hướng di chuyển", "vị trí và hướng chuyển động"]
-          }
+          { "label": "thay t = 2", "anyOf": ["t = 2", "thay t"] },
+          { "label": "pha dao động", "anyOf": ["pha", "4πt + π/2"] },
+          { "label": "x = 0 cm", "anyOf": ["x = 0 cm", "0 cm", "li độ bằng 0"] }
         ]
       }
     }
   },
   {
-    "id": "RAG_SMOKE_009",
-    "question": "Độ lệch pha giữa hai dao động cùng chu kì được hiểu như thế nào?",
-    "subject": "physics",
-    "grade": 11,
-    "topic": "simple_harmonic_motion",
-    "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L02_012"],
-      "answer": {
-        "type": "conceptual",
-        "required_concepts": [
-          "độ lệch pha",
-          { "label": "hiệu pha", "anyOf": ["hiệu pha", "chênh lệch về pha", "khác biệt về pha", "lấy hiệu giữa hai pha"] },
-          { "label": "hai dao động cùng chu kì", "anyOf": ["hai dao động cùng chu kì", "hai dao động cùng chu kỳ", "cùng chu kì"] },
-          { "label": "sớm pha hoặc trễ pha", "anyOf": ["sớm pha hoặc trễ pha", "sớm hoặc trễ pha", "sớm hoặc trễ pha nhau"] }
-        ]
-      }
-    }
-  },
-  {
-    "id": "RAG_SMOKE_010",
-    "question": "Từ x = A cos(omega t + phi), phương trình vận tốc của vật dao động điều hòa là gì?",
+    "id": "REAL_EVAL_PHY11_SHM_VELOCITY_001",
+    "question": "Từ x = A cos(ωt + φ), hãy viết phương trình vận tốc của vật dao động điều hòa.",
     "subject": "physics",
     "grade": 11,
     "topic": "shm_kinematics",
     "expected": {
       "relevant_chunk_ids": ["TH_PHY11_C01_L03_004"],
       "answer": {
-        "type": "mixed",
+        "type": "conceptual",
+        "reference_answer": "Vận tốc là đạo hàm của li độ theo thời gian: v = x' = -ωA sin(ωt + φ).",
         "required_concepts": [
-          { "label": "v = x'", "anyOf": ["v = x'", "v=x'", "vận tốc là đạo hàm", "tính đạo hàm của x"] },
-          { "label": "v = -ωA sin(ωt + φ)", "anyOf": ["v = -ωA sin(ωt + φ)", "v=-ωA sin(ωt+φ)", "v = -omega A sin(omega t + phi)"] },
-          "vận tốc",
-          { "label": "đạo hàm của li độ theo thời gian", "anyOf": ["đạo hàm của li độ theo thời gian", "phương trình vận tốc"] }
+          { "label": "vận tốc là đạo hàm của li độ", "anyOf": ["đạo hàm của li độ", "v = x'", "v=x'"] },
+          { "label": "v = -ωA sin(ωt + φ)", "anyOf": ["v = -ωA sin", "v=-ωA sin", "v = -omega A sin"] }
         ]
       }
     }
   },
   {
-    "id": "RAG_SMOKE_011",
+    "id": "REAL_EVAL_PHY11_SHM_ACCELERATION_001",
     "question": "Gia tốc trong dao động điều hòa liên hệ với li độ x theo công thức nào?",
     "subject": "physics",
     "grade": 11,
@@ -235,153 +109,97 @@
     "expected": {
       "relevant_chunk_ids": ["TH_PHY11_C01_L03_011"],
       "answer": {
-        "type": "mixed",
+        "type": "conceptual",
+        "reference_answer": "Gia tốc của dao động điều hòa thỏa mãn a = -ω²x, tức gia tốc luôn trái dấu với li độ và hướng về vị trí cân bằng.",
         "required_concepts": [
-          "gia tốc",
-          { "label": "li độ x", "anyOf": ["li độ x", "li độ"] },
-          { "label": "a = -ω²x", "anyOf": ["a = -ω²x", "a=-ω^2x", "a = -omega^2 x", "a=-ω²x"] },
-          { "label": "ngược chiều với li độ", "anyOf": ["ngược chiều với li độ", "trái dấu với li độ", "hướng về vị trí cân bằng"] }
+          { "label": "a = -ω²x", "anyOf": ["a = -ω²x", "a=-ω²x", "a = -omega^2 x", "a=-omega^2x"] },
+          { "label": "trái dấu với li độ", "anyOf": ["trái dấu với li độ", "ngược chiều với li độ"] },
+          { "label": "vị trí cân bằng", "anyOf": ["vị trí cân bằng", "hướng về vị trí cân bằng"] }
         ]
       }
     }
   },
   {
-    "id": "RAG_SMOKE_012",
-    "question": "Con lắc lò xo có chu kì dao động phụ thuộc vào khối lượng và độ cứng như thế nào?",
+    "id": "REAL_EVAL_PHY11_WAVE_SPEED_001",
+    "question": "Một sóng có tần số f = 5 Hz và tốc độ truyền sóng v = 2 m/s. Tính bước sóng.",
     "subject": "physics",
     "grade": 11,
-    "topic": "shm_energy",
+    "topic": "mechanical_wave",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L05_013"],
+      "relevant_chunk_ids": ["TH_PHY11_C02_L14_004"],
       "answer": {
         "type": "mixed",
+        "value": 0.4,
+        "unit": "m",
+        "tolerance": 0.000001,
+        "reference_answer": "Dùng v = λf nên λ = v/f = 2/5 = 0,4 m.",
         "required_concepts": [
-          "con lắc lò xo",
-          { "label": "khối lượng m", "anyOf": ["khối lượng m", "m là khối lượng", "m là khối lượng vật nặng"] },
-          { "label": "độ cứng k", "anyOf": ["độ cứng k", "k là độ cứng", "k là độ cứng của lò xo"] },
-          { "label": "T = 2π√(m/k)", "anyOf": ["T = 2π√(m/k)", "T=2π√(m/k)", "T = 2pi sqrt(m/k)", "T=2pi sqrt(m/k)"] },
-          { "label": "m tăng thì T tăng", "anyOf": ["m tăng thì T tăng", "chu kỳ tăng khi khối lượng tăng", "chu kì tăng khi khối lượng tăng"] },
-          { "label": "k tăng thì T giảm", "anyOf": ["k tăng thì T giảm", "giảm khi độ cứng tăng", "chu kì giảm khi độ cứng tăng"] }
+          { "label": "v = λf", "anyOf": ["v = λf", "v=λf", "v = lambda f"] },
+          { "label": "λ = v/f", "anyOf": ["λ = v/f", "lambda = v/f", "bước sóng"] },
+          { "label": "0,4 m", "anyOf": ["0,4 m", "0.4 m", "0,4m", "0.4m"] }
         ]
       }
     }
   },
   {
-    "id": "RAG_SMOKE_013",
-    "question": "Với con lắc đơn góc nhỏ, thế năng trọng trường được mô tả như thế nào?",
+    "id": "REAL_EVAL_PHY11_OHM_001",
+    "question": "Một điện trở R = 10 Ω được đặt vào hiệu điện thế U = 5 V. Tính cường độ dòng điện.",
     "subject": "physics",
     "grade": 11,
-    "topic": "shm_energy",
+    "topic": "ohms_law",
     "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L05_016"],
+      "relevant_chunk_ids": ["TH_PHY11_C04_L23_010"],
+      "answer": {
+        "type": "mixed",
+        "value": 0.5,
+        "unit": "A",
+        "tolerance": 0.000001,
+        "reference_answer": "Từ R = U/I suy ra I = U/R = 5/10 = 0,5 A.",
+        "required_concepts": [
+          { "label": "R = U/I", "anyOf": ["R = U/I", "R=U/I"] },
+          { "label": "I = U/R", "anyOf": ["I = U/R", "I=U/R"] },
+          { "label": "0,5 A", "anyOf": ["0,5 A", "0.5 A", "0,5A", "0.5A"] }
+        ]
+      }
+    }
+  },
+  {
+    "id": "REAL_EVAL_PHY11_CAPACITOR_001",
+    "question": "Một tụ điện có điện dung C = 2 μF được đặt vào hiệu điện thế U = 10 V. Tính điện tích của tụ.",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "capacitor",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C03_L21_012"],
+      "answer": {
+        "type": "mixed",
+        "value": 0.00002,
+        "unit": "C",
+        "tolerance": 0.0000001,
+        "reference_answer": "Đổi C = 2 μF = 2×10^-6 F. Dùng Q = CU nên Q = 2×10^-6 × 10 = 2×10^-5 C = 0,00002 C.",
+        "required_concepts": [
+          { "label": "Q = CU", "anyOf": ["Q = CU", "Q=CU"] },
+          { "label": "đổi μF sang F", "anyOf": ["2 μF", "2×10^-6 F", "2.10^-6 F", "0,000002 F"] },
+          { "label": "0,00002 C", "anyOf": ["0,00002 C", "0.00002 C", "2×10^-5 C", "2.10^-5 C"] }
+        ]
+      }
+    }
+  },
+  {
+    "id": "REAL_EVAL_PHY11_STANDING_WAVE_001",
+    "question": "Điều kiện để có sóng dừng trên dây có hai đầu cố định là gì?",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "standing_wave",
+    "expected": {
+      "relevant_chunk_ids": ["TH_PHY11_C02_L13_009"],
       "answer": {
         "type": "conceptual",
+        "reference_answer": "Với dây có hai đầu cố định, chiều dài dây phải bằng một số nguyên lần nửa bước sóng: L = nλ/2.",
         "required_concepts": [
-          "con lắc đơn",
-          { "label": "góc nhỏ", "anyOf": ["góc nhỏ", "góc α nhỏ", "góc lệch nhỏ"] },
-          "thế năng trọng trường",
-          { "label": "phụ thuộc vào độ cao", "anyOf": ["phụ thuộc vào độ cao", "mgh", "độ cao", "vị trí khác với vị trí cân bằng"] },
-          { "label": "xấp xỉ bậc hai", "anyOf": ["xấp xỉ bậc hai", "tỉ lệ với bình phương", "gần đúng bậc hai", "xấp xỉ thành", "α^2", "alpha^2"] }
-        ]
-      }
-    }
-  },
-  {
-    "id": "RAG_SMOKE_014",
-    "question": "Động năng của vật dao động điều hòa phụ thuộc vào li độ x như thế nào?",
-    "subject": "physics",
-    "grade": 11,
-    "topic": "shm_energy",
-    "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L05_002", "TH_PHY11_C01_L05_025"],
-      "answer": {
-        "type": "mixed",
-        "required_concepts": [
-          "động năng",
-          { "label": "li độ x", "anyOf": ["li độ x", "li độ"] },
-          { "label": "Wđ = 1/2 k(A² - x²)", "anyOf": ["Wđ = 1/2 k(A² - x²)", "Wd = 1/2 k(A^2 - x^2)", "W_đ = (1/2)mω²(A² - x²)", "Wđ=1/2k(A^2-x^2)"] },
-          { "label": "cực đại tại vị trí cân bằng", "anyOf": ["cực đại tại vị trí cân bằng", "vị trí cân bằng, động năng đạt", "x = 0"] },
-          { "label": "bằng 0 ở biên", "anyOf": ["bằng 0 ở biên", "vị trí biên, động năng bằng 0", "x = ±A"] }
-        ]
-      }
-    }
-  },
-  {
-    "id": "RAG_SMOKE_015",
-    "question": "Thế năng của vật dao động điều hòa được tính theo li độ x bằng công thức nào?",
-    "subject": "physics",
-    "grade": 11,
-    "topic": "shm_energy",
-    "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L05_004", "TH_PHY11_C01_L05_025", "TH_PHY11_C01_L05_013"],
-      "answer": {
-        "type": "mixed",
-        "required_concepts": [
-          "thế năng",
-          { "label": "li độ x", "anyOf": ["li độ x", "li độ"] },
-          { "label": "Wt = 1/2 kx²", "anyOf": ["Wt = 1/2 kx²", "W_t = (1/2)kx^2", "Wt=1/2kx^2", "thế năng = 1/2 k x^2"] },
-          { "label": "k là độ cứng", "anyOf": ["k là độ cứng", "độ cứng k"] },
-          { "label": "cực đại ở biên", "anyOf": ["cực đại ở biên", "lớn nhất ở biên", "x = ±A"] }
-        ]
-      }
-    }
-  },
-  {
-    "id": "RAG_SMOKE_016",
-    "question": "Cơ năng trong dao động điều hòa có biểu thức và tính chất bảo toàn như thế nào?",
-    "subject": "physics",
-    "grade": 11,
-    "topic": "shm_energy",
-    "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L05_008", "TH_PHY11_C01_L05_025", "th_shm_004"],
-      "answer": {
-        "type": "mixed",
-        "required_concepts": [
-          "cơ năng",
-          { "label": "W = 1/2 kA²", "anyOf": ["W = 1/2 kA²", "W=1/2kA^2", "W = 1/2 m ω² A²", "W=1/2mω²A²", "cơ năng = 1/2 k A^2"] },
-          { "label": "tổng động năng và thế năng", "anyOf": ["tổng động năng và thế năng", "tổng của động năng", "tổng động năng (W_đ) và thế năng (W_t)", "W = W_đ + W_t"] },
-          "bảo toàn",
-          { "label": "không đổi nếu bỏ qua ma sát", "anyOf": ["không đổi nếu bỏ qua ma sát", "không đổi theo thời gian", "không đổi"] }
-        ]
-      }
-    }
-  },
-  {
-    "id": "RAG_SMOKE_017",
-    "question": "Dao động tắt dần là gì và nguyên nhân nào làm biên độ giảm dần?",
-    "subject": "physics",
-    "grade": 11,
-    "topic": "damped_oscillation",
-    "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L06_021"],
-      "answer": {
-        "type": "conceptual",
-        "required_concepts": [
-          "dao động tắt dần",
-          "biên độ giảm dần",
-          { "label": "lực cản", "anyOf": ["lực cản", "lực cản của môi trường"] },
-          "ma sát",
-          { "label": "năng lượng giảm", "anyOf": ["năng lượng giảm", "cơ năng bị tiêu hao", "tiêu hao"] }
-        ]
-      }
-    }
-  },
-  {
-    "id": "RAG_SMOKE_018",
-    "question": "Hiện tượng cộng hưởng xảy ra khi nào trong dao động cưỡng bức?",
-    "subject": "physics",
-    "grade": 11,
-    "topic": "damped_oscillation",
-    "expected": {
-      "relevant_chunk_ids": ["TH_PHY11_C01_L06_015", "TH_PHY11_C01_L06_021"],
-      "answer": {
-        "type": "conceptual",
-        "required_concepts": [
-          "cộng hưởng",
-          "dao động cưỡng bức",
-          { "label": "tần số lực cưỡng bức", "anyOf": ["tần số lực cưỡng bức", "tần số của lực cưỡng bức", "tần số ngoại lực"] },
-          "tần số riêng",
-          { "label": "biên độ đạt cực đại", "anyOf": ["biên độ đạt cực đại", "biên độ cực đại", "biên độ lớn nhất", "biên độ dao động cưỡng bức tăng đến giá trị cực đại"] }
+          { "label": "hai đầu cố định", "anyOf": ["hai đầu cố định"] },
+          { "label": "số nguyên lần nửa bước sóng", "anyOf": ["số nguyên lần nửa bước sóng", "nguyên lần nửa bước sóng"] },
+          { "label": "L = nλ/2", "anyOf": ["L = nλ/2", "L=nλ/2", "L = n lambda/2"] }
         ]
       }
     }

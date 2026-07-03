@@ -1,0 +1,1667 @@
+{
+  "generated_at": "2026-07-01T11:08:13.537Z",
+  "source": "database",
+  "ai_method": "analyze",
+  "llm_enabled": false,
+  "summary": {
+    "total_cases": 125,
+    "evaluated_cases": 5,
+    "skipped_cases": 120,
+    "numeric_cases": 0,
+    "conceptual_cases": 5,
+    "mixed_cases": 0,
+    "numeric_accuracy": 0,
+    "avg_concept_coverage": 0,
+    "avg_rule_based_score": 0,
+    "avg_correctness": 0,
+    "avg_groundedness": 0,
+    "avg_completeness": 0,
+    "avg_clarity": 0,
+    "avg_citation_usage": 0,
+    "avg_final_answer_score": 0,
+    "hallucination_rate": 0,
+    "avg_latency_ms": 0
+  },
+  "cases": [
+    {
+      "case_id": "AI_TEST_PHY11_001",
+      "question": "> Trong cuộc sống hằng ngày và trong kĩ thuật, ta thường gặp những vật dao động, ví dụ như dây đàn ghi-ta rung động, chiếc đu đung đưa, pít-tông chuyển động lên xuống trong xi lanh của động cơ,... > > Chuyển động của những vật này được gọi là dao động cơ. Vậy dao động cơ có những đặc điểm gì chung?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_002",
+      "question": "Một vật dao động điều hòa có phương trình:  $$ x=2\\cos\\left(4\\pi t+\\frac{\\pi}{2}\\right)\\text{ cm} $$  Hãy xác định:  1. Biên độ và pha ban đầu của dao động. 2. Pha và li độ của dao động tại thời điểm:  $$ t=2\\text{ s} $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_003",
+      "question": "Đồ thị li độ – thời gian của một con lắc đơn dao động điều hòa được mô tả trong Hình 1.3.  1. Hãy mô tả dao động điều hòa của con lắc đơn. 2. Xác định biên độ và li độ của con lắc tại các thời điểm:  $$ t=0,\\qquad t=0{,}5\\text{ s},\\qquad t=2{,}0\\text{ s} $$",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_004",
+      "question": "> Để vẽ đồ thị hoặc viết phương trình của một dao động điều hòa cần biết những đại lượng vật lí nào?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_005",
+      "question": "> Hình 2.1 là đồ thị dao động điều hòa của một vật. Hãy xác định: > > * Biên độ, chu kì, tần số của dao động. > * Nêu thời điểm mà vật có li độ: > > $$ > x=0;\\qquad x=0,1,m > $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_006",
+      "question": "> Từ Hình 2.1 hãy xác định tần số góc của dao động của vật.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_007",
+      "question": "> Hình 2.3 là đồ thị dao động điều hòa của một con lắc. > > Tại: > > $$ > t=0 > $$ > > con lắc có: > > $$ > x=-A > $$ > > đạt cực đại: > > $$ > x=A > $$ > > tại: > > $$ > t=\\frac{T}{2} > $$ > > và cắt trục tại: > > $$ > t=\\frac{T}{4} > $$ > > Hãy cho biết: > > * Vị trí và hướng dịch chuyển của con lắc tại thời điểm ban đầu. > * Pha ban đầu của dao động.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_008",
+      "question": "> Hãy chứng minh rằng độ lệch pha giữa hai dao động cùng chu kì bằng độ lệch pha ban đầu.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_009",
+      "question": "> Hai con lắc 1 và 2 dao động điều hòa tại cùng thời điểm quan sát, vị trí của chúng được biểu diễn trên Hình 2.5a và Hình 2.5b. > > Hỏi dao động của con lắc nào sớm pha hơn và sớm hơn bao nhiêu?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_010",
+      "question": "Đồ thị li độ – thời gian của một vật dao động điều hòa được mô tả trên Hình 2.6.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_011",
+      "question": "a. Xác định biên độ, chu kì, tần số, tần số góc, pha ban đầu và viết phương trình dao động.  b. Xác định pha của dao động tại thời điểm:  $$ t=2,5s $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_012",
+      "question": "Hai vật dao động điều hòa A và B có cùng tần số nhưng lệch pha nhau được mô tả trên Hình 2.7.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_013",
+      "question": "a. Xác định li độ của B khi A có li độ cực đại.  b. Xác định li độ của A khi B có li độ cực đại.  c. Hãy cho biết A hay B đạt tới li độ cực đại trước (không kể thời điểm (t=0)).  d. Xác định độ lệch pha của dao động A so với dao động B.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_014",
+      "question": "Xét một vật dao động điều hòa có:  * Biên độ:  $$ A=10cm $$  * Tần số:  $$ f=5Hz $$  Tại thời điểm ban đầu ((t=0)), vật có li độ cực đại theo chiều dương.  Yêu cầu:  * Xác định chu kì, tần số góc, pha ban đầu của dao động. * Viết phương trình và vẽ đồ thị ((x-t)) của dao động.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_015",
+      "question": "Cho hai con lắc đơn dao động điều hòa.  Biết phương trình dao động của con lắc thứ nhất là:  $$ x=20\\cos\\left(20\\pi t+\\frac{\\pi}{2}\\right) \\quad(cm) $$  Con lắc thứ hai có cùng biên độ và tần số nhưng lệch về thời gian so với con lắc thứ nhất một phần tư chu kì.  Hãy viết phương trình dao động của con lắc thứ hai.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_016",
+      "question": "> Ta có thể dựa vào đồ thị ((x-t)) của dao động điều hòa để xác định vận tốc và gia tốc của vật được không?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_017",
+      "question": "> Đặt một thước kẻ (loại 20 cm) cho mép của thước tiếp xúc với đồ thị li độ – thời gian (Hình 3.1) ở một số điểm C, D, E, G, H. > > Từ độ dốc của thước hãy so sánh độ lớn vận tốc của vật tại các điểm: > > C, E, H.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_018",
+      "question": "Dùng thước kẻ (loại 20 cm) để xác định xem trên đồ thị ((v-t)) Hình 3.2:  * Tại thời điểm nào độ dốc của đồ thị bằng 0. * Tại thời điểm nào độ dốc của đồ thị cực đại.  Từ đó, so sánh độ lớn của gia tốc trên đồ thị ((a-t)) Hình 3.3 ở các thời điểm tương ứng.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_019",
+      "question": "Phương trình dao động của một vật là:  $$ x=5\\cos(4\\pi t) \\quad(cm) $$  Hãy:  * Viết phương trình vận tốc. * Viết phương trình gia tốc. * Vẽ đồ thị li độ, vận tốc, gia tốc theo thời gian của vật.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_020",
+      "question": "> Khi biết phương trình hoặc đồ thị của vật dao động điều hòa, làm thế nào để xác định được vận tốc và gia tốc của vật?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_021",
+      "question": "Cho phương trình của một vật dao động điều hòa:  $$ x=5\\cos\\left(10\\pi t+\\frac{\\pi}{6}\\right) \\quad(cm) $$  Xác định biên độ (A), tần số (f), pha ban đầu (\\varphi), và li độ (x), tại thời điểm:  $$ t_1=0,05s $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_022",
+      "question": "Một vật dao động điều hòa với tần số:  $$ f=2Hz $$  Tại thời điểm ban đầu vật có li độ:  $$ x=5cm $$  và vận tốc:  $$ v=-30cm/s $$  Xác định:  a. Biên độ và pha ban đầu của dao động.  b. Giá trị cực đại của vận tốc và gia tốc của vật khi dao động.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_023",
+      "question": "Một vật dao động điều hòa với tần số góc:  $$ \\omega=1rad/s $$  có đồ thị của li độ (x), vận tốc (v) và gia tốc (a) theo thời gian (t) được mô tả trên Hình 4.1.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_024",
+      "question": "Một vật dao động điều hòa có phương trình là:  $$ x=2\\cos\\left(4\\pi t-\\frac{\\pi}{6}\\right) \\quad(cm) $$  Hãy cho biết:  * Biên độ * Tần số góc * Chu kì * Tần số * Pha ban đầu * Pha của dao động ở thời điểm:  $$ t=1s $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_025",
+      "question": "Một vật dao động điều hòa dọc theo trục (Ox), quanh điểm gốc (O), với biên độ:  $$ A=10cm $$  và chu kì:  $$ T=2s $$  Tại thời điểm:  $$ t=0 $$  vật có li độ:  $$ x=A $$  a. Viết phương trình dao động của vật.  b. Xác định thời điểm đầu tiên vật qua vị trí có li độ:  $$ x=5cm $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_026",
+      "question": "Hình 4.2 là sơ đồ của một bàn xoay hình tròn, có gắn một thanh nhỏ cách tâm bàn:  $$ 15cm $$  Bàn xoay được chiếu sáng bằng nguồn sáng rộng, song song, hướng chiếu sáng từ phía trước màn để bóng đổ lên màn hình.  Một con lắc đơn dao động điều hòa phía sau bàn xoay với biên độ bằng khoảng cách từ thanh nhỏ đến tâm bàn xoay.  Tốc độ quay của bàn quay được điều chỉnh là:  $$ 3\\pi rad/s $$  Vị trí bóng của thanh nhỏ con lắc luôn trùng nhau.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_027",
+      "question": "Hình 4.3 là đồ thị li độ – thời gian của một vật dao động điều hòa.  a. Xác định biên độ, chu kì, tần số, tần số góc và pha ban đầu của vật dao động.  b. Viết phương trình của dao động của vật.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_028",
+      "question": "Đồ thị li độ – thời gian của hai vật dao động điều hòa A và B có cùng tần số nhưng lệch pha nhau như Hình 4.4.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_029",
+      "question": "> Ở lớp 10, khi học về chuyển động của vật, ta đã biết có sự chuyển hóa giữa động năng và thế năng của vật. > > Vậy trong dao động điều hòa có sự chuyển hóa tương tự không?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_030",
+      "question": "Một con lắc lò xo có độ cứng (k) và vật nặng có khối lượng (m).",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_031",
+      "question": "> Một em bé đang chơi xích đu trong sân. Tại sao để xích đu tiếp tục dao động, người mẹ thỉnh thoảng lại đẩy nhẹ vào em bé?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_032",
+      "question": "> Hãy giải thích tại sao dao động của em bé chơi xích đu trong ví dụ ở đầu bài lại tắt dần nếu không có người mẹ thỉnh thoảng đẩy nhẹ vào em bé.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_033",
+      "question": "> Hãy tìm trong thực tế ví dụ về dao động tắt dần và cho biết trong mỗi trường hợp thì dao động tắt dần là có lợi hay có hại.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_034",
+      "question": "Khi đến bến xe buýt, xe chỉ tạm dừng nên không tắt máy, thân xe vẫn dao động.  Dao động đó là dao động cưỡng bức dưới tác dụng của lực cưỡng bức tuần hoàn gây ra bởi chuyển động của pít-tông trong xi lanh của máy nổ.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_035",
+      "question": "**Chuẩn bị**  * Một thanh cứng hình trụ, hai đầu thanh được gắn vào hai ổ trục để thanh có thể xoay dễ dàng quanh trục của nó. * Một con lắc điều khiển Đ, ba con lắc thử 1, 2 và 3 được treo vào thanh cứng hình trụ. * Bố trí thí nghiệm như Hình 6.3.  **Tiến hành**  * Hãy dự đoán xem, trong thí nghiệm Hình 6.3, nếu con lắc điều khiển Đ được kéo sang một bên theo phương vuông góc với thanh rồi thả ra cho dao động thì các con lắc khác có dao động không? * Con lắc nào dao động mạnh nhất? * Tại sao? *",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_036",
+      "question": "> Đánh giá được sự có lợi hay có hại của cộng hưởng trong các ví dụ nêu trên.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_037",
+      "question": "> Ta có thể sử dụng định luật bảo toàn cơ năng để tìm li độ và vận tốc của vật dao động điều hòa được không?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_038",
+      "question": "Một con lắc đơn gồm vật nặng có kích thước nhỏ, có khối lượng (m), treo ở đầu một sợi dây mềm không giãn có độ dài (l) và có khối lượng không đáng kể như Hình 7.1.  Đưa vật nặng ra khỏi vị trí cân bằng (O) sao cho dây treo hợp với (Q_0) một góc (\\alpha_0), với:  $$ \\alpha_0 \\le 10^\\circ $$  rồi thả nhẹ cho con lắc dao động điều hòa trên cung tròn (AOB).  a. Tính thế năng của con lắc; động năng của vật ở các vị trí (A), (O), (B) và vị trí bất kì có li độ góc (\\alpha).  b. Ở vị trí nào động năng b",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_039",
+      "question": "Một vật có khối lượng:  $$ m=200g $$  dao động điều hòa với tần số góc:  $$ \\omega=2\\pi;rad/s $$  biên độ:  $$ A=10cm $$  Xác định thế năng của con lắc tại thời điểm vật có tốc độ:  $$ v=10cm/s $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_040",
+      "question": "Một con lắc lò xo có độ cứng:  $$ k=100N/m $$  dao động điều hòa.  Gọi (W_t), (W_đ) lần lượt là thế năng của lò xo và động năng của vật, (W_0) là cơ năng của con lắc lò xo.  Đồ thị biểu diễn sự phụ thuộc của thế năng (W_t) và động năng (W_đ) của con lắc vào li độ (x) như Hình 7.2.  Tính (W_0).  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_041",
+      "question": "Hình 7.3 mô tả một máy đo địa chấn đơn giản hoạt động theo nguyên tắc sau:  * Khi xảy ra động đất thì hệ gồm lò xo và vật nặng của máy sẽ dao động theo tần số của địa chấn. * Bút dạ gắn với vật nặng sẽ ghi lại đồ thị của địa chấn trên cuộn giấy quay đều.  Biết sóng địa chấn có tần số nằm trong khoảng:  $$ 30Hz\\le f\\le 40Hz $$  Hãy giải thích tại sao tần số riêng của hệ vật nặng và lò xo trong máy địa chấn phải có giá trị nhỏ hơn tần số này rất nhiều.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_042",
+      "question": "Đồ thị Hình 7.4 mô tả mối liên hệ giữa gia tốc và li độ của một vật dao động điều hòa.  Sử dụng số liệu trong đồ thị Hình 7.4 để tính tần số của dao động.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_043",
+      "question": "Hình 7.5 là đồ thị động năng theo thời gian của một vật khối lượng:  $$ m=0,4kg $$  dao động điều hòa.  Tại thời điểm ban đầu, vật đang chuyển động theo chiều dương, lấy:  $$ \\pi^2=10 $$  Viết phương trình dao động của vật.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_044",
+      "question": "Một vật có khối lượng (m) dao động điều hòa với tần số góc (\\omega) và biên độ (A).  a. Khi vật có li độ bằng một nửa biên độ thì động năng và thế năng chiếm bao nhiêu phần trăm so với cơ năng?  b. Tại li độ nào thì thế năng bằng động năng?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_045",
+      "question": "> Để chỉnh các dây đàn, có thể so sánh tần số âm của nhạc cụ với âm phát ra từ âm thoa có tần số xác định. > > Làm thế nào kiểm tra tần số âm được ghi trên âm thoa bằng dụng cụ thí nghiệm?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_046",
+      "question": "> Quan sát màn hình hiển thị tín hiệu dao động điện trên dao động kí như Hình 10.2, hãy xác định tần số dao động của tín hiệu.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_047",
+      "question": "| Đại lượng      | Lần 1 | Lần 2 | Lần 3 | Giá trị trung bình | | -------------- | ----: | ----: | ----: | -----------------: | | Chu kì (T(s))  |     ? |     ? |     ? |                  ? | | Tần số (f(Hz)) |     ? |     ? |     ? |                  ? |  ---  So sánh tần số sóng âm đo được với tần số ghi trên âm thoa.  Ghi lại kết quả đo chu kì và xử lí kết quả thí nghiệm:  * Tính tần số sóng âm và ghi kết quả vào mẫu Bảng 10.1. * Tính giá trị trung bình, sai số của phép đo chu kì và tần số.",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_048",
+      "question": "> Chỉ với một chiếc điện thoại thông minh hay chiếc máy tính được kết nối với internet, ta có thể trao đổi thông tin với nhau trên khắp toàn cầu. > > Vậy tại sao thông tin lại có thể lan truyền được trong không gian?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_049",
+      "question": "Một vệ tinh thông tin (vệ tinh địa tĩnh) chuyển động trên quỹ đạo tròn ngay phía trên xích đạo của Trái Đất, quay cùng hướng và cùng chu kì tự quay của Trái Đất ở độ cao:  $$ 36600;km $$  so với đài phát hình trên mặt đất.  Đài phát nằm trên đường thẳng nối vệ tinh và tâm Trái Đất.  Vệ tinh nhận sóng truyền hình từ đài phát rồi phát lại tức thời tín hiệu đó về Trái Đất.  Biết:  $$ \\lambda =0,5m $$  và:  $$ c=3\\times10^8m/s $$  Tính khoảng thời gian lớn nhất mà sóng truyền hình đi từ đài phát đến",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_050",
+      "question": "> So sánh tần số của ánh sáng đỏ và ánh sáng tím.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_051",
+      "question": "Hãy xác định phạm vi của tần số tương ứng với các dải bước sóng đó.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_052",
+      "question": "Nêu tên sóng điện từ trong chân không ứng với mỗi bước sóng:  a)  $$ 1km $$  b)  $$ 3cm $$  c)  $$ 5\\mu m $$  d)  $$ 500nm $$  e)  $$ 50nm $$  g)  $$ 10^{-12}m $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_053",
+      "question": "Nêu loại sóng điện từ ứng với mỗi tần số sau:  a)  $$ 200kHz $$  b)  $$ 100MHz $$  c)  $$ 5\\times10^{14}Hz $$  d)  $$ 10^{18}Hz $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_054",
+      "question": "> Cho hai loa giống nhau cùng phát âm thanh như hình bên, dịch chuyển một micro có nối với dao động kí phía trước hai loa để ghi đồ thị sóng âm thì thấy có những điểm tại đó biên độ sóng âm thu được rất lớn (L) và những điểm biên độ rất bé (B) nằm xen kẽ. > > Hiện tượng thú vị này giải thích như thế nào?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_055",
+      "question": "> Giải thích hiện tượng nêu ở mục khởi động của đầu bài.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_056",
+      "question": "> Trong thí nghiệm trên, nếu thay nguồn sáng laze trong thí nghiệm trên bằng bóng đèn dây tóc phát ánh sáng trắng thì vân sáng chính giữa sẽ có màu gì?  ---  Trong vùng hai chùm sáng gặp nhau lại có những vạch tối và vạch sáng xen kẽ như trên Hình 12.4 đã khẳng định ánh sáng có tính chất sóng.  Những vạch tối là chỗ hai sóng ánh sáng triệt tiêu lẫn nhau.  Những vạch sáng là chỗ hai sóng ánh sáng tăng cường lẫn nhau.  Những vạch sáng và tối xen kẽ nhau chính là hệ vân giao thoa của hai sóng ánh s",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_057",
+      "question": "> Khi vỗ tay đều trước miệng các ống của đàn Klông pút có độ dài khác nhau như hình bên, thì thấy âm phát ra ở các miệng ống trầm bổng khác nhau. > > Sóng âm lan truyền trong mỗi ống không phải là sóng chạy. > > Vậy đó là loại sóng gì và có những đặc điểm nào?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_058",
+      "question": "> Từ kết quả thí nghiệm rút ra điều kiện để có sóng dừng.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_059",
+      "question": "> Hãy xác định số nút và số bụng của sóng dừng trên sợi dây Hình 13.3.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_060",
+      "question": "> Hãy giải thích sự tạo thành sóng dừng trên dây (PQ) ở thí nghiệm Hình 13.1.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_061",
+      "question": "Một dây đàn hồi dài:  $$ 0,6m $$  hai đầu cố định dao động với một bụng sóng.  a. Tính bước sóng (\\lambda) của sóng trên dây.  b. Nếu dây dao động với 3 bụng sóng thì bước sóng là bao nhiêu?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_062",
+      "question": "> Tìm điều kiện để có sóng dừng trong cột không khí một đầu cố định, một đầu tự do như Hình 13.7.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_063",
+      "question": "> Có thể sử dụng mối liên hệ nào để xác định các đại lượng (\\lambda, v, f, T)?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_064",
+      "question": "Một sóng âm có tần số:  $$ f=192Hz $$  và truyền đi được quãng đường:  $$ s=91,4m $$  trong:  $$ t=0,27s $$  Hãy tính:  a. Tốc độ truyền sóng.  b. Bước sóng.  c. Nếu tần số sóng là:  $$ f'=442Hz $$  thì bước sóng và chu kì là bao nhiêu?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_065",
+      "question": "Trong thí nghiệm Hình 8.1, cần rung dao động với tần số:  $$ f=50Hz $$  Người ta đo được bán kính của 2 ngọn sóng hình tròn liên tiếp lần lượt bằng:  $$ 12,4cm $$  và:  $$ 14,3cm $$  Tính tốc độ truyền sóng.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_066",
+      "question": "Một sóng hình sin đang lan truyền từ trái sang phải trên một dây dài.  Hình 14.1 là hình ảnh của sóng ở một thời điểm xét.  Cho biết tốc độ truyền sóng:  $$ v=1m/s $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_067",
+      "question": "![Hình 14.1 - Sóng hình sin lan truyền trên dây](assets/images/hinh-14-1.png)  **Nội dung hình**  * Đồ thị li độ (u), đơn vị cm. * Trục hoành (x), đơn vị cm. * Sóng hình sin lan truyền từ trái sang phải. * Phương truyền sóng. * Các điểm (P, Q, R, O).  ---  a. Tính tần số của sóng.  b. Hỏi điểm (Q), (P) và (O) đang chuyển động lên hay xuống?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_068",
+      "question": "Trong một thí nghiệm về giao thoa ánh sáng với hai khe Y-âng, khoảng cách giữa hai khe hẹp là:  $$ a=2mm $$  khoảng cách giữa mặt phẳng chứa hai khe với màn quan sát là:  $$ D=1,2m $$  Khe sáng hẹp phát đồng thời hai bức xạ đơn sắc màu đỏ:  $$ \\lambda_1=0,66\\mu m $$  và màu lục:  $$ \\lambda_2=0,55\\mu m $$  a. Tính khoảng vân của hai ánh sáng màu đỏ và màu lục.  b. Tính khoảng cách ngắn nhất giữa hai vân sáng cùng màu với vân sáng trung tâm.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_069",
+      "question": "Một lò xo có chiều dài:  $$ 1,2m $$  đầu trên gắn vào một nhánh âm thoa, đầu dưới treo một quả cân.  Dao động của âm thoa được duy trì bằng một nam châm điện để có tần số:  $$ 50Hz $$  Khi đó, trên lò xo có sóng dừng và trên lò xo chỉ có một nhóm vòng dao động với biên độ cực đại.  Tính tốc độ truyền sóng trên lò xo.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_070",
+      "question": "Một sóng hình sin được mô tả như Hình 14.2.  a. Xác định bước sóng của sóng.  b. Nếu chu kì của sóng là:  $$ 1s $$  thì tần số và tốc độ truyền sóng bằng bao nhiêu?  c. Bước sóng sẽ bằng bao nhiêu nếu tần số tăng lên:  $$ 5Hz $$  và tốc độ truyền sóng không đổi?  Vẽ đồ thị ((u-x)) trong trường hợp này và đánh dấu rõ bước sóng trên đồ thị.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_071",
+      "question": "Trong một thí nghiệm Y-âng về giao thoa ánh sáng, hai khe được chiếu bằng ánh sáng đơn sắc.  Khoảng cách giữa hai khe là:  $$ 0,6mm $$  Khoảng vân trên màn quan sát đo được là:  $$ 1mm $$  Từ vị trí ban đầu, nếu tịnh tiến màn quan sát một đoạn:  $$ 25cm $$  lại gần mặt phẳng chứa hai khe thì khoảng vân mới trên màn là:  $$ 0,8mm $$  Tính bước sóng của ánh sáng dùng trong thí nghiệm.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_072",
+      "question": "> Âm thanh truyền trong một môi trường có tốc độ xác định. > > Làm thế nào đo được tốc độ truyền âm trong không khí bằng dụng cụ thí nghiệm?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_073",
+      "question": "> Trong cuộc sống hằng ngày, chúng ta thường gặp hay nghe đến nhiều loại sóng như: sóng nước, sóng âm, sóng vô tuyến, sóng biển, sóng địa chấn,... > > Vậy sóng được hình thành như thế nào và có những đặc điểm gì?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_074",
+      "question": "> Hãy quan sát chuyển động của miếng xốp trong thí nghiệm Hình 8.1 và cho biết miếng xốp có chuyển động ra xa nguồn cùng với sóng không?  ---  Các phần tử môi trường chỉ dao động trong một phạm vi không gian rất hẹp, trong khi sóng truyền đi rất xa.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_075",
+      "question": "> Trong đồ thị của sóng Hình 8.3d, các điểm nào trong các điểm (M), (N), (P) trên phương (Ox) dao động lệch pha: > > $$ > \\frac{\\pi}{2} > $$ > > ngược pha, đồng pha với nhau?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_076",
+      "question": "> Sóng mặt nước và sóng âm truyền trong không khí có đặc điểm gì chung và riêng?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_077",
+      "question": "> Hình 9.1 mô tả một sóng ngang truyền trên dây đàn hồi. > > Hãy quan sát các mũi tên, từ đó chỉ ra phương dao động của các phần tử của dây và phương truyền sóng.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_078",
+      "question": "> Dựa vào Hình 9.1 và Hình 9.2, hãy chỉ ra điểm giống và khác nhau giữa sóng dọc và sóng ngang.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_079",
+      "question": "Quan sát Hình 9.4 mô tả biên độ và tần số của âm qua dao động kí để trả lời các câu hỏi sau:",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_080",
+      "question": "Tại thời điểm mà sóng trên lò xo được chỉ trên Hình 9.2.  Hãy xác định:  a. Sóng đã truyền được bao nhiêu bước sóng?  b. Trong các điểm (X), (Y), (Z), điểm nào là điểm chưa dao động?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_081",
+      "question": "> Em đã biết các điện tích cùng dấu đẩy nhau, khác dấu hút nhau. > > Theo em, độ lớn của lực tương tác giữa hai điện tích phụ thuộc như thế nào vào độ lớn của các điện tích và khoảng cách giữa chúng?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_082",
+      "question": "Dựa vào Hình 16.2a, vẽ các vectơ lực biểu diễn tương tác giữa các điện tích trong các hình còn lại.  Vẽ vectơ lực của ba điện tích đặt tại các đỉnh của một tam giác đều. Biết các điện tích trên đều cùng dấu và cùng độ lớn.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_083",
+      "question": "Độ lớn của lực tương tác giữa các điện tích có phụ thuộc như thế nào vào khoảng cách giữa các điện tích?  Đề xuất phương án thí nghiệm để kiểm tra dự đoán.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_084",
+      "question": "Người ta dùng máy phát tĩnh điện để tích điện cho hai quả cầu kim loại nhỏ đặt cách nhau:  $$ 10\\ cm $$  trong không khí.  Tính lực điện tương tác giữa hai quả cầu khi:",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_085",
+      "question": "Người ta có thể dùng lực tĩnh điện để tách các trang sách bị dính chặt vào nhau mà không làm chúng hỏng.  Hãy mô tả cách làm này.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_086",
+      "question": "Có thể dùng định luật Coulomb để xác định độ lớn của lực tương tác giữa các điện tích trong các thí nghiệm ở Hình 16.1 không?  Tại sao?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_087",
+      "question": "Xác định lực điện tương tác giữa electron và proton của nguyên tử hydrogen.  Biết khoảng cách từ electron trong nguyên tử hydrogen đến hạt nhân của nguyên tử này là:  $$ 5 \\times 10^{-11}\\ m $$  Điện tích của electron và proton có độ lớn bằng nhau:  $$ 1{,}6 \\times 10^{-19}\\ C $$  Lấy:  $$ \\varepsilon_0=8{,}85 \\times 10^{-12}\\ \\frac{C^2}{N \\cdot m^2} $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_088",
+      "question": "Hai điện tích điểm:  $$ q_1=15\\ \\mu C $$  và:  $$ q_2=-6\\ \\mu C $$  đặt cách nhau:  $$ 0{,}2\\ m $$  trong không khí.  Phải đặt một điện tích $q_3$ ở vị trí nào để lực điện tác dụng lên điện tích này bằng 0?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_089",
+      "question": "> Hai quả cầu tích điện có tương tác với nhau. > > Hai quả cầu tích điện cùng dấu được treo bằng hai sợi dây mảnh không dẫn điện như hình bên. > > Tại sao chúng không tiếp xúc nhưng vẫn tương tác được với nhau?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_090",
+      "question": "Xét điện trường của điện tích:  $$ Q=6 \\times 10^{-14}\\ C $$  Sử dụng đoạn thẳng dài:  $$ 1\\ cm $$  để biểu diễn cho độ lớn vectơ cường độ điện trường:  $$ E=\\frac{10^{-10}}{6\\pi\\varepsilon_0}\\ V/m $$  Hãy tính và vẽ vectơ cường độ điện trường tại một điểm cách $Q$ một khoảng:  $$ 2\\ cm $$  và:  $$ 3\\ cm $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_091",
+      "question": "Đặt điện tích điểm:  $$ Q_1=6 \\times 10^{-8}\\ C $$  tại điểm $A$ và điện tích điểm:  $$ Q_2=-2 \\times 10^{-8}\\ C $$  tại điểm $B$.  Khoảng cách giữa $A$ và $B$ là:  $$ 3\\ cm $$  Hãy xác định những điểm mà cường độ điện trường tại đó bằng $0$.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_092",
+      "question": "Cho tam giác $ABC$ vuông tại $A$, có:  $$ AB=3\\ cm $$  và:  $$ AC=4\\ cm $$  Tại điểm $B$ đặt điện tích:  $$ Q_1=4{,}5 \\times 10^{-8}\\ C $$  Tại điểm $C$ đặt điện tích:  $$ Q_2=2 \\times 10^{-8}\\ C $$",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_093",
+      "question": "Một hạt bụi mịn loại $pm2{,}5$ có điện tích:  $$ q=1{,}6 \\times 10^{-19}\\ C $$  lơ lửng trong không khí nơi có điện trường của Trái Đất bằng:  $$ E=120\\ V/m $$  Bỏ qua trọng lực, tính lực điện của Trái Đất tác dụng lên hạt bụi mịn.  Từ đó giải thích lí do hạt bụi loại này thường lơ lửng trong không khí.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_094",
+      "question": "> Chúng ta đã biết, cường độ điện trường tại mỗi điểm thường sẽ có giá trị khác nhau. > > Vậy có tồn tại những vùng điện trường mà cường độ điện trường tại mỗi điểm có giá trị như nhau không?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_095",
+      "question": "Hai bản phẳng kim loại đặt song song, cách nhau một khoảng:  $$ d=20\\ cm $$  Đặt vào hai bản này một hiệu điện thế một chiều:  $$ U=1000\\ V $$  Một hạt bụi mịn $pm2{,}5$ có điện tích:  $$ q=16 \\times 10^{-19}\\ C $$  bay vào điện trường giữa hai bản phẳng.  Hãy xác định phương, chiều và độ lớn của lực điện tác dụng lên hạt bụi đó.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_096",
+      "question": "Để chẩn đoán hình ảnh trong y học, người ta thường sử dụng tia X, hay tia Rơn-ghen, để chụp X-quang và chụp CT.  Cho rằng vùng điện trường giữa hai cực của ống tia X là một điện trường đều.  Khoảng cách giữa hai cực bằng:  $$ 2\\ cm $$  Hiệu điện thế giữa hai cực là:  $$ 120\\ kV $$  Hãy tính lực điện trường tác dụng lên electron.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_097",
+      "question": "Hai bản phẳng có kích thước lớn và bằng nhau, đặt song song với nhau, cách nhau một khoảng:  $$ d=24\\ cm $$  Hiệu điện thế giữa hai bản phẳng là:  $$ U=48\\ V $$  Một electron có:  $$ q=-1{,}6 \\times 10^{-19}\\ C $$  $$ m=9{,}1 \\times 10^{-31}\\ kg $$  bay vào chính giữa hai bản phẳng theo phương vuông góc với các đường sức điện trường với vận tốc:  $$ v_0=200\\ m/s $$  Bỏ qua điện trường Trái Đất, lực cản môi trường và trọng lực tác dụng lên electron.  Hãy viết phương trình quỹ đạo của chuyển động.",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_098",
+      "question": "Hãy giải thích nguyên tắc hoạt động lái tia điện tử của các bản lái tia trong Hình 18.6.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_099",
+      "question": "Máy lọc không khí tạo ra chùm các ion âm $OH^-$.  Mỗi ion $OH^-$ có khối lượng:  $$ m=2{,}833 \\times 10^{-26}\\ kg $$  điện tích:  $$ q=-1{,}6 \\times 10^{-19}\\ C $$  có vận tốc ban đầu từ:  $$ 20\\ m/s $$  đến:  $$ 40\\ m/s $$  theo phương song song với mặt đất và cách mặt đất:  $$ 50\\ cm $$  Điện trường đều đo được ở bề mặt Trái Đất là:  $$ E=114\\ V/m $$  Bỏ qua trọng lực và các loại lực cản khác.  Hãy xác định quỹ đạo của chùm ion âm này.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_100",
+      "question": "> Quỹ đạo chuyển động của điện tích thử $q>0$ khi bay vào điện trường đều theo phương vuông góc với đường sức. > > Chúng ta đã biết, có sự tương tự giữa chuyển động của một điện tích $q$ trong điện trường đều với chuyển động của một vật khối lượng $m$ trong trường trọng lực. > > Như vậy, điện tích $q$ trong điện trường có tồn tại thế năng tương tự như vật khối lượng $m$ trong trọng trường không?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_101",
+      "question": "Trong điện trường bất kì, khi chọn mốc là ở xa vô cùng, có trường hợp mà số đo thế năng sẽ có giá trị âm không?  Hãy vẽ hình minh họa.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_102",
+      "question": "> Đường dây điện cao thế. > > Trong thực tế, chúng ta gặp những đường dây dẫn điện cao thế, trung thế, hạ thế. > > Từ “thế” ở đây được hiểu như thế nào? Có liên quan tới thế năng điện đã học ở Bài 19 hay không?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_103",
+      "question": "Hãy vận dụng công thức:  $$ V=\\frac{A}{q} $$  để chứng tỏ rằng công thực hiện để dịch chuyển điện tích $q$ từ điểm $N$ đến điểm $M$ bằng:  $$ A_{MN}=(V_M-V_N)q=U_{MN}q $$  ---  Để dịch chuyển một điện tích dương $q$ ngược chiều điện trường từ điểm $N$ tới điểm $M$, ta cần cung cấp một lực ít nhất bằng với lực điện và ngược chiều.  Trong dịch chuyển này, công ta bỏ ra có độ lớn bằng nhưng trái dấu với công của lực điện trường.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_104",
+      "question": "Cho hiệu điện thế:  $$ U_{AK}=45\\ V $$  được đặt vào giữa hai cực của tế bào quang điện.  Khi chiếu xạ ánh sáng phù hợp để catôt phát xạ electron vào vùng điện trường giữa hai cực.  Hãy tính công của điện trường trong dịch chuyển của electron từ catôt tới anôt.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_105",
+      "question": "Tính thế năng điện của một electron đặt tại điểm $M$ có điện thế bằng:  $$ 1000\\ V $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_106",
+      "question": "Có hai bản phẳng song song cách nhau một khoảng $d$, được nối vào nguồn điện một chiều có hiệu điện thế:  $$ U=48\\ V $$  Chọn bản nhiễm điện âm làm mốc điện thế.",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_107",
+      "question": "Vận dụng mối liên hệ giữa điện thế và cường độ điện trường để xác định điện thế tại một điểm cách mặt đất:  $$ 5\\ m $$  ở nơi có điện trường của Trái Đất là:  $$ 114\\ V/m $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_108",
+      "question": "> Nếu một chiếc quạt điện gặp trục trặc như: > > * Cánh quạt quay chậm hoặc không quay dù vẫn cắm điện. > * Động cơ nóng, rung và có âm thanh bất thường. > > Thì nguyên nhân mà chúng ta cần xem xét là hỏng tụ điện. > > Vậy tụ điện có cấu tạo như thế nào?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_109",
+      "question": "Cho:  $$ C_1=2\\mu F $$  $$ C_2=3\\mu F $$  $$ C_3=4\\mu F $$",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_110",
+      "question": "Cho hai tụ điện:  Tụ D:  $$ 2mF - 450V $$  Tụ E:  $$ 2.5\\mu F - 350V $$  Khi tích điện tới điện áp tối đa cho phép, hãy tính năng lượng của mỗi tụ.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_111",
+      "question": "> Cường độ dòng điện là gì và đặc trưng cho tính chất nào của dòng điện?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_112",
+      "question": "Trên một thiết bị dùng để nạp điện cho điện thoại di động có ghi thông số:  $$ 10000\\ mA \\cdot h $$  Thông số này cho biết điều gì?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_113",
+      "question": "Một dây dẫn bằng kim loại, tiết diện tròn, có đường kính tiết diện:  $$ d=2\\ mm $$  có dòng điện:  $$ I=5A $$  chạy qua.  Cho biết mật độ electron tự do là:  $$ n=8{,}45 \\times 10^{28}\\ electron/m^3 $$  Hãy tính tốc độ dịch chuyển có hướng của các electron trong dây dẫn.  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_114",
+      "question": "> Các thiết bị điện thông thường mà chúng ta dùng hằng ngày đều có các điện trở. > > Vậy điện trở đặc trưng cho tính chất nào của vật dẫn và tại sao một vật dẫn lại có điện trở?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_115",
+      "question": "Vận dụng công thức:  $$ I=Snve $$  để giải thích tại sao điện trở $R$ của vật dẫn kim loại phụ thuộc vào chiều dài $l$, tiết diện $S$ và điện trở suất $\\rho$ của dây theo công thức:  $$ R=\\rho\\frac{l}{S} $$  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_116",
+      "question": "Từ kết quả thí nghiệm, em rút ra nhận xét gì về sự phụ thuộc của nhiệt điện trở NTC vào nhiệt độ?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_117",
+      "question": "Hai đồ thị trong Hình 23.9a, b mô tả đường đặc trưng vôn - ampe của một dây kim loại ở hai nhiệt độ khác nhau $t_1$ và $t_2$.",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_118",
+      "question": "Đồ thị Hình 23.10 thể hiện đường đặc trưng vôn - ampe của hai linh kiện:  * Dây tóc bóng đèn. * Dây kim loại.",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_119",
+      "question": "> Em đã biết nguồn điện có khả năng cung cấp năng lượng điện để tạo ra dòng điện sử dụng trong đời sống. > > Vậy nguồn điện là gì? Vì sao nguồn điện có thể tạo ra dòng điện?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "AI_TEST_PHY11_120",
+      "question": "Vì sao sẽ rất nguy hiểm nếu hiện tượng đoản mạch xảy ra đối với mạng điện ở gia đình?  ---",
+      "ai_answer": "",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      },
+      "skipped_reason": "No expected answer data"
+    },
+    {
+      "case_id": "GOLD_DRAFT_CAPACITOR_001",
+      "question": "Một tụ điện có điện dung C = 2 μF được đặt vào hiệu điện thế U = 10 V. Tính điện tích của tụ.",
+      "expected_answer": {
+        "Q": 0.00002,
+        "unit": "C"
+      },
+      "ai_answer": "Chọn gốc tọa độ $O$ tại điểm electron bắt đầu bay vào điện trường đều.\n\nTrục $Ox$ có hướng trùng với vectơ vận tốc ban đầu.\n\nTrục $Oy$ hướng thẳng đứng lên trên.\n\nĐổi đơn vị:\n\n$$\nd=24\\ cm=24 \\times 10^{-2}\\ m=0{,}24\\ m\n$$\n\nĐộ lớn cường độ điện trường giữa hai bản phẳng là:\n\n$$\nE=\\frac{U}{d}=\\frac{48}{24 \\times 10^{-2}}=200\\ V/m\n$$\n\nVectơ cường độ điện trường hướng từ trên xuống dưới và ngược chiều với trục $Oy$.\n\nLực điện tác dụng lên electron có phương thẳng đứng, chiều hướng lên trên.\n\nĐộ lớn lực điện:\n\n$$\nF=|q|E=|q|\\frac{U}{d}\n$$\n\nGia tốc của electron theo phương $Oy$:\n\n$$\na_y=\\frac{F}{m}=\\…\nNguồn tham chiếu gần nhất: Giải.\nCâu trả lời được rút từ theory chunk liên quan nhất.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      }
+    },
+    {
+      "case_id": "GOLD_DRAFT_OHM_001",
+      "question": "Một điện trở R = 10 Ω được đặt vào hiệu điện thế U = 5 V. Tính cường độ dòng điện.",
+      "expected_answer": {
+        "I": 0.5,
+        "unit": "A"
+      },
+      "ai_answer": "Chọn gốc tọa độ $O$ tại điểm electron bắt đầu bay vào điện trường đều.\n\nTrục $Ox$ có hướng trùng với vectơ vận tốc ban đầu.\n\nTrục $Oy$ hướng thẳng đứng lên trên.\n\nĐổi đơn vị:\n\n$$\nd=24\\ cm=24 \\times 10^{-2}\\ m=0{,}24\\ m\n$$\n\nĐộ lớn cường độ điện trường giữa hai bản phẳng là:\n\n$$\nE=\\frac{U}{d}=\\frac{48}{24 \\times 10^{-2}}=200\\ V/m\n$$\n\nVectơ cường độ điện trường hướng từ trên xuống dưới và ngược chiều với trục $Oy$.\n\nLực điện tác dụng lên electron có phương thẳng đứng, chiều hướng lên trên.\n\nĐộ lớn lực điện:\n\n$$\nF=|q|E=|q|\\frac{U}{d}\n$$\n\nGia tốc của electron theo phương $Oy$:\n\n$$\na_y=\\frac{F}{m}=\\…\nNguồn tham chiếu gần nhất: Giải.\nCâu trả lời được rút từ theory chunk liên quan nhất.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      }
+    },
+    {
+      "case_id": "GOLD_DRAFT_SHM_PERIOD_001",
+      "question": "Một vật dao động điều hòa có ω = 4π rad/s. Tính chu kì T.",
+      "expected_answer": {
+        "T": 0.5,
+        "unit": "s"
+      },
+      "ai_answer": "![Hình 2.1 - Đồ thị dao động điều hòa](assets/images/hinh-2-1.png)\n\n**Mô tả sơ bộ**\n\n* Đồ thị hình sin.\n* Trục tung: (x(m)), từ (-0,2) đến (0,2).\n* Đỉnh tại:\n\n$$\nx=0,2\n$$\n\nứng với:\n\n$$\nt=0,1s;\\qquad t=0,5s\n$$\n\n* Cực tiểu tại:\n\n$$\nx=-0,2\n$$\n\nứng với:\n\n$$\nt=0,3s\n$$\n\n* Giao với trục thời gian tại:\n\n$$\nt=0,2s;\\qquad t=0,4s\n$$\n\n---\n\nTheo đồ thị Hình 2.1, cứ sau mỗi chu kì thì dao động của vật lại lặp lại như cũ. Như vậy, theo phương trình dao động ta phải có:\n\n$$\nx=A\\cos[\\omega(t+T)]\n=A\\cos(\\omega t)\n$$\n\nTheo tính chất của hàm cosin ta suy ra:\n\n$$\n\\omega T=2\\pi\n$$\n\nhay\n\n$$\n\\omega=\\frac{2\\pi}{T}\n\\qu…\nNguồn tham chiếu gần nhất: Hình 2.1.\nDạng bài gần nhất: Tìm chu kì từ phương trình dao động.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      }
+    },
+    {
+      "case_id": "GOLD_DRAFT_SHM_POSITION_001",
+      "question": "Một vật dao động điều hòa có phương trình x = 2cos(4πt + π/2) cm. Tính li độ tại t = 2 s.",
+      "expected_answer": {
+        "x": 0,
+        "unit": "cm"
+      },
+      "ai_answer": "Hình 2.2 là đồ thị của hai vật dao động điều hòa cùng chu kì, cùng biên độ nhưng dao động 1 luôn đạt tới giá trị cực đại sớm hơn dao động 2 một thời gian là:\n\n$$\n\\frac{T}{4}\n$$\n\nTừ đồ thị ta thấy:\n\n* Tại thời điểm ban đầu ((t=0)), vật dao động điều hòa 1 đang ở vị trí biên:\n\n$$\nx=A\n$$\n\nvà sẽ dịch chuyển về vị trí cân bằng.\n\n* Vật dao động điều hòa 2 đang ở vị trí cân bằng và sẽ dịch chuyển về phía:\n\n$$\nx>0\n$$\n\nCác phương trình dao động tương ứng với đồ thị Hình 2.2 có pha ban đầu lần lượt là:\n\n$$\nx_1=A\\cos(\\omega t)\n$$\n\nvới\n\n$$\n\\varphi_1=0\n$$\n\nvà\n\n$$\nx_2=A\\cos\\left(\\omega t-\\frac{\\pi}{2}\\right…\nNguồn tham chiếu gần nhất: 2.1. Pha ban đầu.\nDạng bài gần nhất: Tính li độ tại một thời điểm.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      }
+    },
+    {
+      "case_id": "GOLD_DRAFT_WAVE_SPEED_001",
+      "question": "Một sóng có tần số f = 5 Hz và tốc độ truyền sóng v = 2 m/s. Tính bước sóng.",
+      "expected_answer": {
+        "unit": "m",
+        "lambda": 0.4
+      },
+      "ai_answer": "Một con lắc lò xo có vật nặng khối lượng:\n\n$$\nm=0,4kg\n$$\n\ndao động điều hòa.\n\nĐồ thị vận tốc (v) theo thời gian (t) như Hình 5.7.\n\nTính:\n\na. Vận tốc cực đại của vật.\n\nb. Động năng cực đại của vật.\n\nc. Thế năng cực đại của con lắc.\n\nd. Độ cứng (k) của lò xo.\n\n---\nNguồn tham chiếu gần nhất: Câu 1.\nCâu trả lời được rút từ theory chunk liên quan nhất.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": null,
+        "matchedConcepts": [],
+        "missingConcepts": [],
+        "ruleBasedScore": 0
+      }
+    }
+  ]
+}
