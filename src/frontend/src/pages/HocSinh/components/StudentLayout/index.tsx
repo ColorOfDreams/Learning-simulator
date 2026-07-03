@@ -130,15 +130,25 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 			const t = localStorage.getItem('scl-theme');
 			if (t === 'dark' || t === 'light') return t;
 		} catch {}
-		return 'light';
+		return 'dark';
 	});
 
 	const toggleTheme = () => {
+		const root = document.querySelector('.stu-root');
+		if (root) {
+			root.classList.add('theme-transitioning');
+		}
 		const next = theme === 'dark' ? 'light' : 'dark';
 		setTheme(next);
 		try {
 			localStorage.setItem('scl-theme', next);
 		} catch {}
+
+		setTimeout(() => {
+			if (root) {
+				root.classList.remove('theme-transitioning');
+			}
+		}, 500);
 	};
 
 	useEffect(() => {
