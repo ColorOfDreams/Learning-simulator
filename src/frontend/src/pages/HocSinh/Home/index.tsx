@@ -1,9 +1,7 @@
 import { analyzeAiPrompt } from '@/services/ai/api';
 import { getSceneAll } from '@/services/base/api';
-import GenericChemSimulation from '@simulations/chemistry/GenericChemSimulation';
-import SimThumbCapture from '@simulations/SimThumbCapture';
 import { Pagination } from 'antd';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { history, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
 import './index.less';
@@ -1317,53 +1315,7 @@ const HocSinhHome: React.FC = () => {
 		setCurrentPage(1);
 	}, [grade, filter]);
 
-	// ── Thumbnail Pre-generation (chem + physics + math) ──
-	interface ThumbItem {
-		simId: string;
-		subject: 'chem' | 'physics' | 'math';
-	}
-
-	const [allThumbs, setAllThumbs] = useState<Record<string, string>>(() => {
-		const map: Record<string, string> = {};
-		for (const lab of ALL_LABS) {
-			if (!lab.simId) continue;
-			const stored =
-				localStorage.getItem(`sim-thumb-${lab.simId}`) ??
-				(lab.subject === 'chem' ? localStorage.getItem(`chem-thumb-${lab.simId}`) : null);
-			if (stored) map[lab.simId] = stored;
-		}
-		return map;
-	});
-
-	const [thumbQueue, setThumbQueue] = useState<ThumbItem[]>(() => {
-		const seen = new Set<string>();
-		const queue: ThumbItem[] = [];
-		for (const lab of ALL_LABS) {
-			if (!lab.simId || seen.has(lab.simId)) continue;
-			const cached =
-				localStorage.getItem(`sim-thumb-${lab.simId}`) ??
-				(lab.subject === 'chem' ? localStorage.getItem(`chem-thumb-${lab.simId}`) : null);
-			if (!cached) {
-				seen.add(lab.simId);
-				queue.push({ simId: lab.simId, subject: lab.subject as 'chem' | 'physics' | 'math' });
-			}
-		}
-		return queue;
-	});
-
-	const [currentThumb, setCurrentThumb] = useState<ThumbItem | null>(null);
-
-	useEffect(() => {
-		if (thumbQueue.length === 0 || currentThumb) return;
-		setCurrentThumb(thumbQueue[0]);
-	}, [thumbQueue, currentThumb]);
-
-	const handleThumbCapture = useCallback((simId: string, dataUrl: string) => {
-		localStorage.setItem(`sim-thumb-${simId}`, dataUrl);
-		setAllThumbs((prev) => ({ ...prev, [simId]: dataUrl }));
-		setCurrentThumb(null);
-		setThumbQueue((prev) => prev.slice(1));
-	}, []);
+	const [thumbErrors, setThumbErrors] = useState<Set<string>>(new Set());
 
 	const paginatedLabs = useMemo(() => {
 		const startIndex = (currentPage - 1) * 9;
@@ -1742,8 +1694,13 @@ const HocSinhHome: React.FC = () => {
 									onClick={() => !lab.locked && openWorkspace(lab.subject, lab.simId)}
 								>
 									<div className={`stu-home__card-thumb stu-home__card-thumb--${lab.subject}`}>
-										{lab.simId && allThumbs[lab.simId] ? (
-											<img className='stu-home__card-thumb-img' src={allThumbs[lab.simId]} alt={lab.title} />
+										{lab.simId && !thumbErrors.has(lab.simId) ? (
+											<img
+												className='stu-home__card-thumb-img'
+												src={`/thumbnails/${lab.simId}.webp`}
+												alt={lab.title}
+												onError={() => setThumbErrors((prev) => new Set(prev).add(lab.simId!))}
+											/>
 										) : (
 											getSubjectIcon(lab.subject, idx)
 										)}
@@ -1796,30 +1753,6 @@ const HocSinhHome: React.FC = () => {
 					</div>
 				</div>
 			</StudentLayout>
-			{currentThumb && (
-				<div
-					style={{
-						position: 'fixed',
-						left: -9999,
-						top: -9999,
-						width: 320,
-						height: 180,
-						visibility: 'hidden',
-						pointerEvents: 'none',
-						zIndex: -1,
-					}}
-				>
-					{currentThumb.subject === 'chem' ? (
-						<GenericChemSimulation
-							config={{ simulation_id: currentThumb.simId, subject: 'chemistry', topic: 'generic', parameters: [] }}
-							currentStep={1}
-							onThumbnail={handleThumbCapture}
-						/>
-					) : (
-						<SimThumbCapture simId={currentThumb.simId} subject={currentThumb.subject} onCapture={handleThumbCapture} />
-					)}
-				</div>
-			)}
 		</>
 	);
 };

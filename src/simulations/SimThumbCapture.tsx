@@ -3,7 +3,7 @@ import type { SimulationProps } from './types';
 
 type SimComponent = React.ComponentType<SimulationProps>;
 
-const PHYSICS_REGISTRY: Record<string, React.LazyExoticComponent<SimComponent>> = {
+export const PHYSICS_REGISTRY: Record<string, React.LazyExoticComponent<SimComponent>> = {
   'SIM-02': lazy(() => import('./physics/SIM-02-projectile')),
   'SIM-21': lazy(() => import('./physics/SIM-21-kinematics')),
   'SIM-22': lazy(() => import('./physics/SIM-22-freefall')),
@@ -44,7 +44,7 @@ const MATH_3D_SIMS = new Set([
   'MATH12-08', 'MATH12-09', 'MATH12-10', 'MATH12-11',
 ]);
 
-const MATH_REGISTRY: Record<string, React.LazyExoticComponent<SimComponent>> = {
+export const MATH_REGISTRY: Record<string, React.LazyExoticComponent<SimComponent>> = {
   'MATH10-01': lazy(() => import('./math/experiments/math10/math10-01')),
   'MATH10-02': lazy(() => import('./math/experiments/math10/math10-02')),
   'MATH10-03': lazy(() => import('./math/experiments/math10/math10-03')),

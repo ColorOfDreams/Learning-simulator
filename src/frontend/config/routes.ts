@@ -208,6 +208,16 @@ export default [
 		component: './exception/DangCapNhat',
 		layout: false,
 	},
+	...(process.env.NODE_ENV !== 'production'
+		? [
+				{
+					path: '/dev/thumbnail-capture',
+					component: './DevTools/ThumbnailCapture',
+					layout: false,
+					hideInMenu: true,
+				},
+			]
+		: []),
 	{
 		path: '/*',
 		component: './exception/404',
