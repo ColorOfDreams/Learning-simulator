@@ -87,6 +87,7 @@ const MyLabs: React.FC = () => {
 	const [activeTab, setActiveTab] = useState(0);
 	const [inProgress, setInProgress] = useState<any[]>([]);
 	const [completed, setCompleted] = useState<any[]>([]);
+	const [thumbErrors, setThumbErrors] = useState<Set<string>>(new Set());
 
 	useEffect(() => {
 		getMyLabs()
@@ -166,7 +167,16 @@ const MyLabs: React.FC = () => {
 										onClick={() => openWorkspace(lab.subject, lab.simulationId)}
 									>
 										<div className={`stu-labs__progress-thumb stu-labs__progress-thumb--${subj.className}`}>
-											{getSubjectIcon(lab.subject, idx)}
+											{lab.simulationId && !thumbErrors.has(lab.simulationId) ? (
+												<img
+													className='stu-labs__progress-thumb-img'
+													src={`/thumbnails/${lab.simulationId}.webp`}
+													alt={lab.simulationTitle || lab.simulationId}
+													onError={() => setThumbErrors((prev) => new Set(prev).add(lab.simulationId))}
+												/>
+											) : (
+												getSubjectIcon(lab.subject, idx)
+											)}
 											<div className='stu-labs__card-shine' style={{ animationDelay: `${idx * 0.3}s` }} />
 											<div className='stu-labs__resume-badge'>TIẾP TỤC</div>
 										</div>
@@ -223,7 +233,16 @@ const MyLabs: React.FC = () => {
 									return (
 										<div key={lab.id} className='stu-labs__completed-card' style={{ animationDelay: `${idx * 0.08}s` }}>
 											<div className={`stu-labs__completed-thumb stu-labs__completed-thumb--${subj.className}`}>
-												{getSubjectIcon(lab.subject, idx)}
+												{lab.simulationId && !thumbErrors.has(lab.simulationId) ? (
+													<img
+														className='stu-labs__completed-thumb-img'
+														src={`/thumbnails/${lab.simulationId}.webp`}
+														alt={lab.simulationTitle || lab.simulationId}
+														onError={() => setThumbErrors((prev) => new Set(prev).add(lab.simulationId))}
+													/>
+												) : (
+													getSubjectIcon(lab.subject, idx)
+												)}
 												<div className='stu-labs__card-shine' style={{ animationDelay: `${idx * 0.35}s` }} />
 												<div className='stu-labs__completed-score-badge'>
 													<svg width='11' height='11' viewBox='0 0 24 24' fill='oklch(0.5 0.16 150)'>

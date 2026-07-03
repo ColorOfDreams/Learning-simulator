@@ -37,6 +37,7 @@ import FullCircuitSimulation from './physics/SIM-52-fullcircuit'
 
 
 import GenericMathSimulation from './math/GenericMathSimulation'
+import { EXPERIMENTS_CONFIG as MATH_EXPERIMENTS_CONFIG } from './math/experiments'
 const registry = new Map<string, ComponentType<SimulationProps>>()
 
 export function registerSimulation(id: string, component: ComponentType<SimulationProps>) {
@@ -45,6 +46,17 @@ export function registerSimulation(id: string, component: ComponentType<Simulati
 
 export function getSimulation(id: string): ComponentType<SimulationProps> | undefined {
   return registry.get(id)
+}
+
+export function getAllSimulationIds(): string[] {
+  return Array.from(registry.keys())
+}
+
+export function classifySubject(id: string): 'chem' | 'math' | 'physics' {
+  const component = getSimulation(id)
+  if (component === GenericChemSimulation) return 'chem'
+  if (component === GenericMathSimulation) return 'math'
+  return 'physics'
 }
 
 // Register simulations
@@ -107,13 +119,8 @@ registerSimulation('SIM-13', GenericChemSimulation)
 registerSimulation('SIM-14', GenericChemSimulation)
 registerSimulation('SIM-15', GenericChemSimulation)
 
-// Register Math simulations
-registerSimulation('MATH10-01', GenericMathSimulation)
-registerSimulation('MATH10-02', GenericMathSimulation)
-registerSimulation('MATH10-03', GenericMathSimulation)
-registerSimulation('MATH10-04', GenericMathSimulation)
-registerSimulation('MATH10-05', GenericMathSimulation)
-registerSimulation('MATH10-06', GenericMathSimulation)
+// Register Math simulations (all ids sourced from EXPERIMENTS_CONFIG to avoid drift)
+Object.keys(MATH_EXPERIMENTS_CONFIG).forEach((id) => registerSimulation(id, GenericMathSimulation))
 
 // Legacy Math aliases for backwards compatibility
 registerSimulation('SIM-08', GenericMathSimulation) // Overwrites chem SIM-08 in the registry, which is correct for Math 10 scope mapping

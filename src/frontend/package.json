@@ -25,7 +25,8 @@
     "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
     "precommit": "lint-staged",
     "prettier": "prettier -c --write \"src/**/*\"",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org aisoft --project sentry-vwa build && sentry-cli --url https://sentry.aisoftech.vn/ sourcemaps upload --org aisoft --project sentry-vwa build"
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org aisoft --project sentry-vwa build && sentry-cli --url https://sentry.aisoftech.vn/ sourcemaps upload --org aisoft --project sentry-vwa build",
+    "thumbnails:generate": "node scripts/generate-thumbnails.mjs"
   },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
@@ -113,9 +114,11 @@
     "eslint": "^9.21.0",
     "express": "^4.21.2",
     "lint-staged": "^15.4.3",
+    "playwright": "^1.49.1",
     "prettier": "^3.5.2",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-packagejson": "^2.5.9",
+    "sharp": "^0.33.5",
     "stylelint": "^16.15.0",
     "typescript": "^5.8.2"
   },
