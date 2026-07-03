@@ -13,7 +13,7 @@ import {
 @ApiTags('Question Bank')
 @Controller('question-bank')
 export class QuestionBankController {
-  constructor(private readonly questionBankService: QuestionBankService) {}
+  constructor(private readonly questionBankService: QuestionBankService) { }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
