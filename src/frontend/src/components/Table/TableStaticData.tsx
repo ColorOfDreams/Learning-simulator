@@ -30,7 +30,7 @@ const TableStaticContent: React.FC<TableStaticProps> = (props) => {
 		columnSetting = true,
 	} = useTableContext();
 
-	const { danhSach: dsPhanVung } = useModel('core.phanvungdulieu');
+	const { danhSach: dsPhanVung } = (useModel('core.phanvungdulieu' as any) as any) || {};
 	const [searchText, setSearchText] = useState<string>('');
 	const [searchedColumn, setSearchedColumn] = useState<any>();
 	const [total, setTotal] = useState<number>();

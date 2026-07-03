@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from '@umijs/max';
 import { Spin, Button } from 'antd';
 import { PrinterOutlined } from '@ant-design/icons';
+import Formula from '@/components/Formula';
 import { getExamWithQuestions } from '@/services/exams/api';
+import 'katex/dist/katex.min.css';
 import './style.less';
 
 const SUBJECTS: Record<string, string> = { math: 'Toán', physics: 'Lý', chemistry: 'Hóa' };
@@ -59,7 +61,7 @@ const ExamPrint: React.FC = () => {
                 <div key={qi} className="exam-question">
                   <div className="question-text">
                     <strong>Câu {globalIdx}: </strong>
-                    <span dangerouslySetInnerHTML={{ __html: q.question }} />
+                    <Formula style={{ display: 'inline' }}>{q.question}</Formula>
                   </div>
 
                   <div className="answer-space">
@@ -68,7 +70,7 @@ const ExamPrint: React.FC = () => {
                         {(q.options || []).map((opt: any) => (
                           <div key={opt.key} className="mcq-option">
                             <span className="mcq-circle">○</span>
-                            <span>{opt.key}. {opt.text}</span>
+                            <span>{opt.key}. <Formula style={{ display: 'inline' }}>{opt.text}</Formula></span>
                           </div>
                         ))}
                       </div>

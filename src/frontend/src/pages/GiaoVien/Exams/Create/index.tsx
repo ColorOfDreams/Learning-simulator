@@ -3,8 +3,15 @@ import { Typography, Button, Space, Tag, Select, Input, InputNumber, message, Fo
 import { ArrowLeftOutlined, RobotOutlined, UnorderedListOutlined, CheckOutlined, ReloadOutlined, SaveOutlined } from '@ant-design/icons';
 import { history } from '@umijs/max';
 import PageCard from '@/components/PageCard';
+import Formula from '@/components/Formula';
 import { getQuestions } from '@/services/question-bank/api';
+import 'katex/dist/katex.min.css';
 import { createExam, aiGenerateExam } from '@/services/exams/api';
+import SelectMonHoc from '@/pages/DanhMuc/MonHoc/components/Select';
+import SelectLop from '@/pages/DanhMuc/Lop/components/Select';
+import SelectLoaiCauHoi from '@/pages/DanhMuc/LoaiCauHoi/components/Select';
+import SelectChuDe from '@/pages/DanhMuc/ChuDe/components/Select';
+import SelectDoKho from '@/pages/DanhMuc/DoKho/components/Select';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -106,7 +113,7 @@ const ExamCreate: React.FC = () => {
   };
 
   const poolColumns = [
-    { title: 'Câu hỏi', dataIndex: 'question', key: 'question', width: 400, ellipsis: true, render: (t: string) => t.replace(/\$\$.*?\$\$/g, '[Math]').slice(0, 120) },
+    { title: 'Câu hỏi', dataIndex: 'question', key: 'question', width: 400, ellipsis: true, render: (t: string) => <Formula style={{ fontSize: 13, maxHeight: 40, overflow: 'hidden', display: 'inline-block' }}>{t}</Formula> },
     { title: 'Loại', dataIndex: 'type', key: 'type', width: 100, render: (t: string) => <Tag>{TYPE_LABELS[t] || t}</Tag> },
     { title: 'Độ khó', dataIndex: 'difficulty', key: 'difficulty', width: 80, render: (d: number) => '★'.repeat(d) },
   ];
@@ -130,8 +137,8 @@ const ExamCreate: React.FC = () => {
               <Col span={12}><Form.Item name="description" label="Mô tả"><Input placeholder="Mô tả ngắn" /></Form.Item></Col>
             </Row>
             <Row gutter={16}>
-              <Col span={6}><Form.Item name="subject" label="Môn"><Select options={Object.entries(SUBJECTS).map(([k, v]) => ({ value: k, label: v }))} /></Form.Item></Col>
-              <Col span={6}><Form.Item name="grade" label="Lớp"><Select options={[10, 11, 12].map(g => ({ value: g, label: `Lớp ${g}` }))} /></Form.Item></Col>
+              <Col span={6}><Form.Item name="subject" label="Môn"><SelectMonHoc hasCreate={false} /></Form.Item></Col>
+              <Col span={6}><Form.Item name="grade" label="Lớp"><SelectLop hasCreate={false} /></Form.Item></Col>
               <Col span={6}><Form.Item name="duration" label="Thời gian (phút)"><InputNumber min={1} max={180} style={{ width: '100%' }} /></Form.Item></Col>
               <Col span={6}><Form.Item name="totalScore" label="Tổng điểm"><InputNumber min={1} max={100} style={{ width: '100%' }} /></Form.Item></Col>
             </Row>
@@ -148,8 +155,9 @@ const ExamCreate: React.FC = () => {
           {sections.map((sec, idx) => (
             <Card key={idx} size="small" title={
               <Space>
-                <Select value={sec.type} onChange={v => setSections((p: any[]) => p.map((s, i) => i === idx ? { ...s, type: v } : s))}
-                  style={{ width: 140 }} options={Object.entries(TYPE_LABELS).map(([k, v]) => ({ value: k, label: v }))} />
+                <div style={{ width: 140 }}>
+                  <SelectLoaiCauHoi value={sec.type} onChange={v => setSections((p: any[]) => p.map((s, i) => i === idx ? { ...s, type: v } : s))} hasCreate={false} />
+                </div>
                 <Input style={{ width: 200 }} placeholder="Tên phần" value={sec.title} onChange={e => setSections((p: any[]) => p.map((s, i) => i === idx ? { ...s, title: e.target.value } : s))} />
                 <span>Điểm:</span>
                 <InputNumber value={sec.maxScore} min={0} max={10} onChange={v => setSections((p: any[]) => p.map((s, i) => i === idx ? { ...s, maxScore: v || 0 } : s))} style={{ width: 70 }} />
@@ -160,7 +168,7 @@ const ExamCreate: React.FC = () => {
                 <div style={{ marginBottom: 8 }}>
                   {sec.questions.map((qref: any, qi: number) => {
                     const q = pool.find(p => p.id === qref.questionId);
-                    return <Tag key={qi} closable onClose={() => setSections((p: any[]) => p.map((s, i) => i === idx ? { ...s, questions: s.questions.filter((_: any, j: number) => j !== qi) } : s))}>{q?.question?.slice(0, 60) || qref.questionId?.slice(0, 8)}</Tag>;
+                    return <Tag key={qi} closable onClose={() => setSections((p: any[]) => p.map((s, i) => i === idx ? { ...s, questions: s.questions.filter((_: any, j: number) => j !== qi) } : s))} style={{ maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}><Formula style={{ display: 'inline' }}>{q?.question || qref.questionId?.slice(0, 8)}</Formula></Tag>;
                   })}
                 </div>
               )}
@@ -169,13 +177,13 @@ const ExamCreate: React.FC = () => {
             </Card>
           ))}
           <Row gutter={16}>
-            <Col span={12}>
-              <Select allowClear placeholder="Lọc môn" style={{ width: 120 }} value={poolFilters.subject} onChange={v => setPoolFilters((p: any) => ({ ...p, subject: v }))} options={Object.entries(SUBJECTS).map(([k, v]) => ({ value: k, label: v }))} />
-              <Select allowClear placeholder="Loại" style={{ width: 140, marginLeft: 8 }} value={poolFilters.type} onChange={v => setPoolFilters((p: any) => ({ ...p, type: v }))} options={Object.entries(TYPE_LABELS).map(([k, v]) => ({ value: k, label: v }))} />
+            <Col span={12} style={{ display: 'flex', gap: 8 }}>
+              <div style={{ width: 120 }}><SelectMonHoc allowClear placeholder="Lọc môn" value={poolFilters.subject} onChange={v => setPoolFilters((p: any) => ({ ...p, subject: v }))} hasCreate={false} /></div>
+              <div style={{ width: 140 }}><SelectLoaiCauHoi allowClear placeholder="Loại" value={poolFilters.type} onChange={v => setPoolFilters((p: any) => ({ ...p, type: v }))} hasCreate={false} /></div>
             </Col>
           </Row>
           <Table size="small" dataSource={pool} columns={poolColumns} rowKey="id" pagination={{ pageSize: 5 }}
-            rowSelection={{ selectedRowKeys: selectedPool, onChange: setSelectedPool }}
+            rowSelection={{ selectedRowKeys: selectedPool, onChange: (keys) => setSelectedPool(keys.map(String)) }}
           />
           <Divider />
           <Button type="primary" onClick={() => setStep(2)} icon={<CheckOutlined />}>Xem lại & Hoàn tất</Button>
@@ -186,12 +194,24 @@ const ExamCreate: React.FC = () => {
         <Card>
           <Form form={aiForm} layout="vertical" initialValues={{ subject: 'math', grade: 10, difficulty: 2 }}>
             <Row gutter={16}>
-              <Col span={6}><Form.Item name="subject" label="Môn"><Select options={Object.entries(SUBJECTS).map(([k, v]) => ({ value: k, label: v }))} /></Form.Item></Col>
-              <Col span={6}><Form.Item name="grade" label="Lớp"><Select options={[10, 11, 12].map(g => ({ value: g, label: g }))} /></Form.Item></Col>
+              <Col span={6}><Form.Item name="subject" label="Môn"><SelectMonHoc hasCreate={false} /></Form.Item></Col>
+              <Col span={6}><Form.Item name="grade" label="Lớp"><SelectLop hasCreate={false} /></Form.Item></Col>
               <Col span={6}><Form.Item name="duration" label="Thời gian"><InputNumber min={1} max={180} style={{ width: '100%' }} /></Form.Item></Col>
-              <Col span={6}><Form.Item name="difficulty" label="Độ khó (1-5)"><InputNumber min={1} max={5} style={{ width: '100%' }} /></Form.Item></Col>
+              <Col span={6}><Form.Item name="difficulty" label="Độ khó"><SelectDoKho hasCreate={false} /></Form.Item></Col>
             </Row>
-            <Form.Item name="topic" label="Chủ đề"><Input placeholder="Để trống → AI tự chọn" /></Form.Item>
+            <Form.Item noStyle shouldUpdate={(prev, curr) => prev.subject !== curr.subject || prev.grade !== curr.grade}>
+              {({ getFieldValue }) => (
+                <Form.Item name="topic" label="Chủ đề">
+                  <SelectChuDe 
+                    allowClear 
+                    placeholder="Để trống → AI tự chọn" 
+                    hasCreate={false} 
+                    subjectCode={getFieldValue('subject')}
+                    gradeCode={getFieldValue('grade')}
+                  />
+                </Form.Item>
+              )}
+            </Form.Item>
             <Form.Item name="structure" label="Cấu trúc đề (tuỳ chọn)" help="VD: 20MULTIPLE_CHOICE+3ESSAY+5SHORT_ANSWER. Để trống → AI tự phân bố.">
               <Input placeholder="20MULTIPLE_CHOICE+3ESSAY+5SHORT_ANSWER" />
             </Form.Item>
@@ -231,7 +251,7 @@ const ExamCreate: React.FC = () => {
             <Card key={idx} size="small" title={`${sec.title} (${TYPE_LABELS[sec.type] || sec.type} - ${sec.maxScore} điểm)`} style={{ marginBottom: 12 }}>
               {(sec.questions || []).map((q: any, qi: number) => (
                 <div key={qi} style={{ padding: '8px 0', borderBottom: '1px solid #f0f0f0' }}>
-                  <Text strong>{`Câu ${qi + 1}: `}</Text><Text>{q.question}</Text>
+                  <Text strong>{`Câu ${qi + 1}: `}</Text><Formula style={{ display: 'inline' }}>{q.question}</Formula>
                   {q.options?.length > 0 && (
                     <div style={{ paddingLeft: 20, marginTop: 4 }}>
                       {q.options.map((o: any) => <div key={o.key}><Text>{o.key}. {o.text}</Text></div>)}

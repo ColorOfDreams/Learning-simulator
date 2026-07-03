@@ -69,20 +69,6 @@ export default [
 		access: 'accessFilter',
 		maChucNang: 'baihoc|xem',
 	},
-
-	// // DANH MUC HE THONG
-	// {
-	// 	name: 'DanhMuc',
-	// 	path: '/danh-muc',
-	// 	icon: 'copy',
-	// 	routes: [
-	// 		{
-	// 			name: 'ChucVu',
-	// 			path: 'chuc-vu',
-	// 			component: './DanhMuc/ChucVu',
-	// 		},
-	// 	],
-	// },
 	// ─── GIAO DIỆN HỌC SINH & LỚP HỌC ───
 	{
 		path: '/join',
@@ -173,6 +159,44 @@ export default [
 		component: './GiaoVien/Exams/Print',
 	},
 
+
+
+	// DANH MUC HE THONG
+	{
+		name: 'Danh mục',
+		path: '/danh-muc',
+		icon: 'DatabaseOutlined',
+		access: 'accessFilter',
+		maChucNang: 'dashboard|xem',
+		routes: [
+			{
+				name: 'Môn học',
+				path: 'mon-hoc',
+				component: './DanhMuc/MonHoc',
+			},
+			{
+				name: 'Lớp',
+				path: 'lop',
+				component: './DanhMuc/Lop',
+			},
+			{
+				name: 'Loại câu hỏi',
+				path: 'loai-cau-hoi',
+				component: './DanhMuc/LoaiCauHoi',
+			},
+			{
+				name: 'Chủ đề',
+				path: 'chu-de',
+				component: './DanhMuc/ChuDe',
+			},
+			{
+				name: 'Độ khó',
+				path: 'do-kho',
+				component: './DanhMuc/DoKho',
+			},
+		],
+	},
+
 	{
 		path: '/notification',
 		routes: [
@@ -210,13 +234,13 @@ export default [
 	},
 	...(process.env.NODE_ENV !== 'production'
 		? [
-				{
-					path: '/dev/thumbnail-capture',
-					component: './DevTools/ThumbnailCapture',
-					layout: false,
-					hideInMenu: true,
-				},
-			]
+			{
+				path: '/dev/thumbnail-capture',
+				component: './DevTools/ThumbnailCapture',
+				layout: false,
+				hideInMenu: true,
+			},
+		]
 		: []),
 	{
 		path: '/*',

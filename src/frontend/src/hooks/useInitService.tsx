@@ -35,7 +35,7 @@ const useInitService = (url: string, ip?: string) => {
 	};
 
 	const getAllService = (payload?: { condition?: any; sort?: any }, path?: string, headers?: any) => {
-		return axios.get(`${finalIp}/${url}/${path || 'many'}`, { params: payload, headers });
+		return axios.get(`${finalIp}/${url}/${path || 'all'}`, { params: payload, headers });
 	};
 
 	const getByIdService = (id: string | number, headers?: any) => {
