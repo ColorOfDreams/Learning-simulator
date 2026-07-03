@@ -128,7 +128,7 @@ export default [
 		],
 	},
 
-	// ─── GIAO DIỆN GIÁO VIÊN (LỚP HỌC + THỐNG KÊ) ───
+	// ─── GIAO DIỆN GIÁO VIÊN (LỚP HỌC + THỐNG KÊ + ĐỀ THI) ───
 	{
 		path: '/giao-vien/classes',
 		name: 'Lớp học',
@@ -142,6 +142,35 @@ export default [
 		name: 'Chi tiết lớp',
 		hideInMenu: true,
 		component: './GiaoVien/Classes/TeacherClassDetails',
+	},
+	{
+		path: '/giao-vien/question-bank',
+		name: 'Ngân hàng câu hỏi',
+		icon: 'DatabaseOutlined',
+		component: './GiaoVien/QuestionBank',
+		access: 'accessFilter',
+		maChucNang: 'quanlythinghiem|tao',
+	},
+	{
+		path: '/giao-vien/exams',
+		name: 'Đề thi',
+		icon: 'FileTextOutlined',
+		component: './GiaoVien/Exams',
+		access: 'accessFilter',
+		maChucNang: 'quanlythinghiem|tao',
+	},
+	{
+		path: '/giao-vien/exams/create',
+		name: 'Tạo đề thi',
+		hideInMenu: true,
+		component: './GiaoVien/Exams/Create',
+	},
+	{
+		path: '/giao-vien/exams/:id/print',
+		name: 'In đề thi',
+		hideInMenu: true,
+		layout: false,
+		component: './GiaoVien/Exams/Print',
 	},
 
 	{

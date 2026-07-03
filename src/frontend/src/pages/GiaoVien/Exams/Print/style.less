@@ -1,0 +1,119 @@
+@page { margin: 20mm; }
+
+.exam-print-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.exam-print-content {
+  background: #fff;
+  padding: 30px 40px;
+  font-family: 'Times New Roman', serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.exam-header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #000;
+
+  .exam-school {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .exam-title {
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .exam-info {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .exam-score {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.exam-desc {
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.exam-section {
+  margin-bottom: 24px;
+
+  .exam-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 1px solid #000;
+    padding-bottom: 4px;
+    margin-bottom: 12px;
+
+    .exam-section-score {
+      font-weight: 400;
+      margin-left: 8px;
+      font-size: 13px;
+    }
+  }
+}
+
+.exam-question {
+  margin-bottom: 16px;
+
+  .question-text {
+    margin-bottom: 8px;
+  }
+}
+
+.mcq-options {
+  padding-left: 20px;
+
+  .mcq-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+
+    .mcq-circle {
+      font-size: 16px;
+    }
+  }
+}
+
+.essay-lines {
+  padding: 8px 0;
+
+  .essay-line {
+    height: 24px;
+    border-bottom: 1px dashed #ccc;
+    margin-bottom: 4px;
+  }
+}
+
+.short-answer-line {
+  padding: 4px 0 4px 20px;
+
+  .dots {
+    letter-spacing: 2px;
+    color: #999;
+  }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  .exam-print-page { padding: 0; }
+  .exam-print-content { padding: 0; box-shadow: none; }
+  @page { margin: 15mm; }
+}

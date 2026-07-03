@@ -12,6 +12,8 @@ import { SceneModule } from './modules/scene/scene.module';
 import { ClassroomsModule } from './modules/classrooms/classrooms.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { QuestionBankModule } from './modules/question-bank/question-bank.module';
+import { ExamModule } from './modules/exams/exam.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
     ClassroomsModule,
     NotificationsModule,
     AnalyticsModule,
+    QuestionBankModule,
+    ExamModule,
   ],
   controllers: [AppController],
   providers: [AppService],
