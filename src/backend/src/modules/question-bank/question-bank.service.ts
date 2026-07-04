@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
+import { Repository, Like, In } from 'typeorm';
+import * as ExcelJS from 'exceljs';
 import { QuestionEntity, QuestionType } from './question-bank.entity';
 import {
   CreateQuestionDto,
@@ -10,53 +11,99 @@ import {
   BulkImportDto,
 } from './dto/question-bank.dto';
 import { LlmService } from '../ai/llm.service';
+import { BaseService } from '../../core/base/base.service';
 
 @Injectable()
-export class QuestionBankService {
+export class QuestionBankService extends BaseService<QuestionEntity> {
   constructor(
     @InjectRepository(QuestionEntity)
     private readonly questionRepo: Repository<QuestionEntity>,
     private readonly llmService: LlmService,
-  ) {}
-
-  async create(dto: CreateQuestionDto, userId?: string): Promise<QuestionEntity> {
-    const question = this.questionRepo.create({ ...dto, createdBy: userId });
-    return this.questionRepo.save(question);
+  ) {
+    super(questionRepo);
   }
 
-  async findAll(query: QueryQuestionDto): Promise<QuestionEntity[]> {
-    const where: any = {};
-    if (query.subject) where.subject = query.subject;
-    if (query.grade) where.grade = query.grade;
-    if (query.type) where.type = query.type;
-    if (query.topic) where.topic = query.topic;
-    if (query.difficulty) where.difficulty = query.difficulty;
-    if (query.search) {
-      where.question = Like(`%${query.search}%`);
-    }
-    return this.questionRepo.find({ where, order: { createdAt: 'DESC' } });
-  }
 
-  async findOne(id: string): Promise<QuestionEntity> {
-    const q = await this.questionRepo.findOne({ where: { id } });
-    if (!q) throw new NotFoundException('Không tìm thấy câu hỏi');
-    return q;
-  }
-
-  async update(id: string, dto: UpdateQuestionDto): Promise<QuestionEntity> {
-    const q = await this.findOne(id);
-    Object.assign(q, dto);
-    return this.questionRepo.save(q);
-  }
-
-  async remove(id: string): Promise<void> {
-    const q = await this.findOne(id);
-    await this.questionRepo.remove(q);
-  }
 
   async bulkImport(dto: BulkImportDto, userId?: string): Promise<QuestionEntity[]> {
     const questions = dto.questions.map(q => this.questionRepo.create({ ...q, createdBy: userId }));
     return this.questionRepo.save(questions);
+  }
+
+  async getImportHeaders() {
+    return [
+      { field: 'type', label: 'Loại câu hỏi', required: true, type: 'String' },
+      { field: 'subject', label: 'Môn học', required: true, type: 'String' },
+      { field: 'grade', label: 'Lớp', required: true, type: 'Number' },
+      { field: 'topic', label: 'Chủ đề', required: false, type: 'String' },
+      { field: 'chapter', label: 'Chương', required: false, type: 'String' },
+      { field: 'question', label: 'Nội dung câu hỏi', required: true, type: 'String' },
+      { field: 'options', label: 'Đáp án (JSON)', required: false, type: 'String' },
+      { field: 'correctAnswer', label: 'Đáp án đúng', required: true, type: 'String' },
+      { field: 'explanation', label: 'Giải thích', required: false, type: 'String' },
+      { field: 'difficulty', label: 'Độ khó (1-5)', required: false, type: 'Number' },
+      { field: 'tags', label: 'Tags', required: false, type: 'String' },
+    ];
+  }
+
+  async getImportTemplate(): Promise<Buffer> {
+    const workbook = new ExcelJS.Workbook();
+    const ws = workbook.addWorksheet('Template');
+    
+    const headers = (await this.getImportHeaders()).map(h => h.label || h.field);
+    ws.addRow(headers);
+    
+    const buffer = await workbook.xlsx.writeBuffer();
+    return buffer as any as Buffer;
+  }
+
+  async validateImport(rows: any[]) {
+    const results = rows.map((row, index) => {
+      const errors: string[] = [];
+      if (!row.type) errors.push('Thiếu loại câu hỏi');
+      else if (![QuestionType.MULTIPLE_CHOICE, QuestionType.ESSAY, QuestionType.SHORT_ANSWER].includes(row.type)) {
+        errors.push('Loại câu hỏi không hợp lệ (MULTIPLE_CHOICE, ESSAY, SHORT_ANSWER)');
+      }
+      if (!row.subject) errors.push('Thiếu môn học');
+      if (row.grade === undefined || row.grade === null || row.grade === '') errors.push('Thiếu lớp');
+      if (!row.question) errors.push('Thiếu nội dung câu hỏi');
+      if (!row.correctAnswer) errors.push('Thiếu đáp án đúng');
+      if (row.options && typeof row.options === 'string') {
+        try { JSON.parse(row.options); } catch { errors.push('Đáp án (JSON) không đúng định dạng'); }
+      }
+      return { index, row, rowErrors: errors.length > 0 ? errors : undefined };
+    });
+    return {
+      data: { error: results.some(r => r.rowErrors), validate: results },
+    };
+  }
+
+  async executeImport(rows: any[], userId?: string) {
+    const questions = rows.map(r => {
+      let options = r.options;
+      if (typeof options === 'string' && options) {
+        try { options = JSON.parse(options); } catch { options = undefined; }
+      }
+      let tags = r.tags;
+      if (typeof tags === 'string' && tags) {
+        tags = tags.split(',').map((t: string) => t.trim()).filter(Boolean);
+      }
+      const grade = typeof r.grade === 'string' ? parseInt(r.grade, 10) : r.grade;
+      const difficulty = typeof r.difficulty === 'string' ? parseInt(r.difficulty, 10) : (r.difficulty || 2);
+      return this.questionRepo.create({
+        type: r.type, subject: r.subject, grade, topic: r.topic,
+        chapter: r.chapter, question: r.question, options,
+        correctAnswer: r.correctAnswer, explanation: r.explanation,
+        difficulty, tags, createdBy: userId,
+      });
+    });
+    await this.questionRepo.save(questions);
+    return {
+      data: {
+        error: false,
+        validate: questions.map((q, index) => ({ index, row: q, rowErrors: undefined })),
+      },
+    };
   }
 
   async aiGenerate(dto: AiGenerateQuestionsDto, userId?: string): Promise<QuestionEntity[]> {

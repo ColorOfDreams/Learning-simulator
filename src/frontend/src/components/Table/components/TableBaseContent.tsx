@@ -220,14 +220,14 @@ export const TableBaseContent = (props: TableBaseProps) => {
 				rowSelection={
 					props?.rowSelection
 						? {
-								type: 'checkbox',
-								selectedRowKeys: selectedIds ?? [],
-								preserveSelectedRowKeys: true,
-								onChange: (selectedRowKeys) => setSelectedIds?.(selectedRowKeys as (string | number)[]),
-								columnWidth: 40,
-								fixed: 'left',
-								...props.detailRow,
-							}
+							type: 'checkbox',
+							selectedRowKeys: selectedIds ?? [],
+							preserveSelectedRowKeys: true,
+							onChange: (selectedRowKeys) => setSelectedIds?.(selectedRowKeys as (string | number)[]),
+							columnWidth: 40,
+							fixed: 'left',
+							...props.detailRow,
+						}
 						: undefined
 				}
 				loading={loading}
@@ -324,7 +324,7 @@ export const TableBaseContent = (props: TableBaseProps) => {
 					onOk={() => getData?.(params)}
 					titleTemplate={
 						title
-							? intl.formatMessage({ id: 'global.table.index.import.titleTemplate' }, { title: title as any })
+							? `${intl.formatMessage({ id: 'global.table.index.import.titleTemplate' }, { title: typeof title === 'string' ? title : '' }).trim()}.xlsx`
 							: undefined
 					}
 					extendData={props.importParam ?? params}

@@ -43,11 +43,11 @@ const useInitService = (url: string, ip?: string) => {
 	};
 
 	const getImportHeaders = (params?: any, headers?: any) => {
-		return axios.get(`${finalIp}/${url}/import/definition`, { params, data: { silent: true }, headers });
+		return axios.get(`${finalIp}/${url}/import/headers`, { params, data: { silent: true }, headers });
 	};
 
 	const getImportTemplate = (params?: any, headers?: any) => {
-		return axios.get(`${finalIp}/${url}/import/template/xlsx`, {
+		return axios.get(`${finalIp}/${url}/import/template`, {
 			responseType: 'arraybuffer',
 			params,
 			headers,
@@ -59,7 +59,7 @@ const useInitService = (url: string, ip?: string) => {
 	};
 
 	const postExecuteImport = (payload: any, headers?: any) => {
-		return axios.post(`${finalIp}/${url}/import/insert`, payload, { headers });
+		return axios.post(`${finalIp}/${url}/import/execute`, payload, { headers });
 	};
 
 	const getExportFields = (params?: any, headers?: any) => {
