@@ -157,6 +157,18 @@
 						color: var(--text);
 					}
 				}
+
+				&--notification {
+					color: var(--muted);
+
+					img {
+						filter: invert(1) brightness(1.7);
+					}
+
+					&:hover {
+						color: var(--text);
+					}
+				}
 			}
 
 			.stu-sidebar__user {
@@ -314,6 +326,10 @@
 			}
 
 			&.stu-sidebar__nav-item--settings {
+				background: oklch(0.62 0.05 280 / 0.1);
+			}
+
+			&.stu-sidebar__nav-item--notification {
 				background: oklch(0.62 0.05 280 / 0.1);
 			}
 		}
