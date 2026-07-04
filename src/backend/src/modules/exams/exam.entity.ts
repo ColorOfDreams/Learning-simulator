@@ -1,6 +1,7 @@
 import { Entity, Column } from 'typeorm';
 import { BaseEntity } from '../../core/base/base.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { ModerationStatus } from '../question-bank/question-bank.entity';
 
 @Entity('exams')
 export class ExamEntity extends BaseEntity {
@@ -43,6 +44,15 @@ export class ExamEntity extends BaseEntity {
   @ApiProperty()
   @Column({ type: 'int', default: 0 })
   questionCount!: number;
+
+  @ApiProperty({ enum: ModerationStatus, default: ModerationStatus.APPROVED })
+  @Column({
+    type: 'enum',
+    enum: ModerationStatus,
+    enumName: 'exams_status_enum',
+    default: ModerationStatus.APPROVED,
+  })
+  status!: ModerationStatus;
 }
 
 export interface ExamSection {

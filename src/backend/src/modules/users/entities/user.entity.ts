@@ -65,4 +65,8 @@ export class UserEntity extends BaseEntity {
   @ApiProperty({ default: 0 })
   @Column({ type: 'int', default: 0 })
   maxStreak!: number;
+
+  @ApiProperty({ default: false })
+  @Column({ type: 'boolean', default: false })
+  isLocked!: boolean;
 }

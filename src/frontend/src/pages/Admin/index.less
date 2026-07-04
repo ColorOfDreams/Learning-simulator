@@ -1,0 +1,267 @@
+.admin-dashboard {
+  box-sizing: border-box;
+  font-family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  // CSS variables structure
+  &[data-theme="dark"] {
+    --app-bg: #141416;
+    --bg: #1c1c20;
+    --surface: #26262b;
+    --border: #34343b;
+    --text: #ededee;
+    --muted: #9b9ba4;
+    --row: #202024;
+
+    .scl::-webkit-scrollbar-thumb {
+      background: #45454e;
+    }
+
+    .app-sidebar {
+      background: linear-gradient(177deg, #1e1e24 0%, #18181c 60%, #131316 100%) !important;
+      border-right-color: #2c2c33 !important;
+    }
+
+    .surf {
+      background: var(--surface, #26262b) !important;
+      border-color: var(--border, #34343b) !important;
+    }
+
+    .fld {
+      background: #1c1c20 !important;
+      border-color: #3a3a42 !important;
+      color: #ededee !important;
+    }
+
+    .rowln:hover {
+      background: #202024 !important;
+    }
+
+    .sidebar-link {
+      &.dash:hover { background: oklch(0.62 0.16 264 / .15) !important; }
+      &.users:hover { background: oklch(0.6 0.18 350 / .15) !important; }
+      &.classes:hover { background: oklch(0.58 0.13 195 / .15) !important; }
+      &.content:hover { background: oklch(0.72 0.15 70 / .15) !important; }
+      &.settings:hover { background: oklch(0.62 0.05 280 / .15) !important; }
+      &.logout:hover { background: oklch(0.6 0.18 25 / .18) !important; color: oklch(0.65 0.19 25) !important; }
+    }
+  }
+
+  &[data-theme="light"] {
+    --app-bg: #f2f1ec;
+    --bg: #faf9f5;
+    --surface: #ffffff;
+    --border: #e6e4dd;
+    --text: #2a2a28;
+    --muted: #7c7a72;
+    --row: #faf8f3;
+
+    .sidebar-link {
+      &.dash:hover { background: oklch(0.62 0.16 264 / .09) !important; }
+      &.users:hover { background: oklch(0.6 0.18 350 / .09) !important; }
+      &.classes:hover { background: oklch(0.58 0.13 195 / .1) !important; }
+      &.content:hover { background: oklch(0.72 0.15 70 / .12) !important; }
+      &.settings:hover { background: oklch(0.62 0.05 280 / .1) !important; }
+      &.logout:hover { background: oklch(0.6 0.18 25 / .12) !important; color: oklch(0.55 0.19 25) !important; }
+    }
+  }
+
+  // Scrollbars
+  .scl::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  
+  .scl::-webkit-scrollbar-thumb {
+    background: #d8d6cf;
+    border-radius: 9px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  // Common Elements
+  .surf {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .fld {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+
+  .rowln {
+    border-top: 1px solid var(--border);
+    transition: background 0.12s;
+
+    &:hover {
+      background: var(--row);
+    }
+  }
+
+  // Sidebar Links Base
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background .18s, color .18s;
+    user-select: none;
+    text-decoration: none;
+  }
+
+  // Action Button Hovers
+  .actBtn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e0ddd4);
+    cursor: pointer;
+    color: #8a887f;
+    transition: border-color .15s, color .15s;
+
+    &:hover {
+      &.lock-btn {
+        border-color: oklch(0.6 0.16 45 / .6);
+        color: oklch(0.5 0.16 45);
+      }
+      &.reset-btn {
+        border-color: oklch(0.62 0.14 264 / .6);
+        color: oklch(0.5 0.14 264);
+      }
+      &.edit-btn {
+        border-color: oklch(0.6 0.16 300 / .6);
+        color: oklch(0.5 0.16 300);
+      }
+      &.remove-btn {
+        border-color: oklch(0.6 0.18 25 / .6);
+        color: oklch(0.55 0.19 25);
+      }
+    }
+  }
+
+  // Keyframe Animations
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes aFloat {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-5px) rotate(3deg);
+    }
+  }
+
+  @keyframes aRowIn {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes aBarV {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes aDash {
+    from {
+      stroke-dashoffset: var(--len, 1000);
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes aToast {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  // Keyframes for custom dropdown transition
+  @keyframes ddIn {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .dd-scl::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .dd-scl::-webkit-scrollbar-thumb {
+    background: #d8d6cf;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  // Responsive Layout
+  @media (max-width: 900px) {
+    .app-sidebar {
+      display: none !important;
+    }
+    .pg {
+      padding: 22px 18px 48px !important;
+    }
+    .stgrid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .chgrid {
+      grid-template-columns: 1fr !important;
+    }
+    .tblwrap {
+      overflow-x: auto !important;
+    }
+    .tbl {
+      min-width: 720px !important;
+    }
+  }
+}

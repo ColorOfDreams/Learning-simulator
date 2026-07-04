@@ -16,6 +16,8 @@ import { QuestionEntity } from './question-bank.entity';
 
 @ApiTags('Question Bank')
 @Controller('question-bank')
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth()
 export class QuestionBankController extends BaseController<QuestionEntity> {
   constructor(private readonly questionBankService: QuestionBankService) {
     super(questionBankService);

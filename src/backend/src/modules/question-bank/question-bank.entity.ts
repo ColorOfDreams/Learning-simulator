@@ -8,6 +8,12 @@ export enum QuestionType {
   SHORT_ANSWER = 'SHORT_ANSWER',
 }
 
+export enum ModerationStatus {
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+}
+
 @Entity('question_bank')
 export class QuestionEntity extends BaseEntity {
   @ApiProperty({ enum: QuestionType })
@@ -57,4 +63,12 @@ export class QuestionEntity extends BaseEntity {
   @ApiProperty({ nullable: true })
   @Column({ type: 'simple-array', nullable: true })
   tags?: string[];
+
+  @ApiProperty({ enum: ModerationStatus, default: ModerationStatus.APPROVED })
+  @Column({
+    type: 'enum',
+    enum: ModerationStatus,
+    default: ModerationStatus.APPROVED,
+  })
+  status!: ModerationStatus;
 }

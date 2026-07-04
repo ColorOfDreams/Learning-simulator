@@ -18,6 +18,7 @@ build/
 # AI logs — tracked structure, ignored content
 .ai-log/*.jsonl
 .ai-log/archive/
+src/backend/reports/
 # Node.js
 node_modules/
 dist/

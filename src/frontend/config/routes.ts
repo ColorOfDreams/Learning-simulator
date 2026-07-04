@@ -11,6 +11,12 @@ export default [
 			},
 		],
 	},
+	{
+		path: '/admin',
+		layout: false,
+		component: './Admin',
+		access: 'isAdmin',
+	},
 
 	// GROUP TITLE
 	// {

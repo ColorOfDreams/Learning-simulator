@@ -19,6 +19,8 @@ import { GradesModule } from './modules/grades/grades.module';
 import { QuestionTypesModule } from './modules/question-types/question_types.module';
 import { TopicsModule } from './modules/topics/topics.module';
 import { DifficultysModule } from './modules/difficulties/difficulties.module';
+import { ActivityModule } from './modules/activity/activity.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -55,6 +57,8 @@ import { DifficultysModule } from './modules/difficulties/difficulties.module';
     QuestionTypesModule,
     TopicsModule,
     DifficultysModule,
+    ActivityModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

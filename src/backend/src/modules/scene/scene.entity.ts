@@ -20,4 +20,7 @@ export class SceneEntity extends BaseEntity {
 
   @Column({ nullable: true })
   image?: string;
+
+  @Column({ type: 'boolean', default: true })
+  published!: boolean;
 }

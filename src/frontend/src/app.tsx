@@ -130,7 +130,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
 				const isUncheckPath = unCheckPermissionPaths.some((path) => window.location.pathname.includes(path));
 
 				if (location.pathname === '/') {
-					history.replace('/dashboard');
+					const role = initialState.currentUser?.role;
+					if (role === 'admin') {
+						history.replace('/admin');
+					} else if (role === 'student') {
+						history.replace('/hoc-sinh');
+					} else {
+						history.replace('/dashboard');
+					}
 				} else if (
 					!isUncheckPath &&
 					currentRole &&

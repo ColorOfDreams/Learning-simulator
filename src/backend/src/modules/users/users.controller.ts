@@ -3,6 +3,9 @@ import {
   Controller,
   Get,
   Post,
+  Put,
+  Delete,
+  Param,
   Query,
   Req,
   UseGuards,
@@ -16,12 +19,13 @@ import {
 } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, type DeepPartial } from 'typeorm';
 import type { Request } from 'express';
 import { BaseController } from '../../core/base/base.controller';
 import { UserEntity, UserRole } from './entities/user.entity';
 import { UserLabSessionEntity } from './entities/user-lab-session.entity';
 import { UsersService } from './users.service';
+import { RolesGuard, Roles } from '../../common/guards/roles.guard';
 
 class CompleteActivityDto {
   @ApiProperty({ example: 30 })
@@ -85,6 +89,8 @@ function calcLevel(xp: number): number {
 
 @ApiTags('users')
 @Controller('users')
+@UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth()
 export class UsersController extends BaseController<UserEntity> {
   constructor(
     private readonly usersService: UsersService,
@@ -282,5 +288,82 @@ export class UsersController extends BaseController<UserEntity> {
     }
 
     return { inProgress, completed };
+  }
+
+  // ── Các route CRUD chung kế thừa từ BaseController thao tác trực tiếp
+  // trên toàn bộ user (liệt kê/tạo/sửa/xóa bất kỳ ai) chỉ dành cho admin.
+  // Override lại để gắn thêm RolesGuard mà không ảnh hưởng tới các route
+  // /me phía trên (guard cộng dồn theo method, không theo class).
+
+  @Get('page')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async getPage(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query() query: any,
+  ) {
+    return super.getPage(page, limit, query);
+  }
+
+  @Get('all')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async getAll(@Query() query: any) {
+    return super.getAll(query);
+  }
+
+  @Get('one')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async getOne(@Query('condition') condition: any) {
+    return super.getOne(condition);
+  }
+
+  @Get(':id')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async getById(@Param('id') id: string) {
+    return super.getById(id);
+  }
+
+  @Post()
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async create(@Body() createDto: DeepPartial<UserEntity>) {
+    return super.create(createDto);
+  }
+
+  @Put('many')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async updateMany(
+    @Body('ids') ids: string[],
+    @Body('payload') updateDto: DeepPartial<UserEntity>,
+  ) {
+    return super.updateMany(ids, updateDto);
+  }
+
+  @Put(':id')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async update(@Param('id') id: string, @Body() updateDto: DeepPartial<UserEntity>) {
+    return super.update(id, updateDto);
+  }
+
+  @Delete('many')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async deleteMany(@Body('ids') ids: string[]) {
+    await super.deleteMany(ids);
+    return { deletedCount: ids.length };
+  }
+
+  @Delete(':id')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async delete(@Param('id') id: string) {
+    await super.delete(id);
+    return true;
   }
 }

@@ -23,6 +23,14 @@ export class ClassEntity extends BaseEntity {
   @Column()
   teacherId!: string;
 
+  @ApiProperty({ description: 'Môn học của lớp', required: false })
+  @Column({ nullable: true })
+  subject?: string;
+
+  @ApiProperty({ description: 'Khối lớp', required: false })
+  @Column({ type: 'int', nullable: true })
+  grade?: number;
+
   @ManyToOne(() => UserEntity)
   @JoinColumn({ name: 'teacherId' })
   teacher!: UserEntity;
@@ -35,4 +43,8 @@ export class ClassEntity extends BaseEntity {
     (assignment) => assignment.classDetails,
   )
   assignments!: ClassAssignmentEntity[];
+
+  @ApiProperty({ description: 'Lớp học có bị khóa bởi admin hay không', default: false })
+  @Column({ type: 'boolean', default: false })
+  isLocked!: boolean;
 }

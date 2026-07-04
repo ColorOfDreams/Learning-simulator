@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { AiUsageService } from './ai-usage.service';
 
 export type LlmChatMessage = {
   role: 'system' | 'user' | 'assistant';
@@ -21,7 +22,10 @@ export type LlmCompletionResult = {
 
 @Injectable()
 export class LlmService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly aiUsageService: AiUsageService,
+  ) {}
 
   isConfigured() {
     return Boolean(this.readApiKey());
@@ -97,8 +101,17 @@ export class LlmService {
 
       const json = (await response.json()) as {
         choices?: { message?: { content?: string } }[];
+        usage?: { prompt_tokens?: number; completion_tokens?: number };
       };
       const content = json.choices?.[0]?.message?.content?.trim();
+
+      if (json.usage) {
+        void this.aiUsageService.log({
+          model,
+          promptTokens: json.usage.prompt_tokens ?? 0,
+          completionTokens: json.usage.completion_tokens ?? 0,
+        });
+      }
 
       return content
         ? {

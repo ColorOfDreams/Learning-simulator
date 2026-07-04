@@ -9,11 +9,38 @@ import { type DataChartType } from '.';
 import './style.less';
 
 const ColumnChart = (props: DataChartType) => {
-	const { title, xAxis, yAxis, yLabel, height, type, formatY, colors, otherOptions } = props;
+	const { title, xAxis, yAxis, yLabel, height, type, formatY, colors, otherOptions, theme } = props;
 	const locale = getLocale();
 	const defaultLocale = locale === 'vi-VN' ? 'vi' : 'en';
+
+	const getIsDark = () => {
+		if (theme) {
+			return theme === 'dark';
+		}
+		if (typeof window !== 'undefined') {
+			const stored = localStorage.getItem('scl-theme');
+			if (stored) return stored === 'dark';
+			if (document.documentElement.getAttribute('data-theme') === 'dark') return true;
+			const dashboard = document.querySelector('.admin-dashboard');
+			if (dashboard && dashboard.getAttribute('data-theme') === 'dark') return true;
+			const stuRoot = document.querySelector('.stu-root');
+			if (stuRoot && stuRoot.getAttribute('data-theme') === 'dark') return true;
+		}
+		return false;
+	};
+	const isDark = getIsDark();
+
+	const safeFormatY = (val: number) => {
+		if (val === undefined || val === null || isNaN(val)) {
+			return '';
+		}
+		return formatY ? formatY(val) : tienVietNam(val);
+	};
+
 	const options: ApexOptions = {
 		chart: {
+			background: 'transparent',
+			fontFamily: "'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 			defaultLocale: defaultLocale,
 			locales: [vi, en],
 			zoom: {
@@ -33,12 +60,16 @@ const ColumnChart = (props: DataChartType) => {
 				},
 			},
 		},
+		theme: {
+			mode: isDark ? 'dark' : 'light',
+		},
 		title: {
 			text: title ?? yLabel[0],
 			align: 'left',
 			style: {
 				fontSize: '14px',
 				fontWeight: '600',
+				color: isDark ? '#ededee' : '#2a2a28',
 			},
 		},
 		plotOptions: {
@@ -49,6 +80,9 @@ const ColumnChart = (props: DataChartType) => {
 		},
 		legend: {
 			position: 'right',
+			labels: {
+				colors: isDark ? '#ededee' : '#2a2a28',
+			},
 		},
 		responsive: [
 			{
@@ -68,19 +102,32 @@ const ColumnChart = (props: DataChartType) => {
 		},
 		yaxis: {
 			labels: {
-				formatter: (val: number) => (formatY ? formatY(val) : tienVietNam(val)),
+				formatter: safeFormatY,
+				style: {
+					colors: isDark ? '#9b9ba4' : '#7c7a72',
+				},
 			},
 		},
 		xaxis: {
 			categories: xAxis || [],
+			tickAmount: xAxis && xAxis.length > 10 ? 10 : undefined,
+			labels: {
+				rotate: -45,
+				rotateAlways: false,
+				hideOverlappingLabels: true,
+				style: {
+					colors: isDark ? '#9b9ba4' : '#7c7a72',
+				},
+			},
 		},
 		tooltip: {
-			y: { formatter: (val: number) => (formatY ? formatY(val) : tienVietNam(val)) },
+			theme: isDark ? 'dark' : 'light',
+			y: { formatter: safeFormatY },
 			intersect: false,
 			shared: true,
 		},
 		grid: {
-			borderColor: '#e0e0e0',
+			borderColor: isDark ? '#2e2e35' : '#e0e0e0',
 			strokeDashArray: 2,
 			xaxis: { lines: { show: false } },
 		},

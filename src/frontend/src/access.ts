@@ -17,5 +17,6 @@ export default function access(initialState: IInitialState) {
 			return scopes.includes(`${prefix}|tao`);
 		},
 		manyAccessFilter: (route: any) => route?.listChucNang?.some((role: string) => scopes?.includes(role)) || false,
+		isAdmin: () => initialState.currentUser?.role === 'admin',
 	};
 }

@@ -1,15 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { AiUsageService } from './ai-usage.service';
 
 type EmbeddingApiResponse = {
   data?: Array<{ embedding?: unknown }>;
+  usage?: { prompt_tokens?: number; total_tokens?: number };
 };
 
 @Injectable()
 export class EmbeddingService {
   private readonly logger = new Logger(EmbeddingService.name);
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly aiUsageService: AiUsageService,
+  ) {}
 
   get model() {
     return (
@@ -113,6 +118,15 @@ export class EmbeddingService {
       throw new Error(
         `Embedding response shape invalid: expected data[${texts.length}], got ${json.data?.length ?? 0}.`,
       );
+    }
+
+    if (json.usage) {
+      void this.aiUsageService.log({
+        model: this.model,
+        promptTokens: json.usage.prompt_tokens ?? 0,
+        completionTokens: 0,
+        kind: 'embedding',
+      });
     }
 
     return json.data.map((item, index) =>

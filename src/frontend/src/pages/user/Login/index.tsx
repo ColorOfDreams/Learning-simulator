@@ -75,7 +75,13 @@ const Login: React.FC = () => {
 		}
 
 		message.success(mode === 'register' ? 'Đăng ký thành công' : 'Đăng nhập thành công');
-		history.push(userRole === 'student' ? '/hoc-sinh' : '/dashboard');
+		if (userRole === 'admin') {
+			history.push('/admin');
+		} else if (userRole === 'student') {
+			history.push('/hoc-sinh');
+		} else {
+			history.push('/dashboard');
+		}
 	};
 
 	const handleEmailAuth = async (values: any) => {
