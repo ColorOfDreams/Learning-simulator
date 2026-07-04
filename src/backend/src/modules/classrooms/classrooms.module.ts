@@ -4,6 +4,7 @@ import { ClassEntity } from './entities/class.entity';
 import { ClassMemberEntity } from './entities/class-member.entity';
 import { ClassAssignmentEntity } from './entities/class-assignment.entity';
 import { AssignmentSubmissionEntity } from './entities/assignment-submission.entity';
+import { NotificationsModule } from '../notifications/notifications.module';
 import { ClassroomsController } from './classrooms.controller';
 import { ClassroomsService } from './classrooms.service';
 
@@ -15,6 +16,7 @@ import { ClassroomsService } from './classrooms.service';
       ClassAssignmentEntity,
       AssignmentSubmissionEntity,
     ]),
+    NotificationsModule,
   ],
   controllers: [ClassroomsController],
   providers: [ClassroomsService],

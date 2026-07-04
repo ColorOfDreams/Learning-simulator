@@ -177,6 +177,17 @@ const Login: React.FC = () => {
 
 			<div className={styles.contentWrapper}>
 				<div className={styles.leftPanel}>
+
+					<h1 className={styles.heroTitle}>
+						<span className={`${styles.word} ${styles.w1} ${styles.gradientText}`}>Phòng</span>{' '}
+						<span className={`${styles.word} ${styles.w2} ${styles.gradientText}`}>thí</span>{' '}
+						<span className={`${styles.word} ${styles.w4} ${styles.gradientText}`}>nghiệm số</span>
+						<br />
+						<span className={`${styles.word} ${styles.w4}`}>
+							{/* <span className={styles.gradientText}>số trong tầm tay</span> */}
+						</span>
+					</h1>
+
 					<div className={styles.heroVisual}>
 						<div className={`${styles.floatTag} ${styles.ftag1}`}>Mô phỏng 3D</div>
 						<div className={`${styles.floatTag} ${styles.ftag2}`}>AI trợ giảng</div>
@@ -199,36 +210,26 @@ const Login: React.FC = () => {
 						</div>
 					</div>
 
-					<div className={styles.badge}>
+					{/* <div className={styles.badge}>
 						<span className={styles.badgeDot} />
 						<span>AI Study Simulator - Phiên bản 1.0</span>
-					</div>
+					</div> */}
 
-					<h1 className={styles.heroTitle}>
-						<span className={`${styles.word} ${styles.w1}`}>Phòng</span>{' '}
-						<span className={`${styles.word} ${styles.w2}`}>thí</span>{' '}
-						<span className={`${styles.word} ${styles.w3}`}>nghiệm</span>
-						<br />
-						<span className={`${styles.word} ${styles.w4}`}>
-							<span className={styles.gradientText}>số trong tầm tay</span>
-						</span>
-					</h1>
-
-					<p className={styles.heroSub}>
+					{/* <p className={styles.heroSub}>
 						Trải nghiệm khoa học qua mô phỏng 3D tương tác, không cần thiết bị, không cần phòng lab thật. Học hiệu quả
 						hơn với AI hỗ trợ từng bước.
-					</p>
+					</p> */}
 
-					<div className={styles.featurePills}>
+					{/* <div className={styles.featurePills}>
 						{PILLS.map((label) => (
 							<div className={styles.pill} key={label}>
 								<span className={styles.pillDot} />
 								{label}
 							</div>
 						))}
-					</div>
+					</div> */}
 
-					<div className={styles.statsRow}>
+					{/* <div className={styles.statsRow}>
 						{STATS.map((stat, index) =>
 							stat === null ? (
 								<div key={index} className={styles.statDivider} />
@@ -239,7 +240,7 @@ const Login: React.FC = () => {
 								</div>
 							),
 						)}
-					</div>
+					</div> */}
 				</div>
 
 				<div className={styles.rightPanel}>

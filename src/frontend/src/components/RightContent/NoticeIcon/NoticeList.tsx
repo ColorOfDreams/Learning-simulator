@@ -43,24 +43,30 @@ const NoticeList: React.FC<NoticeIconTabProps> = ({
 
 	return (
 		<div>
-			<div id='scrollableDiv' style={{ height: 460, overflow: 'auto' }}>
+			<div id='scrollableDiv' style={{ maxHeight: 460, overflowY: 'auto', overflowX: 'hidden' }} className={styles.scrollContainer}>
 				<InfiniteScroll
 					dataLength={danhSach.length}
 					next={onViewMore}
 					hasMore={danhSach.length < total}
-					loader={<Skeleton paragraph={{ rows: 2 }} active style={{ padding: 12 }} />}
-					endMessage={<Divider plain>{emptyText}</Divider>}
+					loader={<Skeleton paragraph={{ rows: 2 }} active style={{ padding: 16 }} />}
+					endMessage={
+						danhSach.length > 5 ? (
+							<div className={styles.endMessage}>Đã hiển thị tất cả thông báo</div>
+						) : null
+					}
 					scrollableTarget='scrollableDiv'
 				>
 					<List<ThongBao.IRecord>
 						className={styles.list}
 						dataSource={danhSach}
 						renderItem={(item) => {
-							const itemCls = classNames(styles.item, { [styles.read]: !item.read });
+							const isUnread = !item.read;
+							const itemCls = classNames(styles.item, { [styles.read]: isUnread });
 							const leftIcon = item.imageUrl ? <Avatar className={styles.avatar} src={item.imageUrl} /> : null;
 
 							return (
 								<List.Item className={itemCls} key={item._id} onClick={() => onItemClick(item)}>
+									{isUnread && <div className={styles.unreadDot} />}
 									<List.Item.Meta
 										className={styles.meta}
 										avatar={leftIcon}

@@ -472,3 +472,7 @@ POST /api/v1/auth/google      â†’ Google OAuth
 
 *"AI khÃ´ng thay tháº¿ team. AI khuáº¿ch Ä‘áº¡i cÃ¡ch team lÃ m viá»‡c."*
 *â€” Vibe Coding Blueprint*
+
+### ? TYPESCRIPT GUIDELINES - Tuy?t d?i không tùy ti?n ép ki?u
+- TUY?T Ð?I KHÔNG dùng `as any` d? vu?t qua l?i TypeScript. Ph?i khai báo dúng ki?u d? li?u (Interface / Type) ho?c c?u trúc l?i code.
+- Ð?i v?i `useModel` trong UmiJS, d?m b?o tên model truy?n vào kh?p chính xác v?i tên file trong thu m?c `models/` d? du?c auto-infer ki?u d? li?u.

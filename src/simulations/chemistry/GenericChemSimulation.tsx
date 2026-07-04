@@ -941,6 +941,8 @@ export default function GenericChemSimulation({
 
       if (step.fx === 'precip_blue') {
         await Effects.precip(tube, { color: 0x3f9be0, tint: 0.5 });
+      } else if (step.fx === 'precip_white') {
+        await Effects.precip(tube, { color: 0xf4f4f4, tint: 0.55, dur: 1.5 });
       } else if (step.fx === 'tube_bubbles') {
         Effects.bubbles(tube, { dur: 1.0, rate: 8, r: 0.04 });
         await delaySeconds(1.0);
@@ -2408,6 +2410,26 @@ export default function GenericChemSimulation({
         }}
       />
       <div style={{ display: 'none' }} id="sim-trigger" onClick={() => executeStep(currentStepRef.current)} />
+      {/* Disclaimer overlay */}
+      <div style={{
+        position: 'absolute',
+        bottom: 12,
+        right: 16,
+        maxWidth: '60%',
+        background: 'rgba(14, 26, 42, 0.85)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        border: '1px solid rgba(255,255,255,0.12)',
+        borderRadius: 8,
+        padding: '6px 14px',
+        fontSize: 11,
+        color: '#94a3b8',
+        lineHeight: 1.4,
+        pointerEvents: 'none',
+        zIndex: 10,
+      }}>
+        Mo phong khai niem, khong thay the thi nghiem thuc te
+      </div>
     </div>
   );
 }

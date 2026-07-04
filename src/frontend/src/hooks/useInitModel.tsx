@@ -146,7 +146,10 @@ const useInitModel = <T extends object>(
 		setLoading(true);
 		try {
 			const payload = {
-				[fieldNameCondtion ?? 'condition']: conditionParam,
+				[fieldNameCondtion ?? 'condition']: {
+					...condition,
+					...conditionParam,
+				},
 				sort: sortParam,
 				filters: filterParam,
 				select: selectParams?.join(' '),

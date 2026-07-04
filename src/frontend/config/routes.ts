@@ -69,21 +69,6 @@ export default [
 		access: 'accessFilter',
 		maChucNang: 'baihoc|xem',
 	},
-
-	// // DANH MUC HE THONG
-	// {
-	// 	name: 'DanhMuc',
-	// 	path: '/danh-muc',
-	// 	icon: 'copy',
-	// 	routes: [
-	// 		{
-	// 			name: 'ChucVu',
-	// 			path: 'chuc-vu',
-	// 			component: './DanhMuc/ChucVu',
-	// 		},
-	// 	],
-	// },
-
 	// ─── GIAO DIỆN HỌC SINH & LỚP HỌC ───
 	{
 		path: '/join',
@@ -129,7 +114,7 @@ export default [
 		],
 	},
 
-	// ─── GIAO DIỆN GIÁO VIÊN (LỚP HỌC) ───
+	// ─── GIAO DIỆN GIÁO VIÊN (LỚP HỌC + THỐNG KÊ + ĐỀ THI) ───
 	{
 		path: '/giao-vien/classes',
 		name: 'Lớp học',
@@ -143,6 +128,73 @@ export default [
 		name: 'Chi tiết lớp',
 		hideInMenu: true,
 		component: './GiaoVien/Classes/TeacherClassDetails',
+	},
+	{
+		path: '/giao-vien/question-bank',
+		name: 'Ngân hàng câu hỏi',
+		icon: 'DatabaseOutlined',
+		component: './GiaoVien/QuestionBank',
+		access: 'accessFilter',
+		maChucNang: 'quanlythinghiem|tao',
+	},
+	{
+		path: '/giao-vien/exams',
+		name: 'Đề thi',
+		icon: 'FileTextOutlined',
+		component: './GiaoVien/Exams',
+		access: 'accessFilter',
+		maChucNang: 'quanlythinghiem|tao',
+	},
+	{
+		path: '/giao-vien/exams/create',
+		name: 'Tạo đề thi',
+		hideInMenu: true,
+		component: './GiaoVien/Exams/Create',
+	},
+	{
+		path: '/giao-vien/exams/:id/print',
+		name: 'In đề thi',
+		hideInMenu: true,
+		layout: false,
+		component: './GiaoVien/Exams/Print',
+	},
+
+
+
+	// DANH MUC HE THONG
+	{
+		name: 'Danh mục',
+		path: '/danh-muc',
+		icon: 'DatabaseOutlined',
+		access: 'accessFilter',
+		maChucNang: 'dashboard|xem',
+		routes: [
+			{
+				name: 'Môn học',
+				path: 'mon-hoc',
+				component: './DanhMuc/MonHoc',
+			},
+			{
+				name: 'Lớp',
+				path: 'lop',
+				component: './DanhMuc/Lop',
+			},
+			{
+				name: 'Loại câu hỏi',
+				path: 'loai-cau-hoi',
+				component: './DanhMuc/LoaiCauHoi',
+			},
+			{
+				name: 'Chủ đề',
+				path: 'chu-de',
+				component: './DanhMuc/ChuDe',
+			},
+			{
+				name: 'Độ khó',
+				path: 'do-kho',
+				component: './DanhMuc/DoKho',
+			},
+		],
 	},
 
 	{
@@ -182,13 +234,13 @@ export default [
 	},
 	...(process.env.NODE_ENV !== 'production'
 		? [
-				{
-					path: '/dev/thumbnail-capture',
-					component: './DevTools/ThumbnailCapture',
-					layout: false,
-					hideInMenu: true,
-				},
-			]
+			{
+				path: '/dev/thumbnail-capture',
+				component: './DevTools/ThumbnailCapture',
+				layout: false,
+				hideInMenu: true,
+			},
+		]
 		: []),
 	{
 		path: '/*',

@@ -25,15 +25,35 @@ export abstract class BaseController<T extends BaseEntity> {
     @Query('limit') limit: number = 10,
     @Query() query: any,
   ) {
-    // Remove page and limit from query for options
-    const { page: _p, limit: _l, ...options } = query;
+    const { page: _p, limit: _l, condition, sort, filters, ...options } = query;
+    const parsedCondition = typeof condition === 'string' ? JSON.parse(condition) : condition;
+    const parsedSort = typeof sort === 'string' ? JSON.parse(sort) : sort;
+
+    if (parsedCondition) {
+      options.where = { ...options.where, ...parsedCondition };
+    }
+    if (parsedSort) {
+      options.order = parsedSort;
+    }
+
     return this.baseService.findPaginated(page, limit, options);
   }
 
   @Get('all')
   @ApiOperation({ summary: 'Lấy tất cả bản ghi' })
   async getAll(@Query() query: any) {
-    return this.baseService.findAll(query);
+    const { condition, sort, filters, ...options } = query;
+    const parsedCondition = typeof condition === 'string' ? JSON.parse(condition) : condition;
+    const parsedSort = typeof sort === 'string' ? JSON.parse(sort) : sort;
+
+    if (parsedCondition) {
+      options.where = { ...options.where, ...parsedCondition };
+    }
+    if (parsedSort) {
+      options.order = parsedSort;
+    }
+
+    return this.baseService.findAll(options);
   }
 
   @Get('one')

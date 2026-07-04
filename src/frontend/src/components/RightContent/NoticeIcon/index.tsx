@@ -6,7 +6,7 @@ import { useIntl, useModel } from 'umi';
 import NoticeIcon from './NoticeIcon';
 import NoticeList from './NoticeList';
 
-const NoticeIconView = () => {
+const NoticeIconView = ({ placement }: { placement?: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' | 'bottom' | 'top' | 'right' | 'rightTop' | 'rightBottom' }) => {
 	const intl = useIntl();
 	const { record, setRecord, unread, readNotificationModel, page, limit, getThongBaoModel, total, loading } =
 		useModel('thongbao.noticeicon');
@@ -19,6 +19,10 @@ const NoticeIconView = () => {
 
 	useEffect(() => {
 		getData();
+		const interval = setInterval(() => {
+			getData();
+		}, 10000);
+		return () => clearInterval(interval);
 	}, [page, limit]);
 
 	const clearReadState = async () => {
@@ -36,6 +40,7 @@ const NoticeIconView = () => {
 				allowClear={!!unread}
 				onClear={clearReadState}
 				getData={getData}
+				placement={placement}
 			>
 				<Spin spinning={loading}>
 					<NoticeList

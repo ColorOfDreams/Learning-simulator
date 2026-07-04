@@ -11,6 +11,11 @@ import chem1210 from './chem12-10';
 import chem1211 from './chem12-11';
 import chem1212 from './chem12-12';
 import chem1213 from './chem12-13';
+import chem1214 from './chem12-14';
+import chem1215 from './chem12-15';
+import chem1216 from './chem12-16';
+import chem1217 from './chem12-17';
+import chem1218 from './chem12-18';
 
 export const experiments = {
   'CHEM12-01': chem1201,
@@ -26,4 +31,9 @@ export const experiments = {
   'CHEM12-11': chem1211,
   'CHEM12-12': chem1212,
   'CHEM12-13': chem1213,
+  'CHEM12-14': chem1214,
+  'CHEM12-15': chem1215,
+  'CHEM12-16': chem1216,
+  'CHEM12-17': chem1217,
+  'CHEM12-18': chem1218,
 };

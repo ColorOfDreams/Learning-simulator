@@ -17,6 +17,6 @@ import { RagRetrievalService } from './rag-retrieval.service';
     EmbeddingService,
     RagRetrievalService,
   ],
-  exports: [AiService, EmbeddingService, RagRetrievalService],
+  exports: [AiService, LlmService, EmbeddingService, RagRetrievalService],
 })
 export class AiModule {}

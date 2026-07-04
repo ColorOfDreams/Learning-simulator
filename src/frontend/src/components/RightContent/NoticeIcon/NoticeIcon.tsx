@@ -18,6 +18,7 @@ export type NoticeIconProps = {
 	allowClear?: boolean;
 	onClear?: () => void;
 	getData?: () => void;
+	placement?: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight' | 'bottom' | 'top' | 'right' | 'rightTop' | 'rightBottom';
 };
 
 const NoticeIcon: React.FC<NoticeIconProps> = ({
@@ -29,6 +30,7 @@ const NoticeIcon: React.FC<NoticeIconProps> = ({
 	popupVisible,
 	onPopupVisibleChange,
 	getData,
+	placement,
 }) => {
 	const intl = useIntl();
 	const { loading } = useModel('thongbao.noticeicon');
@@ -40,12 +42,14 @@ const NoticeIcon: React.FC<NoticeIconProps> = ({
 
 	return (
 		<HeaderDropdown
-			placement={isMobile ? 'bottom' : 'bottomRight'}
+			placement={placement || (isMobile ? 'bottom' : 'bottomRight')}
 			content={
-				<div className='module-view'>
-					<div className='module-header'>
-						{intl.formatMessage({ id: 'app.header.noti', defaultMessage: 'Thông báo của tôi' })} ({total ?? 0})
-						<Space wrap>
+				<div className='module-view' style={{ width: 360, backgroundColor: '#fff', borderRadius: 8, boxShadow: '0 4px 20px rgba(0,0,0,0.08)', overflow: 'hidden' }}>
+					<div className={styles.headerContainer}>
+						<div className={styles.headerTitle}>
+							Thông báo
+						</div>
+						<div className={styles.headerActions}>
 							<Tooltip title={intl.formatMessage({ id: 'app.header.reload', defaultMessage: 'Làm mới' })}>
 								<Link
 									to='#!'
@@ -54,25 +58,27 @@ const NoticeIcon: React.FC<NoticeIconProps> = ({
 										if (getData) getData();
 									}}
 								>
-									<img src={reLoad} className={`${styles.reloadIcon} ${loading ? styles.spinning : ''}`} alt='reload' />
+									<img src={reLoad} className={`${styles.reloadIcon} ${loading ? styles.spinning : ''}`} alt='reload' style={{ width: 16, height: 16, filter: 'grayscale(100%) opacity(60%)' }} />
 								</Link>
 							</Tooltip>
-							<Tooltip
-								title={intl.formatMessage({ id: 'app.header.readAll', defaultMessage: 'Đánh dấu tất cả là đã đọc' })}
-							>
-								<Link
-									to='#!'
-									onClick={(e) => {
-										e.preventDefault();
-										if (allowClear && onClear) onClear();
-									}}
+							{allowClear && (
+								<Tooltip
+									title={intl.formatMessage({ id: 'app.header.readAll', defaultMessage: 'Đánh dấu tất cả là đã đọc' })}
 								>
-									<img src={readAll} />
-								</Link>
-							</Tooltip>
-						</Space>
+									<Link
+										to='#!'
+										onClick={(e) => {
+											e.preventDefault();
+											if (onClear) onClear();
+										}}
+									>
+										<img src={readAll} alt='read all' style={{ width: 16, height: 16, filter: 'grayscale(100%) opacity(60%)' }} />
+									</Link>
+								</Tooltip>
+							)}
+						</div>
 					</div>
-					<div className='module-container' style={{ paddingBottom: 2, overflow: 'hidden' }}>
+					<div className='module-container' style={{ paddingBottom: 0, overflow: 'hidden' }}>
 						{children}
 					</div>
 				</div>

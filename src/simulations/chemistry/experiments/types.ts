@@ -10,6 +10,8 @@ export interface ChemStep {
   dropOffset?: { x?: number; y?: number; z?: number; rotZ?: number; scale?: number; attach?: boolean };
   moveOffset?: { y?: number; dx?: number; rotZ?: number };
   fx?: string;
+  conditionRequired?: string;
+  equipmentRequired?: string[];
 }
 
 export interface ChemSetupItem {
@@ -33,4 +35,5 @@ export interface ChemExperimentDef {
   id: string;
   setup: ChemSetupItem[];
   steps: ChemStep[];
+  disclaimer?: string;
 }

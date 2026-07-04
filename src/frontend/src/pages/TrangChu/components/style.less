@@ -1,48 +1,247 @@
+// ── Welcome Hero ──
 .home-welcome {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	text-align: center;
-	padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 60px 20px;
 
-	h1.title {
-		font-weight: 900;
-		font-size: 64px;
-		font-family: 'Inter', 'Roboto', sans-serif;
-		text-transform: uppercase;
-		letter-spacing: 2px;
-		background: linear-gradient(135deg, var(--color-primary) 0%, #00b4db 100%);
-		-webkit-background-clip: text;
-		background-clip: text;
-		-webkit-text-fill-color: transparent;
-		margin-bottom: 16px;
-		filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+  h1.title {
+    font-weight: 900;
+    font-size: 64px;
+    font-family: 'Inter', 'Roboto', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #00b4db 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
 
-		@media (max-width: @screen-md) {
-			font-size: 48px;
-		}
+    @media (max-width: @screen-md) {
+      font-size: 48px;
+    }
 
-		@media (max-width: @screen-xs) {
-			font-size: 32px;
-		}
-	}
+    @media (max-width: @screen-xs) {
+      font-size: 32px;
+    }
+  }
 
-	h2.sub-title {
-		font-weight: 600;
-		font-size: 24px;
-		color: var(--color-text-100);
-		letter-spacing: 1px;
-		font-family: 'Inter', 'Roboto', sans-serif;
-		text-transform: uppercase;
+  h2.sub-title {
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--color-text-100);
+    letter-spacing: 1px;
+    font-family: 'Inter', 'Roboto', sans-serif;
+    text-transform: uppercase;
 
-		@media (max-width: @screen-md) {
-			font-size: 20px;
-		}
+    @media (max-width: @screen-md) {
+      font-size: 20px;
+    }
 
-		@media (max-width: @screen-xs) {
-			font-size: 16px;
-		}
-	}
+    @media (max-width: @screen-xs) {
+      font-size: 16px;
+    }
+  }
+}
+
+// ── Teacher Analytics ──
+.teacher-analytics {
+  padding: 8px 0;
+
+  .analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+
+  // Stat cards row
+  .stat-row {
+    margin-bottom: 0;
+  }
+
+  .stat-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    height: 100%;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-card-icon {
+      font-size: 28px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      flex-shrink: 0;
+    }
+
+    .stat-card-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .stat-card-value {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .stat-card-label {
+      font-size: 13px;
+      color: #595959;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+  }
+
+  // Chart cards
+  .chart-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 20px 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #f0f0f0;
+    height: 100%;
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+
+      .chart-title {
+        font-weight: 600;
+        font-size: 15px;
+        color: #262626;
+
+        .anticon {
+          margin-right: 6px;
+          color: #4361ee;
+        }
+      }
+
+      .export-link {
+        font-size: 13px;
+        color: #4361ee;
+      }
+    }
+
+    .chart-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 250px;
+      color: #bfbfbf;
+      font-size: 14px;
+    }
+  }
+
+  // Ranking rows
+  .rank-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 8px;
+    border-bottom: 1px solid #f5f5f5;
+    transition: background 0.15s;
+
+    &:last-child { border-bottom: none; }
+    &:hover { background: #fafafa; border-radius: 8px; }
+
+    .rank-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+
+      &-1 { background: #ffd700; color: #7a6200; }
+      &-2 { background: #e8e8e8; color: #555; }
+      &-3 { background: #ffd7b3; color: #8b4513; }
+    }
+
+    .rank-badge-4, .rank-badge-5, .rank-badge-6, .rank-badge-7 {
+      background: #f5f5f5;
+      color: #8c8c8c;
+    }
+
+    .rank-info {
+      flex: 1;
+      min-width: 0;
+
+      .rank-name {
+        font-weight: 600;
+        font-size: 14px;
+        color: #262626;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .rank-code {
+        font-size: 12px;
+        color: #8c8c8c;
+      }
+    }
+
+    .rank-stats {
+      text-align: right;
+      flex-shrink: 0;
+
+      .rank-score {
+        font-weight: 700;
+        font-size: 17px;
+        color: #4361ee;
+        display: block;
+      }
+
+      .rank-sub {
+        font-size: 11px;
+        color: #8c8c8c;
+      }
+    }
+  }
+
+  // Recent activity table container
+  .recent-table-wrap {
+    :global {
+      .ant-table {
+        .ant-table-tbody > tr > td {
+          padding: 6px 8px !important;
+          border-bottom: 1px solid #f5f5f5;
+        }
+        .ant-table-tbody > tr:last-child > td {
+          border-bottom: none;
+        }
+        .ant-table-tbody > tr:hover > td {
+          background: #fafafa;
+        }
+      }
+    }
+  }
 }

@@ -65,27 +65,27 @@ export abstract class BaseService<T extends BaseEntity> {
   }
 
   // Base Import/Export Dummies
-  async getImportHeaders(query?: any) {
+  async getImportHeaders(query?: any): Promise<any> {
     return [];
   }
 
-  async getImportTemplate(query?: any) {
+  async getImportTemplate(query?: any): Promise<any> {
     return {};
   }
 
-  async validateImport(rows: any[]) {
+  async validateImport(rows: any[]): Promise<any> {
     return [];
   }
 
-  async executeImport(rows: any[]) {
+  async executeImport(rows: any[]): Promise<any> {
     return [];
   }
 
-  async getExportFields(query?: any) {
+  async getExportFields(query?: any): Promise<any> {
     return [];
   }
 
-  async executeExport(payload: any) {
+  async executeExport(payload: any): Promise<any> {
     return null;
   }
 }

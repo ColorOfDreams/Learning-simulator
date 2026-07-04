@@ -33,7 +33,6 @@ export class LlmService {
 
   async complete(messages: LlmChatMessage[], options: LlmCompleteOptions = {}) {
     const result = await this.completeWithMetadata(messages, options);
-
     return result?.content;
   }
 
@@ -57,6 +56,7 @@ export class LlmService {
         this.configService.get<string>('LLM_TEMPERATURE') ??
         0.2,
     );
+
     const maxTokens = Number(
       options.maxTokens ??
         this.configService.get<string>('LLM_MAX_TOKENS') ??

@@ -6,7 +6,7 @@ const ipRoot = APP_CONFIG_IP_ROOT; // ip dev
 const ip3 = ipRoot; // ip dev
 
 // Ip khác (Giữ lại nếu sau này backend mở rộng, hiện tại trỏ chung về ipRoot)
-const ipNotif = ipRoot; // ip dev
+const ipNotif = ipRoot; // Trỏ về backend NestJS
 const ipSlink = ipRoot; // ip dev
 const ipCore = ipRoot; // ip dev
 
