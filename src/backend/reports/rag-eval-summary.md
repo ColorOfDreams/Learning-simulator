@@ -1,6 +1,6 @@
 # AI/RAG Retrieval Evaluation Summary
 
-- Run time: 2026-07-02T12:48:51.172Z
+- Run time: 2026-07-04T09:12:27.146Z
 
 ## Cases
 
@@ -19,8 +19,8 @@
 - Embedding dimension: 1536
 - Node global fetch available: true
 - pgvector extension enabled: true
-- Theory chunks total: 4219
-- Theory chunks with embedding: 4219
+- Theory chunks total: 4644
+- Theory chunks with embedding: 4644
 - Theory chunks missing embedding: 0
 - Embedding dimensions in DB: 1536
 - Embedding index count: 0
@@ -32,12 +32,12 @@
 
 | Metric | Before: keyword-only baseline | After: hybrid/vector RAG | Delta |
 | --- | ---: | ---: | ---: |
-| Hit@1 | 0.3800 | 0.4000 | +0.0200 |
-| Hit@3 | 0.6000 | 0.7000 | +0.1000 |
-| Hit@5 | 0.6600 | 0.9400 | +0.2800 |
-| Recall@5 | 0.6600 | 0.9300 | +0.2700 |
-| Precision@5 | 0.1320 | 0.1880 | +0.0560 |
-| MRR | 0.5252 | 0.5898 | +0.0647 |
+| Hit@1 | 0.3600 | 0.4000 | +0.0400 |
+| Hit@3 | 0.5400 | 0.7000 | +0.1600 |
+| Hit@5 | 0.5800 | 0.9400 | +0.3600 |
+| Recall@5 | 0.5800 | 0.9300 | +0.3500 |
+| Precision@5 | 0.1160 | 0.1880 | +0.0720 |
+| MRR | 0.4867 | 0.5898 | +0.1032 |
 
 ## Metrics
 
@@ -49,6 +49,30 @@
 | Recall@5 | 0.9300 |
 | Precision@5 | 0.1880 |
 | MRR | 0.5898 |
+
+## Metrics By Subject
+
+| Group | Total | Evaluated | Skipped | Hit@1 | Hit@3 | Hit@5 | Recall@5 | Precision@5 | MRR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| chemistry | 15 | 15 | 0 | 0.3333 | 0.6667 | 0.9333 | 0.9333 | 0.1867 | 0.5428 |
+| math | 10 | 10 | 0 | 0.4000 | 0.6000 | 0.9000 | 0.9000 | 0.1800 | 0.5483 |
+| physics | 25 | 25 | 0 | 0.4400 | 0.7600 | 0.9600 | 0.9400 | 0.1920 | 0.6347 |
+
+## Metrics By Question Type
+
+| Group | Total | Evaluated | Skipped | Hit@1 | Hit@3 | Hit@5 | Recall@5 | Precision@5 | MRR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| calculation | 9 | 9 | 0 | 0.5556 | 0.8889 | 1.0000 | 0.9444 | 0.2000 | 0.7315 |
+| comparison | 6 | 6 | 0 | 0.6667 | 0.6667 | 1.0000 | 1.0000 | 0.2000 | 0.7417 |
+| concept | 9 | 9 | 0 | 0.4444 | 0.5556 | 0.8889 | 0.8889 | 0.1778 | 0.5731 |
+| cross-topic-noise | 4 | 4 | 0 | 0.2500 | 0.7500 | 1.0000 | 1.0000 | 0.2000 | 0.5500 |
+| definition | 7 | 7 | 0 | 0.4286 | 0.8571 | 1.0000 | 1.0000 | 0.2000 | 0.6476 |
+| formula | 12 | 12 | 0 | 0.1667 | 0.5000 | 0.8333 | 0.8333 | 0.1667 | 0.3944 |
+| phenomenon/experiment | 3 | 3 | 0 | 0.3333 | 1.0000 | 1.0000 | 1.0000 | 0.2000 | 0.6111 |
+
+## Skip Reasons
+
+No skipped cases.
 
 ## Benchmark Comparison
 

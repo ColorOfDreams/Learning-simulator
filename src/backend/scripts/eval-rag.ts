@@ -86,8 +86,23 @@ type RagEvalReport = {
     delta_recall_at_5?: number;
     delta_precision_at_5?: number;
     delta_mrr?: number;
+    skip_reasons: Record<string, number>;
+    by_subject: Record<string, RagEvalGroupSummary>;
+    by_question_type: Record<string, RagEvalGroupSummary>;
   };
   cases: RagEvalCaseReport[];
+};
+
+type RagEvalGroupSummary = {
+  total_cases: number;
+  evaluated_cases: number;
+  skipped_cases: number;
+  hit_at_1: number;
+  hit_at_3: number;
+  hit_at_5: number;
+  recall_at_5: number;
+  precision_at_5: number;
+  mrr: number;
 };
 
 type RagEvalDiagnostics = RagVectorDiagnostics & {
@@ -352,7 +367,7 @@ function buildReport(
       evaluatedCases,
       (item) => item.metrics.precisionAt5,
     ),
-    mrr: calculateMeanReciprocalRank(caseReports.map((item) => item.metrics)),
+    mrr: calculateMeanReciprocalRank(evaluatedCases.map((item) => item.metrics)),
   };
 
   return {
@@ -384,9 +399,75 @@ function buildReport(
       delta_precision_at_5:
         afterSummary.precision_at_5 - baselineSummary.precision_at_5,
       delta_mrr: afterSummary.mrr - baselineSummary.mrr,
+      skip_reasons: countSkipReasons(caseReports),
+      by_subject: buildRagGroupSummaries(caseReports, (item) => item.subject),
+      by_question_type: buildRagGroupSummaries(
+        caseReports,
+        (item) => item.questionType,
+      ),
     },
     cases: caseReports,
   };
+}
+
+function buildRagGroupSummaries(
+  caseReports: RagEvalCaseReport[],
+  getKey: (item: RagEvalCaseReport) => string | undefined,
+): Record<string, RagEvalGroupSummary> {
+  const groups = new Map<string, RagEvalCaseReport[]>();
+
+  for (const item of caseReports) {
+    const key = normalizeGroupKey(getKey(item));
+    groups.set(key, [...(groups.get(key) ?? []), item]);
+  }
+
+  return Object.fromEntries(
+    [...groups.entries()]
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, items]) => [key, summarizeRagGroup(items)]),
+  );
+}
+
+function summarizeRagGroup(items: RagEvalCaseReport[]): RagEvalGroupSummary {
+  const evaluatedCases = items.filter((item) => !item.metrics.skipped);
+
+  return {
+    total_cases: items.length,
+    evaluated_cases: evaluatedCases.length,
+    skipped_cases: items.length - evaluatedCases.length,
+    hit_at_1: average(evaluatedCases, (item) => item.metrics.hitAt1),
+    hit_at_3: average(evaluatedCases, (item) => item.metrics.hitAt3),
+    hit_at_5: average(evaluatedCases, (item) => item.metrics.hitAt5),
+    recall_at_5: average(evaluatedCases, (item) => item.metrics.recallAt5),
+    precision_at_5: average(
+      evaluatedCases,
+      (item) => item.metrics.precisionAt5,
+    ),
+    mrr: calculateMeanReciprocalRank(evaluatedCases.map((item) => item.metrics)),
+  };
+}
+
+function countSkipReasons(caseReports: RagEvalCaseReport[]) {
+  const counts: Record<string, number> = {};
+
+  for (const item of caseReports) {
+    const reason =
+      item.skipped_reason ?? item.metrics.skipReason ?? (item.error ? item.error : '');
+
+    if (!reason) {
+      continue;
+    }
+
+    counts[reason] = (counts[reason] ?? 0) + 1;
+  }
+
+  return Object.fromEntries(
+    Object.entries(counts).sort(([left], [right]) => left.localeCompare(right)),
+  );
+}
+
+function normalizeGroupKey(value: string | undefined) {
+  return value && value.trim() ? value.trim() : 'unknown';
 }
 
 async function safeReadVectorDiagnostics(

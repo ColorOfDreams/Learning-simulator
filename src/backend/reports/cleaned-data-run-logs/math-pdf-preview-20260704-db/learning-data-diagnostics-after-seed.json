@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-07-04T02:31:45.588Z",
+  "theoryChunks": {
+    "totalTheoryChunks": 4225,
+    "activeTheoryChunks": 4225,
+    "embeddedTheoryChunks": 4219,
+    "missingEmbeddings": 6,
+    "needsReviewTheoryChunks": 3565,
+    "generatedCleanedTheoryChunks": 3545
+  },
+  "subjectDistribution": [
+    {
+      "subject": "chemistry",
+      "count": 1538
+    },
+    {
+      "subject": "math",
+      "count": 169
+    },
+    {
+      "subject": "physics",
+      "count": 2518
+    }
+  ],
+  "gradeDistribution": [
+    {
+      "grade": 10,
+      "count": 1332
+    },
+    {
+      "grade": 11,
+      "count": 1844
+    },
+    {
+      "grade": 12,
+      "count": 1049
+    }
+  ],
+  "validationStatusDistribution": [
+    {
+      "validationStatus": "ai_generated",
+      "count": 656
+    },
+    {
+      "validationStatus": "needs_review",
+      "count": 3565
+    },
+    {
+      "validationStatus": "null",
+      "count": 4
+    }
+  ]
+}

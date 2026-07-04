@@ -1,272 +1,251 @@
 # LLM Answer Samples
 
-- Run time: 2026-07-02T12:57:15.489Z
-- AI method: chat
-- LLM enabled: true
-- Model: gpt-4o-mini
+- Run time: 2026-07-04T05:09:52.569Z
+- AI method: analyze
+- LLM enabled: false
+- Model: N/A
 
 ## Best Samples
 
-### REAL_EVAL_PHY11_OSCILLATION_CONCEPT_001 - score 1.0000
+### RAG90_PHYSICS_002 - score 0.8000
 
-Question: Dao động cơ là gì? Nêu đặc điểm chuyển động quanh vị trí cân bằng.
+Question: Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Chương IV: Dòng điện, mạch điện.
 
 Expected:
 
-Reference answer: Dao động cơ là chuyển động qua lại của vật quanh vị trí cân bằng và có thể lặp đi lặp lại theo thời gian.
-Required concepts: dao động cơ, chuyển động qua lại, vị trí cân bằng
+Reference answer: > Xe điện là xu hướng phát triển trong tương lai. > > Pin là một trong những yếu tố quan trọng của tất cả các dòng xe điện. > > Khi pin được nạp đầy, xe có thể di chuyển được quãng đường hàng trăm kilômét, giúp bảo vệ môi trường, chi phí vận hành xe thấp và khả năng vận hành ổn định, không phát ra tiếng ồn. > > Tại sao pin trong xe điện sau khi sạc lại có thể tạo ra dòng điện chạy khá lâu trong mạch kín? ---
+Required concepts: dòng điện, Chương, Dòng, điện, mạch
 
 Metrics:
 
 - Numeric correct: N/A
-- Concept coverage: 1.0000
-- Matched concepts: dao động cơ, chuyển động qua lại, vị trí cân bằng
-- Missing concepts: N/A
-- Rule-based score: 1.0000
-- Judge final score: 4.7500
-- Judge reason: Câu trả lời đúng và dựa hoàn toàn vào thông tin trong CONTEXT, nêu rõ định nghĩa và đặc điểm của dao động cơ.
+- Concept coverage: 0.8000
+- Matched concepts: dòng điện, Dòng, điện, mạch
+- Missing concepts: Chương
+- Rule-based score: 0.8000
 
-Confidence: high
-Used references: TH_PHY11_C01_L01_017, GENCLN_PHY_G11_sgkvatli11_chuong1_bai1_sgkvatli_11_39203721_S004_P01
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Dao động cơ là chuyển động qua lại của vật quanh vị trí cân bằng. Đặc điểm của chuyển động này là vật có thể thực hiện dao động tuần hoàn, tức là sau những khoảng thời gian bằng nhau, vật trở lại vị trí cũ theo hướng cũ.
+![Hình 24.2 - Kí hiệu nguồn điện](assets/images/hinh-24-2.png) **Nội dung hình** Kí hiệu nguồn điện trong sơ đồ mạch điện. Nguồn điện gồm hai cực: * Cực dương. * Cực âm. --- Hiệu điện thế giữa hai cực của nguồn điện được duy trì ngay cả khi có dòng điện chạy qua các vật dẫn nối liền giữa hai cực của nó. Điều đó có nghĩa là sự tích điện khác nhau ở các cực của nguồn điện tiếp tục được duy trì. Để tạo ra các điện cực như vậy, trong nguồn điện phải có lực thực hiện công để: * Tách các electron ra khỏi nguyên tử. * Chuyển các electron hoặc ion dương được tạo thành ra khỏi mỗi cực. Khi đó… Nguồn tham chiếu gần nhất: Hình 24.2. Câu trả lời được rút từ theory chunk liên quan nhất.
 
-### REAL_EVAL_PHY11_SHM_EQUATION_001 - score 1.0000
+### RAG90_PHYSICS_026 - score 0.8000
 
-Question: Trong phương trình dao động điều hòa x = A cos(ωt + φ), x, A, ω và φ có ý nghĩa gì?
+Question: Cần phân biệt hoặc so sánh điểm nào khi học 1. Thế năng của một điện tích trong điện trường đều, đặc biệt với khái niệm thế năng?
 
 Expected:
 
-Reference answer: x là li độ tại thời điểm t, A là biên độ, ω là tần số góc, còn φ là pha ban đầu; ωt + φ là pha dao động.
-Required concepts: x là li độ, A là biên độ, ω là tần số góc, φ là pha ban đầu
+Reference answer: Thế năng của một điện tích $q$ trong điện trường đều đặc trưng cho khả năng sinh công của điện trường đều khi đặt điện tích $q$ tại điểm ta xét. Số đo thế năng của điện tích $q$ trong điện trường đều của một tụ điện được tính bằng công mà điện trường đều có thể sinh ra khi dịch chuyển điện tích $q$ từ điểm ta xét tới bản cực âm của tụ điện.
+Required concepts: thế năng, điện tích, điện trường, cường độ điện trường, điện trường đều
 
 Metrics:
 
 - Numeric correct: N/A
-- Concept coverage: 1.0000
-- Matched concepts: x là li độ, A là biên độ, ω là tần số góc, φ là pha ban đầu
-- Missing concepts: N/A
-- Rule-based score: 1.0000
-- Judge final score: 4.7500
-- Judge reason: Câu trả lời đúng và dựa hoàn toàn vào thông tin trong CONTEXT, giải thích rõ ràng ý nghĩa của từng đại lượng trong phương trình dao động điều hòa.
+- Concept coverage: 0.8000
+- Matched concepts: thế năng, điện tích, điện trường, điện trường đều
+- Missing concepts: cường độ điện trường
+- Rule-based score: 0.8000
 
-Confidence: high
-Used references: th_shm_002, TH_PHY11_C01_L01_017
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Trong phương trình dao động điều hòa x = A cos(ωt + φ): x là li độ tại thời điểm t, A là biên độ (giá trị lớn nhất của x), ω là tần số góc (đo bằng rad/s), và φ là pha ban đầu (đo bằng rad). Hãy thử thay đổi các tham số A, ω và φ trong mô phỏng để quan sát ảnh hưởng đến dao động.
+Tương tự như trường hợp điện trường đều, với điện trường bất kì ta có thể phát biểu: > Thế năng của một điện tích $q$ trong điện trường đặc trưng cho khả năng sinh công của điện trường khi đặt điện tích $q$ tại điểm đang xét. Số đo thế năng của điện tích $q$ tại điểm $M$ trong điện trường bằng công của lực điện có thể sinh ra khi điện tích $q$ di chuyển từ điểm $M$ tới điểm mốc để tính thế năng. Khi chọn mốc thế năng tại vô cực, số đo thế năng của điện tích $q$ tại điểm $M$ trong điện trường bằng công của lực điện trong dịch chuyển của điện tích $q$ từ điểm $M$ tới vô cực: $$ W_M=A_{M\inft… Nguồn tham chiếu gần nhất: 2. Thế năng của một điện tích trong điện trường bất kì. Dạng bài gần nhất: Tính cơ năng dao động điều hòa.
 
-### REAL_EVAL_PHY11_OHM_001 - score 1.0000
+### RAG90_MATH_002 - score 0.8000
 
-Question: Một điện trở R = 10 Ω được đặt vào hiệu điện thế U = 5 V. Tính cường độ dòng điện.
-
-Expected:
-
-Reference answer: Từ R = U/I suy ra I = U/R = 5/10 = 0,5 A.
-Expected numeric: value=0.5 A
-Required concepts: R = U/I, I = U/R, 0,5 A
-
-Metrics:
-
-- Numeric correct: pass
-- Concept coverage: 1.0000
-- Matched concepts: R = U/I, I = U/R, 0,5 A
-- Missing concepts: N/A
-- Rule-based score: 1.0000
-- Judge final score: 4.7500
-- Judge reason: Câu trả lời đúng, dựa vào công thức Ohm và tính toán chính xác.
-
-Confidence: high
-Used references: TH_PHY11_C04_L23_010
-
-Answer:
-
-Cường độ dòng điện I = 0.5 A. Sử dụng công thức Ohm: R = U/I. Thay số: 10 = 5/I. Giải phương trình để tìm I: I = 5/10 = 0.5. I = U / R
-
-### REAL_EVAL50_PHYS_009 - score 1.0000
-
-Question: Trình bày ý chính của mục Hiện tượng siêu dẫn.
+Question: Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Giá trị lượng giác của góc lượng giác.
 
 Expected:
 
-Reference answer: Hiện tượng siêu dẫn là hiện tượng một số kim loại và hợp kim khi nhiệt độ thấp hơn một nhiệt độ tới hạn $T_c$ thì điện trở của nó đột ngột giảm xuống bằng $0$. Khi vật dẫn ở trạng thái siêu dẫn, điện trở gần bằng $0$. Vì vậy, nếu trong một vòng dây siêu dẫn có dòng điện chạy qua thì dòng điện này có thể duy trì rất lâu sau khi bỏ nguồn điện. Các vật liệu siêu dẫn có nhiều ứng dụng trong thực tế. Người ta chế tạo nam châm điện có cuộn dây bằng vật liệu siêu dẫn để tạo ra từ trường mạnh trong t...
-Required concepts: Hiện tượng siêu dẫn
+Reference answer: Trong bài 1: Giá trị lượng giác của góc lượng giác, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.
+Required concepts: Giá trị lượng giác của góc lượng giác, definition, gia, tri, luong
 
 Metrics:
 
 - Numeric correct: N/A
-- Concept coverage: 1.0000
-- Matched concepts: Hiện tượng siêu dẫn
-- Missing concepts: N/A
-- Rule-based score: 1.0000
-- Judge final score: 4.5500
-- Judge reason: Câu trả lời đúng và dựa vào thông tin trong CONTEXT, tuy nhiên thiếu một số chi tiết về ứng dụng của vật liệu siêu dẫn.
+- Concept coverage: 0.8000
+- Matched concepts: Giá trị lượng giác của góc lượng giác, gia, tri, luong
+- Missing concepts: definition
+- Rule-based score: 0.8000
 
-Confidence: high
-Used references: TH_PHY11_C04_L23_043, GENCLN_PHY_G11_sgkvatli11_chuong4_bai23_sgkvatli_11_a07c69c6_S044_P01
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Hiện tượng siêu dẫn là hiện tượng một số kim loại và hợp kim khi nhiệt độ thấp hơn một nhiệt độ tới hạn $T_c$ thì điện trở của nó đột ngột giảm xuống bằng $0$. Khi ở trạng thái siêu dẫn, dòng điện có thể duy trì lâu dài mà không hao phí năng lượng.
+Trong bài 1: Giá trị lượng giác của góc lượng giác, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học. Một câu trả lời tốt nên nêu khái niệm bằng ngôn ngữ ngắn gọn, chỉ ra điều kiện đi kèm, rồi nói rõ đối tượng nào đang được xét. Nội dung này là bản tổng hợp synth… Nguồn tham chiếu gần nhất: Khái niệm cốt lõi: Giá trị lượng giác của góc lượng giác. Câu trả lời được rút từ theory chunk liên quan nhất.
 
-### REAL_EVAL50_PHYS_010 - score 1.0000
+### RAG90_MATH_003 - score 0.8000
 
-Question: Theo học liệu, Đặc điểm của sóng dừng là gì?
+Question: Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Tính đơn điệu và cực trị của hàm số.
 
 Expected:
 
-Reference answer: Sóng dừng được tạo thành mỗi khi có hai sóng cùng biên độ, cùng bước sóng lan truyền theo hai hướng ngược nhau. Hai sóng này gặp nhau, giao thoa nhau tạo nên sóng tổng hợp là **sóng dừng**. Những điểm tại đó hai sóng ngược pha nhau thì không dao động và được gọi là **nút sóng**. Những điểm tại đó hai sóng đồng pha với nhau thì dao động với biên độ cực đại và được gọi là **bụng sóng** như Hình 13.2. Trong thực tế, ta thường gặp một trong hai sóng là sóng phản xạ của sóng kia. Sóng dừng là tổng...
-Required concepts: sóng dừng, nút sóng, bụng sóng
+Reference answer: Trong bài 1: Tính đơn điệu và cực trị của hàm số, trọng tâm là cực trị liên quan tới điểm mà hàm số đổi chiều biến thiên. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.
+Required concepts: Tính đơn điệu và cực trị của hàm số, definition, tinh, ieu, cuc
 
 Metrics:
 
 - Numeric correct: N/A
-- Concept coverage: 1.0000
-- Matched concepts: sóng dừng, nút sóng, bụng sóng
-- Missing concepts: N/A
-- Rule-based score: 1.0000
-- Judge final score: 4.5500
-- Judge reason: Câu trả lời đúng và dựa vào thông tin trong CONTEXT, tuy nhiên không đề cập đến điều kiện hình thành sóng dừng.
+- Concept coverage: 0.8000
+- Matched concepts: Tính đơn điệu và cực trị của hàm số, tinh, ieu, cuc
+- Missing concepts: definition
+- Rule-based score: 0.8000
 
-Confidence: high
-Used references: TH_PHY11_C02_L13_022, TH_PHY11_C02_L13_006
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Sóng dừng là sóng tổng hợp được tạo ra khi hai sóng cùng biên độ, cùng tần số lan truyền theo hai hướng ngược nhau. Trong sóng dừng, có những điểm đứng yên gọi là nút sóng và những điểm dao động với biên độ cực đại gọi là bụng sóng.
+Trong bài 1: Tính đơn điệu và cực trị của hàm số, trọng tâm là cực trị liên quan tới điểm mà hàm số đổi chiều biến thiên. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học. Một câu trả lời tốt nên nêu khái niệm bằng ngôn ngữ ngắn gọn, chỉ ra điều kiện đi kèm, rồi nói rõ đối tượng nào đang được xét. Nội dung này là bản tổng hợp synthetic từ danh mục chương/bài để p… Nguồn tham chiếu gần nhất: Khái niệm cốt lõi: Tính đơn điệu và cực trị của hàm số. Câu trả lời được rút từ theory chunk liên quan nhất.
+
+### RAG90_MATH_004 - score 0.8000
+
+Question: Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Tập hợp và các phép toán trên tập hợp.
+
+Expected:
+
+Reference answer: Trong bài 2: Tập hợp và các phép toán trên tập hợp, trọng tâm là tập hợp gồm các phần tử xác định và có thể mô tả bằng liệt kê hoặc tính chất đặc trưng. Đây là một phần của chương 1: Mệnh đề và tập hợp, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.
+Required concepts: Tập hợp và các phép toán trên tập hợp, definition, tap, hop, cac
+
+Metrics:
+
+- Numeric correct: N/A
+- Concept coverage: 0.8000
+- Matched concepts: Tập hợp và các phép toán trên tập hợp, tap, hop, cac
+- Missing concepts: definition
+- Rule-based score: 0.8000
+
+Confidence: N/A
+Used references: N/A
+
+Answer:
+
+Trong bài 2: Tập hợp và các phép toán trên tập hợp, trọng tâm là tập hợp gồm các phần tử xác định và có thể mô tả bằng liệt kê hoặc tính chất đặc trưng. Đây là một phần của chương 1: Mệnh đề và tập hợp, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học. Một câu trả lời tốt nên nêu khái niệm bằng ngôn ngữ ngắn gọn, chỉ ra điều kiện đi kèm, rồi nói rõ đối tượng nào đang được xét. Nội dung này là bản tổng hợp synthetic từ danh mục chương/bài để… Nguồn tham chiếu gần nhất: Khái niệm cốt lõi: Tập hợp và các phép toán trên tập hợp. Câu trả lời được rút từ theory chunk liên quan nhất.
 
 ## Weakest Samples
 
-### REAL_EVAL50_PHYS_001 - score 0.0000
+### RAG90_PHYSICS_009 - score 0.0000
 
-Question: Theo học liệu, Hiện tượng cộng hưởng trong đời sống là gì?
+Question: Công thức hoặc tính chất quan trọng của Hình 3.1 là gì?
 
 Expected:
 
-Reference answer: Cộng hưởng là một hiện tượng vật lí quan trọng có thể xuất hiện trong nhiều tình huống khác nhau. Trong một số trường hợp, hiện tượng cộng hưởng có lợi, như: * Hộp đàn của các đàn ghi ta, violon,... là những hộp cộng hưởng được cấu tạo sao cho không khí trong hộp có thể dao động cộng hưởng với nhiều tần số dao động khác nhau của dây đàn. * Nguyên tắc hoạt động của lò vi sóng dựa trên cộng hưởng. Ở các lò vi sóng này, sóng được sử dụng có tần số phù hợp với tần số dao động riêng của các phân t...
-Required concepts: Hiện tượng cộng hưởng trong đời sống
+Reference answer: ![Hình 3.1 - Thí nghiệm sự truyền nhiệt năng](assets/images/hinh-3-1.png) **Nội dung hình** Hình biểu diễn thí nghiệm sự truyền nhiệt năng, gồm: * Cốc nhôm đựng nước ở nhiệt độ khoảng $30^\circ C$. * Bình cách nhiệt đựng nước ở nhiệt độ khoảng $60^\circ C$. * Hai nhiệt kế dùng để đo nhiệt độ của nước trong cốc và trong bình. Hình gồm: * Ảnh chụp thí nghiệm. * Sơ đồ bố trí thí nghiệm. ---
+Required concepts: physics, grade 12, Bài 3: Nhiệt độ. Thang nhiệt độ – Nhiệt kế, Hình 3.1, 1. Khái niệm nhiệt độ
 
 Metrics:
 
 - Numeric correct: N/A
 - Concept coverage: 0.0000
 - Matched concepts: N/A
-- Missing concepts: Hiện tượng cộng hưởng trong đời sống
+- Missing concepts: physics, grade 12, Bài 3: Nhiệt độ. Thang nhiệt độ – Nhiệt kế, Hình 3.1, 1. Khái niệm nhiệt độ
 - Rule-based score: 0.0000
-- Judge final score: 3.6000
-- Judge reason: Câu trả lời đúng về hiện tượng cộng hưởng và có liên hệ với các ví dụ thực tế, nhưng chưa đề cập đến các ứng dụng cụ thể trong đời sống như hộp đàn hay lò vi sóng, do đó chưa hoàn toàn đầy đủ.
 
-Confidence: high
-Used references: TH_PHY11_C01_L06_021, TH_PHY11_C01_L06_019
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Hiện tượng cộng hưởng là hiện tượng biên độ dao động của một hệ tăng lên đến giá trị cực đại khi tần số của lực cưỡng bức bằng tần số riêng của hệ. Nó có thể có lợi hoặc có hại trong thực tế, ví dụ như cầu sập khi chịu lực cưỡng bức có tần số bằng tần số riêng của nó. Khám phá mô phỏng để thấy rõ hiện tượng cộng hưởng trong dao động cưỡng bức.
+Vì số phân tử $N$ vô cùng lớn và các phân tử chuyển động hỗn loạn trong bình nên các hướng $Ox$, $Oy$ và $Oz$ là bình đẳng. Do đó, số phân tử chuyển động theo hướng $Ox$, từ mặt $EFOH$ sang mặt $ABCD$ và ngược lại để gây áp suất lên hai mặt này chỉ bằng: $$ \frac{N}{3} $$ số phân tử có trong bình. Vì các phân tử chuyển động hỗn loạn nên tốc độ của các phân tử không bằng nhau. Do đó, áp suất của mỗi phân tử tác dụng lên thành bình cũng không bằng nhau. Trung bình, mỗi phân tử tác dụng lên thành bình một áp suất: $$ p_m=\frac{m\overline{v^2}}{V} $$ Trong đó: $$ \overline{v^2}=\frac{v_1^… Nguồn tham chiếu gần nhất: 1.2. Tác dụng của $N$ phân tử khí lên thành bình. Câu trả lời được rút từ theory chunk liên quan nhất.
 
-### REAL_EVAL50_PHYS_003 - score 0.0000
+### RAG90_PHYSICS_012 - score 0.0000
 
-Question: Trình bày ý chính của mục Vật lí là cơ sở của khoa học tự nhiên.
+Question: Hiện tượng hoặc thí nghiệm liên quan đến 2.2. Dụng cụ thí nghiệm được giải thích bằng ý chính nào?
 
 Expected:
 
-Reference answer: Vật lí có quan hệ với mọi ngành khoa học và thường được coi là cơ sở của khoa học tự nhiên. Các khái niệm, định luật, nguyên lí của Vật lí được sử dụng rộng rãi trong mọi lĩnh vực của khoa học tự nhiên, đặc biệt là trong việc giải thích cơ chế của các hiện tượng tự nhiên, từ các hiện tượng xảy ra trong thế giới sinh học, các phản ứng hóa học đến các hiện tượng xảy ra trong vũ trụ. Không phải ngẫu nhiên mà càng ngày càng xuất hiện nhiều lĩnh vực liên môn như: * Vật lí sinh học. * Vật lí địa lí...
-Required concepts: Vật lí là cơ sở của khoa học tự nhiên, Vật lí có quan hệ với mọi ngành khoa học và thường được coi là cơ sở của khoa học tự nhiên
+Reference answer: * Biến thế nguồn. * Bộ đo công suất nguồn điện, tức oát kế, có tích hợp chức năng đo thời gian. * Nhiệt kế điện tử hoặc cảm biến nhiệt độ có thang đo từ $-20^\circ C$ đến $110^\circ C$ và độ phân giải nhiệt độ $\pm 0{,}1^\circ C$. * Nhiệt lượng kế bằng nhựa có vỏ xốp, kèm dây điện trở gắn ở mặt trong của nắp bình. * Cân điện tử hoặc bình đong. * Các dây nối.
+Required concepts: physics, grade 12, Bài 4: Nhiệt dung riêng, 2.2. Dụng cụ thí nghiệm, 2. Thực hành đo nhiệt dung riêng của nước
 
 Metrics:
 
 - Numeric correct: N/A
 - Concept coverage: 0.0000
 - Matched concepts: N/A
-- Missing concepts: Vật lí là cơ sở của khoa học tự nhiên, Vật lí có quan hệ với mọi ngành khoa học và thường được coi là cơ sở của khoa học tự nhiên
+- Missing concepts: physics, grade 12, Bài 4: Nhiệt dung riêng, 2.2. Dụng cụ thí nghiệm, 2. Thực hành đo nhiệt dung riêng của nước
 - Rule-based score: 0.0000
-- Judge final score: 4.7500
-- Judge reason: Câu trả lời đúng và dựa hoàn toàn vào thông tin trong CONTEXT, trình bày rõ ràng ý chính về vai trò của Vật lí trong khoa học tự nhiên và các lĩnh vực liên môn.
 
-Confidence: high
-Used references: GENCLN_PHY_G10_sgkvatli10_chuong1_bai1_sgkvatli10_4644c4e2_S011_P01, GENCLN_PHY_G10_sgkvatli10_chuong1_bai1_sgkvatli10_4644c4e2_S036_P01
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Vật lí được coi là cơ sở của khoa học tự nhiên, có quan hệ với mọi ngành khoa học. Các khái niệm và định luật của Vật lí giúp giải thích cơ chế của các hiện tượng tự nhiên, từ sinh học đến hóa học và vũ trụ. Điều này dẫn đến sự phát triển của nhiều lĩnh vực liên môn như vật lí sinh học, vật lí thiên văn, và hóa lí.
+> Giải thích được một số hiện tượng, thiết bị có liên quan đến phương trình trạng thái của khí lí tưởng. Ví dụ: * Giải thích được cách sử dụng bình oxygen trong y tế. * Giải thích được túi khí trên ô tô. * Tính được thể tích, khối lượng, nhiệt độ của chất khí tạo thành trong các phản ứng hóa học. Nguồn tham chiếu gần nhất: 4. Em có thể. Câu trả lời được rút từ theory chunk liên quan nhất.
 
-### REAL_EVAL50_PHYS_005 - score 0.0000
+### RAG90_PHYSICS_015 - score 0.0000
 
-Question: Mô tả hiện tượng hoặc thí nghiệm được nêu trong mục Hiện tượng cộng hưởng trong đời sống.
+Question: Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Bảng 5.1.
 
 Expected:
 
-Reference answer: Cộng hưởng là một hiện tượng vật lí quan trọng có thể xuất hiện trong nhiều tình huống khác nhau. Trong một số trường hợp, hiện tượng cộng hưởng có lợi, như: * Hộp đàn của các đàn ghi ta, violon,... là những hộp cộng hưởng được cấu tạo sao cho không khí trong hộp có thể dao động cộng hưởng với nhiều tần số dao động khác nhau của dây đàn. * Nguyên tắc hoạt động của lò vi sóng dựa trên cộng hưởng. Ở các lò vi sóng này, sóng được sử dụng có tần số phù hợp với tần số dao động riêng của các phân t...
-Required concepts: Hiện tượng cộng hưởng trong đời sống
+Reference answer: **Giá trị gần đúng của nhiệt nóng chảy riêng ở nhiệt độ nóng chảy dưới áp suất tiêu chuẩn của một số chất** | Chất | Nhiệt độ nóng chảy $(^\circ C)$ | Nhiệt nóng chảy riêng $(J/kg)$ | |---|---:|---:| | Nước đá | 0 | $3{,}34 \cdot 10^5$ | | Sắt | 1535 | $2{,}77 \cdot 10^5$ | | Đồng | 1084 | $1{,}80 \cdot 10^5$ | | Chì | 327 | $0{,}25 \cdot 10^5$ | ---
+Required concepts: physics, grade 12, Bài 5: Nhiệt nóng chảy riêng, Bảng 5.1, 1. Khái niệm nhiệt nóng chảy riêng
 
 Metrics:
 
 - Numeric correct: N/A
 - Concept coverage: 0.0000
 - Matched concepts: N/A
-- Missing concepts: Hiện tượng cộng hưởng trong đời sống
+- Missing concepts: physics, grade 12, Bài 5: Nhiệt nóng chảy riêng, Bảng 5.1, 1. Khái niệm nhiệt nóng chảy riêng
 - Rule-based score: 0.0000
-- Judge final score: 3.8000
-- Judge reason: Câu trả lời mô tả đúng hiện tượng cộng hưởng và đưa ra ví dụ về nhạc cụ và cầu sập, phù hợp với thông tin trong CONTEXT. Tuy nhiên, không trích dẫn cụ thể từ nguồn nào.
 
-Confidence: high
-Used references: TH_PHY11_C01_L06_019, GENCLN_PHY_G11_sgkvatli11_chuong1_bai6_sgkvatli_11_5ddd353a_S019_P01
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Hiện tượng cộng hưởng là hiện tượng vật lý quan trọng, xảy ra khi một hệ dao động bị tác động bởi lực cưỡng bức có tần số bằng với tần số riêng của hệ. Ví dụ, hộp đàn của đàn guitar hay violin là những hộp cộng hưởng giúp khuếch đại âm thanh. Tuy nhiên, cộng hưởng cũng có thể gây hại, như trường hợp cầu sập khi bị tác động bởi lực cưỡng bức có tần số trùng với tần số riêng của nó. Mô tả hiện tượng cộng hưởng trong nhạc cụ như đàn guitar, violin. Nêu ví dụ về cầu sập do cộng hưởng. Khám phá mô phỏng để thấy rõ hiện tượng cộng hưởng trong dao động.
+Phần Vật lí nhiệt bao gồm ba nội dung chính: * Cấu trúc của chất và sự chuyển thể. * Định luật I của Nhiệt động lực học. * Các khái niệm nhiệt dung riêng, nhiệt nóng chảy riêng và nhiệt hóa hơi riêng. --- Nguồn tham chiếu gần nhất: 1. Một số lưu ý trong việc giải bài tập về Vật lí nhiệt. Câu trả lời được rút từ theory chunk liên quan nhất.
 
-### REAL_EVAL50_PHYS_007 - score 0.0000
+### RAG90_PHYSICS_017 - score 0.0000
 
-Question: Bỏ qua các từ gây nhiễu như dao động, acid, phương trình bậc hai; theo đúng mục Giải, nội dung chính là gì?
+Question: Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Kết luận.
 
 Expected:
 
-Reference answer: Chọn gốc tọa độ $O$ tại điểm electron bắt đầu bay vào điện trường đều. Trục $Ox$ có hướng trùng với vectơ vận tốc ban đầu. Trục $Oy$ hướng thẳng đứng lên trên. Đổi đơn vị: $$ d=24\ cm=24 \times 10^{-2}\ m=0{,}24\ m $$ Độ lớn cường độ điện trường giữa hai bản phẳng là: $$ E=\frac{U}{d}=\frac{48}{24 \times 10^{-2}}=200\ V/m $$ Vectơ cường độ điện trường hướng từ trên xuống dưới và ngược chiều với trục $Oy$. Lực điện tác dụng lên electron có phương thẳng đứng, chiều hướng lên trên. Độ lớn lực đi...
-Required concepts: Giải, d=24\ cm=24 10^{-2}\ m=0{,}24\ m, E={U}{d}={48}{24 10^{-2}}=200\ V/m
+Reference answer: Có hai loại điện tích trái dấu. Điện tích xuất hiện ở thanh thủy tinh khi được cọ xát vào len được quy ước gọi là điện tích dương. Điện tích xuất hiện ở thanh nhựa được cọ xát vào vải được quy ước gọi là điện tích âm. Các điện tích cùng loại đẩy nhau. Các điện tích khác loại hút nhau. Lực hút, đẩy giữa các điện tích được gọi chung là lực tương tác giữa các điện tích, thường gọi tắt là lực điện. ---
+Required concepts: điện tích, Kết, luận
 
 Metrics:
 
 - Numeric correct: N/A
 - Concept coverage: 0.0000
 - Matched concepts: N/A
-- Missing concepts: Giải, d=24\ cm=24 10^{-2}\ m=0{,}24\ m, E={U}{d}={48}{24 10^{-2}}=200\ V/m
+- Missing concepts: điện tích, Kết, luận
 - Rule-based score: 0.0000
-- Judge final score: 2.8500
-- Judge reason: Câu trả lời đề cập đến nội dung chính của mô hình nguyên nhân gây ra điện trở trong kim loại, nhưng không liên quan đến câu hỏi về nội dung chính trong mục Giải. Do đó, độ chính xác thấp và không đầy đủ.
 
-Confidence: high
-Used references: TH_PHY11_C04_L23_021, GENCLN_PHY_G11_sgkvatli11_chuong4_bai23_sgkvatli_11_a07c69c6_S021_P01
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Nội dung chính là mô hình nguyên nhân gây ra điện trở trong kim loại, bao gồm: ở nhiệt độ thấp, electron tự do chuyển động dễ dàng; ở nhiệt độ cao, electron bị cản trở do dao động mạnh của các ion; và các nguyên tử tạp chất cũng cản trở chuyển động của electron.
+> Để vẽ đồ thị hoặc viết phương trình của một dao động điều hòa cần biết những đại lượng vật lí nào? --- Nguồn tham chiếu gần nhất: Bài 2: Mô tả dao động điều hòa. Câu trả lời được rút từ theory chunk liên quan nhất.
 
-### REAL_EVAL50_PHYS_011 - score 0.0000
+### RAG90_PHYSICS_018 - score 0.0000
 
-Question: Trong mục Phương trình Clapeyron, bài hoặc công thức đang yêu cầu xác định đại lượng nào và dựa trên quan hệ nào?
+Question: Ý chính cần nhớ về Bảng 6.1 là gì?
 
 Expected:
 
-Reference answer: Có thể xác định được độ lớn của hằng số trong phương trình trạng thái của một lượng $n$ mol khí xác định. Số mol khí được xác định bởi: $$ n=\frac{m}{M} $$ Trong đó: * $m$ là khối lượng khí. * $M$ là khối lượng mol của lượng khí. Trước hết, cần xác định độ lớn của hằng số này đối với $1$ mol khí. Ở điều kiện tiêu chuẩn, một mol của bất kì khí nào đều có: * Thể tích: $$ V=22{,}4\cdot10^{-3}\text{ m}^3 $$ * Áp suất: $$ p=1{,}013\cdot10^5\text{ Pa} $$ * Nhiệt độ: $$ T=273\text{ K} $$ Do đó, đối...
-Required concepts: hằng số khí lí tưởng, phương trình trạng thái của một lượng n mol khí lí tưởng, phương trình trạng thái của khí lí tưởng
+Reference answer: **Giá trị gần đúng của nhiệt hóa hơi riêng ở nhiệt độ sôi dưới áp suất tiêu chuẩn của một số chất** | Chất | Nhiệt độ sôi $(^\circ C)$ | Nhiệt hóa hơi riêng $(J/kg)$ | |---|---:|---:| | Nước | 100 | $2{,}26 \cdot 10^6$ | | Rượu | 78 | $8{,}57 \cdot 10^5$ | | Thủy ngân | 357 | $2{,}85 \cdot 10^5$ | | Ether | 34,5 | $0{,}40 \cdot 10^6$ | ---
+Required concepts: physics, grade 12, Bài 6: Nhiệt hóa hơi riêng, Bảng 6.1, 1. Khái niệm nhiệt hóa hơi riêng
 
 Metrics:
 
 - Numeric correct: N/A
 - Concept coverage: 0.0000
 - Matched concepts: N/A
-- Missing concepts: hằng số khí lí tưởng, phương trình trạng thái của một lượng n mol khí lí tưởng, phương trình trạng thái của khí lí tưởng
+- Missing concepts: physics, grade 12, Bài 6: Nhiệt hóa hơi riêng, Bảng 6.1, 1. Khái niệm nhiệt hóa hơi riêng
 - Rule-based score: 0.0000
-- Judge final score: 3.6000
-- Judge reason: Câu trả lời đúng về nội dung của phương trình Clapeyron và các đại lượng liên quan, nhưng không hoàn toàn dựa vào CONTEXT được cung cấp. Câu trả lời thiếu thông tin về cách xác định hằng số khí lý tưởng và không đề cập đến điều kiện tiêu chuẩn.
 
-Confidence: high
-Used references: GENCLN_PHY_G12_sgkvatli12_chuong2_bai11_sgkvatli12_52004a8e_S009_P01
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Phương trình Clapeyron mô tả mối quan hệ giữa áp suất (p), thể tích (V) và nhiệt độ (T) của một lượng khí lý tưởng. Công thức là pV = nRT, trong đó n là số mol khí và R là hằng số khí lý tưởng. Ý nghĩa vật lý của phương trình này là nó cho phép tính toán các thông số trạng thái của khí trong điều kiện lý tưởng. Xác định các đại lượng p, V, T và n trong phương trình Clapeyron. Sử dụng công thức pV = nRT để tính toán. pV = nRT N/A
+Hình 20.6 là ảnh chụp thí nghiệm đo lực từ của nam châm vĩnh cửu tác dụng lên đoạn dây dẫn đặt trong từ trường. Biết dây dẫn được cố định vào giá thí nghiệm sao cho phương của đoạn dây dẫn nằm ngang vuông góc với vectơ cảm ứng từ $\vec{B}$ của nam châm và không chạm vào nam châm nằm trên cân. Số liệu thí nghiệm thu được như trong Bảng 20.1. Trong đó: * $L$ là chiều dài đoạn dây dẫn mang dòng điện đặt trong từ trường. * $F$ là độ lớn của lực từ tác dụng lên đoạn dây dẫn. * $I$ là cường độ dòng điện. --- Nguồn tham chiếu gần nhất: Bài tập 4. Câu trả lời được rút từ theory chunk liên quan nhất.
 
