@@ -106,8 +106,29 @@ export class QuestionBankService extends BaseService<QuestionEntity> {
     };
   }
 
+  private normalizeQuestionText(text: string): string {
+    return text.toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+
+  private async findExistingQuestionTexts(dto: {
+    subject: string;
+    grade: number;
+    topic?: string;
+  }): Promise<string[]> {
+    const where: Record<string, unknown> = { subject: dto.subject, grade: dto.grade };
+    if (dto.topic) where.topic = dto.topic;
+    const rows = await this.questionRepo.find({
+      where,
+      order: { createdAt: 'DESC' },
+      take: 30,
+      select: { question: true },
+    });
+    return rows.map(r => r.question);
+  }
+
   async aiGenerate(dto: AiGenerateQuestionsDto, userId?: string): Promise<QuestionEntity[]> {
-    const prompt = this.buildAiPrompt(dto);
+    const existingTexts = await this.findExistingQuestionTexts(dto);
+    const prompt = this.buildAiPrompt(dto, existingTexts);
     const result = await this.llmService.complete(
       [{ role: 'system', content: 'Bạn là giáo viên giàu kinh nghiệm. Trả lời JSON thuần, không markdown.' },
        { role: 'user', content: prompt }],
@@ -115,11 +136,20 @@ export class QuestionBankService extends BaseService<QuestionEntity> {
     );
     if (!result) throw new BadRequestException('AI không phản hồi, vui lòng thử lại');
     const parsed = this.parseAiResponse(result, dto);
-    const questions = parsed.map(q => this.questionRepo.create({ ...q, createdBy: userId || 'ai' }));
+
+    const seen = new Set(existingTexts.map(t => this.normalizeQuestionText(t)));
+    const deduped = parsed.filter(q => {
+      const norm = this.normalizeQuestionText(q.question || '');
+      if (seen.has(norm)) return false;
+      seen.add(norm);
+      return true;
+    });
+
+    const questions = deduped.map(q => this.questionRepo.create({ ...q, createdBy: userId || 'ai' }));
     return this.questionRepo.save(questions);
   }
 
-  private buildAiPrompt(dto: AiGenerateQuestionsDto): string {
+  private buildAiPrompt(dto: AiGenerateQuestionsDto, existingTexts: string[] = []): string {
     const typeLabels: Record<string, string> = {
       MULTIPLE_CHOICE: 'trắc nghiệm (4 lựa chọn A, B, C, D, chỉ 1 đáp án đúng)',
       ESSAY: 'tự luận (cần trình bày chi tiết lời giải)',
@@ -147,6 +177,12 @@ export class QuestionBankService extends BaseService<QuestionEntity> {
         }]
       },
       instruction: 'Trả về object {"questions": [...]}. Với trắc nghiệm phải có options 4 đáp án. Với tự luận và ngắn không cần options.',
+      avoidQuestions: existingTexts.length
+        ? existingTexts.map(t => t.slice(0, 200))
+        : undefined,
+      avoidInstruction: existingTexts.length
+        ? 'KHÔNG được tạo câu hỏi trùng hoặc rất giống nội dung các câu trong avoidQuestions.'
+        : undefined,
     });
   }
 

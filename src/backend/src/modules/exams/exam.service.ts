@@ -81,18 +81,39 @@ export class ExamService {
     return { exam, questions: questionMap };
   }
 
+  private normalizeQuestionText(text: string): string {
+    return text.toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+
+  private async findExistingQuestionTexts(dto: {
+    subject: string;
+    grade: number;
+    topic?: string;
+  }): Promise<string[]> {
+    const where: Record<string, unknown> = { subject: dto.subject, grade: dto.grade };
+    if (dto.topic) where.topic = dto.topic;
+    const rows = await this.questionRepo.find({
+      where,
+      order: { createdAt: 'DESC' },
+      take: 30,
+      select: { question: true },
+    });
+    return rows.map(r => r.question);
+  }
+
   async aiGenerate(dto: AiGenerateExamDto, userId: string): Promise<ExamEntity> {
-    const prompt = this.buildAiExamPrompt(dto);
+    const existingTexts = await this.findExistingQuestionTexts(dto);
+    const prompt = this.buildAiExamPrompt(dto, existingTexts);
     const result = await this.llmService.complete(
       [{ role: 'system', content: 'Bạn là giáo viên giàu kinh nghiệm. Trả lời JSON thuần, không markdown.' },
        { role: 'user', content: prompt }],
       { temperature: 0.7, maxTokens: 8192, responseFormat: 'json_object' },
     );
     if (!result) throw new BadRequestException('AI không phản hồi, vui lòng thử lại');
-    return this.parseAndSaveAiExam(result, dto, userId);
+    return this.parseAndSaveAiExam(result, dto, userId, existingTexts);
   }
 
-  private buildAiExamPrompt(dto: AiGenerateExamDto): string {
+  private buildAiExamPrompt(dto: AiGenerateExamDto, existingTexts: string[] = []): string {
     const structureDesc = dto.sections?.length
       ? dto.sections.map(s => `${s.count} câu ${this.typeLabel(s.type)} (${s.maxScore} điểm)`).join(', ')
       : 'tự động phân bố hợp lý';
@@ -126,6 +147,12 @@ export class ExamService {
         }],
       },
       rules: 'Tổng điểm các sections = 10. Mỗi câu MCQ = 0.25đ. Mỗi câu tự luận phân bố điểm theo độ khó. Trả về {title, description, duration, totalScore, sections: [{type, title, maxScore, questions: [...]}]}.',
+      avoidQuestions: existingTexts.length
+        ? existingTexts.map(t => t.slice(0, 200))
+        : undefined,
+      avoidInstruction: existingTexts.length
+        ? 'KHÔNG được tạo câu hỏi trùng hoặc rất giống nội dung các câu trong avoidQuestions.'
+        : undefined,
     });
   }
 
@@ -134,14 +161,26 @@ export class ExamService {
     return map[type] || type;
   }
 
-  private async parseAndSaveAiExam(raw: string, dto: AiGenerateExamDto, userId: string): Promise<ExamEntity> {
+  private async parseAndSaveAiExam(
+    raw: string,
+    dto: AiGenerateExamDto,
+    userId: string,
+    existingTexts: string[] = [],
+  ): Promise<ExamEntity> {
     try {
       const cleaned = raw.replace(/```json|```/g, '').trim();
       const parsed = JSON.parse(cleaned);
-      const savedQuestions: { questionId: string; score: number }[] = [];
+      const seen = new Set(existingTexts.map(t => this.normalizeQuestionText(t)));
+      let totalSaved = 0;
 
-      for (const section of parsed.sections || []) {
+      const sections: ExamSection[] = [];
+      for (const [i, section] of ((parsed.sections || []) as any[]).entries()) {
+        const qRefs: { questionId: string; score: number }[] = [];
         for (const qData of section.questions || []) {
+          const norm = this.normalizeQuestionText(qData.question || '');
+          if (!norm || seen.has(norm)) continue;
+          seen.add(norm);
+
           const qType = qData.type || section.type || 'SHORT_ANSWER';
           const question = this.questionRepo.create({
             type: qType,
@@ -157,23 +196,20 @@ export class ExamService {
             createdBy: 'ai',
           });
           const saved = await this.questionRepo.save(question);
-          const totalQsInSection = section.questions.length;
-          const scorePerQ = totalQsInSection > 0 ? Math.round((section.maxScore / totalQsInSection) * 100) / 100 : 0;
-          savedQuestions.push({ questionId: saved.id, score: scorePerQ });
+          qRefs.push({ questionId: saved.id, score: 0 });
         }
-      }
 
-      let globalIdx = 0;
-      const sections: ExamSection[] = (parsed.sections || []).map((s: any, i: number) => {
-        const qRefs = savedQuestions.slice(globalIdx, globalIdx + (s.questions?.length || 0));
-        globalIdx += s.questions?.length || 0;
-        return {
-          type: s.type,
-          title: s.title || `Phần ${i + 1}`,
-          maxScore: s.maxScore,
+        const scorePerQ = qRefs.length > 0 ? Math.round((section.maxScore / qRefs.length) * 100) / 100 : 0;
+        qRefs.forEach(q => (q.score = scorePerQ));
+        totalSaved += qRefs.length;
+
+        sections.push({
+          type: section.type,
+          title: section.title || `Phần ${i + 1}`,
+          maxScore: section.maxScore,
           questions: qRefs,
-        };
-      });
+        });
+      }
 
       const totalScore = sections.reduce((sum, s) => sum + s.maxScore, 0);
       const exam = this.examRepo.create({
@@ -185,7 +221,7 @@ export class ExamService {
         totalScore: totalScore || 10,
         createdBy: userId,
         isAIGenerated: true,
-        questionCount: savedQuestions.length,
+        questionCount: totalSaved,
         sections,
       });
       return this.examRepo.save(exam);
