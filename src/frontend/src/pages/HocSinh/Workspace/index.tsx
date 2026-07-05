@@ -3320,6 +3320,14 @@ const Workspace: React.FC = () => {
 
 	return (
 		<StudentLayout hideSidebar>
+			{/* Google Fonts (dùng link thay vì @import url() trong .less để tránh
+			    webpack fetch font lúc build — build trên Railway không có mạng ra ngoài) */}
+			<link rel='preconnect' href='https://fonts.googleapis.com' />
+			<link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='' />
+			<link
+				href='https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap'
+				rel='stylesheet'
+			/>
 			<div style={{ display: 'none' }}>{JSON.stringify(unusedBundle)}</div>
 			<div className='stu-ws'>
 				{/* Subheader */}
