@@ -4,8 +4,10 @@ import {
   IsArray,
   IsIn,
   IsInt,
+  IsNotEmpty,
   IsOptional,
   IsString,
+  MaxLength,
   Min,
   ValidateNested,
 } from 'class-validator';
@@ -26,6 +28,8 @@ export class ChatRequestDto {
     example: 'Vì sao ở vị trí cân bằng vận tốc cực đại?',
   })
   @IsString()
+  @IsNotEmpty()
+  @MaxLength(4000)
   message: string;
 
   @ApiPropertyOptional({ example: 'physics', default: 'physics' })

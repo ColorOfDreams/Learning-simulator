@@ -27,7 +27,13 @@ export async function chatWithAiPrompt(payload: {
 	simulationId?: string;
 	context?: { role: 'user' | 'assistant'; content: string }[];
 }) {
-	return axios.post<{ data: { answer: string } }>(`${ip3}/ai/chat`, payload);
+	return axios.post<{
+		data: {
+			answer: string;
+			options?: string[];
+			selection_type?: 'single' | 'multiple';
+		};
+	}>(`${ip3}/ai/chat`, payload);
 }
 
 export async function generateAiQuiz(payload: { simulationId: string; subject?: string; count: number }) {

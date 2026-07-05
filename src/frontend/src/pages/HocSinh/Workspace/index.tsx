@@ -51,6 +51,10 @@ type SubjectKey = 'physics' | 'math' | 'chem';
 interface ChatMessage {
 	role: 'ai' | 'user';
 	text: string;
+	options?: string[];
+	selectionType?: 'single' | 'multiple';
+	selectedOptions?: string[];
+	answered?: boolean;
 }
 
 const escapeHtml = (value: unknown) =>
@@ -908,12 +912,6 @@ const LAB_INITIAL_CHATS: Record<string, ChatMessage[]> = {
 			text: 'Chào bạn! Chúng ta cùng tìm hiểu các số đặc trưng đo xu thế trung tâm và độ phân tán. Bạn có thể tự nhập dữ liệu số liệu của lớp mình vào ô nhập liệu nhé.',
 		},
 	],
-};
-
-const RIGHT_CHAT_CHIPS: Record<SubjectKey, string[]> = {
-	physics: ['Giải thích hiện tượng', 'Công thức cần dùng?', 'Thử đổi tham số nào?'],
-	math: ['Giải từng bước', 'Ý nghĩa đồ thị?', 'Kiểm tra đáp án'],
-	chem: ['Vì sao đổi màu?', 'Điểm tương đương là gì?', 'Cách tính nồng độ?'],
 };
 
 // ── Quiz data ──
@@ -1892,6 +1890,28 @@ const renderRichText = (html: string) => ({
 	}),
 });
 
+// Render AI chat text an toàn: escape trước, sau đó xuống dòng + dựng công thức $...$ bằng KaTeX
+const renderChatText = (text: string) => {
+	const escaped = escapeHtml(text).replace(/\n/g, '<br/>');
+	const withMath = escaped.replace(/\$(.+?)\$/g, (_, texEscaped) => {
+		const tex = texEscaped
+			.replace(/&amp;/g, '&')
+			.replace(/&lt;/g, '<')
+			.replace(/&gt;/g, '>')
+			.replace(/&quot;/g, '"')
+			.replace(/&#39;/g, "'");
+		if (typeof window !== 'undefined' && (window as any).katex) {
+			try {
+				return (window as any).katex.renderToString(tex, { throwOnError: false, displayMode: false });
+			} catch {
+				return tex;
+			}
+		}
+		return tex;
+	});
+	return { __html: withMath };
+};
+
 // Trigger rebuild to apply new CSS specificity
 const getTrackStyle = (val: number, min: number, max: number, accent: string) => {
 	const pct = ((val - min) / (max - min)) * 100;
@@ -2688,22 +2708,29 @@ const Workspace: React.FC = () => {
 			}));
 
 			try {
-				const gradeVal = subject === 'chem' ? 12 : subject === 'physics' ? 11 : 10;
+				const backendSubject = subject === 'chem' ? 'chemistry' : subject;
 				const res = await chatWithAiPrompt({
 					message: t,
-					subject,
-					grade: gradeVal,
+					subject: backendSubject,
 					simulationId: simId,
 					context,
 				});
 
 				const aiReply = res?.data?.data?.answer || 'Trợ lý không phản hồi. Vui lòng đặt câu hỏi khác.';
+				const aiOptions = res?.data?.data?.options;
+				const aiSelectionType = res?.data?.data?.selection_type;
 
 				setChats((prev) => {
 					const list = prev[metaKey] || [];
 					if (list.length > 0) {
 						const updated = [...list];
-						updated[updated.length - 1] = { role: 'ai' as const, text: aiReply };
+						updated[updated.length - 1] = {
+							role: 'ai' as const,
+							text: aiReply,
+							...(aiOptions && aiOptions.length > 0
+								? { options: aiOptions, selectionType: aiSelectionType }
+								: {}),
+						};
 						return { ...prev, [metaKey]: updated };
 					}
 					return prev;
@@ -2725,6 +2752,56 @@ const Workspace: React.FC = () => {
 			}
 		},
 		[chatInput, metaKey, chats, subject, simId],
+	);
+
+	const markChatMessageAnswered = useCallback(
+		(msgIndex: number) => {
+			setChats((prev) => {
+				const list = prev[metaKey] || [];
+				if (!list[msgIndex]) return prev;
+				const updated = [...list];
+				updated[msgIndex] = { ...updated[msgIndex], answered: true };
+				return { ...prev, [metaKey]: updated };
+			});
+		},
+		[metaKey],
+	);
+
+	const selectSingleChatOption = useCallback(
+		(msgIndex: number, option: string) => {
+			markChatMessageAnswered(msgIndex);
+			sendChat(option);
+		},
+		[markChatMessageAnswered, sendChat],
+	);
+
+	const toggleChatOption = useCallback(
+		(msgIndex: number, option: string) => {
+			setChats((prev) => {
+				const list = prev[metaKey] || [];
+				const msg = list[msgIndex];
+				if (!msg) return prev;
+				const current = msg.selectedOptions || [];
+				const next = current.includes(option)
+					? current.filter((o) => o !== option)
+					: [...current, option];
+				const updated = [...list];
+				updated[msgIndex] = { ...msg, selectedOptions: next };
+				return { ...prev, [metaKey]: updated };
+			});
+		},
+		[metaKey],
+	);
+
+	const submitChatOptions = useCallback(
+		(msgIndex: number) => {
+			const list = chats[metaKey] || [];
+			const selected = list[msgIndex]?.selectedOptions || [];
+			if (selected.length === 0) return;
+			markChatMessageAnswered(msgIndex);
+			sendChat(selected.join(', '));
+		},
+		[chats, metaKey, markChatMessageAnswered, sendChat],
 	);
 
 	// ── Reset ──
@@ -13617,7 +13694,51 @@ const Workspace: React.FC = () => {
 											<div
 												className={`stu-ws__chat-msg ${m.role === 'user' ? 'stu-ws__chat-msg--user' : 'stu-ws__chat-msg--ai'}`}
 											>
-												{m.text}
+												{m.role === 'ai' ? (
+													<span dangerouslySetInnerHTML={renderChatText(m.text)} />
+												) : (
+													m.text
+												)}
+												{m.role === 'ai' && m.options && m.options.length > 0 && !m.answered && (
+													<div className='stu-ws__chat-options'>
+														{m.selectionType === 'multiple' ? (
+															<>
+																{m.options.map((opt) => (
+																	<label
+																		key={opt}
+																		className='stu-ws__chat-option stu-ws__chat-option--checkbox'
+																	>
+																		<input
+																			type='checkbox'
+																			checked={(m.selectedOptions || []).includes(opt)}
+																			onChange={() => toggleChatOption(i, opt)}
+																		/>
+																		<span>{opt}</span>
+																	</label>
+																))}
+																<button
+																	type='button'
+																	className='stu-ws__chat-option-submit'
+																	disabled={!(m.selectedOptions && m.selectedOptions.length > 0)}
+																	onClick={() => submitChatOptions(i)}
+																>
+																	Gửi lựa chọn
+																</button>
+															</>
+														) : (
+															m.options.map((opt) => (
+																<button
+																	key={opt}
+																	type='button'
+																	className='stu-ws__chat-option stu-ws__chat-option--radio'
+																	onClick={() => selectSingleChatOption(i, opt)}
+																>
+																	{opt}
+																</button>
+															))
+														)}
+													</div>
+												)}
 											</div>
 										</div>
 									))}
@@ -13625,15 +13746,6 @@ const Workspace: React.FC = () => {
 
 								{/* Chat input */}
 								<div className='stu-ws__chat-composer'>
-									{(chats[metaKey] || []).length <= 1 && (
-										<div className='stu-ws__chat-chips'>
-											{RIGHT_CHAT_CHIPS[subject].map((chip) => (
-												<button key={chip} type='button' onClick={() => sendChat(chip)}>
-													{chip}
-												</button>
-											))}
-										</div>
-									)}
 									<div className='stu-ws__chat-input-row'>
 										<input
 											className='stu-ws__chat-input'

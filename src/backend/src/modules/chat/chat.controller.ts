@@ -1,10 +1,19 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { ThrottlerGuard } from '@nestjs/throttler';
 import { ChatService } from './chat.service';
 import { AiService } from '../ai/ai.service';
+import {
+  CreateSessionDto,
+  ExperimentChatDto,
+  GenerateExperimentDto,
+  GuidanceDto,
+  SendMessageDto,
+} from './dto/chat.dto';
 
 @ApiTags('Chat')
 @Controller('ai/chat')
+@UseGuards(ThrottlerGuard)
 export class ChatController {
   constructor(
     private readonly chatService: ChatService,
@@ -12,15 +21,7 @@ export class ChatController {
   ) {}
 
   @Post('sessions')
-  createSession(
-    @Body()
-    body: {
-      title?: string;
-      subject?: string;
-      sceneId?: string;
-      userId?: string;
-    },
-  ) {
+  createSession(@Body() body: CreateSessionDto) {
     return this.chatService.createSession(body);
   }
 
@@ -52,7 +53,7 @@ export class ChatController {
   @Post('sessions/:id/messages')
   async sendMessage(
     @Param('id') sessionId: string,
-    @Body() body: { message: string; subject?: string; grade?: number },
+    @Body() body: SendMessageDto,
   ) {
     const [userMsg] = await Promise.all([
       this.chatService.addMessage({
@@ -91,14 +92,14 @@ export class ChatController {
   }
 
   @Post('generate-experiment')
-  async generateExperiment(@Body() body: { message: string }) {
+  async generateExperiment(@Body() body: GenerateExperimentDto) {
     return this.aiService.generateExperiment(body.message);
   }
 
   @Post('sessions/:id/experiment-chat')
   async experimentChat(
     @Param('id') sessionId: string,
-    @Body() body: { message: string; subject?: string },
+    @Body() body: ExperimentChatDto,
   ) {
     const [userMsg] = await Promise.all([
       this.chatService.addMessage({
@@ -143,7 +144,7 @@ export class ChatController {
   @Post('sessions/:id/guidance')
   async getGuidance(
     @Param('id') sessionId: string,
-    @Body() body: { sceneGraph?: any },
+    @Body() body: GuidanceDto,
   ) {
     const guidance = await this.aiService.generateGuidance(body.sceneGraph);
     const msg = await this.chatService.addMessage({

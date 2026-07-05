@@ -205,6 +205,35 @@ export class RagRetrievalService {
       );
     }
 
+    if (rows.length === 0 && input.grade !== undefined) {
+      this.logger.debug(
+        `Vector retrieval found no chunks for grade=${input.grade}; retrying without grade filter`,
+      );
+      rows = await this.queryVectorRows(
+        embedding,
+        {
+          ...input,
+          grade: undefined,
+        },
+        config,
+      );
+    }
+
+    if (rows.length === 0 && input.topic && input.grade !== undefined) {
+      this.logger.debug(
+        'Vector retrieval still empty; retrying without topic and grade filters',
+      );
+      rows = await this.queryVectorRows(
+        embedding,
+        {
+          ...input,
+          topic: undefined,
+          grade: undefined,
+        },
+        config,
+      );
+    }
+
     return rows.map((row) => ({
       id: row.id,
       title: row.title ?? row.id,
@@ -346,31 +375,42 @@ export class RagRetrievalService {
     config: RagRetrievalConfig,
   ): Promise<RagReference[]> {
     const chunks = await this.theoryChunkService.findAll();
-    const rankedChunks = chunks
-      .filter(
-        (chunk) =>
-          (!input.subject || chunk.subject === input.subject) &&
-          (input.grade === undefined || chunk.grade === input.grade),
-      )
-      .map((chunk) => ({
-        chunk,
-        score: this.keywordScore(chunk, input.message),
-        topicMatched: Boolean(input.topic && chunk.topic === input.topic),
-      }))
-      .filter((item) => item.score > 0)
-      .sort((left, right) => {
-        if (left.topicMatched !== right.topicMatched) {
-          return left.topicMatched ? -1 : 1;
-        }
 
-        if (right.score !== left.score) {
-          return right.score - left.score;
-        }
+    const rank = (grade: number | undefined) =>
+      chunks
+        .filter(
+          (chunk) =>
+            (!input.subject || chunk.subject === input.subject) &&
+            (grade === undefined || chunk.grade === grade),
+        )
+        .map((chunk) => ({
+          chunk,
+          score: this.keywordScore(chunk, input.message),
+          topicMatched: Boolean(input.topic && chunk.topic === input.topic),
+        }))
+        .filter((item) => item.score > 0)
+        .sort((left, right) => {
+          if (left.topicMatched !== right.topicMatched) {
+            return left.topicMatched ? -1 : 1;
+          }
 
-        return left.chunk.id.localeCompare(right.chunk.id);
-      })
-      .slice(0, config.keywordCandidates)
-      .map((item) => item.chunk);
+          if (right.score !== left.score) {
+            return right.score - left.score;
+          }
+
+          return left.chunk.id.localeCompare(right.chunk.id);
+        })
+        .slice(0, config.keywordCandidates)
+        .map((item) => item.chunk);
+
+    let rankedChunks = rank(input.grade);
+
+    if (rankedChunks.length === 0 && input.grade !== undefined) {
+      this.logger.debug(
+        `Keyword retrieval found no chunks for grade=${input.grade}; retrying without grade filter`,
+      );
+      rankedChunks = rank(undefined);
+    }
 
     return rankedChunks.map((chunk) => this.fromTheoryChunk(chunk, input.message));
   }

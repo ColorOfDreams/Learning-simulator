@@ -1,5 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { ThrottlerGuard } from '@nestjs/throttler';
 import { AiService } from './ai.service';
 import { AnalyzeRequestDto } from './dto/analyze-request.dto';
 import { ChatRequestDto } from './dto/chat-request.dto';
@@ -7,6 +8,7 @@ import { GenerateQuizRequestDto } from './dto/generate-quiz.dto';
 
 @ApiTags('AI')
 @Controller('ai')
+@UseGuards(ThrottlerGuard)
 export class AiController {
   constructor(private readonly aiService: AiService) {}
 
