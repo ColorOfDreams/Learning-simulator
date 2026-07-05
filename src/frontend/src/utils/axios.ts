@@ -121,10 +121,11 @@ axios.interceptors.response.use(
 						er?.message ||
 						er?.errorDescription;
 
-			switch (error?.response?.status) {
+			const status = error?.response?.status;
+			switch (status) {
 				case 400:
 					notification.error({
-						message: getMessage('error.400.title', { code: '004' }),
+						message: getMessage('error.400.title', { code: String(status) }),
 						description: descriptionError,
 						key: 'error400',
 					});
@@ -134,7 +135,7 @@ axios.interceptors.response.use(
 					// Nếu có access token (có thể access token hết hạn) thì mới cảnh báo
 					if (originalRequest?.headers?.Authorization) {
 						notification.error({
-							message: getMessage('error.401.title', { code: '104' }),
+							message: getMessage('error.401.title', { code: String(status) }),
 							description: getMessage('error.401.description'),
 							key: 'error401',
 						});
@@ -196,7 +197,7 @@ axios.interceptors.response.use(
 				case 403:
 				case 405:
 					notification.error({
-						message: getMessage('error.403.title', { code: '304' }),
+						message: getMessage('error.403.title', { code: String(status) }),
 						description: descriptionError,
 						key: 'error403',
 					});
@@ -204,7 +205,7 @@ axios.interceptors.response.use(
 
 				case 404:
 					notification.error({
-						message: getMessage('error.404.title', { code: '040' }),
+						message: getMessage('error.404.title', { code: String(status) }),
 						description: descriptionError,
 						key: 'error404',
 					});
@@ -212,7 +213,7 @@ axios.interceptors.response.use(
 
 				case 409:
 					notification.error({
-						message: getMessage('error.409.title', { code: '904' }),
+						message: getMessage('error.409.title', { code: String(status) }),
 						description: descriptionError,
 						key: 'error409',
 					});
@@ -221,7 +222,7 @@ axios.interceptors.response.use(
 				case 500:
 				case 502:
 					notification.warning({
-						message: getMessage('error.500.title', { code: '005' }),
+						message: getMessage('error.500.title', { code: String(status) }),
 						// description: descriptionError,
 						description: getMessage('error.500.description'),
 						key: 'error500',
@@ -230,7 +231,7 @@ axios.interceptors.response.use(
 
 				case 504:
 					notification.info({
-						message: getMessage('error.504.title', { code: '405' }),
+						message: getMessage('error.504.title', { code: String(status) }),
 						description: getMessage('error.504.description'),
 						key: 'error504',
 					});

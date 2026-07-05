@@ -30,7 +30,13 @@ export class SceneController extends BaseController<SceneEntity> {
     super(sceneService);
   }
 
+  // Danh sách thí nghiệm tự tạo dùng chung cho cả trang chủ học sinh (xem
+  // gợi ý mô phỏng của mình) lẫn trang quản lý — không giới hạn theo quyền
+  // "quanlythinghiem|xem"/"baihoc|xem" ở cấp controller (2 scope này chưa
+  // được gán cho role nào, kể cả học sinh, nên trước đây bị chặn 403 hoàn
+  // toàn). Chỉ cần đăng nhập (AuthGuard('jwt') ở cấp controller vẫn áp dụng).
   @Get('all')
+  @Permissions()
   async getAll(
     @Query('roomType') roomType?: string,
     @Query('keyword') keyword?: string,
