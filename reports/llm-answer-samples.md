@@ -1,141 +1,251 @@
 # LLM Answer Samples
 
-- Run time: 2026-06-28T13:00:36.601Z
-- AI method: chat
-- LLM enabled: true
-- Model: gpt-4o-mini
+- Run time: 2026-07-04T05:09:52.569Z
+- AI method: analyze
+- LLM enabled: false
+- Model: N/A
 
 ## Best Samples
 
-### RAG_SMOKE_001 - score 1.0000
+### RAG90_PHYSICS_002 - score 0.8000
 
-Question: Dao động cơ là gì? Cho biết đặc điểm chuyển động quanh vị trí cân bằng.
+Question: Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Chương IV: Dòng điện, mạch điện.
 
-Confidence: high
-Used references: TH_PHY11_C01_L01_017, TH_PHY11_C01_L01_003
-Matched concepts: dao động cơ, chuyển động qua lại, quanh vị trí cân bằng, lặp đi lặp lại
-Missing concepts: N/A
+Expected:
 
-Answer:
+Reference answer: > Xe điện là xu hướng phát triển trong tương lai. > > Pin là một trong những yếu tố quan trọng của tất cả các dòng xe điện. > > Khi pin được nạp đầy, xe có thể di chuyển được quãng đường hàng trăm kilômét, giúp bảo vệ môi trường, chi phí vận hành xe thấp và khả năng vận hành ổn định, không phát ra tiếng ồn. > > Tại sao pin trong xe điện sau khi sạc lại có thể tạo ra dòng điện chạy khá lâu trong mạch kín? ---
+Required concepts: dòng điện, Chương, Dòng, điện, mạch
 
-Dao động cơ là chuyển động qua lại của vật quanh vị trí cân bằng. Đặc điểm của chuyển động này là vật thực hiện dao động tuần hoàn, tức là sau những khoảng thời gian bằng nhau, vật trở lại vị trí cũ theo hướng cũ. Ví dụ, dao động của con lắc đồng hồ là một dạng dao động cơ tuần hoàn.
+Metrics:
 
-### RAG_SMOKE_002 - score 1.0000
+- Numeric correct: N/A
+- Concept coverage: 0.8000
+- Matched concepts: dòng điện, Dòng, điện, mạch
+- Missing concepts: Chương
+- Rule-based score: 0.8000
 
-Question: Phương trình dao động điều hòa x = A cos(omega t + phi) có ý nghĩa như thế nào?
-
-Confidence: high
-Used references: th_shm_002, TH_PHY11_C01_L01_017
-Matched concepts: x là li độ, A là biên độ, omega là tần số góc, phi là pha ban đầu, omega t + phi là pha dao động
-Missing concepts: N/A
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Phương trình dao động điều hòa x = A cos(ωt + φ) mô tả chuyển động của vật dao động quanh vị trí cân bằng. A là biên độ (độ lớn tối đa của li độ), ω là tần số góc (đo tốc độ dao động), và φ là pha ban đầu (vị trí của vật tại t=0). Ví dụ, nếu A=5 cm, ω=2π rad/s, φ=0, thì vật dao động với biên độ 5 cm và bắt đầu từ vị trí cân bằng. x = A cos(ωt + φ) Thay đổi các tham số A, ω, φ để quan sát ảnh hưởng đến dao động.
+![Hình 24.2 - Kí hiệu nguồn điện](assets/images/hinh-24-2.png) **Nội dung hình** Kí hiệu nguồn điện trong sơ đồ mạch điện. Nguồn điện gồm hai cực: * Cực dương. * Cực âm. --- Hiệu điện thế giữa hai cực của nguồn điện được duy trì ngay cả khi có dòng điện chạy qua các vật dẫn nối liền giữa hai cực của nó. Điều đó có nghĩa là sự tích điện khác nhau ở các cực của nguồn điện tiếp tục được duy trì. Để tạo ra các điện cực như vậy, trong nguồn điện phải có lực thực hiện công để: * Tách các electron ra khỏi nguyên tử. * Chuyển các electron hoặc ion dương được tạo thành ra khỏi mỗi cực. Khi đó… Nguồn tham chiếu gần nhất: Hình 24.2. Câu trả lời được rút từ theory chunk liên quan nhất.
 
-### RAG_SMOKE_003 - score 1.0000
+### RAG90_PHYSICS_026 - score 0.8000
 
-Question: Trong phương trình x = A cos(omega t + phi), A, omega và phi là các đại lượng gì?
+Question: Cần phân biệt hoặc so sánh điểm nào khi học 1. Thế năng của một điện tích trong điện trường đều, đặc biệt với khái niệm thế năng?
 
-Confidence: high
-Used references: TH_PHY11_C01_L01_017, TH_PHY11_C01_L02_008
-Matched concepts: A là biên độ, omega là tần số góc, phi là pha ban đầu
-Missing concepts: N/A
+Expected:
 
-Answer:
+Reference answer: Thế năng của một điện tích $q$ trong điện trường đều đặc trưng cho khả năng sinh công của điện trường đều khi đặt điện tích $q$ tại điểm ta xét. Số đo thế năng của điện tích $q$ trong điện trường đều của một tụ điện được tính bằng công mà điện trường đều có thể sinh ra khi dịch chuyển điện tích $q$ từ điểm ta xét tới bản cực âm của tụ điện.
+Required concepts: thế năng, điện tích, điện trường, cường độ điện trường, điện trường đều
 
-Trong phương trình x = A cos(ωt + φ): A là biên độ (đơn vị: mét), ω là tần số góc (đơn vị: rad/s), φ là pha ban đầu (đơn vị: rad). Biên độ A xác định độ lớn dao động, tần số góc ω xác định tốc độ dao động, và pha ban đầu φ xác định vị trí của vật tại thời điểm t=0.
+Metrics:
 
-### RAG_SMOKE_004 - score 1.0000
+- Numeric correct: N/A
+- Concept coverage: 0.8000
+- Matched concepts: thế năng, điện tích, điện trường, điện trường đều
+- Missing concepts: cường độ điện trường
+- Rule-based score: 0.8000
 
-Question: Biên độ dao động điều hòa được định nghĩa như thế nào?
-
-Confidence: high
-Used references: TH_PHY11_C01_L02_003, TH_PHY11_C01_L02_030
-Matched concepts: biên độ, li độ cực đại, độ lệch lớn nhất, vị trí cân bằng
-Missing concepts: N/A
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Biên độ dao động điều hòa (A) là độ dịch chuyển cực đại của vật tính từ vị trí cân bằng. Nó thể hiện mức độ dao động của vật và không thay đổi trong suốt quá trình dao động. Ví dụ, nếu một vật dao động với biên độ 10 cm, thì khoảng cách tối đa mà nó dịch chuyển từ vị trí cân bằng là 10 cm. Thay đổi giá trị biên độ trong mô phỏng để quan sát sự thay đổi của dao động.
+Tương tự như trường hợp điện trường đều, với điện trường bất kì ta có thể phát biểu: > Thế năng của một điện tích $q$ trong điện trường đặc trưng cho khả năng sinh công của điện trường khi đặt điện tích $q$ tại điểm đang xét. Số đo thế năng của điện tích $q$ tại điểm $M$ trong điện trường bằng công của lực điện có thể sinh ra khi điện tích $q$ di chuyển từ điểm $M$ tới điểm mốc để tính thế năng. Khi chọn mốc thế năng tại vô cực, số đo thế năng của điện tích $q$ tại điểm $M$ trong điện trường bằng công của lực điện trong dịch chuyển của điện tích $q$ từ điểm $M$ tới vô cực: $$ W_M=A_{M\inft… Nguồn tham chiếu gần nhất: 2. Thế năng của một điện tích trong điện trường bất kì. Dạng bài gần nhất: Tính cơ năng dao động điều hòa.
 
-### RAG_SMOKE_005 - score 1.0000
+### RAG90_MATH_002 - score 0.8000
 
-Question: Chu kì dao động là gì và đơn vị của chu kì là gì?
+Question: Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Giá trị lượng giác của góc lượng giác.
 
-Confidence: high
-Used references: TH_PHY11_C01_L02_029, TH_PHY11_C01_L02_003
-Matched concepts: chu kì, thời gian thực hiện một dao động toàn phần, đơn vị giây, kí hiệu T
-Missing concepts: N/A
+Expected:
+
+Reference answer: Trong bài 1: Giá trị lượng giác của góc lượng giác, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.
+Required concepts: Giá trị lượng giác của góc lượng giác, definition, gia, tri, luong
+
+Metrics:
+
+- Numeric correct: N/A
+- Concept coverage: 0.8000
+- Matched concepts: Giá trị lượng giác của góc lượng giác, gia, tri, luong
+- Missing concepts: definition
+- Rule-based score: 0.8000
+
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Chu kì (T) là khoảng thời gian để vật thực hiện một dao động. Đơn vị của chu kì là giây (s). Thử thay đổi các tham số trong mô phỏng để quan sát ảnh hưởng đến chu kì dao động.
+Trong bài 1: Giá trị lượng giác của góc lượng giác, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học. Một câu trả lời tốt nên nêu khái niệm bằng ngôn ngữ ngắn gọn, chỉ ra điều kiện đi kèm, rồi nói rõ đối tượng nào đang được xét. Nội dung này là bản tổng hợp synth… Nguồn tham chiếu gần nhất: Khái niệm cốt lõi: Giá trị lượng giác của góc lượng giác. Câu trả lời được rút từ theory chunk liên quan nhất.
+
+### RAG90_MATH_003 - score 0.8000
+
+Question: Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Tính đơn điệu và cực trị của hàm số.
+
+Expected:
+
+Reference answer: Trong bài 1: Tính đơn điệu và cực trị của hàm số, trọng tâm là cực trị liên quan tới điểm mà hàm số đổi chiều biến thiên. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.
+Required concepts: Tính đơn điệu và cực trị của hàm số, definition, tinh, ieu, cuc
+
+Metrics:
+
+- Numeric correct: N/A
+- Concept coverage: 0.8000
+- Matched concepts: Tính đơn điệu và cực trị của hàm số, tinh, ieu, cuc
+- Missing concepts: definition
+- Rule-based score: 0.8000
+
+Confidence: N/A
+Used references: N/A
+
+Answer:
+
+Trong bài 1: Tính đơn điệu và cực trị của hàm số, trọng tâm là cực trị liên quan tới điểm mà hàm số đổi chiều biến thiên. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học. Một câu trả lời tốt nên nêu khái niệm bằng ngôn ngữ ngắn gọn, chỉ ra điều kiện đi kèm, rồi nói rõ đối tượng nào đang được xét. Nội dung này là bản tổng hợp synthetic từ danh mục chương/bài để p… Nguồn tham chiếu gần nhất: Khái niệm cốt lõi: Tính đơn điệu và cực trị của hàm số. Câu trả lời được rút từ theory chunk liên quan nhất.
+
+### RAG90_MATH_004 - score 0.8000
+
+Question: Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Tập hợp và các phép toán trên tập hợp.
+
+Expected:
+
+Reference answer: Trong bài 2: Tập hợp và các phép toán trên tập hợp, trọng tâm là tập hợp gồm các phần tử xác định và có thể mô tả bằng liệt kê hoặc tính chất đặc trưng. Đây là một phần của chương 1: Mệnh đề và tập hợp, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.
+Required concepts: Tập hợp và các phép toán trên tập hợp, definition, tap, hop, cac
+
+Metrics:
+
+- Numeric correct: N/A
+- Concept coverage: 0.8000
+- Matched concepts: Tập hợp và các phép toán trên tập hợp, tap, hop, cac
+- Missing concepts: definition
+- Rule-based score: 0.8000
+
+Confidence: N/A
+Used references: N/A
+
+Answer:
+
+Trong bài 2: Tập hợp và các phép toán trên tập hợp, trọng tâm là tập hợp gồm các phần tử xác định và có thể mô tả bằng liệt kê hoặc tính chất đặc trưng. Đây là một phần của chương 1: Mệnh đề và tập hợp, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học. Một câu trả lời tốt nên nêu khái niệm bằng ngôn ngữ ngắn gọn, chỉ ra điều kiện đi kèm, rồi nói rõ đối tượng nào đang được xét. Nội dung này là bản tổng hợp synthetic từ danh mục chương/bài để… Nguồn tham chiếu gần nhất: Khái niệm cốt lõi: Tập hợp và các phép toán trên tập hợp. Câu trả lời được rút từ theory chunk liên quan nhất.
 
 ## Weakest Samples
 
-### RAG_SMOKE_009 - score 0.7500
+### RAG90_PHYSICS_009 - score 0.0000
 
-Question: Độ lệch pha giữa hai dao động cùng chu kì được hiểu như thế nào?
+Question: Công thức hoặc tính chất quan trọng của Hình 3.1 là gì?
 
-Confidence: high
-Used references: TH_PHY11_C01_L02_012, TH_PHY11_C01_L02_027, TH_PHY11_C01_L02_029
-Matched concepts: độ lệch pha, hiệu pha, hai dao động cùng chu kì
-Missing concepts: sớm pha hoặc trễ pha
+Expected:
 
-Answer:
+Reference answer: ![Hình 3.1 - Thí nghiệm sự truyền nhiệt năng](assets/images/hinh-3-1.png) **Nội dung hình** Hình biểu diễn thí nghiệm sự truyền nhiệt năng, gồm: * Cốc nhôm đựng nước ở nhiệt độ khoảng $30^\circ C$. * Bình cách nhiệt đựng nước ở nhiệt độ khoảng $60^\circ C$. * Hai nhiệt kế dùng để đo nhiệt độ của nước trong cốc và trong bình. Hình gồm: * Ảnh chụp thí nghiệm. * Sơ đồ bố trí thí nghiệm. ---
+Required concepts: physics, grade 12, Bài 3: Nhiệt độ. Thang nhiệt độ – Nhiệt kế, Hình 3.1, 1. Khái niệm nhiệt độ
 
-Độ lệch pha giữa hai dao động cùng chu kì là đại lượng đặc trưng cho sự khác biệt về pha giữa chúng. Nó không phụ thuộc vào thời gian quan sát và có thể xác định được bằng cách so sánh các pha ban đầu của hai dao động. Nếu độ lệch pha bằng 0, hai dao động cùng pha; nếu khác 0, chúng có thể sớm pha, trễ pha hoặc ngược pha với nhau. Xác định pha ban đầu của hai dao động. So sánh các pha để tìm độ lệch pha. Thay đổi giá trị của phi trong mô phỏng để quan sát sự thay đổi độ lệch pha.
+Metrics:
 
-### RAG_SMOKE_010 - score 0.7500
+- Numeric correct: N/A
+- Concept coverage: 0.0000
+- Matched concepts: N/A
+- Missing concepts: physics, grade 12, Bài 3: Nhiệt độ. Thang nhiệt độ – Nhiệt kế, Hình 3.1, 1. Khái niệm nhiệt độ
+- Rule-based score: 0.0000
 
-Question: Từ x = A cos(omega t + phi), phương trình vận tốc của vật dao động điều hòa là gì?
-
-Confidence: high
-Used references: TH_PHY11_C01_L03_021, TH_PHY11_C01_L03_004
-Matched concepts: v = -ωA sin(ωt + φ), vận tốc, đạo hàm của li độ theo thời gian
-Missing concepts: v = x'
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Phương trình vận tốc của vật dao động điều hòa là: v = -ωA sin(ωt + φ). v = -ωA sin(ωt + φ) Thay đổi các tham số để quan sát sự thay đổi của vận tốc trong mô phỏng.
+Vì số phân tử $N$ vô cùng lớn và các phân tử chuyển động hỗn loạn trong bình nên các hướng $Ox$, $Oy$ và $Oz$ là bình đẳng. Do đó, số phân tử chuyển động theo hướng $Ox$, từ mặt $EFOH$ sang mặt $ABCD$ và ngược lại để gây áp suất lên hai mặt này chỉ bằng: $$ \frac{N}{3} $$ số phân tử có trong bình. Vì các phân tử chuyển động hỗn loạn nên tốc độ của các phân tử không bằng nhau. Do đó, áp suất của mỗi phân tử tác dụng lên thành bình cũng không bằng nhau. Trung bình, mỗi phân tử tác dụng lên thành bình một áp suất: $$ p_m=\frac{m\overline{v^2}}{V} $$ Trong đó: $$ \overline{v^2}=\frac{v_1^… Nguồn tham chiếu gần nhất: 1.2. Tác dụng của $N$ phân tử khí lên thành bình. Câu trả lời được rút từ theory chunk liên quan nhất.
 
-### RAG_SMOKE_013 - score 0.8000
+### RAG90_PHYSICS_012 - score 0.0000
 
-Question: Với con lắc đơn góc nhỏ, thế năng trọng trường được mô tả như thế nào?
+Question: Hiện tượng hoặc thí nghiệm liên quan đến 2.2. Dụng cụ thí nghiệm được giải thích bằng ý chính nào?
 
-Confidence: high
-Used references: TH_PHY11_C01_L05_016
-Matched concepts: con lắc đơn, góc nhỏ, thế năng trọng trường, xấp xỉ bậc hai
-Missing concepts: phụ thuộc vào độ cao
+Expected:
 
-Answer:
+Reference answer: * Biến thế nguồn. * Bộ đo công suất nguồn điện, tức oát kế, có tích hợp chức năng đo thời gian. * Nhiệt kế điện tử hoặc cảm biến nhiệt độ có thang đo từ $-20^\circ C$ đến $110^\circ C$ và độ phân giải nhiệt độ $\pm 0{,}1^\circ C$. * Nhiệt lượng kế bằng nhựa có vỏ xốp, kèm dây điện trở gắn ở mặt trong của nắp bình. * Cân điện tử hoặc bình đong. * Các dây nối.
+Required concepts: physics, grade 12, Bài 4: Nhiệt dung riêng, 2.2. Dụng cụ thí nghiệm, 2. Thực hành đo nhiệt dung riêng của nước
 
-Thế năng trọng trường của con lắc đơn được mô tả bằng công thức: W_t = mgl(1 - cos(α)), trong đó m là khối lượng vật nặng, g là gia tốc trọng trường, l là chiều dài dây treo, và α là góc lệch so với phương thẳng đứng. Khi góc α nhỏ, công thức có thể được xấp xỉ thành W_t ≈ (1/2)mgl(α^2). Điều này có nghĩa là thế năng tăng khi con lắc ở xa vị trí cân bằng. Xác định công thức thế năng trọng trường: W_t = mgl(1 - cos(α)) Áp dụng xấp xỉ cho góc nhỏ: cos(α) ≈ 1 - (α^2/2) Suy ra W_t ≈ (1/2)mgl(α^2) W_t = mgl(1 - cos(α)) W_t ≈ (1/2)mgl(α^2)
+Metrics:
 
-### RAG_SMOKE_015 - score 0.8000
+- Numeric correct: N/A
+- Concept coverage: 0.0000
+- Matched concepts: N/A
+- Missing concepts: physics, grade 12, Bài 4: Nhiệt dung riêng, 2.2. Dụng cụ thí nghiệm, 2. Thực hành đo nhiệt dung riêng của nước
+- Rule-based score: 0.0000
 
-Question: Thế năng của vật dao động điều hòa được tính theo li độ x bằng công thức nào?
-
-Confidence: high
-Used references: TH_PHY11_C01_L05_013
-Matched concepts: thế năng, li độ x, Wt = 1/2 kx², k là độ cứng
-Missing concepts: cực đại ở biên
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Thế năng của vật dao động điều hòa được tính theo li độ x bằng công thức: W_t = (1/2)kx^2, trong đó k là độ cứng của lò xo. Xác định độ cứng k của lò xo. Thay giá trị li độ x vào công thức W_t = (1/2)kx^2. W_t = (1/2)kx^2 Thay đổi li độ x trong mô phỏng để thấy sự thay đổi của thế năng.
+> Giải thích được một số hiện tượng, thiết bị có liên quan đến phương trình trạng thái của khí lí tưởng. Ví dụ: * Giải thích được cách sử dụng bình oxygen trong y tế. * Giải thích được túi khí trên ô tô. * Tính được thể tích, khối lượng, nhiệt độ của chất khí tạo thành trong các phản ứng hóa học. Nguồn tham chiếu gần nhất: 4. Em có thể. Câu trả lời được rút từ theory chunk liên quan nhất.
 
-### RAG_SMOKE_016 - score 0.8000
+### RAG90_PHYSICS_015 - score 0.0000
 
-Question: Cơ năng trong dao động điều hòa có biểu thức và tính chất bảo toàn như thế nào?
+Question: Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Bảng 5.1.
 
-Confidence: high
-Used references: TH_PHY11_C01_L05_008, th_shm_004, TH_PHY11_C01_L07_008, TH_PHY11_C01_L05_002, TH_PHY11_C01_L05_019
-Matched concepts: cơ năng, W = 1/2 kA², tổng động năng và thế năng, bảo toàn
-Missing concepts: không đổi nếu bỏ qua ma sát
+Expected:
+
+Reference answer: **Giá trị gần đúng của nhiệt nóng chảy riêng ở nhiệt độ nóng chảy dưới áp suất tiêu chuẩn của một số chất** | Chất | Nhiệt độ nóng chảy $(^\circ C)$ | Nhiệt nóng chảy riêng $(J/kg)$ | |---|---:|---:| | Nước đá | 0 | $3{,}34 \cdot 10^5$ | | Sắt | 1535 | $2{,}77 \cdot 10^5$ | | Đồng | 1084 | $1{,}80 \cdot 10^5$ | | Chì | 327 | $0{,}25 \cdot 10^5$ | ---
+Required concepts: physics, grade 12, Bài 5: Nhiệt nóng chảy riêng, Bảng 5.1, 1. Khái niệm nhiệt nóng chảy riêng
+
+Metrics:
+
+- Numeric correct: N/A
+- Concept coverage: 0.0000
+- Matched concepts: N/A
+- Missing concepts: physics, grade 12, Bài 5: Nhiệt nóng chảy riêng, Bảng 5.1, 1. Khái niệm nhiệt nóng chảy riêng
+- Rule-based score: 0.0000
+
+Confidence: N/A
+Used references: N/A
 
 Answer:
 
-Trong dao động điều hòa, cơ năng (W) là tổng động năng (W_đ) và thế năng (W_t) của vật, được bảo toàn và không thay đổi theo thời gian. Biểu thức cơ năng là: W = 1/2 m ω² A², với m là khối lượng, ω là tần số góc, A là biên độ. Cơ năng chuyển hóa qua lại giữa động năng và thế năng trong quá trình dao động. Xác định động năng W_đ = 1/2 mv² và thế năng W_t = 1/2 kx². Tính tổng cơ năng W = W_đ + W_t. Sử dụng biểu thức W = 1/2 m ω² A² để thấy cơ năng được bảo toàn. W = 1/2 m ω² A² Khám phá sự chuyển hóa năng lượng trong dao động điều hòa bằng cách điều chỉnh biên độ và độ cứng lò xo.
+Phần Vật lí nhiệt bao gồm ba nội dung chính: * Cấu trúc của chất và sự chuyển thể. * Định luật I của Nhiệt động lực học. * Các khái niệm nhiệt dung riêng, nhiệt nóng chảy riêng và nhiệt hóa hơi riêng. --- Nguồn tham chiếu gần nhất: 1. Một số lưu ý trong việc giải bài tập về Vật lí nhiệt. Câu trả lời được rút từ theory chunk liên quan nhất.
+
+### RAG90_PHYSICS_017 - score 0.0000
+
+Question: Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Kết luận.
+
+Expected:
+
+Reference answer: Có hai loại điện tích trái dấu. Điện tích xuất hiện ở thanh thủy tinh khi được cọ xát vào len được quy ước gọi là điện tích dương. Điện tích xuất hiện ở thanh nhựa được cọ xát vào vải được quy ước gọi là điện tích âm. Các điện tích cùng loại đẩy nhau. Các điện tích khác loại hút nhau. Lực hút, đẩy giữa các điện tích được gọi chung là lực tương tác giữa các điện tích, thường gọi tắt là lực điện. ---
+Required concepts: điện tích, Kết, luận
+
+Metrics:
+
+- Numeric correct: N/A
+- Concept coverage: 0.0000
+- Matched concepts: N/A
+- Missing concepts: điện tích, Kết, luận
+- Rule-based score: 0.0000
+
+Confidence: N/A
+Used references: N/A
+
+Answer:
+
+> Để vẽ đồ thị hoặc viết phương trình của một dao động điều hòa cần biết những đại lượng vật lí nào? --- Nguồn tham chiếu gần nhất: Bài 2: Mô tả dao động điều hòa. Câu trả lời được rút từ theory chunk liên quan nhất.
+
+### RAG90_PHYSICS_018 - score 0.0000
+
+Question: Ý chính cần nhớ về Bảng 6.1 là gì?
+
+Expected:
+
+Reference answer: **Giá trị gần đúng của nhiệt hóa hơi riêng ở nhiệt độ sôi dưới áp suất tiêu chuẩn của một số chất** | Chất | Nhiệt độ sôi $(^\circ C)$ | Nhiệt hóa hơi riêng $(J/kg)$ | |---|---:|---:| | Nước | 100 | $2{,}26 \cdot 10^6$ | | Rượu | 78 | $8{,}57 \cdot 10^5$ | | Thủy ngân | 357 | $2{,}85 \cdot 10^5$ | | Ether | 34,5 | $0{,}40 \cdot 10^6$ | ---
+Required concepts: physics, grade 12, Bài 6: Nhiệt hóa hơi riêng, Bảng 6.1, 1. Khái niệm nhiệt hóa hơi riêng
+
+Metrics:
+
+- Numeric correct: N/A
+- Concept coverage: 0.0000
+- Matched concepts: N/A
+- Missing concepts: physics, grade 12, Bài 6: Nhiệt hóa hơi riêng, Bảng 6.1, 1. Khái niệm nhiệt hóa hơi riêng
+- Rule-based score: 0.0000
+
+Confidence: N/A
+Used references: N/A
+
+Answer:
+
+Hình 20.6 là ảnh chụp thí nghiệm đo lực từ của nam châm vĩnh cửu tác dụng lên đoạn dây dẫn đặt trong từ trường. Biết dây dẫn được cố định vào giá thí nghiệm sao cho phương của đoạn dây dẫn nằm ngang vuông góc với vectơ cảm ứng từ $\vec{B}$ của nam châm và không chạm vào nam châm nằm trên cân. Số liệu thí nghiệm thu được như trong Bảng 20.1. Trong đó: * $L$ là chiều dài đoạn dây dẫn mang dòng điện đặt trong từ trường. * $F$ là độ lớn của lực từ tác dụng lên đoạn dây dẫn. * $I$ là cường độ dòng điện. --- Nguồn tham chiếu gần nhất: Bài tập 4. Câu trả lời được rút từ theory chunk liên quan nhất.
 

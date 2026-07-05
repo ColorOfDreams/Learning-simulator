@@ -1,0 +1,679 @@
+[
+  {
+    "id": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "title": "Nhận dạng các đại lượng trong phương trình dao động điều hòa",
+    "description": "Từ phương trình x=Acos(ωt+φ), xác định A, ω, φ, pha tại thời điểm t.",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "phi"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "A",
+      "omega",
+      "phi",
+      "phase"
+    ],
+    "formulaKeys": [],
+    "solverKey": "shm.identifyParameters",
+    "simulationId": "SIM_PHY11_SHM_BASIC_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_SHM_PERIOD_FREQUENCY",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "title": "Tính chu kì, tần số, tần số góc",
+    "description": "Sử dụng f=1/T và ω=2πf=2π/T để đổi giữa các đại lượng đặc trưng.",
+    "requiredParameters": [
+      "T",
+      "f",
+      "omega"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "T",
+      "f",
+      "omega"
+    ],
+    "formulaKeys": [],
+    "solverKey": "shm.periodFrequency",
+    "simulationId": "SIM_PHY11_SHM_BASIC_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_SHM_POSITION_AT_TIME",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "simple_harmonic_motion",
+    "title": "Tính li độ tại thời điểm t",
+    "description": "Thay thời điểm vào phương trình x=Acos(ωt+φ).",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "phi",
+      "t"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "x"
+    ],
+    "formulaKeys": [],
+    "solverKey": "shm.positionAtTime",
+    "simulationId": "SIM_PHY11_SHM_BASIC_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_SHM_VELOCITY_ACCELERATION",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_kinematics",
+    "title": "Tính vận tốc và gia tốc trong dao động điều hòa",
+    "description": "Dùng v=-ωA sin(ωt+φ), a=-ω²A cos(ωt+φ) hoặc a=-ω²x.",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "phi",
+      "t"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "v",
+      "a"
+    ],
+    "formulaKeys": [],
+    "solverKey": "shm.velocityAcceleration",
+    "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_SHM_MAX_VALUES",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_kinematics",
+    "title": "Tính vận tốc cực đại và gia tốc cực đại",
+    "description": "Dùng vmax=ωA và amax=ω²A.",
+    "requiredParameters": [
+      "A",
+      "omega"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "vmax",
+      "amax"
+    ],
+    "formulaKeys": [],
+    "solverKey": "shm.maxValues",
+    "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_SHM_ENERGY",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_energy",
+    "title": "Tính động năng, thế năng và cơ năng dao động điều hòa",
+    "description": "Dùng Wđ=1/2 mω²(A²-x²), Wt=1/2 mω²x², W=1/2 mω²A².",
+    "requiredParameters": [
+      "m",
+      "omega",
+      "A"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "W",
+      "Wd",
+      "Wt"
+    ],
+    "formulaKeys": [],
+    "solverKey": "shm.energy",
+    "simulationId": "SIM_PHY11_SHM_ENERGY_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_SPRING_PERIOD",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "shm_energy",
+    "title": "Tính chu kì con lắc lò xo",
+    "description": "Dùng ω=sqrt(k/m) và T=2πsqrt(m/k).",
+    "requiredParameters": [
+      "m",
+      "k"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "T",
+      "omega"
+    ],
+    "formulaKeys": [],
+    "solverKey": "spring.period",
+    "simulationId": "SIM_PHY11_SPRING_OSCILLATOR_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_DAMPED_FORCED_RESONANCE",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "resonance",
+    "title": "Nhận biết dao động tắt dần, cưỡng bức và cộng hưởng",
+    "description": "Phân loại hiện tượng và điều kiện cộng hưởng f=f0.",
+    "requiredParameters": [
+      "f",
+      "f0"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "phenomenon",
+      "resonanceCondition"
+    ],
+    "formulaKeys": [],
+    "solverKey": "oscillation.classifyResonance",
+    "simulationId": "SIM_PHY11_RESONANCE_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_WAVE_BASIC_QUANTITIES",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "mechanical_wave",
+    "title": "Xác định đại lượng đặc trưng của sóng cơ",
+    "description": "Nhận biết A, λ, T, f, v từ mô tả hoặc đồ thị sóng.",
+    "requiredParameters": [
+      "A",
+      "lambda",
+      "T",
+      "f",
+      "v"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "A",
+      "lambda",
+      "T",
+      "f",
+      "v"
+    ],
+    "formulaKeys": [],
+    "solverKey": "wave.identifyQuantities",
+    "simulationId": "SIM_PHY11_WAVE_PROPAGATION_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_WAVE_SPEED_RELATION",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "mechanical_wave",
+    "title": "Tính bước sóng, tần số, chu kì hoặc tốc độ truyền sóng",
+    "description": "Dùng λ=vT=v/f và f=1/T.",
+    "requiredParameters": [
+      "lambda",
+      "v",
+      "T",
+      "f"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "lambda",
+      "v",
+      "T",
+      "f"
+    ],
+    "formulaKeys": [],
+    "solverKey": "wave.speedRelation",
+    "simulationId": "SIM_PHY11_WAVE_PROPAGATION_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_SOUND_FREQUENCY_MEASUREMENT",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "sound_wave",
+    "title": "Đo tần số sóng âm từ dao động kí",
+    "description": "Dùng chu kì đọc từ đồ thị u-t để tính f=1/T.",
+    "requiredParameters": [
+      "T"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "f"
+    ],
+    "formulaKeys": [],
+    "solverKey": "sound.measureFrequency",
+    "simulationId": "SIM_PHY11_SOUND_WAVE_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_WAVE_INTERFERENCE",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "wave_interference",
+    "title": "Điều kiện giao thoa sóng",
+    "description": "Xác định cực đại, cực tiểu giao thoa và hiệu đường đi.",
+    "requiredParameters": [
+      "d1",
+      "d2",
+      "lambda"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "interferenceType"
+    ],
+    "formulaKeys": [],
+    "solverKey": "wave.interference",
+    "simulationId": "SIM_PHY11_WAVE_INTERFERENCE_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_STANDING_WAVE",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "standing_wave",
+    "title": "Sóng dừng trên dây",
+    "description": "Xác định nút, bụng, bước sóng và điều kiện sóng dừng.",
+    "requiredParameters": [
+      "L",
+      "lambda"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "node",
+      "antinode",
+      "frequency"
+    ],
+    "formulaKeys": [],
+    "solverKey": "wave.standingWave",
+    "simulationId": "SIM_PHY11_STANDING_WAVE_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_ELECTROMAGNETIC_WAVE",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electromagnetic_wave",
+    "title": "Nhận biết sóng điện từ",
+    "description": "Mô tả đặc điểm, phổ và ứng dụng của sóng điện từ.",
+    "requiredParameters": [],
+    "optionalParameters": [],
+    "target": [
+      "concept"
+    ],
+    "formulaKeys": [],
+    "solverKey": "emwave.concept",
+    "simulationId": "SIM_PHY11_ELECTROMAGNETIC_WAVE_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_COULOMB_FORCE",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_field",
+    "title": "Tính lực tương tác giữa hai điện tích",
+    "description": "Dùng định luật Coulomb F=k|q1q2|/r².",
+    "requiredParameters": [
+      "q1",
+      "q2",
+      "r"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "F"
+    ],
+    "formulaKeys": [],
+    "solverKey": "electric.coulombForce",
+    "simulationId": "SIM_PHY11_COULOMB_FORCE_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_field",
+    "title": "Tính cường độ điện trường",
+    "description": "Dùng E=F/q hoặc E=k|Q|/r².",
+    "requiredParameters": [
+      "F",
+      "q",
+      "Q",
+      "r"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "E"
+    ],
+    "formulaKeys": [],
+    "solverKey": "electric.fieldStrength",
+    "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_UNIFORM_ELECTRIC_FIELD",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "uniform_electric_field",
+    "title": "Bài toán điện trường đều",
+    "description": "Dùng E=U/d và lực điện F=qE trong điện trường đều.",
+    "requiredParameters": [
+      "U",
+      "d",
+      "q"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "E",
+      "F"
+    ],
+    "formulaKeys": [],
+    "solverKey": "electric.uniformField",
+    "simulationId": "SIM_PHY11_UNIFORM_E_FIELD_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_ELECTRIC_POTENTIAL_ENERGY",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_potential_energy",
+    "title": "Tính thế năng điện",
+    "description": "Xác định công của lực điện và thế năng điện trong điện trường.",
+    "requiredParameters": [
+      "q",
+      "E",
+      "d",
+      "U"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "W",
+      "A"
+    ],
+    "formulaKeys": [],
+    "solverKey": "electric.potentialEnergy",
+    "simulationId": "SIM_PHY11_ELECTRIC_POTENTIAL_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_ELECTRIC_POTENTIAL",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_potential",
+    "title": "Tính điện thế và hiệu điện thế",
+    "description": "Dùng V=W/q, U=VM-VN và quan hệ với công của lực điện.",
+    "requiredParameters": [
+      "W",
+      "q",
+      "A"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "V",
+      "U"
+    ],
+    "formulaKeys": [],
+    "solverKey": "electric.potential",
+    "simulationId": "SIM_PHY11_ELECTRIC_POTENTIAL_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_CAPACITOR",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "capacitor",
+    "title": "Tính điện dung, điện tích và năng lượng tụ điện",
+    "description": "Dùng C=Q/U và W=1/2 CU².",
+    "requiredParameters": [
+      "C",
+      "Q",
+      "U"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "C",
+      "Q",
+      "U",
+      "W"
+    ],
+    "formulaKeys": [],
+    "solverKey": "electric.capacitor",
+    "simulationId": "SIM_PHY11_CAPACITOR_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_OHMS_LAW",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "ohms_law",
+    "title": "Áp dụng định luật Ôm",
+    "description": "Dùng I=U/R cho đoạn mạch chỉ có điện trở.",
+    "requiredParameters": [
+      "U",
+      "R",
+      "I"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "U",
+      "R",
+      "I"
+    ],
+    "formulaKeys": [],
+    "solverKey": "circuit.ohmsLaw",
+    "simulationId": "SIM_PHY11_OHMS_LAW_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_RESISTOR_NETWORK",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_circuit",
+    "title": "Tính điện trở tương đương",
+    "description": "Tính điện trở tương đương của đoạn mạch nối tiếp hoặc song song.",
+    "requiredParameters": [
+      "R1",
+      "R2"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "Req"
+    ],
+    "formulaKeys": [],
+    "solverKey": "circuit.equivalentResistance",
+    "simulationId": "SIM_PHY11_RESISTOR_NETWORK_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_ELECTRIC_SOURCE",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_source",
+    "title": "Tính suất điện động và điện trở trong",
+    "description": "Dùng quan hệ mạch kín và đặc tuyến nguồn điện.",
+    "requiredParameters": [
+      "E",
+      "r",
+      "I",
+      "R"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "E",
+      "r",
+      "U"
+    ],
+    "formulaKeys": [],
+    "solverKey": "circuit.electricSource",
+    "simulationId": "SIM_PHY11_ELECTRIC_SOURCE_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  },
+  {
+    "id": "PP_PHY11_ELECTRIC_POWER_ENERGY",
+    "subject": "physics",
+    "grade": 11,
+    "topic": "electric_power_energy",
+    "title": "Tính năng lượng và công suất điện",
+    "description": "Dùng A=UIt, P=UI, P=I²R hoặc P=U²/R.",
+    "requiredParameters": [
+      "U",
+      "I",
+      "R",
+      "t"
+    ],
+    "optionalParameters": [],
+    "target": [
+      "A",
+      "P"
+    ],
+    "formulaKeys": [],
+    "solverKey": "circuit.powerEnergy",
+    "simulationId": "SIM_PHY11_ELECTRIC_POWER_3D",
+    "difficultyRange": [
+      "recognition",
+      "understanding",
+      "application"
+    ],
+    "validationStatus": "ai_generated",
+    "isActive": true
+  }
+]

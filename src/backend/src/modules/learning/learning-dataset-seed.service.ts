@@ -52,7 +52,8 @@ export class LearningDatasetSeedService {
     }
 
     const dataset = validation.data;
-    await this.simulationTemplateRepo.upsert(
+    await this.upsertInBatches(
+      this.simulationTemplateRepo,
       dataset.simulationTemplates.map((item) =>
         this.simulationTemplateRepo.create(
           this.normalizeSimulationTemplate(item),
@@ -60,25 +61,29 @@ export class LearningDatasetSeedService {
       ),
       ['simulationId'],
     );
-    await this.problemPatternRepo.upsert(
+    await this.upsertInBatches(
+      this.problemPatternRepo,
       dataset.problemPatterns.map((item) =>
         this.problemPatternRepo.create(this.normalizeProblemPattern(item)),
       ),
       ['patternId'],
     );
-    await this.theoryChunkRepo.upsert(
+    await this.upsertInBatches(
+      this.theoryChunkRepo,
       dataset.theoryChunks.map((item) =>
         this.theoryChunkRepo.create(this.normalizeTheoryChunk(item)),
       ),
       ['id'],
     );
-    await this.learningItemRepo.upsert(
+    await this.upsertInBatches(
+      this.learningItemRepo,
       dataset.learningItems.map((item) =>
         this.learningItemRepo.create(this.normalizeLearningItem(item)),
       ),
       ['id'],
     );
-    await this.aiTestCaseRepo.upsert(
+    await this.upsertInBatches(
+      this.aiTestCaseRepo,
       dataset.aiTestCases.map((item) =>
         this.aiTestCaseRepo.create({
           id: item.id,
@@ -92,7 +97,8 @@ export class LearningDatasetSeedService {
       ),
       ['id'],
     );
-    await this.mediaAssetRepo.upsert(
+    await this.upsertInBatches(
+      this.mediaAssetRepo,
       dataset.mediaAssets.map((item) =>
         this.mediaAssetRepo.create({
           id: item.id,
@@ -296,5 +302,19 @@ export class LearningDatasetSeedService {
 
   private ensureArray(value: unknown): any[] {
     return Array.isArray(value) ? value : [];
+  }
+
+  private async upsertInBatches(
+    repo: Repository<any>,
+    entities: any[],
+    conflictPaths: string[],
+    batchSize = 200,
+  ) {
+    for (let index = 0; index < entities.length; index += batchSize) {
+      const batch = entities.slice(index, index + batchSize);
+      if (batch.length > 0) {
+        await repo.upsert(batch, conflictPaths);
+      }
+    }
   }
 }

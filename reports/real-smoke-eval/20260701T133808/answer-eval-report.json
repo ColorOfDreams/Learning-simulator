@@ -1,0 +1,498 @@
+{
+  "generated_at": "2026-07-01T13:38:08.082Z",
+  "source": "smoke",
+  "ai_method": "analyze",
+  "llm_enabled": false,
+  "summary": {
+    "total_cases": 10,
+    "evaluated_cases": 10,
+    "skipped_cases": 0,
+    "numeric_cases": 5,
+    "conceptual_cases": 5,
+    "mixed_cases": 5,
+    "numeric_accuracy": 0.2,
+    "avg_concept_coverage": 0.5333333333333333,
+    "avg_rule_based_score": 0.5166666666666667,
+    "avg_correctness": 0,
+    "avg_groundedness": 0,
+    "avg_completeness": 0,
+    "avg_clarity": 0,
+    "avg_citation_usage": 0,
+    "avg_final_answer_score": 0,
+    "hallucination_rate": 0,
+    "avg_latency_ms": 0
+  },
+  "cases": [
+    {
+      "case_id": "REAL_EVAL_PHY11_OSCILLATION_CONCEPT_001",
+      "question": "Dao động cơ là gì? Nêu đặc điểm chuyển động quanh vị trí cân bằng.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Dao động cơ là chuyển động qua lại của vật quanh vị trí cân bằng và có thể lặp đi lặp lại theo thời gian.",
+        "required_concepts": [
+          {
+            "label": "dao động cơ",
+            "anyOf": [
+              "dao động cơ"
+            ]
+          },
+          {
+            "label": "chuyển động qua lại",
+            "anyOf": [
+              "chuyển động qua lại",
+              "qua lại"
+            ]
+          },
+          {
+            "label": "vị trí cân bằng",
+            "anyOf": [
+              "vị trí cân bằng",
+              "quanh vị trí cân bằng"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Dao động cơ là chuyển động qua lại quanh vị trí cân bằng và lặp đi lặp lại theo thời gian.\nVị trí cân bằng là vị trí mà vật thường xuyên đi qua trong quá trình dao động.\nĐặc trưng quan trọng là chuyển động có tính lặp lại quanh vị trí cân bằng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "dao động cơ",
+          "chuyển động qua lại",
+          "vị trí cân bằng"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      }
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_SHM_EQUATION_001",
+      "question": "Trong phương trình dao động điều hòa x = A cos(ωt + φ), x, A, ω và φ có ý nghĩa gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "x là li độ tại thời điểm t, A là biên độ, ω là tần số góc, còn φ là pha ban đầu; ωt + φ là pha dao động.",
+        "required_concepts": [
+          {
+            "label": "x là li độ",
+            "anyOf": [
+              "x là li độ",
+              "li độ"
+            ]
+          },
+          {
+            "label": "A là biên độ",
+            "anyOf": [
+              "A là biên độ",
+              "biên độ"
+            ]
+          },
+          {
+            "label": "ω là tần số góc",
+            "anyOf": [
+              "ω là tần số góc",
+              "omega là tần số góc",
+              "tần số góc"
+            ]
+          },
+          {
+            "label": "φ là pha ban đầu",
+            "anyOf": [
+              "φ là pha ban đầu",
+              "phi là pha ban đầu",
+              "pha ban đầu"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Phương trình x = A cos(ωt + φ) mô tả li độ x của vật theo thời gian; x là li độ, A là biên độ, omega là tần số góc, phi là pha ban đầu và omega t + phi là pha dao động.\nLi độ x cho biết vị trí của vật so với vị trí cân bằng tại thời điểm t.\nPha dao động ωt + φ xác định trạng thái dao động của vật ở thời điểm đó.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "x là li độ",
+          "A là biên độ",
+          "ω là tần số góc",
+          "φ là pha ban đầu"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      }
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_SHM_PERIOD_001",
+      "question": "Một vật dao động điều hòa có ω = 4π rad/s. Tính chu kì T.",
+      "expected_answer": {
+        "type": "mixed",
+        "value": 0.5,
+        "unit": "s",
+        "tolerance": 0.000001,
+        "reference_answer": "Dùng ω = 2π/T nên T = 2π/ω = 2π/(4π) = 0,5 s.",
+        "required_concepts": [
+          {
+            "label": "ω = 2π/T",
+            "anyOf": [
+              "ω=2π/T",
+              "ω = 2π/T",
+              "omega = 2pi/T"
+            ]
+          },
+          {
+            "label": "T = 2π/ω",
+            "anyOf": [
+              "T=2π/ω",
+              "T = 2π/ω",
+              "T = 2pi/omega"
+            ]
+          },
+          {
+            "label": "0,5 s",
+            "anyOf": [
+              "0,5 s",
+              "0.5 s",
+              "0,5s",
+              "0.5s"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "![Hình 2.1 - Đồ thị dao động điều hòa](assets/images/hinh-2-1.png)\n\n**Mô tả sơ bộ**\n\n* Đồ thị hình sin.\n* Trục tung: (x(m)), từ (-0,2) đến (0,2).\n* Đỉnh tại:\n\n$$\nx=0,2\n$$\n\nứng với:\n\n$$\nt=0,1s;\\qquad t=0,5s\n$$\n\n* Cực tiểu tại:\n\n$$\nx=-0,2\n$$\n\nứng với:\n\n$$\nt=0,3s\n$$\n\n* Giao với trục thời gian tại:\n\n$$\nt=0,2s;\\qquad t=0,4s\n$$\n\n---\n\nTheo đồ thị Hình 2.1, cứ sau mỗi chu kì thì dao động của vật lại lặp lại như cũ. Như vậy, theo phương trình dao động ta phải có:\n\n$$\nx=A\\cos[\\omega(t+T)]\n=A\\cos(\\omega t)\n$$\n\nTheo tính chất của hàm cosin ta suy ra:\n\n$$\n\\omega T=2\\pi\n$$\n\nhay\n\n$$\n\\omega=\\frac{2\\pi}{T}\n\\qu…\nNguồn tham chiếu gần nhất: Hình 2.1.\nDạng bài gần nhất: Tìm chu kì từ phương trình dao động.",
+      "metrics": {
+        "numericCorrect": true,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "0,5 s"
+        ],
+        "missingConcepts": [
+          "ω = 2π/T",
+          "T = 2π/ω"
+        ],
+        "ruleBasedScore": 0.6666666666666666
+      }
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_SHM_POSITION_001",
+      "question": "Một vật dao động điều hòa có phương trình x = 2cos(4πt + π/2) cm. Tính li độ tại t = 2 s.",
+      "expected_answer": {
+        "type": "mixed",
+        "value": 0,
+        "unit": "cm",
+        "tolerance": 0.000001,
+        "reference_answer": "Thay t = 2 s vào x = 2cos(4πt + π/2), pha bằng 17π/2 nên cos(17π/2) = 0. Vậy x = 0 cm.",
+        "required_concepts": [
+          {
+            "label": "thay t = 2",
+            "anyOf": [
+              "t = 2",
+              "thay t"
+            ]
+          },
+          {
+            "label": "pha dao động",
+            "anyOf": [
+              "pha",
+              "4πt + π/2"
+            ]
+          },
+          {
+            "label": "x = 0 cm",
+            "anyOf": [
+              "x = 0 cm",
+              "0 cm",
+              "li độ bằng 0"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Một vật dao động điều hòa có phương trình là:\n\n$$\nx=2\\cos\\left(4\\pi t-\\frac{\\pi}{6}\\right)\n\\quad(cm)\n$$\n\nHãy cho biết:\n\n* Biên độ\n* Tần số góc\n* Chu kì\n* Tần số\n* Pha ban đầu\n* Pha của dao động ở thời điểm:\n\n$$\nt=1s\n$$\n\n---\nNguồn tham chiếu gần nhất: Bài 1.\nDạng bài gần nhất: Tính li độ tại một thời điểm.",
+      "metrics": {
+        "numericCorrect": false,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "pha dao động"
+        ],
+        "missingConcepts": [
+          "thay t = 2",
+          "x = 0 cm"
+        ],
+        "ruleBasedScore": 0.16666666666666666
+      }
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_SHM_VELOCITY_001",
+      "question": "Từ x = A cos(ωt + φ), hãy viết phương trình vận tốc của vật dao động điều hòa.",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Vận tốc là đạo hàm của li độ theo thời gian: v = x' = -ωA sin(ωt + φ).",
+        "required_concepts": [
+          {
+            "label": "vận tốc là đạo hàm của li độ",
+            "anyOf": [
+              "đạo hàm của li độ",
+              "v = x'",
+              "v=x'"
+            ]
+          },
+          {
+            "label": "v = -ωA sin(ωt + φ)",
+            "anyOf": [
+              "v = -ωA sin",
+              "v=-ωA sin",
+              "v = -omega A sin"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Từ x = A cos(ωt + φ), vận tốc là đạo hàm của li độ theo thời gian: v = x' và v = -ωA sin(ωt + φ).\nLấy đạo hàm x theo thời gian.\nVì đạo hàm của cos(ωt + φ) là -ω sin(ωt + φ), nên v = x' = -ωA sin(ωt + φ).",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "vận tốc là đạo hàm của li độ",
+          "v = -ωA sin(ωt + φ)"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      }
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_SHM_ACCELERATION_001",
+      "question": "Gia tốc trong dao động điều hòa liên hệ với li độ x theo công thức nào?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Gia tốc của dao động điều hòa thỏa mãn a = -ω²x, tức gia tốc luôn trái dấu với li độ và hướng về vị trí cân bằng.",
+        "required_concepts": [
+          {
+            "label": "a = -ω²x",
+            "anyOf": [
+              "a = -ω²x",
+              "a=-ω²x",
+              "a = -omega^2 x",
+              "a=-omega^2x"
+            ]
+          },
+          {
+            "label": "trái dấu với li độ",
+            "anyOf": [
+              "trái dấu với li độ",
+              "ngược chiều với li độ"
+            ]
+          },
+          {
+            "label": "vị trí cân bằng",
+            "anyOf": [
+              "vị trí cân bằng",
+              "hướng về vị trí cân bằng"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "> Phương trình của vận tốc và gia tốc của một vật dao động điều hòa có li độ:\n\n$$\nx=A\\cos(\\omega t+\\varphi)\n$$\n\nlà:\n\n$$\nv=-\\omega A\\sin(\\omega t+\\varphi)\n$$\n\n$$\na=-\\omega^2A\\cos(\\omega t+\\varphi)\n$$\n\n> Đồ thị của vận tốc, gia tốc theo thời gian là đường hình sin.\n\n> Vận tốc của vật dao động sớm pha:\n\n$$\n\\frac{\\pi}{2}\n$$\n\nso với li độ.\n\n> Gia tốc của vật dao động ngược pha với li độ.\n\n> Vectơ gia tốc luôn hướng về vị trí cân bằng và có độ lớn tỉ lệ với độ lớn của li độ.\n\n> Tại vị trí biên, vận tốc của vật bằng 0, còn gia tốc của vật có độ lớn cực đại.\n\n> Tại vị trí cân bằng, gia tốc của vật bằn…\nNguồn tham chiếu gần nhất: Em đã học.\nDạng bài gần nhất: Tính vận tốc cực đại và gia tốc cực đại.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "vị trí cân bằng"
+        ],
+        "missingConcepts": [
+          "a = -ω²x",
+          "trái dấu với li độ"
+        ],
+        "ruleBasedScore": 0.3333333333333333
+      }
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_WAVE_SPEED_001",
+      "question": "Một sóng có tần số f = 5 Hz và tốc độ truyền sóng v = 2 m/s. Tính bước sóng.",
+      "expected_answer": {
+        "type": "mixed",
+        "value": 0.4,
+        "unit": "m",
+        "tolerance": 0.000001,
+        "reference_answer": "Dùng v = λf nên λ = v/f = 2/5 = 0,4 m.",
+        "required_concepts": [
+          {
+            "label": "v = λf",
+            "anyOf": [
+              "v = λf",
+              "v=λf",
+              "v = lambda f"
+            ]
+          },
+          {
+            "label": "λ = v/f",
+            "anyOf": [
+              "λ = v/f",
+              "lambda = v/f",
+              "bước sóng"
+            ]
+          },
+          {
+            "label": "0,4 m",
+            "anyOf": [
+              "0,4 m",
+              "0.4 m",
+              "0,4m",
+              "0.4m"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Một sóng âm có tần số:\n\n$$\nf=192Hz\n$$\n\nvà truyền đi được quãng đường:\n\n$$\ns=91,4m\n$$\n\ntrong:\n\n$$\nt=0,27s\n$$\n\nHãy tính:\n\na. Tốc độ truyền sóng.\n\nb. Bước sóng.\n\nc. Nếu tần số sóng là:\n\n$$\nf'=442Hz\n$$\n\nthì bước sóng và chu kì là bao nhiêu?\n\n---\nNguồn tham chiếu gần nhất: Ví dụ 1.\nCâu trả lời được rút từ theory chunk liên quan nhất.",
+      "metrics": {
+        "numericCorrect": false,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "λ = v/f"
+        ],
+        "missingConcepts": [
+          "v = λf",
+          "0,4 m"
+        ],
+        "ruleBasedScore": 0.16666666666666666
+      }
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_OHM_001",
+      "question": "Một điện trở R = 10 Ω được đặt vào hiệu điện thế U = 5 V. Tính cường độ dòng điện.",
+      "expected_answer": {
+        "type": "mixed",
+        "value": 0.5,
+        "unit": "A",
+        "tolerance": 0.000001,
+        "reference_answer": "Từ R = U/I suy ra I = U/R = 5/10 = 0,5 A.",
+        "required_concepts": [
+          {
+            "label": "R = U/I",
+            "anyOf": [
+              "R = U/I",
+              "R=U/I"
+            ]
+          },
+          {
+            "label": "I = U/R",
+            "anyOf": [
+              "I = U/R",
+              "I=U/R"
+            ]
+          },
+          {
+            "label": "0,5 A",
+            "anyOf": [
+              "0,5 A",
+              "0.5 A",
+              "0,5A",
+              "0.5A"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Một vật dao động điều hòa với tần số góc:\n\n$$\n\\omega=1rad/s\n$$\n\ncó đồ thị của li độ (x), vận tốc (v) và gia tốc (a) theo thời gian (t) được mô tả trên Hình 4.1.\n\n---\nNguồn tham chiếu gần nhất: Ví dụ 3.\nCâu trả lời được rút từ theory chunk liên quan nhất.",
+      "metrics": {
+        "numericCorrect": false,
+        "conceptCoverage": 0,
+        "matchedConcepts": [],
+        "missingConcepts": [
+          "R = U/I",
+          "I = U/R",
+          "0,5 A"
+        ],
+        "ruleBasedScore": 0
+      }
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_CAPACITOR_001",
+      "question": "Một tụ điện có điện dung C = 2 μF được đặt vào hiệu điện thế U = 10 V. Tính điện tích của tụ.",
+      "expected_answer": {
+        "type": "mixed",
+        "value": 0.00002,
+        "unit": "C",
+        "tolerance": 1e-7,
+        "reference_answer": "Đổi C = 2 μF = 2×10^-6 F. Dùng Q = CU nên Q = 2×10^-6 × 10 = 2×10^-5 C = 0,00002 C.",
+        "required_concepts": [
+          {
+            "label": "Q = CU",
+            "anyOf": [
+              "Q = CU",
+              "Q=CU"
+            ]
+          },
+          {
+            "label": "đổi μF sang F",
+            "anyOf": [
+              "2 μF",
+              "2×10^-6 F",
+              "2.10^-6 F",
+              "0,000002 F"
+            ]
+          },
+          {
+            "label": "0,00002 C",
+            "anyOf": [
+              "0,00002 C",
+              "0.00002 C",
+              "2×10^-5 C",
+              "2.10^-5 C"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Thực nghiệm cho thấy:\n\n> Với một tụ điện xác định, điện tích tích được tỉ lệ thuận với hiệu điện thế đặt vào hai bản tụ.\n\nBiểu thức:\n\n$$\nQ = CU\n$$\n\nTrong đó:\n\n* $Q$ là điện tích của tụ điện.\n* $U$ là hiệu điện thế giữa hai bản tụ.\n* $C$ là điện dung của tụ điện.\n\n---\nNguồn tham chiếu gần nhất: 1. Điện dung.\nCâu trả lời được rút từ theory chunk liên quan nhất.",
+      "metrics": {
+        "numericCorrect": false,
+        "conceptCoverage": 0.3333333333333333,
+        "matchedConcepts": [
+          "Q = CU"
+        ],
+        "missingConcepts": [
+          "đổi μF sang F",
+          "0,00002 C"
+        ],
+        "ruleBasedScore": 0.16666666666666666
+      }
+    },
+    {
+      "case_id": "REAL_EVAL_PHY11_STANDING_WAVE_001",
+      "question": "Điều kiện để có sóng dừng trên dây có hai đầu cố định là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "reference_answer": "Với dây có hai đầu cố định, chiều dài dây phải bằng một số nguyên lần nửa bước sóng: L = nλ/2.",
+        "required_concepts": [
+          {
+            "label": "hai đầu cố định",
+            "anyOf": [
+              "hai đầu cố định"
+            ]
+          },
+          {
+            "label": "số nguyên lần nửa bước sóng",
+            "anyOf": [
+              "số nguyên lần nửa bước sóng",
+              "nguyên lần nửa bước sóng"
+            ]
+          },
+          {
+            "label": "L = nλ/2",
+            "anyOf": [
+              "L = nλ/2",
+              "L=nλ/2",
+              "L = n lambda/2"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Điều kiện để có sóng dừng trên một sợi dây có hai đầu cố định là chiều dài của sợi dây phải bằng một số nguyên lần nửa bước sóng như Hình 13.3.\n\n$$\nL=n\\frac{\\lambda}{2}\n$$\n\nvới:\n\n$$\nn=1,2,3,...\n$$\n\n[\n\\tag{13.1}\n]\n\n---\nNguồn tham chiếu gần nhất: 2.2. Điều kiện để có sóng dừng.\nCâu trả lời được rút từ theory chunk liên quan nhất.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.6666666666666666,
+        "matchedConcepts": [
+          "hai đầu cố định",
+          "số nguyên lần nửa bước sóng"
+        ],
+        "missingConcepts": [
+          "L = nλ/2"
+        ],
+        "ruleBasedScore": 0.6666666666666666
+      }
+    }
+  ]
+}

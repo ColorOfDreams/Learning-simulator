@@ -1,0 +1,254 @@
+{
+  "datasetId": "PHY11_STRUCTURED_MVP_26_LESSONS",
+  "subject": "physics",
+  "grade": 11,
+  "source": "clean_markdown_upload",
+  "lessonCount": 26,
+  "lessons": [
+    {
+      "chapter": 1,
+      "lessonNumber": 1,
+      "title": "Bài 1: Dao động điều hòa",
+      "lessonId": "PHY11_C01_L01_bai-1-dao-dong-dieu-hoa",
+      "path": "chuong1_bai1_sgkvatli_11.md"
+    },
+    {
+      "chapter": 1,
+      "lessonNumber": 2,
+      "title": "Bài 2: Mô tả dao động điều hòa",
+      "lessonId": "PHY11_C01_L02_bai-2-mo-ta-dao-dong-dieu-hoa",
+      "path": "chuong1_bai2_sgkvatli_11.md"
+    },
+    {
+      "chapter": 1,
+      "lessonNumber": 3,
+      "title": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa",
+      "lessonId": "PHY11_C01_L03_bai-3-van-toc-gia-toc-trong-dao-dong-dieu-hoa",
+      "path": "chuong1_bai3_sgkvatli_11.md"
+    },
+    {
+      "chapter": 1,
+      "lessonNumber": 4,
+      "title": "Bài 4: Bài tập về dao động điều hòa",
+      "lessonId": "PHY11_C01_L04_bai-4-bai-tap-ve-dao-dong-dieu-hoa",
+      "path": "chuong1_bai4_sgkvatli_11.md"
+    },
+    {
+      "chapter": 1,
+      "lessonNumber": 5,
+      "title": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa",
+      "lessonId": "PHY11_C01_L05_bai-5-su-chuyen-hoa-nang-luong-trong-dao-dong-dieu-hoa",
+      "path": "chuong1_bai5_sgkvatli_11.md"
+    },
+    {
+      "chapter": 1,
+      "lessonNumber": 6,
+      "title": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng",
+      "lessonId": "PHY11_C01_L06_bai-6-dao-dong-tat-dan-dao-dong-cuong-buc-hien-tuong-cong-huong",
+      "path": "chuong1_bai6_sgkvatli_11.md"
+    },
+    {
+      "chapter": 1,
+      "lessonNumber": 7,
+      "title": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa",
+      "lessonId": "PHY11_C01_L07_bai-7-bai-tap-ve-su-chuyen-hoa-nang-luong-trong-dao-dong-dieu-hoa",
+      "path": "chuong1_bai7_sgkvatli_11.md"
+    },
+    {
+      "chapter": 2,
+      "lessonNumber": 10,
+      "title": "Bài 10: Thực hành: Đo tần số của sóng âm",
+      "lessonId": "PHY11_C02_L10_bai-10-thuc-hanh-do-tan-so-cua-song-am",
+      "path": "chuong2_bai10_sgkvatli_11.md"
+    },
+    {
+      "chapter": 2,
+      "lessonNumber": 11,
+      "title": "Bài 11: Sóng điện từ",
+      "lessonId": "PHY11_C02_L11_bai-11-song-dien-tu",
+      "path": "chuong2_bai11_sgkvatli_11.md"
+    },
+    {
+      "chapter": 2,
+      "lessonNumber": 12,
+      "title": "Bài 12: Giao thoa sóng",
+      "lessonId": "PHY11_C02_L12_bai-12-giao-thoa-song",
+      "path": "chuong2_bai12_sgkvatli_11.md"
+    },
+    {
+      "chapter": 2,
+      "lessonNumber": 13,
+      "title": "Bài 13: Sóng dừng",
+      "lessonId": "PHY11_C02_L13_bai-13-song-dung",
+      "path": "chuong2_bai13_sgkvatli_11.md"
+    },
+    {
+      "chapter": 2,
+      "lessonNumber": 14,
+      "title": "Bài 14: Bài tập về sóng",
+      "lessonId": "PHY11_C02_L14_bai-14-bai-tap-ve-song",
+      "path": "chuong2_bai14_sgkvatli_11.md"
+    },
+    {
+      "chapter": 2,
+      "lessonNumber": 15,
+      "title": "Bài 15: Thực hành: Đo tốc độ truyền âm",
+      "lessonId": "PHY11_C02_L15_bai-15-thuc-hanh-do-toc-do-truyen-am",
+      "path": "chuong2_bai15_sgkvatli_11.md"
+    },
+    {
+      "chapter": 2,
+      "lessonNumber": 8,
+      "title": "Chương II: Sóng",
+      "lessonId": "PHY11_C02_L08_chuong-ii-song",
+      "path": "chuong2_bai8_sgkvatli_11.md"
+    },
+    {
+      "chapter": 2,
+      "lessonNumber": 9,
+      "title": "Bài 9: Sóng ngang. Sóng dọc. Sự truyền năng lượng của sóng cơ",
+      "lessonId": "PHY11_C02_L09_bai-9-song-ngang-song-doc-su-truyen-nang-luong-cua-song-co",
+      "path": "chuong2_bai9_sgkvatli_11.md"
+    },
+    {
+      "chapter": 3,
+      "lessonNumber": 16,
+      "title": "Chương III: Điện trường",
+      "lessonId": "PHY11_C03_L16_chuong-iii-dien-truong",
+      "path": "chuong3_bai16_sgkvatli_11.md"
+    },
+    {
+      "chapter": 3,
+      "lessonNumber": 17,
+      "title": "Bài 17: Khái niệm điện trường",
+      "lessonId": "PHY11_C03_L17_bai-17-khai-niem-dien-truong",
+      "path": "chuong3_bai17_sgkvatli_11.md"
+    },
+    {
+      "chapter": 3,
+      "lessonNumber": 18,
+      "title": "Bài 18: Điện trường đều",
+      "lessonId": "PHY11_C03_L18_bai-18-dien-truong-deu",
+      "path": "chuong3_bai18_sgkvatli_11.md"
+    },
+    {
+      "chapter": 3,
+      "lessonNumber": 19,
+      "title": "Bài 19: Thế năng điện",
+      "lessonId": "PHY11_C03_L19_bai-19-the-nang-dien",
+      "path": "chuong3_bai19_sgkvatli_11.md"
+    },
+    {
+      "chapter": 3,
+      "lessonNumber": 20,
+      "title": "Bài 20: Điện thế",
+      "lessonId": "PHY11_C03_L20_bai-20-dien-the",
+      "path": "chuong3_bai20_sgkvatli_11.md"
+    },
+    {
+      "chapter": 3,
+      "lessonNumber": 21,
+      "title": "Bài 21: Tụ điện",
+      "lessonId": "PHY11_C03_L21_bai-21-tu-dien",
+      "path": "chuong3_bai21_sgkvatli_11.md"
+    },
+    {
+      "chapter": 4,
+      "lessonNumber": 22,
+      "title": "Chương IV: Dòng điện, mạch điện",
+      "lessonId": "PHY11_C04_L22_chuong-iv-dong-dien-mach-dien",
+      "path": "chuong4_bai22_sgkvatli_11.md"
+    },
+    {
+      "chapter": 4,
+      "lessonNumber": 23,
+      "title": "Bài 23: Điện trở. Định luật Ôm",
+      "lessonId": "PHY11_C04_L23_bai-23-dien-tro-dinh-luat-om",
+      "path": "chuong4_bai23_sgkvatli_11.md"
+    },
+    {
+      "chapter": 4,
+      "lessonNumber": 24,
+      "title": "Bài 24: Nguồn điện",
+      "lessonId": "PHY11_C04_L24_bai-24-nguon-dien",
+      "path": "chuong4_bai24_sgkvatli_11.md"
+    },
+    {
+      "chapter": 4,
+      "lessonNumber": 25,
+      "title": "Bài 25: Năng lượng và công suất điện",
+      "lessonId": "PHY11_C04_L25_bai-25-nang-luong-va-cong-suat-dien",
+      "path": "chuong4_bai25_sgkvatli_11.md"
+    },
+    {
+      "chapter": 4,
+      "lessonNumber": 26,
+      "title": "Bài 26: Thực hành – Đo suất điện động và điện trở trong của pin điện hóa",
+      "lessonId": "PHY11_C04_L26_bai-26-thuc-hanh-do-suat-dien-dong-va-dien-tro-trong-cua-pin-dien-hoa",
+      "path": "chuong4_bai26_sgkvatli_11.md"
+    }
+  ],
+  "counts": {
+    "theoryChunks": 670,
+    "problemPatterns": 24,
+    "learningItems": 128,
+    "aiTestCases": 125,
+    "simulationTemplates": 19,
+    "mediaAssets": 122
+  },
+  "statusLegend": {
+    "ai_generated": "Generated from clean Markdown; usable for MVP/RAG, not gold.",
+    "needs_review": "Depends on image/table/unclear OCR or missing data; do not use as gold answer.",
+    "draft": "Draft evaluation case.",
+    "solver_verified_draft": "Synthetic solver-style case; should be reviewed before becoming official gold."
+  },
+  "previewMerge": {
+    "additionDatasetId": "generated_from_cleaned_review",
+    "note": "Non-destructive preview merge. Original base file was not overwritten.",
+    "validationStatusMigrations": [
+      {
+        "collection": "aiTestCases",
+        "id": "GOLD_DRAFT_SHM_PERIOD_001",
+        "from": "solver_verified_draft",
+        "to": "needs_review"
+      },
+      {
+        "collection": "aiTestCases",
+        "id": "GOLD_DRAFT_SHM_POSITION_001",
+        "from": "solver_verified_draft",
+        "to": "needs_review"
+      },
+      {
+        "collection": "aiTestCases",
+        "id": "GOLD_DRAFT_WAVE_SPEED_001",
+        "from": "solver_verified_draft",
+        "to": "needs_review"
+      },
+      {
+        "collection": "aiTestCases",
+        "id": "GOLD_DRAFT_OHM_001",
+        "from": "solver_verified_draft",
+        "to": "needs_review"
+      },
+      {
+        "collection": "aiTestCases",
+        "id": "GOLD_DRAFT_CAPACITOR_001",
+        "from": "solver_verified_draft",
+        "to": "needs_review"
+      }
+    ]
+  },
+  "splitPreview": {
+    "sourceAllInOne": "data/structured/generated/all-in-one.with-cleaned-preview.learning-data.json",
+    "counts": {
+      "theoryChunks": 4215,
+      "aiTestCases": 125,
+      "learningItems": 128,
+      "mediaAssets": 122,
+      "problemPatterns": 24,
+      "simulationTemplates": 19
+    },
+    "generatedCleanedTheoryChunks": 3545,
+    "note": "Generated split preview. Original data/structured collection files were not overwritten."
+  }
+}

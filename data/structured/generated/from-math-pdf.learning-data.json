@@ -1,0 +1,260 @@
+{
+  "manifest": {
+    "datasetId": "generated_from_math_pdf_review",
+    "version": "0.1.0",
+    "sourceDirectory": "data/cleaned_math_pdf_llm",
+    "description": "Preview dataset generated from extracted math textbook PDF/HTML/DOCX files. TheoryChunks only.",
+    "notes": [
+      "Original structured datasets were not overwritten.",
+      "All generated chunks are marked needs_review.",
+      "No answers, examples, conclusions, problem patterns, or simulations were inferred beyond source text."
+    ]
+  },
+  "theoryChunks": [
+    {
+      "id": "GENMATH_G10_sach_giao_khoa_toan_10_tap_1_ket_noi_tri_thuc_voi_cuoc_song_440856f7_S0001_P01",
+      "subject": "math",
+      "grade": 10,
+      "chapter": "math_chapter_unknown",
+      "lessonId": "math_g10_t1_lesson_unknown_98a8bbb2",
+      "lessonTitle": "Toán 10",
+      "topic": "lesson_unknown",
+      "type": "explanation",
+      "title": "Toán 10",
+      "text": "# Toán 10\n\n<!-- sourceFile: sach-giao-khoa-toan-10-tap-1-ket-noi-tri-thuc-voi-cuoc-song.pdf -->\n<!-- detectedType: pdf -->\n<!-- grade: 10 -->\n<!-- volume: 1 -->\n<!-- validationStatus: needs_review -->",
+      "keywords": [
+        "math",
+        "toán",
+        "grade 10",
+        "lớp 10",
+        "tập 1",
+        "Toán 10"
+      ],
+      "source": {
+        "sourceType": "textbook",
+        "sourceName": "SGK Toán 10 tập 1",
+        "fileName": "sach-giao-khoa-toan-10-tap-1-ket-noi-tri-thuc-voi-cuoc-song.pdf"
+      },
+      "metadata": {
+        "sourceFile": "sach-giao-khoa-toan-10-tap-1-ket-noi-tri-thuc-voi-cuoc-song.pdf",
+        "sourcePath": "sach_giao_khoa_toan_10_tap_1_ket_noi_tri_thuc_voi_cuoc_song.md",
+        "sourcePageStart": null,
+        "sourcePageEnd": null,
+        "volume": 1,
+        "sectionOrdinal": 1,
+        "partNumber": 1,
+        "validationStatus": "needs_review",
+        "pipeline": "scripts/convert_math_cleaned_to_learning_structured.py"
+      },
+      "formulaKeys": [],
+      "conceptKeys": [],
+      "validationStatus": "needs_review",
+      "isActive": true
+    },
+    {
+      "id": "GENMATH_G10_sach_giao_khoa_toan_10_tap_2_ket_noi_tri_thuc_voi_cuoc_song_fd326f62_S0001_P01",
+      "subject": "math",
+      "grade": 10,
+      "chapter": "math_chapter_unknown",
+      "lessonId": "math_g10_t2_lesson_unknown_afa7d91d",
+      "lessonTitle": "Toán 10",
+      "topic": "lesson_unknown",
+      "type": "explanation",
+      "title": "Toán 10",
+      "text": "# Toán 10\n\n<!-- sourceFile: sach-giao-khoa-toan-10-tap-2-ket-noi-tri-thuc-voi-cuoc-song.pdf -->\n<!-- detectedType: pdf -->\n<!-- grade: 10 -->\n<!-- volume: 2 -->\n<!-- validationStatus: needs_review -->",
+      "keywords": [
+        "math",
+        "toán",
+        "grade 10",
+        "lớp 10",
+        "tập 2",
+        "Toán 10"
+      ],
+      "source": {
+        "sourceType": "textbook",
+        "sourceName": "SGK Toán 10 tập 2",
+        "fileName": "sach-giao-khoa-toan-10-tap-2-ket-noi-tri-thuc-voi-cuoc-song.pdf"
+      },
+      "metadata": {
+        "sourceFile": "sach-giao-khoa-toan-10-tap-2-ket-noi-tri-thuc-voi-cuoc-song.pdf",
+        "sourcePath": "sach_giao_khoa_toan_10_tap_2_ket_noi_tri_thuc_voi_cuoc_song.md",
+        "sourcePageStart": null,
+        "sourcePageEnd": null,
+        "volume": 2,
+        "sectionOrdinal": 1,
+        "partNumber": 1,
+        "validationStatus": "needs_review",
+        "pipeline": "scripts/convert_math_cleaned_to_learning_structured.py"
+      },
+      "formulaKeys": [],
+      "conceptKeys": [],
+      "validationStatus": "needs_review",
+      "isActive": true
+    },
+    {
+      "id": "GENMATH_G11_sach_giao_khoa_toan_11_tap_1_ket_noi_tri_thuc_voi_cuoc_song_03cd9b03_S0001_P01",
+      "subject": "math",
+      "grade": 11,
+      "chapter": "math_chapter_unknown",
+      "lessonId": "math_g11_t1_lesson_unknown_93752334",
+      "lessonTitle": "Toán 11",
+      "topic": "lesson_unknown",
+      "type": "explanation",
+      "title": "Toán 11",
+      "text": "# Toán 11\n\n<!-- sourceFile: sach-giao-khoa-toan-11-tap-1-ket-noi-tri-thuc-voi-cuoc-song.pdf -->\n<!-- detectedType: pdf -->\n<!-- grade: 11 -->\n<!-- volume: 1 -->\n<!-- validationStatus: needs_review -->",
+      "keywords": [
+        "math",
+        "toán",
+        "grade 11",
+        "lớp 11",
+        "tập 1",
+        "Toán 11"
+      ],
+      "source": {
+        "sourceType": "textbook",
+        "sourceName": "SGK Toán 11 tập 1",
+        "fileName": "sach-giao-khoa-toan-11-tap-1-ket-noi-tri-thuc-voi-cuoc-song.pdf"
+      },
+      "metadata": {
+        "sourceFile": "sach-giao-khoa-toan-11-tap-1-ket-noi-tri-thuc-voi-cuoc-song.pdf",
+        "sourcePath": "sach_giao_khoa_toan_11_tap_1_ket_noi_tri_thuc_voi_cuoc_song.md",
+        "sourcePageStart": null,
+        "sourcePageEnd": null,
+        "volume": 1,
+        "sectionOrdinal": 1,
+        "partNumber": 1,
+        "validationStatus": "needs_review",
+        "pipeline": "scripts/convert_math_cleaned_to_learning_structured.py"
+      },
+      "formulaKeys": [],
+      "conceptKeys": [],
+      "validationStatus": "needs_review",
+      "isActive": true
+    },
+    {
+      "id": "GENMATH_G11_sach_giao_khoa_toan_11_tap_2_ket_noi_tri_thuc_voi_cuoc_song_f37d4058_S0001_P01",
+      "subject": "math",
+      "grade": 11,
+      "chapter": "math_chapter_unknown",
+      "lessonId": "math_g11_t2_lesson_unknown_4bc4f1a5",
+      "lessonTitle": "Toán 11",
+      "topic": "lesson_unknown",
+      "type": "explanation",
+      "title": "Toán 11",
+      "text": "# Toán 11\n\n<!-- sourceFile: sach-giao-khoa-toan-11-tap-2-ket-noi-tri-thuc-voi-cuoc-song.pdf -->\n<!-- detectedType: pdf -->\n<!-- grade: 11 -->\n<!-- volume: 2 -->\n<!-- validationStatus: needs_review -->",
+      "keywords": [
+        "math",
+        "toán",
+        "grade 11",
+        "lớp 11",
+        "tập 2",
+        "Toán 11"
+      ],
+      "source": {
+        "sourceType": "textbook",
+        "sourceName": "SGK Toán 11 tập 2",
+        "fileName": "sach-giao-khoa-toan-11-tap-2-ket-noi-tri-thuc-voi-cuoc-song.pdf"
+      },
+      "metadata": {
+        "sourceFile": "sach-giao-khoa-toan-11-tap-2-ket-noi-tri-thuc-voi-cuoc-song.pdf",
+        "sourcePath": "sach_giao_khoa_toan_11_tap_2_ket_noi_tri_thuc_voi_cuoc_song.md",
+        "sourcePageStart": null,
+        "sourcePageEnd": null,
+        "volume": 2,
+        "sectionOrdinal": 1,
+        "partNumber": 1,
+        "validationStatus": "needs_review",
+        "pipeline": "scripts/convert_math_cleaned_to_learning_structured.py"
+      },
+      "formulaKeys": [],
+      "conceptKeys": [],
+      "validationStatus": "needs_review",
+      "isActive": true
+    },
+    {
+      "id": "GENMATH_G12_sach_giao_khoa_toan_12_tap_1_ket_noi_tri_thuc_voi_cuoc_song_a71b1f80_S0001_P01",
+      "subject": "math",
+      "grade": 12,
+      "chapter": "math_chapter_unknown",
+      "lessonId": "math_g12_t1_lesson_unknown_5c99ced8",
+      "lessonTitle": "Toán 12",
+      "topic": "lesson_unknown",
+      "type": "explanation",
+      "title": "Toán 12",
+      "text": "# Toán 12\n\n<!-- sourceFile: sach-giao-khoa-toan-12-tap-1-ket-noi-tri-thuc-voi-cuoc-song.pdf -->\n<!-- detectedType: pdf -->\n<!-- grade: 12 -->\n<!-- volume: 1 -->\n<!-- validationStatus: needs_review -->",
+      "keywords": [
+        "math",
+        "toán",
+        "grade 12",
+        "lớp 12",
+        "tập 1",
+        "Toán 12"
+      ],
+      "source": {
+        "sourceType": "textbook",
+        "sourceName": "SGK Toán 12 tập 1",
+        "fileName": "sach-giao-khoa-toan-12-tap-1-ket-noi-tri-thuc-voi-cuoc-song.pdf"
+      },
+      "metadata": {
+        "sourceFile": "sach-giao-khoa-toan-12-tap-1-ket-noi-tri-thuc-voi-cuoc-song.pdf",
+        "sourcePath": "sach_giao_khoa_toan_12_tap_1_ket_noi_tri_thuc_voi_cuoc_song.md",
+        "sourcePageStart": null,
+        "sourcePageEnd": null,
+        "volume": 1,
+        "sectionOrdinal": 1,
+        "partNumber": 1,
+        "validationStatus": "needs_review",
+        "pipeline": "scripts/convert_math_cleaned_to_learning_structured.py"
+      },
+      "formulaKeys": [],
+      "conceptKeys": [],
+      "validationStatus": "needs_review",
+      "isActive": true
+    },
+    {
+      "id": "GENMATH_G12_sach_giao_khoa_toan_12_tap_2_ket_noi_tri_thuc_voi_cuoc_song_2a97ce02_S0001_P01",
+      "subject": "math",
+      "grade": 12,
+      "chapter": "math_chapter_unknown",
+      "lessonId": "math_g12_t2_lesson_unknown_562a7292",
+      "lessonTitle": "Toán 12",
+      "topic": "lesson_unknown",
+      "type": "explanation",
+      "title": "Toán 12",
+      "text": "# Toán 12\n\n<!-- sourceFile: sach-giao-khoa-toan-12-tap-2-ket-noi-tri-thuc-voi-cuoc-song.pdf -->\n<!-- detectedType: pdf -->\n<!-- grade: 12 -->\n<!-- volume: 2 -->\n<!-- validationStatus: needs_review -->",
+      "keywords": [
+        "math",
+        "toán",
+        "grade 12",
+        "lớp 12",
+        "tập 2",
+        "Toán 12"
+      ],
+      "source": {
+        "sourceType": "textbook",
+        "sourceName": "SGK Toán 12 tập 2",
+        "fileName": "sach-giao-khoa-toan-12-tap-2-ket-noi-tri-thuc-voi-cuoc-song.pdf"
+      },
+      "metadata": {
+        "sourceFile": "sach-giao-khoa-toan-12-tap-2-ket-noi-tri-thuc-voi-cuoc-song.pdf",
+        "sourcePath": "sach_giao_khoa_toan_12_tap_2_ket_noi_tri_thuc_voi_cuoc_song.md",
+        "sourcePageStart": null,
+        "sourcePageEnd": null,
+        "volume": 2,
+        "sectionOrdinal": 1,
+        "partNumber": 1,
+        "validationStatus": "needs_review",
+        "pipeline": "scripts/convert_math_cleaned_to_learning_structured.py"
+      },
+      "formulaKeys": [],
+      "conceptKeys": [],
+      "validationStatus": "needs_review",
+      "isActive": true
+    }
+  ],
+  "problemPatterns": [],
+  "learningItems": [],
+  "aiTestCases": [],
+  "simulationTemplates": [],
+  "mediaAssets": []
+}

@@ -19,7 +19,7 @@ import type {
 import type { ExpectedEvaluationAnswer } from '../src/modules/ai/evaluation/eval-types';
 import type { RuleBasedAnswerMetrics } from '../src/modules/ai/evaluation/answer-metrics';
 
-type EvalSource = 'database' | 'smoke';
+type EvalSource = 'database' | 'smoke' | 'file';
 type EvalAiMethod = 'analyze' | 'chat';
 
 type AnswerEvalInputCase = {
@@ -33,6 +33,10 @@ type AnswerEvalInputCase = {
   subject?: unknown;
   grade?: unknown;
   topic?: unknown;
+  chapter?: unknown;
+  lessonId?: unknown;
+  lesson_id?: unknown;
+  questionType?: unknown;
   expected?: unknown;
   expectedOutput?: unknown;
   metadata?: unknown;
@@ -41,6 +45,12 @@ type AnswerEvalInputCase = {
 type AnswerEvalCaseReport = {
   case_id: string;
   question: string;
+  subject?: string;
+  grade?: number;
+  topic?: string;
+  chapter?: string;
+  lessonId?: string;
+  questionType?: string;
   expected_answer?: ExpectedEvaluationAnswer;
   ai_answer: string;
   metrics: RuleBasedAnswerMetrics;
@@ -69,6 +79,14 @@ type AnswerEvalReport = {
   source: EvalSource;
   ai_method: EvalAiMethod;
   llm_enabled: boolean;
+  llm_answer_enabled: boolean;
+  llm_answer_configured: boolean;
+  llm_judge_enabled: boolean;
+  llm_judge_configured: boolean;
+  llm_base_url?: string;
+  llm_model?: string;
+  judge_base_url?: string;
+  judge_model?: string;
   summary: {
     total_cases: number;
     evaluated_cases: number;
@@ -88,8 +106,30 @@ type AnswerEvalReport = {
     hallucination_rate: number;
     avg_latency_ms: number;
     model?: string;
+    skip_reasons: Record<string, number>;
+    by_subject: Record<string, AnswerEvalGroupSummary>;
+    by_question_type: Record<string, AnswerEvalGroupSummary>;
   };
   cases: AnswerEvalCaseReport[];
+};
+
+type AnswerEvalGroupSummary = {
+  total_cases: number;
+  evaluated_cases: number;
+  skipped_cases: number;
+  numeric_cases: number;
+  conceptual_cases: number;
+  mixed_cases: number;
+  numeric_accuracy: number;
+  avg_concept_coverage: number;
+  avg_rule_based_score: number;
+  avg_correctness: number;
+  avg_groundedness: number;
+  avg_completeness: number;
+  avg_clarity: number;
+  avg_citation_usage: number;
+  avg_final_answer_score: number;
+  hallucination_rate: number;
 };
 
 configureLlmForEval();
@@ -124,7 +164,10 @@ async function main() {
     console.log(JSON.stringify(report.summary, null, 2));
     console.log(`Answer eval source: ${evalSource}`);
     console.log(`Answer eval method: ${aiMethod}`);
-    console.log(`LLM enabled: ${report.llm_enabled}`);
+    console.log(`LLM answer enabled: ${report.llm_answer_enabled}`);
+    console.log(`LLM answer configured: ${report.llm_answer_configured}`);
+    console.log(`LLM judge enabled: ${report.llm_judge_enabled}`);
+    console.log(`LLM judge configured: ${report.llm_judge_configured}`);
     console.log(`Answer eval report written to ${reportPath}`);
     console.log(`Answer eval summary written to ${summaryPath}`);
     console.log(`LLM answer samples written to ${samplesPath}`);
@@ -140,17 +183,31 @@ async function evaluateCase(
 ): Promise<AnswerEvalCaseReport> {
   const caseId = readCaseId(testCase);
   const question = readQuestion(testCase);
+  const metadata = {
+    subject: readSubject(testCase),
+    grade: readGrade(testCase),
+    topic: readTopic(testCase),
+    chapter: readChapter(testCase),
+    lessonId: readLessonId(testCase),
+    questionType: readQuestionType(testCase),
+  };
   const expected = readExpectedEvaluationData(testCase);
   const expectedAnswer = expected?.answer;
 
   if (!expectedAnswer) {
-    return buildSkippedCaseReport(caseId, question, 'No expected answer data');
+    return buildSkippedCaseReport(
+      caseId,
+      question,
+      metadata,
+      'No expected answer data',
+    );
   }
 
   if (!question) {
     return buildSkippedCaseReport(
       caseId,
       question,
+      metadata,
       'No question/input text',
       expectedAnswer,
     );
@@ -161,13 +218,13 @@ async function evaluateCase(
       aiMethod === 'chat'
         ? await aiService.chat({
             message: question,
-            subject: readSubject(testCase),
-            grade: readGrade(testCase),
+            subject: metadata.subject,
+            grade: metadata.grade,
           })
         : await aiService.analyze({
             message: question,
-            subject: readSubject(testCase),
-            grade: readGrade(testCase),
+            subject: metadata.subject,
+            grade: metadata.grade,
           });
     const aiAnswer = extractAnswerText(output);
     const metrics = computeRuleBasedAnswerMetrics(aiAnswer, expectedAnswer);
@@ -198,6 +255,7 @@ async function evaluateCase(
     return {
       case_id: caseId,
       question,
+      ...compactCaseMetadata(metadata),
       expected_answer: expectedAnswer,
       ai_answer: aiAnswer,
       metrics,
@@ -208,6 +266,7 @@ async function evaluateCase(
     return buildSkippedCaseReport(
       caseId,
       question,
+      metadata,
       'Case evaluation failed',
       expectedAnswer,
       error,
@@ -219,7 +278,7 @@ async function loadEvalCases(
   app: Awaited<ReturnType<typeof NestFactory.createApplicationContext>>,
   evalSource: EvalSource,
 ): Promise<Array<AnswerEvalInputCase | AiTestCaseEntity>> {
-  if (evalSource === 'smoke') {
+  if (evalSource === 'smoke' || evalSource === 'file') {
     return readSmokeCases();
   }
 
@@ -246,11 +305,14 @@ async function readSmokeCases(): Promise<AnswerEvalInputCase[]> {
 }
 
 async function resolveSmokeFilePath() {
-  const envPath = process.env.EVAL_SMOKE_FILE?.trim();
+  const envPath =
+    process.env.EVAL_CASES_PATH?.trim() ?? process.env.EVAL_SMOKE_FILE?.trim();
   const candidates = [
-    ...(envPath ? [envPath] : []),
+    ...(envPath ? resolveEvalPathCandidates(envPath) : []),
     join(process.cwd(), '../../data/eval/answer-smoke-cases.json'),
     join(process.cwd(), '../../data/eval/rag-smoke-cases.json'),
+    join(process.cwd(), '../../../data/eval/answer-smoke-cases.json'),
+    join(process.cwd(), '../../../data/eval/rag-smoke-cases.json'),
     join(process.cwd(), 'data/eval/answer-smoke-cases.json'),
     join(process.cwd(), 'data/eval/rag-smoke-cases.json'),
   ];
@@ -309,6 +371,14 @@ function buildReport(
     source,
     ai_method: aiMethod,
     llm_enabled: isLlmEnabledForEval(),
+    llm_answer_enabled: isLlmEnabledForEval(),
+    llm_answer_configured: isLlmConfiguredForEval(),
+    llm_judge_enabled: isAnswerJudgeEnabled(),
+    llm_judge_configured: isAnswerJudgeConfiguredForEval(),
+    llm_base_url: readLlmBaseUrl(),
+    llm_model: readLlmModel(),
+    judge_base_url: readJudgeBaseUrl(),
+    judge_model: readJudgeModel(),
     summary: {
       total_cases: caseReports.length,
       evaluated_cases: evaluatedCases.length,
@@ -360,9 +430,145 @@ function buildReport(
         (item) => item.output_metadata?.latencyMs ?? 0,
       ),
       ...(model ? { model } : {}),
+      skip_reasons: countAnswerSkipReasons(caseReports),
+      by_subject: buildAnswerGroupSummaries(caseReports, (item) => item.subject),
+      by_question_type: buildAnswerGroupSummaries(
+        caseReports,
+        (item) => item.questionType,
+      ),
     },
     cases: caseReports,
   };
+}
+
+function buildAnswerGroupSummaries(
+  caseReports: AnswerEvalCaseReport[],
+  getKey: (item: AnswerEvalCaseReport) => string | undefined,
+): Record<string, AnswerEvalGroupSummary> {
+  const groups = new Map<string, AnswerEvalCaseReport[]>();
+
+  for (const item of caseReports) {
+    const key = normalizeGroupKey(getKey(item));
+    groups.set(key, [...(groups.get(key) ?? []), item]);
+  }
+
+  return Object.fromEntries(
+    [...groups.entries()]
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, items]) => [key, summarizeAnswerGroup(items)]),
+  );
+}
+
+function summarizeAnswerGroup(items: AnswerEvalCaseReport[]): AnswerEvalGroupSummary {
+  const evaluatedCases = items.filter((item) => !item.skipped_reason);
+  const numericCases = evaluatedCases.filter(
+    (item) =>
+      item.metrics.numericCorrect !== null &&
+      (item.expected_answer?.type === 'numeric' ||
+        item.expected_answer?.type === 'mixed' ||
+        item.expected_answer?.value !== undefined),
+  );
+  const conceptCheckCases = evaluatedCases.filter(
+    (item) => item.metrics.conceptCoverage !== null,
+  );
+  const conceptualCases = evaluatedCases.filter(
+    (item) =>
+      (item.expected_answer?.type ?? inferExpectedAnswerType(item)) ===
+      'conceptual',
+  );
+  const mixedCases = evaluatedCases.filter(
+    (item) => (item.expected_answer?.type ?? inferExpectedAnswerType(item)) === 'mixed',
+  );
+  const judgedCases = evaluatedCases.filter((item) => item.judge_scores);
+  const hallucinationCases = judgedCases.filter(
+    (item) => item.hallucination === true,
+  );
+
+  return {
+    total_cases: items.length,
+    evaluated_cases: evaluatedCases.length,
+    skipped_cases: items.length - evaluatedCases.length,
+    numeric_cases: numericCases.length,
+    conceptual_cases: conceptualCases.length,
+    mixed_cases: mixedCases.length,
+    numeric_accuracy: average(numericCases, (item) =>
+      item.metrics.numericCorrect ? 1 : 0,
+    ),
+    avg_concept_coverage: average(
+      conceptCheckCases,
+      (item) => item.metrics.conceptCoverage ?? 0,
+    ),
+    avg_rule_based_score: average(
+      evaluatedCases,
+      (item) => item.metrics.ruleBasedScore,
+    ),
+    avg_correctness: average(
+      judgedCases,
+      (item) => item.judge_scores?.correctness ?? 0,
+    ),
+    avg_groundedness: average(
+      judgedCases,
+      (item) => item.judge_scores?.groundedness ?? 0,
+    ),
+    avg_completeness: average(
+      judgedCases,
+      (item) => item.judge_scores?.completeness ?? 0,
+    ),
+    avg_clarity: average(
+      judgedCases,
+      (item) => item.judge_scores?.clarity ?? 0,
+    ),
+    avg_citation_usage: average(
+      judgedCases,
+      (item) => item.judge_scores?.citationUsage ?? 0,
+    ),
+    avg_final_answer_score: average(
+      judgedCases,
+      (item) => item.final_answer_score ?? 0,
+    ),
+    hallucination_rate:
+      judgedCases.length === 0 ? 0 : hallucinationCases.length / judgedCases.length,
+  };
+}
+
+function countAnswerSkipReasons(caseReports: AnswerEvalCaseReport[]) {
+  const counts: Record<string, number> = {};
+
+  for (const item of caseReports) {
+    const reason = item.skipped_reason ?? (item.error ? item.error : '');
+
+    if (!reason) {
+      continue;
+    }
+
+    counts[reason] = (counts[reason] ?? 0) + 1;
+  }
+
+  return Object.fromEntries(
+    Object.entries(counts).sort(([left], [right]) => left.localeCompare(right)),
+  );
+}
+
+function compactCaseMetadata(metadata: {
+  subject?: string;
+  grade?: number;
+  topic?: string;
+  chapter?: string;
+  lessonId?: string;
+  questionType?: string;
+}) {
+  return {
+    ...(metadata.subject ? { subject: metadata.subject } : {}),
+    ...(metadata.grade !== undefined ? { grade: metadata.grade } : {}),
+    ...(metadata.topic ? { topic: metadata.topic } : {}),
+    ...(metadata.chapter ? { chapter: metadata.chapter } : {}),
+    ...(metadata.lessonId ? { lessonId: metadata.lessonId } : {}),
+    ...(metadata.questionType ? { questionType: metadata.questionType } : {}),
+  };
+}
+
+function normalizeGroupKey(value: string | undefined) {
+  return value && value.trim() ? value.trim() : 'unknown';
 }
 
 function buildMarkdownSummary(report: AnswerEvalReport) {
@@ -385,13 +591,32 @@ function buildMarkdownSummary(report: AnswerEvalReport) {
     `- Run time: ${report.generated_at}`,
     `- Source: ${report.source}`,
     `- AI method: ${report.ai_method}`,
-    `- LLM enabled: ${report.llm_enabled}`,
+    `- LLM answer enabled: ${report.llm_answer_enabled}`,
+    `- LLM answer configured: ${report.llm_answer_configured}`,
+    `- LLM judge enabled: ${report.llm_judge_enabled}`,
+    `- LLM judge configured: ${report.llm_judge_configured}`,
+    `- LLM base URL: ${report.llm_base_url ?? 'N/A'}`,
+    `- LLM model: ${report.llm_model ?? 'N/A'}`,
+    `- Judge base URL: ${report.judge_base_url ?? 'N/A'}`,
+    `- Judge model: ${report.judge_model ?? 'N/A'}`,
     `- Model: ${report.summary.model ?? 'N/A'}`,
     `- Avg latency: ${formatMetricIf(
       report.summary.avg_latency_ms,
       report.summary.evaluated_cases > 0 && report.summary.avg_latency_ms > 0,
     )} ms`,
     `- Answer judge enabled: ${isAnswerJudgeEnabled()}`,
+    ...(report.ai_method !== 'chat' || !report.llm_answer_enabled
+      ? [
+          '',
+          '> WARNING: Answer evaluation is not running full LLM chat generation. Metrics may reflect local/analyze fallback.',
+        ]
+      : []),
+    ...(report.llm_judge_enabled && !report.llm_judge_configured
+      ? [
+          '',
+          '> WARNING: Answer judge is enabled but no judge API key is configured.',
+        ]
+      : []),
     '',
     '## Cases',
     '',
@@ -454,6 +679,21 @@ function buildMarkdownSummary(report: AnswerEvalReport) {
       hasEvaluatedCases && hasJudgeResults,
     )} |`,
     '',
+    '## Metrics By Subject',
+    '',
+    ...formatAnswerGroupMetrics(report.summary.by_subject, hasJudgeResults),
+    '',
+    '## Metrics By Question Type',
+    '',
+    ...formatAnswerGroupMetrics(
+      report.summary.by_question_type,
+      hasJudgeResults,
+    ),
+    '',
+    '## Skip Reasons',
+    '',
+    ...formatSkipReasons(report.summary.skip_reasons),
+    '',
     '## Error Analysis',
     '',
     ...formatErrorAnalysisRows(errorAnalysisRows),
@@ -497,9 +737,65 @@ function formatErrorAnalysisRows(
   ];
 }
 
+function formatAnswerGroupMetrics(
+  groups: Record<string, AnswerEvalGroupSummary>,
+  hasJudgeResults: boolean,
+) {
+  if (!groups || Object.keys(groups).length === 0) {
+    return ['No grouped metrics found.'];
+  }
+
+  return [
+    '| Group | Total | Evaluated | Skipped | Numeric | Conceptual | Mixed | Numeric Accuracy | Concept Coverage | Rule Score | Final Score | Hallucination Rate |',
+    '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |',
+    ...Object.entries(groups).map(
+      ([group, item]) =>
+        `| ${escapeCell(group)} | ${item.total_cases} | ${
+          item.evaluated_cases
+        } | ${item.skipped_cases} | ${item.numeric_cases} | ${
+          item.conceptual_cases
+        } | ${item.mixed_cases} | ${formatMetricIf(
+          item.numeric_accuracy,
+          item.numeric_cases > 0,
+        )} | ${formatMetricIf(
+          item.avg_concept_coverage,
+          item.conceptual_cases + item.mixed_cases > 0,
+        )} | ${formatMetricIf(
+          item.avg_rule_based_score,
+          item.evaluated_cases > 0,
+        )} | ${formatMetricIf(
+          item.avg_final_answer_score,
+          hasJudgeResults,
+        )} | ${formatMetricIf(item.hallucination_rate, hasJudgeResults)} |`,
+    ),
+  ];
+}
+
+function formatSkipReasons(reasons: Record<string, number>) {
+  if (!reasons || Object.keys(reasons).length === 0) {
+    return ['No skipped cases.'];
+  }
+
+  return [
+    '| Reason | Count |',
+    '| --- | ---: |',
+    ...Object.entries(reasons).map(
+      ([reason, count]) => `| ${escapeCell(reason)} | ${count} |`,
+    ),
+  ];
+}
+
 function buildSkippedCaseReport(
   caseId: string,
   question: string,
+  metadata: {
+    subject?: string;
+    grade?: number;
+    topic?: string;
+    chapter?: string;
+    lessonId?: string;
+    questionType?: string;
+  },
   reason: string,
   expectedAnswer?: ExpectedEvaluationAnswer,
   error?: unknown,
@@ -507,6 +803,7 @@ function buildSkippedCaseReport(
   return {
     case_id: caseId,
     question,
+    ...compactCaseMetadata(metadata),
     ...(expectedAnswer ? { expected_answer: expectedAnswer } : {}),
     ai_answer: '',
     metrics: {
@@ -639,21 +936,74 @@ function extractReferences(output: unknown): AnswerJudgeReference[] {
 }
 
 function configureLlmForEval() {
-  if (!process.env.LLM_API_KEY && process.env.OPENAI_API_KEY) {
-    process.env.LLM_API_KEY = process.env.OPENAI_API_KEY;
+  const sharedApiKey =
+    process.env.LLM_API_KEY ??
+    process.env.OPENAI_API_KEY ??
+    process.env.ANSWER_JUDGE_API_KEY ??
+    process.env.EMBEDDING_API_KEY;
+
+  if (!process.env.LLM_API_KEY && sharedApiKey) {
+    process.env.LLM_API_KEY = sharedApiKey;
   }
 
-  if (!isLlmEnabledForEval()) {
-    delete process.env.LLM_API_KEY;
+  if (process.env.ANSWER_JUDGE_ENABLED === undefined && isLlmEnabledForEval()) {
+    process.env.ANSWER_JUDGE_ENABLED = 'true';
   }
 }
 
 function isLlmEnabledForEval() {
   const explicit =
     process.env.EVAL_USE_LLM === 'true' || readEvalAiMethod() === 'chat';
-  const hasKey = Boolean(process.env.LLM_API_KEY || process.env.OPENAI_API_KEY);
+  const hasKey = Boolean(
+      process.env.LLM_API_KEY ||
+      process.env.OPENAI_API_KEY ||
+      process.env.ANSWER_JUDGE_API_KEY ||
+      process.env.EMBEDDING_API_KEY,
+  );
 
   return explicit && hasKey;
+}
+
+function isLlmConfiguredForEval() {
+  return Boolean(
+    process.env.LLM_API_KEY ||
+      process.env.OPENAI_API_KEY ||
+      process.env.ANSWER_JUDGE_API_KEY ||
+      process.env.EMBEDDING_API_KEY,
+  );
+}
+
+function isAnswerJudgeConfiguredForEval() {
+  return Boolean(
+    process.env.ANSWER_JUDGE_API_KEY ||
+      process.env.LLM_API_KEY ||
+      process.env.OPENAI_API_KEY ||
+      process.env.EMBEDDING_API_KEY,
+  );
+}
+
+function readLlmBaseUrl() {
+  return process.env.LLM_BASE_URL ?? 'https://api.openai.com/v1';
+}
+
+function readLlmModel() {
+  return process.env.LLM_MODEL ?? 'gpt-4o-mini';
+}
+
+function readJudgeBaseUrl() {
+  return (
+    process.env.ANSWER_JUDGE_BASE_URL ??
+    process.env.LLM_BASE_URL ??
+    'https://api.openai.com/v1'
+  );
+}
+
+function readJudgeModel() {
+  return (
+    process.env.ANSWER_JUDGE_MODEL ??
+    process.env.LLM_MODEL ??
+    'gpt-4o-mini'
+  );
 }
 
 function readQuestion(testCase: unknown) {
@@ -687,6 +1037,46 @@ function readGrade(testCase: unknown) {
     : undefined;
 }
 
+function readTopic(testCase: unknown) {
+  if (!isRecord(testCase)) {
+    return undefined;
+  }
+
+  return typeof testCase.topic === 'string' && testCase.topic.trim()
+    ? testCase.topic
+    : undefined;
+}
+
+function readChapter(testCase: unknown) {
+  if (!isRecord(testCase)) {
+    return undefined;
+  }
+
+  return typeof testCase.chapter === 'string' && testCase.chapter.trim()
+    ? testCase.chapter
+    : undefined;
+}
+
+function readLessonId(testCase: unknown) {
+  if (!isRecord(testCase)) {
+    return undefined;
+  }
+
+  const value = testCase.lessonId ?? testCase.lesson_id;
+
+  return typeof value === 'string' && value.trim() ? value : undefined;
+}
+
+function readQuestionType(testCase: unknown) {
+  if (!isRecord(testCase)) {
+    return undefined;
+  }
+
+  return typeof testCase.questionType === 'string' && testCase.questionType.trim()
+    ? testCase.questionType
+    : undefined;
+}
+
 function readCaseId(testCase: unknown) {
   if (!isRecord(testCase)) {
     return 'unknown';
@@ -698,7 +1088,20 @@ function readCaseId(testCase: unknown) {
 }
 
 function readEvalSource(): EvalSource {
+  if (process.env.EVAL_CASES_PATH?.trim()) {
+    return 'file';
+  }
+
   return process.env.EVAL_SOURCE === 'smoke' ? 'smoke' : 'database';
+}
+
+function resolveEvalPathCandidates(path: string) {
+  return [
+    path,
+    join(process.cwd(), path),
+    join(process.cwd(), '..', '..', path),
+    join(process.cwd(), '..', '..', '..', path),
+  ];
 }
 
 function readEvalAiMethod(): EvalAiMethod {
@@ -770,16 +1173,77 @@ function formatSampleBlocks(cases: AnswerEvalCaseReport[]) {
     '',
     `Question: ${item.question}`,
     '',
+    'Expected:',
+    '',
+    formatExpectedAnswer(item.expected_answer),
+    '',
+    'Metrics:',
+    '',
+    `- Numeric correct: ${formatNullableBoolean(item.metrics.numericCorrect)}`,
+    `- Concept coverage: ${formatMetricIf(
+      item.metrics.conceptCoverage ?? 0,
+      item.metrics.conceptCoverage !== null,
+    )}`,
+    `- Matched concepts: ${item.metrics.matchedConcepts.join(', ') || 'N/A'}`,
+    `- Missing concepts: ${item.metrics.missingConcepts.join(', ') || 'N/A'}`,
+    `- Rule-based score: ${formatMetric(item.metrics.ruleBasedScore)}`,
+    ...(item.final_answer_score !== undefined
+      ? [`- Judge final score: ${formatMetric(item.final_answer_score)}`]
+      : []),
+    ...(item.judge_reason ? [`- Judge reason: ${item.judge_reason}`] : []),
+    '',
     `Confidence: ${item.confidence ?? 'N/A'}`,
     `Used references: ${(item.used_reference_ids ?? []).join(', ') || 'N/A'}`,
-    `Matched concepts: ${item.metrics.matchedConcepts.join(', ') || 'N/A'}`,
-    `Missing concepts: ${item.metrics.missingConcepts.join(', ') || 'N/A'}`,
     '',
     'Answer:',
     '',
     truncate(item.ai_answer, 1200),
     '',
   ]);
+}
+
+function formatExpectedAnswer(expected: ExpectedEvaluationAnswer | undefined) {
+  if (!expected) {
+    return 'N/A';
+  }
+
+  const reference =
+    typeof expected.reference_answer === 'string'
+      ? expected.reference_answer
+      : undefined;
+  const numeric =
+    expected.value !== undefined
+      ? `value=${String(expected.value)}${expected.unit ? ` ${expected.unit}` : ''}`
+      : undefined;
+  const concepts = expected.required_concepts ?? expected.requiredConcepts ?? [];
+  const conceptText = Array.isArray(concepts)
+    ? concepts
+        .map((item) =>
+          typeof item === 'string'
+            ? item
+            : item && typeof item === 'object' && 'label' in item
+              ? String(item.label)
+              : '',
+        )
+        .filter(Boolean)
+        .join(', ')
+    : '';
+
+  return [
+    reference ? `Reference answer: ${reference}` : '',
+    numeric ? `Expected numeric: ${numeric}` : '',
+    conceptText ? `Required concepts: ${conceptText}` : '',
+  ]
+    .filter(Boolean)
+    .join('\n');
+}
+
+function formatNullableBoolean(value: boolean | null) {
+  if (value === null) {
+    return 'N/A';
+  }
+
+  return value ? 'pass' : 'fail';
 }
 
 function inferExpectedAnswerType(item: AnswerEvalCaseReport) {

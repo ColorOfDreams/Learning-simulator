@@ -1,0 +1,500 @@
+[
+  {
+    "chunk_id": "physics12_c01_l01_001",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "theory",
+    "content": "Hãy dựa trên những kiến thức đã học về cấu tạo chất để giải thích tại sao cùng một chất lại có thể tồn tại ở các thểkhác nhau là rắn, lỏng, khí.",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_002",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "figure",
+    "content": "Mô hình động học phân tử về cấu tạo chất có những nội dung cơ bản sau đây:\n1. Các chất được cấu tạo từ các hạt riêng biệt là phân tử.\n2. Các phân tử chuyển động không ngừng. Nhiệt độ của vật càng cao thì tốc độ chuyển động của các phân tử cấu tạo nên vật càng lớn.\n3. Giữa các phân tử có lực hút và đẩy gọi chung là lực liên kết phân tử.\nDùng mô hình này có thể giải thích được cấu trúc của các chất rắn, chất lỏng, chất khí và sự chuyển thể.\nThuật ngũ phân tử trong mô hình trên được dùng để chỉ chung các hạt cấu tạo chất: phân tử, nguyên tử, ion.",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Mô hình động học phân tử về cấu tạo chất",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_003",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "question",
+    "content": "1. Trong lịch sử phát triển của khoa học, có hai quan điểm khác nhau về cấu tạo chất là quan điểm chất có cấu tạo liên tục và chất có cấu tạo gián đoạn. Mô hình động học phân tử được xây dựng trên quan điểm nào?\n2. Năm 1827, khi làm thí nghiệm quan sát các hạt phấn hoa rất nhỏ trong nước bằng kính hiến vi, Brown thấy chúng chuyển động hỗn loạn, không ngừng.\n(Hình 1.1 và Hình 1.2). Chuyển động này được gọi là chuyển động Brown.\n#### a) Tại sao thí nghiệm của Brown được coi là một trong những thí nghiệm chứng tỏ các phân tử chuyển động hỗn loạn, không ngừng?\n\n#### b) Làm thế nào để với thí nghiệm của Brown có thể chứng tỏ được khi nhiệt độ của nước càng cao thì các phân tử nước chuyển động càng nhanh?",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Mô hình động học phân tử về cấu tạo chất",
+    "subsection_title": "Câu hỏi",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_004",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "question",
+    "content": "1. Hãy tìm các hiện tượng thực tế chứng tỏ giữa các phân tử có lực đẩy, lực hút.\na م",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Mô hình động học phân tử về cấu tạo chất",
+    "subsection_title": "Câu hỏi",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_005",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "figure",
+    "content": "![Hình 1.1 - Chuyển động của các](assets/images/hinh-1-1.png)\n\n**Nội dung hình**\n\nHình minh họa: Chuyển động của các.\n\n\nphân từ nước và các hạt phấn hoa Mũi tên màu đen (→) biểu diễn hướng chuyển động của các phân từ nước Mũi tên màu vàng (→) biểu diễn hướng chuyển động của hạt phấn hoa\nONG",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Mô hình động học phân tử về cấu tạo chất",
+    "subsection_title": "Hình 1.1",
+    "image_path": "assets/images/hinh-1-1.png",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_006",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "figure",
+    "content": "![Hình 1.2 - Quỹ đạo chuyền động](assets/images/hinh-1-2.png)\n\n**Nội dung hình**\n\nHình minh họa: Quỹ đạo chuyền động.\n\n\ncủa hạt phấn hoa trong nước Người ta thường gọi chuyển động hỗn loạn, không ngừng của các hạt rất nhỏ dưới tác dụng của các phân tử chất lỏng hoặc chất khí là chuyển động Brown.\nCHƯƠNG 1 – VẬT LÍ NHIỆT",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Mô hình động học phân tử về cấu tạo chất",
+    "subsection_title": "Hình 1.2",
+    "image_path": "assets/images/hinh-1-2.png",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_007",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "theory",
+    "content": "Dựa vào các đặc điểm sau đây của phân tử có thể nêu được so lược cấu trúc của hầu hết các chất rắn, chất lỏng, chất khí:\nKhoảng cách giữa các phân tử càng lớn thì lực liên kết giữa chúng càng yếu.\nCác phân tử sắp xếp có trật tự thì lực liên kết giữa chúng mạnh.",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Cấu trúc của chất rắn, chất lỏng và chất khí",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_008",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "question",
+    "content": "1. Hãy dựa vào Hình 1.3 để mô tả, so sánh khoảng cách và sự sắp xếp (a), chuyển động (b) của phân tử ở các thể khác nhau. Từ đó mô tả một cách sơ lược về cấu trúc của chất rắn, chất lỏng, chất khí.\nO\n이\nΟ\n#### a) B) thể khí\n\n#### a) B) thể rắn •\n\n#### a) B) thể lỏng",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Cấu trúc của chất rắn, chất lỏng và chất khí",
+    "subsection_title": "Câu hỏi",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_009",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "figure",
+    "content": "![Hình 1.3 - (a) Khoảng cách và sự sắp xếp các phân từ ở các thể khác nhau](assets/images/hinh-1-3.png)\n\n**Nội dung hình**\n\nHình minh họa: (a) Khoảng cách và sự sắp xếp các phân từ ở các thể khác nhau.\n\n\n(b) Chuyển động của phân từ ở các thể khác nhau Hình cầu là phân tử, mũi tên là hướng chuyền động của phân từ",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Cấu trúc của chất rắn, chất lỏng và chất khí",
+    "subsection_title": "Hình 1.3",
+    "image_path": "assets/images/hinh-1-3.png",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_010",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "question",
+    "content": "1. Hãy giải thích các đặc điểm sau đây của thể khí, thể rắn, thể lỏng.\n#### a) Chất khí không có hình dạng và thể tích riêng, luôn chiếm toàn bộ thể tích bình chứa và có thể nén được dễ dàng\n\n#### b) Vật ở thể rắn có thể tích và hình dạng riêng, rất khó nén\n\n#### c) Vật ở thể lỏng có thể tích riêng nhưng không có hình dạng riêng",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Cấu trúc của chất rắn, chất lỏng và chất khí",
+    "subsection_title": "Câu hỏi",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_011",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "theory",
+    "content": "1. Sự chuyển thể Các chất có thể chuyển từ thể này sang thể khác. Đa số các chất ở thể rắn khi nóng lên có thể chuyển sang thể lỏng, rồi từ thể lỏng sang thế khí. Ngược lại, đa số chất khí khi lạnh đi có thể chuyển sang thể lỏng, rồi từ thể lỏng sang thể rắn. Một số chất có thế chuyển trực tiếp từ thể rắn sang thể khí và ngược lại (Hình 1.4).\nHoá hơi Hoá lỏng Khí Ngưng kết Thăng hoa Đông đặc Nóng chảy Lỏng Rắn",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Sự chuyển thể",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_012",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "figure",
+    "content": "![Hình 1.4 - Sơ đồ các hình thức](assets/images/hinh-1-4.png)\n\n**Nội dung hình**\n\nHình minh họa: Sơ đồ các hình thức.\n\n\nchuyển thể",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Sự chuyển thể",
+    "subsection_title": "Hình 1.4",
+    "image_path": "assets/images/hinh-1-4.png",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_013",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "question",
+    "content": "Dựa vào đặc điểm của mô hình động học phân tử có thể giải thích sơ lược các hiện tượng liên quan đến sự chuyển thể như sự hoá hơi, sự nóng chảy:\nTrong khi chuyển động hỗn loạn, các phân tử có thể va chạm vào nhau, truyền năng lượng cho nhau. Càng nhận được nhiều năng lượng thì các phân tử chuyển động hỗn loạn càng nhanh, khoảng cách trung bình giữa chúng càng tăng, lực liên kết giữa chúng càng yếu.\n#### a) Giải thích sự hoá hơi sự hoá hơi có thể xảy ra dưới hai hình thức là bay hơi và sôi",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Sự chuyển thể",
+    "subsection_title": "Câu hỏi",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_014",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "question",
+    "content": "Sự bay hơi là sự hoá hơi xảy ra ở mặt thoáng của chất lỏng. Nước đựng trong một cốc không đậy kín cạn dần là một ví dụ về sự bay hơi.\nDo các phân tử chuyển động hỗn loạn có thể va chạm vào nhau, truyền năng lượng cho nhau nên có một số phân tử ở gần mặt thoáng của chất lỏng có thể có động năng đủ lớn để thắng lực liên kết của các phân tử chất lỏng khác, thoát được ra khỏi mặt thoáng của chất lỏng trở thành các phân tử ở thể hơi.\nSự sôi: Hình 1.5 là đồ thị biểu diễn sự thay đổi nhiệt độ của nước theo thời gian khi được đun nóng. Khi nhiệt độ của nước tăng tới khoảng 100 °C dưới áp suất tiêu chuẩn (1,01.105 Pa) thì nước bắt đầu sôi. Khi đó các bọt chứa không khí và hơi nước nổi lên trong lòng nước càng ngày càng nhiều, càng nổi lên trên thể tích các bọt khí này càng tăng, tới mặt thoáng thì vỡ, không khí và hơi nước thoát ra ngoài khí quyến. Do đó sự sôi là sự hoá hơi xảy ra đồng thời ở bên trong và trên mặt thoáng của chất lỏng.",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Sự chuyển thể",
+    "subsection_title": "Câu hỏi",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_015",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "question",
+    "content": "1. Tại sao khi bay hơi nhiệt độ của chất lỏng giảm?\nNhiệt độ (°C)\nB\n20 A\n01 t\nC\nt Thời gian (s)",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Sự chuyển thể",
+    "subsection_title": "Câu hỏi",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_016",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "figure",
+    "content": "![Hình 1.5 - Đồ thị về sự thay đổi](assets/images/hinh-1-5.png)\n\n**Nội dung hình**\n\nHình minh họa: Đồ thị về sự thay đổi.\n\n\nnhiệt độ của nước theo thời gian khi được đun sôi",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Sự chuyển thể",
+    "subsection_title": "Hình 1.5",
+    "image_path": "assets/images/hinh-1-5.png",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_017",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "note",
+    "content": "Chất rắn kết tinh và chất rắn vô định hình Chất rắn kết tinh là chất mà các hạt (phân tử, nguyên tử, ion) cấu tạo nên nó ở thể rắn, liên kết với nhau một cách chặt chẽ, sắp xếp theo một trật tự hình học tuần hoàn tao thành các mạng tinh thể (Hình 1.6). Chất rắn vô định hình là chất ở thể rắn mà các hạt tạo nên nó không tạo thành mạng tinh thể.\nHầu hết các kim loại là các chất kết tinh; thuỷ tinh, nhựa đường, các chất dẻo,... là các chất vô định hình.\nMỗi chất rắn kết tinh có nhiệt độ nóng chảy (hoặc đông đặc) riêng xác định.\nNa+\nCI\nNa+",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Em có biết?",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_018",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "question",
+    "content": "1. Hãy dựa vào đồ thị ở Hình 1.5 để mô tả sự thay đổi nhiệt độ của nước khi được đun từ 20 °C tới khi sôi.\n2. Khi nước đang sôi thì năng lượng mà nước nhận được từ nguồn nhiệt có được chuyển hoá thành động năng của các phân tử nước không? Tại sao?",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Em có biết?",
+    "subsection_title": "Câu hỏi",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_019",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "figure",
+    "content": "![Hình 1.6 - Tinh thể muối ăn](assets/images/hinh-1-6.png)\n\n**Nội dung hình**\n\nHình minh họa: Tinh thể muối ăn.\n\n\n#### b) Giải thích sự nóng chảy của chất rắn kết tinh nhiệt độ (°c)",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Em có biết?",
+    "subsection_title": "Hình 1.6",
+    "image_path": "assets/images/hinh-1-6.png",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_020",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "question",
+    "content": "1. Tại sao chất rắn kết tinh khi được đun nóng có thể chuyển thành chất lỏng?",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Em có biết?",
+    "subsection_title": "Câu hỏi",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_021",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "figure",
+    "content": "#### b) Giải thích tại sao khi đang nóng chảy, nhiệt độ của chất rắn kết tinh không tăng dù vẫn nhận được nhiệt năng. Năng lượng mà chất rắn kết tinh nhận được lúc này dùng để làm gì?\n\nto Nhiệt độ |nóng chảy b a 이 Thời gian (s)",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Em có biết?",
+    "subsection_title": "A) hãy dựa vào hình 1.7 để mô tả quá trình nóng chảy của chất kết tinh",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_022",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "figure",
+    "content": "![Hình 1.7 - Đổ thị sự thay đổi nhiệt độ của](assets/images/hinh-1-7.png)\n\n**Nội dung hình**\n\nHình minh họa: Đổ thị sự thay đổi nhiệt độ của.\n\n\nchất rắn kết tinh khi được làm nóng chảy Giai đoạn a: Chất rắn chưa nóng chảy:\nGiai đoạn b: Chất rắn đang nóng chầy; Giai đoạn c: Chất rắn đã nóng chảy hoàn toàn.",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Em có biết?",
+    "subsection_title": "Hình 1.7",
+    "image_path": "assets/images/hinh-1-7.png",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_023",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "summary",
+    "content": "* Mô hình động học phân tử về cấu tạo chất:\n* Các chất được cấu tạo từ các hạt riêng biệt là phân tử.\n* Các phân tử chuyển động không ngừng. Nhiệt độ của vật càng cao thì tốc độ trung bình của các phân tử càng lớn.\n* Giữa các phân tử có lực liên kết phân tử.\n* Các chất có thể chuyển từ thể này sang thể khác.",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Em đã học",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_024",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "application",
+    "content": "* Giải thích được sự khác nhau giữa các thể của chất và cơ chế của sự chuyển thể.\n* Tìm hiểu và trình bày được vai trò của sự chuyển thể đối với cuộc sống con người như vòng tuần hoàn nước, công nghệ đúc,...",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Em có thể",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  },
+  {
+    "chunk_id": "physics12_c01_l01_025",
+    "lesson_id": "physics12_c01_l01",
+    "lesson_number": 1,
+    "lesson_title": "Cấu trúc của chất. Sự chuyển thể",
+    "chunk_type": "note",
+    "content": "Ở nhiệt độ hàng triệu độ, chất không tồn tại ở các thể rắn, lỏng, khí mà ở một thể đặc biệt gọi là Plasma. Ở thể này, chất không tồn tại dưới dạng các nguyên tử, phân tử mà dưới dạng các ion. Plasma rất ít gặp trên Trái Đất nhưng trong vũ trụ có tới trên 99% các chất tồn tại ở thể Plasma (Hình 1.8). Hình 1.8. Luồng Plasma phóng ra từ Mặt Trời",
+    "source": {
+      "subject": "physics",
+      "book": "SGK Vật lí 12",
+      "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "grade": 12
+    },
+    "chapter": "Dao động",
+    "section_title": "Em có biết?",
+    "metadata": {
+      "pipeline": "LearningSimulator.dataset_pipeline.mvp"
+    }
+  }
+]

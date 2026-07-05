@@ -19,6 +19,8 @@ build/
 .ai-log/*.jsonl
 .ai-log/archive/
 src/backend/reports/
+# Local OCR model cache
+data/easyocr_models/
 # Node.js
 node_modules/
 dist/

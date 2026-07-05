@@ -86,8 +86,23 @@ export type RagEvalSummaryInput = {
     delta_recall_at_5?: number;
     delta_precision_at_5?: number;
     delta_mrr?: number;
+    skip_reasons?: Record<string, number>;
+    by_subject?: Record<string, RagEvalGroupSummary>;
+    by_question_type?: Record<string, RagEvalGroupSummary>;
   };
   cases: RagEvalCase[];
+};
+
+type RagEvalGroupSummary = {
+  total_cases: number;
+  evaluated_cases: number;
+  skipped_cases: number;
+  hit_at_1: number;
+  hit_at_3: number;
+  hit_at_5: number;
+  recall_at_5: number;
+  precision_at_5: number;
+  mrr: number;
 };
 
 type BenchmarkRow = {
@@ -133,6 +148,18 @@ export function buildRagEvalMarkdownSummary(report: RagEvalSummaryInput) {
     `| Recall@5 | ${formatMetric(report.summary.recall_at_5)} |`,
     `| Precision@5 | ${formatMetric(report.summary.precision_at_5)} |`,
     `| MRR | ${formatMetric(report.summary.mrr)} |`,
+    '',
+    '## Metrics By Subject',
+    '',
+    ...formatGroupMetrics(report.summary.by_subject),
+    '',
+    '## Metrics By Question Type',
+    '',
+    ...formatGroupMetrics(report.summary.by_question_type),
+    '',
+    '## Skip Reasons',
+    '',
+    ...formatSkipReasons(report.summary.skip_reasons),
     '',
     '## Benchmark Comparison',
     '',
@@ -320,6 +347,43 @@ function formatErrorAnalysisRows(
         `| ${item.errorType} | ${item.count} | ${escapeCell(
           item.suggestedFix,
         )} |`,
+    ),
+  ];
+}
+
+function formatGroupMetrics(groups: Record<string, RagEvalGroupSummary> | undefined) {
+  if (!groups || Object.keys(groups).length === 0) {
+    return ['No grouped metrics found.'];
+  }
+
+  return [
+    '| Group | Total | Evaluated | Skipped | Hit@1 | Hit@3 | Hit@5 | Recall@5 | Precision@5 | MRR |',
+    '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |',
+    ...Object.entries(groups).map(
+      ([group, item]) =>
+        `| ${escapeCell(group)} | ${item.total_cases} | ${
+          item.evaluated_cases
+        } | ${item.skipped_cases} | ${formatMetric(
+          item.hit_at_1,
+        )} | ${formatMetric(item.hit_at_3)} | ${formatMetric(
+          item.hit_at_5,
+        )} | ${formatMetric(item.recall_at_5)} | ${formatMetric(
+          item.precision_at_5,
+        )} | ${formatMetric(item.mrr)} |`,
+    ),
+  ];
+}
+
+function formatSkipReasons(reasons: Record<string, number> | undefined) {
+  if (!reasons || Object.keys(reasons).length === 0) {
+    return ['No skipped cases.'];
+  }
+
+  return [
+    '| Reason | Count |',
+    '| --- | ---: |',
+    ...Object.entries(reasons).map(
+      ([reason, count]) => `| ${escapeCell(reason)} | ${count} |`,
     ),
   ];
 }

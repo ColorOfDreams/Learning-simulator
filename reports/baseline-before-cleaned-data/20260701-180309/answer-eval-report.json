@@ -1,0 +1,1088 @@
+{
+  "generated_at": "2026-06-28T13:00:36.601Z",
+  "source": "smoke",
+  "ai_method": "chat",
+  "llm_enabled": true,
+  "summary": {
+    "total_cases": 18,
+    "evaluated_cases": 18,
+    "skipped_cases": 0,
+    "numeric_cases": 0,
+    "conceptual_cases": 10,
+    "mixed_cases": 8,
+    "numeric_accuracy": 0,
+    "avg_concept_coverage": 0.938888888888889,
+    "avg_rule_based_score": 0.938888888888889,
+    "avg_correctness": 0,
+    "avg_groundedness": 0,
+    "avg_completeness": 0,
+    "avg_clarity": 0,
+    "avg_citation_usage": 0,
+    "avg_final_answer_score": 0,
+    "hallucination_rate": 0,
+    "avg_latency_ms": 3302.8333333333335,
+    "model": "gpt-4o-mini"
+  },
+  "cases": [
+    {
+      "case_id": "RAG_SMOKE_001",
+      "question": "Dao động cơ là gì? Cho biết đặc điểm chuyển động quanh vị trí cân bằng.",
+      "expected_answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "dao động cơ",
+          "chuyển động qua lại",
+          "quanh vị trí cân bằng",
+          {
+            "label": "lặp đi lặp lại",
+            "anyOf": [
+              "lặp đi lặp lại",
+              "tuần hoàn",
+              "trở lại vị trí cũ"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Dao động cơ là chuyển động qua lại của vật quanh vị trí cân bằng. Đặc điểm của chuyển động này là vật thực hiện dao động tuần hoàn, tức là sau những khoảng thời gian bằng nhau, vật trở lại vị trí cũ theo hướng cũ. Ví dụ, dao động của con lắc đồng hồ là một dạng dao động cơ tuần hoàn.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "dao động cơ",
+          "chuyển động qua lại",
+          "quanh vị trí cân bằng",
+          "lặp đi lặp lại"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L01_003"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1594,
+        "latencyMs": 2628
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_002",
+      "question": "Phương trình dao động điều hòa x = A cos(omega t + phi) có ý nghĩa như thế nào?",
+      "expected_answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          {
+            "label": "x là li độ",
+            "anyOf": [
+              "x là li độ",
+              "li độ x",
+              "x cho biết vị trí",
+              "phương trình dao động điều hòa x"
+            ]
+          },
+          "A là biên độ",
+          "omega là tần số góc",
+          "phi là pha ban đầu",
+          {
+            "label": "omega t + phi là pha dao động",
+            "anyOf": [
+              "omega t + phi là pha dao động",
+              "ωt + φ",
+              "pha theo thời gian"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Phương trình dao động điều hòa x = A cos(ωt + φ) mô tả chuyển động của vật dao động quanh vị trí cân bằng. A là biên độ (độ lớn tối đa của li độ), ω là tần số góc (đo tốc độ dao động), và φ là pha ban đầu (vị trí của vật tại t=0). Ví dụ, nếu A=5 cm, ω=2π rad/s, φ=0, thì vật dao động với biên độ 5 cm và bắt đầu từ vị trí cân bằng.\nx = A cos(ωt + φ)\nThay đổi các tham số A, ω, φ để quan sát ảnh hưởng đến dao động.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "x là li độ",
+          "A là biên độ",
+          "omega là tần số góc",
+          "phi là pha ban đầu",
+          "omega t + phi là pha dao động"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "th_shm_002",
+        "TH_PHY11_C01_L01_017"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1604,
+        "latencyMs": 4746
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_003",
+      "question": "Trong phương trình x = A cos(omega t + phi), A, omega và phi là các đại lượng gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "A là biên độ",
+          "omega là tần số góc",
+          "phi là pha ban đầu"
+        ]
+      },
+      "ai_answer": "Trong phương trình x = A cos(ωt + φ): A là biên độ (đơn vị: mét), ω là tần số góc (đơn vị: rad/s), φ là pha ban đầu (đơn vị: rad). Biên độ A xác định độ lớn dao động, tần số góc ω xác định tốc độ dao động, và pha ban đầu φ xác định vị trí của vật tại thời điểm t=0.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "A là biên độ",
+          "omega là tần số góc",
+          "phi là pha ban đầu"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L01_017",
+        "TH_PHY11_C01_L02_008"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1640,
+        "latencyMs": 2345
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_004",
+      "question": "Biên độ dao động điều hòa được định nghĩa như thế nào?",
+      "expected_answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "biên độ",
+          {
+            "label": "li độ cực đại",
+            "anyOf": [
+              "li độ cực đại",
+              "độ dịch chuyển cực đại",
+              "x_max"
+            ]
+          },
+          {
+            "label": "độ lệch lớn nhất",
+            "anyOf": [
+              "độ lệch lớn nhất",
+              "độ lớn tối đa",
+              "độ lớn của dao động",
+              "khoảng cách tối đa"
+            ]
+          },
+          "vị trí cân bằng"
+        ]
+      },
+      "ai_answer": "Biên độ dao động điều hòa (A) là độ dịch chuyển cực đại của vật tính từ vị trí cân bằng. Nó thể hiện mức độ dao động của vật và không thay đổi trong suốt quá trình dao động. Ví dụ, nếu một vật dao động với biên độ 10 cm, thì khoảng cách tối đa mà nó dịch chuyển từ vị trí cân bằng là 10 cm.\nThay đổi giá trị biên độ trong mô phỏng để quan sát sự thay đổi của dao động.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "biên độ",
+          "li độ cực đại",
+          "độ lệch lớn nhất",
+          "vị trí cân bằng"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L02_003",
+        "TH_PHY11_C01_L02_030"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1523,
+        "latencyMs": 2734
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_005",
+      "question": "Chu kì dao động là gì và đơn vị của chu kì là gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          {
+            "label": "chu kì",
+            "anyOf": [
+              "chu kì",
+              "chu kỳ",
+              "T"
+            ]
+          },
+          {
+            "label": "thời gian thực hiện một dao động toàn phần",
+            "anyOf": [
+              "thời gian thực hiện một dao động toàn phần",
+              "thời gian để vật thực hiện một dao động",
+              "khoảng thời gian để vật thực hiện một dao động"
+            ]
+          },
+          {
+            "label": "đơn vị giây",
+            "anyOf": [
+              "đơn vị giây",
+              "đơn vị là giây",
+              "giây (s)"
+            ]
+          },
+          {
+            "label": "kí hiệu T",
+            "anyOf": [
+              "kí hiệu T",
+              "chu kì (T)",
+              "chu kỳ (T)"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Chu kì (T) là khoảng thời gian để vật thực hiện một dao động. Đơn vị của chu kì là giây (s).\nThử thay đổi các tham số trong mô phỏng để quan sát ảnh hưởng đến chu kì dao động.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "chu kì",
+          "thời gian thực hiện một dao động toàn phần",
+          "đơn vị giây",
+          "kí hiệu T"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L02_029",
+        "TH_PHY11_C01_L02_003"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1507,
+        "latencyMs": 1870
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_006",
+      "question": "Tần số dao động là gì? Tần số liên hệ với chu kì theo công thức nào?",
+      "expected_answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "tần số",
+          {
+            "label": "số dao động trong một giây",
+            "anyOf": [
+              "số dao động trong một giây",
+              "số dao động mà vật thực hiện được trong một giây"
+            ]
+          },
+          "f = 1/T",
+          {
+            "label": "đơn vị Hz",
+            "anyOf": [
+              "đơn vị Hz",
+              "đơn vị là héc",
+              "Hz",
+              "héc"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Tần số (f) là số dao động mà vật thực hiện được trong một giây, đơn vị là héc (Hz). Chu kì (T) là khoảng thời gian để vật thực hiện một dao động, đơn vị là giây (s). Mối liên hệ giữa tần số và chu kì là: f = 1/T.\nf = 1/T\nThay đổi giá trị A và omega để quan sát ảnh hưởng đến dao động.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "tần số",
+          "số dao động trong một giây",
+          "f = 1/T",
+          "đơn vị Hz"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L02_029",
+        "TH_PHY11_C01_L02_003"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1596,
+        "latencyMs": 2342
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_007",
+      "question": "Tần số góc omega liên hệ với chu kì T và tần số f như thế nào?",
+      "expected_answer": {
+        "type": "mixed",
+        "required_concepts": [
+          {
+            "label": "omega",
+            "anyOf": [
+              "omega",
+              "ω"
+            ]
+          },
+          "tần số góc",
+          {
+            "label": "ω = 2π/T",
+            "anyOf": [
+              "ω = 2π/T",
+              "omega = 2pi/T",
+              "ω=2π/T"
+            ]
+          },
+          {
+            "label": "ω = 2πf",
+            "anyOf": [
+              "ω = 2πf",
+              "omega = 2pi f",
+              "ω=2πf"
+            ]
+          },
+          "rad/s"
+        ]
+      },
+      "ai_answer": "Tần số góc ω liên hệ với chu kì T và tần số f qua công thức: ω = 2π/T = 2πf. Tần số góc đo bằng rad/s, chu kì đo bằng giây (s), và tần số đo bằng héc (Hz).\nω = 2π/T\nω = 2πf\nThay đổi giá trị của ω trong mô phỏng để thấy ảnh hưởng đến dao động.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "omega",
+          "tần số góc",
+          "ω = 2π/T",
+          "ω = 2πf",
+          "rad/s"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "th_shm_003",
+        "TH_PHY11_C01_L02_029"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1509,
+        "latencyMs": 2064
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_008",
+      "question": "Pha ban đầu trong dao động điều hòa cho biết điều gì?",
+      "expected_answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "pha ban đầu",
+          {
+            "label": "trạng thái ban đầu",
+            "anyOf": [
+              "trạng thái ban đầu",
+              "thời điểm bắt đầu quan sát"
+            ]
+          },
+          {
+            "label": "thời điểm t = 0",
+            "anyOf": [
+              "thời điểm t = 0",
+              "t=0",
+              "ban đầu"
+            ]
+          },
+          {
+            "label": "vị trí hoặc chiều chuyển động ban đầu",
+            "anyOf": [
+              "vị trí hoặc chiều chuyển động ban đầu",
+              "vị trí của vật",
+              "hướng di chuyển",
+              "vị trí và hướng chuyển động"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Pha ban đầu (φ) trong dao động điều hòa cho biết vị trí và hướng chuyển động của vật tại thời điểm bắt đầu quan sát. Nó nằm trong khoảng từ -π đến π (rad). Ví dụ, nếu φ = 0, vật ở vị trí biên, còn nếu φ = -π/2, vật ở vị trí cân bằng và đang chuyển động về phía x > 0.\nThay đổi giá trị pha ban đầu để quan sát ảnh hưởng đến vị trí và hướng chuyển động của vật.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "pha ban đầu",
+          "trạng thái ban đầu",
+          "thời điểm t = 0",
+          "vị trí hoặc chiều chuyển động ban đầu"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L02_008",
+        "th_shm_002"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1392,
+        "latencyMs": 2004
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_009",
+      "question": "Độ lệch pha giữa hai dao động cùng chu kì được hiểu như thế nào?",
+      "expected_answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "độ lệch pha",
+          {
+            "label": "hiệu pha",
+            "anyOf": [
+              "hiệu pha",
+              "chênh lệch về pha",
+              "khác biệt về pha",
+              "lấy hiệu giữa hai pha"
+            ]
+          },
+          {
+            "label": "hai dao động cùng chu kì",
+            "anyOf": [
+              "hai dao động cùng chu kì",
+              "hai dao động cùng chu kỳ",
+              "cùng chu kì"
+            ]
+          },
+          {
+            "label": "sớm pha hoặc trễ pha",
+            "anyOf": [
+              "sớm pha hoặc trễ pha",
+              "sớm hoặc trễ pha",
+              "sớm hoặc trễ pha nhau"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Độ lệch pha giữa hai dao động cùng chu kì là đại lượng đặc trưng cho sự khác biệt về pha giữa chúng. Nó không phụ thuộc vào thời gian quan sát và có thể xác định được bằng cách so sánh các pha ban đầu của hai dao động. Nếu độ lệch pha bằng 0, hai dao động cùng pha; nếu khác 0, chúng có thể sớm pha, trễ pha hoặc ngược pha với nhau.\nXác định pha ban đầu của hai dao động.\nSo sánh các pha để tìm độ lệch pha.\nThay đổi giá trị của phi trong mô phỏng để quan sát sự thay đổi độ lệch pha.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.75,
+        "matchedConcepts": [
+          "độ lệch pha",
+          "hiệu pha",
+          "hai dao động cùng chu kì"
+        ],
+        "missingConcepts": [
+          "sớm pha hoặc trễ pha"
+        ],
+        "ruleBasedScore": 0.75
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L02_012",
+        "TH_PHY11_C01_L02_027",
+        "TH_PHY11_C01_L02_029"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1324,
+        "latencyMs": 2308
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_010",
+      "question": "Từ x = A cos(omega t + phi), phương trình vận tốc của vật dao động điều hòa là gì?",
+      "expected_answer": {
+        "type": "mixed",
+        "required_concepts": [
+          {
+            "label": "v = x'",
+            "anyOf": [
+              "v = x'",
+              "v=x'",
+              "vận tốc là đạo hàm",
+              "tính đạo hàm của x"
+            ]
+          },
+          {
+            "label": "v = -ωA sin(ωt + φ)",
+            "anyOf": [
+              "v = -ωA sin(ωt + φ)",
+              "v=-ωA sin(ωt+φ)",
+              "v = -omega A sin(omega t + phi)"
+            ]
+          },
+          "vận tốc",
+          {
+            "label": "đạo hàm của li độ theo thời gian",
+            "anyOf": [
+              "đạo hàm của li độ theo thời gian",
+              "phương trình vận tốc"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Phương trình vận tốc của vật dao động điều hòa là: v = -ωA sin(ωt + φ).\nv = -ωA sin(ωt + φ)\nThay đổi các tham số để quan sát sự thay đổi của vận tốc trong mô phỏng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.75,
+        "matchedConcepts": [
+          "v = -ωA sin(ωt + φ)",
+          "vận tốc",
+          "đạo hàm của li độ theo thời gian"
+        ],
+        "missingConcepts": [
+          "v = x'"
+        ],
+        "ruleBasedScore": 0.75
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L03_021",
+        "TH_PHY11_C01_L03_004"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1479,
+        "latencyMs": 2794
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_011",
+      "question": "Gia tốc trong dao động điều hòa liên hệ với li độ x theo công thức nào?",
+      "expected_answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "gia tốc",
+          {
+            "label": "li độ x",
+            "anyOf": [
+              "li độ x",
+              "li độ"
+            ]
+          },
+          {
+            "label": "a = -ω²x",
+            "anyOf": [
+              "a = -ω²x",
+              "a=-ω^2x",
+              "a = -omega^2 x",
+              "a=-ω²x"
+            ]
+          },
+          {
+            "label": "ngược chiều với li độ",
+            "anyOf": [
+              "ngược chiều với li độ",
+              "trái dấu với li độ",
+              "hướng về vị trí cân bằng"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Gia tốc trong dao động điều hòa liên hệ với li độ x theo công thức: a = -ω²x, trong đó a là gia tốc, ω là tần số góc, x là li độ. Công thức này cho thấy gia tốc luôn hướng về vị trí cân bằng và tỉ lệ với li độ.\nXác định công thức gia tốc a = -ω²x.\nGiải thích các đại lượng: a (gia tốc), ω (tần số góc), x (li độ).\na = -ω²x\nThay đổi giá trị li độ x trong mô phỏng để quan sát sự thay đổi của gia tốc a.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "gia tốc",
+          "li độ x",
+          "a = -ω²x",
+          "ngược chiều với li độ"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L03_011"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1480,
+        "latencyMs": 5702
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_012",
+      "question": "Con lắc lò xo có chu kì dao động phụ thuộc vào khối lượng và độ cứng như thế nào?",
+      "expected_answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "con lắc lò xo",
+          {
+            "label": "khối lượng m",
+            "anyOf": [
+              "khối lượng m",
+              "m là khối lượng",
+              "m là khối lượng vật nặng"
+            ]
+          },
+          {
+            "label": "độ cứng k",
+            "anyOf": [
+              "độ cứng k",
+              "k là độ cứng",
+              "k là độ cứng của lò xo"
+            ]
+          },
+          {
+            "label": "T = 2π√(m/k)",
+            "anyOf": [
+              "T = 2π√(m/k)",
+              "T=2π√(m/k)",
+              "T = 2pi sqrt(m/k)",
+              "T=2pi sqrt(m/k)"
+            ]
+          },
+          {
+            "label": "m tăng thì T tăng",
+            "anyOf": [
+              "m tăng thì T tăng",
+              "chu kỳ tăng khi khối lượng tăng",
+              "chu kì tăng khi khối lượng tăng"
+            ]
+          },
+          {
+            "label": "k tăng thì T giảm",
+            "anyOf": [
+              "k tăng thì T giảm",
+              "giảm khi độ cứng tăng",
+              "chu kì giảm khi độ cứng tăng"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Chu kỳ dao động của con lắc lò xo được xác định bằng công thức: T = 2π√(m/k), trong đó T là chu kỳ, m là khối lượng của vật nặng, và k là độ cứng của lò xo. Điều này có nghĩa là chu kỳ tăng khi khối lượng tăng và giảm khi độ cứng tăng.\nXác định công thức chu kỳ T = 2π√(m/k)\nPhân tích ảnh hưởng của m và k đến T.\nT = 2π√(m/k)\nN/A",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "con lắc lò xo",
+          "khối lượng m",
+          "độ cứng k",
+          "T = 2π√(m/k)",
+          "m tăng thì T tăng",
+          "k tăng thì T giảm"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L05_013"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1464,
+        "latencyMs": 2877
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_013",
+      "question": "Với con lắc đơn góc nhỏ, thế năng trọng trường được mô tả như thế nào?",
+      "expected_answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "con lắc đơn",
+          {
+            "label": "góc nhỏ",
+            "anyOf": [
+              "góc nhỏ",
+              "góc α nhỏ",
+              "góc lệch nhỏ"
+            ]
+          },
+          "thế năng trọng trường",
+          {
+            "label": "phụ thuộc vào độ cao",
+            "anyOf": [
+              "phụ thuộc vào độ cao",
+              "mgh",
+              "độ cao",
+              "vị trí khác với vị trí cân bằng"
+            ]
+          },
+          {
+            "label": "xấp xỉ bậc hai",
+            "anyOf": [
+              "xấp xỉ bậc hai",
+              "tỉ lệ với bình phương",
+              "gần đúng bậc hai",
+              "xấp xỉ thành",
+              "α^2",
+              "alpha^2"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Thế năng trọng trường của con lắc đơn được mô tả bằng công thức: W_t = mgl(1 - cos(α)), trong đó m là khối lượng vật nặng, g là gia tốc trọng trường, l là chiều dài dây treo, và α là góc lệch so với phương thẳng đứng. Khi góc α nhỏ, công thức có thể được xấp xỉ thành W_t ≈ (1/2)mgl(α^2). Điều này có nghĩa là thế năng tăng khi con lắc ở xa vị trí cân bằng.\nXác định công thức thế năng trọng trường: W_t = mgl(1 - cos(α))\nÁp dụng xấp xỉ cho góc nhỏ: cos(α) ≈ 1 - (α^2/2)\nSuy ra W_t ≈ (1/2)mgl(α^2)\nW_t = mgl(1 - cos(α))\nW_t ≈ (1/2)mgl(α^2)",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.8,
+        "matchedConcepts": [
+          "con lắc đơn",
+          "góc nhỏ",
+          "thế năng trọng trường",
+          "xấp xỉ bậc hai"
+        ],
+        "missingConcepts": [
+          "phụ thuộc vào độ cao"
+        ],
+        "ruleBasedScore": 0.8
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L05_016"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1544,
+        "latencyMs": 4147
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_014",
+      "question": "Động năng của vật dao động điều hòa phụ thuộc vào li độ x như thế nào?",
+      "expected_answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "động năng",
+          {
+            "label": "li độ x",
+            "anyOf": [
+              "li độ x",
+              "li độ"
+            ]
+          },
+          {
+            "label": "Wđ = 1/2 k(A² - x²)",
+            "anyOf": [
+              "Wđ = 1/2 k(A² - x²)",
+              "Wd = 1/2 k(A^2 - x^2)",
+              "W_đ = (1/2)mω²(A² - x²)",
+              "Wđ=1/2k(A^2-x^2)"
+            ]
+          },
+          {
+            "label": "cực đại tại vị trí cân bằng",
+            "anyOf": [
+              "cực đại tại vị trí cân bằng",
+              "vị trí cân bằng, động năng đạt",
+              "x = 0"
+            ]
+          },
+          {
+            "label": "bằng 0 ở biên",
+            "anyOf": [
+              "bằng 0 ở biên",
+              "vị trí biên, động năng bằng 0",
+              "x = ±A"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Động năng của vật dao động điều hòa phụ thuộc vào li độ x theo công thức: W_đ = (1/2)mω²(A² - x²). Khi x = 0 (vị trí cân bằng), động năng đạt giá trị cực đại, và khi x = ±A (vị trí biên), động năng bằng 0.\nXác định công thức động năng W_đ = (1/2)mω²(A² - x²).\nThay giá trị x vào công thức để tính động năng tại các li độ khác nhau.\nW_đ = (1/2)mω²(A² - x²)\nThay đổi li độ x trong mô phỏng để quan sát sự biến thiên của động năng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "động năng",
+          "li độ x",
+          "Wđ = 1/2 k(A² - x²)",
+          "cực đại tại vị trí cân bằng",
+          "bằng 0 ở biên"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L05_002",
+        "TH_PHY11_C01_L05_024"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1519,
+        "latencyMs": 4281
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_015",
+      "question": "Thế năng của vật dao động điều hòa được tính theo li độ x bằng công thức nào?",
+      "expected_answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "thế năng",
+          {
+            "label": "li độ x",
+            "anyOf": [
+              "li độ x",
+              "li độ"
+            ]
+          },
+          {
+            "label": "Wt = 1/2 kx²",
+            "anyOf": [
+              "Wt = 1/2 kx²",
+              "W_t = (1/2)kx^2",
+              "Wt=1/2kx^2",
+              "thế năng = 1/2 k x^2"
+            ]
+          },
+          {
+            "label": "k là độ cứng",
+            "anyOf": [
+              "k là độ cứng",
+              "độ cứng k"
+            ]
+          },
+          {
+            "label": "cực đại ở biên",
+            "anyOf": [
+              "cực đại ở biên",
+              "lớn nhất ở biên",
+              "x = ±A"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Thế năng của vật dao động điều hòa được tính theo li độ x bằng công thức: W_t = (1/2)kx^2, trong đó k là độ cứng của lò xo.\nXác định độ cứng k của lò xo.\nThay giá trị li độ x vào công thức W_t = (1/2)kx^2.\nW_t = (1/2)kx^2\nThay đổi li độ x trong mô phỏng để thấy sự thay đổi của thế năng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.8,
+        "matchedConcepts": [
+          "thế năng",
+          "li độ x",
+          "Wt = 1/2 kx²",
+          "k là độ cứng"
+        ],
+        "missingConcepts": [
+          "cực đại ở biên"
+        ],
+        "ruleBasedScore": 0.8
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L05_013"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1596,
+        "latencyMs": 3616
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_016",
+      "question": "Cơ năng trong dao động điều hòa có biểu thức và tính chất bảo toàn như thế nào?",
+      "expected_answer": {
+        "type": "mixed",
+        "required_concepts": [
+          "cơ năng",
+          {
+            "label": "W = 1/2 kA²",
+            "anyOf": [
+              "W = 1/2 kA²",
+              "W=1/2kA^2",
+              "W = 1/2 m ω² A²",
+              "W=1/2mω²A²",
+              "cơ năng = 1/2 k A^2"
+            ]
+          },
+          {
+            "label": "tổng động năng và thế năng",
+            "anyOf": [
+              "tổng động năng và thế năng",
+              "tổng của động năng",
+              "tổng động năng (W_đ) và thế năng (W_t)",
+              "W = W_đ + W_t"
+            ]
+          },
+          "bảo toàn",
+          {
+            "label": "không đổi nếu bỏ qua ma sát",
+            "anyOf": [
+              "không đổi nếu bỏ qua ma sát",
+              "không đổi theo thời gian",
+              "không đổi"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Trong dao động điều hòa, cơ năng (W) là tổng động năng (W_đ) và thế năng (W_t) của vật, được bảo toàn và không thay đổi theo thời gian. Biểu thức cơ năng là: W = 1/2 m ω² A², với m là khối lượng, ω là tần số góc, A là biên độ. Cơ năng chuyển hóa qua lại giữa động năng và thế năng trong quá trình dao động.\nXác định động năng W_đ = 1/2 mv² và thế năng W_t = 1/2 kx².\nTính tổng cơ năng W = W_đ + W_t.\nSử dụng biểu thức W = 1/2 m ω² A² để thấy cơ năng được bảo toàn.\nW = 1/2 m ω² A²\nKhám phá sự chuyển hóa năng lượng trong dao động điều hòa bằng cách điều chỉnh biên độ và độ cứng lò xo.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 0.8,
+        "matchedConcepts": [
+          "cơ năng",
+          "W = 1/2 kA²",
+          "tổng động năng và thế năng",
+          "bảo toàn"
+        ],
+        "missingConcepts": [
+          "không đổi nếu bỏ qua ma sát"
+        ],
+        "ruleBasedScore": 0.8
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L05_008",
+        "th_shm_004",
+        "TH_PHY11_C01_L07_008",
+        "TH_PHY11_C01_L05_002",
+        "TH_PHY11_C01_L05_019"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1294,
+        "latencyMs": 5912
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_017",
+      "question": "Dao động tắt dần là gì và nguyên nhân nào làm biên độ giảm dần?",
+      "expected_answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "dao động tắt dần",
+          "biên độ giảm dần",
+          {
+            "label": "lực cản",
+            "anyOf": [
+              "lực cản",
+              "lực cản của môi trường"
+            ]
+          },
+          "ma sát",
+          {
+            "label": "năng lượng giảm",
+            "anyOf": [
+              "năng lượng giảm",
+              "cơ năng bị tiêu hao",
+              "tiêu hao"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Dao động tắt dần là dao động có biên độ giảm dần theo thời gian. Nguyên nhân làm biên độ giảm dần là do lực ma sát và lực cản của môi trường, khiến cơ năng của hệ dao động bị tiêu hao và chuyển hóa thành nhiệt năng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "dao động tắt dần",
+          "biên độ giảm dần",
+          "lực cản",
+          "ma sát",
+          "năng lượng giảm"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L06_021",
+        "TH_PHY11_C01_L06_002",
+        "TH_PHY11_C01_L06_006"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1360,
+        "latencyMs": 3206
+      }
+    },
+    {
+      "case_id": "RAG_SMOKE_018",
+      "question": "Hiện tượng cộng hưởng xảy ra khi nào trong dao động cưỡng bức?",
+      "expected_answer": {
+        "type": "conceptual",
+        "required_concepts": [
+          "cộng hưởng",
+          "dao động cưỡng bức",
+          {
+            "label": "tần số lực cưỡng bức",
+            "anyOf": [
+              "tần số lực cưỡng bức",
+              "tần số của lực cưỡng bức",
+              "tần số ngoại lực"
+            ]
+          },
+          "tần số riêng",
+          {
+            "label": "biên độ đạt cực đại",
+            "anyOf": [
+              "biên độ đạt cực đại",
+              "biên độ cực đại",
+              "biên độ lớn nhất",
+              "biên độ dao động cưỡng bức tăng đến giá trị cực đại"
+            ]
+          }
+        ]
+      },
+      "ai_answer": "Hiện tượng cộng hưởng xảy ra khi tần số của lực cưỡng bức (f) bằng tần số riêng (f_0) của hệ dao động. Khi đó, biên độ dao động cưỡng bức tăng đến giá trị cực đại. Điều này có thể thấy trong các nhạc cụ như đàn guitar, nơi hộp đàn hoạt động như một hộp cộng hưởng.\nXác định tần số riêng của hệ dao động.\nSo sánh tần số của lực cưỡng bức với tần số riêng.\nNếu f = f_0, hiện tượng cộng hưởng xảy ra.\nf = f_0\nThay đổi tần số của lực cưỡng bức trong mô phỏng để quan sát hiện tượng cộng hưởng.",
+      "metrics": {
+        "numericCorrect": null,
+        "conceptCoverage": 1,
+        "matchedConcepts": [
+          "cộng hưởng",
+          "dao động cưỡng bức",
+          "tần số lực cưỡng bức",
+          "tần số riêng",
+          "biên độ đạt cực đại"
+        ],
+        "missingConcepts": [],
+        "ruleBasedScore": 1
+      },
+      "used_reference_ids": [
+        "TH_PHY11_C01_L06_015",
+        "TH_PHY11_C01_L06_018"
+      ],
+      "confidence": "high",
+      "output_metadata": {
+        "llmEnabled": true,
+        "model": "gpt-4o-mini",
+        "retrievalTopK": 5,
+        "promptTokensApprox": 1605,
+        "latencyMs": 3875
+      }
+    }
+  ]
+}

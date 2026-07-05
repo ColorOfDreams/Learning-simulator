@@ -1,0 +1,83 @@
+I CÁC LOẠI HẠT CẤU TẠO NÊN NGUYÊN TỬ
+  Năm 1897, J. J. Thomson (Tôm-xơn, người Anh) thực 
+hiện thí nghiệm phóng điện qua không khí loãng đã phát 
+hiện ra chùm tia phát ra từ cực âm và bị hút lệch về 
+phía cực dương của điện trường, chứng tỏ chúng mang 
+điện tích âm (xem Hình 1.1). Đó chính là chùm các hạt 
+electron. Electron là một thành phần của nguyên tử.
+  Năm 1911, E. Rutherford (Rơ-dơ-pho, người Niu Di-lân) 
+thực hiện thí nghiệm bắn phá lá vàng rất mỏng bằng 
+chùm hạt a() (alpha) (Hình 1.2). Ông sử dụng màn 
+huỳnh quang bao quanh lá vàng để quan sát vị trí 
+va chạm của hạt a. Kết quả thí nghiệm cho thấy hầu 
+hết các hạt a đều xuyên thẳng qua lá vàng, chứng tỏ 
+nguyên tử có cấu tạo rỗng, ở tâm chứa một hạt nhân 
+mang điện tích dương và có kích thước rất nhỏ so với 
+kích thước nguyên tử.
+  Năm 1918, E. Rutherford và các cộng sự khi dùng hạt a 
+bắn phá nitrogen đã phát hiện ra hạt proton.
+  Năm 1932, J. Chadwick (Chat-uêch, người Anh), cộng 
+sự của Rutherford, đã phát hiện ra hạt neutron khi bắn 
+phá beryllium bằng các hạt a.        
+  Proton, neutron và electron là các hạt cấu tạo nên 
+nguyên tử.
+ MỤC TIÊU:
+– Trình bày được thành phần của nguyên tử (nguyên tử vô cùng nhỏ; nguyên tử gồm 2 phần: 
+hạt nhân và lớp vỏ nguyên tử; hạt nhân tạo nên bởi các hạt proton (p), neutron (n); lớp vỏ 
+tạo nên bởi các electron (e); điện tích, khối lượng mỗi loại hạt).
+– So sánh được khối lượng của electron với proton và neutron, kích thước của hạt nhân với kích 
+thước nguyên tử.
+Nguyên tử gồm các loại hạt cơ bản nào" Các nhà khoa học đã phát hiện ra các loại hạt 
+cơ bản đó như thế nào"
+?
+Hình 1.2. Thí nghiệm  
+phát hiện hạt nhân nguyên tử
+Màn 
+ huỳnh quang
+Hộp phóng ra 
+chùm hạt a 
+Lá vàng mỏng
+Khe hở
+Tấm kim loại tích điện 
+làm thay đổi đường đi 
+của chùm tia
+Màn huỳnh quang
+H
+Cực âm
+Cực dương
+Hình 1.1. Thí nghiệm  
+phát hiện hạt electron
+-
+EGF Hạt a+ hạt nhân helium, mang điện tích dương.
+THÀNH PHẦN CỦA NGUYÊN TỬ
+BÀf
+N
+NP
+
+  Thành phần cấu tạo của nguyên tử gồm+ 
+± Hạt nhân (nucleus)+ ở tâm của nguyên tử, chứa các proton mang điện tích dương và các 
+neutron không mang điện. 
+± Vỏ nguyên tử+ chứa các electron mang điện tích âm, chuyển động rất nhanh xung quanh  
+hạt nhân.  
+ Bảng 1.1. Khͩi lưͻng, điện tích của các loại hạt cấu tạo nên nguyên tử
+Hạt Kí hiệuKhối lượng 
+(kg) Khối lượng (amu)Điện tích 
+(C)
+Điện tích 
+tương đối
+Proton p 1,672 . 10±27 | 1 1,602 . 10±19 .1
+Neutron n 1,675 . 10±27 | 1 0 0
+Electrone 9,109 . 10±31 | 0,000551 
+1837 ±1,602 . 10±19 ±1
+  Trong nguyên tử, số proton bằng số electron nên nguyên tử trung hoà điện.
+  Khối lượng của electron rất nhỏ, không đáng kể so với khối lượng của proton hay 
+neutron nên khối lượng của nguyên tử tập trung hầu hết ở hạt nhân.
+NK  VỔ mô hình biểu diỞn các thành phần cấu tạo nên nguyên tử.
+OK  Nguyên tử chứa những hạt mang điện là 
+  A. proton và a.      B . proton và neutron. 
+  C. proton và electron.      D. electron và neutron.
+PK  Quan sát hình ảnh mô phỏng kết quả thí nghiệm bắn phá lá vàng thực hiện bởi 
+Rutherford (Hình 1.3) và nhận xét về đường đi của các hạt a.
+?
+Hình 1.3. Mô phỏng kết quả thí nghiệm b͇n phá lá vàng
+NQ

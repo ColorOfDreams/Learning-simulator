@@ -1,0 +1,5654 @@
+{
+  "manifest": {
+    "datasetId": "physics11_oscillation_chapter1_mvp",
+    "version": "0.1.0",
+    "description": "Structured MVP dataset generated from 7 cleaned Markdown lessons for Physics 11 Oscillation chapter.",
+    "counts": {
+      "theoryChunks": 52,
+      "problemPatterns": 22,
+      "learningItems": 29,
+      "aiTestCases": 21,
+      "simulationTemplates": 11,
+      "mediaAssets": 38
+    },
+    "notes": [
+      "MVP dataset for RAG/demo, not final gold dataset.",
+      "Items depending on graph/image should be reviewed with original figures.",
+      "Some formulas in source Markdown had visual artifacts; JSON formulas are normalized for demo use."
+    ]
+  },
+  "theoryChunks": [
+    {
+      "id": "TH_OSC_001",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "mechanical_oscillation",
+      "title": "Dao động cơ",
+      "type": "definition",
+      "text": "Dao động cơ là chuyển động qua lại của vật quanh vị trí cân bằng.",
+      "keywords": [
+        "dao động cơ",
+        "vị trí cân bằng",
+        "chuyển động qua lại"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "mechanical_oscillation",
+          "equilibrium_position"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_OSC_002",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "mechanical_oscillation",
+      "title": "Dao động tuần hoàn",
+      "type": "definition",
+      "text": "Dao động tuần hoàn là dao động mà sau những khoảng thời gian bằng nhau, vật trở lại vị trí cũ theo hướng cũ.",
+      "keywords": [
+        "dao động tuần hoàn",
+        "chu kì",
+        "vị trí cũ"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "periodic_oscillation"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_001",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Dao động điều hòa",
+      "type": "definition",
+      "text": "Dao động điều hòa là dao động trong đó li độ của vật là một hàm cosin hoặc hàm sin của thời gian.",
+      "keywords": [
+        "dao động điều hòa",
+        "li độ",
+        "cosin",
+        "sin"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "simple_harmonic_motion",
+          "displacement"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_002",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Đồ thị dao động điều hòa",
+      "type": "explanation",
+      "text": "Đồ thị li độ theo thời gian của dao động điều hòa có dạng hình sin, cho biết vị trí của vật tại các thời điểm khác nhau.",
+      "keywords": [
+        "đồ thị",
+        "hình sin",
+        "li độ thời gian"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "shm_graph",
+          "displacement_time_graph"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_003",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Phương trình dao động điều hòa",
+      "type": "formula",
+      "text": "Phương trình dao động điều hòa có dạng x = A cos(omega t + phi). Trong đó x là li độ, A là biên độ, omega là tần số góc, omega t + phi là pha tại thời điểm t và phi là pha ban đầu.",
+      "keywords": [
+        "phương trình dao động",
+        "x=Acos",
+        "biên độ",
+        "pha ban đầu"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_POSITION_EQUATION"
+        ],
+        "conceptKeys": [
+          "simple_harmonic_motion",
+          "amplitude",
+          "angular_frequency",
+          "phase",
+          "initial_phase"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_004",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Li độ",
+      "type": "definition",
+      "text": "Li độ x là độ dịch chuyển của vật khỏi vị trí cân bằng tại một thời điểm.",
+      "keywords": [
+        "li độ",
+        "vị trí cân bằng",
+        "độ dịch chuyển"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "displacement",
+          "equilibrium_position"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_005",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Biên độ",
+      "type": "definition",
+      "text": "Biên độ A là độ dịch chuyển cực đại của vật tính từ vị trí cân bằng.",
+      "keywords": [
+        "biên độ",
+        "cực đại",
+        "vị trí cân bằng"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "amplitude"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_006",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Pha và pha ban đầu",
+      "type": "definition",
+      "text": "Đại lượng omega t + phi là pha của dao động tại thời điểm t, còn phi là pha ban đầu.",
+      "keywords": [
+        "pha",
+        "pha ban đầu",
+        "thời điểm"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "phase",
+          "initial_phase"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_007",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Dao động điều hòa của con lắc đơn biên độ nhỏ",
+      "type": "note",
+      "text": "Con lắc đơn có thể dao động gần điều hòa khi biên độ góc nhỏ, thường với alpha0 không vượt quá 10 độ.",
+      "keywords": [
+        "con lắc đơn",
+        "biên độ góc nhỏ",
+        "alpha0"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "simple_pendulum",
+          "small_angle_condition"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_008",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Liên hệ giữa dao động điều hòa và chuyển động tròn đều",
+      "type": "explanation",
+      "text": "Hình chiếu của một điểm chuyển động tròn đều lên một trục dao động điều hòa với phương trình x = OM cos(omega t + phi).",
+      "keywords": [
+        "chuyển động tròn đều",
+        "hình chiếu",
+        "dao động điều hòa"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "CIRCULAR_PROJECTION_SHM"
+        ],
+        "conceptKeys": [
+          "circular_motion_projection",
+          "simple_harmonic_motion"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_009",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Li độ trong dao động điều hòa",
+      "type": "definition",
+      "text": "Li độ x là độ dịch chuyển từ vị trí cân bằng đến vị trí của vật tại thời điểm t.",
+      "keywords": [
+        "li độ",
+        "x",
+        "vị trí cân bằng"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "displacement"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_010",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Chu kì",
+      "type": "definition",
+      "text": "Chu kì T là khoảng thời gian để vật thực hiện được một dao động. Đơn vị của chu kì là giây.",
+      "keywords": [
+        "chu kì",
+        "T",
+        "giây"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "period"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_011",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Tần số",
+      "type": "formula",
+      "text": "Tần số f là số dao động vật thực hiện trong một giây. Công thức f = 1/T. Đơn vị là Hz.",
+      "keywords": [
+        "tần số",
+        "Hz",
+        "f=1/T"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "FREQUENCY_PERIOD_RELATION"
+        ],
+        "conceptKeys": [
+          "frequency",
+          "period"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_012",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Tần số góc",
+      "type": "formula",
+      "text": "Tần số góc omega liên hệ với chu kì và tần số qua omega = 2pi/T = 2pi f. Đơn vị là rad/s.",
+      "keywords": [
+        "tần số góc",
+        "omega",
+        "rad/s"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "ANGULAR_FREQUENCY_PERIOD",
+          "ANGULAR_FREQUENCY_FREQUENCY"
+        ],
+        "conceptKeys": [
+          "angular_frequency",
+          "period",
+          "frequency"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_013",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Các đại lượng đặc trưng không đổi",
+      "type": "definition",
+      "text": "Trong một dao động điều hòa, biên độ A, chu kì T, tần số f và tần số góc omega là các đại lượng không đổi, không phụ thuộc vào thời điểm quan sát.",
+      "keywords": [
+        "đại lượng đặc trưng",
+        "biên độ",
+        "chu kì"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "amplitude",
+          "period",
+          "frequency",
+          "angular_frequency"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_014",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Pha ban đầu",
+      "type": "definition",
+      "text": "Pha ban đầu phi cho biết tại thời điểm bắt đầu quan sát vật dao động điều hòa ở đâu và sẽ đi về phía nào.",
+      "keywords": [
+        "pha ban đầu",
+        "phi",
+        "hướng chuyển động"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "initial_phase"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_015",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Độ lệch pha",
+      "type": "definition",
+      "text": "Độ lệch pha giữa hai dao động điều hòa cùng chu kì là đại lượng không đổi và bằng độ lệch pha ban đầu.",
+      "keywords": [
+        "độ lệch pha",
+        "cùng pha",
+        "ngược pha",
+        "sớm pha",
+        "trễ pha"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "phase_difference"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_016",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Sớm pha và trễ pha",
+      "type": "definition",
+      "text": "Nếu phi1 lớn hơn phi2 thì dao động 1 sớm pha hơn dao động 2. Nếu phi1 nhỏ hơn phi2 thì dao động 1 trễ pha hơn dao động 2.",
+      "keywords": [
+        "sớm pha",
+        "trễ pha",
+        "phi1 phi2"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "phase_difference"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_017",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "title": "Đồng pha và ngược pha",
+      "type": "definition",
+      "text": "Hai dao động có phi1 bằng phi2 thì đồng pha. Nếu hai pha lệch nhau pi thì hai dao động ngược pha.",
+      "keywords": [
+        "đồng pha",
+        "ngược pha",
+        "pi"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "in_phase",
+          "opposite_phase"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_018",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "title": "Vận tốc từ độ dốc đồ thị x-t",
+      "type": "explanation",
+      "text": "Vận tốc tức thời bằng độ dốc của đồ thị li độ theo thời gian tại điểm đang xét.",
+      "keywords": [
+        "vận tốc",
+        "độ dốc",
+        "đồ thị x-t"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "velocity",
+          "displacement_time_graph"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_019",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "title": "Phương trình vận tốc",
+      "type": "formula",
+      "text": "Nếu x = A cos(omega t + phi) thì v = -omega A sin(omega t + phi).",
+      "keywords": [
+        "phương trình vận tốc",
+        "v=-omega A sin"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_VELOCITY_EQUATION"
+        ],
+        "conceptKeys": [
+          "velocity",
+          "angular_frequency",
+          "amplitude"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_020",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "title": "Hệ thức vận tốc theo li độ",
+      "type": "formula",
+      "text": "Trong dao động điều hòa, v = ± omega sqrt(A^2 - x^2). Vì vậy ở vị trí cân bằng tốc độ cực đại, ở vị trí biên vận tốc bằng 0.",
+      "keywords": [
+        "vận tốc theo li độ",
+        "vmax",
+        "vị trí biên"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_VELOCITY_POSITION_RELATION",
+          "SHM_MAX_VELOCITY"
+        ],
+        "conceptKeys": [
+          "velocity",
+          "amplitude",
+          "displacement"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_021",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "title": "Phương trình gia tốc",
+      "type": "formula",
+      "text": "Nếu x = A cos(omega t + phi) thì a = -omega^2 A cos(omega t + phi).",
+      "keywords": [
+        "phương trình gia tốc",
+        "a=-omega^2Acos"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_ACCELERATION_EQUATION"
+        ],
+        "conceptKeys": [
+          "acceleration",
+          "angular_frequency"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_022",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "title": "Gia tốc tỉ lệ với li độ",
+      "type": "formula",
+      "text": "Trong dao động điều hòa, gia tốc và li độ liên hệ bởi a = -omega^2 x. Vectơ gia tốc luôn hướng về vị trí cân bằng.",
+      "keywords": [
+        "a=-omega^2x",
+        "gia tốc",
+        "li độ"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_ACCELERATION_DISPLACEMENT_RELATION"
+        ],
+        "conceptKeys": [
+          "acceleration",
+          "displacement",
+          "equilibrium_position"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_023",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "title": "Cực trị vận tốc và gia tốc",
+      "type": "explanation",
+      "text": "Tại vị trí biên vận tốc bằng 0 và độ lớn gia tốc cực đại. Tại vị trí cân bằng gia tốc bằng 0 và tốc độ cực đại.",
+      "keywords": [
+        "vị trí biên",
+        "vị trí cân bằng",
+        "cực đại"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_MAX_VELOCITY",
+          "SHM_MAX_ACCELERATION"
+        ],
+        "conceptKeys": [
+          "velocity",
+          "acceleration",
+          "equilibrium_position"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_024",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "title": "Quan hệ pha giữa li độ, vận tốc và gia tốc",
+      "type": "explanation",
+      "text": "Vận tốc sớm pha pi/2 so với li độ, còn gia tốc ngược pha với li độ.",
+      "keywords": [
+        "quan hệ pha",
+        "vận tốc sớm pha",
+        "gia tốc ngược pha"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "phase_relation",
+          "velocity",
+          "acceleration"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_025",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_problem_solving",
+      "title": "Xác định đại lượng từ phương trình",
+      "type": "explanation",
+      "text": "Khi đề cho phương trình dao động, so sánh với dạng chuẩn x = A cos(omega t + phi) để xác định biên độ, tần số góc và pha ban đầu.",
+      "keywords": [
+        "so sánh dạng chuẩn",
+        "x=Acos",
+        "xác định A omega phi"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 4: Bài tập về dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_POSITION_EQUATION"
+        ],
+        "conceptKeys": [
+          "identify_parameters"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_026",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_problem_solving",
+      "title": "Tính li độ tại thời điểm",
+      "type": "explanation",
+      "text": "Để tính li độ tại thời điểm t, thay giá trị t vào phương trình x = A cos(omega t + phi).",
+      "keywords": [
+        "tính li độ",
+        "thay t",
+        "phương trình"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 4: Bài tập về dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_POSITION_EQUATION"
+        ],
+        "conceptKeys": [
+          "position_at_time"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_027",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_problem_solving",
+      "title": "Biên độ từ x và v ban đầu",
+      "type": "formula",
+      "text": "Nếu biết x0, v0 và omega, có thể tính biên độ bằng A = sqrt(x0^2 + v0^2/omega^2).",
+      "keywords": [
+        "biên độ",
+        "x0 v0",
+        "A=sqrt"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 4: Bài tập về dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_AMPLITUDE_FROM_X_V"
+        ],
+        "conceptKeys": [
+          "amplitude",
+          "velocity",
+          "initial_condition"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_028",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_problem_solving",
+      "title": "Vận tốc cực đại và gia tốc cực đại",
+      "type": "formula",
+      "text": "Trong dao động điều hòa, vmax = omega A và amax = omega^2 A.",
+      "keywords": [
+        "vmax",
+        "amax",
+        "cực đại"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 4: Bài tập về dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_MAX_VELOCITY",
+          "SHM_MAX_ACCELERATION"
+        ],
+        "conceptKeys": [
+          "maximum_velocity",
+          "maximum_acceleration"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_029",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "title": "Động năng dao động điều hòa",
+      "type": "formula",
+      "text": "Động năng của vật dao động điều hòa là Wd = 1/2 m v^2 = 1/2 m omega^2 (A^2 - x^2).",
+      "keywords": [
+        "động năng",
+        "Wd",
+        "A^2-x^2"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_KINETIC_ENERGY"
+        ],
+        "conceptKeys": [
+          "kinetic_energy",
+          "displacement"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_030",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "title": "Thế năng dao động điều hòa",
+      "type": "formula",
+      "text": "Thế năng của vật dao động điều hòa tại li độ x là Wt = 1/2 m omega^2 x^2.",
+      "keywords": [
+        "thế năng",
+        "Wt",
+        "x^2"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_POTENTIAL_ENERGY"
+        ],
+        "conceptKeys": [
+          "potential_energy",
+          "displacement"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_031",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "title": "Cơ năng dao động điều hòa",
+      "type": "formula",
+      "text": "Cơ năng trong dao động điều hòa là W = Wd + Wt = 1/2 m omega^2 A^2 và được bảo toàn nếu bỏ qua lực cản.",
+      "keywords": [
+        "cơ năng",
+        "bảo toàn",
+        "W"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_MECHANICAL_ENERGY"
+        ],
+        "conceptKeys": [
+          "mechanical_energy",
+          "energy_conservation"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_032",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "title": "Chuyển hóa động năng và thế năng",
+      "type": "explanation",
+      "text": "Khi vật đi từ vị trí cân bằng tới vị trí biên, động năng giảm và thế năng tăng. Khi vật đi từ vị trí biên về vị trí cân bằng, động năng tăng và thế năng giảm.",
+      "keywords": [
+        "chuyển hóa năng lượng",
+        "động năng",
+        "thế năng"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "energy_transformation"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_033",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "spring_oscillator",
+      "title": "Thế năng con lắc lò xo",
+      "type": "formula",
+      "text": "Thế năng đàn hồi của con lắc lò xo tại li độ x là Wt = 1/2 k x^2.",
+      "keywords": [
+        "con lắc lò xo",
+        "thế năng đàn hồi",
+        "k"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SPRING_POTENTIAL_ENERGY"
+        ],
+        "conceptKeys": [
+          "spring_oscillator",
+          "potential_energy"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_034",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "spring_oscillator",
+      "title": "Chu kì con lắc lò xo",
+      "type": "formula",
+      "text": "Với con lắc lò xo, omega = sqrt(k/m) và T = 2pi sqrt(m/k).",
+      "keywords": [
+        "chu kì con lắc lò xo",
+        "omega sqrt k/m"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SPRING_ANGULAR_FREQUENCY",
+          "SPRING_PERIOD"
+        ],
+        "conceptKeys": [
+          "spring_oscillator",
+          "period"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_035",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_pendulum",
+      "title": "Thế năng con lắc đơn góc nhỏ",
+      "type": "formula",
+      "text": "Với con lắc đơn góc nhỏ, thế năng gần đúng Wt = 1/2 m(g/l)s^2, trong đó s là li độ dài.",
+      "keywords": [
+        "con lắc đơn",
+        "thế năng",
+        "góc nhỏ"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "PENDULUM_POTENTIAL_ENERGY_SMALL_ANGLE"
+        ],
+        "conceptKeys": [
+          "simple_pendulum",
+          "potential_energy"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_036",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_pendulum",
+      "title": "Tần số góc con lắc đơn",
+      "type": "formula",
+      "text": "Với con lắc đơn góc nhỏ, omega = sqrt(g/l).",
+      "keywords": [
+        "con lắc đơn",
+        "omega",
+        "sqrt g/l"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "PENDULUM_ANGULAR_FREQUENCY"
+        ],
+        "conceptKeys": [
+          "simple_pendulum",
+          "angular_frequency"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_OSC_003",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "damped_oscillation",
+      "title": "Dao động tắt dần",
+      "type": "definition",
+      "text": "Dao động có biên độ giảm dần theo thời gian gọi là dao động tắt dần.",
+      "keywords": [
+        "dao động tắt dần",
+        "biên độ giảm"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "damped_oscillation"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_OSC_004",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "damped_oscillation",
+      "title": "Nguyên nhân dao động tắt dần",
+      "type": "explanation",
+      "text": "Nguyên nhân làm dao động tắt dần là do lực ma sát và lực cản của môi trường làm tiêu hao cơ năng.",
+      "keywords": [
+        "ma sát",
+        "lực cản",
+        "cơ năng"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "damping",
+          "friction",
+          "air_resistance"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_OSC_005",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "damped_oscillation",
+      "title": "Ứng dụng dao động tắt dần",
+      "type": "example",
+      "text": "Bộ phận giảm xóc của xe máy là ứng dụng của dao động tắt dần, giúp dao động của khung xe nhanh chóng giảm đi.",
+      "keywords": [
+        "giảm xóc",
+        "ứng dụng",
+        "xe máy"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "application",
+          "damped_oscillation"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_OSC_006",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "forced_oscillation",
+      "title": "Dao động cưỡng bức",
+      "type": "definition",
+      "text": "Dao động cưỡng bức là dao động xảy ra dưới tác dụng của ngoại lực tuần hoàn.",
+      "keywords": [
+        "dao động cưỡng bức",
+        "ngoại lực tuần hoàn"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "forced_oscillation"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_OSC_007",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "forced_oscillation",
+      "title": "Đặc điểm dao động cưỡng bức",
+      "type": "explanation",
+      "text": "Khi ổn định, dao động cưỡng bức có biên độ không đổi và tần số bằng tần số của lực cưỡng bức.",
+      "keywords": [
+        "biên độ không đổi",
+        "tần số lực cưỡng bức"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "forced_oscillation",
+          "frequency"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_OSC_008",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "resonance",
+      "title": "Hiện tượng cộng hưởng",
+      "type": "definition",
+      "text": "Cộng hưởng là hiện tượng biên độ dao động cưỡng bức tăng đến cực đại khi tần số lực cưỡng bức tiến đến bằng tần số riêng của hệ.",
+      "keywords": [
+        "cộng hưởng",
+        "tần số riêng",
+        "biên độ cực đại"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "RESONANCE_CONDITION"
+        ],
+        "conceptKeys": [
+          "resonance",
+          "natural_frequency"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_OSC_009",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "resonance",
+      "title": "Điều kiện cộng hưởng",
+      "type": "formula",
+      "text": "Điều kiện cộng hưởng là f = f0, trong đó f là tần số lực cưỡng bức và f0 là tần số riêng của hệ.",
+      "keywords": [
+        "f=f0",
+        "điều kiện cộng hưởng"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "RESONANCE_CONDITION"
+        ],
+        "conceptKeys": [
+          "resonance"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_OSC_010",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "resonance",
+      "title": "Cộng hưởng có lợi và có hại",
+      "type": "explanation",
+      "text": "Cộng hưởng có thể có lợi như trong hộp đàn hoặc lò vi sóng, nhưng cũng có thể có hại với cầu, tòa nhà, bệ máy nếu bị kích thích đúng tần số riêng.",
+      "keywords": [
+        "cộng hưởng có lợi",
+        "cộng hưởng có hại",
+        "cầu",
+        "hộp đàn"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "resonance_application"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_037",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "title": "Bảo toàn cơ năng để tìm động năng và thế năng",
+      "type": "explanation",
+      "text": "Có thể dùng định luật bảo toàn cơ năng W = Wd + Wt để tìm động năng, thế năng, li độ hoặc vận tốc của vật dao động điều hòa.",
+      "keywords": [
+        "bảo toàn cơ năng",
+        "động năng",
+        "thế năng"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "ENERGY_CONSERVATION"
+        ],
+        "conceptKeys": [
+          "energy_conservation"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_038",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_pendulum",
+      "title": "Năng lượng con lắc đơn tại vị trí biên",
+      "type": "formula",
+      "text": "Với con lắc đơn góc nhỏ, tại vị trí biên động năng bằng 0 và thế năng xấp xỉ mgl alpha0^2 / 2.",
+      "keywords": [
+        "con lắc đơn",
+        "vị trí biên",
+        "alpha0"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "PENDULUM_ENERGY_AT_BOUNDARY"
+        ],
+        "conceptKeys": [
+          "simple_pendulum",
+          "mechanical_energy"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_039",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_pendulum",
+      "title": "Vị trí động năng bằng thế năng của con lắc đơn",
+      "type": "formula",
+      "text": "Với con lắc đơn góc nhỏ, động năng bằng thế năng khi alpha = ± alpha0 / sqrt(2).",
+      "keywords": [
+        "động năng bằng thế năng",
+        "alpha0/sqrt2"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "PENDULUM_EQUAL_KINETIC_POTENTIAL"
+        ],
+        "conceptKeys": [
+          "simple_pendulum",
+          "energy_ratio"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_040",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "title": "Thế năng từ vận tốc",
+      "type": "formula",
+      "text": "Khi biết m, omega, A và v, thế năng có thể tính bằng Wt = 1/2 m(omega^2 A^2 - v^2).",
+      "keywords": [
+        "thế năng từ vận tốc",
+        "m omega A v"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "POTENTIAL_ENERGY_FROM_SPEED"
+        ],
+        "conceptKeys": [
+          "potential_energy",
+          "velocity",
+          "energy_conservation"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_041",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "title": "Đồ thị gia tốc theo li độ",
+      "type": "formula",
+      "text": "Đồ thị a theo x của dao động điều hòa là đường thẳng đi qua gốc tọa độ với hệ số góc -omega^2.",
+      "keywords": [
+        "đồ thị a-x",
+        "a=-omega^2x",
+        "tần số"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "SHM_ACCELERATION_DISPLACEMENT_RELATION"
+        ],
+        "conceptKeys": [
+          "acceleration",
+          "displacement",
+          "graph_reading"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    },
+    {
+      "id": "TH_SHM_042",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "title": "Tỉ lệ động năng và thế năng theo li độ",
+      "type": "formula",
+      "text": "Khi x = A/2 thì thế năng bằng 1/4 cơ năng và động năng bằng 3/4 cơ năng. Động năng bằng thế năng khi |x| = A/sqrt(2).",
+      "keywords": [
+        "tỉ lệ năng lượng",
+        "x=A/2",
+        "A/sqrt2"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "metadata": {
+        "formulaKeys": [
+          "ENERGY_RATIO_BY_POSITION"
+        ],
+        "conceptKeys": [
+          "energy_ratio",
+          "displacement"
+        ],
+        "validationStatus": "verified"
+      },
+      "isActive": true
+    }
+  ],
+  "problemPatterns": [
+    {
+      "patternId": "OSC_CONCEPT_MECHANICAL_OSCILLATION",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "mechanical_oscillation",
+      "name": "Nhận biết dao động cơ",
+      "description": "Nhận biết và nêu ví dụ về chuyển động qua lại quanh vị trí cân bằng.",
+      "mainFormula": null,
+      "requiredParameters": [],
+      "optionalParameters": [],
+      "target": [
+        "concept_explanation"
+      ],
+      "simulationId": "SIM_MECHANICAL_OSCILLATION_3D",
+      "solverKey": null,
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Nhận biết dao động cơ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Nhận biết dao động cơ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Nhận biết dao động cơ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Nhận biết dao động cơ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "mechanical_oscillation"
+        ],
+        "skillKeys": [
+          "concept_explain"
+        ],
+        "tags": [
+          "mechanical_oscillation"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_IDENTIFY_PARAMETERS",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "name": "Xác định đại lượng từ phương trình dao động",
+      "description": "Cho phương trình x = A cos(omega t + phi), xác định A, omega, phi.",
+      "mainFormula": "SHM_POSITION_EQUATION",
+      "requiredParameters": [
+        "equation"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "A",
+        "omega",
+        "phi"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "solverKey": "identifyShmParameters",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Xác định đại lượng từ phương trình dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Xác định đại lượng từ phương trình dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Xác định đại lượng từ phương trình dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Xác định đại lượng từ phương trình dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "SHM_POSITION_EQUATION"
+        ],
+        "conceptKeys": [
+          "simple_harmonic_motion",
+          "amplitude",
+          "angular_frequency",
+          "initial_phase"
+        ],
+        "skillKeys": [
+          "compare_with_standard_form"
+        ],
+        "tags": [
+          "simple_harmonic_motion"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_POSITION_AT_TIME",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "name": "Tính li độ tại thời điểm",
+      "description": "Cho A, omega, phi và t, tính x.",
+      "mainFormula": "SHM_POSITION_EQUATION",
+      "requiredParameters": [
+        "A",
+        "omega",
+        "phi",
+        "t"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "x"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "solverKey": "solveShmPositionAtTime",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Tính li độ tại thời điểm",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Tính li độ tại thời điểm",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Tính li độ tại thời điểm",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Tính li độ tại thời điểm",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "SHM_POSITION_EQUATION"
+        ],
+        "conceptKeys": [
+          "displacement",
+          "phase"
+        ],
+        "skillKeys": [
+          "substitute_formula"
+        ],
+        "tags": [
+          "simple_harmonic_motion"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_PHASE_AT_TIME",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "name": "Tính pha tại thời điểm",
+      "description": "Cho omega, phi và t, tính pha omega t + phi.",
+      "mainFormula": "SHM_PHASE_AT_TIME",
+      "requiredParameters": [
+        "omega",
+        "phi",
+        "t"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "phase"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "solverKey": "solveShmPhaseAtTime",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Tính pha tại thời điểm",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Tính pha tại thời điểm",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Tính pha tại thời điểm",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Tính pha tại thời điểm",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "SHM_PHASE_AT_TIME"
+        ],
+        "conceptKeys": [
+          "phase"
+        ],
+        "skillKeys": [
+          "substitute_formula"
+        ],
+        "tags": [
+          "simple_harmonic_motion"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_FIND_PERIOD_FREQUENCY",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "name": "Tính chu kì, tần số, tần số góc",
+      "description": "Dùng các quan hệ f = 1/T và omega = 2pi/T = 2pi f.",
+      "mainFormula": "ANGULAR_FREQUENCY_PERIOD",
+      "requiredParameters": [
+        "omega_or_T_or_f"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "T",
+        "f",
+        "omega"
+      ],
+      "simulationId": "SIM_SHM_GRAPH_3D",
+      "solverKey": "solveShmPeriodFrequency",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Tính chu kì, tần số, tần số góc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Tính chu kì, tần số, tần số góc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Tính chu kì, tần số, tần số góc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Tính chu kì, tần số, tần số góc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "ANGULAR_FREQUENCY_PERIOD"
+        ],
+        "conceptKeys": [
+          "period",
+          "frequency",
+          "angular_frequency"
+        ],
+        "skillKeys": [
+          "formula_transform"
+        ],
+        "tags": [
+          "simple_harmonic_motion"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_WRITE_EQUATION",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "name": "Viết phương trình dao động",
+      "description": "Dựa vào A, omega, phi hoặc đồ thị để viết phương trình x = A cos(omega t + phi).",
+      "mainFormula": "SHM_POSITION_EQUATION",
+      "requiredParameters": [
+        "A",
+        "omega",
+        "phi"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "equation"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "solverKey": "writeShmEquation",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Viết phương trình dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Viết phương trình dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Viết phương trình dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Viết phương trình dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "SHM_POSITION_EQUATION"
+        ],
+        "conceptKeys": [
+          "simple_harmonic_motion",
+          "phase"
+        ],
+        "skillKeys": [
+          "construct_equation"
+        ],
+        "tags": [
+          "simple_harmonic_motion"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_FIND_AMPLITUDE_FROM_RANGE",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "name": "Tìm biên độ từ quãng dao động",
+      "description": "Nếu vật dao động trên đoạn thẳng dài 2A thì biên độ bằng nửa độ dài đoạn dao động.",
+      "mainFormula": "AMPLITUDE_FROM_RANGE",
+      "requiredParameters": [
+        "range_length"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "A"
+      ],
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "solverKey": "solveAmplitudeFromRange",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Tìm biên độ từ quãng dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Tìm biên độ từ quãng dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Tìm biên độ từ quãng dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Tìm biên độ từ quãng dao động",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "AMPLITUDE_FROM_RANGE"
+        ],
+        "conceptKeys": [
+          "amplitude"
+        ],
+        "skillKeys": [
+          "interpret_physical_range"
+        ],
+        "tags": [
+          "simple_harmonic_motion"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_READ_GRAPH",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "name": "Đọc đồ thị li độ thời gian",
+      "description": "Dựa vào đồ thị x-t để xác định biên độ, chu kì, tần số, pha ban đầu hoặc li độ tại thời điểm.",
+      "mainFormula": null,
+      "requiredParameters": [
+        "graph_data"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "A",
+        "T",
+        "f",
+        "omega",
+        "phi",
+        "x"
+      ],
+      "simulationId": "SIM_SHM_GRAPH_3D",
+      "solverKey": "readShmGraph",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Đọc đồ thị li độ thời gian",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Đọc đồ thị li độ thời gian",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Đọc đồ thị li độ thời gian",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Đọc đồ thị li độ thời gian",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "graph_reading",
+          "amplitude",
+          "period"
+        ],
+        "skillKeys": [
+          "read_graph"
+        ],
+        "tags": [
+          "simple_harmonic_motion"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_PHASE_DIFFERENCE",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "name": "Xác định độ lệch pha",
+      "description": "So sánh hai dao động cùng chu kì để xác định sớm pha, trễ pha, đồng pha hoặc ngược pha.",
+      "mainFormula": "PHASE_DIFFERENCE",
+      "requiredParameters": [
+        "phi1",
+        "phi2"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "delta_phi"
+      ],
+      "simulationId": "SIM_SHM_PHASE_COMPARE_3D",
+      "solverKey": "solvePhaseDifference",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Xác định độ lệch pha",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Xác định độ lệch pha",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Xác định độ lệch pha",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Xác định độ lệch pha",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "PHASE_DIFFERENCE"
+        ],
+        "conceptKeys": [
+          "phase_difference"
+        ],
+        "skillKeys": [
+          "compare_phase"
+        ],
+        "tags": [
+          "simple_harmonic_motion"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_CIRCULAR_PROJECTION",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "name": "Liên hệ chuyển động tròn đều và dao động điều hòa",
+      "description": "Dùng hình chiếu của chuyển động tròn đều để mô tả dao động điều hòa.",
+      "mainFormula": "CIRCULAR_PROJECTION_SHM",
+      "requiredParameters": [
+        "radius",
+        "omega",
+        "phi"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "x"
+      ],
+      "simulationId": "SIM_SHM_CIRCULAR_PROJECTION_3D",
+      "solverKey": "solveCircularProjection",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Liên hệ chuyển động tròn đều và dao động điều hòa",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Liên hệ chuyển động tròn đều và dao động điều hòa",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Liên hệ chuyển động tròn đều và dao động điều hòa",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Liên hệ chuyển động tròn đều và dao động điều hòa",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "CIRCULAR_PROJECTION_SHM"
+        ],
+        "conceptKeys": [
+          "circular_motion_projection"
+        ],
+        "skillKeys": [
+          "visual_reasoning"
+        ],
+        "tags": [
+          "simple_harmonic_motion"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_VELOCITY_EQUATION",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "name": "Viết phương trình vận tốc",
+      "description": "Lấy đạo hàm phương trình li độ để viết v = -omega A sin(omega t + phi).",
+      "mainFormula": "SHM_VELOCITY_EQUATION",
+      "requiredParameters": [
+        "A",
+        "omega",
+        "phi"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "v_equation"
+      ],
+      "simulationId": "SIM_SHM_XVA_3D",
+      "solverKey": "writeVelocityEquation",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Viết phương trình vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Viết phương trình vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Viết phương trình vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Viết phương trình vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "SHM_VELOCITY_EQUATION"
+        ],
+        "conceptKeys": [
+          "velocity"
+        ],
+        "skillKeys": [
+          "differentiate"
+        ],
+        "tags": [
+          "shm_kinematics"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_ACCELERATION_EQUATION",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "name": "Viết phương trình gia tốc",
+      "description": "Lấy đạo hàm vận tốc để viết a = -omega^2 A cos(omega t + phi).",
+      "mainFormula": "SHM_ACCELERATION_EQUATION",
+      "requiredParameters": [
+        "A",
+        "omega",
+        "phi"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "a_equation"
+      ],
+      "simulationId": "SIM_SHM_XVA_3D",
+      "solverKey": "writeAccelerationEquation",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Viết phương trình gia tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Viết phương trình gia tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Viết phương trình gia tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Viết phương trình gia tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "SHM_ACCELERATION_EQUATION"
+        ],
+        "conceptKeys": [
+          "acceleration"
+        ],
+        "skillKeys": [
+          "differentiate"
+        ],
+        "tags": [
+          "shm_kinematics"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_MAX_VELOCITY_ACCELERATION",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "name": "Tính vận tốc và gia tốc cực đại",
+      "description": "Dùng vmax = omega A và amax = omega^2 A.",
+      "mainFormula": "SHM_MAX_VELOCITY_ACCELERATION",
+      "requiredParameters": [
+        "A",
+        "omega"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "vmax",
+        "amax"
+      ],
+      "simulationId": "SIM_SHM_XVA_3D",
+      "solverKey": "solveShmMaxVelocityAcceleration",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Tính vận tốc và gia tốc cực đại",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Tính vận tốc và gia tốc cực đại",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Tính vận tốc và gia tốc cực đại",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Tính vận tốc và gia tốc cực đại",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "SHM_MAX_VELOCITY_ACCELERATION"
+        ],
+        "conceptKeys": [
+          "maximum_velocity",
+          "maximum_acceleration"
+        ],
+        "skillKeys": [
+          "formula_substitution"
+        ],
+        "tags": [
+          "shm_kinematics"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_AMPLITUDE_FROM_X_V",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_problem_solving",
+      "name": "Tìm biên độ từ li độ và vận tốc",
+      "description": "Dùng A = sqrt(x^2 + v^2/omega^2) khi biết x, v và omega.",
+      "mainFormula": "SHM_AMPLITUDE_FROM_X_V",
+      "requiredParameters": [
+        "x",
+        "v",
+        "omega"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "A"
+      ],
+      "simulationId": "SIM_SHM_XVA_3D",
+      "solverKey": "solveAmplitudeFromXv",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Tìm biên độ từ li độ và vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Tìm biên độ từ li độ và vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Tìm biên độ từ li độ và vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Tìm biên độ từ li độ và vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "SHM_AMPLITUDE_FROM_X_V"
+        ],
+        "conceptKeys": [
+          "amplitude",
+          "velocity"
+        ],
+        "skillKeys": [
+          "formula_substitution"
+        ],
+        "tags": [
+          "shm_problem_solving"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_ENERGY_AT_POSITION",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "name": "Tính động năng, thế năng, cơ năng theo li độ",
+      "description": "Dùng Wd = 1/2 m omega^2(A^2-x^2), Wt = 1/2 m omega^2 x^2, W = 1/2 m omega^2 A^2.",
+      "mainFormula": "SHM_ENERGY_SET",
+      "requiredParameters": [
+        "m",
+        "omega",
+        "A",
+        "x"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "Wd",
+        "Wt",
+        "W"
+      ],
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "solverKey": "solveShmEnergyAtPosition",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Tính động năng, thế năng, cơ năng theo li độ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Tính động năng, thế năng, cơ năng theo li độ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Tính động năng, thế năng, cơ năng theo li độ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Tính động năng, thế năng, cơ năng theo li độ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "SHM_ENERGY_SET"
+        ],
+        "conceptKeys": [
+          "kinetic_energy",
+          "potential_energy",
+          "mechanical_energy"
+        ],
+        "skillKeys": [
+          "energy_calculation"
+        ],
+        "tags": [
+          "shm_energy"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_ENERGY_FROM_VELOCITY",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "name": "Tính thế năng từ vận tốc",
+      "description": "Dùng bảo toàn cơ năng: Wt = 1/2 m(omega^2 A^2 - v^2).",
+      "mainFormula": "POTENTIAL_ENERGY_FROM_SPEED",
+      "requiredParameters": [
+        "m",
+        "omega",
+        "A",
+        "v"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "Wt"
+      ],
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "solverKey": "solvePotentialEnergyFromVelocity",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Tính thế năng từ vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Tính thế năng từ vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Tính thế năng từ vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Tính thế năng từ vận tốc",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "POTENTIAL_ENERGY_FROM_SPEED"
+        ],
+        "conceptKeys": [
+          "potential_energy",
+          "velocity"
+        ],
+        "skillKeys": [
+          "energy_conservation"
+        ],
+        "tags": [
+          "shm_energy"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SHM_ENERGY_RATIO",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "name": "Tỉ lệ động năng và thế năng",
+      "description": "Tính phần trăm động năng, thế năng theo cơ năng tại li độ cho trước.",
+      "mainFormula": "ENERGY_RATIO_BY_POSITION",
+      "requiredParameters": [
+        "A",
+        "x"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "Wd_ratio",
+        "Wt_ratio"
+      ],
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "solverKey": "solveEnergyRatio",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Tỉ lệ động năng và thế năng",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Tỉ lệ động năng và thế năng",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Tỉ lệ động năng và thế năng",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Tỉ lệ động năng và thế năng",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "ENERGY_RATIO_BY_POSITION"
+        ],
+        "conceptKeys": [
+          "energy_ratio"
+        ],
+        "skillKeys": [
+          "ratio_reasoning"
+        ],
+        "tags": [
+          "shm_energy"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "SPRING_OSCILLATOR_PERIOD",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "spring_oscillator",
+      "name": "Chu kì con lắc lò xo",
+      "description": "Tính chu kì con lắc lò xo bằng T = 2pi sqrt(m/k).",
+      "mainFormula": "SPRING_PERIOD",
+      "requiredParameters": [
+        "m",
+        "k"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "T"
+      ],
+      "simulationId": "SIM_SPRING_OSCILLATOR_3D",
+      "solverKey": "solveSpringPeriod",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Chu kì con lắc lò xo",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Chu kì con lắc lò xo",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Chu kì con lắc lò xo",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Chu kì con lắc lò xo",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "SPRING_PERIOD"
+        ],
+        "conceptKeys": [
+          "spring_oscillator",
+          "period"
+        ],
+        "skillKeys": [
+          "formula_substitution"
+        ],
+        "tags": [
+          "spring_oscillator"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "PENDULUM_SMALL_ANGLE_ENERGY",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_pendulum",
+      "name": "Năng lượng con lắc đơn góc nhỏ",
+      "description": "Dùng bảo toàn cơ năng và xấp xỉ góc nhỏ để tính thế năng, động năng của con lắc đơn.",
+      "mainFormula": "PENDULUM_SMALL_ANGLE_ENERGY",
+      "requiredParameters": [
+        "m",
+        "g",
+        "l",
+        "alpha0",
+        "alpha"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "Wt",
+        "Wd"
+      ],
+      "simulationId": "SIM_SIMPLE_PENDULUM_3D",
+      "solverKey": "solvePendulumSmallAngleEnergy",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Năng lượng con lắc đơn góc nhỏ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Năng lượng con lắc đơn góc nhỏ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Năng lượng con lắc đơn góc nhỏ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Năng lượng con lắc đơn góc nhỏ",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "PENDULUM_SMALL_ANGLE_ENERGY"
+        ],
+        "conceptKeys": [
+          "simple_pendulum",
+          "energy_conservation"
+        ],
+        "skillKeys": [
+          "small_angle_approximation"
+        ],
+        "tags": [
+          "simple_pendulum"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "DAMPED_OSCILLATION_CONCEPT",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "damped_oscillation",
+      "name": "Giải thích dao động tắt dần",
+      "description": "Giải thích nguyên nhân và ứng dụng của dao động tắt dần.",
+      "mainFormula": null,
+      "requiredParameters": [],
+      "optionalParameters": [],
+      "target": [
+        "concept_explanation"
+      ],
+      "simulationId": "SIM_DAMPED_OSCILLATION_3D",
+      "solverKey": null,
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Giải thích dao động tắt dần",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Giải thích dao động tắt dần",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Giải thích dao động tắt dần",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Giải thích dao động tắt dần",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "damped_oscillation"
+        ],
+        "skillKeys": [
+          "concept_explain"
+        ],
+        "tags": [
+          "damped_oscillation"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "FORCED_OSCILLATION_CONCEPT",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "forced_oscillation",
+      "name": "Giải thích dao động cưỡng bức",
+      "description": "Nhận biết đặc điểm của dao động cưỡng bức và ví dụ thực tế.",
+      "mainFormula": null,
+      "requiredParameters": [],
+      "optionalParameters": [],
+      "target": [
+        "concept_explanation"
+      ],
+      "simulationId": "SIM_FORCED_RESONANCE_3D",
+      "solverKey": null,
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Giải thích dao động cưỡng bức",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Giải thích dao động cưỡng bức",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Giải thích dao động cưỡng bức",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Giải thích dao động cưỡng bức",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [],
+        "conceptKeys": [
+          "forced_oscillation"
+        ],
+        "skillKeys": [
+          "concept_explain"
+        ],
+        "tags": [
+          "forced_oscillation"
+        ]
+      },
+      "isActive": true
+    },
+    {
+      "patternId": "RESONANCE_CONDITION",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "resonance",
+      "name": "Điều kiện cộng hưởng",
+      "description": "Giải thích điều kiện f = f0 và tác dụng có lợi hoặc có hại của cộng hưởng.",
+      "mainFormula": "RESONANCE_CONDITION",
+      "requiredParameters": [
+        "f",
+        "f0"
+      ],
+      "optionalParameters": [],
+      "target": [
+        "resonance_state"
+      ],
+      "simulationId": "SIM_FORCED_RESONANCE_3D",
+      "solverKey": "solveResonanceCondition",
+      "levels": [
+        {
+          "level": "recognition",
+          "description": "Mức recognition cho dạng Điều kiện cộng hưởng",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "understanding",
+          "description": "Mức understanding cho dạng Điều kiện cộng hưởng",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "application",
+          "description": "Mức application cho dạng Điều kiện cộng hưởng",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        },
+        {
+          "level": "high_application",
+          "description": "Mức high_application cho dạng Điều kiện cộng hưởng",
+          "generationInstruction": "Sinh bài đúng phạm vi Vật lí 11, dữ kiện đủ và đáp án kiểm chứng được."
+        }
+      ],
+      "examples": [],
+      "metadata": {
+        "formulaKeys": [
+          "RESONANCE_CONDITION"
+        ],
+        "conceptKeys": [
+          "resonance"
+        ],
+        "skillKeys": [
+          "concept_explain"
+        ],
+        "tags": [
+          "resonance"
+        ]
+      },
+      "isActive": true
+    }
+  ],
+  "learningItems": [
+    {
+      "id": "LI_B1_SHM_001",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_IDENTIFY_PARAMETERS",
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "title": "Xác định A và phi từ phương trình",
+      "text": "Một vật dao động điều hòa có phương trình x = 2cos(4πt + π/2) cm. Xác định biên độ và pha ban đầu.",
+      "parameters": [
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 2,
+          "unit": "cm",
+          "valueSI": 0.02
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc",
+          "value": 12.566370614359172,
+          "unit": "rad/s",
+          "expression": "4π"
+        },
+        {
+          "key": "phi",
+          "label": "Pha ban đầu",
+          "value": 1.5707963267948966,
+          "unit": "rad",
+          "expression": "π/2"
+        }
+      ],
+      "target": [
+        {
+          "key": "A",
+          "label": "Biên độ"
+        },
+        {
+          "key": "phi",
+          "label": "Pha ban đầu"
+        }
+      ],
+      "answer": {
+        "short": "A = 2 cm, φ = π/2 rad.",
+        "steps": [
+          "So sánh với x = A cos(ωt + φ).",
+          "Suy ra A = 2 cm.",
+          "Suy ra φ = π/2 rad."
+        ]
+      },
+      "difficulty": "recognition",
+      "concepts": [
+        "amplitude",
+        "initial_phase"
+      ],
+      "skills": [
+        "identify_parameters_from_equation"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B1_SHM_002",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_POSITION_AT_TIME",
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "title": "Tính pha và li độ tại t = 2 s",
+      "text": "Với x = 2cos(4πt + π/2) cm, tính pha và li độ tại t = 2 s.",
+      "parameters": [
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 2,
+          "unit": "cm",
+          "valueSI": 0.02
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc",
+          "value": 12.566370614359172,
+          "unit": "rad/s",
+          "expression": "4π"
+        },
+        {
+          "key": "phi",
+          "label": "Pha ban đầu",
+          "value": 1.5707963267948966,
+          "unit": "rad",
+          "expression": "π/2"
+        },
+        {
+          "key": "t",
+          "label": "Thời gian",
+          "value": 2,
+          "unit": "s"
+        }
+      ],
+      "target": [
+        {
+          "key": "phase",
+          "label": "Pha"
+        },
+        {
+          "key": "x",
+          "label": "Li độ"
+        }
+      ],
+      "answer": {
+        "short": "Pha tại t = 2 s là 17π/2 rad và x = 0 cm.",
+        "steps": [
+          "Pha bằng 4π·2 + π/2 = 17π/2 rad.",
+          "x = 2cos(17π/2) = 0 cm."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "phase",
+        "displacement"
+      ],
+      "skills": [
+        "substitute_formula"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B1_SHM_003",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_FIND_AMPLITUDE_FROM_RANGE",
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "title": "Tìm biên độ dao động của pít-tông",
+      "text": "Pít-tông dao động trên một đoạn thẳng dài 16 cm. Xác định biên độ dao động.",
+      "parameters": [
+        {
+          "key": "range_length",
+          "label": "Độ dài đoạn dao động",
+          "value": 16,
+          "unit": "cm",
+          "valueSI": 0.16
+        }
+      ],
+      "target": [
+        {
+          "key": "A",
+          "label": "Biên độ"
+        }
+      ],
+      "answer": {
+        "short": "Biên độ dao động là A = 8 cm.",
+        "steps": [
+          "Độ dài đoạn dao động bằng 2A.",
+          "Suy ra A = 16/2 = 8 cm."
+        ]
+      },
+      "difficulty": "recognition",
+      "concepts": [
+        "amplitude"
+      ],
+      "skills": [
+        "interpret_physical_range"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 1: Dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B2_SHM_001",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_FIND_PERIOD_FREQUENCY",
+      "simulationId": "SIM_SHM_GRAPH_3D",
+      "title": "Tìm tần số góc từ chu kì",
+      "text": "Một dao động điều hòa có chu kì T = 2 s. Tính tần số và tần số góc.",
+      "parameters": [
+        {
+          "key": "T",
+          "label": "Chu kì",
+          "value": 2,
+          "unit": "s"
+        }
+      ],
+      "target": [
+        {
+          "key": "f",
+          "label": "Tần số"
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc"
+        }
+      ],
+      "answer": {
+        "short": "f = 0,5 Hz và ω = π rad/s.",
+        "steps": [
+          "f = 1/T = 1/2 = 0,5 Hz.",
+          "ω = 2π/T = π rad/s."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "period",
+        "frequency",
+        "angular_frequency"
+      ],
+      "skills": [
+        "formula_substitution"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B2_SHM_002",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_READ_GRAPH",
+      "simulationId": "SIM_SHM_GRAPH_3D",
+      "title": "Đọc đồ thị Hình 2.1",
+      "text": "Từ Hình 2.1 xác định biên độ, chu kì, tần số, tần số góc.",
+      "parameters": [
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 0.2,
+          "unit": "m"
+        },
+        {
+          "key": "T",
+          "label": "Chu kì",
+          "value": 0.4,
+          "unit": "s"
+        }
+      ],
+      "target": [
+        {
+          "key": "A",
+          "label": "Biên độ"
+        },
+        {
+          "key": "T",
+          "label": "Chu kì"
+        },
+        {
+          "key": "f",
+          "label": "Tần số"
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc"
+        }
+      ],
+      "answer": {
+        "short": "A = 0,2 m; T = 0,4 s; f = 2,5 Hz; ω = 5π rad/s.",
+        "steps": [
+          "Từ đồ thị, A = 0,2 m.",
+          "Hai đỉnh liên tiếp cách nhau 0,4 s nên T = 0,4 s.",
+          "f = 1/T = 2,5 Hz.",
+          "ω = 2π/T = 5π rad/s."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "graph_reading",
+        "period"
+      ],
+      "skills": [
+        "read_graph"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "requiresFigure": true,
+      "figureIds": [
+        "FIG_2_1"
+      ],
+      "validationStatus": "needs_review",
+      "isActive": true
+    },
+    {
+      "id": "LI_B2_SHM_003",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_PHASE_DIFFERENCE",
+      "simulationId": "SIM_SHM_PHASE_COMPARE_3D",
+      "title": "Độ lệch pha π/2",
+      "text": "Hai dao động cùng biên độ, cùng chu kì; dao động 1 đạt cực đại sớm hơn dao động 2 một khoảng T/4. Xác định độ lệch pha.",
+      "parameters": [
+        {
+          "key": "time_shift",
+          "label": "Độ lệch thời gian",
+          "expression": "T/4"
+        }
+      ],
+      "target": [
+        {
+          "key": "delta_phi",
+          "label": "Độ lệch pha"
+        }
+      ],
+      "answer": {
+        "short": "Độ lệch pha là π/2 rad; dao động 1 sớm pha hơn dao động 2.",
+        "steps": [
+          "Một chu kì ứng với 2π rad.",
+          "T/4 ứng với π/2 rad.",
+          "Dao động 1 đạt cực đại trước nên sớm pha π/2."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "phase_difference"
+      ],
+      "skills": [
+        "compare_phase"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B2_SHM_004",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_WRITE_EQUATION",
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "title": "Viết phương trình từ A và f",
+      "text": "Vật dao động điều hòa có A = 10 cm, f = 5 Hz, tại t = 0 vật ở li độ cực đại dương. Viết phương trình dao động.",
+      "parameters": [
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 10,
+          "unit": "cm",
+          "valueSI": 0.1
+        },
+        {
+          "key": "f",
+          "label": "Tần số",
+          "value": 5,
+          "unit": "Hz"
+        },
+        {
+          "key": "phi",
+          "label": "Pha ban đầu",
+          "value": 0,
+          "unit": "rad"
+        }
+      ],
+      "target": [
+        {
+          "key": "equation",
+          "label": "Phương trình dao động"
+        }
+      ],
+      "answer": {
+        "short": "x = 10cos(10πt) cm.",
+        "steps": [
+          "ω = 2πf = 10π rad/s.",
+          "Vật ở biên dương lúc t=0 nên φ = 0.",
+          "Phương trình là x = 10cos(10πt) cm."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "write_equation"
+      ],
+      "skills": [
+        "construct_equation"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 2: Mô tả dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B3_SHM_001",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "patternId": "SHM_VELOCITY_EQUATION",
+      "simulationId": "SIM_SHM_XVA_3D",
+      "title": "Viết phương trình vận tốc",
+      "text": "Vật dao động theo x = 5cos(4πt) cm. Viết phương trình vận tốc.",
+      "parameters": [
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 5,
+          "unit": "cm",
+          "valueSI": 0.05
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc",
+          "value": 12.566370614359172,
+          "unit": "rad/s",
+          "expression": "4π"
+        },
+        {
+          "key": "phi",
+          "label": "Pha ban đầu",
+          "value": 0,
+          "unit": "rad"
+        }
+      ],
+      "target": [
+        {
+          "key": "v_equation",
+          "label": "Phương trình vận tốc"
+        }
+      ],
+      "answer": {
+        "short": "v = -20π sin(4πt) cm/s.",
+        "steps": [
+          "v = -ωA sin(ωt + φ).",
+          "Thay A = 5 cm, ω = 4π, φ = 0.",
+          "v = -20π sin(4πt) cm/s."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "velocity"
+      ],
+      "skills": [
+        "differentiate"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B3_SHM_002",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "patternId": "SHM_ACCELERATION_EQUATION",
+      "simulationId": "SIM_SHM_XVA_3D",
+      "title": "Viết phương trình gia tốc",
+      "text": "Vật dao động theo x = 5cos(4πt) cm. Viết phương trình gia tốc.",
+      "parameters": [
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 5,
+          "unit": "cm",
+          "valueSI": 0.05
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc",
+          "value": 12.566370614359172,
+          "unit": "rad/s",
+          "expression": "4π"
+        },
+        {
+          "key": "phi",
+          "label": "Pha ban đầu",
+          "value": 0,
+          "unit": "rad"
+        }
+      ],
+      "target": [
+        {
+          "key": "a_equation",
+          "label": "Phương trình gia tốc"
+        }
+      ],
+      "answer": {
+        "short": "a = -80π² cos(4πt) cm/s².",
+        "steps": [
+          "a = -ω²A cos(ωt + φ).",
+          "Thay A = 5 cm, ω = 4π.",
+          "a = -(4π)²·5cos(4πt) = -80π²cos(4πt) cm/s²."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "acceleration"
+      ],
+      "skills": [
+        "differentiate"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B3_SHM_003",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_kinematics",
+      "patternId": "SHM_MAX_VELOCITY_ACCELERATION",
+      "simulationId": "SIM_SHM_XVA_3D",
+      "title": "Tìm biên độ từ v và a",
+      "text": "Khi vật qua vị trí cân bằng, tốc độ là 20 cm/s. Khi tốc độ là 10 cm/s thì gia tốc có độ lớn 40√3 cm/s². Tính biên độ dao động.",
+      "parameters": [
+        {
+          "key": "vmax",
+          "label": "Tốc độ cực đại",
+          "value": 20,
+          "unit": "cm/s"
+        },
+        {
+          "key": "v",
+          "label": "Tốc độ",
+          "value": 10,
+          "unit": "cm/s"
+        },
+        {
+          "key": "a",
+          "label": "Gia tốc",
+          "unit": "cm/s^2",
+          "expression": "40√3"
+        }
+      ],
+      "target": [
+        {
+          "key": "A",
+          "label": "Biên độ"
+        }
+      ],
+      "answer": {
+        "short": "Biên độ dao động là A = 5 cm.",
+        "steps": [
+          "vmax = ωA = 20.",
+          "Dùng v² = ω²(A² - x²) và a = ω²|x|.",
+          "Từ dữ kiện suy ra ω = 4 rad/s và A = 5 cm."
+        ]
+      },
+      "difficulty": "high_application",
+      "concepts": [
+        "velocity",
+        "acceleration"
+      ],
+      "skills": [
+        "combine_relations"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 3: Vận tốc, gia tốc trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B4_SHM_001",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_problem_solving",
+      "patternId": "SHM_IDENTIFY_PARAMETERS",
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "title": "Bài tập xác định đại lượng từ phương trình",
+      "text": "Cho x = 5cos(10πt + π/6) cm. Xác định A, f, φ và x tại t = 0,05 s.",
+      "parameters": [
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 5,
+          "unit": "cm",
+          "valueSI": 0.05
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc",
+          "value": 31.41592653589793,
+          "unit": "rad/s",
+          "expression": "10π"
+        },
+        {
+          "key": "phi",
+          "label": "Pha ban đầu",
+          "value": 0.5235987755982988,
+          "unit": "rad",
+          "expression": "π/6"
+        },
+        {
+          "key": "t",
+          "label": "Thời gian",
+          "value": 0.05,
+          "unit": "s"
+        }
+      ],
+      "target": [
+        {
+          "key": "A",
+          "label": "Biên độ"
+        },
+        {
+          "key": "f",
+          "label": "Tần số"
+        },
+        {
+          "key": "phi",
+          "label": "Pha ban đầu"
+        },
+        {
+          "key": "x",
+          "label": "Li độ"
+        }
+      ],
+      "answer": {
+        "short": "A = 5 cm; f = 5 Hz; φ = π/6 rad; x = -2,5 cm.",
+        "steps": [
+          "So sánh với dạng chuẩn.",
+          "f = ω/(2π)=5 Hz.",
+          "Thay t=0,05 s vào phương trình được x=-2,5 cm."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "identify_parameters",
+        "position_at_time"
+      ],
+      "skills": [
+        "solve_multi_target"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 4: Bài tập về dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B4_SHM_002",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_problem_solving",
+      "patternId": "SHM_AMPLITUDE_FROM_X_V",
+      "simulationId": "SIM_SHM_XVA_3D",
+      "title": "Tìm A từ x0 và v0",
+      "text": "Vật dao động điều hòa với f = 2 Hz, tại t = 0 có x = 5 cm và v = -30 cm/s. Xác định biên độ.",
+      "parameters": [
+        {
+          "key": "f",
+          "label": "Tần số",
+          "value": 2,
+          "unit": "Hz"
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc",
+          "value": 12.566370614359172,
+          "unit": "rad/s",
+          "expression": "4π"
+        },
+        {
+          "key": "x0",
+          "label": "Li độ ban đầu",
+          "value": 5,
+          "unit": "cm"
+        },
+        {
+          "key": "v0",
+          "label": "Vận tốc ban đầu",
+          "value": -30,
+          "unit": "cm/s"
+        }
+      ],
+      "target": [
+        {
+          "key": "A",
+          "label": "Biên độ"
+        }
+      ],
+      "answer": {
+        "short": "A ≈ 5,54 cm.",
+        "steps": [
+          "ω = 2πf = 4π rad/s.",
+          "A = sqrt(x0² + v0²/ω²).",
+          "Thay số được A ≈ 5,54 cm."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "amplitude",
+        "initial_condition"
+      ],
+      "skills": [
+        "formula_substitution"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 4: Bài tập về dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B4_SHM_003",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_problem_solving",
+      "patternId": "SHM_MAX_VELOCITY_ACCELERATION",
+      "simulationId": "SIM_SHM_XVA_3D",
+      "title": "Tính vmax và amax",
+      "text": "Với f = 2 Hz và A ≈ 5,54 cm, tính vận tốc cực đại và gia tốc cực đại.",
+      "parameters": [
+        {
+          "key": "f",
+          "label": "Tần số",
+          "value": 2,
+          "unit": "Hz"
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc",
+          "value": 12.566370614359172,
+          "unit": "rad/s",
+          "expression": "4π"
+        },
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 5.54,
+          "unit": "cm",
+          "valueSI": 0.0554
+        }
+      ],
+      "target": [
+        {
+          "key": "vmax",
+          "label": "Vận tốc cực đại"
+        },
+        {
+          "key": "amax",
+          "label": "Gia tốc cực đại"
+        }
+      ],
+      "answer": {
+        "short": "vmax ≈ 70 cm/s; amax ≈ 8,8 m/s².",
+        "steps": [
+          "vmax = ωA.",
+          "amax = ω²A.",
+          "Đổi A sang m khi tính amax theo m/s²."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "maximum_velocity",
+        "maximum_acceleration"
+      ],
+      "skills": [
+        "formula_substitution"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 4: Bài tập về dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B4_SHM_004",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_WRITE_EQUATION",
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "title": "Viết phương trình với A và T",
+      "text": "Vật dao động có A = 10 cm, T = 2 s, tại t = 0 có x = A. Viết phương trình dao động.",
+      "parameters": [
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 10,
+          "unit": "cm",
+          "valueSI": 0.1
+        },
+        {
+          "key": "T",
+          "label": "Chu kì",
+          "value": 2,
+          "unit": "s"
+        },
+        {
+          "key": "phi",
+          "label": "Pha ban đầu",
+          "value": 0,
+          "unit": "rad"
+        }
+      ],
+      "target": [
+        {
+          "key": "equation",
+          "label": "Phương trình"
+        }
+      ],
+      "answer": {
+        "short": "x = 10cos(πt) cm.",
+        "steps": [
+          "ω = 2π/T = π rad/s.",
+          "x(0)=A nên φ=0.",
+          "Phương trình: x=10cos(πt) cm."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "write_equation"
+      ],
+      "skills": [
+        "construct_equation"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 4: Bài tập về dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B4_SHM_005",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_harmonic_motion",
+      "patternId": "SHM_POSITION_AT_TIME",
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "title": "Tìm thời điểm qua x = 5 cm",
+      "text": "Với x = 10cos(πt) cm, tìm thời điểm đầu tiên vật qua x = 5 cm.",
+      "parameters": [
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 10,
+          "unit": "cm"
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc",
+          "value": 3.141592653589793,
+          "unit": "rad/s",
+          "expression": "π"
+        },
+        {
+          "key": "phi",
+          "label": "Pha ban đầu",
+          "value": 0,
+          "unit": "rad"
+        },
+        {
+          "key": "x",
+          "label": "Li độ cần qua",
+          "value": 5,
+          "unit": "cm"
+        }
+      ],
+      "target": [
+        {
+          "key": "t",
+          "label": "Thời điểm"
+        }
+      ],
+      "answer": {
+        "short": "Thời điểm đầu tiên là t = 1/3 s.",
+        "steps": [
+          "10cos(πt)=5 nên cos(πt)=1/2.",
+          "Nghiệm dương nhỏ nhất: πt = π/3.",
+          "Suy ra t = 1/3 s."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "position_at_time"
+      ],
+      "skills": [
+        "solve_trigonometric_equation"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 4: Bài tập về dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B5_EN_001",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "patternId": "SHM_ENERGY_AT_POSITION",
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "title": "Tính động năng theo li độ",
+      "text": "Vật dao động điều hòa có m, omega, A. Tính động năng tại li độ x.",
+      "parameters": [],
+      "target": [
+        {
+          "key": "Wd",
+          "label": "Động năng"
+        }
+      ],
+      "answer": {
+        "short": "Wđ = 1/2 mω²(A² - x²).",
+        "steps": [
+          "Dùng Wđ = 1/2 mv².",
+          "Kết hợp v² = ω²(A²-x²).",
+          "Suy ra Wđ = 1/2 mω²(A²-x²)."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "kinetic_energy"
+      ],
+      "skills": [
+        "derive_formula"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B5_EN_002",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "patternId": "SHM_ENERGY_AT_POSITION",
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "title": "Tính thế năng theo li độ",
+      "text": "Vật dao động điều hòa có m, omega. Tính thế năng tại li độ x.",
+      "parameters": [],
+      "target": [
+        {
+          "key": "Wt",
+          "label": "Thế năng"
+        }
+      ],
+      "answer": {
+        "short": "Wt = 1/2 mω²x².",
+        "steps": [
+          "Cơ năng W = 1/2 mω²A².",
+          "Wđ = 1/2 mω²(A²-x²).",
+          "Wt = W - Wđ = 1/2 mω²x²."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "potential_energy"
+      ],
+      "skills": [
+        "derive_formula"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B5_EN_003",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "spring_oscillator",
+      "patternId": "SPRING_OSCILLATOR_PERIOD",
+      "simulationId": "SIM_SPRING_OSCILLATOR_3D",
+      "title": "Chu kì con lắc lò xo",
+      "text": "Con lắc lò xo có khối lượng m và độ cứng k. Tính chu kì T.",
+      "parameters": [
+        {
+          "key": "m",
+          "label": "Khối lượng",
+          "unit": "kg"
+        },
+        {
+          "key": "k",
+          "label": "Độ cứng",
+          "unit": "N/m"
+        }
+      ],
+      "target": [
+        {
+          "key": "T",
+          "label": "Chu kì"
+        }
+      ],
+      "answer": {
+        "short": "T = 2π√(m/k).",
+        "steps": [
+          "Với con lắc lò xo, ω = √(k/m).",
+          "T = 2π/ω.",
+          "Suy ra T = 2π√(m/k)."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "spring_oscillator",
+        "period"
+      ],
+      "skills": [
+        "formula_transform"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B5_EN_004",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "spring_oscillator",
+      "patternId": "SHM_ENERGY_RATIO",
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "title": "Động năng bằng 3 lần thế năng",
+      "text": "Con lắc lò xo có k = 100 N/m, m = 200 g, A = 5 cm. Xác định li độ khi động năng bằng 3 lần thế năng.",
+      "parameters": [
+        {
+          "key": "k",
+          "label": "Độ cứng",
+          "value": 100,
+          "unit": "N/m"
+        },
+        {
+          "key": "m",
+          "label": "Khối lượng",
+          "value": 200,
+          "unit": "g",
+          "valueSI": 0.2
+        },
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 5,
+          "unit": "cm",
+          "valueSI": 0.05
+        },
+        {
+          "key": "Wd_over_Wt",
+          "label": "Tỉ lệ động năng/thế năng",
+          "value": 3
+        }
+      ],
+      "target": [
+        {
+          "key": "x",
+          "label": "Li độ"
+        }
+      ],
+      "answer": {
+        "short": "|x| = A/2 = 2,5 cm, nên x = ±2,5 cm.",
+        "steps": [
+          "W = Wđ + Wt và Wđ = 3Wt nên W = 4Wt.",
+          "Wt/W = x²/A² = 1/4.",
+          "Suy ra |x| = A/2 = 2,5 cm."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "energy_ratio"
+      ],
+      "skills": [
+        "ratio_reasoning"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B5_EN_005",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "spring_oscillator",
+      "patternId": "SHM_MAX_VELOCITY_ACCELERATION",
+      "simulationId": "SIM_SPRING_OSCILLATOR_3D",
+      "title": "Tốc độ qua vị trí cân bằng",
+      "text": "Con lắc lò xo có k = 100 N/m, m = 200 g, A = 5 cm. Xác định tốc độ khi qua vị trí cân bằng.",
+      "parameters": [
+        {
+          "key": "k",
+          "label": "Độ cứng",
+          "value": 100,
+          "unit": "N/m"
+        },
+        {
+          "key": "m",
+          "label": "Khối lượng",
+          "value": 0.2,
+          "unit": "kg"
+        },
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 0.05,
+          "unit": "m"
+        }
+      ],
+      "target": [
+        {
+          "key": "vmax",
+          "label": "Tốc độ cực đại"
+        }
+      ],
+      "answer": {
+        "short": "vmax ≈ 1,12 m/s.",
+        "steps": [
+          "ω = √(k/m)=√(100/0,2)=√500 rad/s.",
+          "Qua vị trí cân bằng, v = vmax = ωA.",
+          "vmax = √500·0,05 ≈ 1,12 m/s."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "maximum_velocity",
+        "spring_oscillator"
+      ],
+      "skills": [
+        "formula_substitution"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B5_EN_006",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "spring_oscillator",
+      "patternId": "SHM_ENERGY_AT_POSITION",
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "title": "Thế năng con lắc lò xo tại x = -2,5 cm",
+      "text": "Con lắc lò xo có k = 100 N/m. Tính thế năng khi x = -2,5 cm.",
+      "parameters": [
+        {
+          "key": "k",
+          "label": "Độ cứng",
+          "value": 100,
+          "unit": "N/m"
+        },
+        {
+          "key": "x",
+          "label": "Li độ",
+          "value": -2.5,
+          "unit": "cm",
+          "valueSI": -0.025
+        }
+      ],
+      "target": [
+        {
+          "key": "Wt",
+          "label": "Thế năng"
+        }
+      ],
+      "answer": {
+        "short": "Wt = 0,03125 J.",
+        "steps": [
+          "Wt = 1/2 kx².",
+          "Đổi x = -0,025 m.",
+          "Wt = 1/2·100·(0,025)² = 0,03125 J."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "potential_energy"
+      ],
+      "skills": [
+        "unit_conversion",
+        "formula_substitution"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 5: Sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B6_OSC_001",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "damped_oscillation",
+      "patternId": "DAMPED_OSCILLATION_CONCEPT",
+      "simulationId": "SIM_DAMPED_OSCILLATION_3D",
+      "title": "Giải thích xích đu tắt dần",
+      "text": "Tại sao xích đu sẽ tắt dần nếu không được đẩy thêm?",
+      "parameters": [],
+      "target": [
+        {
+          "key": "concept_explanation",
+          "label": "Giải thích"
+        }
+      ],
+      "answer": {
+        "short": "Vì ma sát và lực cản không khí làm tiêu hao cơ năng, biên độ dao động giảm dần.",
+        "steps": [
+          "Xích đu chịu lực cản và ma sát.",
+          "Các lực này làm cơ năng chuyển hóa thành nhiệt năng.",
+          "Biên độ giảm dần nên dao động tắt dần."
+        ]
+      },
+      "difficulty": "recognition",
+      "concepts": [
+        "damped_oscillation"
+      ],
+      "skills": [
+        "concept_explain"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B6_OSC_002",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "forced_oscillation",
+      "patternId": "FORCED_OSCILLATION_CONCEPT",
+      "simulationId": "SIM_FORCED_RESONANCE_3D",
+      "title": "Nhận biết dao động cưỡng bức",
+      "text": "Thân xe buýt dao động khi xe dừng nhưng không tắt máy. Giải thích hiện tượng.",
+      "parameters": [],
+      "target": [
+        {
+          "key": "concept_explanation",
+          "label": "Giải thích"
+        }
+      ],
+      "answer": {
+        "short": "Đó là dao động cưỡng bức do lực tuần hoàn từ máy nổ gây ra.",
+        "steps": [
+          "Pít-tông trong xi lanh tạo lực tuần hoàn.",
+          "Thân xe chịu tác dụng của lực này.",
+          "Dao động ổn định có tần số bằng tần số lực cưỡng bức."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "forced_oscillation"
+      ],
+      "skills": [
+        "concept_explain"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B6_OSC_003",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "resonance",
+      "patternId": "RESONANCE_CONDITION",
+      "simulationId": "SIM_FORCED_RESONANCE_3D",
+      "title": "Điều kiện cộng hưởng",
+      "text": "Khi nào xảy ra cộng hưởng trong dao động cưỡng bức?",
+      "parameters": [],
+      "target": [
+        {
+          "key": "condition",
+          "label": "Điều kiện"
+        }
+      ],
+      "answer": {
+        "short": "Cộng hưởng xảy ra khi tần số lực cưỡng bức bằng hoặc gần bằng tần số riêng của hệ: f = f0.",
+        "steps": [
+          "Biên độ cưỡng bức phụ thuộc vào độ chênh giữa f và f0.",
+          "Khi f tiến đến f0, biên độ tăng cực đại.",
+          "Điều kiện cộng hưởng là f = f0."
+        ]
+      },
+      "difficulty": "recognition",
+      "concepts": [
+        "resonance"
+      ],
+      "skills": [
+        "concept_explain"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 6: Dao động tắt dần, dao động cưỡng bức, hiện tượng cộng hưởng"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B7_EN_001",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "simple_pendulum",
+      "patternId": "PENDULUM_SMALL_ANGLE_ENERGY",
+      "simulationId": "SIM_SIMPLE_PENDULUM_3D",
+      "title": "Vị trí động năng bằng thế năng của con lắc đơn",
+      "text": "Con lắc đơn góc nhỏ có biên độ góc alpha0. Tìm vị trí mà động năng bằng thế năng.",
+      "parameters": [
+        {
+          "key": "alpha0",
+          "label": "Biên độ góc",
+          "expression": "alpha0"
+        }
+      ],
+      "target": [
+        {
+          "key": "alpha",
+          "label": "Li độ góc"
+        }
+      ],
+      "answer": {
+        "short": "α = ±α0/√2.",
+        "steps": [
+          "Khi Wđ = Wt thì W = 2Wt.",
+          "Với góc nhỏ, Wt tỉ lệ với α².",
+          "Suy ra α² = α0²/2, nên α = ±α0/√2."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "simple_pendulum",
+        "energy_ratio"
+      ],
+      "skills": [
+        "energy_conservation"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B7_EN_002",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "patternId": "SHM_ENERGY_FROM_VELOCITY",
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "title": "Tính thế năng từ vận tốc",
+      "text": "Một vật m = 200 g dao động với omega = 2π rad/s, A = 10 cm. Tính thế năng khi v = 10 cm/s.",
+      "parameters": [
+        {
+          "key": "m",
+          "label": "Khối lượng",
+          "value": 200,
+          "unit": "g",
+          "valueSI": 0.2
+        },
+        {
+          "key": "omega",
+          "label": "Tần số góc",
+          "value": 6.283185307179586,
+          "unit": "rad/s",
+          "expression": "2π"
+        },
+        {
+          "key": "A",
+          "label": "Biên độ",
+          "value": 10,
+          "unit": "cm",
+          "valueSI": 0.1
+        },
+        {
+          "key": "v",
+          "label": "Tốc độ",
+          "value": 10,
+          "unit": "cm/s",
+          "valueSI": 0.1
+        }
+      ],
+      "target": [
+        {
+          "key": "Wt",
+          "label": "Thế năng"
+        }
+      ],
+      "answer": {
+        "short": "Wt ≈ 0,038 J.",
+        "steps": [
+          "Wt = 1/2 m(ω²A² - v²).",
+          "Đổi m = 0,2 kg, A = 0,1 m, v = 0,1 m/s.",
+          "Thay số được Wt ≈ 0,038 J."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "potential_energy",
+        "energy_conservation"
+      ],
+      "skills": [
+        "unit_conversion",
+        "formula_substitution"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B7_EN_003",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "patternId": "SHM_ENERGY_AT_POSITION",
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "title": "Tính cơ năng từ đồ thị năng lượng theo li độ",
+      "text": "Con lắc lò xo có k = 100 N/m. Tại điểm Wđ = Wt, đồ thị cho x = ±8 cm. Tính cơ năng W0.",
+      "parameters": [
+        {
+          "key": "k",
+          "label": "Độ cứng",
+          "value": 100,
+          "unit": "N/m"
+        },
+        {
+          "key": "x",
+          "label": "Li độ tại Wd=Wt",
+          "value": 8,
+          "unit": "cm",
+          "valueSI": 0.08
+        }
+      ],
+      "target": [
+        {
+          "key": "W0",
+          "label": "Cơ năng"
+        }
+      ],
+      "answer": {
+        "short": "W0 = 0,64 J.",
+        "steps": [
+          "Khi Wđ = Wt thì W0 = 2Wt.",
+          "Wt = 1/2 kx².",
+          "W0 = kx² = 100·(0,08)² = 0,64 J."
+        ]
+      },
+      "difficulty": "application",
+      "concepts": [
+        "mechanical_energy",
+        "graph_reading"
+      ],
+      "skills": [
+        "energy_conservation"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B7_EN_004",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "patternId": "SHM_ENERGY_RATIO",
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "title": "Tỉ lệ năng lượng tại x = A/2",
+      "text": "Một vật dao động điều hòa có li độ bằng một nửa biên độ. Động năng và thế năng chiếm bao nhiêu phần trăm cơ năng?",
+      "parameters": [
+        {
+          "key": "x_over_A",
+          "label": "Tỉ lệ x/A",
+          "value": 0.5
+        }
+      ],
+      "target": [
+        {
+          "key": "Wt_ratio",
+          "label": "Tỉ lệ thế năng"
+        },
+        {
+          "key": "Wd_ratio",
+          "label": "Tỉ lệ động năng"
+        }
+      ],
+      "answer": {
+        "short": "Thế năng chiếm 25%, động năng chiếm 75% cơ năng.",
+        "steps": [
+          "Wt/W = x²/A².",
+          "Với x = A/2, Wt/W = 1/4 = 25%.",
+          "Wđ/W = 1 - 1/4 = 3/4 = 75%."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "energy_ratio"
+      ],
+      "skills": [
+        "ratio_reasoning"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    },
+    {
+      "id": "LI_B7_EN_005",
+      "subject": "physics",
+      "grade": 11,
+      "chapter": "oscillation",
+      "topic": "shm_energy",
+      "patternId": "SHM_ENERGY_RATIO",
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "title": "Li độ khi thế năng bằng động năng",
+      "text": "Tại li độ nào thì thế năng bằng động năng?",
+      "parameters": [
+        {
+          "key": "condition",
+          "label": "Điều kiện",
+          "expression": "Wt = Wd"
+        }
+      ],
+      "target": [
+        {
+          "key": "x",
+          "label": "Li độ"
+        }
+      ],
+      "answer": {
+        "short": "|x| = A/√2, tức x = ±A/√2.",
+        "steps": [
+          "Wt/W = x²/A².",
+          "Khi Wt = Wđ thì Wt = W/2.",
+          "x²/A² = 1/2 nên x = ±A/√2."
+        ]
+      },
+      "difficulty": "understanding",
+      "concepts": [
+        "energy_ratio"
+      ],
+      "skills": [
+        "ratio_reasoning"
+      ],
+      "source": {
+        "sourceType": "textbook_cleaned_markdown",
+        "sourceName": "Vật lí 11 - Chương 1 Dao động",
+        "chapter": "Chương 1: Dao động",
+        "lesson": "Bài 7: Bài tập về sự chuyển hóa năng lượng trong dao động điều hòa"
+      },
+      "requiresFigure": false,
+      "figureIds": [],
+      "validationStatus": "verified",
+      "isActive": true
+    }
+  ],
+  "aiTestCases": [
+    {
+      "id": "AI_TEST_OSC_001",
+      "input": "Một vật dao động điều hòa có phương trình x = 2cos(4πt + π/2) cm. Xác định biên độ và pha ban đầu.",
+      "expected": {
+        "intent": "solve",
+        "topic": "simple_harmonic_motion",
+        "patternId": "SHM_IDENTIFY_PARAMETERS",
+        "targets": [
+          "A",
+          "phi"
+        ],
+        "simulationId": "SIM_SHM_BASIC_3D"
+      },
+      "sourceItemId": "LI_B1_SHM_001",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_002",
+      "input": "Với x = 2cos(4πt + π/2) cm, tính pha và li độ tại t = 2 s.",
+      "expected": {
+        "intent": "solve",
+        "topic": "simple_harmonic_motion",
+        "patternId": "SHM_POSITION_AT_TIME",
+        "targets": [
+          "phase",
+          "x"
+        ],
+        "simulationId": "SIM_SHM_BASIC_3D"
+      },
+      "sourceItemId": "LI_B1_SHM_002",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_003",
+      "input": "Pít-tông dao động trên một đoạn thẳng dài 16 cm. Xác định biên độ dao động.",
+      "expected": {
+        "intent": "solve",
+        "topic": "simple_harmonic_motion",
+        "patternId": "SHM_FIND_AMPLITUDE_FROM_RANGE",
+        "targets": [
+          "A"
+        ],
+        "simulationId": "SIM_SHM_BASIC_3D"
+      },
+      "sourceItemId": "LI_B1_SHM_003",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_004",
+      "input": "Một dao động điều hòa có chu kì T = 2 s. Tính tần số và tần số góc.",
+      "expected": {
+        "intent": "solve",
+        "topic": "simple_harmonic_motion",
+        "patternId": "SHM_FIND_PERIOD_FREQUENCY",
+        "targets": [
+          "f",
+          "omega"
+        ],
+        "simulationId": "SIM_SHM_GRAPH_3D"
+      },
+      "sourceItemId": "LI_B2_SHM_001",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_005",
+      "input": "Hai dao động cùng biên độ, cùng chu kì; dao động 1 đạt cực đại sớm hơn dao động 2 một khoảng T/4. Xác định độ lệch pha.",
+      "expected": {
+        "intent": "solve",
+        "topic": "simple_harmonic_motion",
+        "patternId": "SHM_PHASE_DIFFERENCE",
+        "targets": [
+          "delta_phi"
+        ],
+        "simulationId": "SIM_SHM_PHASE_COMPARE_3D"
+      },
+      "sourceItemId": "LI_B2_SHM_003",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_006",
+      "input": "Vật dao động điều hòa có A = 10 cm, f = 5 Hz, tại t = 0 vật ở li độ cực đại dương. Viết phương trình dao động.",
+      "expected": {
+        "intent": "solve",
+        "topic": "simple_harmonic_motion",
+        "patternId": "SHM_WRITE_EQUATION",
+        "targets": [
+          "equation"
+        ],
+        "simulationId": "SIM_SHM_BASIC_3D"
+      },
+      "sourceItemId": "LI_B2_SHM_004",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_007",
+      "input": "Vật dao động theo x = 5cos(4πt) cm. Viết phương trình vận tốc.",
+      "expected": {
+        "intent": "solve",
+        "topic": "shm_kinematics",
+        "patternId": "SHM_VELOCITY_EQUATION",
+        "targets": [
+          "v_equation"
+        ],
+        "simulationId": "SIM_SHM_XVA_3D"
+      },
+      "sourceItemId": "LI_B3_SHM_001",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_008",
+      "input": "Vật dao động theo x = 5cos(4πt) cm. Viết phương trình gia tốc.",
+      "expected": {
+        "intent": "solve",
+        "topic": "shm_kinematics",
+        "patternId": "SHM_ACCELERATION_EQUATION",
+        "targets": [
+          "a_equation"
+        ],
+        "simulationId": "SIM_SHM_XVA_3D"
+      },
+      "sourceItemId": "LI_B3_SHM_002",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_009",
+      "input": "Khi vật qua vị trí cân bằng, tốc độ là 20 cm/s. Khi tốc độ là 10 cm/s thì gia tốc có độ lớn 40√3 cm/s². Tính biên độ dao động.",
+      "expected": {
+        "intent": "solve",
+        "topic": "shm_kinematics",
+        "patternId": "SHM_MAX_VELOCITY_ACCELERATION",
+        "targets": [
+          "A"
+        ],
+        "simulationId": "SIM_SHM_XVA_3D"
+      },
+      "sourceItemId": "LI_B3_SHM_003",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_010",
+      "input": "Cho x = 5cos(10πt + π/6) cm. Xác định A, f, φ và x tại t = 0,05 s.",
+      "expected": {
+        "intent": "solve",
+        "topic": "shm_problem_solving",
+        "patternId": "SHM_IDENTIFY_PARAMETERS",
+        "targets": [
+          "A",
+          "f",
+          "phi",
+          "x"
+        ],
+        "simulationId": "SIM_SHM_BASIC_3D"
+      },
+      "sourceItemId": "LI_B4_SHM_001",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_011",
+      "input": "Vật dao động điều hòa với f = 2 Hz, tại t = 0 có x = 5 cm và v = -30 cm/s. Xác định biên độ.",
+      "expected": {
+        "intent": "solve",
+        "topic": "shm_problem_solving",
+        "patternId": "SHM_AMPLITUDE_FROM_X_V",
+        "targets": [
+          "A"
+        ],
+        "simulationId": "SIM_SHM_XVA_3D"
+      },
+      "sourceItemId": "LI_B4_SHM_002",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_012",
+      "input": "Với f = 2 Hz và A ≈ 5,54 cm, tính vận tốc cực đại và gia tốc cực đại.",
+      "expected": {
+        "intent": "solve",
+        "topic": "shm_problem_solving",
+        "patternId": "SHM_MAX_VELOCITY_ACCELERATION",
+        "targets": [
+          "vmax",
+          "amax"
+        ],
+        "simulationId": "SIM_SHM_XVA_3D"
+      },
+      "sourceItemId": "LI_B4_SHM_003",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_013",
+      "input": "Vật dao động có A = 10 cm, T = 2 s, tại t = 0 có x = A. Viết phương trình dao động.",
+      "expected": {
+        "intent": "solve",
+        "topic": "simple_harmonic_motion",
+        "patternId": "SHM_WRITE_EQUATION",
+        "targets": [
+          "equation"
+        ],
+        "simulationId": "SIM_SHM_BASIC_3D"
+      },
+      "sourceItemId": "LI_B4_SHM_004",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_014",
+      "input": "Với x = 10cos(πt) cm, tìm thời điểm đầu tiên vật qua x = 5 cm.",
+      "expected": {
+        "intent": "solve",
+        "topic": "simple_harmonic_motion",
+        "patternId": "SHM_POSITION_AT_TIME",
+        "targets": [
+          "t"
+        ],
+        "simulationId": "SIM_SHM_BASIC_3D"
+      },
+      "sourceItemId": "LI_B4_SHM_005",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_015",
+      "input": "Vật dao động điều hòa có m, omega, A. Tính động năng tại li độ x.",
+      "expected": {
+        "intent": "solve",
+        "topic": "shm_energy",
+        "patternId": "SHM_ENERGY_AT_POSITION",
+        "targets": [
+          "Wd"
+        ],
+        "simulationId": "SIM_SHM_ENERGY_3D"
+      },
+      "sourceItemId": "LI_B5_EN_001",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_016",
+      "input": "Vật dao động điều hòa có m, omega. Tính thế năng tại li độ x.",
+      "expected": {
+        "intent": "solve",
+        "topic": "shm_energy",
+        "patternId": "SHM_ENERGY_AT_POSITION",
+        "targets": [
+          "Wt"
+        ],
+        "simulationId": "SIM_SHM_ENERGY_3D"
+      },
+      "sourceItemId": "LI_B5_EN_002",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_017",
+      "input": "Con lắc lò xo có khối lượng m và độ cứng k. Tính chu kì T.",
+      "expected": {
+        "intent": "solve",
+        "topic": "spring_oscillator",
+        "patternId": "SPRING_OSCILLATOR_PERIOD",
+        "targets": [
+          "T"
+        ],
+        "simulationId": "SIM_SPRING_OSCILLATOR_3D"
+      },
+      "sourceItemId": "LI_B5_EN_003",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_018",
+      "input": "Con lắc lò xo có k = 100 N/m, m = 200 g, A = 5 cm. Xác định li độ khi động năng bằng 3 lần thế năng.",
+      "expected": {
+        "intent": "solve",
+        "topic": "spring_oscillator",
+        "patternId": "SHM_ENERGY_RATIO",
+        "targets": [
+          "x"
+        ],
+        "simulationId": "SIM_SHM_ENERGY_3D"
+      },
+      "sourceItemId": "LI_B5_EN_004",
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_019",
+      "input": "Dao động điều hòa là gì?",
+      "expected": {
+        "intent": "explain",
+        "topic": "simple_harmonic_motion",
+        "referenceChunkIds": [
+          "TH_SHM_001"
+        ],
+        "simulationId": "SIM_SHM_BASIC_3D"
+      },
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_020",
+      "input": "Tại sao ở vị trí cân bằng vận tốc cực đại?",
+      "expected": {
+        "intent": "explain",
+        "topic": "shm_kinematics",
+        "referenceChunkIds": [
+          "TH_SHM_020",
+          "TH_SHM_023"
+        ],
+        "simulationId": "SIM_SHM_XVA_3D"
+      },
+      "validationStatus": "verified"
+    },
+    {
+      "id": "AI_TEST_OSC_021",
+      "input": "Cộng hưởng xảy ra khi nào?",
+      "expected": {
+        "intent": "explain",
+        "topic": "resonance",
+        "referenceChunkIds": [
+          "TH_OSC_008",
+          "TH_OSC_009"
+        ],
+        "simulationId": "SIM_FORCED_RESONANCE_3D"
+      },
+      "validationStatus": "verified"
+    }
+  ],
+  "simulationTemplates": [
+    {
+      "simulationId": "SIM_MECHANICAL_OSCILLATION_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "mechanical_oscillation",
+      "title": "Mô phỏng dao động cơ quanh vị trí cân bằng",
+      "description": "Mô phỏng dao động cơ quanh vị trí cân bằng",
+      "sceneType": "generic_oscillator",
+      "requiredParameters": [
+        "A",
+        "period"
+      ],
+      "defaultParameters": {
+        "A": 0.05,
+        "period": 1
+      },
+      "outputs": [
+        "three_scene",
+        "position_trace"
+      ],
+      "supportedActions": [
+        "play",
+        "pause",
+        "reset",
+        "set_time",
+        "update_parameter",
+        "highlight_equilibrium",
+        "highlight_amplitude"
+      ],
+      "isActive": true
+    },
+    {
+      "simulationId": "SIM_SHM_BASIC_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "simple_harmonic_motion",
+      "title": "Mô phỏng 3D dao động điều hòa cơ bản",
+      "description": "Mô phỏng 3D dao động điều hòa cơ bản",
+      "sceneType": "spring_mass_oscillator",
+      "requiredParameters": [
+        "A",
+        "omega",
+        "phi"
+      ],
+      "defaultParameters": {
+        "A": 0.05,
+        "omega": 6.283185307,
+        "phi": 0
+      },
+      "outputs": [
+        "three_scene",
+        "x_t_graph",
+        "parameter_panel"
+      ],
+      "supportedActions": [
+        "play",
+        "pause",
+        "reset",
+        "set_time",
+        "update_parameter",
+        "highlight_equilibrium",
+        "highlight_amplitude",
+        "show_phase"
+      ],
+      "isActive": true
+    },
+    {
+      "simulationId": "SIM_SHM_GRAPH_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "simple_harmonic_motion",
+      "title": "Mô phỏng đồ thị li độ thời gian",
+      "description": "Mô phỏng đồ thị li độ thời gian",
+      "sceneType": "shm_graph_viewer",
+      "requiredParameters": [
+        "A",
+        "T",
+        "phi"
+      ],
+      "defaultParameters": {
+        "A": 0.1,
+        "T": 1,
+        "phi": 0
+      },
+      "outputs": [
+        "x_t_graph",
+        "graph_markers",
+        "parameter_panel"
+      ],
+      "supportedActions": [
+        "set_time",
+        "highlight_peak",
+        "highlight_zero_crossing"
+      ],
+      "isActive": true
+    },
+    {
+      "simulationId": "SIM_SHM_PHASE_COMPARE_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "simple_harmonic_motion",
+      "title": "So sánh pha hai dao động điều hòa",
+      "description": "So sánh pha hai dao động điều hòa",
+      "sceneType": "phase_comparison",
+      "requiredParameters": [
+        "A",
+        "omega",
+        "phi1",
+        "phi2"
+      ],
+      "defaultParameters": {
+        "A": 0.05,
+        "omega": 6.283185307,
+        "phi1": 0,
+        "phi2": -1.570796327
+      },
+      "outputs": [
+        "dual_oscillator_scene",
+        "dual_x_t_graph"
+      ],
+      "supportedActions": [
+        "play",
+        "pause",
+        "reset",
+        "set_time",
+        "update_parameter",
+        "highlight_equilibrium",
+        "highlight_amplitude",
+        "highlight_phase_difference"
+      ],
+      "isActive": true
+    },
+    {
+      "simulationId": "SIM_SHM_CIRCULAR_PROJECTION_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "simple_harmonic_motion",
+      "title": "Hình chiếu chuyển động tròn đều và dao động điều hòa",
+      "description": "Hình chiếu chuyển động tròn đều và dao động điều hòa",
+      "sceneType": "circular_projection",
+      "requiredParameters": [
+        "radius",
+        "omega",
+        "phi"
+      ],
+      "defaultParameters": {
+        "radius": 0.05,
+        "omega": 6.283185307,
+        "phi": 0
+      },
+      "outputs": [
+        "circle_scene",
+        "projection_axis",
+        "x_t_graph"
+      ],
+      "supportedActions": [
+        "play",
+        "pause",
+        "reset",
+        "set_time",
+        "update_parameter",
+        "highlight_equilibrium",
+        "highlight_amplitude",
+        "show_projection_line"
+      ],
+      "isActive": true
+    },
+    {
+      "simulationId": "SIM_SHM_XVA_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "shm_kinematics",
+      "title": "Mô phỏng li độ vận tốc gia tốc",
+      "description": "Mô phỏng li độ vận tốc gia tốc",
+      "sceneType": "xva_vectors",
+      "requiredParameters": [
+        "A",
+        "omega",
+        "phi"
+      ],
+      "defaultParameters": {
+        "A": 0.05,
+        "omega": 6.283185307,
+        "phi": 0
+      },
+      "outputs": [
+        "three_scene",
+        "x_t_graph",
+        "v_t_graph",
+        "a_t_graph",
+        "vector_overlay"
+      ],
+      "supportedActions": [
+        "play",
+        "pause",
+        "reset",
+        "set_time",
+        "update_parameter",
+        "highlight_equilibrium",
+        "highlight_amplitude",
+        "show_velocity_vector",
+        "show_acceleration_vector"
+      ],
+      "isActive": true
+    },
+    {
+      "simulationId": "SIM_SHM_ENERGY_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "shm_energy",
+      "title": "Mô phỏng chuyển hóa động năng thế năng",
+      "description": "Mô phỏng chuyển hóa động năng thế năng",
+      "sceneType": "energy_oscillator",
+      "requiredParameters": [
+        "A",
+        "omega",
+        "m"
+      ],
+      "defaultParameters": {
+        "A": 0.05,
+        "omega": 6.283185307,
+        "m": 0.2
+      },
+      "outputs": [
+        "three_scene",
+        "energy_bar",
+        "kinetic_energy",
+        "potential_energy",
+        "total_energy"
+      ],
+      "supportedActions": [
+        "play",
+        "pause",
+        "reset",
+        "set_time",
+        "update_parameter",
+        "highlight_equilibrium",
+        "highlight_amplitude",
+        "show_energy_bars"
+      ],
+      "isActive": true
+    },
+    {
+      "simulationId": "SIM_SPRING_OSCILLATOR_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "spring_oscillator",
+      "title": "Mô phỏng con lắc lò xo",
+      "description": "Mô phỏng con lắc lò xo",
+      "sceneType": "spring_oscillator",
+      "requiredParameters": [
+        "m",
+        "k",
+        "A"
+      ],
+      "defaultParameters": {
+        "m": 0.2,
+        "k": 100,
+        "A": 0.05
+      },
+      "outputs": [
+        "three_scene",
+        "x_t_graph",
+        "energy_bar"
+      ],
+      "supportedActions": [
+        "play",
+        "pause",
+        "reset",
+        "set_time",
+        "update_parameter",
+        "highlight_equilibrium",
+        "highlight_amplitude",
+        "show_spring_force"
+      ],
+      "isActive": true
+    },
+    {
+      "simulationId": "SIM_SIMPLE_PENDULUM_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "simple_pendulum",
+      "title": "Mô phỏng con lắc đơn góc nhỏ",
+      "description": "Mô phỏng con lắc đơn góc nhỏ",
+      "sceneType": "simple_pendulum",
+      "requiredParameters": [
+        "l",
+        "g",
+        "alpha0"
+      ],
+      "defaultParameters": {
+        "l": 1,
+        "g": 9.8,
+        "alpha0": 0.1
+      },
+      "outputs": [
+        "three_scene",
+        "angle_time_graph",
+        "energy_bar"
+      ],
+      "supportedActions": [
+        "play",
+        "pause",
+        "reset",
+        "set_time",
+        "update_parameter",
+        "highlight_equilibrium",
+        "highlight_amplitude",
+        "show_angle",
+        "show_tangent_axis"
+      ],
+      "isActive": true
+    },
+    {
+      "simulationId": "SIM_DAMPED_OSCILLATION_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "damped_oscillation",
+      "title": "Mô phỏng dao động tắt dần",
+      "description": "Mô phỏng dao động tắt dần",
+      "sceneType": "damped_oscillator",
+      "requiredParameters": [
+        "A",
+        "omega",
+        "damping"
+      ],
+      "defaultParameters": {
+        "A": 0.1,
+        "omega": 6.283185307,
+        "damping": 0.1
+      },
+      "outputs": [
+        "three_scene",
+        "x_t_graph",
+        "amplitude_envelope"
+      ],
+      "supportedActions": [
+        "play",
+        "pause",
+        "reset",
+        "set_time",
+        "update_parameter",
+        "highlight_equilibrium",
+        "highlight_amplitude",
+        "update_damping"
+      ],
+      "isActive": true
+    },
+    {
+      "simulationId": "SIM_FORCED_RESONANCE_3D",
+      "engine": "threejs",
+      "version": "1.0.0",
+      "subject": "physics",
+      "topic": "resonance",
+      "title": "Mô phỏng dao động cưỡng bức và cộng hưởng",
+      "description": "Mô phỏng dao động cưỡng bức và cộng hưởng",
+      "sceneType": "forced_resonance",
+      "requiredParameters": [
+        "naturalFrequency",
+        "drivingFrequency",
+        "damping",
+        "drivingAmplitude"
+      ],
+      "defaultParameters": {
+        "naturalFrequency": 1,
+        "drivingFrequency": 1,
+        "damping": 0.1,
+        "drivingAmplitude": 1
+      },
+      "outputs": [
+        "three_scene",
+        "resonance_curve",
+        "amplitude_meter"
+      ],
+      "supportedActions": [
+        "play",
+        "pause",
+        "reset",
+        "set_time",
+        "update_parameter",
+        "highlight_equilibrium",
+        "highlight_amplitude",
+        "sweep_frequency",
+        "highlight_resonance"
+      ],
+      "isActive": true
+    }
+  ],
+  "mediaAssets": [
+    {
+      "figureId": "FIG_1_1",
+      "lessonId": "PHYS11_OSC_L01",
+      "assetPath": "assets/images/hinh-1-1.png",
+      "caption": "Hình 1.1",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_1_2",
+      "lessonId": "PHYS11_OSC_L01",
+      "assetPath": "assets/images/hinh-1-2.png",
+      "caption": "Hình 1.2",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_1_3",
+      "lessonId": "PHYS11_OSC_L01",
+      "assetPath": "assets/images/hinh-1-3.png",
+      "caption": "Hình 1.3",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_1_4",
+      "lessonId": "PHYS11_OSC_L01",
+      "assetPath": "assets/images/hinh-1-4.png",
+      "caption": "Hình 1.4",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_1_5",
+      "lessonId": "PHYS11_OSC_L01",
+      "assetPath": "assets/images/hinh-1-5.png",
+      "caption": "Hình 1.5",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_1_6",
+      "lessonId": "PHYS11_OSC_L01",
+      "assetPath": "assets/images/hinh-1-6.png",
+      "caption": "Hình 1.6",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_1_7",
+      "lessonId": "PHYS11_OSC_L01",
+      "assetPath": "assets/images/hinh-1-7.png",
+      "caption": "Hình 1.7",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_2_1",
+      "lessonId": "PHYS11_OSC_L02",
+      "assetPath": "assets/images/hinh-2-1.png",
+      "caption": "Hình 2.1",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_2_2",
+      "lessonId": "PHYS11_OSC_L02",
+      "assetPath": "assets/images/hinh-2-2.png",
+      "caption": "Hình 2.2",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_2_3",
+      "lessonId": "PHYS11_OSC_L02",
+      "assetPath": "assets/images/hinh-2-3.png",
+      "caption": "Hình 2.3",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_2_4",
+      "lessonId": "PHYS11_OSC_L02",
+      "assetPath": "assets/images/hinh-2-4.png",
+      "caption": "Hình 2.4",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_2_5",
+      "lessonId": "PHYS11_OSC_L02",
+      "assetPath": "assets/images/hinh-2-5.png",
+      "caption": "Hình 2.5",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_2_6",
+      "lessonId": "PHYS11_OSC_L02",
+      "assetPath": "assets/images/hinh-2-6.png",
+      "caption": "Hình 2.6",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_2_7",
+      "lessonId": "PHYS11_OSC_L02",
+      "assetPath": "assets/images/hinh-2-7.png",
+      "caption": "Hình 2.7",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_3_1",
+      "lessonId": "PHYS11_OSC_L03",
+      "assetPath": "assets/images/hinh-3-1.png",
+      "caption": "Hình 3.1",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_3_2",
+      "lessonId": "PHYS11_OSC_L03",
+      "assetPath": "assets/images/hinh-3-2.png",
+      "caption": "Hình 3.2",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_3_3",
+      "lessonId": "PHYS11_OSC_L03",
+      "assetPath": "assets/images/hinh-3-3.png",
+      "caption": "Hình 3.3",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_3_4",
+      "lessonId": "PHYS11_OSC_L03",
+      "assetPath": "assets/images/hinh-3-4.png",
+      "caption": "Hình 3.4",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_4_1",
+      "lessonId": "PHYS11_OSC_L04",
+      "assetPath": "assets/images/hinh-4-1.png",
+      "caption": "Hình 4.1",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_4_2",
+      "lessonId": "PHYS11_OSC_L04",
+      "assetPath": "assets/images/hinh-4-2.png",
+      "caption": "Hình 4.2",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_4_3",
+      "lessonId": "PHYS11_OSC_L04",
+      "assetPath": "assets/images/hinh-4-3.png",
+      "caption": "Hình 4.3",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_4_4",
+      "lessonId": "PHYS11_OSC_L04",
+      "assetPath": "assets/images/hinh-4-4.png",
+      "caption": "Hình 4.4",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_5_1",
+      "lessonId": "PHYS11_OSC_L05",
+      "assetPath": "assets/images/hinh-5-1.png",
+      "caption": "Hình 5.1",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_5_2",
+      "lessonId": "PHYS11_OSC_L05",
+      "assetPath": "assets/images/hinh-5-2.png",
+      "caption": "Hình 5.2",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_5_3",
+      "lessonId": "PHYS11_OSC_L05",
+      "assetPath": "assets/images/hinh-5-3.png",
+      "caption": "Hình 5.3",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_5_4",
+      "lessonId": "PHYS11_OSC_L05",
+      "assetPath": "assets/images/hinh-5-4.png",
+      "caption": "Hình 5.4",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_5_5",
+      "lessonId": "PHYS11_OSC_L05",
+      "assetPath": "assets/images/hinh-5-5.png",
+      "caption": "Hình 5.5",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_5_6",
+      "lessonId": "PHYS11_OSC_L05",
+      "assetPath": "assets/images/hinh-5-6.png",
+      "caption": "Hình 5.6",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_5_7",
+      "lessonId": "PHYS11_OSC_L05",
+      "assetPath": "assets/images/hinh-5-7.png",
+      "caption": "Hình 5.7",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_6_1",
+      "lessonId": "PHYS11_OSC_L06",
+      "assetPath": "assets/images/hinh-6-1.png",
+      "caption": "Hình 6.1",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_6_2",
+      "lessonId": "PHYS11_OSC_L06",
+      "assetPath": "assets/images/hinh-6-2.png",
+      "caption": "Hình 6.2",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_6_3",
+      "lessonId": "PHYS11_OSC_L06",
+      "assetPath": "assets/images/hinh-6-3.png",
+      "caption": "Hình 6.3",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_6_4",
+      "lessonId": "PHYS11_OSC_L06",
+      "assetPath": "assets/images/hinh-6-4.png",
+      "caption": "Hình 6.4",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_7_1",
+      "lessonId": "PHYS11_OSC_L07",
+      "assetPath": "assets/images/hinh-7-1.png",
+      "caption": "Hình 7.1",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_7_2",
+      "lessonId": "PHYS11_OSC_L07",
+      "assetPath": "assets/images/hinh-7-2.png",
+      "caption": "Hình 7.2",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_7_3",
+      "lessonId": "PHYS11_OSC_L07",
+      "assetPath": "assets/images/hinh-7-3.png",
+      "caption": "Hình 7.3",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_7_4",
+      "lessonId": "PHYS11_OSC_L07",
+      "assetPath": "assets/images/hinh-7-4.png",
+      "caption": "Hình 7.4",
+      "status": "asset_reference_only"
+    },
+    {
+      "figureId": "FIG_7_5",
+      "lessonId": "PHYS11_OSC_L07",
+      "assetPath": "assets/images/hinh-7-5.png",
+      "caption": "Hình 7.5",
+      "status": "asset_reference_only"
+    }
+  ]
+}

@@ -9,10 +9,16 @@ export type RagReference = {
   id: string;
   title: string;
   text: string;
+  subject?: string;
+  grade?: number;
+  chapter?: string;
+  lessonId?: string;
+  lessonTitle?: string;
   topic?: string;
   source?: string;
   metadata?: object;
   keywords?: string[];
+  validationStatus?: string;
   score?: number;
   finalScore?: number;
   vectorScore?: number;
@@ -24,6 +30,12 @@ export type RagReference = {
   formulaBoost?: number;
   textBoost?: number;
   topicBoost?: number;
+  subjectBoost?: number;
+  gradeBoost?: number;
+  chapterBoost?: number;
+  lessonBoost?: number;
+  sectionBoost?: number;
+  validationBoost?: number;
   retrievalType?: 'vector' | 'keyword' | 'hybrid';
 };
 
@@ -31,6 +43,9 @@ export type RetrieveTheoryChunksInput = {
   message: string;
   subject?: string;
   grade?: number;
+  chapter?: string;
+  lessonId?: string;
+  questionType?: string;
   topic?: string;
   simulationId?: string;
   topK?: number;
@@ -41,10 +56,16 @@ type VectorSearchRow = {
   id: string;
   title: string | null;
   text: string;
+  subject: string;
+  grade: number;
+  chapter: string;
+  lessonId: string | null;
+  lessonTitle: string | null;
   topic: string;
   source: unknown;
   metadata: unknown;
   keywords: unknown;
+  validationStatus: string | null;
   vectorScore: number | string;
 };
 
@@ -188,6 +209,11 @@ export class RagRetrievalService {
       id: row.id,
       title: row.title ?? row.id,
       text: row.text,
+      subject: row.subject,
+      grade: row.grade,
+      chapter: row.chapter,
+      ...(row.lessonId ? { lessonId: row.lessonId } : {}),
+      ...(row.lessonTitle ? { lessonTitle: row.lessonTitle } : {}),
       topic: row.topic,
       ...(this.sourceName(row.source)
         ? { source: this.sourceName(row.source) }
@@ -196,6 +222,9 @@ export class RagRetrievalService {
         ? { metadata: this.asMetadata(row.metadata) }
         : {}),
       keywords: this.asStringArray(row.keywords),
+      ...(row.validationStatus
+        ? { validationStatus: row.validationStatus }
+        : {}),
       vectorScore: this.normalizeScore(Number(row.vectorScore)),
       retrievalType: 'vector' as const,
     }));
@@ -213,10 +242,16 @@ export class RagRetrievalService {
             id,
             title,
             text,
+            subject,
+            grade,
+            chapter,
+            lesson_id AS "lessonId",
+            lesson_title AS "lessonTitle",
             topic,
             source,
             metadata,
             keywords,
+            validation_status AS "validationStatus",
             1 - (embedding <=> $1::vector) AS "vectorScore"
           FROM theory_chunks
           WHERE embedding IS NOT NULL
@@ -383,6 +418,12 @@ export class RagRetrievalService {
           formulaBoost: boosts.formulaBoost,
           textBoost: boosts.textBoost,
           topicBoost: boosts.topicBoost,
+          subjectBoost: boosts.subjectBoost,
+          gradeBoost: boosts.gradeBoost,
+          chapterBoost: boosts.chapterBoost,
+          lessonBoost: boosts.lessonBoost,
+          sectionBoost: boosts.sectionBoost,
+          validationBoost: boosts.validationBoost,
           retrievalType:
             hasVector && hasKeyword
               ? ('hybrid' as const)
@@ -405,10 +446,18 @@ export class RagRetrievalService {
       id: chunk.id,
       title: chunk.title ?? chunk.id,
       text: chunk.text,
+      subject: chunk.subject,
+      grade: chunk.grade,
+      chapter: chunk.chapter,
+      ...(chunk.lessonId ? { lessonId: chunk.lessonId } : {}),
+      ...(chunk.lessonTitle ? { lessonTitle: chunk.lessonTitle } : {}),
       topic: chunk.topic,
       ...(source ? { source } : {}),
       ...(chunk.metadata ? { metadata: chunk.metadata } : {}),
       keywords: chunk.keywords ?? [],
+      ...(chunk.validationStatus
+        ? { validationStatus: chunk.validationStatus }
+        : {}),
       keywordScore: this.keywordScore(chunk, message),
       retrievalType: 'keyword',
     };
@@ -465,6 +514,7 @@ export class RagRetrievalService {
       this.formulaAliases(input.message, activeAliases),
       0.1,
     );
+    const formulaQueryBoost = this.formulaQueryBoost(reference, input);
     const definitionBoost =
       this.isDefinitionQuestion(input.message) &&
       this.hasDefinitionPattern(normalizedText, activeAliases)
@@ -476,22 +526,47 @@ export class RagRetrievalService {
         definitionBoost,
     );
     const topicBoost = input.topic && reference.topic === input.topic ? 0.05 : 0;
-    const totalBoost = this.normalizeScore(
+    const subjectBoost =
+      input.subject && reference.subject === input.subject ? 0.03 : 0;
+    const gradeBoost =
+      input.grade !== undefined && reference.grade === input.grade ? 0.03 : 0;
+    const chapterBoost =
+      input.chapter && reference.chapter === input.chapter ? 0.06 : 0;
+    const lessonBoost =
+      input.lessonId && reference.lessonId === input.lessonId ? 0.12 : 0;
+    const sectionBoost = this.sectionCueBoost(reference, input.message);
+    const validationBoost = this.validationStatusBoost(
+      reference.validationStatus,
+    );
+    const finalFormulaBoost = Math.max(formulaBoost, formulaQueryBoost);
+    const totalBoost = this.clampBoost(
       conceptBoost +
         titleBoost +
         metadataBoost +
-        formulaBoost +
+        finalFormulaBoost +
         textBoost +
-        topicBoost,
+        topicBoost +
+        subjectBoost +
+        gradeBoost +
+        chapterBoost +
+        lessonBoost +
+        sectionBoost +
+        validationBoost,
     );
 
     return {
       conceptBoost,
       titleBoost,
       metadataBoost,
-      formulaBoost,
+      formulaBoost: finalFormulaBoost,
       textBoost,
       topicBoost,
+      subjectBoost,
+      gradeBoost,
+      chapterBoost,
+      lessonBoost,
+      sectionBoost,
+      validationBoost,
       totalBoost,
     };
   }
@@ -649,6 +724,153 @@ export class RagRetrievalService {
     });
   }
 
+  private formulaQueryBoost(
+    reference: RagReference,
+    input: RetrieveTheoryChunksInput,
+  ) {
+    if (!this.isFormulaAwareQuery(input)) {
+      return 0;
+    }
+
+    const haystack = this.decodeMojibake(
+      [
+        reference.title,
+        reference.text,
+        reference.metadata ? JSON.stringify(reference.metadata) : '',
+      ]
+        .filter(Boolean)
+        .join(' '),
+    );
+    const hasFormula = this.hasFormulaSyntax(haystack);
+    const querySymbols = this.mathSymbols(input.message);
+    const referenceSymbols = new Set(this.mathSymbols(haystack));
+    const matchedSymbols = querySymbols.filter((symbol) =>
+      referenceSymbols.has(symbol),
+    ).length;
+    const symbolBoost =
+      querySymbols.length > 0
+        ? Math.min(0.12, (matchedSymbols / querySymbols.length) * 0.12)
+        : 0;
+
+    return (hasFormula ? 0.12 : 0) + symbolBoost;
+  }
+
+  private sectionCueBoost(reference: RagReference, message: string) {
+    const cues = this.sectionCues(message);
+    if (cues.length === 0) {
+      return 0;
+    }
+
+    const title = this.normalize(reference.title);
+    const text = this.normalize(reference.text);
+    const metadata = this.normalize(
+      [
+        reference.topic,
+        reference.lessonTitle,
+        reference.metadata ? JSON.stringify(reference.metadata) : '',
+        ...(reference.keywords ?? []),
+      ]
+        .filter(Boolean)
+        .join(' '),
+    );
+    let score = 0;
+
+    for (const cue of cues) {
+      if (this.hasExactAlias(title, cue)) {
+        score = Math.max(score, 0.55);
+      } else if (
+        text.startsWith(cue) ||
+        text.startsWith(`**${cue}`) ||
+        this.hasExactAlias(metadata, cue)
+      ) {
+        score = Math.max(score, 0.35);
+      } else if (this.hasExactAlias(text, cue)) {
+        score = Math.max(score, 0.2);
+      }
+    }
+
+    return score;
+  }
+
+  private sectionCues(message: string) {
+    const normalized = this.normalize(message);
+    const cues: string[] = [];
+    const directCues = [
+      'giai',
+      'van dung',
+      'an dung',
+      'chu y',
+      'de bai',
+      'nhan xet',
+      'kien thuc',
+    ];
+
+    for (const cue of directCues) {
+      if (normalized.includes(cue)) {
+        cues.push(cue);
+      }
+    }
+
+    for (const match of normalized.matchAll(/\bhd\s*(\d+)\b/g)) {
+      cues.push(`hd${match[1]}`);
+    }
+    for (const match of normalized.matchAll(/\bluyen tap\s*(\d+)\b/g)) {
+      cues.push(`luyen tap ${match[1]}`);
+    }
+    for (const match of normalized.matchAll(/\bbuoc\s*(\d+)\b/g)) {
+      cues.push(`buoc ${match[1]}`);
+    }
+
+    return [...new Set(cues)];
+  }
+
+  private validationStatusBoost(status: string | undefined) {
+    const normalized = this.normalize(status ?? '');
+    if (
+      ['reviewed', 'verified', 'solver verified', 'solver_verified'].includes(
+        normalized,
+      )
+    ) {
+      return 0.08;
+    }
+    if (normalized === 'ai generated' || normalized === 'ai_generated') {
+      return 0.02;
+    }
+    if (normalized === 'needs review' || normalized === 'needs_review') {
+      return -0.02;
+    }
+
+    return 0;
+  }
+
+  private isFormulaAwareQuery(input: RetrieveTheoryChunksInput) {
+    return (
+      input.questionType === 'formula' ||
+      input.questionType === 'calculation' ||
+      this.hasFormulaSyntax(input.message)
+    );
+  }
+
+  private hasFormulaSyntax(value: string) {
+    return /[$=<>≤≥+\-*/^]|\\frac|\\sqrt|\\begin|omega|lambda|pi|sin|cos|tan|log|[πλµωφΩ]/i.test(
+      this.decodeMojibake(value),
+    );
+  }
+
+  private mathSymbols(value: string) {
+    const decoded = this.decodeMojibake(value)
+      .toLowerCase()
+      .replace(/\\omega|ω/g, ' omega ')
+      .replace(/\\varphi|φ/g, ' phi ')
+      .replace(/\\lambda|λ/g, ' lambda ')
+      .replace(/\\pi|π/g, ' pi ');
+    const symbols = decoded.match(
+      /\b(?:omega|phi|lambda|pi|sin|cos|tan|log|sqrt|frac)\b|[=<>≤≥+\-*/^]|\b[a-z]\b/g,
+    );
+
+    return [...new Set(symbols ?? [])];
+  }
+
   private isPhysicsSymbol(token: string) {
     return ['a', 'f', 'k', 'm', 't', 'v', 'w', 'x'].includes(token);
   }
@@ -674,6 +896,14 @@ export class RagRetrievalService {
     }
 
     return Math.max(0, Math.min(1, value));
+  }
+
+  private clampBoost(value: number) {
+    if (!Number.isFinite(value)) {
+      return 0;
+    }
+
+    return Math.max(-0.25, Math.min(1, value));
   }
 
   private normalizeTopK(value: number | undefined, config: RagRetrievalConfig) {

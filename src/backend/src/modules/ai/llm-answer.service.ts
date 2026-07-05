@@ -179,7 +179,7 @@ export class LlmAnswerService {
       detected: input.detected,
       rag: {
         topK: input.references.length,
-        references: input.references.slice(0, 5).map((reference) => ({
+        references: input.references.slice(0, 8).map((reference) => ({
           id: reference.id,
           title: reference.title,
           text: this.truncate(reference.text, 1200),
@@ -208,6 +208,11 @@ export class LlmAnswerService {
         max_length: 'short',
         must_use_references: true,
         avoid_hallucination: true,
+        calculation_or_formula_questions: [
+          'Use only formulae and facts that appear in rag.references unless explicitly saying the references are missing required data.',
+          'For calculation: state the formula from references, substitute given values, compute, include the unit, then give the final answer.',
+          'If a required value or formula is absent from rag.references, say the data is insufficient instead of inventing a solution.',
+        ],
         include_simulation_hint: Boolean(input.simulation?.simulationId),
       },
     };
@@ -227,6 +232,9 @@ export class LlmAnswerService {
           'Nếu context không đủ: nói rõ chưa đủ dữ liệu trong học liệu hiện tại; chỉ thêm kiến thức nền khi chắc và không bịa nguồn.',
           'Không dùng markdown phức tạp. Không trả lời quá dài. Không nhắc máy móc "theo context được cung cấp" trong mọi câu.',
           'Chỉ trả JSON hợp lệ, không markdown, không văn bản ngoài JSON.',
+          'Với câu hỏi tính toán hoặc công thức: chỉ dùng công thức/sự kiện xuất hiện trong rag.references, trừ khi nói rõ tài liệu thiếu dữ kiện.',
+          'Khi tính toán, trình bày theo thứ tự: công thức từ tài liệu, thay số, phép tính, đơn vị, kết luận cuối.',
+          'Nếu thiếu công thức hoặc dữ kiện cần thiết trong rag.references, trả lời là chưa đủ dữ kiện thay vì tự bịa công thức.',
           'Schema bắt buộc: {"answer":"...","steps":["..."],"formulae":["..."],"simulation_hint":"...","used_reference_ids":["..."],"confidence":"high|medium|low","needs_more_context":false,"safety_notes":[]}',
           'used_reference_ids chỉ được chứa id có trong rag.references.',
         ].join('\n'),

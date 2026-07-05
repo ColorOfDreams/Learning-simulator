@@ -16,7 +16,7 @@
   "text": "Một vật chuyển động thẳng đều với v = 5 m/s. Quãng đường sau 10s?"
 }
 ```
-
+  
 **Response 200:**
 ```json
 {

@@ -1,0 +1,3727 @@
+[
+  {
+    "id": "AI_TEST_PHY11_001",
+    "input": "> Trong cuộc sống hằng ngày và trong kĩ thuật, ta thường gặp những vật dao động, ví dụ như dây đàn ghi-ta rung động, chiếc đu đung đưa, pít-tông chuyển động lên xuống trong xi lanh của động cơ,... > > Chuyển động của những vật này được gọi là dao động cơ. Vậy dao động cơ có những đặc điểm gì chung?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "oscillation",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L01_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_002",
+    "input": "Một vật dao động điều hòa có phương trình:  $$ x=2\\cos\\left(4\\pi t+\\frac{\\pi}{2}\\right)\\text{ cm} $$  Hãy xác định:  1. Biên độ và pha ban đầu của dao động. 2. Pha và li độ của dao động tại thời điểm:  $$ t=2\\text{ s} $$  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "x": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 4.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 2.0,
+          "unit": null
+        },
+        "t": {
+          "value": 2.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L01_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_003",
+    "input": "Đồ thị li độ – thời gian của một con lắc đơn dao động điều hòa được mô tả trong Hình 1.3.  1. Hãy mô tả dao động điều hòa của con lắc đơn. 2. Xác định biên độ và li độ của con lắc tại các thời điểm:  $$ t=0,\\qquad t=0{,}5\\text{ s},\\qquad t=2{,}0\\text{ s} $$",
+    "expected": {
+      "intent": "solve",
+      "topic": "oscillation",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 1.3,
+          "unit": null
+        },
+        "p2": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 2.0,
+          "unit": null
+        },
+        "t": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 5.0,
+          "unit": null
+        },
+        "p6": {
+          "value": 0.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L01_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_004",
+    "input": "> Để vẽ đồ thị hoặc viết phương trình của một dao động điều hòa cần biết những đại lượng vật lí nào?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_005",
+    "input": "> Hình 2.1 là đồ thị dao động điều hòa của một vật. Hãy xác định: > > * Biên độ, chu kì, tần số của dao động. > * Nêu thời điểm mà vật có li độ: > > $$ > x=0;\\qquad x=0,1,m > $$  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 2.1,
+          "unit": null
+        },
+        "x": {
+          "value": 0.1,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_006",
+    "input": "> Từ Hình 2.1 hãy xác định tần số góc của dao động của vật.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 2.1,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_007",
+    "input": "> Hình 2.3 là đồ thị dao động điều hòa của một con lắc. > > Tại: > > $$ > t=0 > $$ > > con lắc có: > > $$ > x=-A > $$ > > đạt cực đại: > > $$ > x=A > $$ > > tại: > > $$ > t=\\frac{T}{2} > $$ > > và cắt trục tại: > > $$ > t=\\frac{T}{4} > $$ > > Hãy cho biết: > > * Vị trí và hướng dịch chuyển của con lắc tại thời điểm ban đầu. > * Pha ban đầu của dao động.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 2.3,
+          "unit": null
+        },
+        "t": {
+          "value": 0.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 4.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_008",
+    "input": "> Hãy chứng minh rằng độ lệch pha giữa hai dao động cùng chu kì bằng độ lệch pha ban đầu.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_009",
+    "input": "> Hai con lắc 1 và 2 dao động điều hòa tại cùng thời điểm quan sát, vị trí của chúng được biểu diễn trên Hình 2.5a và Hình 2.5b. > > Hỏi dao động của con lắc nào sớm pha hơn và sớm hơn bao nhiêu?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "lac": {
+          "value": 1.0,
+          "unit": null
+        },
+        "va": {
+          "value": 2.0,
+          "unit": null
+        },
+        "hinh": {
+          "value": 2.5,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_006",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_010",
+    "input": "Đồ thị li độ – thời gian của một vật dao động điều hòa được mô tả trên Hình 2.6.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "oscillation",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 2.6,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_007",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_011",
+    "input": "a. Xác định biên độ, chu kì, tần số, tần số góc, pha ban đầu và viết phương trình dao động.  b. Xác định pha của dao động tại thời điểm:  $$ t=2,5s $$  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "t": {
+          "value": 2.5,
+          "unit": "s"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_008",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_012",
+    "input": "Hai vật dao động điều hòa A và B có cùng tần số nhưng lệch pha nhau được mô tả trên Hình 2.7.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 2.7,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_009",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_013",
+    "input": "a. Xác định li độ của B khi A có li độ cực đại.  b. Xác định li độ của A khi B có li độ cực đại.  c. Hãy cho biết A hay B đạt tới li độ cực đại trước (không kể thời điểm (t=0)).  d. Xác định độ lệch pha của dao động A so với dao động B.  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "t": {
+          "value": 0.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_010",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_014",
+    "input": "Xét một vật dao động điều hòa có:  * Biên độ:  $$ A=10cm $$  * Tần số:  $$ f=5Hz $$  Tại thời điểm ban đầu ((t=0)), vật có li độ cực đại theo chiều dương.  Yêu cầu:  * Xác định chu kì, tần số góc, pha ban đầu của dao động. * Viết phương trình và vẽ đồ thị ((x-t)) của dao động.  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "a": {
+          "value": 10.0,
+          "unit": "cm"
+        },
+        "f": {
+          "value": 5.0,
+          "unit": "Hz"
+        },
+        "t": {
+          "value": 0.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_011",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_015",
+    "input": "Cho hai con lắc đơn dao động điều hòa.  Biết phương trình dao động của con lắc thứ nhất là:  $$ x=20\\cos\\left(20\\pi t+\\frac{\\pi}{2}\\right) \\quad(cm) $$  Con lắc thứ hai có cùng biên độ và tần số nhưng lệch về thời gian so với con lắc thứ nhất một phần tư chu kì.  Hãy viết phương trình dao động của con lắc thứ hai.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "x": {
+          "value": 20.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 20.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 2.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L02_012",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_016",
+    "input": "> Ta có thể dựa vào đồ thị ((x-t)) của dao động điều hòa để xác định vận tốc và gia tốc của vật được không?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_kinematics",
+      "patternId": "PP_PHY11_SHM_VELOCITY_ACCELERATION",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L03_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_017",
+    "input": "> Đặt một thước kẻ (loại 20 cm) cho mép của thước tiếp xúc với đồ thị li độ – thời gian (Hình 3.1) ở một số điểm C, D, E, G, H. > > Từ độ dốc của thước hãy so sánh độ lớn vận tốc của vật tại các điểm: > > C, E, H.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_kinematics",
+      "patternId": "PP_PHY11_SHM_VELOCITY_ACCELERATION",
+      "parameters": {
+        "loai": {
+          "value": 20.0,
+          "unit": "cm"
+        },
+        "hinh": {
+          "value": 3.1,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L03_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_018",
+    "input": "Dùng thước kẻ (loại 20 cm) để xác định xem trên đồ thị ((v-t)) Hình 3.2:  * Tại thời điểm nào độ dốc của đồ thị bằng 0. * Tại thời điểm nào độ dốc của đồ thị cực đại.  Từ đó, so sánh độ lớn của gia tốc trên đồ thị ((a-t)) Hình 3.3 ở các thời điểm tương ứng.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_kinematics",
+      "patternId": "PP_PHY11_SHM_VELOCITY_ACCELERATION",
+      "parameters": {
+        "loai": {
+          "value": 20.0,
+          "unit": "cm"
+        },
+        "hinh": {
+          "value": 3.3,
+          "unit": null
+        },
+        "bang": {
+          "value": 0.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L03_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_019",
+    "input": "Phương trình dao động của một vật là:  $$ x=5\\cos(4\\pi t) \\quad(cm) $$  Hãy:  * Viết phương trình vận tốc. * Viết phương trình gia tốc. * Vẽ đồ thị li độ, vận tốc, gia tốc theo thời gian của vật.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_kinematics",
+      "patternId": "PP_PHY11_SHM_VELOCITY_ACCELERATION",
+      "parameters": {
+        "x": {
+          "value": 5.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 4.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L03_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_020",
+    "input": "> Khi biết phương trình hoặc đồ thị của vật dao động điều hòa, làm thế nào để xác định được vận tốc và gia tốc của vật?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_kinematics",
+      "patternId": "PP_PHY11_SHM_VELOCITY_ACCELERATION",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L04_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_021",
+    "input": "Cho phương trình của một vật dao động điều hòa:  $$ x=5\\cos\\left(10\\pi t+\\frac{\\pi}{6}\\right) \\quad(cm) $$  Xác định biên độ (A), tần số (f), pha ban đầu (\\varphi), và li độ (x), tại thời điểm:  $$ t_1=0,05s $$  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "x": {
+          "value": 5.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 6.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 0.05,
+          "unit": "s"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L04_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_022",
+    "input": "Một vật dao động điều hòa với tần số:  $$ f=2Hz $$  Tại thời điểm ban đầu vật có li độ:  $$ x=5cm $$  và vận tốc:  $$ v=-30cm/s $$  Xác định:  a. Biên độ và pha ban đầu của dao động.  b. Giá trị cực đại của vận tốc và gia tốc của vật khi dao động.  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_kinematics",
+      "patternId": "PP_PHY11_SHM_VELOCITY_ACCELERATION",
+      "parameters": {
+        "f": {
+          "value": 2.0,
+          "unit": "Hz"
+        },
+        "x": {
+          "value": 5.0,
+          "unit": "cm"
+        },
+        "v": {
+          "value": -30.0,
+          "unit": "cm/s"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L04_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_023",
+    "input": "Một vật dao động điều hòa với tần số góc:  $$ \\omega=1rad/s $$  có đồ thị của li độ (x), vận tốc (v) và gia tốc (a) theo thời gian (t) được mô tả trên Hình 4.1.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_kinematics",
+      "patternId": "PP_PHY11_SHM_VELOCITY_ACCELERATION",
+      "parameters": {
+        "omega": {
+          "value": 1.0,
+          "unit": "rad/s"
+        },
+        "hinh": {
+          "value": 4.1,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L04_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_024",
+    "input": "Một vật dao động điều hòa có phương trình là:  $$ x=2\\cos\\left(4\\pi t-\\frac{\\pi}{6}\\right) \\quad(cm) $$  Hãy cho biết:  * Biên độ * Tần số góc * Chu kì * Tần số * Pha ban đầu * Pha của dao động ở thời điểm:  $$ t=1s $$  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "x": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 4.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 6.0,
+          "unit": null
+        },
+        "t": {
+          "value": 1.0,
+          "unit": "s"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L04_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_025",
+    "input": "Một vật dao động điều hòa dọc theo trục (Ox), quanh điểm gốc (O), với biên độ:  $$ A=10cm $$  và chu kì:  $$ T=2s $$  Tại thời điểm:  $$ t=0 $$  vật có li độ:  $$ x=A $$  a. Viết phương trình dao động của vật.  b. Xác định thời điểm đầu tiên vật qua vị trí có li độ:  $$ x=5cm $$  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "a": {
+          "value": 10.0,
+          "unit": "cm"
+        },
+        "t": {
+          "value": 0.0,
+          "unit": null
+        },
+        "x": {
+          "value": 5.0,
+          "unit": "cm"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L04_006",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_026",
+    "input": "Hình 4.2 là sơ đồ của một bàn xoay hình tròn, có gắn một thanh nhỏ cách tâm bàn:  $$ 15cm $$  Bàn xoay được chiếu sáng bằng nguồn sáng rộng, song song, hướng chiếu sáng từ phía trước màn để bóng đổ lên màn hình.  Một con lắc đơn dao động điều hòa phía sau bàn xoay với biên độ bằng khoảng cách từ thanh nhỏ đến tâm bàn xoay.  Tốc độ quay của bàn quay được điều chỉnh là:  $$ 3\\pi rad/s $$  Vị trí bóng của thanh nhỏ con lắc luôn trùng nhau.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "sound_wave",
+      "patternId": "PP_PHY11_SOUND_FREQUENCY_MEASUREMENT",
+      "parameters": {
+        "hinh": {
+          "value": 4.2,
+          "unit": null
+        },
+        "p2": {
+          "value": 15.0,
+          "unit": "cm"
+        },
+        "p3": {
+          "value": 3.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SOUND_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L04_007",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_027",
+    "input": "Hình 4.3 là đồ thị li độ – thời gian của một vật dao động điều hòa.  a. Xác định biên độ, chu kì, tần số, tần số góc và pha ban đầu của vật dao động.  b. Viết phương trình của dao động của vật.  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 4.3,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L04_008",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_028",
+    "input": "Đồ thị li độ – thời gian của hai vật dao động điều hòa A và B có cùng tần số nhưng lệch pha nhau như Hình 4.4.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 4.4,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L04_009",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_029",
+    "input": "> Ở lớp 10, khi học về chuyển động của vật, ta đã biết có sự chuyển hóa giữa động năng và thế năng của vật. > > Vậy trong dao động điều hòa có sự chuyển hóa tương tự không?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "lop": {
+          "value": 10.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L05_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_030",
+    "input": "Một con lắc lò xo có độ cứng (k) và vật nặng có khối lượng (m).",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L05_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_031",
+    "input": "> Một em bé đang chơi xích đu trong sân. Tại sao để xích đu tiếp tục dao động, người mẹ thỉnh thoảng lại đẩy nhẹ vào em bé?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "damped_oscillation",
+      "patternId": "PP_PHY11_DAMPED_FORCED_RESONANCE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_RESONANCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L06_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_032",
+    "input": "> Hãy giải thích tại sao dao động của em bé chơi xích đu trong ví dụ ở đầu bài lại tắt dần nếu không có người mẹ thỉnh thoảng đẩy nhẹ vào em bé.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "damped_oscillation",
+      "patternId": "PP_PHY11_DAMPED_FORCED_RESONANCE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_RESONANCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L06_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_033",
+    "input": "> Hãy tìm trong thực tế ví dụ về dao động tắt dần và cho biết trong mỗi trường hợp thì dao động tắt dần là có lợi hay có hại.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "damped_oscillation",
+      "patternId": "PP_PHY11_DAMPED_FORCED_RESONANCE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_RESONANCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L06_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_034",
+    "input": "Khi đến bến xe buýt, xe chỉ tạm dừng nên không tắt máy, thân xe vẫn dao động.  Dao động đó là dao động cưỡng bức dưới tác dụng của lực cưỡng bức tuần hoàn gây ra bởi chuyển động của pít-tông trong xi lanh của máy nổ.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "damped_oscillation",
+      "patternId": "PP_PHY11_DAMPED_FORCED_RESONANCE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_RESONANCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L06_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_035",
+    "input": "**Chuẩn bị**  * Một thanh cứng hình trụ, hai đầu thanh được gắn vào hai ổ trục để thanh có thể xoay dễ dàng quanh trục của nó. * Một con lắc điều khiển Đ, ba con lắc thử 1, 2 và 3 được treo vào thanh cứng hình trụ. * Bố trí thí nghiệm như Hình 6.3.  **Tiến hành**  * Hãy dự đoán xem, trong thí nghiệm Hình 6.3, nếu con lắc điều khiển Đ được kéo sang một bên theo phương vuông góc với thanh rồi thả ra cho dao động thì các con lắc khác có dao động không? * Con lắc nào dao động mạnh nhất? * Tại sao? *",
+    "expected": {
+      "intent": "explain",
+      "topic": "damped_oscillation",
+      "patternId": "PP_PHY11_DAMPED_FORCED_RESONANCE",
+      "parameters": {
+        "thu": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 2.0,
+          "unit": null
+        },
+        "va": {
+          "value": 3.0,
+          "unit": null
+        },
+        "hinh": {
+          "value": 6.3,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_RESONANCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L06_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_036",
+    "input": "> Đánh giá được sự có lợi hay có hại của cộng hưởng trong các ví dụ nêu trên.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "damped_oscillation",
+      "patternId": "PP_PHY11_DAMPED_FORCED_RESONANCE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_RESONANCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L06_006",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_037",
+    "input": "> Ta có thể sử dụng định luật bảo toàn cơ năng để tìm li độ và vận tốc của vật dao động điều hòa được không?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L07_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_038",
+    "input": "Một con lắc đơn gồm vật nặng có kích thước nhỏ, có khối lượng (m), treo ở đầu một sợi dây mềm không giãn có độ dài (l) và có khối lượng không đáng kể như Hình 7.1.  Đưa vật nặng ra khỏi vị trí cân bằng (O) sao cho dây treo hợp với (Q_0) một góc (\\alpha_0), với:  $$ \\alpha_0 \\le 10^\\circ $$  rồi thả nhẹ cho con lắc dao động điều hòa trên cung tròn (AOB).  a. Tính thế năng của con lắc; động năng của vật ở các vị trí (A), (O), (B) và vị trí bất kì có li độ góc (\\alpha).  b. Ở vị trí nào động năng b",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "hinh": {
+          "value": 7.1,
+          "unit": null
+        },
+        "p2": {
+          "value": 0.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 0.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 0.0,
+          "unit": null
+        },
+        "le": {
+          "value": 10.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L07_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_039",
+    "input": "Một vật có khối lượng:  $$ m=200g $$  dao động điều hòa với tần số góc:  $$ \\omega=2\\pi;rad/s $$  biên độ:  $$ A=10cm $$  Xác định thế năng của con lắc tại thời điểm vật có tốc độ:  $$ v=10cm/s $$  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "m": {
+          "value": 200.0,
+          "unit": "g"
+        },
+        "omega": {
+          "value": 2.0,
+          "unit": null
+        },
+        "a": {
+          "value": 10.0,
+          "unit": "cm"
+        },
+        "v": {
+          "value": 10.0,
+          "unit": "cm/s"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L07_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_040",
+    "input": "Một con lắc lò xo có độ cứng:  $$ k=100N/m $$  dao động điều hòa.  Gọi (W_t), (W_đ) lần lượt là thế năng của lò xo và động năng của vật, (W_0) là cơ năng của con lắc lò xo.  Đồ thị biểu diễn sự phụ thuộc của thế năng (W_t) và động năng (W_đ) của con lắc vào li độ (x) như Hình 7.2.  Tính (W_0).  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "k": {
+          "value": 100.0,
+          "unit": "N/m"
+        },
+        "p2": {
+          "value": 0.0,
+          "unit": null
+        },
+        "hinh": {
+          "value": 7.2,
+          "unit": null
+        },
+        "p4": {
+          "value": 0.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L07_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_041",
+    "input": "Hình 7.3 mô tả một máy đo địa chấn đơn giản hoạt động theo nguyên tắc sau:  * Khi xảy ra động đất thì hệ gồm lò xo và vật nặng của máy sẽ dao động theo tần số của địa chấn. * Bút dạ gắn với vật nặng sẽ ghi lại đồ thị của địa chấn trên cuộn giấy quay đều.  Biết sóng địa chấn có tần số nằm trong khoảng:  $$ 30Hz\\le f\\le 40Hz $$  Hãy giải thích tại sao tần số riêng của hệ vật nặng và lò xo trong máy địa chấn phải có giá trị nhỏ hơn tần số này rất nhiều.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "hinh": {
+          "value": 7.3,
+          "unit": "m"
+        },
+        "p2": {
+          "value": 30.0,
+          "unit": "Hz"
+        },
+        "f-le": {
+          "value": 40.0,
+          "unit": "Hz"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L07_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_042",
+    "input": "Đồ thị Hình 7.4 mô tả mối liên hệ giữa gia tốc và li độ của một vật dao động điều hòa.  Sử dụng số liệu trong đồ thị Hình 7.4 để tính tần số của dao động.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "hinh": {
+          "value": 7.4,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L07_006",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_043",
+    "input": "Hình 7.5 là đồ thị động năng theo thời gian của một vật khối lượng:  $$ m=0,4kg $$  dao động điều hòa.  Tại thời điểm ban đầu, vật đang chuyển động theo chiều dương, lấy:  $$ \\pi^2=10 $$  Viết phương trình dao động của vật.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "hinh": {
+          "value": 7.5,
+          "unit": null
+        },
+        "m": {
+          "value": 0.4,
+          "unit": "kg"
+        },
+        "p3": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 10.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L07_007",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_044",
+    "input": "Một vật có khối lượng (m) dao động điều hòa với tần số góc (\\omega) và biên độ (A).  a. Khi vật có li độ bằng một nửa biên độ thì động năng và thế năng chiếm bao nhiêu phần trăm so với cơ năng?  b. Tại li độ nào thì thế năng bằng động năng?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C01_L07_008",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_045",
+    "input": "> Để chỉnh các dây đàn, có thể so sánh tần số âm của nhạc cụ với âm phát ra từ âm thoa có tần số xác định. > > Làm thế nào kiểm tra tần số âm được ghi trên âm thoa bằng dụng cụ thí nghiệm?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L10_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_046",
+    "input": "> Quan sát màn hình hiển thị tín hiệu dao động điện trên dao động kí như Hình 10.2, hãy xác định tần số dao động của tín hiệu.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 10.2,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L10_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_047",
+    "input": "| Đại lượng      | Lần 1 | Lần 2 | Lần 3 | Giá trị trung bình | | -------------- | ----: | ----: | ----: | -----------------: | | Chu kì (T(s))  |     ? |     ? |     ? |                  ? | | Tần số (f(Hz)) |     ? |     ? |     ? |                  ? |  ---  So sánh tần số sóng âm đo được với tần số ghi trên âm thoa.  Ghi lại kết quả đo chu kì và xử lí kết quả thí nghiệm:  * Tính tần số sóng âm và ghi kết quả vào mẫu Bảng 10.1. * Tính giá trị trung bình, sai số của phép đo chu kì và tần số.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "lan": {
+          "value": 3.0,
+          "unit": null
+        },
+        "bang": {
+          "value": 10.1,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L10_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_048",
+    "input": "> Chỉ với một chiếc điện thoại thông minh hay chiếc máy tính được kết nối với internet, ta có thể trao đổi thông tin với nhau trên khắp toàn cầu. > > Vậy tại sao thông tin lại có thể lan truyền được trong không gian?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electromagnetic_wave",
+      "patternId": "PP_PHY11_ELECTROMAGNETIC_WAVE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTROMAGNETIC_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L11_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_049",
+    "input": "Một vệ tinh thông tin (vệ tinh địa tĩnh) chuyển động trên quỹ đạo tròn ngay phía trên xích đạo của Trái Đất, quay cùng hướng và cùng chu kì tự quay của Trái Đất ở độ cao:  $$ 36600;km $$  so với đài phát hình trên mặt đất.  Đài phát nằm trên đường thẳng nối vệ tinh và tâm Trái Đất.  Vệ tinh nhận sóng truyền hình từ đài phát rồi phát lại tức thời tín hiệu đó về Trái Đất.  Biết:  $$ \\lambda =0,5m $$  và:  $$ c=3\\times10^8m/s $$  Tính khoảng thời gian lớn nhất mà sóng truyền hình đi từ đài phát đến",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "p1": {
+          "value": 36600.0,
+          "unit": null
+        },
+        "lambda": {
+          "value": 0.5,
+          "unit": "m"
+        },
+        "c": {
+          "value": 3.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 8.0,
+          "unit": "m/s"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L11_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_050",
+    "input": "> So sánh tần số của ánh sáng đỏ và ánh sáng tím.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L11_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_051",
+    "input": "Hãy xác định phạm vi của tần số tương ứng với các dải bước sóng đó.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L11_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_052",
+    "input": "Nêu tên sóng điện từ trong chân không ứng với mỗi bước sóng:  a)  $$ 1km $$  b)  $$ 3cm $$  c)  $$ 5\\mu m $$  d)  $$ 500nm $$  e)  $$ 50nm $$  g)  $$ 10^{-12}m $$  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electromagnetic_wave",
+      "patternId": "PP_PHY11_ELECTROMAGNETIC_WAVE",
+      "parameters": {
+        "p1": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 3.0,
+          "unit": "cm"
+        },
+        "p3": {
+          "value": 5.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 500.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 50.0,
+          "unit": null
+        },
+        "p6": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p7": {
+          "value": -12.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTROMAGNETIC_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L11_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_053",
+    "input": "Nêu loại sóng điện từ ứng với mỗi tần số sau:  a)  $$ 200kHz $$  b)  $$ 100MHz $$  c)  $$ 5\\times10^{14}Hz $$  d)  $$ 10^{18}Hz $$  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "p1": {
+          "value": 200.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 100.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 5.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 14.0,
+          "unit": null
+        },
+        "p6": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p7": {
+          "value": 18.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L11_006",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_054",
+    "input": "> Cho hai loa giống nhau cùng phát âm thanh như hình bên, dịch chuyển một micro có nối với dao động kí phía trước hai loa để ghi đồ thị sóng âm thì thấy có những điểm tại đó biên độ sóng âm thu được rất lớn (L) và những điểm biên độ rất bé (B) nằm xen kẽ. > > Hiện tượng thú vị này giải thích như thế nào?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "wave_interference",
+      "patternId": "PP_PHY11_WAVE_INTERFERENCE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_WAVE_INTERFERENCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L12_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_055",
+    "input": "> Giải thích hiện tượng nêu ở mục khởi động của đầu bài.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "wave_interference",
+      "patternId": "PP_PHY11_WAVE_INTERFERENCE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_WAVE_INTERFERENCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L12_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_056",
+    "input": "> Trong thí nghiệm trên, nếu thay nguồn sáng laze trong thí nghiệm trên bằng bóng đèn dây tóc phát ánh sáng trắng thì vân sáng chính giữa sẽ có màu gì?  ---  Trong vùng hai chùm sáng gặp nhau lại có những vạch tối và vạch sáng xen kẽ như trên Hình 12.4 đã khẳng định ánh sáng có tính chất sóng.  Những vạch tối là chỗ hai sóng ánh sáng triệt tiêu lẫn nhau.  Những vạch sáng là chỗ hai sóng ánh sáng tăng cường lẫn nhau.  Những vạch sáng và tối xen kẽ nhau chính là hệ vân giao thoa của hai sóng ánh s",
+    "expected": {
+      "intent": "explain",
+      "topic": "wave_interference",
+      "patternId": "PP_PHY11_WAVE_INTERFERENCE",
+      "parameters": {
+        "hinh": {
+          "value": 12.4,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_WAVE_INTERFERENCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L12_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_057",
+    "input": "> Khi vỗ tay đều trước miệng các ống của đàn Klông pút có độ dài khác nhau như hình bên, thì thấy âm phát ra ở các miệng ống trầm bổng khác nhau. > > Sóng âm lan truyền trong mỗi ống không phải là sóng chạy. > > Vậy đó là loại sóng gì và có những đặc điểm nào?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "standing_wave",
+      "patternId": "PP_PHY11_STANDING_WAVE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_STANDING_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L13_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_058",
+    "input": "> Từ kết quả thí nghiệm rút ra điều kiện để có sóng dừng.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "standing_wave",
+      "patternId": "PP_PHY11_STANDING_WAVE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_STANDING_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L13_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_059",
+    "input": "> Hãy xác định số nút và số bụng của sóng dừng trên sợi dây Hình 13.3.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "standing_wave",
+      "patternId": "PP_PHY11_STANDING_WAVE",
+      "parameters": {
+        "hinh": {
+          "value": 13.3,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_STANDING_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L13_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_060",
+    "input": "> Hãy giải thích sự tạo thành sóng dừng trên dây (PQ) ở thí nghiệm Hình 13.1.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "standing_wave",
+      "patternId": "PP_PHY11_STANDING_WAVE",
+      "parameters": {
+        "hinh": {
+          "value": 13.1,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_STANDING_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L13_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_061",
+    "input": "Một dây đàn hồi dài:  $$ 0,6m $$  hai đầu cố định dao động với một bụng sóng.  a. Tính bước sóng (\\lambda) của sóng trên dây.  b. Nếu dây dao động với 3 bụng sóng thì bước sóng là bao nhiêu?  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "standing_wave",
+      "patternId": "PP_PHY11_STANDING_WAVE",
+      "parameters": {
+        "p1": {
+          "value": 0.6,
+          "unit": "m"
+        },
+        "voi": {
+          "value": 3.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_STANDING_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L13_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_062",
+    "input": "> Tìm điều kiện để có sóng dừng trong cột không khí một đầu cố định, một đầu tự do như Hình 13.7.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "standing_wave",
+      "patternId": "PP_PHY11_STANDING_WAVE",
+      "parameters": {
+        "hinh": {
+          "value": 13.7,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_STANDING_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L13_006",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_063",
+    "input": "> Có thể sử dụng mối liên hệ nào để xác định các đại lượng (\\lambda, v, f, T)?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "mechanical_wave",
+      "patternId": "PP_PHY11_WAVE_SPEED_RELATION",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_WAVE_PROPAGATION_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L14_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_064",
+    "input": "Một sóng âm có tần số:  $$ f=192Hz $$  và truyền đi được quãng đường:  $$ s=91,4m $$  trong:  $$ t=0,27s $$  Hãy tính:  a. Tốc độ truyền sóng.  b. Bước sóng.  c. Nếu tần số sóng là:  $$ f'=442Hz $$  thì bước sóng và chu kì là bao nhiêu?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "f": {
+          "value": 192.0,
+          "unit": "Hz"
+        },
+        "s": {
+          "value": 91.4,
+          "unit": "m"
+        },
+        "t": {
+          "value": 0.27,
+          "unit": "s"
+        },
+        "p4": {
+          "value": 442.0,
+          "unit": "Hz"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L14_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_065",
+    "input": "Trong thí nghiệm Hình 8.1, cần rung dao động với tần số:  $$ f=50Hz $$  Người ta đo được bán kính của 2 ngọn sóng hình tròn liên tiếp lần lượt bằng:  $$ 12,4cm $$  và:  $$ 14,3cm $$  Tính tốc độ truyền sóng.  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 8.1,
+          "unit": null
+        },
+        "f": {
+          "value": 50.0,
+          "unit": "Hz"
+        },
+        "cua": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 12.4,
+          "unit": "cm"
+        },
+        "p5": {
+          "value": 14.3,
+          "unit": "cm"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L14_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_066",
+    "input": "Một sóng hình sin đang lan truyền từ trái sang phải trên một dây dài.  Hình 14.1 là hình ảnh của sóng ở một thời điểm xét.  Cho biết tốc độ truyền sóng:  $$ v=1m/s $$  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "mechanical_wave",
+      "patternId": "PP_PHY11_WAVE_SPEED_RELATION",
+      "parameters": {
+        "hinh": {
+          "value": 14.1,
+          "unit": null
+        },
+        "v": {
+          "value": 1.0,
+          "unit": "m/s"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_WAVE_PROPAGATION_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L14_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_067",
+    "input": "![Hình 14.1 - Sóng hình sin lan truyền trên dây](assets/images/hinh-14-1.png)  **Nội dung hình**  * Đồ thị li độ (u), đơn vị cm. * Trục hoành (x), đơn vị cm. * Sóng hình sin lan truyền từ trái sang phải. * Phương truyền sóng. * Các điểm (P, Q, R, O).  ---  a. Tính tần số của sóng.  b. Hỏi điểm (Q), (P) và (O) đang chuyển động lên hay xuống?  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": -14.0,
+          "unit": null
+        },
+        "p2": {
+          "value": -1.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L14_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_068",
+    "input": "Trong một thí nghiệm về giao thoa ánh sáng với hai khe Y-âng, khoảng cách giữa hai khe hẹp là:  $$ a=2mm $$  khoảng cách giữa mặt phẳng chứa hai khe với màn quan sát là:  $$ D=1,2m $$  Khe sáng hẹp phát đồng thời hai bức xạ đơn sắc màu đỏ:  $$ \\lambda_1=0,66\\mu m $$  và màu lục:  $$ \\lambda_2=0,55\\mu m $$  a. Tính khoảng vân của hai ánh sáng màu đỏ và màu lục.  b. Tính khoảng cách ngắn nhất giữa hai vân sáng cùng màu với vân sáng trung tâm.  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "wave_interference",
+      "patternId": "PP_PHY11_WAVE_INTERFERENCE",
+      "parameters": {
+        "a": {
+          "value": 2.0,
+          "unit": "m"
+        },
+        "d": {
+          "value": 1.2,
+          "unit": "m"
+        },
+        "p3": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 0.66,
+          "unit": null
+        },
+        "p5": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p6": {
+          "value": 0.55,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_WAVE_INTERFERENCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L14_006",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_069",
+    "input": "Một lò xo có chiều dài:  $$ 1,2m $$  đầu trên gắn vào một nhánh âm thoa, đầu dưới treo một quả cân.  Dao động của âm thoa được duy trì bằng một nam châm điện để có tần số:  $$ 50Hz $$  Khi đó, trên lò xo có sóng dừng và trên lò xo chỉ có một nhóm vòng dao động với biên độ cực đại.  Tính tốc độ truyền sóng trên lò xo.  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "p1": {
+          "value": 1.2,
+          "unit": "m"
+        },
+        "p2": {
+          "value": 50.0,
+          "unit": "Hz"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L14_007",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_070",
+    "input": "Một sóng hình sin được mô tả như Hình 14.2.  a. Xác định bước sóng của sóng.  b. Nếu chu kì của sóng là:  $$ 1s $$  thì tần số và tốc độ truyền sóng bằng bao nhiêu?  c. Bước sóng sẽ bằng bao nhiêu nếu tần số tăng lên:  $$ 5Hz $$  và tốc độ truyền sóng không đổi?  Vẽ đồ thị ((u-x)) trong trường hợp này và đánh dấu rõ bước sóng trên đồ thị.  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 14.2,
+          "unit": null
+        },
+        "p2": {
+          "value": 1.0,
+          "unit": "s"
+        },
+        "p3": {
+          "value": 5.0,
+          "unit": "Hz"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L14_008",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_071",
+    "input": "Trong một thí nghiệm Y-âng về giao thoa ánh sáng, hai khe được chiếu bằng ánh sáng đơn sắc.  Khoảng cách giữa hai khe là:  $$ 0,6mm $$  Khoảng vân trên màn quan sát đo được là:  $$ 1mm $$  Từ vị trí ban đầu, nếu tịnh tiến màn quan sát một đoạn:  $$ 25cm $$  lại gần mặt phẳng chứa hai khe thì khoảng vân mới trên màn là:  $$ 0,8mm $$  Tính bước sóng của ánh sáng dùng trong thí nghiệm.  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "wave_interference",
+      "patternId": "PP_PHY11_WAVE_INTERFERENCE",
+      "parameters": {
+        "p1": {
+          "value": 0.6,
+          "unit": "m"
+        },
+        "p2": {
+          "value": 1.0,
+          "unit": "m"
+        },
+        "p3": {
+          "value": 25.0,
+          "unit": "cm"
+        },
+        "p4": {
+          "value": 0.8,
+          "unit": "m"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_WAVE_INTERFERENCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L14_009",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_072",
+    "input": "> Âm thanh truyền trong một môi trường có tốc độ xác định. > > Làm thế nào đo được tốc độ truyền âm trong không khí bằng dụng cụ thí nghiệm?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "sound_wave",
+      "patternId": "PP_PHY11_SOUND_FREQUENCY_MEASUREMENT",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SOUND_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L15_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_073",
+    "input": "> Trong cuộc sống hằng ngày, chúng ta thường gặp hay nghe đến nhiều loại sóng như: sóng nước, sóng âm, sóng vô tuyến, sóng biển, sóng địa chấn,... > > Vậy sóng được hình thành như thế nào và có những đặc điểm gì?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "sound_wave",
+      "patternId": "PP_PHY11_SOUND_FREQUENCY_MEASUREMENT",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SOUND_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L08_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_074",
+    "input": "> Hãy quan sát chuyển động của miếng xốp trong thí nghiệm Hình 8.1 và cho biết miếng xốp có chuyển động ra xa nguồn cùng với sóng không?  ---  Các phần tử môi trường chỉ dao động trong một phạm vi không gian rất hẹp, trong khi sóng truyền đi rất xa.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "mechanical_wave",
+      "patternId": "PP_PHY11_WAVE_SPEED_RELATION",
+      "parameters": {
+        "hinh": {
+          "value": 8.1,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_WAVE_PROPAGATION_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L08_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_075",
+    "input": "> Trong đồ thị của sóng Hình 8.3d, các điểm nào trong các điểm (M), (N), (P) trên phương (Ox) dao động lệch pha: > > $$ > \\frac{\\pi}{2} > $$ > > ngược pha, đồng pha với nhau?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_IDENTIFY_PARAMETERS",
+      "parameters": {
+        "hinh": {
+          "value": 8.3,
+          "unit": null
+        },
+        "p2": {
+          "value": 2.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L08_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_076",
+    "input": "> Sóng mặt nước và sóng âm truyền trong không khí có đặc điểm gì chung và riêng?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L09_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_077",
+    "input": "> Hình 9.1 mô tả một sóng ngang truyền trên dây đàn hồi. > > Hãy quan sát các mũi tên, từ đó chỉ ra phương dao động của các phần tử của dây và phương truyền sóng.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "hinh": {
+          "value": 9.1,
+          "unit": "m"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L09_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_078",
+    "input": "> Dựa vào Hình 9.1 và Hình 9.2, hãy chỉ ra điểm giống và khác nhau giữa sóng dọc và sóng ngang.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "hinh": {
+          "value": 9.2,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L09_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_079",
+    "input": "Quan sát Hình 9.4 mô tả biên độ và tần số của âm qua dao động kí để trả lời các câu hỏi sau:",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "hinh": {
+          "value": 9.4,
+          "unit": "m"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L09_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_080",
+    "input": "Tại thời điểm mà sóng trên lò xo được chỉ trên Hình 9.2.  Hãy xác định:  a. Sóng đã truyền được bao nhiêu bước sóng?  b. Trong các điểm (X), (Y), (Z), điểm nào là điểm chưa dao động?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "hinh": {
+          "value": 9.2,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C02_L09_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_081",
+    "input": "> Em đã biết các điện tích cùng dấu đẩy nhau, khác dấu hút nhau. > > Theo em, độ lớn của lực tương tác giữa hai điện tích phụ thuộc như thế nào vào độ lớn của các điện tích và khoảng cách giữa chúng?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L16_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_082",
+    "input": "Dựa vào Hình 16.2a, vẽ các vectơ lực biểu diễn tương tác giữa các điện tích trong các hình còn lại.  Vẽ vectơ lực của ba điện tích đặt tại các đỉnh của một tam giác đều. Biết các điện tích trên đều cùng dấu và cùng độ lớn.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {
+        "hinh": {
+          "value": 16.2,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L16_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_083",
+    "input": "Độ lớn của lực tương tác giữa các điện tích có phụ thuộc như thế nào vào khoảng cách giữa các điện tích?  Đề xuất phương án thí nghiệm để kiểm tra dự đoán.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L16_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_084",
+    "input": "Người ta dùng máy phát tĩnh điện để tích điện cho hai quả cầu kim loại nhỏ đặt cách nhau:  $$ 10\\ cm $$  trong không khí.  Tính lực điện tương tác giữa hai quả cầu khi:",
+    "expected": {
+      "intent": "solve",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {
+        "p1": {
+          "value": 10.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L16_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_085",
+    "input": "Người ta có thể dùng lực tĩnh điện để tách các trang sách bị dính chặt vào nhau mà không làm chúng hỏng.  Hãy mô tả cách làm này.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L16_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_086",
+    "input": "Có thể dùng định luật Coulomb để xác định độ lớn của lực tương tác giữa các điện tích trong các thí nghiệm ở Hình 16.1 không?  Tại sao?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {
+        "hinh": {
+          "value": 16.1,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L16_006",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_087",
+    "input": "Xác định lực điện tương tác giữa electron và proton của nguyên tử hydrogen.  Biết khoảng cách từ electron trong nguyên tử hydrogen đến hạt nhân của nguyên tử này là:  $$ 5 \\times 10^{-11}\\ m $$  Điện tích của electron và proton có độ lớn bằng nhau:  $$ 1{,}6 \\times 10^{-19}\\ C $$  Lấy:  $$ \\varepsilon_0=8{,}85 \\times 10^{-12}\\ \\frac{C^2}{N \\cdot m^2} $$  ---",
+    "expected": {
+      "intent": "solve",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {
+        "p1": {
+          "value": 5.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p3": {
+          "value": -11.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 6.0,
+          "unit": null
+        },
+        "p6": {
+          "value": -19.0,
+          "unit": null
+        },
+        "p7": {
+          "value": 0.0,
+          "unit": null
+        },
+        "p8": {
+          "value": 8.0,
+          "unit": null
+        },
+        "p9": {
+          "value": 85.0,
+          "unit": null
+        },
+        "p10": {
+          "value": -12.0,
+          "unit": null
+        },
+        "p11": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p12": {
+          "value": 2.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L16_007",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching",
+      "numeric_answer"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_088",
+    "input": "Hai điện tích điểm:  $$ q_1=15\\ \\mu C $$  và:  $$ q_2=-6\\ \\mu C $$  đặt cách nhau:  $$ 0{,}2\\ m $$  trong không khí.  Phải đặt một điện tích $q_3$ ở vị trí nào để lực điện tác dụng lên điện tích này bằng 0?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {
+        "p1": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 15.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p4": {
+          "value": -6.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 0.0,
+          "unit": null
+        },
+        "p6": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p7": {
+          "value": 3.0,
+          "unit": null
+        },
+        "bang": {
+          "value": 0.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L16_008",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_089",
+    "input": "> Hai quả cầu tích điện có tương tác với nhau. > > Hai quả cầu tích điện cùng dấu được treo bằng hai sợi dây mảnh không dẫn điện như hình bên. > > Tại sao chúng không tiếp xúc nhưng vẫn tương tác được với nhau?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L17_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_090",
+    "input": "Xét điện trường của điện tích:  $$ Q=6 \\times 10^{-14}\\ C $$  Sử dụng đoạn thẳng dài:  $$ 1\\ cm $$  để biểu diễn cho độ lớn vectơ cường độ điện trường:  $$ E=\\frac{10^{-10}}{6\\pi\\varepsilon_0}\\ V/m $$  Hãy tính và vẽ vectơ cường độ điện trường tại một điểm cách $Q$ một khoảng:  $$ 2\\ cm $$  và:  $$ 3\\ cm $$  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {
+        "q": {
+          "value": 6.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p3": {
+          "value": -14.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p6": {
+          "value": -10.0,
+          "unit": null
+        },
+        "p7": {
+          "value": 6.0,
+          "unit": null
+        },
+        "p8": {
+          "value": 0.0,
+          "unit": null
+        },
+        "p9": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p10": {
+          "value": 3.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L17_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_091",
+    "input": "Đặt điện tích điểm:  $$ Q_1=6 \\times 10^{-8}\\ C $$  tại điểm $A$ và điện tích điểm:  $$ Q_2=-2 \\times 10^{-8}\\ C $$  tại điểm $B$.  Khoảng cách giữa $A$ và $B$ là:  $$ 3\\ cm $$  Hãy xác định những điểm mà cường độ điện trường tại đó bằng $0$.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {
+        "p1": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 6.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p4": {
+          "value": -8.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p6": {
+          "value": -2.0,
+          "unit": null
+        },
+        "p7": {
+          "value": -8.0,
+          "unit": null
+        },
+        "p8": {
+          "value": 3.0,
+          "unit": null
+        },
+        "p9": {
+          "value": 0.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L17_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_092",
+    "input": "Cho tam giác $ABC$ vuông tại $A$, có:  $$ AB=3\\ cm $$  và:  $$ AC=4\\ cm $$  Tại điểm $B$ đặt điện tích:  $$ Q_1=4{,}5 \\times 10^{-8}\\ C $$  Tại điểm $C$ đặt điện tích:  $$ Q_2=2 \\times 10^{-8}\\ C $$",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {
+        "ab": {
+          "value": 3.0,
+          "unit": null
+        },
+        "ac": {
+          "value": 4.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 4.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 5.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p7": {
+          "value": -8.0,
+          "unit": null
+        },
+        "p8": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p9": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p10": {
+          "value": -8.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L17_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_093",
+    "input": "Một hạt bụi mịn loại $pm2{,}5$ có điện tích:  $$ q=1{,}6 \\times 10^{-19}\\ C $$  lơ lửng trong không khí nơi có điện trường của Trái Đất bằng:  $$ E=120\\ V/m $$  Bỏ qua trọng lực, tính lực điện của Trái Đất tác dụng lên hạt bụi mịn.  Từ đó giải thích lí do hạt bụi loại này thường lơ lửng trong không khí.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_field",
+      "patternId": "PP_PHY11_ELECTRIC_FIELD_STRENGTH",
+      "parameters": {
+        "pm": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 5.0,
+          "unit": null
+        },
+        "q": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 6.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p6": {
+          "value": -19.0,
+          "unit": null
+        },
+        "e": {
+          "value": 120.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L17_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_094",
+    "input": "> Chúng ta đã biết, cường độ điện trường tại mỗi điểm thường sẽ có giá trị khác nhau. > > Vậy có tồn tại những vùng điện trường mà cường độ điện trường tại mỗi điểm có giá trị như nhau không?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "uniform_electric_field",
+      "patternId": "PP_PHY11_UNIFORM_ELECTRIC_FIELD",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_UNIFORM_E_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L18_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_095",
+    "input": "Hai bản phẳng kim loại đặt song song, cách nhau một khoảng:  $$ d=20\\ cm $$  Đặt vào hai bản này một hiệu điện thế một chiều:  $$ U=1000\\ V $$  Một hạt bụi mịn $pm2{,}5$ có điện tích:  $$ q=16 \\times 10^{-19}\\ C $$  bay vào điện trường giữa hai bản phẳng.  Hãy xác định phương, chiều và độ lớn của lực điện tác dụng lên hạt bụi đó.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_potential",
+      "patternId": "PP_PHY11_ELECTRIC_POTENTIAL",
+      "parameters": {
+        "d": {
+          "value": 20.0,
+          "unit": null
+        },
+        "u": {
+          "value": 1000.0,
+          "unit": null
+        },
+        "pm": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 5.0,
+          "unit": null
+        },
+        "q": {
+          "value": 16.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p7": {
+          "value": -19.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_POTENTIAL_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L18_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_096",
+    "input": "Để chẩn đoán hình ảnh trong y học, người ta thường sử dụng tia X, hay tia Rơn-ghen, để chụp X-quang và chụp CT.  Cho rằng vùng điện trường giữa hai cực của ống tia X là một điện trường đều.  Khoảng cách giữa hai cực bằng:  $$ 2\\ cm $$  Hiệu điện thế giữa hai cực là:  $$ 120\\ kV $$  Hãy tính lực điện trường tác dụng lên electron.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_potential",
+      "patternId": "PP_PHY11_ELECTRIC_POTENTIAL",
+      "parameters": {
+        "p1": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 120.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_POTENTIAL_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L18_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_097",
+    "input": "Hai bản phẳng có kích thước lớn và bằng nhau, đặt song song với nhau, cách nhau một khoảng:  $$ d=24\\ cm $$  Hiệu điện thế giữa hai bản phẳng là:  $$ U=48\\ V $$  Một electron có:  $$ q=-1{,}6 \\times 10^{-19}\\ C $$  $$ m=9{,}1 \\times 10^{-31}\\ kg $$  bay vào chính giữa hai bản phẳng theo phương vuông góc với các đường sức điện trường với vận tốc:  $$ v_0=200\\ m/s $$  Bỏ qua điện trường Trái Đất, lực cản môi trường và trọng lực tác dụng lên electron.  Hãy viết phương trình quỹ đạo của chuyển động.",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_kinematics",
+      "patternId": "PP_PHY11_SHM_VELOCITY_ACCELERATION",
+      "parameters": {
+        "d": {
+          "value": 24.0,
+          "unit": null
+        },
+        "u": {
+          "value": 48.0,
+          "unit": null
+        },
+        "q": {
+          "value": -1.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 6.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p6": {
+          "value": -19.0,
+          "unit": null
+        },
+        "m": {
+          "value": 9.0,
+          "unit": null
+        },
+        "p8": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p9": {
+          "value": -31.0,
+          "unit": null
+        },
+        "p10": {
+          "value": 0.0,
+          "unit": null
+        },
+        "p11": {
+          "value": 200.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L18_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_098",
+    "input": "Hãy giải thích nguyên tắc hoạt động lái tia điện tử của các bản lái tia trong Hình 18.6.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "uniform_electric_field",
+      "patternId": "PP_PHY11_UNIFORM_ELECTRIC_FIELD",
+      "parameters": {
+        "hinh": {
+          "value": 18.6,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_UNIFORM_E_FIELD_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L18_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_099",
+    "input": "Máy lọc không khí tạo ra chùm các ion âm $OH^-$.  Mỗi ion $OH^-$ có khối lượng:  $$ m=2{,}833 \\times 10^{-26}\\ kg $$  điện tích:  $$ q=-1{,}6 \\times 10^{-19}\\ C $$  có vận tốc ban đầu từ:  $$ 20\\ m/s $$  đến:  $$ 40\\ m/s $$  theo phương song song với mặt đất và cách mặt đất:  $$ 50\\ cm $$  Điện trường đều đo được ở bề mặt Trái Đất là:  $$ E=114\\ V/m $$  Bỏ qua trọng lực và các loại lực cản khác.  Hãy xác định quỹ đạo của chùm ion âm này.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_kinematics",
+      "patternId": "PP_PHY11_SHM_VELOCITY_ACCELERATION",
+      "parameters": {
+        "m": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 833.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p4": {
+          "value": -26.0,
+          "unit": null
+        },
+        "q": {
+          "value": -1.0,
+          "unit": null
+        },
+        "p6": {
+          "value": 6.0,
+          "unit": null
+        },
+        "p7": {
+          "value": -19.0,
+          "unit": null
+        },
+        "p8": {
+          "value": 20.0,
+          "unit": null
+        },
+        "p9": {
+          "value": 40.0,
+          "unit": null
+        },
+        "p10": {
+          "value": 50.0,
+          "unit": null
+        },
+        "e": {
+          "value": 114.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_KINEMATICS_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L18_006",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_100",
+    "input": "> Quỹ đạo chuyển động của điện tích thử $q>0$ khi bay vào điện trường đều theo phương vuông góc với đường sức. > > Chúng ta đã biết, có sự tương tự giữa chuyển động của một điện tích $q$ trong điện trường đều với chuyển động của một vật khối lượng $m$ trong trường trọng lực. > > Như vậy, điện tích $q$ trong điện trường có tồn tại thế năng tương tự như vật khối lượng $m$ trong trọng trường không?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "p1": {
+          "value": 0.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L19_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_101",
+    "input": "Trong điện trường bất kì, khi chọn mốc là ở xa vô cùng, có trường hợp mà số đo thế năng sẽ có giá trị âm không?  Hãy vẽ hình minh họa.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L19_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_102",
+    "input": "> Đường dây điện cao thế. > > Trong thực tế, chúng ta gặp những đường dây dẫn điện cao thế, trung thế, hạ thế. > > Từ “thế” ở đây được hiểu như thế nào? Có liên quan tới thế năng điện đã học ở Bài 19 hay không?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "bai": {
+          "value": 19.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L20_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_103",
+    "input": "Hãy vận dụng công thức:  $$ V=\\frac{A}{q} $$  để chứng tỏ rằng công thực hiện để dịch chuyển điện tích $q$ từ điểm $N$ đến điểm $M$ bằng:  $$ A_{MN}=(V_M-V_N)q=U_{MN}q $$  ---  Để dịch chuyển một điện tích dương $q$ ngược chiều điện trường từ điểm $N$ tới điểm $M$, ta cần cung cấp một lực ít nhất bằng với lực điện và ngược chiều.  Trong dịch chuyển này, công ta bỏ ra có độ lớn bằng nhưng trái dấu với công của lực điện trường.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_potential",
+      "patternId": "PP_PHY11_ELECTRIC_POTENTIAL",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_POTENTIAL_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L20_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_104",
+    "input": "Cho hiệu điện thế:  $$ U_{AK}=45\\ V $$  được đặt vào giữa hai cực của tế bào quang điện.  Khi chiếu xạ ánh sáng phù hợp để catôt phát xạ electron vào vùng điện trường giữa hai cực.  Hãy tính công của điện trường trong dịch chuyển của electron từ catôt tới anôt.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_potential",
+      "patternId": "PP_PHY11_ELECTRIC_POTENTIAL",
+      "parameters": {
+        "p1": {
+          "value": 45.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_POTENTIAL_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L20_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_105",
+    "input": "Tính thế năng điện của một electron đặt tại điểm $M$ có điện thế bằng:  $$ 1000\\ V $$  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "p1": {
+          "value": 1000.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L20_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_106",
+    "input": "Có hai bản phẳng song song cách nhau một khoảng $d$, được nối vào nguồn điện một chiều có hiệu điện thế:  $$ U=48\\ V $$  Chọn bản nhiễm điện âm làm mốc điện thế.",
+    "expected": {
+      "intent": "explain",
+      "topic": "sound_wave",
+      "patternId": "PP_PHY11_SOUND_FREQUENCY_MEASUREMENT",
+      "parameters": {
+        "u": {
+          "value": 48.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SOUND_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L20_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_107",
+    "input": "Vận dụng mối liên hệ giữa điện thế và cường độ điện trường để xác định điện thế tại một điểm cách mặt đất:  $$ 5\\ m $$  ở nơi có điện trường của Trái Đất là:  $$ 114\\ V/m $$  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_potential",
+      "patternId": "PP_PHY11_ELECTRIC_POTENTIAL",
+      "parameters": {
+        "p1": {
+          "value": 5.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 114.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_POTENTIAL_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L20_006",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_108",
+    "input": "> Nếu một chiếc quạt điện gặp trục trặc như: > > * Cánh quạt quay chậm hoặc không quay dù vẫn cắm điện. > * Động cơ nóng, rung và có âm thanh bất thường. > > Thì nguyên nhân mà chúng ta cần xem xét là hỏng tụ điện. > > Vậy tụ điện có cấu tạo như thế nào?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "sound_wave",
+      "patternId": "PP_PHY11_SOUND_FREQUENCY_MEASUREMENT",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SOUND_WAVE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L21_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_109",
+    "input": "Cho:  $$ C_1=2\\mu F $$  $$ C_2=3\\mu F $$  $$ C_3=4\\mu F $$",
+    "expected": {
+      "intent": "explain",
+      "topic": "capacitor",
+      "patternId": "PP_PHY11_CAPACITOR",
+      "parameters": {
+        "p1": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p2": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 2.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 3.0,
+          "unit": null
+        },
+        "p5": {
+          "value": 3.0,
+          "unit": null
+        },
+        "p6": {
+          "value": 4.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_CAPACITOR_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L21_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_110",
+    "input": "Cho hai tụ điện:  Tụ D:  $$ 2mF - 450V $$  Tụ E:  $$ 2.5\\mu F - 350V $$  Khi tích điện tới điện áp tối đa cho phép, hãy tính năng lượng của mỗi tụ.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {
+        "p1": {
+          "value": 2.0,
+          "unit": "m"
+        },
+        "p2": {
+          "value": 450.0,
+          "unit": "V"
+        },
+        "p3": {
+          "value": 2.5,
+          "unit": null
+        },
+        "p4": {
+          "value": 350.0,
+          "unit": "V"
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C03_L21_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_111",
+    "input": "> Cường độ dòng điện là gì và đặc trưng cho tính chất nào của dòng điện?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_circuit",
+      "patternId": "PP_PHY11_RESISTOR_NETWORK",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_RESISTOR_NETWORK_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C04_L22_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_112",
+    "input": "Trên một thiết bị dùng để nạp điện cho điện thoại di động có ghi thông số:  $$ 10000\\ mA \\cdot h $$  Thông số này cho biết điều gì?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_circuit",
+      "patternId": "PP_PHY11_RESISTOR_NETWORK",
+      "parameters": {
+        "p1": {
+          "value": 10000.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_RESISTOR_NETWORK_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C04_L22_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_113",
+    "input": "Một dây dẫn bằng kim loại, tiết diện tròn, có đường kính tiết diện:  $$ d=2\\ mm $$  có dòng điện:  $$ I=5A $$  chạy qua.  Cho biết mật độ electron tự do là:  $$ n=8{,}45 \\times 10^{28}\\ electron/m^3 $$  Hãy tính tốc độ dịch chuyển có hướng của các electron trong dây dẫn.  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_circuit",
+      "patternId": "PP_PHY11_RESISTOR_NETWORK",
+      "parameters": {
+        "d": {
+          "value": 2.0,
+          "unit": null
+        },
+        "i": {
+          "value": 5.0,
+          "unit": "A"
+        },
+        "n": {
+          "value": 8.0,
+          "unit": null
+        },
+        "p4": {
+          "value": 45.0,
+          "unit": null
+        },
+        "times": {
+          "value": 10.0,
+          "unit": null
+        },
+        "p6": {
+          "value": 28.0,
+          "unit": null
+        },
+        "p7": {
+          "value": 3.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_RESISTOR_NETWORK_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C04_L22_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_114",
+    "input": "> Các thiết bị điện thông thường mà chúng ta dùng hằng ngày đều có các điện trở. > > Vậy điện trở đặc trưng cho tính chất nào của vật dẫn và tại sao một vật dẫn lại có điện trở?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "ohms_law",
+      "patternId": "PP_PHY11_OHMS_LAW",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_OHMS_LAW_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C04_L23_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_115",
+    "input": "Vận dụng công thức:  $$ I=Snve $$  để giải thích tại sao điện trở $R$ của vật dẫn kim loại phụ thuộc vào chiều dài $l$, tiết diện $S$ và điện trở suất $\\rho$ của dây theo công thức:  $$ R=\\rho\\frac{l}{S} $$  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "ohms_law",
+      "patternId": "PP_PHY11_OHMS_LAW",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_OHMS_LAW_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C04_L23_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_116",
+    "input": "Từ kết quả thí nghiệm, em rút ra nhận xét gì về sự phụ thuộc của nhiệt điện trở NTC vào nhiệt độ?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "ohms_law",
+      "patternId": "PP_PHY11_OHMS_LAW",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_OHMS_LAW_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C04_L23_003",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_117",
+    "input": "Hai đồ thị trong Hình 23.9a, b mô tả đường đặc trưng vôn - ampe của một dây kim loại ở hai nhiệt độ khác nhau $t_1$ và $t_2$.",
+    "expected": {
+      "intent": "explain",
+      "topic": "ohms_law",
+      "patternId": "PP_PHY11_OHMS_LAW",
+      "parameters": {
+        "hinh": {
+          "value": 23.9,
+          "unit": null
+        },
+        "p2": {
+          "value": 1.0,
+          "unit": null
+        },
+        "p3": {
+          "value": 2.0,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_OHMS_LAW_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C04_L23_004",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_118",
+    "input": "Đồ thị Hình 23.10 thể hiện đường đặc trưng vôn - ampe của hai linh kiện:  * Dây tóc bóng đèn. * Dây kim loại.",
+    "expected": {
+      "intent": "explain",
+      "topic": "ohms_law",
+      "patternId": "PP_PHY11_OHMS_LAW",
+      "parameters": {
+        "hinh": {
+          "value": 23.1,
+          "unit": null
+        }
+      },
+      "target": [],
+      "simulationId": "SIM_PHY11_OHMS_LAW_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C04_L23_005",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "AI_TEST_PHY11_119",
+    "input": "> Em đã biết nguồn điện có khả năng cung cấp năng lượng điện để tạo ra dòng điện sử dụng trong đời sống. > > Vậy nguồn điện là gì? Vì sao nguồn điện có thể tạo ra dòng điện?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "shm_energy",
+      "patternId": "PP_PHY11_SHM_ENERGY",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_SHM_ENERGY_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C04_L24_001",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "AI_TEST_PHY11_120",
+    "input": "Vì sao sẽ rất nguy hiểm nếu hiện tượng đoản mạch xảy ra đối với mạng điện ở gia đình?  ---",
+    "expected": {
+      "intent": "explain",
+      "topic": "electric_source",
+      "patternId": "PP_PHY11_ELECTRIC_SOURCE",
+      "parameters": {},
+      "target": [],
+      "simulationId": "SIM_PHY11_ELECTRIC_SOURCE_3D"
+    },
+    "sourceLearningItemId": "LI_PHY11_C04_L24_002",
+    "evaluationFocus": [
+      "intent_detection",
+      "topic_classification",
+      "retrieval",
+      "pattern_matching"
+    ],
+    "validationStatus": "draft"
+  },
+  {
+    "id": "GOLD_DRAFT_SHM_PERIOD_001",
+    "input": "Một vật dao động điều hòa có ω = 4π rad/s. Tính chu kì T.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_PERIOD_FREQUENCY",
+      "parameters": {
+        "omega": 12.566370614
+      },
+      "target": [
+        "T"
+      ],
+      "answer": {
+        "T": 0.5,
+        "unit": "s"
+      },
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": null,
+    "evaluationFocus": [
+      "intent_detection",
+      "parameter_extraction",
+      "pattern_matching",
+      "numeric_answer",
+      "simulation_selection"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "GOLD_DRAFT_SHM_POSITION_001",
+    "input": "Một vật dao động điều hòa có phương trình x = 2cos(4πt + π/2) cm. Tính li độ tại t = 2 s.",
+    "expected": {
+      "intent": "solve",
+      "topic": "simple_harmonic_motion",
+      "patternId": "PP_PHY11_SHM_POSITION_AT_TIME",
+      "parameters": {
+        "A": 2,
+        "omegaExpression": "4π",
+        "phiExpression": "π/2",
+        "t": 2
+      },
+      "target": [
+        "x"
+      ],
+      "answer": {
+        "x": 0,
+        "unit": "cm"
+      },
+      "simulationId": "SIM_PHY11_SHM_BASIC_3D"
+    },
+    "sourceLearningItemId": null,
+    "evaluationFocus": [
+      "intent_detection",
+      "parameter_extraction",
+      "pattern_matching",
+      "numeric_answer",
+      "simulation_selection"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "GOLD_DRAFT_WAVE_SPEED_001",
+    "input": "Một sóng có tần số f = 5 Hz và tốc độ truyền sóng v = 2 m/s. Tính bước sóng.",
+    "expected": {
+      "intent": "solve",
+      "topic": "mechanical_wave",
+      "patternId": "PP_PHY11_WAVE_SPEED_RELATION",
+      "parameters": {
+        "f": 5,
+        "v": 2
+      },
+      "target": [
+        "lambda"
+      ],
+      "answer": {
+        "lambda": 0.4,
+        "unit": "m"
+      },
+      "simulationId": "SIM_PHY11_WAVE_PROPAGATION_3D"
+    },
+    "sourceLearningItemId": null,
+    "evaluationFocus": [
+      "intent_detection",
+      "parameter_extraction",
+      "pattern_matching",
+      "numeric_answer",
+      "simulation_selection"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "GOLD_DRAFT_OHM_001",
+    "input": "Một điện trở R = 10 Ω được đặt vào hiệu điện thế U = 5 V. Tính cường độ dòng điện.",
+    "expected": {
+      "intent": "solve",
+      "topic": "ohms_law",
+      "patternId": "PP_PHY11_OHMS_LAW",
+      "parameters": {
+        "R": 10,
+        "U": 5
+      },
+      "target": [
+        "I"
+      ],
+      "answer": {
+        "I": 0.5,
+        "unit": "A"
+      },
+      "simulationId": "SIM_PHY11_OHMS_LAW_3D"
+    },
+    "sourceLearningItemId": null,
+    "evaluationFocus": [
+      "intent_detection",
+      "parameter_extraction",
+      "pattern_matching",
+      "numeric_answer",
+      "simulation_selection"
+    ],
+    "validationStatus": "needs_review"
+  },
+  {
+    "id": "GOLD_DRAFT_CAPACITOR_001",
+    "input": "Một tụ điện có điện dung C = 2 μF được đặt vào hiệu điện thế U = 10 V. Tính điện tích của tụ.",
+    "expected": {
+      "intent": "solve",
+      "topic": "capacitor",
+      "patternId": "PP_PHY11_CAPACITOR",
+      "parameters": {
+        "C": 2e-06,
+        "U": 10
+      },
+      "target": [
+        "Q"
+      ],
+      "answer": {
+        "Q": 2e-05,
+        "unit": "C"
+      },
+      "simulationId": "SIM_PHY11_CAPACITOR_3D"
+    },
+    "sourceLearningItemId": null,
+    "evaluationFocus": [
+      "intent_detection",
+      "parameter_extraction",
+      "pattern_matching",
+      "numeric_answer",
+      "simulation_selection"
+    ],
+    "validationStatus": "needs_review"
+  }
+]

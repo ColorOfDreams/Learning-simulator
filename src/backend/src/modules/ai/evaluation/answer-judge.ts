@@ -136,7 +136,8 @@ function readAnswerJudgeConfig() {
     apiKey:
       process.env.ANSWER_JUDGE_API_KEY ??
       process.env.LLM_API_KEY ??
-      process.env.OPENAI_API_KEY,
+      process.env.OPENAI_API_KEY ??
+      process.env.EMBEDDING_API_KEY,
     baseUrl:
       process.env.ANSWER_JUDGE_BASE_URL ??
       process.env.LLM_BASE_URL ??
