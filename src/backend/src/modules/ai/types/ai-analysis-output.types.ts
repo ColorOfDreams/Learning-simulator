@@ -57,6 +57,7 @@ export type AiAnalysisOutput = {
   };
   answer: AiAnswer;
   simulation?: AiSimulation;
+  simulations?: AiSimulation[];
   render_blocks: AiRenderBlock[];
   references: AiReference[];
 };

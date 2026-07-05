@@ -6,6 +6,36 @@ import { history, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
 import './index.less';
 
+const escapeHtml = (value: unknown) =>
+	String(value ?? '')
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+
+// Render AI chat text an toàn: escape trước, sau đó xuống dòng + dựng công thức $...$ bằng KaTeX
+const renderChatText = (text: string) => {
+	const escaped = escapeHtml(text).replace(/\n/g, '<br/>');
+	const withMath = escaped.replace(/\$(.+?)\$/g, (_, texEscaped) => {
+		const tex = texEscaped
+			.replace(/&amp;/g, '&')
+			.replace(/&lt;/g, '<')
+			.replace(/&gt;/g, '>')
+			.replace(/&quot;/g, '"')
+			.replace(/&#39;/g, "'");
+		if (typeof window !== 'undefined' && (window as any).katex) {
+			try {
+				return (window as any).katex.renderToString(tex, { throwOnError: false, displayMode: false });
+			} catch {
+				return tex;
+			}
+		}
+		return tex;
+	});
+	return { __html: withMath };
+};
+
 // ── Types ──
 interface LabItem {
 	id: number | string;
@@ -1183,14 +1213,14 @@ const getSubjectIcon = (subject: 'physics' | 'math' | 'chem', idx: number) => {
 interface ChatMessage {
 	role: 'user' | 'ai';
 	text: string;
-	simulation?: {
+	simulations?: {
 		simulation_id: string;
 		title: string;
 		subject: 'physics' | 'math' | 'chem';
 		level?: string;
 		mins?: string;
 		xp?: string;
-	};
+	}[];
 }
 
 const HERO_CHIPS = [
@@ -1389,7 +1419,7 @@ const HocSinhHome: React.FC = () => {
 
 				let text =
 					'Mình có thể giúp bạn làm bài tập này! Hãy nhập chủ đề — ví dụ: chuẩn độ, ném xiên, đồ thị hàm số — hoặc chọn phòng thí nghiệm bên dưới nhé.';
-				let recommendedSim = undefined;
+				let recommendedSims: ChatMessage['simulations'] = undefined;
 
 				if (data) {
 					if (data.answer?.short_answer) {
@@ -1398,16 +1428,19 @@ const HocSinhHome: React.FC = () => {
 						text = 'Mình đã tìm thấy một phòng thí nghiệm rất phù hợp với chủ đề của bạn. Hãy trải nghiệm ngay nhé:';
 					}
 
-					if (data.simulation) {
-						const matchedLab = ALL_LABS.find((l) => l.simId === data.simulation?.simulation_id);
-						recommendedSim = {
-							simulation_id: data.simulation.simulation_id,
-							title: data.simulation.title || matchedLab?.title || 'Phòng thí nghiệm',
-							subject: (data.subject || matchedLab?.subject || 'chem') as 'physics' | 'math' | 'chem',
-							level: matchedLab?.level || 'Trung bình',
-							mins: matchedLab?.mins || '~15 phút',
-							xp: matchedLab?.xp || '+120 XP',
-						};
+					const simList = data.simulations?.length ? data.simulations : data.simulation ? [data.simulation] : [];
+					if (simList.length > 0) {
+						recommendedSims = simList.map((sim) => {
+							const matchedLab = ALL_LABS.find((l) => l.simId === sim.simulation_id);
+							return {
+								simulation_id: sim.simulation_id,
+								title: sim.title || matchedLab?.title || 'Phòng thí nghiệm',
+								subject: (data.subject || matchedLab?.subject || 'chem') as 'physics' | 'math' | 'chem',
+								level: matchedLab?.level || 'Trung bình',
+								mins: matchedLab?.mins || '~15 phút',
+								xp: matchedLab?.xp || '+120 XP',
+							};
+						});
 					}
 				}
 
@@ -1416,7 +1449,7 @@ const HocSinhHome: React.FC = () => {
 					{
 						role: 'ai',
 						text,
-						simulation: recommendedSim,
+						simulations: recommendedSims,
 					},
 				]);
 			} catch (err) {
@@ -1550,12 +1583,20 @@ const HocSinhHome: React.FC = () => {
 											}`}
 										>
 											<div className='stu-home__hero-chat-bubble-container'>
-												<div className='stu-home__hero-chat-bubble'>{msg.text}</div>
-												{msg.simulation && (
+												<div className='stu-home__hero-chat-bubble'>
+													{msg.role === 'ai' ? (
+														<span dangerouslySetInnerHTML={renderChatText(msg.text)} />
+													) : (
+														msg.text
+													)}
+												</div>
+												{msg.simulations && msg.simulations.length > 0 && (
 													<div className='stu-home__hero-chat-labs'>
+														{msg.simulations.map((sim) => (
 														<div
+															key={sim.simulation_id}
 															className='stu-home__hero-chat-lab-card'
-															onClick={() => openWorkspace(msg.simulation!.subject, msg.simulation!.simulation_id)}
+															onClick={() => openWorkspace(sim.subject, sim.simulation_id)}
 														>
 															<div
 																className='stu-profile__achievement-badge-icon stu-profile__achievement-badge-icon--chem'
@@ -1575,9 +1616,9 @@ const HocSinhHome: React.FC = () => {
 																</svg>
 															</div>
 															<div style={{ flex: 1, minWidth: 0 }}>
-																<div className='stu-home__hero-chat-lab-title'>{msg.simulation.title}</div>
+																<div className='stu-home__hero-chat-lab-title'>{sim.title}</div>
 																<div className='stu-home__hero-chat-lab-meta'>
-																	{msg.simulation.level} · {msg.simulation.mins} · {msg.simulation.xp}
+																	{sim.level} · {sim.mins} · {sim.xp}
 																</div>
 															</div>
 															<div className='stu-home__hero-chat-lab-btn'>
@@ -1596,6 +1637,7 @@ const HocSinhHome: React.FC = () => {
 																</svg>
 															</div>
 														</div>
+														))}
 													</div>
 												)}
 											</div>

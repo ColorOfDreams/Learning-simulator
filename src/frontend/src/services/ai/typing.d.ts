@@ -27,6 +27,11 @@ declare module Ai {
 			title: string;
 			parameters: GivenValue[];
 		};
+		simulations?: {
+			simulation_id: string;
+			title: string;
+			parameters: GivenValue[];
+		}[];
 		render_blocks: { type: string }[];
 		references: { id: string; title: string; source?: string }[];
 		used_llm?: boolean;
