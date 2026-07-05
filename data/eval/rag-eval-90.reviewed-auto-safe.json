@@ -1,0 +1,3797 @@
+[
+  {
+    "id": "RAG90_PHYSICS_001",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến 3.1. Vật lí là cơ sở của khoa học tự nhiên.",
+    "subject": "physics",
+    "grade": 10,
+    "chapter": "physics_chapter_01",
+    "lessonId": "physics_g10_bai01_4644c4e2",
+    "lesson": "Chương mở đầu",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G10_sgkvatli10_chuong1_bai1_sgkvatli10_4644c4e2_S011_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 10",
+      "Chương mở đầu",
+      "3.1. Vật lí là cơ sở của khoa học tự nhiên",
+      "Bài 1: Làm quen với vật lí",
+      "3. Vai trò của Vật lí đối với khoa học, kĩ thuật và công nghệ",
+      "Vật",
+      "của"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong1_bai1_sgkvatli10_4644c4e2_S011_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Vật lí có quan hệ với mọi ngành khoa học và thường được coi là cơ sở của khoa học tự nhiên. Các khái niệm, định luật, nguyên lí của Vật lí được sử dụng rộng rãi trong mọi lĩnh vực của khoa học tự nhiên, đặc biệt là trong việc giải thích cơ chế của các hiện tượng tự nhiên, từ các hiện tượng xảy ra trong thế giới sinh học, các phản ứng hóa học đến các hiện tượng xảy ra trong vũ trụ.",
+        "required_concepts": [
+          "physics",
+          "grade 10",
+          "Chương mở đầu",
+          "3.1. Vật lí là cơ sở của khoa học tự nhiên",
+          "Bài 1: Làm quen với vật lí"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Vật lí có quan hệ với mọi ngành khoa học và thường được coi là cơ sở của khoa học tự nhiên. Các khái niệm, định luật, nguyên lí của Vật lí được sử dụng rộng rãi trong mọi lĩnh vực của khoa học tự nhiên, đặc biệt là trong việc giải thích cơ chế của các hiện tượng tự nhiên, từ các hiện tượng xảy ra trong thế giới sinh học, các phản ứng hóa học đến các hiện tượng xảy ra trong vũ trụ.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_002",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Chương IV: Dòng điện, mạch điện.",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "electric_circuit",
+    "lessonId": "PHY11_C04_L22_chuong-iv-dong-dien-mach-dien",
+    "lesson": "Chương IV: Dòng điện, mạch điện",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "TH_PHY11_C04_L22_001"
+    ],
+    "expectedConcepts": [
+      "dòng điện",
+      "Chương",
+      "Dòng",
+      "điện",
+      "mạch"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "TH_PHY11_C04_L22_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "> Xe điện là xu hướng phát triển trong tương lai. > > Pin là một trong những yếu tố quan trọng của tất cả các dòng xe điện. > > Khi pin được nạp đầy, xe có thể di chuyển được quãng đường hàng trăm kilômét, giúp bảo vệ môi trường, chi phí vận hành xe thấp và khả năng vận hành ổn định, không phát ra tiếng ồn. > > Tại sao pin trong xe điện sau khi sạc lại có thể tạo ra dòng điện chạy khá lâu trong mạch kín? ---",
+        "required_concepts": [
+          "dòng điện",
+          "Chương",
+          "Dòng",
+          "điện",
+          "mạch"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "> Xe điện là xu hướng phát triển trong tương lai. > > Pin là một trong những yếu tố quan trọng của tất cả các dòng xe điện. > > Khi pin được nạp đầy, xe có thể di chuyển được quãng đường hàng trăm kilômét, giúp bảo vệ môi trường, chi phí vận hành xe thấp và khả năng vận hành ổn định, không phát ra tiếng ồn. > > Tại sao pin trong xe điện sau khi sạc lại có thể tạo ra dòng điện chạy khá lâu trong mạch kín? ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_003",
+    "question": "Nêu phương pháp cơ bản để xử lí dạng câu hỏi về Bài 1: Cấu trúc của chất. Sự chuyển thể.",
+    "subject": "physics",
+    "grade": 12,
+    "chapter": "physics_chapter_01",
+    "lessonId": "physics_g12_bai01_dbbe2fc8",
+    "lesson": "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+    "questionType": "method",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G12_sgkvatli12_chuong1_bai1_sgkvatli12_dbbe2fc8_S001_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 12",
+      "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+      "Bài",
+      "Cấu",
+      "trúc",
+      "của",
+      "chất"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong1_bai1_sgkvatli12_dbbe2fc8_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "> Năm 1765, James Watt (Giêm Oát) (1736–1819), dựa vào những thành tựu nghiên cứu về Vật lí nhiệt, đã phát minh ra máy hơi nước, góp phần quan trọng vào việc làm bùng nổ cuộc Cách mạng Công nghiệp lần thứ nhất. > > Những kiến thức về Vật lí nhiệt nào đã làm cơ sở cho việc phát minh ra máy hơi nước? ---",
+        "required_concepts": [
+          "physics",
+          "grade 12",
+          "Bài 1: Cấu trúc của chất. Sự chuyển thể",
+          "Bài",
+          "Cấu"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "> Năm 1765, James Watt (Giêm Oát) (1736–1819), dựa vào những thành tựu nghiên cứu về Vật lí nhiệt, đã phát minh ra máy hơi nước, góp phần quan trọng vào việc làm bùng nổ cuộc Cách mạng Công nghiệp lần thứ nhất. > > Những kiến thức về Vật lí nhiệt nào đã làm cơ sở cho việc phát minh ra máy hơi nước? ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_004",
+    "question": "Ý chính cần nhớ về Hình 2.1 là gì?",
+    "subject": "physics",
+    "grade": 10,
+    "chapter": "physics_chapter_01",
+    "lessonId": "physics_g10_bai02_5e318891",
+    "lesson": "Bài 2: Các quy tắc an toàn trong phòng thực hành Vật lí",
+    "questionType": "concept",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G10_sgkvatli10_chuong1_bai2_sgkvatli10_5e318891_S003_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 10",
+      "Bài 2: Các quy tắc an toàn trong phòng thực hành Vật lí",
+      "Hình 2.1",
+      "I. An toàn khi sử dụng thiết bị thí nghiệm",
+      "Hình"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong1_bai2_sgkvatli10_5e318891_S003_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "![Hình 2.1 - Hai loại thiết bị cung cấp nguồn điện](assets/images/hinh-2-1.png) **Nội dung hình** Hình minh họa hai loại thiết bị cung cấp nguồn điện: * Máy biến áp, còn gọi là máy biến thế. * Bộ chuyển đổi điện áp. Thiết bị có các kí hiệu và thông số kĩ thuật như: * AC. * DC. * Input. * Output. * Hiệu điện thế vào. * Hiệu điện thế ra. ---",
+        "required_concepts": [
+          "physics",
+          "grade 10",
+          "Bài 2: Các quy tắc an toàn trong phòng thực hành Vật lí",
+          "Hình 2.1",
+          "I. An toàn khi sử dụng thiết bị thí nghiệm"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "![Hình 2.1 - Hai loại thiết bị cung cấp nguồn điện](assets/images/hinh-2-1.png) **Nội dung hình** Hình minh họa hai loại thiết bị cung cấp nguồn điện: * Máy biến áp, còn gọi là máy biến thế. * Bộ chuyển đổi điện áp. Thiết bị có các kí hiệu và thông số kĩ thuật như: * AC. * DC. * Input. * Output. * Hiệu điện thế vào. * Hiệu điện thế ra. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_005",
+    "question": "Cần phân biệt hoặc so sánh điểm nào khi học 1. Nguyên nhân gây ra điện trở trong vật dẫn kim loại, đặc biệt với khái niệm điện trở?",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "electric_circuit",
+    "lessonId": "PHY11_C04_L23_bai-23-dien-tro-dinh-luat-om",
+    "lesson": "Bài 23: Điện trở. Định luật Ôm",
+    "questionType": "comparison",
+    "expectedChunkIds": [
+      "TH_PHY11_C04_L23_020"
+    ],
+    "expectedConcepts": [
+      "điện trở",
+      "điện trở trong",
+      "Nguyên",
+      "nhân",
+      "gây",
+      "điện",
+      "trở",
+      "trong"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "TH_PHY11_C04_L23_020"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong kim loại, các nguyên tử bị mất electron hóa trị trở thành các ion dương. Các ion dương liên kết với nhau một cách trật tự, tạo nên mạng tinh thể kim loại. Chuyển động nhiệt của các ion có thể phá vỡ trật tự này. Nhiệt độ càng cao: * Dao động nhiệt càng mạnh. * Mạng tinh thể càng mất trật tự. * Electron tự do càng bị cản trở mạnh.",
+        "required_concepts": [
+          "điện trở",
+          "điện trở trong",
+          "Nguyên",
+          "nhân",
+          "gây"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong kim loại, các nguyên tử bị mất electron hóa trị trở thành các ion dương. Các ion dương liên kết với nhau một cách trật tự, tạo nên mạng tinh thể kim loại. Chuyển động nhiệt của các ion có thể phá vỡ trật tự này. Nhiệt độ càng cao: * Dao động nhiệt càng mạnh. * Mạng tinh thể càng mất trật tự. * Electron tự do càng bị cản trở mạnh.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_006",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến 10. Em có thể.",
+    "subject": "physics",
+    "grade": 12,
+    "chapter": "physics_chapter_01",
+    "lessonId": "physics_g12_bai02_95600b51",
+    "lesson": "Bài 2: Nội năng. Định luật I của Nhiệt động lực học",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G12_sgkvatli12_chuong1_bai2_sgkvatli12_95600b51_S033_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 12",
+      "Bài 2: Nội năng. Định luật I của Nhiệt động lực học",
+      "10. Em có thể",
+      "thể"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong1_bai2_sgkvatli12_95600b51_S033_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "> Dùng mô hình động học phân tử giải thích được một số hiện tượng liên quan đến sự chuyển thể của các chất. > Dùng khái niệm nội năng và định luật I của Nhiệt động lực học để giải thích một số hiện tượng đơn giản như: * Sự chuyển hóa năng lượng trong các quá trình chuyển thể. * Nguyên tắc hoạt động của động cơ nhiệt. * Nguyên tắc hoạt động của máy hơi nước. * Nguyên tắc hoạt động của động cơ đốt trong.",
+        "required_concepts": [
+          "physics",
+          "grade 12",
+          "Bài 2: Nội năng. Định luật I của Nhiệt động lực học",
+          "10. Em có thể",
+          "thể"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "> Dùng mô hình động học phân tử giải thích được một số hiện tượng liên quan đến sự chuyển thể của các chất. > Dùng khái niệm nội năng và định luật I của Nhiệt động lực học để giải thích một số hiện tượng đơn giản như: * Sự chuyển hóa năng lượng trong các quá trình chuyển thể. * Nguyên tắc hoạt động của động cơ nhiệt. * Nguyên tắc hoạt động của máy hơi nước. * Nguyên tắc hoạt động của động cơ đốt trong.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_007",
+    "question": "Hiện tượng hoặc thí nghiệm liên quan đến Câu hỏi được giải thích bằng ý chính nào?",
+    "subject": "physics",
+    "grade": 10,
+    "chapter": "physics_chapter_01",
+    "lessonId": "physics_g10_bai03_17a0e02d",
+    "lesson": "Bài 3: Thực hành tính sai số trong phép đo. Ghi kết quả đo",
+    "questionType": "phenomenon/experiment",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G10_sgkvatli10_chuong1_bai3_sgkvatli10_17a0e02d_S003_P01",
+      "GENCLN_PHY_G10_sgkvatli10_chuong1_bai1_sgkvatli10_4644c4e2_S012_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 10",
+      "Bài 3: Thực hành tính sai số trong phép đo. Ghi kết quả đo",
+      "Câu hỏi",
+      "I. Phép đo trực tiếp và phép đo gián tiếp",
+      "Câu",
+      "hỏi"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong1_bai3_sgkvatli10_17a0e02d_S003_P01",
+        "GENCLN_PHY_G10_sgkvatli10_chuong1_bai1_sgkvatli10_4644c4e2_S012_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Em hãy lập phương án đo tốc độ chuyển động của chiếc xe ô tô đồ chơi chỉ dùng thước và đồng hồ bấm giây, sau đó trả lời các câu hỏi sau: a) Để đo tốc độ chuyển động của chiếc xe cần đo những đại lượng nào? b) Xác định tốc độ chuyển động của xe theo công thức nào? c) Phép đo nào là phép đo trực tiếp? Tại sao? d) Phép đo nào là phép đo gián tiếp? Tại sao? ---",
+        "required_concepts": [
+          "physics",
+          "grade 10",
+          "Bài 3: Thực hành tính sai số trong phép đo. Ghi kết quả đo",
+          "Câu hỏi",
+          "I. Phép đo trực tiếp và phép đo gián tiếp"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Em hãy lập phương án đo tốc độ chuyển động của chiếc xe ô tô đồ chơi chỉ dùng thước và đồng hồ bấm giây, sau đó trả lời các câu hỏi sau: a) Để đo tốc độ chuyển động của chiếc xe cần đo những đại lượng nào? b) Xác định tốc độ chuyển động của xe theo công thức nào? c) Phép đo nào là phép đo trực tiếp? Tại sao? d) Phép đo nào là phép đo gián tiếp? Tại sao? ---",
+    "benchmarkSplit": "preview_v1",
+    "metadata": {
+      "benchmarkReview": {
+        "status": "auto_safe_reviewed",
+        "action": "add_candidate_as_additional_gold",
+        "candidateId": "GENCLN_PHY_G10_sgkvatli10_chuong1_bai1_sgkvatli10_4644c4e2_S012_P01",
+        "reviewedAt": "2026-07-04T07:14:24.329Z",
+        "reason": "candidate matched subject/grade/chapter-or-lesson and had clear question keyword coverage"
+      }
+    }
+  },
+  {
+    "id": "RAG90_PHYSICS_008",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến 3. Suất điện động của nguồn điện.",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "electric_circuit",
+    "lessonId": "PHY11_C04_L24_bai-24-nguon-dien",
+    "lesson": "Bài 24: Nguồn điện",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "TH_PHY11_C04_L24_008"
+    ],
+    "expectedConcepts": [
+      "điện trường",
+      "dòng điện",
+      "nguồn điện",
+      "suất điện động",
+      "Suất",
+      "điện",
+      "động",
+      "của"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "TH_PHY11_C04_L24_008"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Khi nối hai cực của nguồn điện bằng một vật dẫn tạo thành mạch kín thì trong mạch có dòng điện. Nếu vật dẫn làm bằng kim loại thì chỉ có sự dịch chuyển của các electron tự do từ cực âm, qua vật dẫn đến cực dương. Bên trong nguồn điện, dưới tác dụng của lực lạ, các hạt tải điện dương lại dịch chuyển ngược chiều điện trường từ cực âm đến cực dương.",
+        "required_concepts": [
+          "điện trường",
+          "dòng điện",
+          "nguồn điện",
+          "suất điện động",
+          "Suất"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Khi nối hai cực của nguồn điện bằng một vật dẫn tạo thành mạch kín thì trong mạch có dòng điện. Nếu vật dẫn làm bằng kim loại thì chỉ có sự dịch chuyển của các electron tự do từ cực âm, qua vật dẫn đến cực dương. Bên trong nguồn điện, dưới tác dụng của lực lạ, các hạt tải điện dương lại dịch chuyển ngược chiều điện trường từ cực âm đến cực dương.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_009",
+    "question": "Công thức hoặc tính chất quan trọng của Hình 3.1 là gì?",
+    "subject": "physics",
+    "grade": 12,
+    "chapter": "physics_chapter_01",
+    "lessonId": "physics_g12_bai03_df06bfb6",
+    "lesson": "Bài 3: Nhiệt độ. Thang nhiệt độ – Nhiệt kế",
+    "questionType": "formula",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G12_sgkvatli12_chuong1_bai3_sgkvatli12_df06bfb6_S005_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 12",
+      "Bài 3: Nhiệt độ. Thang nhiệt độ – Nhiệt kế",
+      "Hình 3.1",
+      "1. Khái niệm nhiệt độ",
+      "Hình"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong1_bai3_sgkvatli12_df06bfb6_S005_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "![Hình 3.1 - Thí nghiệm sự truyền nhiệt năng](assets/images/hinh-3-1.png) **Nội dung hình** Hình biểu diễn thí nghiệm sự truyền nhiệt năng, gồm: * Cốc nhôm đựng nước ở nhiệt độ khoảng $30^\\circ C$. * Bình cách nhiệt đựng nước ở nhiệt độ khoảng $60^\\circ C$. * Hai nhiệt kế dùng để đo nhiệt độ của nước trong cốc và trong bình. Hình gồm: * Ảnh chụp thí nghiệm. * Sơ đồ bố trí thí nghiệm. ---",
+        "required_concepts": [
+          "physics",
+          "grade 12",
+          "Bài 3: Nhiệt độ. Thang nhiệt độ – Nhiệt kế",
+          "Hình 3.1",
+          "1. Khái niệm nhiệt độ"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "![Hình 3.1 - Thí nghiệm sự truyền nhiệt năng](assets/images/hinh-3-1.png) **Nội dung hình** Hình biểu diễn thí nghiệm sự truyền nhiệt năng, gồm: * Cốc nhôm đựng nước ở nhiệt độ khoảng $30^\\circ C$. * Bình cách nhiệt đựng nước ở nhiệt độ khoảng $60^\\circ C$. * Hai nhiệt kế dùng để đo nhiệt độ của nước trong cốc và trong bình. Hình gồm: * Ảnh chụp thí nghiệm. * Sơ đồ bố trí thí nghiệm. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_010",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Nội dung.",
+    "subject": "physics",
+    "grade": 10,
+    "chapter": "physics_chapter_02",
+    "lessonId": "physics_g10_bai04_81c28424",
+    "lesson": "Chương II: Động học",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G10_sgkvatli10_chuong2_bai4_sgkvatli10_81c28424_S002_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 10",
+      "Chương II: Động học",
+      "Nội dung",
+      "Nội",
+      "dung"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai4_sgkvatli10_81c28424_S002_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "- Các khái niệm: vận tốc, tốc độ trung bình, quãng đường đi được, độ dịch chuyển, gia tốc của chuyển động. - Mô tả chuyển động: chuyển động thẳng đều, chuyển động thẳng biến đổi đều và sự rơi tự do. - Thiết kế phương án và thực hiện thí nghiệm đo tốc độ. - Tổng hợp vận tốc. ---",
+        "required_concepts": [
+          "physics",
+          "grade 10",
+          "Chương II: Động học",
+          "Nội dung",
+          "Nội"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Các khái niệm: vận tốc, tốc độ trung bình, quãng đường đi được, độ dịch chuyển, gia tốc của chuyển động. - Mô tả chuyển động: chuyển động thẳng đều, chuyển động thẳng biến đổi đều và sự rơi tự do. - Thiết kế phương án và thực hiện thí nghiệm đo tốc độ. - Tổng hợp vận tốc. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_011",
+    "question": "Ý chính cần nhớ về Em có thể là gì?",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "electric_circuit",
+    "lessonId": "PHY11_C04_L25_bai-25-nang-luong-va-cong-suat-dien",
+    "lesson": "Bài 25: Năng lượng và công suất điện",
+    "questionType": "concept",
+    "expectedChunkIds": [
+      "TH_PHY11_C04_L25_027"
+    ],
+    "expectedConcepts": [
+      "năng lượng điện",
+      "thể"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "TH_PHY11_C04_L25_027"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Giải thích được nội dung ghi trong hóa đơn tiền điện và ý nghĩa của việc tính giá điện lũy tiến. * Giải thích được lợi ích của việc thay đèn sợi đốt bằng đèn LED. * Ước tính được số tiền điện trung bình mỗi tháng phải trả cho các dụng cụ và thiết bị điện dùng trong nhà. * Đề xuất được các biện pháp tiết kiệm năng lượng điện tiêu thụ.",
+        "required_concepts": [
+          "năng lượng điện",
+          "thể"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Giải thích được nội dung ghi trong hóa đơn tiền điện và ý nghĩa của việc tính giá điện lũy tiến. * Giải thích được lợi ích của việc thay đèn sợi đốt bằng đèn LED. * Ước tính được số tiền điện trung bình mỗi tháng phải trả cho các dụng cụ và thiết bị điện dùng trong nhà. * Đề xuất được các biện pháp tiết kiệm năng lượng điện tiêu thụ.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_012",
+    "question": "Hiện tượng hoặc thí nghiệm liên quan đến 2.2. Dụng cụ thí nghiệm được giải thích bằng ý chính nào?",
+    "subject": "physics",
+    "grade": 12,
+    "chapter": "physics_chapter_01",
+    "lessonId": "physics_g12_bai04_a738956e",
+    "lesson": "Bài 4: Nhiệt dung riêng",
+    "questionType": "phenomenon/experiment",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G12_sgkvatli12_chuong1_bai4_sgkvatli12_a738956e_S008_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 12",
+      "Bài 4: Nhiệt dung riêng",
+      "2.2. Dụng cụ thí nghiệm",
+      "2. Thực hành đo nhiệt dung riêng của nước",
+      "Dụng",
+      "thí",
+      "nghiệm"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong1_bai4_sgkvatli12_a738956e_S008_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Biến thế nguồn. * Bộ đo công suất nguồn điện, tức oát kế, có tích hợp chức năng đo thời gian. * Nhiệt kế điện tử hoặc cảm biến nhiệt độ có thang đo từ $-20^\\circ C$ đến $110^\\circ C$ và độ phân giải nhiệt độ $\\pm 0{,}1^\\circ C$. * Nhiệt lượng kế bằng nhựa có vỏ xốp, kèm dây điện trở gắn ở mặt trong của nắp bình. * Cân điện tử hoặc bình đong. * Các dây nối.",
+        "required_concepts": [
+          "physics",
+          "grade 12",
+          "Bài 4: Nhiệt dung riêng",
+          "2.2. Dụng cụ thí nghiệm",
+          "2. Thực hành đo nhiệt dung riêng của nước"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Biến thế nguồn. * Bộ đo công suất nguồn điện, tức oát kế, có tích hợp chức năng đo thời gian. * Nhiệt kế điện tử hoặc cảm biến nhiệt độ có thang đo từ $-20^\\circ C$ đến $110^\\circ C$ và độ phân giải nhiệt độ $\\pm 0{,}1^\\circ C$. * Nhiệt lượng kế bằng nhựa có vỏ xốp, kèm dây điện trở gắn ở mặt trong của nắp bình. * Cân điện tử hoặc bình đong. * Các dây nối.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_013",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến 2. Tốc độ tức thời.",
+    "subject": "physics",
+    "grade": 10,
+    "chapter": "physics_chapter_02",
+    "lessonId": "physics_g10_bai05_d156cafa",
+    "lesson": "Bài 5: Tốc độ và vận tốc",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G10_sgkvatli10_chuong2_bai5_sgkvatli10_d156cafa_S007_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 10",
+      "Bài 5: Tốc độ và vận tốc",
+      "2. Tốc độ tức thời",
+      "I. Tốc độ",
+      "Tốc",
+      "tức",
+      "thời"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai5_sgkvatli10_d156cafa_S007_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trên xe máy và ô tô, đồng hồ tốc độ, còn gọi là **tốc kế**, đặt trước mặt người lái xe. Tốc kế chỉ tốc độ mà xe đang chạy vào thời điểm người lái xe đọc số chỉ của tốc kế. Tốc độ này được gọi là **tốc độ tức thời**. > **Em có biết?** > > Khái niệm tốc độ tức thời liên quan đến phép tính đạo hàm của môn Toán sẽ được học ở lớp 11. > > Có thể coi tốc độ tức thời là tốc độ trung bình trong một khoảng thời gian rất ngắn.",
+        "required_concepts": [
+          "physics",
+          "grade 10",
+          "Bài 5: Tốc độ và vận tốc",
+          "2. Tốc độ tức thời",
+          "I. Tốc độ"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trên xe máy và ô tô, đồng hồ tốc độ, còn gọi là **tốc kế**, đặt trước mặt người lái xe. Tốc kế chỉ tốc độ mà xe đang chạy vào thời điểm người lái xe đọc số chỉ của tốc kế. Tốc độ này được gọi là **tốc độ tức thời**. > **Em có biết?** > > Khái niệm tốc độ tức thời liên quan đến phép tính đạo hàm của môn Toán sẽ được học ở lớp 11. > > Có thể coi tốc độ tức thời là tốc độ trung bình trong một khoảng thời gian rất ngắn.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_014",
+    "question": "Hiện tượng hoặc thí nghiệm liên quan đến Hình 26.1 được giải thích bằng ý chính nào?",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "electric_circuit",
+    "lessonId": "PHY11_C04_L26_bai-26-thuc-hanh-do-suat-dien-dong-va-dien-tro-trong-cua-pin-dien-hoa",
+    "lesson": "Bài 26: Thực hành – Đo suất điện động và điện trở trong của pin điện hóa",
+    "questionType": "phenomenon/experiment",
+    "expectedChunkIds": [
+      "TH_PHY11_C04_L26_003"
+    ],
+    "expectedConcepts": [
+      "điện trở",
+      "suất điện động",
+      "điện trở trong",
+      "Hình"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "TH_PHY11_C04_L26_003"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "![Hình 26.1 - Bộ thí nghiệm đo suất điện động và điện trở trong của pin điện hóa](assets/images/hinh-26-1.png) **Nội dung hình** Bộ thí nghiệm gồm: 1. Pin điện hóa. 2. Biến trở. 3. Đồng hồ đo điện đa năng. 4. Dây nối. 5. Công tắc. 6. Điện trở bảo vệ. 7. Bảng lắp mạch. ---",
+        "required_concepts": [
+          "điện trở",
+          "suất điện động",
+          "điện trở trong",
+          "Hình"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "![Hình 26.1 - Bộ thí nghiệm đo suất điện động và điện trở trong của pin điện hóa](assets/images/hinh-26-1.png) **Nội dung hình** Bộ thí nghiệm gồm: 1. Pin điện hóa. 2. Biến trở. 3. Đồng hồ đo điện đa năng. 4. Dây nối. 5. Công tắc. 6. Điện trở bảo vệ. 7. Bảng lắp mạch. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_015",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Bảng 5.1.",
+    "subject": "physics",
+    "grade": 12,
+    "chapter": "physics_chapter_01",
+    "lessonId": "physics_g12_bai05_698c3023",
+    "lesson": "Bài 5: Nhiệt nóng chảy riêng",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G12_sgkvatli12_chuong1_bai5_sgkvatli12_698c3023_S003_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 12",
+      "Bài 5: Nhiệt nóng chảy riêng",
+      "Bảng 5.1",
+      "1. Khái niệm nhiệt nóng chảy riêng",
+      "Bảng"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong1_bai5_sgkvatli12_698c3023_S003_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "**Giá trị gần đúng của nhiệt nóng chảy riêng ở nhiệt độ nóng chảy dưới áp suất tiêu chuẩn của một số chất** | Chất | Nhiệt độ nóng chảy $(^\\circ C)$ | Nhiệt nóng chảy riêng $(J/kg)$ | |---|---:|---:| | Nước đá | 0 | $3{,}34 \\cdot 10^5$ | | Sắt | 1535 | $2{,}77 \\cdot 10^5$ | | Đồng | 1084 | $1{,}80 \\cdot 10^5$ | | Chì | 327 | $0{,}25 \\cdot 10^5$ | ---",
+        "required_concepts": [
+          "physics",
+          "grade 12",
+          "Bài 5: Nhiệt nóng chảy riêng",
+          "Bảng 5.1",
+          "1. Khái niệm nhiệt nóng chảy riêng"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "**Giá trị gần đúng của nhiệt nóng chảy riêng ở nhiệt độ nóng chảy dưới áp suất tiêu chuẩn của một số chất** | Chất | Nhiệt độ nóng chảy $(^\\circ C)$ | Nhiệt nóng chảy riêng $(J/kg)$ | |---|---:|---:| | Nước đá | 0 | $3{,}34 \\cdot 10^5$ | | Sắt | 1535 | $2{,}77 \\cdot 10^5$ | | Đồng | 1084 | $1{,}80 \\cdot 10^5$ | | Chì | 327 | $0{,}25 \\cdot 10^5$ | ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_016",
+    "question": "Công thức hoặc tính chất quan trọng của Câu hỏi là gì?",
+    "subject": "physics",
+    "grade": 10,
+    "chapter": "physics_chapter_02",
+    "lessonId": "physics_g10_bai06_2b7d514c",
+    "lesson": "Bài 6: Thực hành đo tốc độ của vật chuyển động",
+    "questionType": "formula",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G10_sgkvatli10_chuong2_bai6_sgkvatli10_2b7d514c_S003_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 10",
+      "Bài 6: Thực hành đo tốc độ của vật chuyển động",
+      "Câu hỏi",
+      "I. Cách đo tốc độ trong phòng thí nghiệm",
+      "Câu",
+      "hỏi"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai6_sgkvatli10_2b7d514c_S003_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Hãy thảo luận nhóm và trả lời các câu hỏi sau: 1. Dùng dụng cụ gì để đo quãng đường và thời gian chuyển động của vật? 2. Làm thế nào đo được quãng đường đi được của vật trong một khoảng thời gian hoặc ngược lại? 3. Thiết kế các phương án đo tốc độ và so sánh ưu, nhược điểm của các phương án đó. ---",
+        "required_concepts": [
+          "physics",
+          "grade 10",
+          "Bài 6: Thực hành đo tốc độ của vật chuyển động",
+          "Câu hỏi",
+          "I. Cách đo tốc độ trong phòng thí nghiệm"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Hãy thảo luận nhóm và trả lời các câu hỏi sau: 1. Dùng dụng cụ gì để đo quãng đường và thời gian chuyển động của vật? 2. Làm thế nào đo được quãng đường đi được của vật trong một khoảng thời gian hoặc ngược lại? 3. Thiết kế các phương án đo tốc độ và so sánh ưu, nhược điểm của các phương án đó. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_017",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Kết luận.",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "electric_field",
+    "lessonId": "PHY11_C03_L16_chuong-iii-dien-truong",
+    "lesson": "Chương III: Điện trường",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "TH_PHY11_C03_L16_009"
+    ],
+    "expectedConcepts": [
+      "điện tích",
+      "Kết",
+      "luận"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "TH_PHY11_C03_L16_009"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Có hai loại điện tích trái dấu. Điện tích xuất hiện ở thanh thủy tinh khi được cọ xát vào len được quy ước gọi là điện tích dương. Điện tích xuất hiện ở thanh nhựa được cọ xát vào vải được quy ước gọi là điện tích âm. Các điện tích cùng loại đẩy nhau. Các điện tích khác loại hút nhau. Lực hút, đẩy giữa các điện tích được gọi chung là lực tương tác giữa các điện tích, thường gọi tắt là lực điện. ---",
+        "required_concepts": [
+          "điện tích",
+          "Kết",
+          "luận"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Có hai loại điện tích trái dấu. Điện tích xuất hiện ở thanh thủy tinh khi được cọ xát vào len được quy ước gọi là điện tích dương. Điện tích xuất hiện ở thanh nhựa được cọ xát vào vải được quy ước gọi là điện tích âm. Các điện tích cùng loại đẩy nhau. Các điện tích khác loại hút nhau. Lực hút, đẩy giữa các điện tích được gọi chung là lực tương tác giữa các điện tích, thường gọi tắt là lực điện. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_018",
+    "question": "Ý chính cần nhớ về Bảng 6.1 là gì?",
+    "subject": "physics",
+    "grade": 12,
+    "chapter": "physics_chapter_01",
+    "lessonId": "physics_g12_bai06_281ee9d7",
+    "lesson": "Bài 6: Nhiệt hóa hơi riêng",
+    "questionType": "concept",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G12_sgkvatli12_chuong1_bai6_sgkvatli12_281ee9d7_S003_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 12",
+      "Bài 6: Nhiệt hóa hơi riêng",
+      "Bảng 6.1",
+      "1. Khái niệm nhiệt hóa hơi riêng",
+      "Bảng"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong1_bai6_sgkvatli12_281ee9d7_S003_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "**Giá trị gần đúng của nhiệt hóa hơi riêng ở nhiệt độ sôi dưới áp suất tiêu chuẩn của một số chất** | Chất | Nhiệt độ sôi $(^\\circ C)$ | Nhiệt hóa hơi riêng $(J/kg)$ | |---|---:|---:| | Nước | 100 | $2{,}26 \\cdot 10^6$ | | Rượu | 78 | $8{,}57 \\cdot 10^5$ | | Thủy ngân | 357 | $2{,}85 \\cdot 10^5$ | | Ether | 34,5 | $0{,}40 \\cdot 10^6$ | ---",
+        "required_concepts": [
+          "physics",
+          "grade 12",
+          "Bài 6: Nhiệt hóa hơi riêng",
+          "Bảng 6.1",
+          "1. Khái niệm nhiệt hóa hơi riêng"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "**Giá trị gần đúng của nhiệt hóa hơi riêng ở nhiệt độ sôi dưới áp suất tiêu chuẩn của một số chất** | Chất | Nhiệt độ sôi $(^\\circ C)$ | Nhiệt hóa hơi riêng $(J/kg)$ | |---|---:|---:| | Nước | 100 | $2{,}26 \\cdot 10^6$ | | Rượu | 78 | $8{,}57 \\cdot 10^5$ | | Thủy ngân | 357 | $2{,}85 \\cdot 10^5$ | | Ether | 34,5 | $0{,}40 \\cdot 10^6$ | ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_019",
+    "question": "Cần phân biệt hoặc so sánh điểm nào khi học Câu hỏi, đặc biệt với khái niệm physics?",
+    "subject": "physics",
+    "grade": 10,
+    "chapter": "physics_chapter_02",
+    "lessonId": "physics_g10_bai07_08937d6a",
+    "lesson": "Bài 7: Đồ thị độ dịch chuyển - thời gian",
+    "questionType": "comparison",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G10_sgkvatli10_chuong2_bai7_sgkvatli10_08937d6a_S008_P01",
+      "GENCLN_PHY_G10_sgkvatli10_chuong2_bai4_sgkvatli10_81c28424_S007_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 10",
+      "Bài 7: Đồ thị độ dịch chuyển - thời gian",
+      "Câu hỏi",
+      "II. Đồ thị độ dịch chuyển - thời gian trong chuyển động thẳng",
+      "Câu",
+      "hỏi"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai7_sgkvatli10_08937d6a_S008_P01",
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai4_sgkvatli10_81c28424_S007_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Hãy vẽ đồ thị độ dịch chuyển - thời gian trong chuyển động của bạn A nêu ở trên theo trình tự sau đây: 1. Vẽ bảng ghi số liệu vào vở. | Độ dịch chuyển (m) | 0 | 200 | 400 | 600 | 800 | 1000 | 800 | |---|---:|---:|---:|---:|---:|---:|---:| | Thời gian (s) | 0 | 50 | 100 | 150 | 200 | 250 | 300 | 2. Vẽ đồ thị: - Trên trục tung, tức trục độ dịch chuyển: \\(1\\text{ cm}\\) ứng với \\(200\\text{ m}\\).",
+        "required_concepts": [
+          "physics",
+          "grade 10",
+          "Bài 7: Đồ thị độ dịch chuyển - thời gian",
+          "Câu hỏi",
+          "II. Đồ thị độ dịch chuyển - thời gian trong chuyển động thẳng"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Hãy vẽ đồ thị độ dịch chuyển - thời gian trong chuyển động của bạn A nêu ở trên theo trình tự sau đây: 1. Vẽ bảng ghi số liệu vào vở. | Độ dịch chuyển (m) | 0 | 200 | 400 | 600 | 800 | 1000 | 800 | |---|---:|---:|---:|---:|---:|---:|---:| | Thời gian (s) | 0 | 50 | 100 | 150 | 200 | 250 | 300 | 2. Vẽ đồ thị: - Trên trục tung, tức trục độ dịch chuyển: \\(1\\text{ cm}\\) ứng với \\(200\\text{ m}\\).",
+    "benchmarkSplit": "preview_v1",
+    "metadata": {
+      "benchmarkReview": {
+        "status": "auto_safe_reviewed",
+        "action": "add_candidate_as_additional_gold",
+        "candidateId": "GENCLN_PHY_G10_sgkvatli10_chuong2_bai4_sgkvatli10_81c28424_S007_P01",
+        "reviewedAt": "2026-07-04T07:14:24.329Z",
+        "reason": "candidate matched subject/grade/chapter-or-lesson and had clear question keyword coverage"
+      }
+    }
+  },
+  {
+    "id": "RAG90_PHYSICS_020",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Khái niệm điện trường.",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "electric_field",
+    "lessonId": "PHY11_C03_L17_bai-17-khai-niem-dien-truong",
+    "lesson": "Bài 17: Khái niệm điện trường",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "TH_PHY11_C03_L17_006"
+    ],
+    "expectedConcepts": [
+      "điện tích",
+      "điện trường",
+      "Khái",
+      "niệm",
+      "điện",
+      "trường"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "TH_PHY11_C03_L17_006"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Xung quanh nam châm có từ trường. Từ trường truyền tương tác từ nam châm này tới nam châm khác. Tương tự như nam châm, xung quanh điện tích có một điện trường. Điện trường truyền tương tác giữa các điện tích. Điện trường là một trường lực. > Điện trường được tạo ra bởi điện tích, là dạng vật chất tồn tại xung quanh điện tích và truyền tương tác giữa các điện tích. ---",
+        "required_concepts": [
+          "điện tích",
+          "điện trường",
+          "Khái",
+          "niệm",
+          "điện"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Xung quanh nam châm có từ trường. Từ trường truyền tương tác từ nam châm này tới nam châm khác. Tương tự như nam châm, xung quanh điện tích có một điện trường. Điện trường truyền tương tác giữa các điện tích. Điện trường là một trường lực. > Điện trường được tạo ra bởi điện tích, là dạng vật chất tồn tại xung quanh điện tích và truyền tương tác giữa các điện tích. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_021",
+    "question": "Hiện tượng hoặc thí nghiệm liên quan đến Ví dụ 2 được giải thích bằng ý chính nào?",
+    "subject": "physics",
+    "grade": 12,
+    "chapter": "physics_chapter_01",
+    "lessonId": "physics_g12_bai07_353d9013",
+    "lesson": "Bài 7: Bài tập về Vật lí nhiệt",
+    "questionType": "phenomenon/experiment",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G12_sgkvatli12_chuong1_bai7_sgkvatli12_353d9013_S010_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 12",
+      "Bài 7: Bài tập về Vật lí nhiệt",
+      "Ví dụ 2",
+      "2. Bài tập ví dụ"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong1_bai7_sgkvatli12_353d9013_S010_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Người ta cung cấp nhiệt lượng $25\\text{ J}$ cho một lượng khí trong một xi lanh đặt nằm ngang. Lượng khí nở ra đẩy pít-tông chuyển động trong xi lanh được $10\\text{ cm}$. Tính độ biến thiên nội năng của lượng khí. Biết lực ma sát giữa pít-tông và xi lanh có độ lớn là $20\\text{ N}$ và coi chuyển động của pít-tông trong xi lanh là đều. ---",
+        "required_concepts": [
+          "physics",
+          "grade 12",
+          "Bài 7: Bài tập về Vật lí nhiệt",
+          "Ví dụ 2",
+          "2. Bài tập ví dụ"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Người ta cung cấp nhiệt lượng $25\\text{ J}$ cho một lượng khí trong một xi lanh đặt nằm ngang. Lượng khí nở ra đẩy pít-tông chuyển động trong xi lanh được $10\\text{ cm}$. Tính độ biến thiên nội năng của lượng khí. Biết lực ma sát giữa pít-tông và xi lanh có độ lớn là $20\\text{ N}$ và coi chuyển động của pít-tông trong xi lanh là đều. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_022",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến 1. Khái niệm gia tốc.",
+    "subject": "physics",
+    "grade": 10,
+    "chapter": "physics_chapter_02",
+    "lessonId": "physics_g10_bai08_df19a839",
+    "lesson": "Bài 8: Chuyển động biến đổi. Gia tốc",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G10_sgkvatli10_chuong2_bai8_sgkvatli10_df19a839_S004_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 10",
+      "Bài 8: Chuyển động biến đổi. Gia tốc",
+      "1. Khái niệm gia tốc",
+      "II. Gia tốc của chuyển động biến đổi",
+      "Khái",
+      "niệm",
+      "gia"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai8_sgkvatli10_df19a839_S004_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Để xác định được sự thay đổi vận tốc theo thời gian, phải biết vận tốc tức thời của chuyển động tại các thời điểm khác nhau. Các phương tiện giao thông như xe máy, ô tô được trang bị tốc kế là thiết bị đo trực tiếp vận tốc tức thời. Do đó, có thể dùng tốc kế trên xe máy hoặc ô tô để tìm hiểu sự thay đổi vận tốc của chuyển động biến đổi. ---",
+        "required_concepts": [
+          "physics",
+          "grade 10",
+          "Bài 8: Chuyển động biến đổi. Gia tốc",
+          "1. Khái niệm gia tốc",
+          "II. Gia tốc của chuyển động biến đổi"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Để xác định được sự thay đổi vận tốc theo thời gian, phải biết vận tốc tức thời của chuyển động tại các thời điểm khác nhau. Các phương tiện giao thông như xe máy, ô tô được trang bị tốc kế là thiết bị đo trực tiếp vận tốc tức thời. Do đó, có thể dùng tốc kế trên xe máy hoặc ô tô để tìm hiểu sự thay đổi vận tốc của chuyển động biến đổi. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_023",
+    "question": "Công thức hoặc tính chất quan trọng của Em có thể là gì?",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "electric_field",
+    "lessonId": "PHY11_C03_L18_bai-18-dien-truong-deu",
+    "lesson": "Bài 18: Điện trường đều",
+    "questionType": "formula",
+    "expectedChunkIds": [
+      "TH_PHY11_C03_L18_027"
+    ],
+    "expectedConcepts": [
+      "gia tốc",
+      "điện tích",
+      "điện trường",
+      "điện trường đều",
+      "thể"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "TH_PHY11_C03_L18_027"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Mô tả được ảnh hưởng của điện trường đều lên chuyển động của một điện tích khi bay vào điện trường đều theo phương vuông góc với các đường sức. * Từ đó giải thích được nguyên tắc lái tia điện tử trong ống phóng tia điện tử. * Giải thích được cơ chế gia tốc cho electron trong ống phóng tia X, từ đó giúp điều khiển một số đặc tính của chùm tia X theo mong muốn.",
+        "required_concepts": [
+          "gia tốc",
+          "điện tích",
+          "điện trường",
+          "điện trường đều",
+          "thể"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Mô tả được ảnh hưởng của điện trường đều lên chuyển động của một điện tích khi bay vào điện trường đều theo phương vuông góc với các đường sức. * Từ đó giải thích được nguyên tắc lái tia điện tử trong ống phóng tia điện tử. * Giải thích được cơ chế gia tốc cho electron trong ống phóng tia X, từ đó giúp điều khiển một số đặc tính của chùm tia X theo mong muốn.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_024",
+    "question": "Nêu phương pháp cơ bản để xử lí dạng câu hỏi về Hình 8.1.",
+    "subject": "physics",
+    "grade": 12,
+    "chapter": "physics_chapter_02",
+    "lessonId": "physics_g12_bai08_cbe0d8c9",
+    "lesson": "Bài 8: Mô hình động học phân tử chất khí",
+    "questionType": "method",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G12_sgkvatli12_chuong2_bai8_sgkvatli12_cbe0d8c9_S003_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 12",
+      "Bài 8: Mô hình động học phân tử chất khí",
+      "Hình 8.1",
+      "1. Chuyển động và tương tác của các phân tử khí",
+      "Hình"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong2_bai8_sgkvatli12_cbe0d8c9_S003_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "![Hình 8.1 - Thí nghiệm quan sát chuyển động Brown trong không khí](assets/images/hinh-8-1.png) **Nội dung hình** Hình minh họa thí nghiệm quan sát chuyển động Brown trong không khí, gồm: * Ống thủy tinh chứa khói. * Nắp đậy thủy tinh. * Kính hiển vi để quan sát. * Nguồn sáng chiếu qua ống thủy tinh. * Các hạt khói chuyển động trong không khí. ---",
+        "required_concepts": [
+          "physics",
+          "grade 12",
+          "Bài 8: Mô hình động học phân tử chất khí",
+          "Hình 8.1",
+          "1. Chuyển động và tương tác của các phân tử khí"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "![Hình 8.1 - Thí nghiệm quan sát chuyển động Brown trong không khí](assets/images/hinh-8-1.png) **Nội dung hình** Hình minh họa thí nghiệm quan sát chuyển động Brown trong không khí, gồm: * Ống thủy tinh chứa khói. * Nắp đậy thủy tinh. * Kính hiển vi để quan sát. * Nguồn sáng chiếu qua ống thủy tinh. * Các hạt khói chuyển động trong không khí. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_025",
+    "question": "Ý chính cần nhớ về Hình 9.1 là gì?",
+    "subject": "physics",
+    "grade": 10,
+    "chapter": "physics_chapter_02",
+    "lessonId": "physics_g10_bai09_c0f043c1",
+    "lesson": "Bài 9: Chuyển động thẳng biến đổi đều",
+    "questionType": "concept",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G10_sgkvatli10_chuong2_bai9_sgkvatli10_c0f043c1_S006_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 10",
+      "Bài 9: Chuyển động thẳng biến đổi đều",
+      "Hình 9.1",
+      "III. Đồ thị vận tốc - thời gian của chuyển động thẳng biến đổi đều",
+      "Hình"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai9_sgkvatli10_c0f043c1_S006_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "![Hình 9.1 - Các dạng đồ thị vận tốc - thời gian trong chuyển động thẳng biến đổi đều](assets/images/hinh-9-1.png) **Nội dung hình** Hình minh họa các dạng đồ thị vận tốc - thời gian trong chuyển động thẳng biến đổi đều. Các đồ thị biểu diễn mối quan hệ giữa vận tốc \\(v\\) và thời gian \\(t\\). ---",
+        "required_concepts": [
+          "physics",
+          "grade 10",
+          "Bài 9: Chuyển động thẳng biến đổi đều",
+          "Hình 9.1",
+          "III. Đồ thị vận tốc - thời gian của chuyển động thẳng biến đổi đều"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "![Hình 9.1 - Các dạng đồ thị vận tốc - thời gian trong chuyển động thẳng biến đổi đều](assets/images/hinh-9-1.png) **Nội dung hình** Hình minh họa các dạng đồ thị vận tốc - thời gian trong chuyển động thẳng biến đổi đều. Các đồ thị biểu diễn mối quan hệ giữa vận tốc \\(v\\) và thời gian \\(t\\). ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_026",
+    "question": "Cần phân biệt hoặc so sánh điểm nào khi học 1. Thế năng của một điện tích trong điện trường đều, đặc biệt với khái niệm thế năng?",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "electric_field",
+    "lessonId": "PHY11_C03_L19_bai-19-the-nang-dien",
+    "lesson": "Bài 19: Thế năng điện",
+    "questionType": "comparison",
+    "expectedChunkIds": [
+      "TH_PHY11_C03_L19_004"
+    ],
+    "expectedConcepts": [
+      "thế năng",
+      "điện tích",
+      "điện trường",
+      "cường độ điện trường",
+      "điện trường đều",
+      "tụ điện",
+      "Thế",
+      "năng"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "TH_PHY11_C03_L19_004"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Thế năng của một điện tích $q$ trong điện trường đều đặc trưng cho khả năng sinh công của điện trường đều khi đặt điện tích $q$ tại điểm ta xét. Số đo thế năng của điện tích $q$ trong điện trường đều của một tụ điện được tính bằng công mà điện trường đều có thể sinh ra khi dịch chuyển điện tích $q$ từ điểm ta xét tới bản cực âm của tụ điện.",
+        "required_concepts": [
+          "thế năng",
+          "điện tích",
+          "điện trường",
+          "cường độ điện trường",
+          "điện trường đều"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Thế năng của một điện tích $q$ trong điện trường đều đặc trưng cho khả năng sinh công của điện trường đều khi đặt điện tích $q$ tại điểm ta xét. Số đo thế năng của điện tích $q$ trong điện trường đều của một tụ điện được tính bằng công mà điện trường đều có thể sinh ra khi dịch chuyển điện tích $q$ từ điểm ta xét tới bản cực âm của tụ điện.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_027",
+    "question": "Khi gặp bài tính nhanh liên quan đến 1. Các thông số trạng thái của một lượng khí, cần chọn công thức và kiểm tra điều kiện nào?",
+    "subject": "physics",
+    "grade": 12,
+    "chapter": "physics_chapter_02",
+    "lessonId": "physics_g12_bai09_04cd1c18",
+    "lesson": "Bài 9: Định luật Boyle",
+    "questionType": "calculation-lite",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G12_sgkvatli12_chuong2_bai9_sgkvatli12_04cd1c18_S002_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 12",
+      "Bài 9: Định luật Boyle",
+      "1. Các thông số trạng thái của một lượng khí",
+      "Các",
+      "thông",
+      "trạng",
+      "thái"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong2_bai9_sgkvatli12_04cd1c18_S002_P01"
+      ],
+      "answer": {
+        "type": "mixed",
+        "reference_answer": "Một lượng khí đựng trong một bình kín được xác định bởi bốn đại lượng: * Khối lượng $m$. * Thể tích $V$. * Nhiệt độ $T$. * Áp suất $p$. Khi thể tích, nhiệt độ và áp suất của một khối lượng khí xác định không thay đổi, ta nói lượng khí ở **trạng thái cân bằng**. Thể tích, áp suất và nhiệt độ của lượng khí được gọi là **các thông số trạng thái** của nó.",
+        "required_concepts": [
+          "physics",
+          "grade 12",
+          "Bài 9: Định luật Boyle",
+          "1. Các thông số trạng thái của một lượng khí",
+          "Các"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Một lượng khí đựng trong một bình kín được xác định bởi bốn đại lượng: * Khối lượng $m$. * Thể tích $V$. * Nhiệt độ $T$. * Áp suất $p$. Khi thể tích, nhiệt độ và áp suất của một khối lượng khí xác định không thay đổi, ta nói lượng khí ở **trạng thái cân bằng**. Thể tích, áp suất và nhiệt độ của lượng khí được gọi là **các thông số trạng thái** của nó.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_028",
+    "question": "Hiện tượng hoặc thí nghiệm liên quan đến Câu hỏi được giải thích bằng ý chính nào?",
+    "subject": "physics",
+    "grade": 10,
+    "chapter": "physics_chapter_02",
+    "lessonId": "physics_g10_bai10_07eb19d4",
+    "lesson": "Bài 10: Sự rơi tự do",
+    "questionType": "phenomenon/experiment",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G10_sgkvatli10_chuong2_bai10_sgkvatli10_07eb19d4_S007_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 10",
+      "Bài 10: Sự rơi tự do",
+      "Câu hỏi",
+      "I. Sự rơi trong không khí",
+      "Câu",
+      "hỏi"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai10_sgkvatli10_07eb19d4_S007_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Từ những thí nghiệm trên, rút ra nhận xét về sự rơi trong không khí. --- Các thí nghiệm trên cho thấy sự rơi nhanh hay chậm của vật phụ thuộc vào độ lớn của lực cản không khí tác dụng lên vật. Lực cản càng nhỏ so với trọng lực tác dụng lên vật thì vật sẽ rơi càng nhanh và ngược lại.",
+        "required_concepts": [
+          "physics",
+          "grade 10",
+          "Bài 10: Sự rơi tự do",
+          "Câu hỏi",
+          "I. Sự rơi trong không khí"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Từ những thí nghiệm trên, rút ra nhận xét về sự rơi trong không khí. --- Các thí nghiệm trên cho thấy sự rơi nhanh hay chậm của vật phụ thuộc vào độ lớn của lực cản không khí tác dụng lên vật. Lực cản càng nhỏ so với trọng lực tác dụng lên vật thì vật sẽ rơi càng nhanh và ngược lại.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_029",
+    "question": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Em có thể.",
+    "subject": "physics",
+    "grade": 11,
+    "chapter": "electric_field",
+    "lessonId": "PHY11_C03_L20_bai-20-dien-the",
+    "lesson": "Bài 20: Điện thế",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "TH_PHY11_C03_L20_027"
+    ],
+    "expectedConcepts": [
+      "thế năng",
+      "điện tích",
+      "điện trường",
+      "thế năng điện",
+      "điện thế",
+      "hiệu điện thế",
+      "thể"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "TH_PHY11_C03_L20_027"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Giải thích được ý nghĩa của hiệu điện thế giữa hai điểm. * Vận dụng được mối liên hệ thế năng điện với điện thế để tính được thế năng điện của điện tích nằm trong điện trường. * Tính được công dịch chuyển một điện tích $q$ từ điểm $N$ đến điểm $M$ trong điện trường.",
+        "required_concepts": [
+          "thế năng",
+          "điện tích",
+          "điện trường",
+          "thế năng điện",
+          "điện thế"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Giải thích được ý nghĩa của hiệu điện thế giữa hai điểm. * Vận dụng được mối liên hệ thế năng điện với điện thế để tính được thế năng điện của điện tích nằm trong điện trường. * Tính được công dịch chuyển một điện tích $q$ từ điểm $N$ đến điểm $M$ trong điện trường.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_PHYSICS_030",
+    "question": "Công thức hoặc tính chất quan trọng của Hình 10.1 là gì?",
+    "subject": "physics",
+    "grade": 12,
+    "chapter": "physics_chapter_02",
+    "lessonId": "physics_g12_bai10_5a915483",
+    "lesson": "Bài 10: Định luật Charles",
+    "questionType": "formula",
+    "expectedChunkIds": [
+      "GENCLN_PHY_G12_sgkvatli12_chuong2_bai10_sgkvatli12_5a915483_S004_P01"
+    ],
+    "expectedConcepts": [
+      "physics",
+      "grade 12",
+      "Bài 10: Định luật Charles",
+      "Hình 10.1",
+      "1. Định luật Charles",
+      "Hình"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong2_bai10_sgkvatli12_5a915483_S004_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "![Hình 10.1 - Đồ thị biểu diễn sự thay đổi thể tích khí theo nhiệt độ](assets/images/hinh-10-1.png) **Nội dung hình** Hình gồm hai đồ thị: * Đồ thị biểu diễn sự thay đổi thể tích khí theo nhiệt độ Celsius. * Đồ thị biểu diễn sự thay đổi thể tích khí theo nhiệt độ Kelvin. Trong đồ thị theo nhiệt độ Celsius, đường biểu diễn không đi qua gốc tọa độ nên thể tích $V$ của khí không tỉ lệ thuận với nhiệt độ Celsius.",
+        "required_concepts": [
+          "physics",
+          "grade 12",
+          "Bài 10: Định luật Charles",
+          "Hình 10.1",
+          "1. Định luật Charles"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "![Hình 10.1 - Đồ thị biểu diễn sự thay đổi thể tích khí theo nhiệt độ](assets/images/hinh-10-1.png) **Nội dung hình** Hình gồm hai đồ thị: * Đồ thị biểu diễn sự thay đổi thể tích khí theo nhiệt độ Celsius. * Đồ thị biểu diễn sự thay đổi thể tích khí theo nhiệt độ Kelvin. Trong đồ thị theo nhiệt độ Celsius, đường biểu diễn không đi qua gốc tọa độ nên thể tích $V$ của khí không tỉ lệ thuận với nhiệt độ Celsius.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_001",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Chương 1: Cấu tạo nguyên tử.",
+    "subject": "chemistry",
+    "grade": 10,
+    "chapter": "chemistry_chapter_01",
+    "lessonId": "chemistry_g10_bai01_915728a8",
+    "lesson": "Chương 1: Cấu tạo nguyên tử",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G10_sgkhoahoc10_chuong1_bai1_sgkhoahoc10_915728a8_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 10",
+      "Chương 1: Cấu tạo nguyên tử",
+      "Chương",
+      "Cấu",
+      "tạo",
+      "nguyên"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong1_bai1_sgkhoahoc10_915728a8_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "> **Câu hỏi mở đầu** > > Tại sao đồng dẫn điện mà gỗ lại cách điện? > Tại sao thép rất cứng nhưng vẫn có thể dát mỏng và kéo sợi? > > Từ hiểu biết về cấu tạo nguyên tử, các nhà khoa học không chỉ giải thích được tính chất của vật liệu mà còn tạo ra nhiều vật liệu mới với những tính chất mới. ---",
+        "required_concepts": [
+          "chemistry",
+          "grade 10",
+          "Chương 1: Cấu tạo nguyên tử",
+          "Chương",
+          "Cấu"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "> **Câu hỏi mở đầu** > > Tại sao đồng dẫn điện mà gỗ lại cách điện? > Tại sao thép rất cứng nhưng vẫn có thể dát mỏng và kéo sợi? > > Từ hiểu biết về cấu tạo nguyên tử, các nhà khoa học không chỉ giải thích được tính chất của vật liệu mà còn tạo ra nhiều vật liệu mới với những tính chất mới. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_002",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 11,
+    "chapter": "chemistry_chapter_01",
+    "lessonId": "chemistry_g11_bai01_c951d0f5",
+    "lesson": "CHƯƠNG 1",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G11_sgkhoahoc11_chuong1_bai1_sgkhoahoc11_c951d0f5_S002_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 11",
+      "CHƯƠNG 1",
+      "MỤC TIÊU",
+      "BÀI 1. CÂN BẰNG HÓA HỌC",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong1_bai1_sgkhoahoc11_c951d0f5_S002_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "- Trình bày được khái niệm phản ứng thuận nghịch và trạng thái cân bằng của phản ứng thuận nghịch. - Viết được biểu thức hằng số cân bằng (K) của phản ứng thuận nghịch. - Thực hiện được thí nghiệm nghiên cứu ảnh hưởng của nhiệt độ tới chuyển dịch cân bằng: 1. Phản ứng: ```text 2NO₂(g) ⇌ N₂O₄(g) ``` 2. Phản ứng thủy phân sodium acetate.",
+        "required_concepts": [
+          "chemistry",
+          "grade 11",
+          "CHƯƠNG 1",
+          "MỤC TIÊU",
+          "BÀI 1. CÂN BẰNG HÓA HỌC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Trình bày được khái niệm phản ứng thuận nghịch và trạng thái cân bằng của phản ứng thuận nghịch. - Viết được biểu thức hằng số cân bằng (K) của phản ứng thuận nghịch. - Thực hiện được thí nghiệm nghiên cứu ảnh hưởng của nhiệt độ tới chuyển dịch cân bằng: 1. Phản ứng: ```text 2NO₂(g) ⇌ N₂O₄(g) ``` 2. Phản ứng thủy phân sodium acetate.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_003",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 12,
+    "chapter": "chemistry_chapter_01",
+    "lessonId": "chemistry_g12_bai01_51b450bb",
+    "lesson": "BÀI 1. ESTER - LIPID",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G12_sgkhoahoc12_chuong1_bai1_sgkhoahoc12_51b450bb_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 12",
+      "BÀI 1. ESTER - LIPID",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong1_bai1_sgkhoahoc12_51b450bb_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Nêu được khái niệm về lipid, chất béo, acid béo, đặc điểm cấu tạo phân tử ester. * Viết được công thức cấu tạo và gọi được tên một số ester đơn giản (số nguyên tử C trong phân tử ≤ 5) và thường gặp. * Trình bày được đặc điểm về tính chất vật lí và tính chất hoá học cơ bản của ester (phản ứng thuỷ phân) và của chất béo (phản ứng hydrogen hoá chất béo lỏng, phản ứng oxi hoá chất béo bởi oxygen không khí).",
+        "required_concepts": [
+          "chemistry",
+          "grade 12",
+          "BÀI 1. ESTER - LIPID",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Nêu được khái niệm về lipid, chất béo, acid béo, đặc điểm cấu tạo phân tử ester. * Viết được công thức cấu tạo và gọi được tên một số ester đơn giản (số nguyên tử C trong phân tử ≤ 5) và thường gặp. * Trình bày được đặc điểm về tính chất vật lí và tính chất hoá học cơ bản của ester (phản ứng thuỷ phân) và của chất béo (phản ứng hydrogen hoá chất béo lỏng, phản ứng oxi hoá chất béo bởi oxygen không khí).",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_004",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến BÀI 2. NGUYÊN TỐ HÓA HỌC.",
+    "subject": "chemistry",
+    "grade": 10,
+    "chapter": "chemistry_chapter_01",
+    "lessonId": "chemistry_g10_bai02_946f5316",
+    "lesson": "BÀI 2. NGUYÊN TỐ HÓA HỌC",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G10_sgkhoahoc10_chuong1_bai2_sgkhoahoc10_946f5316_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 10",
+      "BÀI 2. NGUYÊN TỐ HÓA HỌC",
+      "BÀI",
+      "NGUYÊN",
+      "HÓA",
+      "HỌC"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong1_bai2_sgkhoahoc10_946f5316_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "> ## 🎯 Mục tiêu > > Sau bài học này, em sẽ: > > - Trình bày được khái niệm nguyên tố hóa học, số hiệu nguyên tử và kí hiệu nguyên tử. > - Phát biểu được khái niệm đồng vị và nguyên tử khối. > - Tính được nguyên tử khối trung bình dựa vào thành phần đồng vị. > - Giải thích được mối liên hệ giữa số proton, số electron và số đơn vị điện tích hạt nhân. ---",
+        "required_concepts": [
+          "chemistry",
+          "grade 10",
+          "BÀI 2. NGUYÊN TỐ HÓA HỌC",
+          "BÀI",
+          "NGUYÊN"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "> ## 🎯 Mục tiêu > > Sau bài học này, em sẽ: > > - Trình bày được khái niệm nguyên tố hóa học, số hiệu nguyên tử và kí hiệu nguyên tử. > - Phát biểu được khái niệm đồng vị và nguyên tử khối. > - Tính được nguyên tử khối trung bình dựa vào thành phần đồng vị. > - Giải thích được mối liên hệ giữa số proton, số electron và số đơn vị điện tích hạt nhân. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_005",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 11,
+    "chapter": "chemistry_chapter_01",
+    "lessonId": "chemistry_g11_bai02_18831cab",
+    "lesson": "BÀI 2. CÂN BẰNG TRONG DUNG DỊCH NƯỚC",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G11_sgkhoahoc11_chuong1_bai2_sgkhoahoc11_18831cab_S002_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 11",
+      "BÀI 2. CÂN BẰNG TRONG DUNG DỊCH NƯỚC",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong1_bai2_sgkhoahoc11_18831cab_S002_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "- Nêu được khái niệm sự điện li, chất điện li, chất không điện li. - Trình bày được thuyết Brønsted–Lowry về acid – base. - Nêu được khái niệm và ý nghĩa của pH trong thực tiễn. - Viết được biểu thức tính pH và biết cách sử dụng các chất chỉ thị để xác định pH bằng các chất chỉ thị phổ biến như giấy chỉ thị màu, quỳ tím, phenolphthalein,...",
+        "required_concepts": [
+          "chemistry",
+          "grade 11",
+          "BÀI 2. CÂN BẰNG TRONG DUNG DỊCH NƯỚC",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Nêu được khái niệm sự điện li, chất điện li, chất không điện li. - Trình bày được thuyết Brønsted–Lowry về acid – base. - Nêu được khái niệm và ý nghĩa của pH trong thực tiễn. - Viết được biểu thức tính pH và biết cách sử dụng các chất chỉ thị để xác định pH bằng các chất chỉ thị phổ biến như giấy chỉ thị màu, quỳ tím, phenolphthalein,...",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_006",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 12,
+    "chapter": "chemistry_chapter_01",
+    "lessonId": "chemistry_g12_bai02_6f1d2bc6",
+    "lesson": "BÀI 2. XÀ PHÒNG VÀ CHẤT GIẶT RỬA",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G12_sgkhoahoc12_chuong1_bai2_sgkhoahoc12_6f1d2bc6_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 12",
+      "BÀI 2. XÀ PHÒNG VÀ CHẤT GIẶT RỬA",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong1_bai2_sgkhoahoc12_6f1d2bc6_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Nêu được khái niệm, đặc điểm về cấu tạo và tính chất giặt rửa của xà phòng và chất giặt rửa tự nhiên, tổng hợp. * Trình bày được một số phương pháp sản xuất xà phòng, phương pháp chủ yếu sản xuất chất giặt rửa tổng hợp. * Thực hiện được hoặc quan sát video thí nghiệm về phản ứng xà phòng hoá chất béo. * Trình bày được cách sử dụng hợp lí, an toàn xà phòng và chất giặt rửa tổng hợp trong đời sống. ---",
+        "required_concepts": [
+          "chemistry",
+          "grade 12",
+          "BÀI 2. XÀ PHÒNG VÀ CHẤT GIẶT RỬA",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Nêu được khái niệm, đặc điểm về cấu tạo và tính chất giặt rửa của xà phòng và chất giặt rửa tự nhiên, tổng hợp. * Trình bày được một số phương pháp sản xuất xà phòng, phương pháp chủ yếu sản xuất chất giặt rửa tổng hợp. * Thực hiện được hoặc quan sát video thí nghiệm về phản ứng xà phòng hoá chất béo. * Trình bày được cách sử dụng hợp lí, an toàn xà phòng và chất giặt rửa tổng hợp trong đời sống. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_007",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 10,
+    "chapter": "chemistry_chapter_01",
+    "lessonId": "chemistry_g10_bai03_54de3f11",
+    "lesson": "CẤU TRÚC LỚP VỎ ELECTRON NGUYÊN TỬ",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G10_sgkhoahoc10_chuong1_bai3_sgkhoahoc10_54de3f11_S002_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 10",
+      "CẤU TRÚC LỚP VỎ ELECTRON NGUYÊN TỬ",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong1_bai3_sgkhoahoc10_54de3f11_S002_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "- Trình bày và so sánh được mô hình của Rutherford - Bohr với mô hình hiện đại mô tả sự chuyển động của electron trong nguyên tử. - Nêu được khái niệm về orbital nguyên tử (AO), mô tả được hình dạng của AO s, p và số lượng electron trong một AO. - Trình bày được khái niệm lớp, phân lớp electron và mối quan hệ về số lượng phân lớp trong một lớp. - Liên hệ được số lượng AO trong một phân lớp, trong một lớp.",
+        "required_concepts": [
+          "chemistry",
+          "grade 10",
+          "CẤU TRÚC LỚP VỎ ELECTRON NGUYÊN TỬ",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Trình bày và so sánh được mô hình của Rutherford - Bohr với mô hình hiện đại mô tả sự chuyển động của electron trong nguyên tử. - Nêu được khái niệm về orbital nguyên tử (AO), mô tả được hình dạng của AO s, p và số lượng electron trong một AO. - Trình bày được khái niệm lớp, phân lớp electron và mối quan hệ về số lượng phân lớp trong một lớp. - Liên hệ được số lượng AO trong một phân lớp, trong một lớp.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_008",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Hằng số cân bằng.",
+    "subject": "chemistry",
+    "grade": 11,
+    "chapter": "chemistry_chapter_01",
+    "lessonId": "chemistry_g11_bai03_73d534cb",
+    "lesson": "BÀI 3. ÔN TẬP CHƯƠNG 1",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G11_sgkhoahoc11_chuong1_bai3_sgkhoahoc11_73d534cb_S005_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 11",
+      "BÀI 3. ÔN TẬP CHƯƠNG 1",
+      "Hằng số cân bằng",
+      "HỆ THỐNG HÓA KIẾN THỨC",
+      "1. Cân bằng hóa học",
+      "Hằng",
+      "cân"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong1_bai3_sgkhoahoc11_73d534cb_S005_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Đối với phản ứng: ```text aA + bB ⇌ cC + dD ``` Biểu thức hằng số cân bằng: \\[ K_c=\\frac{[C]^c[D]^d}{[A]^a[B]^b} \\] Trong đó: - [A], [B], [C], [D] là nồng độ mol của các chất ở trạng thái cân bằng. - Chất rắn không được đưa vào biểu thức tính \\(K_c\\). - \\(K_c\\) chỉ phụ thuộc vào bản chất của phản ứng và nhiệt độ. ---",
+        "required_concepts": [
+          "chemistry",
+          "grade 11",
+          "BÀI 3. ÔN TẬP CHƯƠNG 1",
+          "Hằng số cân bằng",
+          "HỆ THỐNG HÓA KIẾN THỨC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Đối với phản ứng: ```text aA + bB ⇌ cC + dD ``` Biểu thức hằng số cân bằng: \\[ K_c=\\frac{[C]^c[D]^d}{[A]^a[B]^b} \\] Trong đó: - [A], [B], [C], [D] là nồng độ mol của các chất ở trạng thái cân bằng. - Chất rắn không được đưa vào biểu thức tính \\(K_c\\). - \\(K_c\\) chỉ phụ thuộc vào bản chất của phản ứng và nhiệt độ. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_009",
+    "question": "Công thức hoặc tính chất quan trọng của 1. Ester là gì?",
+    "subject": "chemistry",
+    "grade": 12,
+    "chapter": "chemistry_chapter_01",
+    "lessonId": "chemistry_g12_bai03_eea01431",
+    "lesson": "BÀI 3. ÔN TẬP CHƯƠNG 1",
+    "questionType": "formula",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G12_sgkhoahoc12_chuong1_bai3_sgkhoahoc12_eea01431_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 12",
+      "BÀI 3. ÔN TẬP CHƯƠNG 1",
+      "1. Ester",
+      "HỆ THỐNG HOÁ KIẾN THỨC",
+      "Ester"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong1_bai3_sgkhoahoc12_eea01431_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "**Công thức tổng quát của ester đơn chức:** ```text R-C(=O)-O-R' ``` **Tính chất hoá học:** Phản ứng thuỷ phân trong môi trường acid thường là phản ứng thuận nghịch: ```text RCOOR' + H₂O ⇌ RCOOH + R'OH H⁺, t° ``` Phản ứng thuỷ phân trong môi trường base: ```text RCOOR' + NaOH → RCOONa + R'OH t° ``` **Điều chế:** ```text RCOOH + R'OH ⇌ RCOOR' + H₂O H₂SO₄ đặc, t° ``` ---",
+        "required_concepts": [
+          "chemistry",
+          "grade 12",
+          "BÀI 3. ÔN TẬP CHƯƠNG 1",
+          "1. Ester",
+          "HỆ THỐNG HOÁ KIẾN THỨC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "**Công thức tổng quát của ester đơn chức:** ```text R-C(=O)-O-R' ``` **Tính chất hoá học:** Phản ứng thuỷ phân trong môi trường acid thường là phản ứng thuận nghịch: ```text RCOOR' + H₂O ⇌ RCOOH + R'OH H⁺, t° ``` Phản ứng thuỷ phân trong môi trường base: ```text RCOOR' + NaOH → RCOONa + R'OH t° ``` **Điều chế:** ```text RCOOH + R'OH ⇌ RCOOR' + H₂O H₂SO₄ đặc, t° ``` ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_010",
+    "question": "Nêu phương pháp cơ bản để xử lí dạng câu hỏi về Câu 8.",
+    "subject": "chemistry",
+    "grade": 10,
+    "chapter": "chemistry_chapter_01",
+    "lessonId": "chemistry_g10_bai04_ed88ed24",
+    "lesson": "BÀI 4. ÔN TẬP CHƯƠNG 1",
+    "questionType": "method",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G10_sgkhoahoc10_chuong1_bai4_sgkhoahoc10_ed88ed24_S010_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 10",
+      "BÀI 4. ÔN TẬP CHƯƠNG 1",
+      "Câu 8",
+      "II. LUYỆN TẬP",
+      "Câu"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong1_bai4_sgkhoahoc10_ed88ed24_S010_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Cấu hình electron của: * Nguyên tử X: `1s²2s²2p⁶3s²3p⁶4s¹`. * Nguyên tử Y: `1s²2s²2p⁶3s²3p⁴`. a) Mỗi nguyên tử X và Y chứa bao nhiêu electron? b) Hãy cho biết số hiệu nguyên tử của X và Y. c) Lớp electron nào trong nguyên tử X và Y có mức năng lượng cao nhất? d) Mỗi nguyên tử X và Y có bao nhiêu lớp electron, bao nhiêu phân lớp electron? e) X và Y là nguyên tố kim loại, phi kim hay khí hiếm? ---",
+        "required_concepts": [
+          "chemistry",
+          "grade 10",
+          "BÀI 4. ÔN TẬP CHƯƠNG 1",
+          "Câu 8",
+          "II. LUYỆN TẬP"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Cấu hình electron của: * Nguyên tử X: `1s²2s²2p⁶3s²3p⁶4s¹`. * Nguyên tử Y: `1s²2s²2p⁶3s²3p⁴`. a) Mỗi nguyên tử X và Y chứa bao nhiêu electron? b) Hãy cho biết số hiệu nguyên tử của X và Y. c) Lớp electron nào trong nguyên tử X và Y có mức năng lượng cao nhất? d) Mỗi nguyên tử X và Y có bao nhiêu lớp electron, bao nhiêu phân lớp electron? e) X và Y là nguyên tố kim loại, phi kim hay khí hiếm? ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_011",
+    "question": "Ý chính cần nhớ về MỤC TIÊU là gì?",
+    "subject": "chemistry",
+    "grade": 11,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g11_bai04_2cad9043",
+    "lesson": "BÀI 4. NITROGEN",
+    "questionType": "concept",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai4_sgkhoahoc11_2cad9043_S002_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 11",
+      "BÀI 4. NITROGEN",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai4_sgkhoahoc11_2cad9043_S002_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "- Phát biểu được trạng thái tự nhiên của nguyên tố nitrogen. - Giải thích được tính trơ của đơn chất nitrogen ở nhiệt độ thường thông qua liên kết và giá trị năng lượng liên kết. - Trình bày được sự hoạt động của đơn chất nitrogen ở nhiệt độ cao đối với hydrogen và oxygen. Liên hệ quá trình tạo và cung cấp nitrate cho đất từ nước mưa.",
+        "required_concepts": [
+          "chemistry",
+          "grade 11",
+          "BÀI 4. NITROGEN",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Phát biểu được trạng thái tự nhiên của nguyên tố nitrogen. - Giải thích được tính trơ của đơn chất nitrogen ở nhiệt độ thường thông qua liên kết và giá trị năng lượng liên kết. - Trình bày được sự hoạt động của đơn chất nitrogen ở nhiệt độ cao đối với hydrogen và oxygen. Liên hệ quá trình tạo và cung cấp nitrate cho đất từ nước mưa.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_012",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 12,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g12_bai04_f3915f54",
+    "lesson": "BÀI 4. GIỚI THIỆU VỀ CARBOHYDRATE. GLUCOSE VÀ FRUCTOSE",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G12_sgkhoahoc12_chuong2_bai4_sgkhoahoc12_f3915f54_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 12",
+      "BÀI 4. GIỚI THIỆU VỀ CARBOHYDRATE. GLUCOSE VÀ FRUCTOSE",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong2_bai4_sgkhoahoc12_f3915f54_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Nêu được khái niệm, cách phân loại carbohydrate, trạng thái tự nhiên của glucose, fructose. * Viết được công thức cấu tạo dạng mạch hở, dạng mạch vòng và gọi được tên của glucose, fructose.",
+        "required_concepts": [
+          "chemistry",
+          "grade 12",
+          "BÀI 4. GIỚI THIỆU VỀ CARBOHYDRATE. GLUCOSE VÀ FRUCTOSE",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Nêu được khái niệm, cách phân loại carbohydrate, trạng thái tự nhiên của glucose, fructose. * Viết được công thức cấu tạo dạng mạch hở, dạng mạch vòng và gọi được tên của glucose, fructose.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_013",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 10,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g10_bai05_ced4d630",
+    "lesson": "CHƯƠNG 2. BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HOÁ HỌC VÀ ĐỊNH LUẬT TUẦN HOÀN",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai5_sgkhoahoc10_ced4d630_S003_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 10",
+      "CHƯƠNG 2. BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HOÁ HỌC VÀ ĐỊNH LUẬT TUẦN HOÀN",
+      "MỤC TIÊU",
+      "BÀI 5. CẤU TẠO CỦA BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HOÁ HỌC",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai5_sgkhoahoc10_ced4d630_S003_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "- Nêu được lịch sử phát minh định luật tuần hoàn và bảng tuần hoàn các nguyên tố hoá học. - Mô tả được cấu tạo của bảng tuần hoàn các nguyên tố hoá học và nêu được các khái niệm liên quan: ô, chu kì, nhóm. - Nêu được nguyên tắc sắp xếp của bảng tuần hoàn các nguyên tố hoá học dựa theo cấu hình electron. - Phân loại được nguyên tố dựa theo cấu hình electron: nguyên tố s, p, d, f.",
+        "required_concepts": [
+          "chemistry",
+          "grade 10",
+          "CHƯƠNG 2. BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HOÁ HỌC VÀ ĐỊNH LUẬT TUẦN HOÀN",
+          "MỤC TIÊU",
+          "BÀI 5. CẤU TẠO CỦA BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HOÁ HỌC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Nêu được lịch sử phát minh định luật tuần hoàn và bảng tuần hoàn các nguyên tố hoá học. - Mô tả được cấu tạo của bảng tuần hoàn các nguyên tố hoá học và nêu được các khái niệm liên quan: ô, chu kì, nhóm. - Nêu được nguyên tắc sắp xếp của bảng tuần hoàn các nguyên tố hoá học dựa theo cấu hình electron. - Phân loại được nguyên tố dựa theo cấu hình electron: nguyên tố s, p, d, f.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_014",
+    "question": "Hiện tượng hoặc thí nghiệm liên quan đến MỤC TIÊU được giải thích bằng ý chính nào?",
+    "subject": "chemistry",
+    "grade": 11,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g11_bai05_c784ad58",
+    "lesson": "BÀI 5. AMMONIA VÀ MUỐI AMMONIUM",
+    "questionType": "phenomenon/experiment",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai5_sgkhoahoc11_c784ad58_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 11",
+      "BÀI 5. AMMONIA VÀ MUỐI AMMONIUM",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai5_sgkhoahoc11_c784ad58_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "- Mô tả được công thức Lewis và dạng hình học của phân tử ammonia. - Từ cấu tạo của phân tử ammonia, giải thích được tính tan, tính base và tính khử; viết được các phương trình hóa học minh họa. - Vận dụng được kiến thức về cân bằng hóa học, tốc độ phản ứng và enthalpy cho phản ứng tổng hợp ammonia từ nitrogen và hydrogen trong quá trình Haber.",
+        "required_concepts": [
+          "chemistry",
+          "grade 11",
+          "BÀI 5. AMMONIA VÀ MUỐI AMMONIUM",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Mô tả được công thức Lewis và dạng hình học của phân tử ammonia. - Từ cấu tạo của phân tử ammonia, giải thích được tính tan, tính base và tính khử; viết được các phương trình hóa học minh họa. - Vận dụng được kiến thức về cân bằng hóa học, tốc độ phản ứng và enthalpy cho phản ứng tổng hợp ammonia từ nitrogen và hydrogen trong quá trình Haber.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_015",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 12,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g12_bai05_c228a604",
+    "lesson": "BÀI 5. SACCHAROSE VÀ MALTOSE",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G12_sgkhoahoc12_chuong2_bai5_sgkhoahoc12_c228a604_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 12",
+      "BÀI 5. SACCHAROSE VÀ MALTOSE",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong2_bai5_sgkhoahoc12_c228a604_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Viết được công thức cấu tạo dạng mạch hở, dạng mạch vòng và gọi được tên của saccharose, maltose. * Trình bày được tính chất hoá học cơ bản của saccharose: phản ứng với copper(II) hydroxide, phản ứng thuỷ phân. * Thực hiện được hoặc quan sát video thí nghiệm về phản ứng của saccharose với copper(II) hydroxide. Mô tả hiện tượng thí nghiệm và giải thích được tính chất hoá học của saccharose.",
+        "required_concepts": [
+          "chemistry",
+          "grade 12",
+          "BÀI 5. SACCHAROSE VÀ MALTOSE",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Viết được công thức cấu tạo dạng mạch hở, dạng mạch vòng và gọi được tên của saccharose, maltose. * Trình bày được tính chất hoá học cơ bản của saccharose: phản ứng với copper(II) hydroxide, phản ứng thuỷ phân. * Thực hiện được hoặc quan sát video thí nghiệm về phản ứng của saccharose với copper(II) hydroxide. Mô tả hiện tượng thí nghiệm và giải thích được tính chất hoá học của saccharose.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_016",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến 1. Khái niệm.",
+    "subject": "chemistry",
+    "grade": 10,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g10_bai06_c5de9c28",
+    "lesson": "BÀI 6. XU HƯỚNG BIẾN ĐỔI MỘT SỐ TÍNH CHẤT CỦA NGUYÊN TỬ CÁC NGUYÊN TỐ TRONG MỘT CHU KÌ VÀ TRONG MỘT NHÓM",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai6_sgkhoahoc10_c5de9c28_S012_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 10",
+      "BÀI 6. XU HƯỚNG BIẾN ĐỔI MỘT SỐ TÍNH CHẤT CỦA NGUYÊN TỬ CÁC NGUYÊN TỐ TRONG MỘT CHU KÌ VÀ TRONG MỘT NHÓM",
+      "1. Khái niệm",
+      "IV. TÍNH KIM LOẠI VÀ TÍNH PHI KIM",
+      "Khái",
+      "niệm"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai6_sgkhoahoc10_c5de9c28_S012_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Tính kim loại là tính chất của một nguyên tố mà nguyên tử của nó dễ nhường electron để trở thành ion dương. Nguyên tử của nguyên tố nào càng dễ nhường electron để trở thành ion dương, tính kim loại của nguyên tố đó càng mạnh. Tính phi kim là tính chất của một nguyên tố mà nguyên tử của nó dễ nhận electron để trở thành ion âm.",
+        "required_concepts": [
+          "chemistry",
+          "grade 10",
+          "BÀI 6. XU HƯỚNG BIẾN ĐỔI MỘT SỐ TÍNH CHẤT CỦA NGUYÊN TỬ CÁC NGUYÊN TỐ TRONG MỘT CHU KÌ VÀ TRONG MỘT NHÓM",
+          "1. Khái niệm",
+          "IV. TÍNH KIM LOẠI VÀ TÍNH PHI KIM"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Tính kim loại là tính chất của một nguyên tố mà nguyên tử của nó dễ nhường electron để trở thành ion dương. Nguyên tử của nguyên tố nào càng dễ nhường electron để trở thành ion dương, tính kim loại của nguyên tố đó càng mạnh. Tính phi kim là tính chất của một nguyên tố mà nguyên tử của nó dễ nhận electron để trở thành ion âm.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_017",
+    "question": "Nêu phương pháp cơ bản để xử lí dạng câu hỏi về MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 11,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g11_bai06_d7ab969f",
+    "lesson": "BÀI 6. MỘT SỐ HỢP CHẤT CỦA NITROGEN VỚI OXYGEN",
+    "questionType": "method",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai6_sgkhoahoc11_d7ab969f_S002_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 11",
+      "BÀI 6. MỘT SỐ HỢP CHẤT CỦA NITROGEN VỚI OXYGEN",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai6_sgkhoahoc11_d7ab969f_S002_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "- Phân tích được nguồn gốc các oxide của nitrogen trong không khí và nguyên nhân gây hiện tượng mưa acid. - Nêu được cấu tạo của nitric acid (HNO₃), tính acid và tính oxi hóa mạnh trong một số ứng dụng thực tiễn quan trọng của nitric acid. - Giải thích được nguyên nhân và hệ quả của hiện tượng phú dưỡng. ---",
+        "required_concepts": [
+          "chemistry",
+          "grade 11",
+          "BÀI 6. MỘT SỐ HỢP CHẤT CỦA NITROGEN VỚI OXYGEN",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Phân tích được nguồn gốc các oxide của nitrogen trong không khí và nguyên nhân gây hiện tượng mưa acid. - Nêu được cấu tạo của nitric acid (HNO₃), tính acid và tính oxi hóa mạnh trong một số ứng dụng thực tiễn quan trọng của nitric acid. - Giải thích được nguyên nhân và hệ quả của hiện tượng phú dưỡng. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_018",
+    "question": "Ý chính cần nhớ về MỤC TIÊU là gì?",
+    "subject": "chemistry",
+    "grade": 12,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g12_bai06_3d34fa12",
+    "lesson": "BÀI 6. TINH BỘT VÀ CELLULOSE",
+    "questionType": "concept",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G12_sgkhoahoc12_chuong2_bai6_sgkhoahoc12_3d34fa12_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 12",
+      "BÀI 6. TINH BỘT VÀ CELLULOSE",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong2_bai6_sgkhoahoc12_3d34fa12_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Viết được công thức cấu tạo và gọi được tên của tinh bột, cellulose. * Trình bày được tính chất hoá học cơ bản của tinh bột (phản ứng thuỷ phân, phản ứng với iodine); của cellulose (phản ứng thuỷ phân, phản ứng với nitric acid và với nước Schweizer).",
+        "required_concepts": [
+          "chemistry",
+          "grade 12",
+          "BÀI 6. TINH BỘT VÀ CELLULOSE",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Viết được công thức cấu tạo và gọi được tên của tinh bột, cellulose. * Trình bày được tính chất hoá học cơ bản của tinh bột (phản ứng thuỷ phân, phản ứng với iodine); của cellulose (phản ứng thuỷ phân, phản ứng với nitric acid và với nước Schweizer).",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_019",
+    "question": "Cần phân biệt hoặc so sánh điểm nào khi học I. THÀNH PHẦN CỦA CÁC OXIDE VÀ HYDROXIDE, đặc biệt với khái niệm chemistry?",
+    "subject": "chemistry",
+    "grade": 10,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g10_bai07_47eb21b1",
+    "lesson": "BÀI 7. XU HƯỚNG BIẾN ĐỔI THÀNH PHẦN VÀ MỘT SỐ TÍNH CHẤT CỦA HỢP CHẤT TRONG MỘT CHU KÌ",
+    "questionType": "comparison",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai7_sgkhoahoc10_47eb21b1_S004_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 10",
+      "BÀI 7. XU HƯỚNG BIẾN ĐỔI THÀNH PHẦN VÀ MỘT SỐ TÍNH CHẤT CỦA HỢP CHẤT TRONG MỘT CHU KÌ",
+      "I. THÀNH PHẦN CỦA CÁC OXIDE VÀ HYDROXIDE",
+      "THÀNH",
+      "PHẦN",
+      "CỦA",
+      "CÁC"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai7_sgkhoahoc10_47eb21b1_S004_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Hoá trị cao nhất của các nguyên tố nhóm A trong hợp chất với oxygen tăng từ I đến VII khi đi từ trái qua phải trong một chu kì, trừ chu kì 1 và nguyên tố fluorine ở chu kì 2. Do đó, thành phần của các oxide và hydroxide có sự lặp lại theo chu kì. 📷 **Bảng 7.1.** Công thức oxide, hydroxide ứng với hoá trị cao nhất của các nguyên tố thuộc chu kì 2, 3.",
+        "required_concepts": [
+          "chemistry",
+          "grade 10",
+          "BÀI 7. XU HƯỚNG BIẾN ĐỔI THÀNH PHẦN VÀ MỘT SỐ TÍNH CHẤT CỦA HỢP CHẤT TRONG MỘT CHU KÌ",
+          "I. THÀNH PHẦN CỦA CÁC OXIDE VÀ HYDROXIDE",
+          "THÀNH"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Hoá trị cao nhất của các nguyên tố nhóm A trong hợp chất với oxygen tăng từ I đến VII khi đi từ trái qua phải trong một chu kì, trừ chu kì 1 và nguyên tố fluorine ở chu kì 2. Do đó, thành phần của các oxide và hydroxide có sự lặp lại theo chu kì. 📷 **Bảng 7.1.** Công thức oxide, hydroxide ứng với hoá trị cao nhất của các nguyên tố thuộc chu kì 2, 3.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_020",
+    "question": "Khi gặp bài tính nhanh liên quan đến MỤC TIÊU, cần chọn công thức và kiểm tra điều kiện nào?",
+    "subject": "chemistry",
+    "grade": 11,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g11_bai07_0351a2e5",
+    "lesson": "BÀI 7. SULFUR VÀ SULFUR DIOXIDE",
+    "questionType": "calculation-lite",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai7_sgkhoahoc11_0351a2e5_S002_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 11",
+      "BÀI 7. SULFUR VÀ SULFUR DIOXIDE",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai7_sgkhoahoc11_0351a2e5_S002_P01"
+      ],
+      "answer": {
+        "type": "mixed",
+        "reference_answer": "- Nêu được các trạng thái tự nhiên của nguyên tố sulfur. - Trình bày được cấu tạo, tính chất vật lí, tính chất hóa học cơ bản và ứng dụng của sulfur đơn chất. - Thực hiện được thí nghiệm chứng minh sulfur đơn chất vừa có tính oxi hóa vừa có tính khử. - Trình bày được tính oxi hóa, tính khử và ứng dụng của sulfur dioxide.",
+        "required_concepts": [
+          "chemistry",
+          "grade 11",
+          "BÀI 7. SULFUR VÀ SULFUR DIOXIDE",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Nêu được các trạng thái tự nhiên của nguyên tố sulfur. - Trình bày được cấu tạo, tính chất vật lí, tính chất hóa học cơ bản và ứng dụng của sulfur đơn chất. - Thực hiện được thí nghiệm chứng minh sulfur đơn chất vừa có tính oxi hóa vừa có tính khử. - Trình bày được tính oxi hóa, tính khử và ứng dụng của sulfur dioxide.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_021",
+    "question": "Hiện tượng hoặc thí nghiệm liên quan đến 1. Cấu tạo của các carbohydrate được giải thích bằng ý chính nào?",
+    "subject": "chemistry",
+    "grade": 12,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g12_bai07_0d182b80",
+    "lesson": "BÀI 7. ÔN TẬP CHƯƠNG 2",
+    "questionType": "phenomenon/experiment",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G12_sgkhoahoc12_chuong2_bai7_sgkhoahoc12_0d182b80_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 12",
+      "BÀI 7. ÔN TẬP CHƯƠNG 2",
+      "1. Cấu tạo của các carbohydrate",
+      "HỆ THỐNG HOÁ KIẾN THỨC",
+      "Cấu",
+      "tạo",
+      "của"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong2_bai7_sgkhoahoc12_0d182b80_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "📷 **Bảng 7.1.** Công thức phân tử và công thức cấu tạo của một số carbohydrate. | Chất | Công thức phân tử | Công thức cấu tạo | | ---------- | ----------------- | --------------------------------------------------------------------------------- | | Glucose | C₆H₁₂O₆ | α-glucose; β-glucose | | Fructose | C₆H₁₂O₆ | α-fructose; β-fructose | | Saccharose | C₁₂H₂₂O₁₁ | Có liên kết α-1,2-glycoside | | Maltose | C₁₂H₂₂O...",
+        "required_concepts": [
+          "chemistry",
+          "grade 12",
+          "BÀI 7. ÔN TẬP CHƯƠNG 2",
+          "1. Cấu tạo của các carbohydrate",
+          "HỆ THỐNG HOÁ KIẾN THỨC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "📷 **Bảng 7.1.** Công thức phân tử và công thức cấu tạo của một số carbohydrate. | Chất | Công thức phân tử | Công thức cấu tạo | | ---------- | ----------------- | --------------------------------------------------------------------------------- | | Glucose | C₆H₁₂O₆ | α-glucose; β-glucose | | Fructose | C₆H₁₂O₆ | α-fructose; β-fructose | | Saccharose | C₁₂H₂₂O₁₁ | Có liên kết α-1,2-glycoside | | Maltose | C₁₂H₂₂O...",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_022",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến II. Ý NGHĨA CỦA BẢNG TUẦN HOÀN.",
+    "subject": "chemistry",
+    "grade": 10,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g10_bai08_ba1b8b85",
+    "lesson": "BÀI 8. ĐỊNH LUẬT TUẦN HOÀN. Ý NGHĨA CỦA BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HOÁ HỌC",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai8_sgkhoahoc10_ba1b8b85_S006_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 10",
+      "BÀI 8. ĐỊNH LUẬT TUẦN HOÀN. Ý NGHĨA CỦA BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HOÁ HỌC",
+      "II. Ý NGHĨA CỦA BẢNG TUẦN HOÀN",
+      "NGHĨA",
+      "CỦA",
+      "BẢNG",
+      "TUẦN"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai8_sgkhoahoc10_ba1b8b85_S006_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Vị trí của nguyên tố trong bảng tuần hoàn cho biết cấu hình electron của nguyên tử. Cấu hình electron của nguyên tử quyết định tính chất của nguyên tố. Vì vậy, có thể dự đoán được tính chất hoá học của nguyên tố khi biết: - vị trí của nguyên tố trong bảng tuần hoàn; hoặc - cấu hình electron của nguyên tử. ```text Vị trí của nguyên tố trong bảng tuần hoàn │ ▼ Cấu hình electron │ ▼ Tính chất của nguyên tố ``` ---",
+        "required_concepts": [
+          "chemistry",
+          "grade 10",
+          "BÀI 8. ĐỊNH LUẬT TUẦN HOÀN. Ý NGHĨA CỦA BẢNG TUẦN HOÀN CÁC NGUYÊN TỐ HOÁ HỌC",
+          "II. Ý NGHĨA CỦA BẢNG TUẦN HOÀN",
+          "NGHĨA"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Vị trí của nguyên tố trong bảng tuần hoàn cho biết cấu hình electron của nguyên tử. Cấu hình electron của nguyên tử quyết định tính chất của nguyên tố. Vì vậy, có thể dự đoán được tính chất hoá học của nguyên tố khi biết: - vị trí của nguyên tố trong bảng tuần hoàn; hoặc - cấu hình electron của nguyên tử. ```text Vị trí của nguyên tố trong bảng tuần hoàn │ ▼ Cấu hình electron │ ▼ Tính chất của nguyên tố ``` ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_023",
+    "question": "Công thức hoặc tính chất quan trọng của 1. Cấu tạo phân tử là gì?",
+    "subject": "chemistry",
+    "grade": 11,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g11_bai08_f0c02d4e",
+    "lesson": "BÀI 8. SULFURIC ACID VÀ MUỐI SULFATE",
+    "questionType": "formula",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai8_sgkhoahoc11_f0c02d4e_S004_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 11",
+      "BÀI 8. SULFURIC ACID VÀ MUỐI SULFATE",
+      "1. Cấu tạo phân tử",
+      "I. SULFURIC ACID",
+      "Cấu",
+      "tạo",
+      "phân"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai8_sgkhoahoc11_f0c02d4e_S004_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Phân tử sulfuric acid (H₂SO₄) có công thức cấu tạo: ```text HO–S(=O)₂–OH ``` Giữa các phân tử sulfuric acid hình thành nhiều liên kết hydrogen do: - Có các nguyên tử hydrogen linh động. - Có các nguyên tử oxygen có độ âm điện lớn. 📷 **Hình 8.1.** Liên kết hydrogen giữa các phân tử sulfuric acid.",
+        "required_concepts": [
+          "chemistry",
+          "grade 11",
+          "BÀI 8. SULFURIC ACID VÀ MUỐI SULFATE",
+          "1. Cấu tạo phân tử",
+          "I. SULFURIC ACID"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Phân tử sulfuric acid (H₂SO₄) có công thức cấu tạo: ```text HO–S(=O)₂–OH ``` Giữa các phân tử sulfuric acid hình thành nhiều liên kết hydrogen do: - Có các nguyên tử hydrogen linh động. - Có các nguyên tử oxygen có độ âm điện lớn. 📷 **Hình 8.1.** Liên kết hydrogen giữa các phân tử sulfuric acid.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_024",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 12,
+    "chapter": "chemistry_chapter_03",
+    "lessonId": "chemistry_g12_bai08_2133d6d3",
+    "lesson": "BÀI 8. AMINE",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G12_sgkhoahoc12_chuong3_bai8_sgkhoahoc12_2133d6d3_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 12",
+      "BÀI 8. AMINE",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong3_bai8_sgkhoahoc12_2133d6d3_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Nêu được khái niệm amine và phân loại amine theo bậc của amine và bản chất gốc hydrocarbon. * Viết được công thức cấu tạo và gọi được tên một số amine theo danh pháp thay thế, danh pháp gốc – chức (số nguyên tử C trong phân tử ≤ 5), tên thông thường của một số amine hay gặp. * Nêu được đặc điểm về tính chất vật lí của amine: trạng thái, nhiệt độ sôi, nhiệt độ nóng chảy, khả năng hoà tan.",
+        "required_concepts": [
+          "chemistry",
+          "grade 12",
+          "BÀI 8. AMINE",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Nêu được khái niệm amine và phân loại amine theo bậc của amine và bản chất gốc hydrocarbon. * Viết được công thức cấu tạo và gọi được tên một số amine theo danh pháp thay thế, danh pháp gốc – chức (số nguyên tử C trong phân tử ≤ 5), tên thông thường của một số amine hay gặp. * Nêu được đặc điểm về tính chất vật lí của amine: trạng thái, nhiệt độ sôi, nhiệt độ nóng chảy, khả năng hoà tan.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_025",
+    "question": "Ý chính cần nhớ về 1. Cấu tạo bảng tuần hoàn là gì?",
+    "subject": "chemistry",
+    "grade": 10,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g10_bai09_8a3a2ed2",
+    "lesson": "BÀI ÔN TẬP CHƯƠNG 2",
+    "questionType": "concept",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai9_sgkhoahoc10_8a3a2ed2_S002_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 10",
+      "BÀI ÔN TẬP CHƯƠNG 2",
+      "1. Cấu tạo bảng tuần hoàn",
+      "I. HỆ THỐNG HOÁ KIẾN THỨC",
+      "Cấu",
+      "tạo",
+      "bảng"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai9_sgkhoahoc10_8a3a2ed2_S002_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "a) Điền các cụm từ `\"số lớp electron\"`, `\"điện tích hạt nhân\"` và `\"số electron hoá trị\"` vào chỗ trống thích hợp trong các mệnh đề sau theo đúng các nguyên tắc sắp xếp các nguyên tố trong bảng tuần hoàn. ```text Điện tích hạt nhân tăng dần. Cùng số lớp electron ⇒ cùng chu kì (hàng). Cùng số electron hoá trị ⇒ cùng nhóm (cột).",
+        "required_concepts": [
+          "chemistry",
+          "grade 10",
+          "BÀI ÔN TẬP CHƯƠNG 2",
+          "1. Cấu tạo bảng tuần hoàn",
+          "I. HỆ THỐNG HOÁ KIẾN THỨC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "a) Điền các cụm từ `\"số lớp electron\"`, `\"điện tích hạt nhân\"` và `\"số electron hoá trị\"` vào chỗ trống thích hợp trong các mệnh đề sau theo đúng các nguyên tắc sắp xếp các nguyên tố trong bảng tuần hoàn. ```text Điện tích hạt nhân tăng dần. Cùng số lớp electron ⇒ cùng chu kì (hàng). Cùng số electron hoá trị ⇒ cùng nhóm (cột).",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_026",
+    "question": "Cần phân biệt hoặc so sánh điểm nào khi học I. NITROGEN, đặc biệt với khái niệm chemistry?",
+    "subject": "chemistry",
+    "grade": 11,
+    "chapter": "chemistry_chapter_02",
+    "lessonId": "chemistry_g11_bai09_2c8ed0f2",
+    "lesson": "BÀI 9. ÔN TẬP CHƯƠNG 2",
+    "questionType": "comparison",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai9_sgkhoahoc11_2c8ed0f2_S003_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 11",
+      "BÀI 9. ÔN TẬP CHƯƠNG 2",
+      "I. NITROGEN",
+      "HỆ THỐNG HÓA KIẾN THỨC",
+      "NITROGEN"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai9_sgkhoahoc11_2c8ed0f2_S003_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "- Nitrogen là nguyên tố phổ biến, góp phần tạo nên sự sống trên Trái Đất. - Cấu hình electron lớp ngoài cùng: **2s²2p³**. - Các số oxi hóa thường gặp: **−3, 0, +1, +2, +3, +4, +5**. - Phân tử nitrogen gồm hai nguyên tử liên kết với nhau bằng **liên kết ba bền vững (N≡N)**. - Đơn chất nitrogen khá trơ ở nhiệt độ thường, hoạt động hóa học mạnh hơn khi đun nóng và có xúc tác.",
+        "required_concepts": [
+          "chemistry",
+          "grade 11",
+          "BÀI 9. ÔN TẬP CHƯƠNG 2",
+          "I. NITROGEN",
+          "HỆ THỐNG HÓA KIẾN THỨC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Nitrogen là nguyên tố phổ biến, góp phần tạo nên sự sống trên Trái Đất. - Cấu hình electron lớp ngoài cùng: **2s²2p³**. - Các số oxi hóa thường gặp: **−3, 0, +1, +2, +3, +4, +5**. - Phân tử nitrogen gồm hai nguyên tử liên kết với nhau bằng **liên kết ba bền vững (N≡N)**. - Đơn chất nitrogen khá trơ ở nhiệt độ thường, hoạt động hóa học mạnh hơn khi đun nóng và có xúc tác.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_027",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 12,
+    "chapter": "chemistry_chapter_03",
+    "lessonId": "chemistry_g12_bai09_f4bd23ac",
+    "lesson": "BÀI 9. AMINO ACID VÀ PEPTIDE",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G12_sgkhoahoc12_chuong3_bai9_sgkhoahoc12_f4bd23ac_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 12",
+      "BÀI 9. AMINO ACID VÀ PEPTIDE",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong3_bai9_sgkhoahoc12_f4bd23ac_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Nêu được khái niệm về amino acid, amino acid thiên nhiên, amino acid trong cơ thể; gọi được tên một số amino acid thông dụng, đặc điểm cấu tạo phân tử của amino acid. * Nêu được đặc điểm về tính chất vật lí của amino acid: trạng thái, nhiệt độ nóng chảy, khả năng hoà tan. * Trình bày được tính chất hoá học đặc trưng của amino acid: tính lưỡng tính, phản ứng ester hoá; phản ứng trùng ngưng của ε- và ω-amino acid.",
+        "required_concepts": [
+          "chemistry",
+          "grade 12",
+          "BÀI 9. AMINO ACID VÀ PEPTIDE",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Nêu được khái niệm về amino acid, amino acid thiên nhiên, amino acid trong cơ thể; gọi được tên một số amino acid thông dụng, đặc điểm cấu tạo phân tử của amino acid. * Nêu được đặc điểm về tính chất vật lí của amino acid: trạng thái, nhiệt độ nóng chảy, khả năng hoà tan. * Trình bày được tính chất hoá học đặc trưng của amino acid: tính lưỡng tính, phản ứng ester hoá; phản ứng trùng ngưng của ε- và ω-amino acid.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_028",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến I. KHÁI NIỆM LIÊN KẾT HOÁ HỌC.",
+    "subject": "chemistry",
+    "grade": 10,
+    "chapter": "chemistry_chapter_03",
+    "lessonId": "chemistry_g10_bai10_e8a89a18",
+    "lesson": "CHƯƠNG 3. LIÊN KẾT HOÁ HỌC",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G10_sgkhoahoc10_chuong3_bai10_sgkhoahoc10_e8a89a18_S006_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 10",
+      "CHƯƠNG 3. LIÊN KẾT HOÁ HỌC",
+      "I. KHÁI NIỆM LIÊN KẾT HOÁ HỌC",
+      "BÀI 10. QUY TẮC OCTET",
+      "KHÁI",
+      "NIỆM",
+      "LIÊN"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong3_bai10_sgkhoahoc10_e8a89a18_S006_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Theo thuyết cấu tạo hoá học, sự liên kết giữa các nguyên tử tạo thành phân tử hay tinh thể được giải thích bằng sự giảm năng lượng khi các nguyên tử kết hợp lại với nhau. Khi tạo liên kết hoá học, nguyên tử có xu hướng đạt tới cấu hình electron bền vững của khí hiếm. Liên kết hoá học là sự kết hợp giữa các nguyên tử tạo thành phân tử hoặc tinh thể bền vững hơn.",
+        "required_concepts": [
+          "chemistry",
+          "grade 10",
+          "CHƯƠNG 3. LIÊN KẾT HOÁ HỌC",
+          "I. KHÁI NIỆM LIÊN KẾT HOÁ HỌC",
+          "BÀI 10. QUY TẮC OCTET"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Theo thuyết cấu tạo hoá học, sự liên kết giữa các nguyên tử tạo thành phân tử hay tinh thể được giải thích bằng sự giảm năng lượng khi các nguyên tử kết hợp lại với nhau. Khi tạo liên kết hoá học, nguyên tử có xu hướng đạt tới cấu hình electron bền vững của khí hiếm. Liên kết hoá học là sự kết hợp giữa các nguyên tử tạo thành phân tử hoặc tinh thể bền vững hơn.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_029",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 11,
+    "chapter": "chemistry_chapter_03",
+    "lessonId": "chemistry_g11_bai10_9367dda3",
+    "lesson": "BÀI 10. HỢP CHẤT HỮU CƠ VÀ HÓA HỌC HỮU CƠ",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G11_sgkhoahoc11_chuong3_bai10_sgkhoahoc11_9367dda3_S002_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 11",
+      "BÀI 10. HỢP CHẤT HỮU CƠ VÀ HÓA HỌC HỮU CƠ",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong3_bai10_sgkhoahoc11_9367dda3_S002_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "- Nêu được khái niệm hợp chất hữu cơ và hóa học hữu cơ; đặc điểm chung của các hợp chất hữu cơ. - Phân loại được hợp chất hữu cơ (hydrocarbon và dẫn xuất hydrocarbon). - Nêu được khái niệm nhóm chức và một số loại nhóm chức cơ bản. - Sử dụng được bảng tín hiệu phổ hồng ngoại (IR) để xác định một số nhóm chức cơ bản. ---",
+        "required_concepts": [
+          "chemistry",
+          "grade 11",
+          "BÀI 10. HỢP CHẤT HỮU CƠ VÀ HÓA HỌC HỮU CƠ",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "- Nêu được khái niệm hợp chất hữu cơ và hóa học hữu cơ; đặc điểm chung của các hợp chất hữu cơ. - Phân loại được hợp chất hữu cơ (hydrocarbon và dẫn xuất hydrocarbon). - Nêu được khái niệm nhóm chức và một số loại nhóm chức cơ bản. - Sử dụng được bảng tín hiệu phổ hồng ngoại (IR) để xác định một số nhóm chức cơ bản. ---",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_CHEMISTRY_030",
+    "question": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến MỤC TIÊU.",
+    "subject": "chemistry",
+    "grade": 12,
+    "chapter": "chemistry_chapter_03",
+    "lessonId": "chemistry_g12_bai10_f2d22dc6",
+    "lesson": "BÀI 10. PROTEIN VÀ ENZYME",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "GENCLN_CHEM_G12_sgkhoahoc12_chuong3_bai10_sgkhoahoc12_f2d22dc6_S001_P01"
+    ],
+    "expectedConcepts": [
+      "chemistry",
+      "grade 12",
+      "BÀI 10. PROTEIN VÀ ENZYME",
+      "MỤC TIÊU",
+      "MỤC",
+      "TIÊU"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong3_bai10_sgkhoahoc12_f2d22dc6_S001_P01"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "* Nêu được khái niệm, đặc điểm cấu tạo phân tử, tính chất vật lí của protein. * Trình bày được tính chất hoá học đặc trưng của protein: phản ứng thuỷ phân, phản ứng màu của protein với nitric acid và copper(II) hydroxide; sự đông tụ bởi nhiệt, bởi acid, kiềm và muối kim loại nặng.",
+        "required_concepts": [
+          "chemistry",
+          "grade 12",
+          "BÀI 10. PROTEIN VÀ ENZYME",
+          "MỤC TIÊU",
+          "MỤC"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "* Nêu được khái niệm, đặc điểm cấu tạo phân tử, tính chất vật lí của protein. * Trình bày được tính chất hoá học đặc trưng của protein: phản ứng thuỷ phân, phản ứng màu của protein với nitric acid và copper(II) hydroxide; sự đông tụ bởi nhiệt, bởi acid, kiềm và muối kim loại nặng.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_001",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Mệnh đề.",
+    "subject": "math",
+    "grade": 10,
+    "chapter": "math_g10_tap1_chapter_01",
+    "lessonId": "math_g10_tap1_ch01_bai01",
+    "lesson": "Mệnh đề",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g10_tap1_ch01_bai01_definition_001"
+    ],
+    "expectedConcepts": [
+      "Mệnh đề",
+      "definition",
+      "menh",
+      "khái niệm",
+      "math",
+      "toán",
+      "grade 10",
+      "tap1"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g10_tap1_ch01_bai01_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 1: Mệnh đề, trọng tâm là tập hợp gồm các phần tử xác định và có thể mô tả bằng liệt kê hoặc tính chất đặc trưng. Đây là một phần của chương 1: Mệnh đề và tập hợp, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Mệnh đề",
+          "definition",
+          "menh",
+          "khái niệm",
+          "math"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 1: Mệnh đề, trọng tâm là tập hợp gồm các phần tử xác định và có thể mô tả bằng liệt kê hoặc tính chất đặc trưng. Đây là một phần của chương 1: Mệnh đề và tập hợp, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_002",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Giá trị lượng giác của góc lượng giác.",
+    "subject": "math",
+    "grade": 11,
+    "chapter": "math_g11_tap1_chapter_01",
+    "lessonId": "math_g11_tap1_ch01_bai01",
+    "lesson": "Giá trị lượng giác của góc lượng giác",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g11_tap1_ch01_bai01_definition_001"
+    ],
+    "expectedConcepts": [
+      "Giá trị lượng giác của góc lượng giác",
+      "definition",
+      "gia",
+      "tri",
+      "luong",
+      "giac",
+      "cua",
+      "goc"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g11_tap1_ch01_bai01_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 1: Giá trị lượng giác của góc lượng giác, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+        "required_concepts": [
+          "Giá trị lượng giác của góc lượng giác",
+          "definition",
+          "gia",
+          "tri",
+          "luong"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 1: Giá trị lượng giác của góc lượng giác, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_003",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Tính đơn điệu và cực trị của hàm số.",
+    "subject": "math",
+    "grade": 12,
+    "chapter": "math_g12_tap1_chapter_01",
+    "lessonId": "math_g12_tap1_ch01_bai01",
+    "lesson": "Tính đơn điệu và cực trị của hàm số",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g12_tap1_ch01_bai01_definition_001"
+    ],
+    "expectedConcepts": [
+      "Tính đơn điệu và cực trị của hàm số",
+      "definition",
+      "tinh",
+      "ieu",
+      "cuc",
+      "tri",
+      "cua",
+      "ham"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g12_tap1_ch01_bai01_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 1: Tính đơn điệu và cực trị của hàm số, trọng tâm là cực trị liên quan tới điểm mà hàm số đổi chiều biến thiên. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Tính đơn điệu và cực trị của hàm số",
+          "definition",
+          "tinh",
+          "ieu",
+          "cuc"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 1: Tính đơn điệu và cực trị của hàm số, trọng tâm là cực trị liên quan tới điểm mà hàm số đổi chiều biến thiên. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_004",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Tập hợp và các phép toán trên tập hợp.",
+    "subject": "math",
+    "grade": 10,
+    "chapter": "math_g10_tap1_chapter_01",
+    "lessonId": "math_g10_tap1_ch01_bai02",
+    "lesson": "Tập hợp và các phép toán trên tập hợp",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g10_tap1_ch01_bai02_definition_001"
+    ],
+    "expectedConcepts": [
+      "Tập hợp và các phép toán trên tập hợp",
+      "definition",
+      "tap",
+      "hop",
+      "cac",
+      "phep",
+      "toan",
+      "tren"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g10_tap1_ch01_bai02_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 2: Tập hợp và các phép toán trên tập hợp, trọng tâm là tập hợp gồm các phần tử xác định và có thể mô tả bằng liệt kê hoặc tính chất đặc trưng. Đây là một phần của chương 1: Mệnh đề và tập hợp, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Tập hợp và các phép toán trên tập hợp",
+          "definition",
+          "tap",
+          "hop",
+          "cac"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 2: Tập hợp và các phép toán trên tập hợp, trọng tâm là tập hợp gồm các phần tử xác định và có thể mô tả bằng liệt kê hoặc tính chất đặc trưng. Đây là một phần của chương 1: Mệnh đề và tập hợp, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_005",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Công thức lượng giác.",
+    "subject": "math",
+    "grade": 11,
+    "chapter": "math_g11_tap1_chapter_01",
+    "lessonId": "math_g11_tap1_ch01_bai02",
+    "lesson": "Công thức lượng giác",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g11_tap1_ch01_bai02_definition_001"
+    ],
+    "expectedConcepts": [
+      "Công thức lượng giác",
+      "definition",
+      "cong",
+      "thuc",
+      "luong",
+      "giac",
+      "khái niệm",
+      "math"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g11_tap1_ch01_bai02_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 2: Công thức lượng giác, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+        "required_concepts": [
+          "Công thức lượng giác",
+          "definition",
+          "cong",
+          "thuc",
+          "luong"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 2: Công thức lượng giác, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_006",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Giá trị lớn nhất và giá trị nhỏ nhất của hàm số.",
+    "subject": "math",
+    "grade": 12,
+    "chapter": "math_g12_tap1_chapter_01",
+    "lessonId": "math_g12_tap1_ch01_bai02",
+    "lesson": "Giá trị lớn nhất và giá trị nhỏ nhất của hàm số",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g12_tap1_ch01_bai02_definition_001"
+    ],
+    "expectedConcepts": [
+      "Giá trị lớn nhất và giá trị nhỏ nhất của hàm số",
+      "definition",
+      "gia",
+      "tri",
+      "lon",
+      "nhat",
+      "nho",
+      "cua"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g12_tap1_ch01_bai02_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 2: Giá trị lớn nhất và giá trị nhỏ nhất của hàm số, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+        "required_concepts": [
+          "Giá trị lớn nhất và giá trị nhỏ nhất của hàm số",
+          "definition",
+          "gia",
+          "tri",
+          "lon"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 2: Giá trị lớn nhất và giá trị nhỏ nhất của hàm số, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_007",
+    "question": "Hiện tượng hoặc thí nghiệm liên quan đến Tóm tắt chương 1: Mệnh đề và tập hợp được giải thích bằng ý chính nào?",
+    "subject": "math",
+    "grade": 10,
+    "chapter": "math_g10_tap1_chapter_01",
+    "lessonId": "math_g10_tap1_ch01_summary",
+    "lesson": "Chương 1: Mệnh đề và tập hợp",
+    "questionType": "phenomenon/experiment",
+    "expectedChunkIds": [
+      "math_synth_g10_tap1_ch01_summary_001"
+    ],
+    "expectedConcepts": [
+      "Mệnh đề và tập hợp",
+      "summary",
+      "menh",
+      "tap",
+      "hop",
+      "math",
+      "toán",
+      "grade 10"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g10_tap1_ch01_summary_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Chương 1: Mệnh đề và tập hợp cung cấp nhóm kiến thức nền của Toán 10 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+        "required_concepts": [
+          "Mệnh đề và tập hợp",
+          "summary",
+          "menh",
+          "tap",
+          "hop"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Chương 1: Mệnh đề và tập hợp cung cấp nhóm kiến thức nền của Toán 10 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_008",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Hàm số lượng giác.",
+    "subject": "math",
+    "grade": 11,
+    "chapter": "math_g11_tap1_chapter_01",
+    "lessonId": "math_g11_tap1_ch01_bai03",
+    "lesson": "Hàm số lượng giác",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g11_tap1_ch01_bai03_definition_001"
+    ],
+    "expectedConcepts": [
+      "Hàm số lượng giác",
+      "definition",
+      "ham",
+      "luong",
+      "giac",
+      "khái niệm",
+      "math",
+      "toán"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g11_tap1_ch01_bai03_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 3: Hàm số lượng giác, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Hàm số lượng giác",
+          "definition",
+          "ham",
+          "luong",
+          "giac"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 3: Hàm số lượng giác, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_009",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Đường tiệm cận của đồ thị hàm số.",
+    "subject": "math",
+    "grade": 12,
+    "chapter": "math_g12_tap1_chapter_01",
+    "lessonId": "math_g12_tap1_ch01_bai03",
+    "lesson": "Đường tiệm cận của đồ thị hàm số",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g12_tap1_ch01_bai03_definition_001"
+    ],
+    "expectedConcepts": [
+      "Đường tiệm cận của đồ thị hàm số",
+      "definition",
+      "uong",
+      "tiem",
+      "can",
+      "cua",
+      "thi",
+      "ham"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g12_tap1_ch01_bai03_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 3: Đường tiệm cận của đồ thị hàm số, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+        "required_concepts": [
+          "Đường tiệm cận của đồ thị hàm số",
+          "definition",
+          "uong",
+          "tiem",
+          "can"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 3: Đường tiệm cận của đồ thị hàm số, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_010",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Bất phương trình bậc nhất hai ẩn.",
+    "subject": "math",
+    "grade": 10,
+    "chapter": "math_g10_tap1_chapter_02",
+    "lessonId": "math_g10_tap1_ch02_bai03",
+    "lesson": "Bất phương trình bậc nhất hai ẩn",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g10_tap1_ch02_bai03_definition_001"
+    ],
+    "expectedConcepts": [
+      "Bất phương trình bậc nhất hai ẩn",
+      "definition",
+      "bat",
+      "phuong",
+      "trinh",
+      "bac",
+      "nhat",
+      "hai"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g10_tap1_ch02_bai03_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 3: Bất phương trình bậc nhất hai ẩn, trọng tâm là bất phương trình mô tả miền giá trị thỏa mãn một quan hệ so sánh. Đây là một phần của chương 2: Bất phương trình và hệ bất phương trình bậc nhất hai ẩn, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Bất phương trình bậc nhất hai ẩn",
+          "definition",
+          "bat",
+          "phuong",
+          "trinh"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 3: Bất phương trình bậc nhất hai ẩn, trọng tâm là bất phương trình mô tả miền giá trị thỏa mãn một quan hệ so sánh. Đây là một phần của chương 2: Bất phương trình và hệ bất phương trình bậc nhất hai ẩn, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_011",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Phương trình lượng giác cơ bản.",
+    "subject": "math",
+    "grade": 11,
+    "chapter": "math_g11_tap1_chapter_01",
+    "lessonId": "math_g11_tap1_ch01_bai04",
+    "lesson": "Phương trình lượng giác cơ bản",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g11_tap1_ch01_bai04_definition_001"
+    ],
+    "expectedConcepts": [
+      "Phương trình lượng giác cơ bản",
+      "definition",
+      "phuong",
+      "trinh",
+      "luong",
+      "giac",
+      "ban",
+      "khái niệm"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g11_tap1_ch01_bai04_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 4: Phương trình lượng giác cơ bản, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+        "required_concepts": [
+          "Phương trình lượng giác cơ bản",
+          "definition",
+          "phuong",
+          "trinh",
+          "luong"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 4: Phương trình lượng giác cơ bản, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Hàm số lượng giác và phương trình lượng giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_012",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Khảo sát sự biến thiên và vẽ đồ thị của hàm số.",
+    "subject": "math",
+    "grade": 12,
+    "chapter": "math_g12_tap1_chapter_01",
+    "lessonId": "math_g12_tap1_ch01_bai04",
+    "lesson": "Khảo sát sự biến thiên và vẽ đồ thị của hàm số",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g12_tap1_ch01_bai04_definition_001"
+    ],
+    "expectedConcepts": [
+      "Khảo sát sự biến thiên và vẽ đồ thị của hàm số",
+      "definition",
+      "khao",
+      "sat",
+      "bien",
+      "thien",
+      "thi",
+      "cua"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g12_tap1_ch01_bai04_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 4: Khảo sát sự biến thiên và vẽ đồ thị của hàm số, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+        "required_concepts": [
+          "Khảo sát sự biến thiên và vẽ đồ thị của hàm số",
+          "definition",
+          "khao",
+          "sat",
+          "bien"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 4: Khảo sát sự biến thiên và vẽ đồ thị của hàm số, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_013",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Hệ bất phương trình bậc nhất hai ẩn.",
+    "subject": "math",
+    "grade": 10,
+    "chapter": "math_g10_tap1_chapter_02",
+    "lessonId": "math_g10_tap1_ch02_bai04",
+    "lesson": "Hệ bất phương trình bậc nhất hai ẩn",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g10_tap1_ch02_bai04_definition_001"
+    ],
+    "expectedConcepts": [
+      "Hệ bất phương trình bậc nhất hai ẩn",
+      "definition",
+      "bat",
+      "phuong",
+      "trinh",
+      "bac",
+      "nhat",
+      "hai"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g10_tap1_ch02_bai04_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 4: Hệ bất phương trình bậc nhất hai ẩn, trọng tâm là bất phương trình mô tả miền giá trị thỏa mãn một quan hệ so sánh. Đây là một phần của chương 2: Bất phương trình và hệ bất phương trình bậc nhất hai ẩn, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Hệ bất phương trình bậc nhất hai ẩn",
+          "definition",
+          "bat",
+          "phuong",
+          "trinh"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 4: Hệ bất phương trình bậc nhất hai ẩn, trọng tâm là bất phương trình mô tả miền giá trị thỏa mãn một quan hệ so sánh. Đây là một phần của chương 2: Bất phương trình và hệ bất phương trình bậc nhất hai ẩn, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_014",
+    "question": "Hiện tượng hoặc thí nghiệm liên quan đến Tóm tắt chương 1: Hàm số lượng giác và phương trình lượng giác được giải thích bằng ý chính nào?",
+    "subject": "math",
+    "grade": 11,
+    "chapter": "math_g11_tap1_chapter_01",
+    "lessonId": "math_g11_tap1_ch01_summary",
+    "lesson": "Chương 1: Hàm số lượng giác và phương trình lượng giác",
+    "questionType": "phenomenon/experiment",
+    "expectedChunkIds": [
+      "math_synth_g11_tap1_ch01_summary_001"
+    ],
+    "expectedConcepts": [
+      "Hàm số lượng giác và phương trình lượng giác",
+      "summary",
+      "ham",
+      "luong",
+      "giac",
+      "phuong",
+      "trinh",
+      "math"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g11_tap1_ch01_summary_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Chương 1: Hàm số lượng giác và phương trình lượng giác cung cấp nhóm kiến thức nền của Toán 11 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+        "required_concepts": [
+          "Hàm số lượng giác và phương trình lượng giác",
+          "summary",
+          "ham",
+          "luong",
+          "giac"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Chương 1: Hàm số lượng giác và phương trình lượng giác cung cấp nhóm kiến thức nền của Toán 11 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_015",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Ứng dụng đạo hàm để giải quyết một số vấn đề liên quan đến thực tiễn.",
+    "subject": "math",
+    "grade": 12,
+    "chapter": "math_g12_tap1_chapter_01",
+    "lessonId": "math_g12_tap1_ch01_bai05",
+    "lesson": "Ứng dụng đạo hàm để giải quyết một số vấn đề liên quan đến thực tiễn",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g12_tap1_ch01_bai05_definition_001"
+    ],
+    "expectedConcepts": [
+      "Ứng dụng đạo hàm để giải quyết một số vấn đề liên quan đến thực tiễn",
+      "definition",
+      "ung",
+      "dung",
+      "ham",
+      "giai",
+      "quyet",
+      "mot"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g12_tap1_ch01_bai05_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 5: Ứng dụng đạo hàm để giải quyết một số vấn đề liên quan đến thực tiễn, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+        "required_concepts": [
+          "Ứng dụng đạo hàm để giải quyết một số vấn đề liên quan đến thực tiễn",
+          "definition",
+          "ung",
+          "dung",
+          "ham"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 5: Ứng dụng đạo hàm để giải quyết một số vấn đề liên quan đến thực tiễn, trọng tâm là hàm số mô tả quy tắc gán mỗi giá trị đầu vào trong tập xác định với đúng một giá trị đầu ra. Đây là một phần của chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_016",
+    "question": "Công thức hoặc tính chất quan trọng của Tóm tắt chương 2: Bất phương trình và hệ bất phương trình bậc nhất hai ẩn là gì?",
+    "subject": "math",
+    "grade": 10,
+    "chapter": "math_g10_tap1_chapter_02",
+    "lessonId": "math_g10_tap1_ch02_summary",
+    "lesson": "Chương 2: Bất phương trình và hệ bất phương trình bậc nhất hai ẩn",
+    "questionType": "formula",
+    "expectedChunkIds": [
+      "math_synth_g10_tap1_ch02_summary_001"
+    ],
+    "expectedConcepts": [
+      "Bất phương trình và hệ bất phương trình bậc nhất hai ẩn",
+      "summary",
+      "bat",
+      "phuong",
+      "trinh",
+      "bac",
+      "nhat",
+      "hai"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g10_tap1_ch02_summary_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Chương 2: Bất phương trình và hệ bất phương trình bậc nhất hai ẩn cung cấp nhóm kiến thức nền của Toán 10 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+        "required_concepts": [
+          "Bất phương trình và hệ bất phương trình bậc nhất hai ẩn",
+          "summary",
+          "bat",
+          "phuong",
+          "trinh"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Chương 2: Bất phương trình và hệ bất phương trình bậc nhất hai ẩn cung cấp nhóm kiến thức nền của Toán 10 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_017",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Dãy số.",
+    "subject": "math",
+    "grade": 11,
+    "chapter": "math_g11_tap1_chapter_02",
+    "lessonId": "math_g11_tap1_ch02_bai05",
+    "lesson": "Dãy số",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g11_tap1_ch02_bai05_definition_001"
+    ],
+    "expectedConcepts": [
+      "Dãy số",
+      "definition",
+      "day",
+      "khái niệm",
+      "math",
+      "toán",
+      "grade 11",
+      "tap1"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g11_tap1_ch02_bai05_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 5: Dãy số, trọng tâm là dãy số là hàm số xác định trên tập số tự nhiên dương hoặc một tập chỉ số rời rạc. Đây là một phần của chương 2: Dãy số. Cấp số cộng và cấp số nhân, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Dãy số",
+          "definition",
+          "day",
+          "khái niệm",
+          "math"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 5: Dãy số, trọng tâm là dãy số là hàm số xác định trên tập số tự nhiên dương hoặc một tập chỉ số rời rạc. Đây là một phần của chương 2: Dãy số. Cấp số cộng và cấp số nhân, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_018",
+    "question": "Ý chính cần nhớ về Tóm tắt chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số là gì?",
+    "subject": "math",
+    "grade": 12,
+    "chapter": "math_g12_tap1_chapter_01",
+    "lessonId": "math_g12_tap1_ch01_summary",
+    "lesson": "Chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
+    "questionType": "concept",
+    "expectedChunkIds": [
+      "math_synth_g12_tap1_ch01_summary_001"
+    ],
+    "expectedConcepts": [
+      "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
+      "summary",
+      "ung",
+      "dung",
+      "ham",
+      "khao",
+      "sat",
+      "thi"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g12_tap1_ch01_summary_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số cung cấp nhóm kiến thức nền của Toán 12 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+        "required_concepts": [
+          "Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số",
+          "summary",
+          "ung",
+          "dung",
+          "ham"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Chương 1: Ứng dụng đạo hàm để khảo sát và vẽ đồ thị hàm số cung cấp nhóm kiến thức nền của Toán 12 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_019",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Giá trị lượng giác của một góc từ 0° đến 180°.",
+    "subject": "math",
+    "grade": 10,
+    "chapter": "math_g10_tap1_chapter_03",
+    "lessonId": "math_g10_tap1_ch03_bai05",
+    "lesson": "Giá trị lượng giác của một góc từ 0° đến 180°",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g10_tap1_ch03_bai05_definition_001"
+    ],
+    "expectedConcepts": [
+      "Giá trị lượng giác của một góc từ 0° đến 180°",
+      "definition",
+      "gia",
+      "tri",
+      "luong",
+      "giac",
+      "cua",
+      "mot"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g10_tap1_ch03_bai05_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 5: Giá trị lượng giác của một góc từ 0° đến 180°, trọng tâm là lượng giác mô tả quan hệ giữa góc và các tỉ số hoặc hàm số như sin, cos, tan. Đây là một phần của chương 3: Hệ thức lượng trong tam giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Giá trị lượng giác của một góc từ 0° đến 180°",
+          "definition",
+          "gia",
+          "tri",
+          "luong"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 5: Giá trị lượng giác của một góc từ 0° đến 180°, trọng tâm là lượng giác mô tả quan hệ giữa góc và các tỉ số hoặc hàm số như sin, cos, tan. Đây là một phần của chương 3: Hệ thức lượng trong tam giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_020",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Cấp số cộng.",
+    "subject": "math",
+    "grade": 11,
+    "chapter": "math_g11_tap1_chapter_02",
+    "lessonId": "math_g11_tap1_ch02_bai06",
+    "lesson": "Cấp số cộng",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g11_tap1_ch02_bai06_definition_001"
+    ],
+    "expectedConcepts": [
+      "Cấp số cộng",
+      "definition",
+      "cap",
+      "cong",
+      "khái niệm",
+      "math",
+      "toán",
+      "grade 11"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g11_tap1_ch02_bai06_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 6: Cấp số cộng, trọng tâm là dãy số là hàm số xác định trên tập số tự nhiên dương hoặc một tập chỉ số rời rạc. Đây là một phần của chương 2: Dãy số. Cấp số cộng và cấp số nhân, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Cấp số cộng",
+          "definition",
+          "cap",
+          "cong",
+          "khái niệm"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 6: Cấp số cộng, trọng tâm là dãy số là hàm số xác định trên tập số tự nhiên dương hoặc một tập chỉ số rời rạc. Đây là một phần của chương 2: Dãy số. Cấp số cộng và cấp số nhân, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_021",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Vectơ trong không gian.",
+    "subject": "math",
+    "grade": 12,
+    "chapter": "math_g12_tap1_chapter_02",
+    "lessonId": "math_g12_tap1_ch02_bai06",
+    "lesson": "Vectơ trong không gian",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g12_tap1_ch02_bai06_definition_001"
+    ],
+    "expectedConcepts": [
+      "Vectơ trong không gian",
+      "definition",
+      "vecto",
+      "trong",
+      "khong",
+      "gian",
+      "khái niệm",
+      "math"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g12_tap1_ch02_bai06_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 6: Vectơ trong không gian, trọng tâm là vectơ là đại lượng có hướng, độ dài và điểm đặt phù hợp với ngữ cảnh hình học. Đây là một phần của chương 2: Vectơ và hệ trục tọa độ trong không gian, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Vectơ trong không gian",
+          "definition",
+          "vecto",
+          "trong",
+          "khong"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 6: Vectơ trong không gian, trọng tâm là vectơ là đại lượng có hướng, độ dài và điểm đặt phù hợp với ngữ cảnh hình học. Đây là một phần của chương 2: Vectơ và hệ trục tọa độ trong không gian, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_022",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Hệ thức lượng trong tam giác.",
+    "subject": "math",
+    "grade": 10,
+    "chapter": "math_g10_tap1_chapter_03",
+    "lessonId": "math_g10_tap1_ch03_bai06",
+    "lesson": "Hệ thức lượng trong tam giác",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g10_tap1_ch03_bai06_definition_001"
+    ],
+    "expectedConcepts": [
+      "Hệ thức lượng trong tam giác",
+      "definition",
+      "thuc",
+      "luong",
+      "trong",
+      "tam",
+      "giac",
+      "khái niệm"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g10_tap1_ch03_bai06_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 6: Hệ thức lượng trong tam giác, trọng tâm là nội dung hệ thức lượng trong tam giác. Đây là một phần của chương 3: Hệ thức lượng trong tam giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Hệ thức lượng trong tam giác",
+          "definition",
+          "thuc",
+          "luong",
+          "trong"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 6: Hệ thức lượng trong tam giác, trọng tâm là nội dung hệ thức lượng trong tam giác. Đây là một phần của chương 3: Hệ thức lượng trong tam giác, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_023",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Cấp số nhân.",
+    "subject": "math",
+    "grade": 11,
+    "chapter": "math_g11_tap1_chapter_02",
+    "lessonId": "math_g11_tap1_ch02_bai07",
+    "lesson": "Cấp số nhân",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g11_tap1_ch02_bai07_definition_001"
+    ],
+    "expectedConcepts": [
+      "Cấp số nhân",
+      "definition",
+      "cap",
+      "nhan",
+      "khái niệm",
+      "math",
+      "toán",
+      "grade 11"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g11_tap1_ch02_bai07_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 7: Cấp số nhân, trọng tâm là dãy số là hàm số xác định trên tập số tự nhiên dương hoặc một tập chỉ số rời rạc. Đây là một phần của chương 2: Dãy số. Cấp số cộng và cấp số nhân, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Cấp số nhân",
+          "definition",
+          "cap",
+          "nhan",
+          "khái niệm"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 7: Cấp số nhân, trọng tâm là dãy số là hàm số xác định trên tập số tự nhiên dương hoặc một tập chỉ số rời rạc. Đây là một phần của chương 2: Dãy số. Cấp số cộng và cấp số nhân, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_024",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Hệ trục tọa độ trong không gian.",
+    "subject": "math",
+    "grade": 12,
+    "chapter": "math_g12_tap1_chapter_02",
+    "lessonId": "math_g12_tap1_ch02_bai07",
+    "lesson": "Hệ trục tọa độ trong không gian",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g12_tap1_ch02_bai07_definition_001"
+    ],
+    "expectedConcepts": [
+      "Hệ trục tọa độ trong không gian",
+      "definition",
+      "truc",
+      "toa",
+      "trong",
+      "khong",
+      "gian",
+      "khái niệm"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g12_tap1_ch02_bai07_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 7: Hệ trục tọa độ trong không gian, trọng tâm là vectơ là đại lượng có hướng, độ dài và điểm đặt phù hợp với ngữ cảnh hình học. Đây là một phần của chương 2: Vectơ và hệ trục tọa độ trong không gian, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Hệ trục tọa độ trong không gian",
+          "definition",
+          "truc",
+          "toa",
+          "trong"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 7: Hệ trục tọa độ trong không gian, trọng tâm là vectơ là đại lượng có hướng, độ dài và điểm đặt phù hợp với ngữ cảnh hình học. Đây là một phần của chương 2: Vectơ và hệ trục tọa độ trong không gian, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_025",
+    "question": "Ý chính cần nhớ về Tóm tắt chương 3: Hệ thức lượng trong tam giác là gì?",
+    "subject": "math",
+    "grade": 10,
+    "chapter": "math_g10_tap1_chapter_03",
+    "lessonId": "math_g10_tap1_ch03_summary",
+    "lesson": "Chương 3: Hệ thức lượng trong tam giác",
+    "questionType": "concept",
+    "expectedChunkIds": [
+      "math_synth_g10_tap1_ch03_summary_001"
+    ],
+    "expectedConcepts": [
+      "Hệ thức lượng trong tam giác",
+      "summary",
+      "thuc",
+      "luong",
+      "trong",
+      "tam",
+      "giac",
+      "math"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g10_tap1_ch03_summary_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Chương 3: Hệ thức lượng trong tam giác cung cấp nhóm kiến thức nền của Toán 10 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+        "required_concepts": [
+          "Hệ thức lượng trong tam giác",
+          "summary",
+          "thuc",
+          "luong",
+          "trong"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Chương 3: Hệ thức lượng trong tam giác cung cấp nhóm kiến thức nền của Toán 10 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_026",
+    "question": "Cần phân biệt hoặc so sánh điểm nào khi học Tóm tắt chương 2: Dãy số. Cấp số cộng và cấp số nhân, đặc biệt với khái niệm Dãy số. Cấp số cộng và cấp số nhân?",
+    "subject": "math",
+    "grade": 11,
+    "chapter": "math_g11_tap1_chapter_02",
+    "lessonId": "math_g11_tap1_ch02_summary",
+    "lesson": "Chương 2: Dãy số. Cấp số cộng và cấp số nhân",
+    "questionType": "comparison",
+    "expectedChunkIds": [
+      "math_synth_g11_tap1_ch02_summary_001"
+    ],
+    "expectedConcepts": [
+      "Dãy số. Cấp số cộng và cấp số nhân",
+      "summary",
+      "day",
+      "cap",
+      "cong",
+      "nhan",
+      "math",
+      "toán"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g11_tap1_ch02_summary_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Chương 2: Dãy số. Cấp số cộng và cấp số nhân cung cấp nhóm kiến thức nền của Toán 11 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+        "required_concepts": [
+          "Dãy số. Cấp số cộng và cấp số nhân",
+          "summary",
+          "day",
+          "cap",
+          "cong"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Chương 2: Dãy số. Cấp số cộng và cấp số nhân cung cấp nhóm kiến thức nền của Toán 11 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_027",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Biểu thức tọa độ của các phép toán vectơ.",
+    "subject": "math",
+    "grade": 12,
+    "chapter": "math_g12_tap1_chapter_02",
+    "lessonId": "math_g12_tap1_ch02_bai08",
+    "lesson": "Biểu thức tọa độ của các phép toán vectơ",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g12_tap1_ch02_bai08_definition_001"
+    ],
+    "expectedConcepts": [
+      "Biểu thức tọa độ của các phép toán vectơ",
+      "definition",
+      "bieu",
+      "thuc",
+      "toa",
+      "cua",
+      "cac",
+      "phep"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g12_tap1_ch02_bai08_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 8: Biểu thức tọa độ của các phép toán vectơ, trọng tâm là vectơ là đại lượng có hướng, độ dài và điểm đặt phù hợp với ngữ cảnh hình học. Đây là một phần của chương 2: Vectơ và hệ trục tọa độ trong không gian, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+        "required_concepts": [
+          "Biểu thức tọa độ của các phép toán vectơ",
+          "definition",
+          "bieu",
+          "thuc",
+          "toa"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 8: Biểu thức tọa độ của các phép toán vectơ, trọng tâm là vectơ là đại lượng có hướng, độ dài và điểm đặt phù hợp với ngữ cảnh hình học. Đây là một phần của chương 2: Vectơ và hệ trục tọa độ trong không gian, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_028",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Các khái niệm mở đầu.",
+    "subject": "math",
+    "grade": 10,
+    "chapter": "math_g10_tap1_chapter_04",
+    "lessonId": "math_g10_tap1_ch04_bai07",
+    "lesson": "Các khái niệm mở đầu",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g10_tap1_ch04_bai07_definition_001"
+    ],
+    "expectedConcepts": [
+      "Các khái niệm mở đầu",
+      "definition",
+      "cac",
+      "khai",
+      "niem",
+      "khái niệm",
+      "math",
+      "toán"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g10_tap1_ch04_bai07_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 7: Các khái niệm mở đầu, trọng tâm là vectơ là đại lượng có hướng, độ dài và điểm đặt phù hợp với ngữ cảnh hình học. Đây là một phần của chương 4: Vectơ, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Các khái niệm mở đầu",
+          "definition",
+          "cac",
+          "khai",
+          "niem"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 7: Các khái niệm mở đầu, trọng tâm là vectơ là đại lượng có hướng, độ dài và điểm đặt phù hợp với ngữ cảnh hình học. Đây là một phần của chương 4: Vectơ, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_029",
+    "question": "Trong Toán, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Mẫu số liệu ghép nhóm.",
+    "subject": "math",
+    "grade": 11,
+    "chapter": "math_g11_tap1_chapter_03",
+    "lessonId": "math_g11_tap1_ch03_bai08",
+    "lesson": "Mẫu số liệu ghép nhóm",
+    "questionType": "definition",
+    "expectedChunkIds": [
+      "math_synth_g11_tap1_ch03_bai08_definition_001"
+    ],
+    "expectedConcepts": [
+      "Mẫu số liệu ghép nhóm",
+      "definition",
+      "mau",
+      "lieu",
+      "ghep",
+      "nhom",
+      "khái niệm",
+      "math"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g11_tap1_ch03_bai08_definition_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Trong bài 8: Mẫu số liệu ghép nhóm, trọng tâm là nội dung mẫu số liệu ghép nhóm. Đây là một phần của chương 3: Các số đặc trưng đo xu thế trung tâm của mẫu số liệu ghép nhóm, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+        "required_concepts": [
+          "Mẫu số liệu ghép nhóm",
+          "definition",
+          "mau",
+          "lieu",
+          "ghep"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Trong bài 8: Mẫu số liệu ghép nhóm, trọng tâm là nội dung mẫu số liệu ghép nhóm. Đây là một phần của chương 3: Các số đặc trưng đo xu thế trung tâm của mẫu số liệu ghép nhóm, nên cần liên hệ khái niệm với các bài cùng chương thay vì học rời rạc. Khi truy hồi kiến thức, câu hỏi thường hỏi định nghĩa, điều kiện áp dụng, ý nghĩa của ký hiệu hoặc cách nhận biết đối tượng toán học.",
+    "benchmarkSplit": "preview_v1"
+  },
+  {
+    "id": "RAG90_MATH_030",
+    "question": "Công thức hoặc tính chất quan trọng của Tóm tắt chương 2: Vectơ và hệ trục tọa độ trong không gian là gì?",
+    "subject": "math",
+    "grade": 12,
+    "chapter": "math_g12_tap1_chapter_02",
+    "lessonId": "math_g12_tap1_ch02_summary",
+    "lesson": "Chương 2: Vectơ và hệ trục tọa độ trong không gian",
+    "questionType": "formula",
+    "expectedChunkIds": [
+      "math_synth_g12_tap1_ch02_summary_001"
+    ],
+    "expectedConcepts": [
+      "Vectơ và hệ trục tọa độ trong không gian",
+      "summary",
+      "vecto",
+      "truc",
+      "toa",
+      "trong",
+      "khong",
+      "gian"
+    ],
+    "expected": {
+      "relevant_chunk_ids": [
+        "math_synth_g12_tap1_ch02_summary_001"
+      ],
+      "answer": {
+        "type": "conceptual",
+        "reference_answer": "Chương 2: Vectơ và hệ trục tọa độ trong không gian cung cấp nhóm kiến thức nền của Toán 12 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+        "required_concepts": [
+          "Vectơ và hệ trục tọa độ trong không gian",
+          "summary",
+          "vecto",
+          "truc",
+          "toa"
+        ]
+      }
+    },
+    "expectedNumericAnswer": null,
+    "validationStatus": "needs_review",
+    "sourceChunkExcerpt": "Chương 2: Vectơ và hệ trục tọa độ trong không gian cung cấp nhóm kiến thức nền của Toán 12 tập 1. Khi ôn tập chương, học sinh nên nhận diện các khái niệm chính, các công thức hoặc tính chất thường dùng, và kiểu câu hỏi hay gặp như nêu định nghĩa, chọn công thức, biến đổi biểu thức, giải bài toán ngắn hoặc giải thích phương pháp.",
+    "benchmarkSplit": "preview_v1"
+  }
+]

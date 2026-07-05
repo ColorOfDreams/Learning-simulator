@@ -1,0 +1,399 @@
+[
+  {
+    "simulationId": "SIM_MECHANICAL_OSCILLATION_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "mechanical_oscillation",
+    "title": "Mô phỏng dao động cơ quanh vị trí cân bằng",
+    "description": "Mô phỏng dao động cơ quanh vị trí cân bằng",
+    "sceneType": "generic_oscillator",
+    "requiredParameters": [
+      "A",
+      "period"
+    ],
+    "defaultParameters": {
+      "A": 0.05,
+      "period": 1
+    },
+    "outputs": [
+      "three_scene",
+      "position_trace"
+    ],
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_time",
+      "update_parameter",
+      "highlight_equilibrium",
+      "highlight_amplitude"
+    ],
+    "isActive": true
+  },
+  {
+    "simulationId": "SIM_SHM_BASIC_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "simple_harmonic_motion",
+    "title": "Mô phỏng 3D dao động điều hòa cơ bản",
+    "description": "Mô phỏng 3D dao động điều hòa cơ bản",
+    "sceneType": "spring_mass_oscillator",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "phi"
+    ],
+    "defaultParameters": {
+      "A": 0.05,
+      "omega": 6.283185307,
+      "phi": 0
+    },
+    "outputs": [
+      "three_scene",
+      "x_t_graph",
+      "parameter_panel"
+    ],
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_time",
+      "update_parameter",
+      "highlight_equilibrium",
+      "highlight_amplitude",
+      "show_phase"
+    ],
+    "isActive": true
+  },
+  {
+    "simulationId": "SIM_SHM_GRAPH_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "simple_harmonic_motion",
+    "title": "Mô phỏng đồ thị li độ thời gian",
+    "description": "Mô phỏng đồ thị li độ thời gian",
+    "sceneType": "shm_graph_viewer",
+    "requiredParameters": [
+      "A",
+      "T",
+      "phi"
+    ],
+    "defaultParameters": {
+      "A": 0.1,
+      "T": 1,
+      "phi": 0
+    },
+    "outputs": [
+      "x_t_graph",
+      "graph_markers",
+      "parameter_panel"
+    ],
+    "supportedActions": [
+      "set_time",
+      "highlight_peak",
+      "highlight_zero_crossing"
+    ],
+    "isActive": true
+  },
+  {
+    "simulationId": "SIM_SHM_PHASE_COMPARE_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "simple_harmonic_motion",
+    "title": "So sánh pha hai dao động điều hòa",
+    "description": "So sánh pha hai dao động điều hòa",
+    "sceneType": "phase_comparison",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "phi1",
+      "phi2"
+    ],
+    "defaultParameters": {
+      "A": 0.05,
+      "omega": 6.283185307,
+      "phi1": 0,
+      "phi2": -1.570796327
+    },
+    "outputs": [
+      "dual_oscillator_scene",
+      "dual_x_t_graph"
+    ],
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_time",
+      "update_parameter",
+      "highlight_equilibrium",
+      "highlight_amplitude",
+      "highlight_phase_difference"
+    ],
+    "isActive": true
+  },
+  {
+    "simulationId": "SIM_SHM_CIRCULAR_PROJECTION_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "simple_harmonic_motion",
+    "title": "Hình chiếu chuyển động tròn đều và dao động điều hòa",
+    "description": "Hình chiếu chuyển động tròn đều và dao động điều hòa",
+    "sceneType": "circular_projection",
+    "requiredParameters": [
+      "radius",
+      "omega",
+      "phi"
+    ],
+    "defaultParameters": {
+      "radius": 0.05,
+      "omega": 6.283185307,
+      "phi": 0
+    },
+    "outputs": [
+      "circle_scene",
+      "projection_axis",
+      "x_t_graph"
+    ],
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_time",
+      "update_parameter",
+      "highlight_equilibrium",
+      "highlight_amplitude",
+      "show_projection_line"
+    ],
+    "isActive": true
+  },
+  {
+    "simulationId": "SIM_SHM_XVA_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "shm_kinematics",
+    "title": "Mô phỏng li độ vận tốc gia tốc",
+    "description": "Mô phỏng li độ vận tốc gia tốc",
+    "sceneType": "xva_vectors",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "phi"
+    ],
+    "defaultParameters": {
+      "A": 0.05,
+      "omega": 6.283185307,
+      "phi": 0
+    },
+    "outputs": [
+      "three_scene",
+      "x_t_graph",
+      "v_t_graph",
+      "a_t_graph",
+      "vector_overlay"
+    ],
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_time",
+      "update_parameter",
+      "highlight_equilibrium",
+      "highlight_amplitude",
+      "show_velocity_vector",
+      "show_acceleration_vector"
+    ],
+    "isActive": true
+  },
+  {
+    "simulationId": "SIM_SHM_ENERGY_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "shm_energy",
+    "title": "Mô phỏng chuyển hóa động năng thế năng",
+    "description": "Mô phỏng chuyển hóa động năng thế năng",
+    "sceneType": "energy_oscillator",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "m"
+    ],
+    "defaultParameters": {
+      "A": 0.05,
+      "omega": 6.283185307,
+      "m": 0.2
+    },
+    "outputs": [
+      "three_scene",
+      "energy_bar",
+      "kinetic_energy",
+      "potential_energy",
+      "total_energy"
+    ],
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_time",
+      "update_parameter",
+      "highlight_equilibrium",
+      "highlight_amplitude",
+      "show_energy_bars"
+    ],
+    "isActive": true
+  },
+  {
+    "simulationId": "SIM_SPRING_OSCILLATOR_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "spring_oscillator",
+    "title": "Mô phỏng con lắc lò xo",
+    "description": "Mô phỏng con lắc lò xo",
+    "sceneType": "spring_oscillator",
+    "requiredParameters": [
+      "m",
+      "k",
+      "A"
+    ],
+    "defaultParameters": {
+      "m": 0.2,
+      "k": 100,
+      "A": 0.05
+    },
+    "outputs": [
+      "three_scene",
+      "x_t_graph",
+      "energy_bar"
+    ],
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_time",
+      "update_parameter",
+      "highlight_equilibrium",
+      "highlight_amplitude",
+      "show_spring_force"
+    ],
+    "isActive": true
+  },
+  {
+    "simulationId": "SIM_SIMPLE_PENDULUM_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "simple_pendulum",
+    "title": "Mô phỏng con lắc đơn góc nhỏ",
+    "description": "Mô phỏng con lắc đơn góc nhỏ",
+    "sceneType": "simple_pendulum",
+    "requiredParameters": [
+      "l",
+      "g",
+      "alpha0"
+    ],
+    "defaultParameters": {
+      "l": 1,
+      "g": 9.8,
+      "alpha0": 0.1
+    },
+    "outputs": [
+      "three_scene",
+      "angle_time_graph",
+      "energy_bar"
+    ],
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_time",
+      "update_parameter",
+      "highlight_equilibrium",
+      "highlight_amplitude",
+      "show_angle",
+      "show_tangent_axis"
+    ],
+    "isActive": true
+  },
+  {
+    "simulationId": "SIM_DAMPED_OSCILLATION_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "damped_oscillation",
+    "title": "Mô phỏng dao động tắt dần",
+    "description": "Mô phỏng dao động tắt dần",
+    "sceneType": "damped_oscillator",
+    "requiredParameters": [
+      "A",
+      "omega",
+      "damping"
+    ],
+    "defaultParameters": {
+      "A": 0.1,
+      "omega": 6.283185307,
+      "damping": 0.1
+    },
+    "outputs": [
+      "three_scene",
+      "x_t_graph",
+      "amplitude_envelope"
+    ],
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_time",
+      "update_parameter",
+      "highlight_equilibrium",
+      "highlight_amplitude",
+      "update_damping"
+    ],
+    "isActive": true
+  },
+  {
+    "simulationId": "SIM_FORCED_RESONANCE_3D",
+    "engine": "threejs",
+    "version": "1.0.0",
+    "subject": "physics",
+    "topic": "resonance",
+    "title": "Mô phỏng dao động cưỡng bức và cộng hưởng",
+    "description": "Mô phỏng dao động cưỡng bức và cộng hưởng",
+    "sceneType": "forced_resonance",
+    "requiredParameters": [
+      "naturalFrequency",
+      "drivingFrequency",
+      "damping",
+      "drivingAmplitude"
+    ],
+    "defaultParameters": {
+      "naturalFrequency": 1,
+      "drivingFrequency": 1,
+      "damping": 0.1,
+      "drivingAmplitude": 1
+    },
+    "outputs": [
+      "three_scene",
+      "resonance_curve",
+      "amplitude_meter"
+    ],
+    "supportedActions": [
+      "play",
+      "pause",
+      "reset",
+      "set_time",
+      "update_parameter",
+      "highlight_equilibrium",
+      "highlight_amplitude",
+      "sweep_frequency",
+      "highlight_resonance"
+    ],
+    "isActive": true
+  }
+] 

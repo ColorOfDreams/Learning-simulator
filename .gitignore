@@ -18,6 +18,9 @@ build/
 # AI logs — tracked structure, ignored content
 .ai-log/*.jsonl
 .ai-log/archive/
+# Local OCR model cache
+data/easyocr_models/
+
 # Node.js
 node_modules/
 dist/

@@ -1,0 +1,173 @@
+{
+  "generated_at": "2026-07-04T07:14:24.326Z",
+  "cases": [
+    {
+      "caseId": "RAG90_PHYSICS_006",
+      "subject": "physics",
+      "grade": 12,
+      "questionType": "definition",
+      "currentQuestion": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến 10. Em có thể.",
+      "suggestedQuestion": "Trong Vật lí, khái niệm chính dựa trên phần 10. Em có thể được hiểu như thế nào?",
+      "targetChunkIds": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong1_bai2_sgkvatli12_95600b51_S033_P01"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_PHYSICS_011",
+      "subject": "physics",
+      "grade": 11,
+      "questionType": "concept",
+      "currentQuestion": "Ý chính cần nhớ về Em có thể là gì?",
+      "suggestedQuestion": "Trong Vật lí, khái niệm chính dựa trên phần Em có thể được hiểu như thế nào?",
+      "targetChunkIds": [
+        "TH_PHY11_C04_L25_027"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_PHYSICS_016",
+      "subject": "physics",
+      "grade": 10,
+      "questionType": "formula",
+      "currentQuestion": "Công thức hoặc tính chất quan trọng của Câu hỏi là gì?",
+      "suggestedQuestion": "Trong Vật lí, hãy nêu công thức hoặc quan hệ định lượng chính dựa trên phần Câu hỏi, kèm ý nghĩa các đại lượng liên quan.",
+      "targetChunkIds": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai6_sgkvatli10_2b7d514c_S003_P01"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_PHYSICS_018",
+      "subject": "physics",
+      "grade": 12,
+      "questionType": "concept",
+      "currentQuestion": "Ý chính cần nhớ về Bảng 6.1 là gì?",
+      "suggestedQuestion": "Trong Vật lí, khái niệm chính dựa trên phần Bảng 6.1 được hiểu như thế nào?",
+      "targetChunkIds": [
+        "GENCLN_PHY_G12_sgkvatli12_chuong1_bai6_sgkvatli12_281ee9d7_S003_P01"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_PHYSICS_022",
+      "subject": "physics",
+      "grade": 10,
+      "questionType": "definition",
+      "currentQuestion": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến 1. Khái niệm gia tốc.",
+      "suggestedQuestion": "Trong Vật lí, khái niệm chính dựa trên phần 1. Khái niệm gia tốc được hiểu như thế nào?",
+      "targetChunkIds": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai8_sgkvatli10_df19a839_S004_P01"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_PHYSICS_028",
+      "subject": "physics",
+      "grade": 10,
+      "questionType": "phenomenon/experiment",
+      "currentQuestion": "Hiện tượng hoặc thí nghiệm liên quan đến Câu hỏi được giải thích bằng ý chính nào?",
+      "suggestedQuestion": "Trong Vật lí, hiện tượng hoặc thí nghiệm dựa trên phần Câu hỏi được giải thích như thế nào?",
+      "targetChunkIds": [
+        "GENCLN_PHY_G10_sgkvatli10_chuong2_bai10_sgkvatli10_07eb19d4_S007_P01"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_PHYSICS_029",
+      "subject": "physics",
+      "grade": 11,
+      "questionType": "definition",
+      "currentQuestion": "Trong Vật lí, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến Em có thể.",
+      "suggestedQuestion": "Trong Vật lí, khái niệm chính dựa trên phần Em có thể được hiểu như thế nào?",
+      "targetChunkIds": [
+        "TH_PHY11_C03_L20_027"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_CHEMISTRY_010",
+      "subject": "chemistry",
+      "grade": 10,
+      "questionType": "method",
+      "currentQuestion": "Nêu phương pháp cơ bản để xử lí dạng câu hỏi về Câu 8.",
+      "suggestedQuestion": "Trong Hóa học, phương pháp hoặc quy trình dựa trên phần Câu 8 gồm những bước/ý chính nào?",
+      "targetChunkIds": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong1_bai4_sgkhoahoc10_ed88ed24_S010_P01"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_CHEMISTRY_011",
+      "subject": "chemistry",
+      "grade": 11,
+      "questionType": "concept",
+      "currentQuestion": "Ý chính cần nhớ về MỤC TIÊU là gì?",
+      "suggestedQuestion": "Trong Hóa học, khái niệm chính dựa trên phần MỤC TIÊU được hiểu như thế nào?",
+      "targetChunkIds": [
+        "GENCLN_CHEM_G11_sgkhoahoc11_chuong2_bai4_sgkhoahoc11_2cad9043_S002_P01"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_CHEMISTRY_016",
+      "subject": "chemistry",
+      "grade": 10,
+      "questionType": "definition",
+      "currentQuestion": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến 1. Khái niệm.",
+      "suggestedQuestion": "Trong Hóa học, khái niệm chính dựa trên phần 1. Khái niệm được hiểu như thế nào?",
+      "targetChunkIds": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong2_bai6_sgkhoahoc10_c5de9c28_S012_P01"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_CHEMISTRY_018",
+      "subject": "chemistry",
+      "grade": 12,
+      "questionType": "concept",
+      "currentQuestion": "Ý chính cần nhớ về MỤC TIÊU là gì?",
+      "suggestedQuestion": "Trong Hóa học, khái niệm chính dựa trên phần MỤC TIÊU được hiểu như thế nào?",
+      "targetChunkIds": [
+        "GENCLN_CHEM_G12_sgkhoahoc12_chuong2_bai6_sgkhoahoc12_3d34fa12_S001_P01"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    },
+    {
+      "caseId": "RAG90_CHEMISTRY_028",
+      "subject": "chemistry",
+      "grade": 10,
+      "questionType": "definition",
+      "currentQuestion": "Trong Hóa học, hãy nêu khái niệm hoặc định nghĩa chính liên quan đến I. KHÁI NIỆM LIÊN KẾT HOÁ HỌC.",
+      "suggestedQuestion": "Trong Hóa học, khái niệm chính dựa trên phần I. KHÁI NIỆM LIÊN KẾT HOÁ HỌC được hiểu như thế nào?",
+      "targetChunkIds": [
+        "GENCLN_CHEM_G10_sgkhoahoc10_chuong3_bai10_sgkhoahoc10_e8a89a18_S006_P01"
+      ],
+      "rationale": "Original question has low expected-chunk keyword coverage or ambiguous section wording.",
+      "validationStatus": "needs_review",
+      "humanDecision": ""
+    }
+  ]
+}
