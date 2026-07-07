@@ -3,12 +3,14 @@ import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import routes from './routes';
 
-const {
-	APP_CONFIG_TEN_TRUONG = '',
-	APP_CONFIG_TIEN_TO_TRUONG = '',
-	APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH = '',
-	APP_CONFIG_GA_ID = '',
-} = process.env;
+// Dùng `||` (không phải default destructuring) để fallback cả khi biến là chuỗi rỗng
+// — trên Railway, Dockerfile đặt ENV=... rỗng khi không truyền ARG, nên default `= ''`
+// của destructuring không kích hoạt (chỉ áp dụng với undefined). Fallback khớp .env local.
+const APP_CONFIG_TEN_TRUONG = process.env.APP_CONFIG_TEN_TRUONG || 'AI Study Simulator';
+const APP_CONFIG_TIEN_TO_TRUONG = process.env.APP_CONFIG_TIEN_TO_TRUONG || 'Dự án';
+const APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH =
+	process.env.APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH || 'AI_MO_PHONG';
+const APP_CONFIG_GA_ID = process.env.APP_CONFIG_GA_ID || '';
 
 export default defineConfig({
 	hash: true,
@@ -106,10 +108,11 @@ export default defineConfig({
 		// Defaults cho tất cả APP_CONFIG_* identifiers — esbuild sẽ replace tất cả,
 		// tránh ReferenceError khi env var không được set lúc build
 		APP_CONFIG_IP_ROOT: process.env.APP_CONFIG_IP_ROOT || 'https://backend-production-0858.up.railway.app',
-		APP_CONFIG_TEN_TRUONG: '',
-		APP_CONFIG_TIEN_TO_TRUONG: '',
-		APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH: '',
-		APP_CONFIG_GA_ID: '',
+		APP_CONFIG_TEN_TRUONG: process.env.APP_CONFIG_TEN_TRUONG || 'AI Study Simulator',
+		APP_CONFIG_TIEN_TO_TRUONG: process.env.APP_CONFIG_TIEN_TO_TRUONG || 'Dự án',
+		APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH:
+			process.env.APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH || 'AI_MO_PHONG',
+		APP_CONFIG_GA_ID: process.env.APP_CONFIG_GA_ID || '',
 		APP_CONFIG_SENTRY_DSN: '',
 		APP_CONFIG_ONE_SIGNAL_ID: '',
 		APP_CONFIG_GOOGLE_CLIENT_ID:
