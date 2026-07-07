@@ -38,6 +38,10 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: true })
   phone?: string;
 
+  @ApiProperty({ nullable: true, description: 'Lời giới thiệu bản thân' })
+  @Column({ type: 'varchar', length: 500, nullable: true })
+  bio?: string;
+
   @ApiProperty({ enum: UserRole, default: UserRole.STUDENT })
   @Column({ type: 'enum', enum: UserRole, default: UserRole.STUDENT })
   role!: UserRole;

@@ -150,9 +150,15 @@ export default function Newton2Simulation({
     return p ? p.value : 2;
   }, [config.parameters]);
 
+  const mu = useMemo(() => {
+    const p = config.parameters.find(x => x.key === 'mu');
+    return p ? p.value : 0;
+  }, [config.parameters]);
+
   const acceleration = useMemo(() => {
-    return F / m;
-  }, [F, m]);
+    // Định luật II Newton có ma sát: a = F/m − μg (kẹp ≥ 0 khi lực kéo chưa thắng ma sát)
+    return Math.max(0, F / m - mu * 9.8);
+  }, [F, m, mu]);
 
   const stateRef = useRef({
     t: 0,

@@ -7,12 +7,22 @@ export async function getUserInfo() {
 	return axios.get(`${ip3}/users/me`);
 }
 
+// Tự cập nhật hồ sơ học sinh (tên, giới thiệu)
+export async function updateMyProfile(payload: { firstName?: string; lastName?: string; bio?: string }) {
+	return axios.patch(`${ip3}/users/me`, payload);
+}
+
 export async function getUserStats() {
 	return axios.get(`${ip3}/users/me/stats`);
 }
 
 export async function completeActivity(xpEarned: number) {
 	return axios.post(`${ip3}/users/me/complete-activity`, { xpEarned });
+}
+
+// Ghi nhận ngày dùng app (cập nhật streak, không cộng XP). Gọi khi mở app.
+export async function touchActivity() {
+	return axios.post(`${ip3}/users/me/touch`);
 }
 
 export async function getLeaderboard(limit = 10) {
@@ -30,6 +40,7 @@ export async function completeLabSession(payload: {
 	score: number;
 	totalQuestions: number;
 	correctAnswers: number;
+	durationSeconds?: number;
 }) {
 	return axios.post(`${ip3}/users/me/labs/complete`, payload);
 }

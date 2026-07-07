@@ -11,7 +11,7 @@ import defaultSettings from '../config/defaultSettings';
 import AuthBounder, { unCheckPermissionPaths } from './components/AuthBounder';
 import ErrorBoundary from './components/ErrorBoundary';
 
-import { getUserInfo } from '@/services/base/api';
+import { getUserInfo, touchActivity } from '@/services/base/api';
 import AIChatBotBounder from './components/AIChatBot';
 import OneSignalBounder from './components/OneSignalBounder';
 import HeaderContentPage from './components/RightContent/Header';
@@ -95,6 +95,15 @@ export async function getInitialState(): Promise<IInitialState> {
 		try {
 			const info = await getUserInfo();
 			initialState.currentUser = info.data?.data || info.data;
+			// Ghi nhận ngày dùng app → cập nhật streak thật, merge vào currentUser
+			// để header hiển thị ngay. Không chặn load nếu lỗi.
+			try {
+				const touched = await touchActivity();
+				const fresh = touched.data?.data || touched.data;
+				if (fresh) {
+					initialState.currentUser = { ...initialState.currentUser, ...fresh };
+				}
+			} catch { }
 		} catch (error) {
 			console.error('Failed to get user info in getInitialState', error);
 			localStorage.removeItem('token');

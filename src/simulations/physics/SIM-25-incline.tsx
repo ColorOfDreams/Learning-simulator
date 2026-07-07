@@ -115,10 +115,8 @@ function makeLabelSprite(text: string, color: number) {
   rr(g, 3, 3, 250, 90, 18);
   g.stroke();
   g.textBaseline = 'middle';
-  g.textAlign = 'center';
-  g.font = `bold 54px ${PHYS_FONT}`;
-  g.fillStyle = col;
-  g.fillText(text, 128, 52);
+  // drawRich xử lý chỉ số dưới dạng F_{ms} → "F" + chỉ số "ms" (thay vì hiện literal ngoặc nhọn)
+  drawRich(g, text, 128, 52, 54, col, 'center');
 
   const tex = new THREE.CanvasTexture(c);
   tex.anisotropy = 4;
@@ -141,7 +139,8 @@ export default function InclineSimulation({
 
   // Extract parameters
   const angle = useMemo(() => {
-    const p = config.parameters.find(x => x.key === 'ang');
+    // Key phải khớp với config truyền từ Workspace ('alpha'); giữ 'ang' làm dự phòng.
+    const p = config.parameters.find(x => x.key === 'alpha' || x.key === 'ang');
     return p ? p.value : 30;
   }, [config.parameters]);
 
@@ -287,6 +286,8 @@ export default function InclineSimulation({
       new THREE.MeshStandardMaterial({ color: 0xffb74d, roughness: 0.6 })
     );
     block.castShadow = true;
+    // Xoay khối theo góc nghiêng để mặt đáy áp phẳng lên mặt dốc (không nằm chỏng chơ)
+    block.rotation.z = rad;
     scene.add(block);
 
     const s0 = L - 1.6;

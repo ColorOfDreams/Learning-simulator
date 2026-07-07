@@ -1,6 +1,7 @@
 import CelebrationOverlay from '@/components/CelebrationOverlay';
 import { chatWithAiPrompt, generateAiQuiz } from '@/services/ai/api';
 import { completeActivity, completeLabSession, getUserInfo, openLabSession } from '@/services/base/api';
+import { buildCelebrationData, type CelebrationData } from '@/utils/xp';
 import GenericChemSimulation from '@simulations/chemistry/GenericChemSimulation';
 import { CHEM_EXPERIMENT_ALIASES, EXPERIMENTS_CONFIG } from '@simulations/chemistry/experiments';
 import ProjectileSimulation from '@simulations/physics/SIM-02-projectile';
@@ -2372,7 +2373,7 @@ const Workspace: React.FC = () => {
 	});
 	const [chatInput, setChatInput] = useState('');
 
-	const { setInitialState } = useModel('@@initialState');
+	const { initialState, setInitialState } = useModel('@@initialState');
 
 	// Dynamic AI Quiz
 	type DynQuestion = { q: string; opts: Array<{ k: string; t: string }>; correct: string; explanation: string };
@@ -2384,6 +2385,7 @@ const Workspace: React.FC = () => {
 	const [dynUsedLlm, setDynUsedLlm] = useState(false);
 	const [showCelebration, setShowCelebration] = useState(false);
 	const xpAwardedRef = useRef(false);
+	const [celebData, setCelebData] = useState<CelebrationData | null>(null);
 
 	const isExperimentDone = subject !== 'chem' || totalChemSteps === 0 || chemStep > totalChemSteps;
 	const allQuestionsAnswered = dynQuizState === 'active' && dynQuestions.length > 0 && Object.keys(dynAnswers).length >= dynQuestions.length;
@@ -2391,6 +2393,7 @@ const Workspace: React.FC = () => {
 	const canSubmit = isExperimentDone && isQuizDone;
 
 	const openedLabRef = useRef<string | null>(null);
+	const openedAtRef = useRef<number>(Date.now());
 	useEffect(() => {
 		setSimZoom(1);
 		setSimPan({ x: 0, y: 0 });
@@ -2400,6 +2403,7 @@ const Workspace: React.FC = () => {
 	useEffect(() => {
 		if (simId && simId !== 'default' && openedLabRef.current !== simId) {
 			openedLabRef.current = simId;
+			openedAtRef.current = Date.now(); // mốc bắt đầu để đo thời lượng thật
 			openLabSession({
 				simulationId: simId,
 				simulationTitle: (meta as any)?.title,
@@ -2417,6 +2421,23 @@ const Workspace: React.FC = () => {
 			const XP_MAX: Record<string, number> = { 'Cơ bản': 80, 'Trung bình': 120, 'Nâng cao': 180 };
 			const maxXp = XP_MAX[difficultyParam] ?? 80;
 			const xpEarned = dynQuestions.length > 0 ? Math.round(maxXp * correct / dynQuestions.length) : 0;
+			const elapsedSeconds = Math.max(0, Math.round((Date.now() - openedAtRef.current) / 1000));
+
+			// Dựng dữ liệu THẬT cho modal từ XP hiện tại của user + kết quả quiz.
+			const xpBefore = Number((initialState?.currentUser as any)?.xp ?? 0);
+			const stepsTotalReal = totalChemSteps > 0 ? totalChemSteps : dynQuestions.length;
+			const stepsDoneReal = totalChemSteps > 0 ? Math.min(chemStep - 1, totalChemSteps) : dynQuestions.length;
+			setCelebData(
+				buildCelebrationData({
+					score: pct,
+					xpEarned,
+					xpBefore,
+					stepsDone: stepsDoneReal,
+					stepsTotal: stepsTotalReal,
+					elapsedSeconds,
+				}),
+			);
+
 			completeLabSession({
 				simulationId: simId || 'default',
 				simulationTitle: (meta as any)?.title,
@@ -2424,6 +2445,7 @@ const Workspace: React.FC = () => {
 				score: pct,
 				totalQuestions: dynQuestions.length,
 				correctAnswers: correct,
+				durationSeconds: elapsedSeconds,
 			}).catch(() => {});
 			if (xpEarned > 0) {
 				completeActivity(xpEarned)
@@ -3024,8 +3046,8 @@ const Workspace: React.FC = () => {
 		} else {
 			if (dynQuizState !== 'done') {
 				setDynQuizState('done');
-				setShowCelebration(true);
 			}
+			setShowCelebration(true);
 			msg = '✓ Đã lưu & nộp thành công!';
 			type = 'success';
 		}
@@ -14086,20 +14108,30 @@ const Workspace: React.FC = () => {
 					</div>
 				</div>
 			</div>
-			{showCelebration && dynQuizState === 'done' && (
+			{showCelebration && dynQuizState === 'done' && celebData && (
 				<CelebrationOverlay
-					score={
-						dynQuestions.length > 0
-							? Math.round(
-									(dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length / dynQuestions.length) * 100,
-								)
-							: 0
-					}
+					subject={subject}
+					mode='B'
+					labName={meta.title}
+					quizName={meta.title}
+					score={celebData.score}
+					xpEarned={celebData.xpEarned}
+					xpBefore={celebData.xpBefore}
+					xpAfter={celebData.xpAfter}
+					levelBefore={celebData.levelBefore}
+					levelAfter={celebData.levelAfter}
+					levelTitle={celebData.levelTitle}
+					stepsDone={celebData.stepsDone}
+					stepsTotal={celebData.stepsTotal}
+					elapsedSeconds={celebData.elapsedSeconds}
 					onClose={() => setShowCelebration(false)}
 				/>
 			)}
 			{showChemCelebration && (
 				<CelebrationOverlay
+					subject={subject}
+					mode='A'
+					labName={meta.title}
 					score={0}
 					icon='🧪'
 					title='Xuất sắc!'

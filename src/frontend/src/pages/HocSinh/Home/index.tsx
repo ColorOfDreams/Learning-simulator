@@ -1,5 +1,6 @@
 import { analyzeAiPrompt } from '@/services/ai/api';
 import { getSceneAll } from '@/services/base/api';
+import { calcLevel, levelFloorXp, nextThresholdXp } from '@/utils/xp';
 import { Pagination } from 'antd';
 import React, { useCallback, useMemo, useState } from 'react';
 import { history, useModel } from 'umi';
@@ -1245,6 +1246,7 @@ interface HomeScrollRestoreState {
 	scrollTop: number;
 	grade: number;
 	filter: string;
+	currentPage?: number;
 }
 
 const readHomeScrollRestore = (): HomeScrollRestoreState | null => {
@@ -1260,6 +1262,7 @@ const readHomeScrollRestore = (): HomeScrollRestoreState | null => {
 			scrollTop: parsed.scrollTop,
 			grade: parsed.grade,
 			filter: parsed.filter,
+			currentPage: parsed.currentPage,
 		};
 	} catch {
 		sessionStorage.removeItem(HOME_SCROLL_RESTORE_KEY);
@@ -1339,9 +1342,19 @@ const HocSinhHome: React.FC = () => {
 		[grade, filter, combinedLabs],
 	);
 
-	const [currentPage, setCurrentPage] = useState(1);
+	const [currentPage, setCurrentPage] = useState(() => {
+		if (restoredHomeState && typeof restoredHomeState.currentPage === 'number') {
+			return restoredHomeState.currentPage;
+		}
+		return 1;
+	});
 
+	const isFirstRender = React.useRef(true);
 	React.useEffect(() => {
+		if (isFirstRender.current) {
+			isFirstRender.current = false;
+			return;
+		}
 		setCurrentPage(1);
 	}, [grade, filter]);
 
@@ -1352,19 +1365,54 @@ const HocSinhHome: React.FC = () => {
 		return filteredLabs.slice(startIndex, startIndex + 9);
 	}, [filteredLabs, currentPage]);
 
-	const scrollRestored = React.useRef(false);
+	const scrollRestoredRef = React.useRef(false);
 	React.useEffect(() => {
-		if (!restoredHomeState || scrollRestored.current) return;
-		const frame = window.requestAnimationFrame(() => {
+		if (!restoredHomeState || scrollRestoredRef.current) return;
+
+		const tryScroll = () => {
+			if (scrollRestoredRef.current) return;
 			const el = homeScrollRef.current;
 			if (el) {
 				el.scrollTop = restoredHomeState.scrollTop;
-				scrollRestored.current = true;
+				if (Math.abs(el.scrollTop - restoredHomeState.scrollTop) < 5) {
+					scrollRestoredRef.current = true;
+				}
 			}
+		};
+
+		tryScroll();
+
+		const timer1 = setTimeout(tryScroll, 100);
+		const timer2 = setTimeout(tryScroll, 300);
+		const timer3 = setTimeout(tryScroll, 600);
+
+		const forceStopTimer = setTimeout(() => {
+			scrollRestoredRef.current = true;
 			sessionStorage.removeItem(HOME_SCROLL_RESTORE_KEY);
-		});
-		return () => window.cancelAnimationFrame(frame);
+		}, 1000);
+
+		return () => {
+			clearTimeout(timer1);
+			clearTimeout(timer2);
+			clearTimeout(timer3);
+			clearTimeout(forceStopTimer);
+		};
 	}, [restoredHomeState, filteredLabs.length]);
+
+	const isScrollMountRef = React.useRef(true);
+	React.useEffect(() => {
+		if (isScrollMountRef.current) {
+			isScrollMountRef.current = false;
+			return;
+		}
+		if (restoredHomeState && !scrollRestoredRef.current) {
+			return;
+		}
+		const el = homeScrollRef.current;
+		if (el) {
+			el.scrollTop = 0;
+		}
+	}, [currentPage, filter, grade]);
 
 	const openWorkspace = useCallback(
 		(subject: string, simId?: string) => {
@@ -1375,6 +1423,7 @@ const HocSinhHome: React.FC = () => {
 					scrollTop: el?.scrollTop ?? 0,
 					grade,
 					filter,
+					currentPage,
 				}),
 			);
 
@@ -1395,7 +1444,7 @@ const HocSinhHome: React.FC = () => {
 			}
 			history.push(path);
 		},
-		[filter, grade],
+		[filter, grade, currentPage],
 	);
 
 	const handleHeroRun = useCallback(
@@ -1499,7 +1548,7 @@ const HocSinhHome: React.FC = () => {
 							<div className='stu-home__badges'>
 								<div className='stu-home__badge'>
 									<div className='stu-home__badge-dot stu-home__badge-dot--level' />
-									<span>Level {user?.level ?? 1}</span>
+									<span>Level {calcLevel(user?.xp ?? 0)}</span>
 								</div>
 								<div className='stu-home__badge stu-home__badge--streak'>
 									<svg
@@ -1525,15 +1574,19 @@ const HocSinhHome: React.FC = () => {
 								</div>
 								{(() => {
 									const xp = user?.xp ?? 0;
-									const lvl = user?.level ?? 1;
-									const nextThreshold = lvl * lvl * 100;
-									const pct = Math.min(100, Math.round((xp / nextThreshold) * 100));
+									const lvl = calcLevel(xp);
+									const floor = levelFloorXp(lvl);
+									const next = nextThresholdXp(lvl);
+									const span = Math.max(1, next - floor);
+									const inLevel = Math.max(0, xp - floor);
+									const remaining = Math.max(0, next - xp);
+									const pct = Math.min(100, Math.round((inLevel / span) * 100));
 									return (
 										<div className='stu-home__xp-bar'>
 											<div className='stu-home__xp-labels'>
-												<span>XP</span>
+												<span>{xp.toLocaleString('vi-VN')} XP</span>
 												<span>
-													{xp.toLocaleString('vi-VN')} / {nextThreshold.toLocaleString('vi-VN')}
+													Còn {remaining.toLocaleString('vi-VN')} → Lv.{lvl + 1}
 												</span>
 											</div>
 											<div className='stu-home__xp-track'>

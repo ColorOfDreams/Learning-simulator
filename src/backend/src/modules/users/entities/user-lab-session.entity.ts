@@ -42,6 +42,10 @@ export class UserLabSessionEntity extends BaseEntity {
   @Column({ type: 'int', nullable: true })
   correctAnswers?: number;
 
+  @ApiProperty({ nullable: true, description: 'Thời lượng làm bài (giây)' })
+  @Column({ type: 'int', nullable: true })
+  durationSeconds?: number;
+
   @ApiProperty({ nullable: true })
   @Column({ type: 'timestamp', nullable: true })
   completedAt?: Date;

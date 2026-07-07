@@ -123,9 +123,12 @@ export default function DampedSimulation({
     return p ? p.value : 2.5;
   }, [config.parameters]);
 
-  const T = useMemo(() => {
-    const p = config.parameters.find((param) => param.key === 'T');
-    return p ? p.value : 1.4;
+  // Nhận tần số riêng ω₀ (rad/s) từ config (key 'omega' khớp Workspace); 'T' làm dự phòng cũ.
+  const omega = useMemo(() => {
+    const pW = config.parameters.find((param) => param.key === 'omega');
+    if (pW) return pW.value;
+    const pT = config.parameters.find((param) => param.key === 'T');
+    return pT && pT.value > 0 ? (2 * Math.PI) / pT.value : 2;
   }, [config.parameters]);
 
   const b = useMemo(() => {
@@ -147,7 +150,7 @@ export default function DampedSimulation({
     isPlaying,
     isSlow,
     A0,
-    T,
+    omega,
     b,
   });
 
@@ -155,9 +158,9 @@ export default function DampedSimulation({
     refs.current.isPlaying = isPlaying;
     refs.current.isSlow = isSlow;
     refs.current.A0 = A0;
-    refs.current.T = T;
+    refs.current.omega = omega;
     refs.current.b = b;
-  }, [isPlaying, isSlow, A0, T, b]);
+  }, [isPlaying, isSlow, A0, omega, b]);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -382,7 +385,6 @@ export default function DampedSimulation({
       dt = Math.min(dt, 0.05);
 
       const activeA0 = refs.current.A0;
-      const activeT = refs.current.T;
       const activeB = refs.current.b;
 
       if (refs.current.isPlaying) {
@@ -390,7 +392,7 @@ export default function DampedSimulation({
         s.lt += dt * speed;
       }
 
-      const w = (2 * Math.PI) / activeT;
+      const w = Math.max(0.01, refs.current.omega); // tần số riêng ω₀ dùng trực tiếp
       const env = activeA0 * Math.exp(-activeB * s.lt);
       const x = env * Math.cos(w * s.lt);
 

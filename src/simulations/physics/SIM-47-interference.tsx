@@ -139,9 +139,13 @@ export default function InterferenceSimulation({
     return p ? p.value : 4.0;
   }, [config.parameters]);
 
+  // Bước sóng suy từ tần số nguồn: λ = C/f (Workspace truyền 'f'). Chọn C=4 để f=2 → λ=2
+  // (khớp mặc định cũ); tần số tăng → bước sóng ngắn → vân giao thoa dày hơn. 'lam' dự phòng.
   const lam = useMemo(() => {
-    const p = config.parameters.find((param) => param.key === 'lam');
-    return p ? p.value : 2.0;
+    const pF = config.parameters.find((param) => param.key === 'f');
+    if (pF && pF.value > 0) return 4.0 / pF.value;
+    const pL = config.parameters.find((param) => param.key === 'lam');
+    return pL ? pL.value : 2.0;
   }, [config.parameters]);
 
   const stateRef = useRef({

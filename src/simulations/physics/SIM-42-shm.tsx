@@ -113,9 +113,12 @@ export default function ShmSimulation({
     return p ? p.value : 2;
   }, [config.parameters]);
 
-  const T = useMemo(() => {
-    const p = config.parameters.find((param) => param.key === 'T');
-    return p ? p.value : 2;
+  // Nhận tần số góc ω (rad/s) từ config (key 'omega' khớp Workspace); 'T' làm dự phòng cũ.
+  const omega = useMemo(() => {
+    const pW = config.parameters.find((param) => param.key === 'omega');
+    if (pW) return pW.value;
+    const pT = config.parameters.find((param) => param.key === 'T');
+    return pT && pT.value > 0 ? (2 * Math.PI) / pT.value : 2;
   }, [config.parameters]);
 
   const phi = useMemo(() => {
@@ -134,7 +137,7 @@ export default function ShmSimulation({
     isPlaying,
     isSlow,
     A,
-    T,
+    omega,
     phi,
   });
 
@@ -142,9 +145,9 @@ export default function ShmSimulation({
     refs.current.isPlaying = isPlaying;
     refs.current.isSlow = isSlow;
     refs.current.A = A;
-    refs.current.T = T;
+    refs.current.omega = omega;
     refs.current.phi = phi;
-  }, [isPlaying, isSlow, A, T, phi]);
+  }, [isPlaying, isSlow, A, omega, phi]);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -373,7 +376,8 @@ export default function ShmSimulation({
       dt = Math.min(dt, 0.05);
 
       const activeA = refs.current.A;
-      const activeT = refs.current.T;
+      const w = Math.max(0.01, refs.current.omega); // tần số góc ω dùng trực tiếp
+      const activeT = (2 * Math.PI) / w; // chu kỳ suy ra để hiển thị & cửa sổ đồ thị
       const activePhi = (refs.current.phi * Math.PI) / 180;
 
       if (refs.current.isPlaying) {
@@ -384,7 +388,6 @@ export default function ShmSimulation({
       // Torus ring scale update dynamically
       ring.scale.set(activeA, activeA, 1);
 
-      const w = (2 * Math.PI) / activeT;
       const th = w * s.lt + activePhi;
 
       const x = activeA * Math.cos(th);

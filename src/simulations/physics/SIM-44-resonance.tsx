@@ -110,10 +110,10 @@ function makeBlock(color = 0xff7043, s = 1) {
   return m;
 }
 
-function ampResonance(f: number, b: number) {
-  const w = 2 * Math.PI * f;
-  const w0 = 2 * Math.PI;
-  return (2.4 * (w0 * w0)) / Math.sqrt(Math.pow(w0 * w0 - w * w, 2) + Math.pow(2 * b * w * w0, 2));
+// Biên độ dao động cưỡng bức ở trạng thái ổn định theo tần số góc lực cưỡng bức w,
+// tần số góc riêng w0, hệ số cản b, biên độ lực F0. Cộng hưởng khi w ≈ w0.
+function ampResonance(w: number, w0: number, b: number, F0: number) {
+  return (F0 * w0 * w0) / Math.sqrt(Math.pow(w0 * w0 - w * w, 2) + Math.pow(2 * b * w * w0, 2));
 }
 
 export default function ResonanceSimulation({
@@ -124,9 +124,24 @@ export default function ResonanceSimulation({
 }: ResonanceSimulationProps) {
   const mountRef = useRef<HTMLDivElement | null>(null);
 
-  const f = useMemo(() => {
-    const p = config.parameters.find((param) => param.key === 'f');
-    return p ? p.value : 0.6;
+  // Tần số góc lực cưỡng bức ω (rad/s) — Workspace truyền key 'omega'; 'f' (Hz) dự phòng cũ.
+  const omega = useMemo(() => {
+    const pW = config.parameters.find((param) => param.key === 'omega');
+    if (pW) return pW.value;
+    const pf = config.parameters.find((param) => param.key === 'f');
+    return pf ? 2 * Math.PI * pf.value : 2;
+  }, [config.parameters]);
+
+  // Tần số góc riêng ω₀ (rad/s) — key 'omega0'; mặc định 2π (≈ hệ cũ f₀=1Hz).
+  const omega0 = useMemo(() => {
+    const p = config.parameters.find((param) => param.key === 'omega0');
+    return p ? p.value : 2 * Math.PI;
+  }, [config.parameters]);
+
+  // Biên độ lực cưỡng bức F0 — key 'F0'; mặc định 2.4 (giữ độ lớn hiển thị như cũ).
+  const F0 = useMemo(() => {
+    const p = config.parameters.find((param) => param.key === 'F0');
+    return p ? p.value : 2.4;
   }, [config.parameters]);
 
   const b = useMemo(() => {
@@ -136,7 +151,6 @@ export default function ResonanceSimulation({
 
   const stateRef = useRef({
     lt: 0,
-    f0: 1.0,
     cy: 3.6,
     wallX: -7,
     eq: -1,
@@ -145,16 +159,20 @@ export default function ResonanceSimulation({
   const refs = useRef({
     isPlaying,
     isSlow,
-    f,
+    omega,
+    omega0,
+    F0,
     b,
   });
 
   useEffect(() => {
     refs.current.isPlaying = isPlaying;
     refs.current.isSlow = isSlow;
-    refs.current.f = f;
+    refs.current.omega = omega;
+    refs.current.omega0 = omega0;
+    refs.current.F0 = F0;
     refs.current.b = b;
-  }, [isPlaying, isSlow, f, b]);
+  }, [isPlaying, isSlow, omega, omega0, F0, b]);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -284,7 +302,7 @@ export default function ResonanceSimulation({
     const gPanel = makePanel(6.3, 6, -1, 7);
 
     const roDefs = [
-      { key: 'f', label: 'f (ngoại lực)', unit: 'Hz' },
+      { key: 'f', label: 'ω (lực cưỡng bức)', unit: 'rad/s' },
       { key: 'A', label: 'Biên độ A', unit: 'm' },
       { key: 'st', label: 'Trạng thái', unit: '' },
     ];
@@ -354,16 +372,16 @@ export default function ResonanceSimulation({
       panel.flush();
     };
 
-    // Calculate resonance curve
-    const getCurve = (activeB: number) => {
+    // Đường cộng hưởng A(ω): biên độ theo tần số góc lực cưỡng bức ω ∈ [1,5] rad/s.
+    const getCurve = (w0: number, activeB: number, aF0: number) => {
       const pts: [number, number][] = [];
-      for (let freq = 0.2; freq <= 2.001; freq += 0.04) {
-        pts.push([freq, ampResonance(freq, activeB)]);
+      for (let wf = 1; wf <= 5.001; wf += 0.08) {
+        pts.push([wf, ampResonance(wf, w0, activeB, aF0)]);
       }
       return pts;
     };
 
-    let curve = getCurve(b);
+    let curve = getCurve(omega0, b, F0);
 
     // Reset loop variables
     s.lt = 0;
@@ -386,46 +404,49 @@ export default function ResonanceSimulation({
 
       dt = Math.min(dt, 0.05);
 
-      const activeF = refs.current.f;
+      const activeW = refs.current.omega;
+      const activeW0 = refs.current.omega0;
       const activeB = refs.current.b;
+      const activeF0 = refs.current.F0;
 
       if (refs.current.isPlaying) {
         const speed = refs.current.isSlow ? 0.22 : 1.0;
         s.lt += dt * speed;
       }
 
-      // Recalculate curve if damping changed
-      curve = getCurve(activeB);
+      // Cập nhật đường cong khi ω₀ / cản / biên độ lực đổi
+      curve = getCurve(activeW0, activeB, activeF0);
 
-      const A = Math.min(3, ampResonance(activeF, activeB));
-      const disp = A * Math.cos(2 * Math.PI * activeF * s.lt);
+      const A = Math.min(3, ampResonance(activeW, activeW0, activeB, activeF0));
+      const disp = A * Math.cos(activeW * s.lt);
       placeMassSpring(disp);
 
       const amax = Math.max(...curve.map((c) => c[1]));
 
       drawGraph(gPanel, {
-        title: 'Đường cộng hưởng A(f)',
-        xlabel: 'f (Hz)',
+        title: 'Đường cộng hưởng A(ω)',
+        xlabel: 'ω (rad/s)',
         ylabel: 'A (m)',
-        xmax: 2,
+        xmin: 1,
+        xmax: 5,
         ymax: Math.max(3, amax),
         series: [
-          { pts: curve, color: '#7cc4ff', label: 'A(f)' },
+          { pts: curve, color: '#7cc4ff', label: 'A(ω)' },
           {
             pts: [
-              [activeF, 0],
-              [activeF, Math.min(ampResonance(activeF, activeB), amax)],
+              [activeW, 0],
+              [activeW, Math.min(ampResonance(activeW, activeW0, activeB, activeF0), amax)],
             ],
             color: '#ffca28',
-            label: 'f hiện tại',
+            label: 'ω hiện tại',
           },
         ],
       });
 
       // Update stats panel
-      const stateStr = Math.abs(activeF - s.f0) < 0.08 ? 'CỘNG HƯỞNG!' : activeF < s.f0 ? 'f < f₀ (Dưới cộng hưởng)' : 'f > f₀ (Trên cộng hưởng)';
+      const stateStr = Math.abs(activeW - activeW0) < 0.15 ? 'CỘNG HƯỞNG!' : activeW < activeW0 ? 'ω < ω₀ (Dưới cộng hưởng)' : 'ω > ω₀ (Trên cộng hưởng)';
       drawStats(statsPanel, roDefs, {
-        f: activeF.toFixed(2),
+        f: activeW.toFixed(2),
         A: A.toFixed(2),
         st: stateStr,
       });

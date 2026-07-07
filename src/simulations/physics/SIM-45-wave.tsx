@@ -113,14 +113,19 @@ export default function WaveSimulation({
     return p ? p.value : 1.0;
   }, [config.parameters]);
 
-  const lam = useMemo(() => {
-    const p = config.parameters.find((param) => param.key === 'lam');
-    return p ? p.value : 4.0;
-  }, [config.parameters]);
-
   const f = useMemo(() => {
     const p = config.parameters.find((param) => param.key === 'f');
-    return p ? p.value : 0.6;
+    return p ? p.value : 1.5;
+  }, [config.parameters]);
+
+  // Bước sóng suy từ tốc độ sóng: λ = v/f (Workspace truyền 'v'); 'lam' làm dự phòng cũ.
+  const lam = useMemo(() => {
+    const pV = config.parameters.find((param) => param.key === 'v');
+    const pF = config.parameters.find((param) => param.key === 'f');
+    const fv = pF && pF.value > 0 ? pF.value : 1.5;
+    if (pV) return pV.value / fv;
+    const pL = config.parameters.find((param) => param.key === 'lam');
+    return pL ? pL.value : 4.0;
   }, [config.parameters]);
 
   const stateRef = useRef({

@@ -4,6 +4,7 @@ import {
   Get,
   Post,
   Put,
+  Patch,
   Delete,
   Param,
   Query,
@@ -17,7 +18,7 @@ import {
   ApiBearerAuth,
   ApiProperty,
 } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, type DeepPartial } from 'typeorm';
 import type { Request } from 'express';
@@ -32,6 +33,26 @@ class CompleteActivityDto {
   @IsNumber()
   @Min(0)
   xpEarned!: number;
+}
+
+class UpdateMeDto {
+  @ApiProperty({ required: false, example: 'Nguyễn Văn' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  firstName?: string;
+
+  @ApiProperty({ required: false, example: 'An' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  lastName?: string;
+
+  @ApiProperty({ required: false, example: 'Học sinh yêu thích Vật lý.' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(500)
+  bio?: string;
 }
 
 class OpenLabDto {
@@ -74,6 +95,12 @@ class CompleteLabDto {
   @ApiProperty({ example: 4 })
   @IsNumber()
   correctAnswers!: number;
+
+  @ApiProperty({ example: 372, required: false, description: 'Thời lượng làm bài (giây)' })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  durationSeconds?: number;
 }
 
 function getLevelTitle(level: number): string {
@@ -85,6 +112,51 @@ function getLevelTitle(level: number): string {
 
 function calcLevel(xp: number): number {
   return Math.floor(Math.sqrt(xp / 100)) + 1;
+}
+
+// Chuẩn hoá một giá trị ngày (Date | string | null) về chuỗi lịch 'YYYY-MM-DD'.
+// Cột lastActiveDate là kiểu `date` (chỉ ngày), driver có thể trả về string
+// 'YYYY-MM-DD' hoặc Date — xử lý cả hai để tránh lệch timezone.
+function toYMD(d: Date | string | null | undefined): string | null {
+  if (!d) return null;
+  if (typeof d === 'string') return d.slice(0, 10);
+  const y = d.getFullYear();
+  const m = `${d.getMonth() + 1}`.padStart(2, '0');
+  const day = `${d.getDate()}`.padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+// Số ngày lịch giữa 2 chuỗi 'YYYY-MM-DD' (so theo Date.UTC để không dính timezone).
+function daysBetweenYMD(a: string, b: string): number {
+  const [ay, am, ad] = a.split('-').map(Number);
+  const [by, bm, bd] = b.split('-').map(Number);
+  return Math.round(
+    (Date.UTC(by, bm - 1, bd) - Date.UTC(ay, am - 1, ad)) / 86400000,
+  );
+}
+
+// Tính streak theo NGÀY DÙNG APP (robust timezone):
+//  - cùng ngày (diff 0) → giữ nguyên
+//  - cách đúng 1 ngày → +1
+//  - cách ≥2 ngày hoặc chưa có mốc → reset về 1
+function computeStreakUpdate(
+  lastActiveDate: Date | string | null | undefined,
+  currentStreak: number,
+  currentMaxStreak: number,
+): { streak: number; maxStreak: number; todayYMD: string } {
+  const now = new Date();
+  const todayYMD = toYMD(now) as string;
+  const lastYMD = toYMD(lastActiveDate);
+
+  let streak = 1;
+  if (lastYMD) {
+    const diff = daysBetweenYMD(lastYMD, todayYMD);
+    if (diff === 0) streak = currentStreak || 1;
+    else if (diff === 1) streak = (currentStreak || 0) + 1;
+    else streak = 1; // bỏ lỡ ≥2 ngày → reset
+  }
+  const maxStreak = Math.max(currentMaxStreak ?? 0, streak);
+  return { streak, maxStreak, todayYMD };
 }
 
 @ApiTags('users')
@@ -106,6 +178,23 @@ export class UsersController extends BaseController<UserEntity> {
   @ApiOperation({ summary: 'Lấy thông tin user hiện tại' })
   getMe(@Req() req: Request): UserEntity {
     return req.user as UserEntity;
+  }
+
+  @Patch('me')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Tự cập nhật hồ sơ (tên, giới thiệu)' })
+  async updateMe(@Req() req: Request, @Body() dto: UpdateMeDto) {
+    const user = req.user as UserEntity;
+    const patch: Partial<UserEntity> = {};
+    if (dto.firstName !== undefined) patch.firstName = dto.firstName.trim();
+    if (dto.lastName !== undefined) patch.lastName = dto.lastName.trim();
+    if (dto.bio !== undefined) patch.bio = dto.bio.trim();
+    if (Object.keys(patch).length > 0) {
+      await this.usersService.update(user.id, patch);
+    }
+    // Trả về user tươi để frontend cập nhật currentUser ngay.
+    return this.usersService.findById(user.id);
   }
 
   @Get('me/stats')
@@ -138,41 +227,63 @@ export class UsersController extends BaseController<UserEntity> {
     const user = req.user as UserEntity;
     const fresh = await this.usersService.findById(user.id);
     const currentXp = fresh?.xp ?? 0;
-    const currentStreak = fresh?.streak ?? 0;
-    const lastActiveDate = fresh?.lastActiveDate;
 
     const newXp = currentXp + dto.xpEarned;
     const newLevel = calcLevel(newXp);
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    let newStreak = 1;
-    if (lastActiveDate) {
-      const last = new Date(lastActiveDate);
-      last.setHours(0, 0, 0, 0);
-      const diffDays = Math.round(
-        (today.getTime() - last.getTime()) / 86400000,
-      );
-      if (diffDays === 0) newStreak = currentStreak;
-      else if (diffDays === 1) newStreak = currentStreak + 1;
-    }
-
-    const maxStreak = Math.max(fresh?.maxStreak ?? 0, newStreak);
+    // Hoàn thành hoạt động cũng tính là 1 ngày dùng app → dùng chung logic streak.
+    const { streak, maxStreak, todayYMD } = computeStreakUpdate(
+      fresh?.lastActiveDate,
+      fresh?.streak ?? 0,
+      fresh?.maxStreak ?? 0,
+    );
 
     await this.usersService.update(user.id, {
       xp: newXp,
       level: newLevel,
-      streak: newStreak,
+      streak,
       maxStreak,
-      lastActiveDate: today,
+      lastActiveDate: todayYMD as any,
     });
 
     return {
       xp: newXp,
       level: newLevel,
-      streak: newStreak,
+      streak,
       maxStreak,
       levelTitle: getLevelTitle(newLevel),
+    };
+  }
+
+  @Post('me/touch')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Ghi nhận ngày dùng app (cập nhật streak, không cộng XP)',
+  })
+  async touch(@Req() req: Request) {
+    const user = req.user as UserEntity;
+    const fresh = await this.usersService.findById(user.id);
+
+    const { streak, maxStreak, todayYMD } = computeStreakUpdate(
+      fresh?.lastActiveDate,
+      fresh?.streak ?? 0,
+      fresh?.maxStreak ?? 0,
+    );
+
+    await this.usersService.update(user.id, {
+      streak,
+      maxStreak,
+      lastActiveDate: todayYMD as any,
+    });
+
+    // Trả về user tươi (đã cập nhật streak) để frontend merge vào currentUser.
+    return {
+      ...(fresh ?? {}),
+      streak,
+      maxStreak,
+      lastActiveDate: todayYMD,
+      levelTitle: getLevelTitle(fresh?.level ?? 1),
     };
   }
 
@@ -231,15 +342,25 @@ export class UsersController extends BaseController<UserEntity> {
       where: { userId, simulationId: dto.simulationId, status: 'in_progress' },
       order: { updatedAt: 'DESC' },
     });
+    const now = new Date();
     if (existing) {
+      // Ưu tiên durationSeconds client gửi; nếu không có thì tự tính từ lúc
+      // mở session (createdAt) tới lúc hoàn thành.
+      const duration =
+        dto.durationSeconds ??
+        Math.max(
+          0,
+          Math.round((now.getTime() - new Date(existing.createdAt).getTime()) / 1000),
+        );
       await this.labRepo.update(existing.id, {
         status: 'completed',
         score: dto.score,
         totalQuestions: dto.totalQuestions,
         correctAnswers: dto.correctAnswers,
-        completedAt: new Date(),
+        durationSeconds: duration,
+        completedAt: now,
       } as any);
-      return { ...existing, status: 'completed', score: dto.score };
+      return { ...existing, status: 'completed', score: dto.score, durationSeconds: duration };
     }
     const session = this.labRepo.create({
       userId,
@@ -250,7 +371,8 @@ export class UsersController extends BaseController<UserEntity> {
       score: dto.score,
       totalQuestions: dto.totalQuestions,
       correctAnswers: dto.correctAnswers,
-      completedAt: new Date(),
+      durationSeconds: dto.durationSeconds ?? 0,
+      completedAt: now,
     });
     return this.labRepo.save(session);
   }

@@ -1,4 +1,5 @@
 import { getLeaderboard } from '@/services/base/api';
+import { calcLevel } from '@/utils/xp';
 import React, { useEffect, useState } from 'react';
 import { useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
@@ -164,7 +165,7 @@ const Leaderboard: React.FC = () => {
 											{isMe ? `${getDisplayName(r)} (Bạn)` : getDisplayName(r)}
 										</div>
 										<div className={`stu-leader__row-level ${isMe ? 'stu-leader__row-level--me' : ''}`}>
-											Level {r.level ?? 1}
+											Level {calcLevel(r.xp ?? 0)}
 										</div>
 									</div>
 									<div className='stu-leader__row-week' />

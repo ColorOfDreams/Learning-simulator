@@ -1,4 +1,5 @@
 import { useAuthActions } from '@/hooks/useAuthActions';
+import { calcLevel } from '@/utils/xp';
 import React, { useEffect, useState } from 'react';
 import { history, useLocation, useModel } from 'umi';
 import './index.less';
@@ -124,7 +125,7 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 	const user = initialState?.currentUser;
 	const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || 'Học sinh';
 	const initials = [user?.firstName?.[0], user?.lastName?.[0]].filter(Boolean).join('').toUpperCase() || 'HS';
-	const levelLabel = `Lớp ${user?.grade ?? 11} · Level ${user?.level ?? 1}`;
+	const levelLabel = `Lớp ${user?.grade ?? 11} · Level ${calcLevel(user?.xp ?? 0)}`;
 
 	const [theme, setTheme] = useState<'light' | 'dark'>(() => {
 		try {

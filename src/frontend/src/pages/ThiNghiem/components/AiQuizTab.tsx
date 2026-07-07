@@ -2,6 +2,7 @@ import CelebrationOverlay from '@/components/CelebrationOverlay';
 import { generateAiQuiz } from '@/services/ai/api';
 import { completeActivity, completeLabSession, getUserInfo } from '@/services/base/api';
 import { submitAssignment } from '@/services/classrooms/api';
+import { buildCelebrationData, type CelebrationData } from '@/utils/xp';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useModel, useSearchParams } from 'umi';
 import '../../HocSinh/Workspace/index.less';
@@ -25,7 +26,9 @@ const AiQuizTab: React.FC<Props> = ({ simId, subject = 'physics', title = 'Thí 
 	const [dynUsedLlm, setDynUsedLlm] = useState(false);
 	const [showCelebration, setShowCelebration] = useState(false);
 	const xpAwardedRef = useRef(false);
-	const { setInitialState } = useModel('@@initialState');
+	const [celebData, setCelebData] = useState<CelebrationData | null>(null);
+	const openedAtRef = useRef<number>(Date.now()); // mốc bắt đầu để đo thời lượng thật
+	const { initialState, setInitialState } = useModel('@@initialState');
 	const [searchParams] = useSearchParams();
 
 	useEffect(() => {
@@ -34,6 +37,20 @@ const AiQuizTab: React.FC<Props> = ({ simId, subject = 'physics', title = 'Thí 
 			const correct = dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length;
 			const pct = dynQuestions.length > 0 ? Math.round((correct / dynQuestions.length) * 100) : 0;
 			const xpEarned = correct * 10;
+			const elapsedSeconds = Math.max(0, Math.round((Date.now() - openedAtRef.current) / 1000));
+
+			// Dựng dữ liệu THẬT cho modal từ XP hiện tại của user + kết quả quiz.
+			const xpBefore = Number((initialState?.currentUser as any)?.xp ?? 0);
+			setCelebData(
+				buildCelebrationData({
+					score: pct,
+					xpEarned,
+					xpBefore,
+					stepsDone: correct,
+					stepsTotal: dynQuestions.length,
+					elapsedSeconds,
+				}),
+			);
 
 			// Submit assignment if doing a classroom assignment
 			const assignmentId = searchParams.get('assignmentId');
@@ -49,6 +66,7 @@ const AiQuizTab: React.FC<Props> = ({ simId, subject = 'physics', title = 'Thí 
 				score: pct,
 				totalQuestions: dynQuestions.length,
 				correctAnswers: correct,
+				durationSeconds: elapsedSeconds,
 			}).catch(() => {});
 			if (xpEarned > 0) {
 				completeActivity(xpEarned)
@@ -445,15 +463,22 @@ const AiQuizTab: React.FC<Props> = ({ simId, subject = 'physics', title = 'Thí 
 						</div>
 					);
 				})()}
-			{showCelebration && dynQuizState === 'done' && (
+			{showCelebration && dynQuizState === 'done' && celebData && (
 				<CelebrationOverlay
-					score={
-						dynQuestions.length > 0
-							? Math.round(
-									(dynQuestions.filter((q, i) => dynAnswers[i] === q.correct).length / dynQuestions.length) * 100,
-								)
-							: 0
-					}
+					subject={subject}
+					mode='B'
+					labName={title}
+					quizName={title}
+					score={celebData.score}
+					xpEarned={celebData.xpEarned}
+					xpBefore={celebData.xpBefore}
+					xpAfter={celebData.xpAfter}
+					levelBefore={celebData.levelBefore}
+					levelAfter={celebData.levelAfter}
+					levelTitle={celebData.levelTitle}
+					stepsDone={celebData.stepsDone}
+					stepsTotal={celebData.stepsTotal}
+					elapsedSeconds={celebData.elapsedSeconds}
 					onClose={() => setShowCelebration(false)}
 				/>
 			)}

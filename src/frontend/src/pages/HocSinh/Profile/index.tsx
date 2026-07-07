@@ -1,4 +1,5 @@
-import { getLeaderboard, getMyLabs, getUserStats } from '@/services/base/api';
+import { getLeaderboard, getMyLabs, getUserStats, updateMyProfile } from '@/services/base/api';
+import { Button, Input, Modal, message } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { history, useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
@@ -17,7 +18,7 @@ function timeAgo(dateStr: string): string {
 }
 
 const HocSinhProfile: React.FC = () => {
-	const { initialState } = useModel('@@initialState');
+	const { initialState, setInitialState } = useModel('@@initialState');
 	const user = initialState?.currentUser;
 	const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || 'Học sinh';
 	const initials = [user?.firstName?.[0], user?.lastName?.[0]].filter(Boolean).join('').toUpperCase() || 'HS';
@@ -25,6 +26,45 @@ const HocSinhProfile: React.FC = () => {
 	const [stats, setStats] = useState<any>(null);
 	const [labs, setLabs] = useState<{ inProgress: any[]; completed: any[] }>({ inProgress: [], completed: [] });
 	const [leaderboard, setLeaderboard] = useState<any[]>([]);
+
+	// ── Chỉnh sửa hồ sơ (tên + giới thiệu) ──
+	const [editOpen, setEditOpen] = useState(false);
+	const [saving, setSaving] = useState(false);
+	const [editFirst, setEditFirst] = useState('');
+	const [editLast, setEditLast] = useState('');
+	const [editBio, setEditBio] = useState('');
+
+	const openEdit = () => {
+		setEditFirst((user as any)?.firstName ?? '');
+		setEditLast((user as any)?.lastName ?? '');
+		setEditBio((user as any)?.bio ?? '');
+		setEditOpen(true);
+	};
+
+	const handleSaveProfile = async () => {
+		if (!editFirst.trim() && !editLast.trim()) {
+			message.warning('Vui lòng nhập tên hiển thị');
+			return;
+		}
+		setSaving(true);
+		try {
+			const res = await updateMyProfile({
+				firstName: editFirst.trim(),
+				lastName: editLast.trim(),
+				bio: editBio.trim(),
+			});
+			const fresh = res.data?.data || res.data;
+			if (fresh) {
+				setInitialState((s: any) => ({ ...s, currentUser: { ...s.currentUser, ...fresh } }));
+			}
+			message.success('Đã cập nhật hồ sơ');
+			setEditOpen(false);
+		} catch {
+			message.error('Lỗi khi cập nhật hồ sơ');
+		} finally {
+			setSaving(false);
+		}
+	};
 
 	useEffect(() => {
 		getUserStats()
@@ -137,7 +177,7 @@ const HocSinhProfile: React.FC = () => {
 								</svg>
 								Xem tiến trình
 							</div>
-							<div className='stu-profile__btn stu-profile__btn--primary'>
+							<div className='stu-profile__btn stu-profile__btn--primary' onClick={openEdit}>
 								<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='#fff' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'>
 									<path d='M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z' />
 								</svg>
@@ -210,8 +250,10 @@ const HocSinhProfile: React.FC = () => {
 						<div className='stu-profile__col-left'>
 							<div className='stu-profile__section-card'>
 								<div className='stu-profile__section-title'>Giới thiệu</div>
-								<div className='stu-profile__bio'>
-									{fullName} — học sinh lớp {user?.grade ?? 11}, đang chinh phục các bài thí nghiệm khoa học tương tác. Hãy tiếp tục duy trì chuỗi học tập và leo lên top bảng xếp hạng!
+								<div className='stu-profile__bio' style={{ whiteSpace: 'pre-line' }}>
+									{(user as any)?.bio?.trim()
+										? (user as any).bio
+										: `${fullName} — học sinh lớp ${user?.grade ?? 11}, đang chinh phục các bài thí nghiệm khoa học tương tác. Hãy tiếp tục duy trì chuỗi học tập và leo lên top bảng xếp hạng!`}
 								</div>
 							</div>
 
@@ -307,6 +349,55 @@ const HocSinhProfile: React.FC = () => {
 					</div>
 				</div>
 			</div>
+
+			<Modal
+				title='Chỉnh sửa hồ sơ'
+				open={editOpen}
+				onCancel={() => setEditOpen(false)}
+				footer={[
+					<Button key='cancel' onClick={() => setEditOpen(false)}>
+						Hủy
+					</Button>,
+					<Button key='save' type='primary' loading={saving} onClick={handleSaveProfile}>
+						Lưu
+					</Button>,
+				]}
+				destroyOnClose
+			>
+				<div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 8 }}>
+					<div>
+						<div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Họ và tên đệm</div>
+						<Input
+							value={editFirst}
+							onChange={(e) => setEditFirst(e.target.value)}
+							placeholder='VD: Nguyễn Văn'
+							maxLength={100}
+							size='large'
+						/>
+					</div>
+					<div>
+						<div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Tên</div>
+						<Input
+							value={editLast}
+							onChange={(e) => setEditLast(e.target.value)}
+							placeholder='VD: An'
+							maxLength={100}
+							size='large'
+						/>
+					</div>
+					<div>
+						<div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6 }}>Giới thiệu</div>
+						<Input.TextArea
+							value={editBio}
+							onChange={(e) => setEditBio(e.target.value)}
+							placeholder='Vài dòng giới thiệu về bản thân (tuỳ chọn)'
+							maxLength={500}
+							rows={4}
+							showCount
+						/>
+					</div>
+				</div>
+			</Modal>
 		</StudentLayout>
 	);
 };

@@ -272,6 +272,10 @@ export default function CoulombSimulation({
   }, [config.parameters]);
 
   const d0 = useMemo(() => {
+    // Workspace truyền 'r' (khoảng cách, m) ∈ [1,6]; scale vào dải hiển thị của sim
+    // (~[0.22, 1.35]) để khoảng cách ban đầu giữa 2 điện tích thay đổi theo slider.
+    const pR = config.parameters.find((param) => param.key === 'r');
+    if (pR) return Math.max(0.22, Math.min(1.35, pR.value * 0.225));
     const p = config.parameters.find((param) => param.key === 'd0');
     return p ? p.value : 0.7;
   }, [config.parameters]);

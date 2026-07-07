@@ -1,4 +1,5 @@
 import { getLeaderboard, getMyLabs, getUserStats } from '@/services/base/api';
+import { calcLevel, levelFloorXp, nextThresholdXp } from '@/utils/xp';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import StudentLayout from '../components/StudentLayout';
@@ -133,13 +134,17 @@ const Progress: React.FC = () => {
 	}, [currentUserId]);
 
 	const xp = stats?.xp ?? 0;
-	const level = stats?.level ?? 1;
+	const level = calcLevel(xp);
 	const streak = stats?.streak ?? 0;
 	const maxStreak = stats?.maxStreak ?? 0;
 	const levelTitle = stats?.levelTitle ?? 'Học sinh mới';
-	const nextThreshold = level * level * 100;
+	// Tiến trình trong-cấp: đoạn XP giữa mốc vào cấp hiện tại và ngưỡng lên cấp kế.
+	const levelFloor = levelFloorXp(level);
+	const nextThreshold = nextThresholdXp(level);
+	const inLevelXp = Math.max(0, xp - levelFloor);
+	const levelSpan = Math.max(1, nextThreshold - levelFloor);
 	const xpToNextLevel = Math.max(0, nextThreshold - xp);
-	const pct = Math.min(100, Math.round((xp / nextThreshold) * 100));
+	const pct = Math.min(100, Math.round((inLevelXp / levelSpan) * 100));
 	const circumference = 402;
 	const dashOffset = circumference - (circumference * pct) / 100;
 
@@ -216,9 +221,7 @@ const Progress: React.FC = () => {
 								<div className='stu-progress__hero-xp-section'>
 									<div className='stu-progress__hero-xp-labels'>
 										<span>{xp.toLocaleString('vi-VN')} XP</span>
-										<span>
-											{nextThreshold.toLocaleString('vi-VN')} → Lv.{level + 1}
-										</span>
+										<span>→ Lv.{level + 1}</span>
 									</div>
 									<div className='stu-progress__hero-xp-track'>
 										<div className='stu-progress__hero-xp-fill' style={{ width: `${pct}%` }} />
