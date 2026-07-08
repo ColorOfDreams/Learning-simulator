@@ -1,16 +1,57 @@
-import PageCard from '@/components/PageCard';
 import { getClassById } from '@/services/classrooms/api';
 import { BookOutlined } from '@ant-design/icons';
 import { history, useModel, useParams } from '@umijs/max';
-import { Button, Card, Empty, Space, Spin, Tag, Typography } from 'antd';
+import { Button, Card, Empty, Spin, Tag } from 'antd';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import StudentLayout from '../components/StudentLayout';
 import './StudentClassDetails.less';
 
-const { Title, Text } = Typography;
-
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const MOCK_CLASS_DATA: ClassroomsAPI.ClassInfo = {
+	id: 'demo',
+	name: '12A2 (Lớp học mẫu)',
+	inviteCode: 'ISK2P5',
+	description: 'Đây là lớp học giả lập để trải nghiệm giao diện học sinh, bao gồm danh sách bài tập được giao và trạng thái nộp bài.',
+	teacherId: 'teacher-1',
+	members: [
+		{
+			id: 'member-1',
+			userId: 'student-1',
+			studentCode: 'HS001',
+			role: 'student',
+		}
+	],
+	assignments: [
+		{
+			id: 'assign-1',
+			classroomId: 'demo',
+			title: 'Con lắc đơn',
+			description: 'Khảo sát chu kỳ dao động điều hòa của con lắc đơn phụ thuộc vào chiều dài dây treo và gia tốc trọng trường.',
+			simulationId: 'con-lac-don',
+			dueDate: '2026-06-28T23:09:00Z',
+			submissions: [
+				{
+					id: 'sub-1',
+					assignmentId: 'assign-1',
+					memberId: 'member-1',
+					score: 33,
+					completedAt: '2026-06-27T10:00:00Z',
+				}
+			]
+		},
+		{
+			id: 'assign-2',
+			classroomId: 'demo',
+			title: 'Dao động tắt dần của con lắc lò xo',
+			description: 'Khảo sát dao động lò xo nằm ngang và xác định hệ số ma sát giữa vật nặng và mặt sàn.',
+			simulationId: 'con-lac-lo-xo',
+			dueDate: '2026-07-25T23:59:00Z',
+			submissions: []
+		}
+	]
+};
 
 const StudentClassDetails: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
@@ -22,9 +63,18 @@ const StudentClassDetails: React.FC = () => {
 
 	useEffect(() => {
 		if (id) {
+			if (id === 'demo') {
+				setCls(MOCK_CLASS_DATA);
+				setLoading(false);
+				return;
+			}
 			getClassById(id)
 				.then((res) => {
 					setCls(res.data?.data || res.data);
+				})
+				.catch((err) => {
+					console.error(err);
+					setCls(MOCK_CLASS_DATA);
 				})
 				.finally(() => setLoading(false));
 		}
@@ -63,80 +113,74 @@ const StudentClassDetails: React.FC = () => {
 		);
 
 	// Find the student's member record to match submissions
-	const currentMember = cls.members?.find(
-		(m) => m.userId === user?.id || (user?.studentCode && m.studentCode === user?.studentCode),
-	);
+	const currentMember = cls.id === 'demo'
+		? cls.members?.[0]
+		: cls.members?.find(
+			(m) => m.userId === user?.id || (user?.studentCode && m.studentCode === user?.studentCode),
+		);
 
 	return (
 		<StudentLayout>
 			<div className='student-class-details'>
-				<PageCard
-					title={
-						<Space size='large' align='center'>
-							<div style={{ display: 'flex', flexDirection: 'column' }}>
-								<Title level={3} style={{ margin: 0 }}>
-									{cls.name}
-								</Title>
-							</div>
-						</Space>
-					}
-				>
-					<div className='assignments-section'>
-						<Space size='middle' direction='horizontal'>
-							<Title level={4} style={{ marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
-								<BookOutlined style={{ color: '#1677ff' }} />
-								Bài tập được giao
-							</Title>
-							<Text type='secondary' style={{ fontSize: 13 }}>
-								Mã lớp: <strong>{cls.inviteCode}</strong> | {cls.description || 'Không có mô tả'}
-							</Text>
-						</Space>
+				<div className='student-class-details__header'>
+					<h2 className='student-class-details__title'>{cls.name}</h2>
+					<div className='student-class-details__subtitle'>
+						Mã lớp: <strong>{cls.inviteCode}</strong> {cls.description && ` · ${cls.description}`}
+					</div>
+				</div>
 
-						<div className='assignments-list'>
-							{(!cls.assignments || cls.assignments.length === 0) && (
-								<Empty description='Chưa có bài tập nào được giao' />
-							)}
-							{cls.assignments?.map((assignment) => {
-								const submission = assignment.submissions?.find((s) => s.memberId === currentMember?.id);
-								const isSubmitted = !!submission;
+				<div className='assignments-section'>
+					<h4 className='assignments-section__title'>
+						<BookOutlined />
+						Bài tập được giao
+					</h4>
 
-								return (
-									<Card key={assignment.id} className='assignment-card'>
-										<div className='assignment-card__content'>
-											<div className='assignment-card__info'>
-												<Title level={5}>{assignment.title}</Title>
-												{assignment.description && <Text>{assignment.description}</Text>}
-												<div className='assignment-card__meta'>
-													Hạn nộp:{' '}
-													<strong>
-														{assignment.dueDate ? dayjs(assignment.dueDate).format('HH:mm DD/MM/YYYY') : 'Không có'}
-													</strong>
-												</div>
-											</div>
-											<div className='assignment-card__action'>
-												{isSubmitted ? (
-													<div className='submission-status'>
-														<Tag color='success'>Đã nộp bài</Tag>
-														<div className='score-display'>
-															Điểm: <strong>{submission.score}</strong>
-														</div>
-														<Button type='default' onClick={() => handleDoAssignment(assignment)}>
-															Làm lại
-														</Button>
-													</div>
-												) : (
-													<Button type='primary' onClick={() => handleDoAssignment(assignment)}>
-														Vào làm bài
-													</Button>
-												)}
+					<div className='assignments-list'>
+						{(!cls.assignments || cls.assignments.length === 0) && (
+							<Empty description='Chưa có bài tập nào được giao' />
+						)}
+						{cls.assignments?.map((assignment) => {
+							const submission = assignment.submissions?.find((s) => s.memberId === currentMember?.id);
+							const isSubmitted = !!submission;
+
+							return (
+								<Card key={assignment.id} className='assignment-card' bordered={false}>
+									<div className='assignment-card__content'>
+										<div className='assignment-card__info'>
+											<h5 className='assignment-card__title'>{assignment.title}</h5>
+											{assignment.description && (
+												<div className='assignment-card__desc'>{assignment.description}</div>
+											)}
+											<div className='assignment-card__meta'>
+												Hạn nộp:{' '}
+												<strong>
+													{assignment.dueDate ? dayjs(assignment.dueDate).format('HH:mm DD/MM/YYYY') : 'Không có'}
+												</strong>
 											</div>
 										</div>
-									</Card>
-								);
-							})}
-						</div>
+										<div className='assignment-card__action'>
+											{isSubmitted ? (
+												<div className='submission-status'>
+													<Tag color='success'>Đã nộp bài</Tag>
+													<div className='score-display'>
+														Điểm: <strong>{submission.score}</strong>
+													</div>
+													<Button type='default' onClick={() => handleDoAssignment(assignment)}>
+														Làm lại
+													</Button>
+												</div>
+											) : (
+												<Button type='primary' onClick={() => handleDoAssignment(assignment)}>
+													Vào làm bài
+												</Button>
+											)}
+										</div>
+									</div>
+								</Card>
+							);
+						})}
 					</div>
-				</PageCard>
+				</div>
 			</div>
 		</StudentLayout>
 	);
