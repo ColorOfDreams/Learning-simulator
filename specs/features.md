@@ -1,5 +1,8 @@
 # Features — AI Study Simulator MVP
 
+> [!NOTE]
+> **Trạng thái: danh mục tính năng MVP dự kiến ban đầu (lịch sử).** Danh sách tính năng **đang chạy thực tế** (mô phỏng 80+, chat RAG, gamification, lớp học, tạo đề/ngân hàng câu hỏi bằng AI, admin) xem [../README.md](../README.md#-tính-năng-chính). Các mục như SSE streaming (F3), Sample Library (F5), Teacher Share Mode/QR (F8) mô tả dưới đây không phản ánh đúng bản đã ship.
+
 ## F1 — Input & AI Analysis
 **Mô tả:** Người dùng nhập bài tập khoa học. AI phân tích và trả về cấu hình simulation.
 

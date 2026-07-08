@@ -1,5 +1,8 @@
 # User Roles — AI Study Simulator
 
+> [!IMPORTANT]
+> **Trạng thái: kế hoạch ban đầu — đã khác thực tế.** Hệ thống thực tế dùng 3 vai trò **`admin` / `teacher` (giáo viên) / `student` (học sinh)**; **không có Guest mode** và **không có rate-limit theo IP** như mô tả dưới. Đăng nhập: Email/Mật khẩu hoặc **Google OAuth** (đều đã triển khai). Phân quyền route qua Passport JWT. Chi tiết auth: [api-contracts.md](api-contracts.md#auth-auth). Phần dưới giữ lại làm lịch sử.
+
 ## Vai trò người dùng
 
 ### 1. Guest (Khách)

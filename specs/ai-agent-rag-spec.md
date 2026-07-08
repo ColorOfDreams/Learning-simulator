@@ -2,6 +2,9 @@
 > **Dự án:** AI Study Simulator (Mô phỏng Khoa học THPT + AI giải thích)  
 > **Mục tiêu:** Tài liệu bàn giao (hand-off) kỹ thuật cho đội ngũ xây dựng RAG hoàn chỉnh.
 
+> [!IMPORTANT]
+> **Contract hiện hành đã đổi so với bản đặc tả này.** Endpoint thực tế: `POST /ai/analyze`, `POST /ai/chat`, `POST /ai/quiz/generate` — **không có prefix `/api/v1`** và **`/ai/chat` trả JSON thường, không phải SSE** (các ví dụ `event: layer` bên dưới không còn đúng). Response bọc envelope `{data,message,statusCode}`. Nội dung về pipeline RAG, prompt, schema `TheoryChunk`/`ProblemPattern` vẫn đúng về mặt khái niệm. **Nguồn chuẩn:** [../Backend-Ai.md](../Backend-Ai.md).
+
 ---
 
 ## 1. Tổng quan Luồng AI Agent & RAG

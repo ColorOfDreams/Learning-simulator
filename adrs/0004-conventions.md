@@ -1,8 +1,11 @@
 # ADR-0004 — Coding Conventions
 
-**Status:** Accepted  
+**Status:** Superseded (một phần) — cập nhật 2026-07-08  
 **Date:** 2026-06-08  
 **Deciders:** Tech Lead
+
+> [!IMPORTANT]
+> **Lỗi thời:** mục **Fastify** không áp dụng (backend là **NestJS**: controller + service + DTO `class-validator`, không throw `fastify.httpErrors`); route thực tế **không có prefix `/api/v1`** (ví dụ `/ai/quiz/generate`); dữ liệu fetch ở FE **không dùng TanStack Query** (UmiJS request/`useInitModel`). Các quy ước TypeScript/Naming/Commit bên dưới vẫn dùng.
 
 ## TypeScript
 

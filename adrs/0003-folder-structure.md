@@ -1,8 +1,11 @@
 # ADR-0003 — Folder Structure
 
-**Status:** Accepted  
+**Status:** Superseded — cập nhật 2026-07-08  
 **Date:** 2026-06-08  
 **Deciders:** Tech Lead
+
+> [!IMPORTANT]
+> **Cấu trúc thực tế khác bản dự kiến này:** Frontend là **UmiJS** (không có `vite.config.ts`/`tailwind.config.ts`/`main.tsx`; dùng `config/`, `pages/{HocSinh,GiaoVien,Admin,...}`, `models/`, `services/`). Backend là **NestJS module-based** (`src/modules/*`), **không phải Fastify + Drizzle**. Cây thư mục hiện hành: [../README.md](../README.md#-cấu-trúc-thư-mục) và [../src/frontend/README.md](../src/frontend/README.md).
 
 ## Frontend (`/src/frontend/`)
 

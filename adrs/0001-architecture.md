@@ -1,8 +1,11 @@
 # ADR-0001 — System Architecture
 
-**Status:** Accepted  
+**Status:** Superseded — cập nhật 2026-07-08  
 **Date:** 2026-06-08  
 **Deciders:** Tech Lead
+
+> [!IMPORTANT]
+> **Đã thay đổi khi triển khai:** API Gateway dùng **NestJS** (không phải Fastify), **không dùng Redis/BullMQ**, và **không dùng SSE** (AI trả JSON thường qua `/ai/chat`). Lý do chọn monolith cho team nhỏ vẫn còn giá trị. Kiến trúc hiện hành: [../README.md](../README.md#-kiến-trúc-tổng-quan).
 
 ## Context
 

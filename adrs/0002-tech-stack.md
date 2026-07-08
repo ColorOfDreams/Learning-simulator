@@ -1,8 +1,11 @@
 # ADR-0002 — Tech Stack
 
-**Status:** Accepted  
+**Status:** Superseded (một phần) — cập nhật 2026-07-08  
 **Date:** 2026-06-08  
 **Deciders:** Tech Lead
+
+> [!IMPORTANT]
+> **Khác thực tế:** phần **AI** đã chốt dùng **Mistral** (OpenAI-compatible), không phải Claude/GPT/Gemini; **Infra** frontend deploy trên **Railway** (không phải Vercel); Redis/Cloudflare R2/PostHog trong kế hoạch **không được sử dụng**. Phần Frontend/Backend bên dưới phần lớn vẫn đúng (UmiJS/React 19/AntD, NestJS 11/TypeORM/Passport/Swagger). Stack hiện hành đầy đủ: [../README.md](../README.md#-tech-stack).
 
 ## Frontend
 
