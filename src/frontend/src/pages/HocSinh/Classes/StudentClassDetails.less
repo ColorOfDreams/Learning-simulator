@@ -12,37 +12,46 @@
 	overflow-y: auto;
 	.stu-scrollbar();
 
-	// Override default PageCard styles to align with student theme
-	.ant-card {
-		background: @stu-bg-card !important;
-		border: 1px solid @stu-border !important;
-		border-radius: @stu-radius-2xl;
-		box-shadow: @stu-shadow-md;
+	&__header {
+		margin-bottom: 28px;
+		animation: stu-fadeUp 0.6s ease;
+	}
 
-		.ant-card-head {
-			border-bottom: 1px solid @stu-border-light;
-			background: transparent;
-			padding: 20px 24px;
+	&__title {
+		font-size: 28px;
+		font-weight: 800;
+		letter-spacing: -0.5px;
+		color: @stu-text-heading;
+		margin-bottom: 6px;
+	}
 
-			.ant-card-head-title {
-				h3.ant-typography {
-					color: @stu-text-heading !important;
-					font-family: @font-heading;
-					font-weight: 800;
-					font-size: 24px;
-				}
-			}
+	&__subtitle {
+		font-size: 14px;
+		color: @stu-text-secondary;
+		line-height: 1.5;
+
+		strong {
+			color: @stu-text-primary;
+			font-weight: 600;
 		}
 	}
 
 	.assignments-section {
-		padding: 12px 0 24px 0;
+		padding: 0;
+		animation: stu-fadeUp 0.7s ease;
 
-		h4.ant-typography {
-			margin-bottom: 16px;
+		&__title {
+			margin-bottom: 18px;
 			font-weight: 700;
-			color: @stu-text-heading !important;
+			color: @stu-text-heading;
 			font-size: 18px;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+
+			.anticon {
+				color: @stu-accent !important;
+			}
 		}
 	}
 
@@ -50,13 +59,14 @@
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
-		margin-top: 20px;
+		margin-top: 12px;
 	}
 
 	.assignment-card {
 		border-radius: @stu-radius-xl !important;
 		box-shadow: @stu-shadow-sm;
 		border: 1px solid @stu-border !important;
+		background: @stu-bg-card !important;
 		transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
 		.ant-card-body {
@@ -83,20 +93,21 @@
 
 		&__info {
 			flex: 1;
+		}
 
-			h5.ant-typography {
-				margin-bottom: 6px;
-				font-size: 17px;
-				font-weight: 700;
-				color: @stu-text-heading !important;
-			}
+		&__title {
+			margin-bottom: 6px;
+			font-size: 17px;
+			font-weight: 700;
+			color: @stu-text-heading;
+		}
 
-			.ant-typography {
-				display: block;
-				margin-bottom: 8px;
-				color: @stu-text-secondary !important;
-				font-size: 13.5px;
-			}
+		&__desc {
+			display: block;
+			margin-bottom: 8px;
+			color: @stu-text-secondary;
+			font-size: 13.5px;
+			line-height: 1.5;
 		}
 
 		&__meta {

@@ -1,49 +1,62 @@
-# AI Mô Phỏng - Frontend (UmiJS)
+# AI Study Simulator — Frontend
 
-admin@gmail.com/abc123 admin ✅
-giaovien@gmail.com/abc123 teacher ✅
+Giao diện web của **AI Study Simulator**, xây trên [UmiJS `@umijs/max`](https://umijs.org/) (React 19) + [Ant Design v5](https://ant.design/). Frontend gọi trực tiếp API NestJS ở `src/backend` (xem [README tổng](../../README.md)).
 
-Đây là Frontend Base Code thuần chủng dành riêng cho hệ thống **AI Mô Phỏng**, được "tẩy rửa" và tối ưu hóa tối đa, loại bỏ hoàn toàn các cấu trúc thừa thãi từ kiến trúc Multi-tenant (đa phân hệ) cũ. Hệ thống sử dụng [UmiJS](https://umijs.org/) (React 19) kết hợp thư viện UI [Ant Design v5](https://ant.design/).
+> Base code kế thừa từ một web-base nội bộ và đã được tinh giản cho dự án này (chỉ còn 1 định danh `EModuleKey.BASE`, bỏ cấu trúc đa phân hệ).
 
-## 🌟 Đặc điểm nổi bật
+## 🧩 Công nghệ chính
 
-- **Kiến trúc độc lập (Stand-alone Base)**: Giao diện sạch sẽ, loại bỏ nút chuyển phân hệ, module switcher, không dính dáng đến cấu trúc chia nhánh (QLDT, TCNS...) của trường học.
-- **Quản lý linh hoạt**: Chỉ giữ lại 1 định danh `EModuleKey.BASE`, giúp toàn bộ hệ thống cực kỳ dễ đọc.
-- **Tích hợp OneSignal thuần**: Xử lý trực tiếp Push Notification trên domain hiện tại (dùng token từ localStorage), không sử dụng iframe ẩn chéo site.
-- **Mở rộng dễ dàng**: Các tính năng Layout, Header, AvatarDropdown đã được tinh giản, dọn đường sẵn để tích hợp Google Login.
+- **UmiJS `@umijs/max` v4** — routing, `@umijs/plugin-model` (state), request/axios.
+- **React 19.2 + TypeScript**, **Ant Design v5 + Less**.
+- **Three.js 0.184** + `@react-three/fiber` / `drei` / `rapier` — mô phỏng 3D.
+- **KaTeX** (công thức), **ApexCharts** (đồ thị), **TinyMCE** (soạn thảo), **OneSignal** (push).
 
-## 📦 Yêu cầu hệ thống
+## 📦 Yêu cầu
 
-- Node.js (Version >= 18)
-- **Yarn** (Bắt buộc dùng `yarn` để quản lý package)
+- Node.js ≥ 18, **Yarn** (bắt buộc dùng yarn).
 
-## 🛠️ Cài đặt & Chạy dự án
+## 🛠️ Cài đặt & chạy
 
 ```bash
-# 1. Cài đặt các gói phụ thuộc (Chỉ dùng yarn)
 yarn install
-
-# 2. Khởi chạy ở chế độ Development (Có Hot-reload)
-yarn start
-
-# 3. Build mã nguồn tĩnh để Deploy
-yarn build
+yarn start      # alias của "max dev" — dev server có hot-reload
+yarn build      # build tĩnh để deploy
 ```
 
-## 🗄️ Cấu trúc thư mục lõi
+Cấu hình API base backend qua biến `APP_CONFIG_IP_ROOT` trong `.env` (mặc định `http://localhost:3000`).
+
+> Lưu ý deploy: production dùng `Dockerfile.frontend.railway` ở gốc repo (Railway). Các script `push-rsync*`/`deploy*` trong `package.json` là tàn dư của base-code cũ — **không dùng cho dự án này**.
+
+## 🔑 Tài khoản demo
+
+| Vai trò | Email | Mật khẩu |
+|---|---|---|
+| Admin | `admin@gmail.com` | `abc123` |
+| Giáo viên | `giaovien@gmail.com` | `abc123` |
+
+Học sinh: đăng ký Email/Mật khẩu hoặc đăng nhập Google.
+
+## 🗂️ Cấu trúc
 
 ```text
-web/
+src/frontend/
+├── config/                  # config.ts, routes.ts, proxy.ts (UmiJS)
 ├── src/
-│   ├── components/     # UI Components chung (Header, Footer, OneSignal)
-│   ├── hooks/          # Custom Hooks (useInitModel kết nối API)
-│   ├── models/         # Quản lý State (Dva/Umi Models)
-│   ├── pages/          # Các màn hình chính
-│   ├── services/       # File API, Type, constant.ts (Chứa EModuleKey.BASE)
-│   ├── utils/          # Các hàm tiện ích (ip.ts, axios.ts)
-│   └── app.tsx         # File khởi tạo gốc của ứng dụng
+│   ├── pages/
+│   │   ├── HocSinh/          # Học sinh: Home, Workspace (chat AI), MyLabs,
+│   │   │                     #   Progress, Profile, Leaderboard, Classes
+│   │   ├── GiaoVien/         # Giáo viên: Dashboard, Classes, Exams, QuestionBank
+│   │   ├── Admin/            # Quản trị
+│   │   ├── TaoThiNghiem/ · QuanLyThiNghiem/ · ThiNghiem/   # Tạo & quản lý thí nghiệm
+│   │   └── ...               # BaiHoc, DanhMuc, ThongBao, TienIch, TrangChu, user
+│   ├── components/           # UI dùng chung (Header, Layout, OneSignal...)
+│   ├── models/               # State (Umi models)
+│   ├── services/             # API client, types, constants
+│   ├── hooks/                # useInitModel (CRUD chuẩn với BaseController), ...
+│   └── utils/                # axios, ip, helpers
+└── src/simulations → ../../simulations   # Thư viện mô phỏng dùng chung
 ```
 
-## 🔗 Liên kết với Backend
+## 🔗 Liên kết Backend
 
-Hệ thống Frontend đã được thiết kế đồng bộ cực độ với Backend. Thông qua hook `useInitModel`, khi bạn gọi đến API `/user` hoặc `/setting`, toàn bộ tính năng **Import Excel, Export Excel, Get Template** đều tương thích 100% với BaseController bên phía NestJS.
+Frontend đồng bộ với `BaseController`/`BaseService` của NestJS: qua hook `useInitModel`, các endpoint CRUD chuẩn (`/…/page`, `/…/all`, import/export Excel) tương thích sẵn. Chi tiết API và AI/RAG: [README tổng](../../README.md) và [Backend-Ai.md](../../Backend-Ai.md).

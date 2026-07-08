@@ -496,6 +496,130 @@
 			text-overflow: ellipsis;
 		}
 	}
+
+	// ── Ant Design Component Custom Overrides for Student Portal ──
+	.ant-card {
+		background-color: var(--bg) !important;
+		border: 1px solid var(--border) !important;
+		color: var(--text) !important;
+
+		.ant-card-head {
+			border-bottom: 1px solid var(--border-light) !important;
+			
+			.ant-card-head-title {
+				color: var(--text-heading) !important;
+			}
+		}
+	}
+
+	.ant-typography {
+		color: var(--text) !important;
+
+		&.ant-typography-secondary {
+			color: var(--muted) !important;
+		}
+	}
+
+	h1.ant-typography, h2.ant-typography, h3.ant-typography, h4.ant-typography, h5.ant-typography, h6.ant-typography {
+		color: var(--text-heading) !important;
+	}
+
+	.ant-btn {
+		text-transform: none !important;
+		font-family: @font-heading;
+		font-weight: 600;
+		border-radius: @stu-radius-md;
+		transition: all 0.2s ease;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+
+		&.ant-btn-primary {
+			background: @stu-accent !important;
+			border-color: @stu-accent !important;
+			color: #ffffff !important;
+			box-shadow: @stu-shadow-btn !important;
+
+			&:hover,
+			&:focus {
+				background: @stu-accent-deep !important;
+				border-color: @stu-accent-deep !important;
+				color: #ffffff !important;
+			}
+			
+			&[disabled], &.ant-btn-disabled {
+				background: var(--border) !important;
+				border-color: var(--border) !important;
+				color: var(--text-placeholder) !important;
+				box-shadow: none !important;
+			}
+		}
+
+		&.ant-btn-default {
+			background: var(--bg) !important;
+			border-color: var(--border) !important;
+			color: var(--text) !important;
+
+			&:hover,
+			&:focus {
+				background: var(--surface) !important;
+				border-color: @stu-accent !important;
+				color: @stu-accent !important;
+			}
+
+			&[disabled], &.ant-btn-disabled {
+				background: var(--border-light) !important;
+				border-color: var(--border-light) !important;
+				color: var(--text-disabled) !important;
+			}
+		}
+	}
+
+	.ant-tag {
+		border-radius: @stu-radius-sm;
+		font-weight: 600;
+		padding: 4px 10px;
+		border: 1px solid transparent;
+		font-size: 12px;
+
+		&.ant-tag-success {
+			background-color: oklch(0.62 0.13 150 / 0.15) !important;
+			border-color: oklch(0.62 0.13 150 / 0.3) !important;
+			color: oklch(0.72 0.14 150) !important;
+		}
+
+		&.ant-tag-error {
+			background-color: oklch(0.6 0.18 25 / 0.15) !important;
+			border-color: oklch(0.6 0.18 25 / 0.3) !important;
+			color: oklch(0.7 0.16 25) !important;
+		}
+
+		&.ant-tag-warning {
+			background-color: oklch(0.75 0.15 70 / 0.15) !important;
+			border-color: oklch(0.75 0.15 70 / 0.3) !important;
+			color: oklch(0.78 0.15 70) !important;
+		}
+		
+		&.ant-tag-info {
+			background-color: oklch(0.58 0.13 195 / 0.15) !important;
+			border-color: oklch(0.58 0.13 195 / 0.3) !important;
+			color: oklch(0.68 0.12 195) !important;
+		}
+	}
+
+	.ant-empty {
+		.ant-empty-description {
+			color: var(--muted) !important;
+		}
+	}
+
+	.ant-spin {
+		color: @stu-accent !important;
+		
+		.ant-spin-dot-item {
+			background-color: @stu-accent !important;
+		}
+	}
 }
 
 // ── Main Content Area ──

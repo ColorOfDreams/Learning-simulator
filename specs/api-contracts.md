@@ -1,264 +1,157 @@
 # API Contracts — AI Study Simulator
-> Single Source of Truth cho FE ↔ BE giao tiếp. Mọi thay đổi phải tạo PR riêng, tag Tech Lead review.
 
-**Base URL:** `/api/v1`
-**Auth header:** `Authorization: Bearer <jwt_token>` (trừ endpoint Guest-allowed)
+> Cập nhật theo mã nguồn thực tế (`src/backend/src/modules/**`). Đây là bản phản ánh API đang chạy — thay cho bản kế hoạch cũ (Fastify, `/api/v1`, SSE, guest mode) vốn không còn đúng.
+
+## Quy ước chung
+
+- **Base URL (dev):** `http://localhost:3000` — **không có prefix `/api/v1`**.
+- **Swagger UI:** `GET /api` (chỉ là trang tài liệu, không phải prefix API).
+- **Auth:** `Authorization: Bearer <jwt>` cho các route yêu cầu đăng nhập (Passport JWT).
+- **Envelope:** mọi response được `ResponseInterceptor` bọc:
+
+```json
+{ "data": { }, "message": "Thành công", "statusCode": 200 }
+```
+
+→ Frontend phải unwrap `response.data`. Với Umi/axios có thể gặp double-wrap `res.data.data`.
+
+- **Validation:** `ValidationPipe({ transform: true, whitelist: true })` toàn cục.
 
 ---
 
-## POST /analyze
-**Mô tả:** Phân tích bài tập, trả simulation config.
-**Auth:** Optional (Guest allowed)
+## AI / RAG (`/ai`)
 
-**Request:**
-```json
-{
-  "text": "Một vật chuyển động thẳng đều với v = 5 m/s. Quãng đường sau 10s?"
-}
-```
-  
-**Response 200:**
-```json
-{
-  "subject": "physics",
-  "topic": "uniform_motion",
-  "simulation_id": "SIM-01",
-  "parameters": [
-    { "key": "v", "value": 5, "unit": "m/s", "label": "Vận tốc" },
-    { "key": "t", "value": 10, "unit": "s", "label": "Thời gian" }
-  ],
-  "confidence": 0.92,
-  "session_id": "sess_abc123"
-}
-```
+| Method | Path | Mô tả |
+|---|---|---|
+| POST | `/ai/analyze` | Phân tích dạng bài, chọn simulation, trả references |
+| POST | `/ai/chat` | Hỏi đáp Hybrid RAG (vector + keyword) qua Mistral |
+| POST | `/ai/quiz/generate` | Sinh quiz MCQ |
 
-**Response 200 (out of scope):**
-```json
-{
-  "confidence": 0.45,
-  "message": "Bài này ngoài phạm vi hỗ trợ hiện tại.",
-  "session_id": null
-}
-```
+👉 **Contract chi tiết (request/response, prompt, fallback):** [../Backend-Ai.md](../Backend-Ai.md).
 
-**Response 429:** Rate limit (Guest > 3 session/ngày)
-```json
-{ "error": "RATE_LIMIT_EXCEEDED", "message": "Bạn đã dùng hết 3 lượt miễn phí hôm nay. Đăng ký để dùng không giới hạn." }
-```
+### Chat sessions (`/ai/chat`, module `chat`) — có lưu lịch sử
+
+| Method | Path | Mô tả |
+|---|---|---|
+| POST/GET | `/ai/chat/sessions` | Tạo / liệt kê phiên chat |
+| GET/DELETE | `/ai/chat/sessions/:id` | Lấy / xóa phiên |
+| GET/POST | `/ai/chat/sessions/:id/messages` | Lấy / gửi tin nhắn trong phiên |
+| POST | `/ai/chat/generate-experiment` | Sinh cấu hình thí nghiệm |
+| POST | `/ai/chat/sessions/:id/experiment-chat` | Chat thiết kế thí nghiệm |
+| POST | `/ai/chat/sessions/:id/guidance` | Gợi ý hướng dẫn |
 
 ---
 
-## POST /explain
-**Mô tả:** SSE stream AI explanation theo 4 lớp.
-**Auth:** Optional (Guest allowed)
-**Content-Type response:** `text/event-stream`
+## Auth (`/auth`)
 
-**Request:**
+| Method | Path | Auth | Mô tả |
+|---|---|---|---|
+| POST | `/auth/register` | ❌ | Đăng ký (201) |
+| POST | `/auth/login` | ❌ | Đăng nhập email/mật khẩu |
+| POST | `/auth/google/verify` | ❌ | Xác thực Google ID token từ frontend |
+| GET | `/auth/google` | ❌ | Khởi tạo luồng Google OAuth (redirect) |
+| GET | `/auth/google/callback` | ❌ | Callback Google → redirect kèm token |
+
+**Register — request:**
 ```json
-{
-  "session_id": "sess_abc123",
-  "message": "Giải thích tại sao vật lại đạt vận tốc đó?",
-  "context": []
-}
+{ "email": "student@example.com", "password": "SecurePass123!", "firstName": "Nguyễn", "lastName": "Văn A", "phone": "0912345678" }
 ```
+`email`, `password` bắt buộc; các trường còn lại tùy chọn.
 
-**SSE Events:**
-```
-event: layer
-data: {"layer": "phenomenon", "text": "Vật đang..."}
-
-event: layer
-data: {"layer": "formula", "text": "Áp dụng công thức $v = \\frac{s}{t}$..."}
-
-event: layer
-data: {"layer": "application", "text": "Với v = 5 m/s và t = 10s..."}
-
-event: layer
-data: {"layer": "experiment", "text": "Thử tăng v lên 10 m/s, bạn thấy gì?"}
-
-event: done
-data: {"message_id": "msg_xyz"}
-```
-
-**Error event:**
-```
-event: error
-data: {"code": "LLM_TIMEOUT", "message": "AI đang bận, vui lòng thử lại."}
-```
+**Login — request:** `{ "email": "...", "password": "..." }`
+**Google verify — request:** `{ "token": "<google_id_token>" }` → `data: { "access_token": "..." }`
 
 ---
 
-## POST /quiz/generate
-**Auth:** Optional (Guest allowed)
+## Users & Gamification (`/users`)
 
-**Request:**
-```json
-{ "session_id": "sess_abc123" }
-```
-
-**Response 200:**
-```json
-{
-  "quiz_id": "quiz_001",
-  "questions": [
-    {
-      "id": "q1",
-      "text": "Quãng đường vật đi được là bao nhiêu?",
-      "options": ["40 m", "50 m", "60 m", "70 m"],
-      "correct_index": 1,
-      "difficulty": 1,
-      "explanation": "Áp dụng s = v × t = 5 × 10 = 50 m"
-    }
-  ]
-}
-```
+| Method | Path | Mô tả |
+|---|---|---|
+| GET | `/users/me` | Thông tin user hiện tại |
+| PATCH | `/users/me` | Cập nhật hồ sơ |
+| GET | `/users/me/stats` | `{ xp, level, streak, maxStreak, levelTitle, nextThreshold, xpToNextLevel }` |
+| POST | `/users/me/complete-activity` | Gửi XP kiếm được `{ xpEarned }` |
+| POST | `/users/me/touch` | Cập nhật hoạt động (streak) |
+| GET | `/users/leaderboard?limit=N` | Bảng xếp hạng theo XP |
+| POST | `/users/me/labs/open` · `/complete` | Mở / hoàn thành một lab (mô phỏng) |
+| GET | `/users/me/labs` | `{ inProgress[], completed[] }` |
+| CRUD | `/users/page`, `/all`, `/one`, `/:id`, ... | CRUD chuẩn `BaseController` |
 
 ---
 
-## POST /quiz/answer
-**Auth:** Required
+## Lớp học (`/classrooms`)
 
-**Request:**
-```json
-{
-  "quiz_id": "quiz_001",
-  "answers": [{ "question_id": "q1", "selected_index": 1 }]
-}
-```
-
-**Response 200:**
-```json
-{
-  "score": 1,
-  "total": 1,
-  "results": [{ "question_id": "q1", "correct": true }]
-}
-```
+| Method | Path | Mô tả |
+|---|---|---|
+| POST | `/classrooms` | Tạo lớp (giáo viên) |
+| GET | `/classrooms/teacher` | Lớp của giáo viên |
+| GET | `/classrooms/student/me` | Lớp của học sinh |
+| GET/DELETE | `/classrooms/:id` | Chi tiết / xóa lớp |
+| POST | `/classrooms/join` | Học sinh tham gia bằng mã |
+| PATCH | `/classrooms/:classId/members/:memberId` | Cập nhật thành viên |
+| POST | `/classrooms/:classId/assignments` | Giao bài |
+| POST | `/classrooms/assignments/:assignmentId/submit` | Nộp bài |
 
 ---
 
-## GET /library
-**Auth:** Optional
-**Query:** `?subject=physics&topic=motion&q=chuyển+động`
+## Đề thi (`/exams`) & Ngân hàng câu hỏi (`/question-bank`)
 
-**Response 200:**
-```json
-{
-  "items": [
-    {
-      "id": "lib_001",
-      "subject": "physics",
-      "topic": "uniform_motion",
-      "title": "Chuyển động thẳng đều cơ bản",
-      "text": "...",
-      "simulation_id": "SIM-01",
-      "thumbnail_url": "/thumbnails/sim-01.png",
-      "parameters": []
-    }
-  ],
-  "total": 30
-}
-```
+| Method | Path | Mô tả |
+|---|---|---|
+| POST | `/exams` | Tạo đề thủ công |
+| POST | `/exams/ai-generate` | **Sinh đề bằng AI** |
+| GET | `/exams` · `/exams/:id` · `/exams/:id/questions` | Xem đề & câu hỏi |
+| PUT/DELETE | `/exams/:id` | Sửa / xóa |
+| POST | `/question-bank/ai-generate` | **AI sinh câu hỏi** (chống trùng) |
+| POST | `/question-bank/bulk` | Import hàng loạt |
+| CRUD | `/question-bank/...` | CRUD chuẩn `BaseController` |
 
 ---
 
-## GET /history
-**Auth:** Required
+## Thí nghiệm (`/scene`)
 
-**Response 200:**
-```json
-{
-  "sessions": [
-    {
-      "session_id": "sess_abc123",
-      "subject": "physics",
-      "topic": "uniform_motion",
-      "simulation_id": "SIM-01",
-      "thumbnail_url": "/thumbnails/sim-01.png",
-      "created_at": "2026-06-08T10:00:00+07:00",
-      "message_count": 5
-    }
-  ]
-}
-```
+`GET /scene/all`, `GET /scene/page`, `POST /scene`, `PUT /scene/:id`, `DELETE /scene/:id`, và `POST /scene/import/validate|execute`, `POST /scene/export/execute`.
 
 ---
 
-## POST /sessions/:id/share
-**Auth:** Required (Teacher only — role check)
+## Phân tích (`/analytics`, `/classrooms/:id/analytics`)
 
-**Response 200:**
-```json
-{
-  "share_url": "https://app.example.com/share/abc123",
-  "qr_code_url": "data:image/png;base64,..."
-}
-```
+- Giáo viên: `/analytics/teacher/overview`, `/class-comparison`, `/monthly-trends`, `/top-students`, `/recent-activity`, `/subject-breakdown` (+ `/export/xlsx`).
+- Theo lớp: `/classrooms/:id/analytics/overview`, `/completion`, `/score-distribution`, `/timeline`, `/student-ranking`, `/per-assignment`, `/student-detail` (+ export xlsx).
 
 ---
 
-## POST /auth/register
-**Request:**
-```json
-{ "email": "student@example.com", "password": "SecurePass123!" }
-```
-**Response 201:**
-```json
-{ "access_token": "...", "refresh_token": "...", "user": { "id": "u1", "email": "...", "role": "student" } }
-```
+## Admin (`/admin`)
+
+- Thống kê: `/admin/stats/overview`, `/admin/stats/railway-metrics`.
+- Người dùng: `GET/POST /admin/users`, `PUT /admin/users/:id/role|lock`, `POST /admin/users/:id/reset-password`, `POST /admin/users/import`, `DELETE /admin/users/:id`.
+- Lớp: `GET /admin/classes`, `PUT /admin/classes/:id/teacher|lock`, `DELETE /admin/classes/:id`.
+- Kiểm duyệt nội dung: `/admin/content/sims`, `/admin/content/questions`, `/admin/content/exams` (publish/approve/reject).
 
 ---
 
-## POST /auth/login
-**Request:**
-```json
-{ "email": "student@example.com", "password": "SecurePass123!" }
-```
-**Response 200:** same as register
+## Learning / RAG data (`/learning`)
+
+| Path | Mô tả |
+|---|---|
+| `GET /learning/theory-chunks` · `/:id` | Học liệu đã chunk |
+| `GET /learning/theory-chunks/rag/search` | Tìm kiếm RAG |
+| `GET /learning/simulation-templates` · `/:simulationId` | Template mô phỏng |
+| `GET /learning/problem-patterns` · `/learning/items` | Mẫu bài / học liệu |
+| `POST /learning/seed*`, `.../seed/default` | Seed dữ liệu |
+| `GET /learning/health` | Health check module learning |
 
 ---
 
-## POST /auth/google
-**Request:**
-```json
-{ "code": "<google_oauth_code>" }
-```
-**Response 200:** same as register
+## Khác
+
+- **Thông báo:** `GET /notification/me/page`, `POST /notification/read`.
+- **Danh mục:** `/subjects`, `/topics`, `/difficulties`, `/question-types`, `/grades` (CRUD chuẩn).
 
 ---
 
-## POST /auth/refresh
-**Request:**
-```json
-{ "refresh_token": "..." }
-```
-**Response 200:**
-```json
-{ "access_token": "...", "refresh_token": "..." }
-```
+## Mã lỗi HTTP
 
----
+- `400` validation · `401` thiếu/sai token · `403` sai vai trò · `429` rate limit (`@nestjs/throttler`) · `500` lỗi server.
 
-## GET /healthcheck
-**Response 200:**
-```json
-{ "status": "ok", "db": "connected", "redis": "connected", "timestamp": "2026-06-08T10:00:00Z" }
-```
-
----
-
-## Error Format (chuẩn chung)
-```json
-{
-  "error": "ERROR_CODE",
-  "message": "Human-readable message in Vietnamese",
-  "details": {}
-}
-```
-
-**HTTP Status codes:**
-- 400 Bad Request — validation error
-- 401 Unauthorized — missing/invalid token
-- 403 Forbidden — insufficient role
-- 429 Too Many Requests — rate limit
-- 500 Internal Server Error
+Lỗi cũng đi qua envelope; `message` là chuỗi tiếng Việt dễ đọc.

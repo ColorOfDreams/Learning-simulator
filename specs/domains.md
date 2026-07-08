@@ -1,5 +1,8 @@
 # Domains — AI Study Simulator
 
+> [!NOTE]
+> **Trạng thái: sơ đồ domain theo kế hoạch ban đầu (lịch sử).** Khác biệt so với thực tế: AI dùng **Mistral** (không phải Claude); **không dùng Redis** và **không dùng SSE**; mô phỏng dùng **Three.js/SVG** (không phải D3/Canvas); backend là **NestJS + TypeORM + PostgreSQL/pgvector**. Kiến trúc & tech stack hiện hành: [../README.md](../README.md#-kiến-trúc-tổng-quan).
+
 ## Domain Map
 
 ```

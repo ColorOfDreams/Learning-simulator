@@ -1,5 +1,8 @@
 # Product Vision — AI Study Simulator
 
+> [!NOTE]
+> **Trạng thái: tầm nhìn/kế hoạch MVP ban đầu (lịch sử).** Sản phẩm thực tế đã vượt phạm vi MVP này (thêm vai trò giáo viên/admin, lớp học, tạo đề & ngân hàng câu hỏi bằng AI, gamification). Một số chỉ tiêu/tính năng dưới đây (guest mode, SSE, teacher share QR) **chưa/không được triển khai đúng như mô tả**. Nguồn sự thật hiện hành: [../README.md](../README.md).
+
 ## Vấn đề cốt lõi
 
 Học sinh THPT Việt Nam học Vật lý, Hóa học, Toán qua bài giải văn bản — không trực quan, khó hình dung hiện tượng. Kết quả: học vẹt, không hiểu bản chất.

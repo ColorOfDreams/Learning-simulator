@@ -1,5 +1,9 @@
 # AGENTS.md — AI Study Simulator
-> **Dành cho AI Agents:** Đọc file này TRƯỚC KHI bắt đầu bất kỳ task nào. Đây là nguồn sự thật duy nhất (Single Source of Truth) về vai trò, quy tắc, và công việc của từng thành viên trong dự án.
+> **Dành cho AI Agents:** Đọc file này để hiểu vai trò, quy tắc làm việc và chiến lược nhánh của team.
+
+> [!IMPORTANT]
+> **Nguồn sự thật về sản phẩm/kỹ thuật hiện hành là [README.md](README.md)** (kèm [Backend-Ai.md](Backend-Ai.md) cho AI/RAG, [specs/api-contracts.md](specs/api-contracts.md) cho API), **không phải file này**.
+> File AGENTS.md được viết ở giai đoạn kế hoạch ban đầu: các phần mô tả **tech stack, kiến trúc và API** bên dưới (Fastify, Redis, SSE, Vercel, Claude, `/analyze`, `/explain`, `/api/v1`...) **đã lỗi thời** — stack thực tế là NestJS + TypeORM + PostgreSQL/pgvector + UmiJS/React 19 + Three.js + Mistral, deploy Railway. Phần **chiến lược nhánh, quy tắc commit và phân vai trò** vẫn còn giá trị tham khảo.
 
 ---
 
@@ -473,6 +477,6 @@ POST /api/v1/auth/google      → Google OAuth
 *"AI không thay thế team. AI khuếch đại cách team làm việc."*
 *— Vibe Coding Blueprint*
 
-### ? TYPESCRIPT GUIDELINES - Tuy?t d?i kh�ng t�y ti?n �p ki?u
-- TUY?T �?I KH�NG d�ng `as any` d? vu?t qua l?i TypeScript. Ph?i khai b�o d�ng ki?u d? li?u (Interface / Type) ho?c c?u tr�c l?i code.
-- �?i v?i `useModel` trong UmiJS, d?m b?o t�n model truy?n v�o kh?p ch�nh x�c v?i t�n file trong thu m?c `models/` d? du?c auto-infer ki?u d? li?u.
+### ? TYPESCRIPT GUIDELINES - Tuy?t d?i kh�ng t�y ti?n �p ki?u
+- TUY?T �?I KH�NG d�ng `as any` d? vu?t qua l?i TypeScript. Ph?i khai b�o d�ng ki?u d? li?u (Interface / Type) ho?c c?u tr�c l?i code.
+- �?i v?i `useModel` trong UmiJS, d?m b?o t�n model truy?n v�o kh?p ch�nh x�c v?i t�n file trong thu m?c `models/` d? du?c auto-infer ki?u d? li?u.
