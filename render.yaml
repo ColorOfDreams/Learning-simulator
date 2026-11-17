@@ -1,0 +1,84 @@
+services:
+  - type: web
+    name: scilab-demo-api-bl06
+    runtime: docker
+    plan: free
+    region: oregon
+    repo: https://github.com/ColorOfDreams/Learning-simulator
+    branch: feature/ASS-040-render-demo
+    dockerfilePath: ./Dockerfile.railway
+    dockerContext: .
+    dockerCommand: node scripts/start-render-demo.cjs
+    healthCheckPath: /learning/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        fromDatabase:
+          name: scilab-demo-db-bl06
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: scilab-demo-db-bl06
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: scilab-demo-db-bl06
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: scilab-demo-db-bl06
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: scilab-demo-db-bl06
+          property: database
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GOOGLE_CLIENT_ID
+        value: local-demo
+      - key: GOOGLE_CLIENT_SECRET
+        value: local-demo
+      - key: GOOGLE_CALLBACK_URL
+        value: http://localhost/auth/google/callback
+      - key: LEARNING_DATASET_PATH
+        value: /app/data/all-in-one.learning-data.json
+      - key: EMBEDDING_DIMENSION
+        value: "1024"
+      - key: AI_DEBUG
+        value: "false"
+      - key: PERMISSION_SERVICE_URL
+        value: http://127.0.0.1:3001
+
+  - type: web
+    name: scilab-demo-web-bl06
+    runtime: static
+    repo: https://github.com/ColorOfDreams/Learning-simulator
+    branch: feature/ASS-040-render-demo
+    buildCommand: cd src/frontend && corepack enable && yarn install --immutable && yarn build
+    staticPublishPath: ./src/frontend/dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: APP_CONFIG_IP_ROOT
+        fromService:
+          type: web
+          name: scilab-demo-api-bl06
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: APP_CONFIG_TEN_TRUONG
+        value: AI Study Simulator
+      - key: APP_CONFIG_GOOGLE_CLIENT_ID
+        value: local-demo
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: scilab-demo-db-bl06
+    plan: free
+    region: oregon
+    postgresMajorVersion: "16"
+    databaseName: scilab_demo
+    user: scilab_demo
+    ipAllowList: []
