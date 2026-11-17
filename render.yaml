@@ -35,12 +35,22 @@ services:
           property: database
       - key: JWT_SECRET
         generateValue: true
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_BASE_URL
+        value: https://api.modelapi.vn/v1
+      - key: LLM_MODEL
+        value: gpt-6-luna
+      - key: LLM_MAX_TOKENS
+        value: "1200"
+      - key: LLM_TIMEOUT_MS
+        value: "25000"
       - key: GOOGLE_CLIENT_ID
-        value: local-demo
+        sync: false
       - key: GOOGLE_CLIENT_SECRET
         value: local-demo
       - key: GOOGLE_CALLBACK_URL
-        value: http://localhost/auth/google/callback
+        value: https://scilab-demo-api-bl06.onrender.com/auth/google/callback
       - key: LEARNING_DATASET_PATH
         value: /app/data/all-in-one.learning-data.json
       - key: EMBEDDING_DIMENSION
@@ -70,7 +80,10 @@ services:
       - key: APP_CONFIG_TEN_TRUONG
         value: AI Study Simulator
       - key: APP_CONFIG_GOOGLE_CLIENT_ID
-        value: local-demo
+        fromService:
+          type: web
+          name: scilab-demo-api-bl06
+          envVarKey: GOOGLE_CLIENT_ID
     routes:
       - type: rewrite
         source: /*
