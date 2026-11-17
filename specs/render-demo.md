@@ -4,6 +4,7 @@ Yêu cầu ngày 2026-11-17: tạo một demo online riêng từ bản mô phỏ
 dùng dịch vụ miễn phí thay Railway vì tài khoản Railway đã hết trial.
 
 - Một Static Site build frontend UmiJS bằng Node 22 và phục vụ SPA với fallback về index.html.
+- Đặt `SHARP_IGNORE_GLOBAL_LIBVIPS=1` để sharp dùng binary theo lockfile thay vì libvips hệ thống của Render.
 - Một Web Service Docker chạy backend NestJS bằng Dockerfile hiện hành.
 - Một PostgreSQL riêng, bật pgvector trước khi NestJS đồng bộ schema.
 - Dịch vụ dùng cùng nhánh `feature/ASS-040-render-demo`; triển khai không cần merge dev/main.

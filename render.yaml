@@ -60,6 +60,8 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "22"
+      - key: SHARP_IGNORE_GLOBAL_LIBVIPS
+        value: "1"
       - key: APP_CONFIG_IP_ROOT
         fromService:
           type: web
