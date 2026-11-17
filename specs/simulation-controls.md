@@ -20,3 +20,13 @@ Yêu cầu ngày 2026-11-17: tham khảo cách trình bày mô phỏng của
 - So sánh kiểm tra TypeScript với trạng thái trước thay đổi; không thêm lỗi mới.
 
 Đây là thay đổi giao diện cho demo local. Tài liệu không xác nhận PR/CI/review đã hoàn tất.
+
+## Bố cục điện thoại (ASS-028, ngày 2026-11-17)
+
+- Áp dụng giao diện một vùng nội dung cho màn hình rộng tối đa 900 px, thay cách xếp chồng ba cột desktop.
+- Mặc định mở **Mô phỏng**; thanh chuyển mục phía dưới gồm **Mô phỏng**, **Hướng dẫn** (Hóa) hoặc **Thông số** (Lý/Toán), **Trợ lý AI**, **Quiz**. Nút chạm tối thiểu 44 px.
+- Chuyển mục giữ nguyên simulation instance, tham số, bước Hóa, hội thoại và trạng thái quiz; không dựng lại canvas khi mở hướng dẫn hoặc chat.
+- Mỗi vùng tự cuộn khi cần; cảnh và thanh thao tác không bị bảng hướng dẫn/AI che. Header có tên bài tối đa hai dòng, nhãn môn một dòng và nút Đặt lại/Lưu không ngắt chữ.
+- Bài Hóa hiển thị bước hiện tại ngắn gọn cạnh mô phỏng; toàn bộ hướng dẫn/quan sát xem trong mục Hướng dẫn.
+- Dùng chiều cao viewport động, chừa vùng an toàn ở đáy và hỗ trợ bàn phím ảo. Ở desktop tiếp tục hiển thị ba cột.
+- Kiểm thử 360×800, 390×844, 412×915, 844×390, 768×1024 và desktop 1440×900: canvas có diện tích, không cuộn ngang; chuyển mục, kéo slider, chạy/tạm dừng, Hóa tự chạy, AI và Quiz vẫn sử dụng được.

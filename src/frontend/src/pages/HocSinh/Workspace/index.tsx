@@ -2,6 +2,7 @@ import CelebrationOverlay from '@/components/CelebrationOverlay';
 import { chatWithAiPrompt, generateAiQuiz } from '@/services/ai/api';
 import { completeActivity, completeLabSession, getUserInfo, openLabSession } from '@/services/base/api';
 import { buildCelebrationData, type CelebrationData } from '@/utils/xp';
+import { ExperimentOutlined, MessageOutlined, QuestionCircleOutlined, SlidersOutlined } from '@ant-design/icons';
 import GenericChemSimulation from '@simulations/chemistry/GenericChemSimulation';
 import { CHEM_EXPERIMENT_ALIASES, EXPERIMENTS_CONFIG } from '@simulations/chemistry/experiments';
 import ProjectileSimulation from '@simulations/physics/SIM-02-projectile';
@@ -48,6 +49,7 @@ import './index.less';
 
 // ── Types ──
 type SubjectKey = 'physics' | 'math' | 'chem';
+type MobilePanel = 'simulation' | 'controls' | 'assistant';
 
 interface ChatMessage {
 	role: 'ai' | 'user';
@@ -2376,6 +2378,36 @@ const Workspace: React.FC = () => {
 
 	// Chat
 	const [activeRightTab, setActiveRightTab] = useState<'chat' | 'quiz'>('chat');
+	const [mobilePanel, setMobilePanel] = useState<MobilePanel>('simulation');
+	const workspaceRef = useRef<HTMLDivElement>(null);
+	const [isMobileWorkspace, setIsMobileWorkspace] = useState(() =>
+		typeof window !== 'undefined' ? window.matchMedia('(max-width: 900px)').matches : false,
+	);
+	useEffect(() => {
+		const query = window.matchMedia('(max-width: 900px)');
+		const update = () => setIsMobileWorkspace(query.matches);
+		update();
+		query.addEventListener('change', update);
+		return () => query.removeEventListener('change', update);
+	}, []);
+	useEffect(() => {
+		const root = workspaceRef.current?.closest<HTMLElement>('.stu-root--workspace');
+		const viewport = window.visualViewport;
+		if (!root || !viewport) return;
+		const updateHeight = () => root.style.setProperty('--workspace-height', `${viewport.height}px`);
+		updateHeight();
+		viewport.addEventListener('resize', updateHeight);
+		return () => {
+			viewport.removeEventListener('resize', updateHeight);
+			root.style.removeProperty('--workspace-height');
+		};
+	}, []);
+	useEffect(() => {
+		setMobilePanel('simulation');
+	}, [simId, subject]);
+	const currentChemInstruction = (
+		LAB_CHEM_STEPS[simId as keyof typeof LAB_CHEM_STEPS] || LAB_CHEM_STEPS['CHEM12-01']
+	).find((step) => step.n === chemStep);
 	const [chats, setChats] = useState<Record<string, ChatMessage[]>>(() => {
 		const initial: Record<string, ChatMessage[]> = {
 			default_physics: LAB_INITIAL_CHATS['default_physics'],
@@ -3355,7 +3387,7 @@ const Workspace: React.FC = () => {
 	}, []);
 
 	return (
-		<StudentLayout hideSidebar>
+		<StudentLayout hideSidebar className='stu-root--workspace'>
 			{/* Google Fonts (dùng link thay vì @import url() trong .less để tránh
 			    webpack fetch font lúc build — build trên Railway không có mạng ra ngoài) */}
 			<link rel='preconnect' href='https://fonts.googleapis.com' />
@@ -3365,11 +3397,16 @@ const Workspace: React.FC = () => {
 				rel='stylesheet'
 			/>
 			<div style={{ display: 'none' }}>{JSON.stringify(unusedBundle)}</div>
-			<div className='stu-ws'>
+			<div className='stu-ws' data-mobile-panel={mobilePanel} ref={workspaceRef}>
 				{/* Subheader */}
 				<div className='stu-ws__subheader'>
 					<div className='stu-ws__subheader-left'>
-						<div className='stu-ws__back' onClick={() => history.push('/hoc-sinh')}>
+						<button
+							type='button'
+							className='stu-ws__back'
+							aria-label='Về trang chủ'
+							onClick={() => history.push('/hoc-sinh')}
+						>
 							<svg
 								width='16'
 								height='16'
@@ -3382,22 +3419,25 @@ const Workspace: React.FC = () => {
 							>
 								<path d='M15 6l-6 6 6 6' />
 							</svg>
-						</div>
+						</button>
 						<div className={`stu-ws__subject-pill stu-ws__subject-pill--${meta.className}`}>{meta.label}</div>
 						<span className='stu-ws__breadcrumb-sep'>/</span>
-						<span className='stu-ws__breadcrumb-title'>{meta.title}</span>
+						<span className='stu-ws__breadcrumb-title' title={meta.title}>
+							{meta.title}
+						</span>
 					</div>
 
 					<div className='stu-ws__subheader-actions'>
-						<div className='stu-ws__btn-secondary' onClick={handleGlobalReset}>
+						<button type='button' className='stu-ws__btn-secondary' onClick={handleGlobalReset}>
 							Đặt lại
-						</div>
-						<div
+						</button>
+						<button
+							type='button'
 							className={`stu-ws__btn-primary${!canSubmit ? ' stu-ws__btn-primary--locked' : ''}`}
 							onClick={handleSubmit}
 						>
 							Lưu & Nộp
-						</div>
+						</button>
 					</div>
 				</div>
 
@@ -3408,7 +3448,13 @@ const Workspace: React.FC = () => {
 				{/* 3-Panel Layout */}
 				<div className='stu-ws__panels'>
 					{/* LEFT: Parameters */}
-					<div className='stu-ws__left scl'>
+					<div
+						className='stu-ws__left scl'
+						id='workspace-controls'
+						aria-label={subject === 'chem' ? 'Hướng dẫn thí nghiệm' : 'Thông số mô phỏng'}
+						aria-hidden={isMobileWorkspace && mobilePanel !== 'controls'}
+						inert={isMobileWorkspace && mobilePanel !== 'controls'}
+					>
 						{/* Physics Params */}
 						{subject === 'physics' && (
 							<>
@@ -12973,7 +13019,13 @@ const Workspace: React.FC = () => {
 					</div>
 
 					{/* CENTER: Simulation */}
-					<div className='stu-ws__center'>
+					<div
+						className='stu-ws__center'
+						id='workspace-simulation'
+						aria-label='Mô phỏng'
+						aria-hidden={isMobileWorkspace && mobilePanel !== 'simulation'}
+						inert={isMobileWorkspace && mobilePanel !== 'simulation'}
+					>
 						<div className='stu-ws__center-header'>
 							<span className='stu-ws__center-title'>{centerTitle}</span>
 							{subject === 'physics' && (
@@ -13024,6 +13076,23 @@ const Workspace: React.FC = () => {
 							)}
 						</div>
 
+						{subject === 'chem' && (
+							<button
+								type='button'
+								className='stu-ws__mobile-step'
+								onClick={() => setMobilePanel('controls')}
+								aria-label={`Xem hướng dẫn, bước ${Math.min(chemStep, totalChemSteps)} trên ${totalChemSteps}`}
+							>
+								<span className='stu-ws__mobile-step-number'>
+									{chemStep > totalChemSteps ? '✓' : `${chemStep}/${totalChemSteps}`}
+								</span>
+								<span>
+									<strong>{currentChemInstruction?.title || 'Đã hoàn thành thí nghiệm'}</strong>
+									<span>{currentChemInstruction?.sub || 'Xem lại các hiện tượng đã quan sát'}</span>
+								</span>
+								<span aria-hidden='true'>›</span>
+							</button>
+						)}
 						{/* Simulation mount point */}
 						<div
 							className={`stu-ws__sim-slot stu-ws__sim-slot--${meta.className}`}
@@ -13848,7 +13917,13 @@ const Workspace: React.FC = () => {
 					</div>
 
 					{/* RIGHT: AI Tutor + Quiz */}
-					<div className='stu-ws__right'>
+					<div
+						className='stu-ws__right'
+						id='workspace-assistant'
+						aria-label={activeRightTab === 'chat' ? 'Trợ lý AI' : 'Quiz'}
+						aria-hidden={isMobileWorkspace && mobilePanel !== 'assistant'}
+						inert={isMobileWorkspace && mobilePanel !== 'assistant'}
+					>
 						<div className='stu-ws__right-bubbles' aria-hidden='true'>
 							<span />
 							<span />
@@ -13865,7 +13940,9 @@ const Workspace: React.FC = () => {
 								<span className='stu-ws__tutor-spark' />
 							</div>
 							<div className='stu-ws__tutor-copy'>
-								<span className='stu-ws__tutor-name'>Trợ lý AI</span>
+								<span className='stu-ws__tutor-name'>
+									{isMobileWorkspace && activeRightTab === 'quiz' ? 'Quiz' : 'Trợ lý AI'}
+								</span>
 								<div className='stu-ws__tutor-status'>
 									<span className='stu-ws__tutor-live' />
 									<span>Đang trực tuyến</span>
@@ -14279,6 +14356,51 @@ const Workspace: React.FC = () => {
 						)}
 					</div>
 				</div>
+
+				<nav className='stu-ws__mobile-nav' aria-label='Các mục phòng thí nghiệm'>
+					<button
+						type='button'
+						aria-controls='workspace-simulation'
+						aria-pressed={mobilePanel === 'simulation'}
+						onClick={() => setMobilePanel('simulation')}
+					>
+						<ExperimentOutlined aria-hidden='true' />
+						<span>Mô phỏng</span>
+					</button>
+					<button
+						type='button'
+						aria-controls='workspace-controls'
+						aria-pressed={mobilePanel === 'controls'}
+						onClick={() => setMobilePanel('controls')}
+					>
+						<SlidersOutlined aria-hidden='true' />
+						<span>{subject === 'chem' ? 'Hướng dẫn' : 'Thông số'}</span>
+					</button>
+					<button
+						type='button'
+						aria-controls='workspace-assistant'
+						aria-pressed={mobilePanel === 'assistant' && activeRightTab === 'chat'}
+						onClick={() => {
+							setActiveRightTab('chat');
+							setMobilePanel('assistant');
+						}}
+					>
+						<MessageOutlined aria-hidden='true' />
+						<span>Trợ lý AI</span>
+					</button>
+					<button
+						type='button'
+						aria-controls='workspace-assistant'
+						aria-pressed={mobilePanel === 'assistant' && activeRightTab === 'quiz'}
+						onClick={() => {
+							setActiveRightTab('quiz');
+							setMobilePanel('assistant');
+						}}
+					>
+						<QuestionCircleOutlined aria-hidden='true' />
+						<span>Quiz</span>
+					</button>
+				</nav>
 			</div>
 			{showCelebration && dynQuizState === 'done' && celebData && (
 				<CelebrationOverlay

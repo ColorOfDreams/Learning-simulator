@@ -8,8 +8,7 @@ import routes from './routes';
 // của destructuring không kích hoạt (chỉ áp dụng với undefined). Fallback khớp .env local.
 const APP_CONFIG_TEN_TRUONG = process.env.APP_CONFIG_TEN_TRUONG || 'AI Study Simulator';
 const APP_CONFIG_TIEN_TO_TRUONG = process.env.APP_CONFIG_TIEN_TO_TRUONG || 'Dự án';
-const APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH =
-	process.env.APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH || 'AI_MO_PHONG';
+const APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH = process.env.APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH || 'AI_MO_PHONG';
 const APP_CONFIG_GA_ID = process.env.APP_CONFIG_GA_ID || '';
 
 export default defineConfig({
@@ -33,7 +32,10 @@ export default defineConfig({
 			name: 'description',
 			content: `AI Thực chiến - ${APP_CONFIG_TEN_TRUONG.toUpperCase()}`,
 		},
-		{ name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' },
+		{
+			name: 'viewport',
+			content: 'width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content',
+		},
 	],
 	links: [
 		{ rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' },
@@ -110,8 +112,7 @@ export default defineConfig({
 		APP_CONFIG_IP_ROOT: process.env.APP_CONFIG_IP_ROOT || 'https://backend-production-0858.up.railway.app',
 		APP_CONFIG_TEN_TRUONG: process.env.APP_CONFIG_TEN_TRUONG || 'AI Study Simulator',
 		APP_CONFIG_TIEN_TO_TRUONG: process.env.APP_CONFIG_TIEN_TO_TRUONG || 'Dự án',
-		APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH:
-			process.env.APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH || 'AI_MO_PHONG',
+		APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH: process.env.APP_CONFIG_TEN_TRUONG_VIET_TAT_TIENG_ANH || 'AI_MO_PHONG',
 		APP_CONFIG_GA_ID: process.env.APP_CONFIG_GA_ID || '',
 		APP_CONFIG_SENTRY_DSN: '',
 		APP_CONFIG_ONE_SIGNAL_ID: '',

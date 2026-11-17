@@ -1,3 +1,4 @@
+import { getResponsiveFov } from '../camera';
 import { createReadoutPanel, drawStats } from './readout-panel';
 import { useRef, useEffect, useMemo } from 'react';
 import * as THREE from 'three';
@@ -105,7 +106,7 @@ export default function EnergySimulation({
 
     const width = mountRef.current.clientWidth;
     const height = mountRef.current.clientHeight;
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(getResponsiveFov(45, width / height), width / height, 0.1, 100);
     camera.position.set(0, 5.5, 18);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
@@ -303,6 +304,7 @@ export default function EnergySimulation({
         const { width: w, height: hVal } = entry.contentRect;
         renderer.setSize(w, hVal);
         camera.aspect = w / hVal;
+        camera.fov = getResponsiveFov(45, camera.aspect);
         camera.updateProjectionMatrix();
         render();
       }

@@ -1,3 +1,4 @@
+import { getResponsiveFov } from '../camera';
 import { createReadoutPanel, drawStats } from './readout-panel';
 import { useRef, useEffect, useMemo } from 'react';
 import * as THREE from 'three';
@@ -66,7 +67,7 @@ export default function StandingSimulation({
 
     const width = mountRef.current.clientWidth;
     const height = mountRef.current.clientHeight;
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(getResponsiveFov(45, width / height), width / height, 0.1, 100);
     camera.position.set(0, 6.4, 22);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
@@ -234,6 +235,7 @@ export default function StandingSimulation({
         const { width: w, height: h } = entry.contentRect;
         renderer.setSize(w, h);
         camera.aspect = w / h;
+        camera.fov = getResponsiveFov(45, camera.aspect);
         camera.updateProjectionMatrix();
         render();
       }

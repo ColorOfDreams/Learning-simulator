@@ -6,10 +6,16 @@
 
 .stu-ws {
 	flex: 1;
+	min-height: 0;
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
 	font-family: @font-heading;
+
+	&__mobile-nav,
+	&__mobile-step {
+		display: none;
+	}
 
 	// ── Subheader ──
 	&__subheader {
@@ -1821,23 +1827,351 @@
 }
 
 @media (max-width: 900px) {
-	.stu-ws__panels {
-		flex-direction: column;
+	.stu-root--workspace {
+		height: 100vh;
+		height: var(--workspace-height, 100dvh);
+
+		.stu-main {
+			min-height: 0;
+		}
 	}
 
-	.stu-ws__left,
-	.stu-ws__right {
-		width: 100%;
-		margin: 0;
-		border-radius: 0;
-		border: none;
-		border-bottom: 1px solid @stu-border;
-		max-height: 360px;
+	.stu-ws {
+		&__subheader {
+			height: auto;
+			min-height: 78px;
+			padding: 10px 12px;
+			gap: 8px;
+
+			&-left {
+				flex: 1;
+				min-width: 0;
+				display: grid;
+				grid-template-columns: 44px minmax(0, 1fr);
+				gap: 3px 8px;
+			}
+
+			&-actions {
+				flex: none;
+				gap: 6px;
+			}
+		}
+
+		&__back {
+			grid-row: 1 / 3;
+			width: 44px;
+			height: 44px;
+		}
+
+		&__subject-pill {
+			grid-column: 2;
+			justify-self: start;
+			padding: 2px 6px;
+			font-size: 11px;
+			line-height: 1.4;
+			white-space: nowrap;
+		}
+
+		&__breadcrumb-sep {
+			display: none;
+		}
+
+		&__breadcrumb-title {
+			grid-column: 2;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+			overflow: hidden;
+			font-size: 13px;
+			line-height: 1.4;
+			word-break: normal;
+		}
+
+		&__subheader-actions button {
+			min-height: 44px;
+			padding: 8px 9px;
+			font-family: inherit;
+			font-size: 12px;
+			white-space: nowrap;
+		}
+
+		&__btn-primary {
+			border: 0;
+		}
+
+		&__panels {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-rows: minmax(0, 1fr);
+			min-height: 0;
+			position: relative;
+		}
+
+		&__left,
+		&__right,
+		&__center {
+			grid-area: 1 / 1;
+			width: 100%;
+			height: 100%;
+			min-width: 0;
+			min-height: 0;
+			max-height: none;
+			margin: 0;
+			border: 0;
+			border-radius: 0;
+			visibility: hidden;
+			pointer-events: none;
+			overflow: hidden;
+		}
+
+		&[data-mobile-panel='simulation'] &__center,
+		&[data-mobile-panel='controls'] &__left,
+		&[data-mobile-panel='assistant'] &__right {
+			visibility: visible;
+			pointer-events: auto;
+			z-index: 1;
+		}
+
+		&__left {
+			padding: 18px 20px;
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			input[type='range'] {
+				height: 6px;
+				margin: 18px 0;
+				&::-webkit-slider-thumb {
+					width: 24px;
+					height: 24px;
+				}
+				&::-moz-range-thumb {
+					width: 22px;
+					height: 22px;
+				}
+			}
+		}
+
+		&__reference > summary {
+			min-height: 44px;
+		}
+
+		&__step-title--muted,
+		&__step-sub {
+			color: @stu-text-secondary;
+		}
+
+		&__center {
+			padding: 10px 12px 12px;
+			gap: 10px;
+		}
+
+		&__center-header {
+			min-height: 44px;
+			flex: none;
+			gap: 8px;
+		}
+
+		&__center-title {
+			font-size: 13px;
+			min-width: 0;
+		}
+
+		&__center-actions {
+			flex: none;
+		}
+
+		&__center-btn {
+			height: 44px;
+			padding: 8px 12px;
+			white-space: nowrap;
+		}
+
+		&__sim-slot {
+			min-height: 0;
+			border-radius: 12px;
+		}
+
+		.sim-readouts {
+			top: 10px;
+			right: 10px;
+			width: min(190px, calc(100% - 20px));
+			gap: 10px 12px;
+			padding: 10px 12px;
+			dd {
+				font-size: 15px;
+			}
+		}
+
+		&__formula-bar {
+			flex: none;
+			padding: 10px;
+			max-height: 58px;
+			overflow: auto;
+			font-size: 12px;
+		}
+
+		&__mobile-step {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			flex: none;
+			width: 100%;
+			padding: 10px;
+			border: 1px solid @stu-border;
+			border-radius: 10px;
+			background: @stu-bg-panel;
+			color: @stu-text-primary;
+			font-family: inherit;
+			text-align: left;
+			cursor: pointer;
+
+			> span:nth-child(2) {
+				min-width: 0;
+				flex: 1;
+				strong,
+				> span {
+					display: block;
+					font-size: 12px;
+					line-height: 1.4;
+				}
+				> span {
+					color: @stu-text-secondary;
+					margin-top: 2px;
+				}
+			}
+		}
+
+		&__mobile-step-number {
+			color: @stu-accent;
+			font-size: 13px;
+			font-weight: 700;
+			white-space: nowrap;
+		}
+
+		&__right::before,
+		&__right-bubbles,
+		&__right-tabs {
+			display: none;
+		}
+
+		&__tutor-header {
+			flex: none;
+			padding: 12px 16px;
+			border-bottom: 1px solid @stu-border;
+		}
+
+		&__chat {
+			min-height: 0;
+			padding: 16px 12px;
+			overscroll-behavior: contain;
+		}
+
+		&__chat-msg--ai {
+			max-width: 90%;
+		}
+
+		&__chat-composer {
+			flex: none;
+			padding: 10px 12px;
+		}
+
+		&__chat-input {
+			font-size: 16px;
+		}
+
+		&__mobile-nav {
+			display: grid;
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 4px;
+			flex: none;
+			padding: 6px max(6px, env(safe-area-inset-right)) max(6px, env(safe-area-inset-bottom))
+				max(6px, env(safe-area-inset-left));
+			border-top: 1px solid @stu-border;
+			background: @stu-bg-sidebar;
+			z-index: 2;
+
+			button {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 5px;
+				min-width: 0;
+				min-height: 52px;
+				padding: 6px 2px;
+				border: 0;
+				border-radius: 8px;
+				background: transparent;
+				color: @stu-text-secondary;
+				font-family: inherit;
+				font-size: 11px;
+				font-weight: 500;
+				white-space: nowrap;
+				cursor: pointer;
+				.anticon {
+					font-size: 19px;
+				}
+				&[aria-pressed='true'] {
+					background: @stu-accent-tint;
+					color: @stu-text-primary;
+					box-shadow: inset 0 2px @stu-accent;
+				}
+			}
+		}
+
+		&__submit-toast {
+			max-width: calc(100vw - 24px);
+			white-space: normal;
+		}
 	}
 
 	.stu-ws__live-badge {
 		display: none;
 	}
+}
+
+@media (max-width: 900px) and (max-height: 500px) {
+	.stu-ws__center {
+		display: grid;
+		grid-template-columns: minmax(150px, 200px) minmax(0, 1fr);
+		grid-template-rows: 44px minmax(0, 1fr);
+	}
+	.stu-ws__center-header {
+		grid-column: 1 / 3;
+	}
+	.stu-ws__sim-slot {
+		grid-column: 1 / 3;
+		grid-row: 2;
+	}
+	.stu-ws__sim-slot--chem {
+		grid-column: 2;
+	}
+	.stu-ws__formula-bar {
+		display: none;
+	}
+	.stu-ws__mobile-nav button {
+		flex-direction: row;
+		min-height: 40px;
+		gap: 6px;
+	}
+	.stu-ws__subheader {
+		min-height: 60px;
+		padding-top: 4px;
+		padding-bottom: 4px;
+	}
+	.stu-ws__mobile-step {
+		grid-column: 1;
+		grid-row: 2;
+		align-self: start;
+		padding: 6px 10px;
+	}
+	.stu-ws__mobile-step > span:nth-child(2) > span {
+		display: none;
+	}
+}
+
+.stu-ws button:focus-visible {
+	outline: 2px solid @stu-accent;
+	outline-offset: 2px;
 }
 
 // ── Dynamic Quiz UI ──
