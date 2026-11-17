@@ -49,6 +49,9 @@ chưa được merge trong lần triển khai demo này.
 6. Kiểm thử đăng nhập Google trong trình duyệt bằng tài khoản do người dùng chọn. Không xác nhận Google login hoạt động chỉ dựa vào việc nút Google xuất hiện.
 
 Project Google Cloud được người dùng chọn trong lần thiết lập này: `ai-lab-16-longbl`.
+OAuth Web Client: `SciLab Render Web`, client ID công khai
+`617306138360-lp9o43cbnndkadavilvu2fgtg9e8p5a7.apps.googleusercontent.com`.
+Authorized JavaScript origin: `https://scilab-demo-web-bl06.onrender.com`.
 
 ModelAPI đã được cấu hình và deploy trên backend Render ngày 2026-11-17. Hai request
 `/ai/chat` thật xác nhận `used_llm: true`, `metadata.model: gpt-6-luna`, có references

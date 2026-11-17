@@ -46,7 +46,7 @@ services:
       - key: LLM_TIMEOUT_MS
         value: "25000"
       - key: GOOGLE_CLIENT_ID
-        sync: false
+        value: 617306138360-lp9o43cbnndkadavilvu2fgtg9e8p5a7.apps.googleusercontent.com
       - key: GOOGLE_CLIENT_SECRET
         value: local-demo
       - key: GOOGLE_CALLBACK_URL
