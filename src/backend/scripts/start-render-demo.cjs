@@ -1,5 +1,6 @@
 const { spawn } = require('node:child_process');
 const { Client } = require('pg');
+const { databaseConfig } = require('./database-config.cjs');
 
 const delay = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -15,14 +16,7 @@ for (const signal of ['SIGINT', 'SIGTERM']) {
 }
 
 async function main() {
-  const client = new Client({
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT || 5432),
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    connectionTimeoutMillis: 15000,
-  });
+  const client = new Client(databaseConfig(process.env));
   try {
     await client.connect();
     await client.query('CREATE EXTENSION IF NOT EXISTS vector');
@@ -57,6 +51,10 @@ async function main() {
   }
   if (stopping) return;
   if (!ready) throw new Error('Demo API did not become ready.');
+  if (process.env.DEMO_SEED_ON_START === 'false') {
+    console.log('Migrated database: startup dataset seed disabled.');
+    return;
+  }
 
   const seeded = await fetch(`${baseUrl}/learning/seed`, {
     method: 'POST',

@@ -207,6 +207,18 @@ Cấu hình API base qua biến `APP_CONFIG_IP_ROOT` trong `src/frontend/.env` (
 
 ## 🔐 Biến môi trường
 
+### Supabase PostgreSQL
+
+Backend có thể dùng PostgreSQL do Supabase quản lý qua `DATABASE_URL` (session
+pooler cho kết nối IPv4), `DB_SSL=true`, `DB_SCHEMA=scilab`, `DB_POOL_MAX=5`,
+`DB_SYNCHRONIZE=false` và `DEMO_SEED_ON_START=false`. Chỉ bật các giá trị này sau
+khi đã restore schema/dữ liệu và kiểm tra. Dùng `DB_SSL_CA` nếu chuỗi chứng chỉ
+provider cần CA riêng; luôn kiểm tra chứng chỉ TLS. Không đưa connection string
+hoặc mật khẩu database ra frontend. Chi tiết: [ADR-0007](adrs/0007-supabase-postgres.md).
+
+Đây là thay nơi lưu PostgreSQL, không thay auth của ứng dụng bằng Supabase Auth.
+Các bảng ứng dụng nằm trong schema riêng; không cần bật Data API cho trình duyệt.
+
 Backend (`src/backend/.env`) — các nhóm chính:
 
 ```dotenv

@@ -181,6 +181,7 @@ export class UsersSeedService implements OnApplicationBootstrap {
   ) {}
 
   async onApplicationBootstrap() {
+    if (process.env.DEMO_SEED_ON_START === 'false') return;
     await this.seedAdmin();
     await this.seedTeacher();
     await this.seedStudents();
