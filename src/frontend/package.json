@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "max dev",
     "build": "max build",
+    "build:cloudflare": "node scripts/build-cloudflare.mjs",
     "format": "prettier --cache --write .",
     "postinstall": "max setup node ./postinstall.js",
     "setup": "max setup",

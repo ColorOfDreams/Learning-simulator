@@ -21,6 +21,7 @@ import { TopicsModule } from './modules/topics/topics.module';
 import { DifficultysModule } from './modules/difficulties/difficulties.module';
 import { ActivityModule } from './modules/activity/activity.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { databaseOptions } from './core/database-options';
 
 @Module({
   imports: [
@@ -29,16 +30,7 @@ import { AdminModule } from './modules/admin/admin.module';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USER'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_NAME'),
-        autoLoadEntities: true,
-        synchronize: true, // Chỉ dùng trong môi trường dev
-      }),
+      useFactory: databaseOptions,
       inject: [ConfigService],
     }),
     UsersModule,

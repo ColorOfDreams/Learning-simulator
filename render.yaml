@@ -1,0 +1,127 @@
+services:
+  - type: web
+    name: scilab-demo-api-bl06
+    runtime: docker
+    plan: free
+    region: oregon
+    repo: https://github.com/ColorOfDreams/Learning-simulator
+    branch: feature/ASS-040-render-demo
+    dockerfilePath: ./Dockerfile.railway
+    dockerContext: .
+    dockerCommand: node scripts/start-render-demo.cjs
+    healthCheckPath: /learning/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DB_SSL
+        value: "true"
+      - key: DB_SSL_CA
+        sync: false
+      - key: DB_SCHEMA
+        value: scilab
+      - key: DB_POOL_MAX
+        value: "5"
+      - key: DB_SYNCHRONIZE
+        value: "false"
+      - key: DEMO_SEED_ON_START
+        value: "false"
+      # Legacy Render DB variables remain available for rollback; DATABASE_URL
+      # takes precedence. Retain the source database until migration is verified.
+      - key: DB_HOST
+        fromDatabase:
+          name: scilab-demo-db-bl06
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: scilab-demo-db-bl06
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: scilab-demo-db-bl06
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: scilab-demo-db-bl06
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: scilab-demo-db-bl06
+          property: database
+      - key: JWT_SECRET
+        generateValue: true
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_API_KEYS
+        sync: false
+      - key: LLM_MAX_CONCURRENT
+        value: "8"
+      - key: LLM_KEY_MAX_CONCURRENT
+        value: "2"
+      - key: LLM_MAX_QUEUE
+        value: "32"
+      - key: LLM_QUEUE_TIMEOUT_MS
+        value: "3000"
+      - key: LLM_MAX_REQUESTS_PER_MINUTE
+        value: "30"
+      - key: LLM_BASE_URL
+        value: https://api.modelapi.vn/v1
+      - key: LLM_MODEL
+        value: gpt-6-luna
+      - key: LLM_MAX_TOKENS
+        value: "1200"
+      - key: LLM_TIMEOUT_MS
+        value: "25000"
+      - key: GOOGLE_CLIENT_ID
+        value: 617306138360-lp9o43cbnndkadavilvu2fgtg9e8p5a7.apps.googleusercontent.com
+      - key: GOOGLE_CLIENT_SECRET
+        value: local-demo
+      - key: GOOGLE_CALLBACK_URL
+        value: https://scilab-demo-api-bl06.onrender.com/auth/google/callback
+      - key: LEARNING_DATASET_PATH
+        value: /app/data/all-in-one.learning-data.json
+      - key: EMBEDDING_DIMENSION
+        value: "1024"
+      - key: AI_DEBUG
+        value: "false"
+      - key: PERMISSION_SERVICE_URL
+        value: http://127.0.0.1:3001
+
+  - type: web
+    name: scilab-demo-web-bl06
+    runtime: static
+    repo: https://github.com/ColorOfDreams/Learning-simulator
+    branch: feature/ASS-040-render-demo
+    buildCommand: cd src/frontend && corepack enable && yarn install --immutable && yarn build
+    staticPublishPath: ./src/frontend/dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: SHARP_IGNORE_GLOBAL_LIBVIPS
+        value: "1"
+      - key: APP_CONFIG_IP_ROOT
+        fromService:
+          type: web
+          name: scilab-demo-api-bl06
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: APP_CONFIG_TEN_TRUONG
+        value: AI Study Simulator
+      - key: APP_CONFIG_GOOGLE_CLIENT_ID
+        fromService:
+          type: web
+          name: scilab-demo-api-bl06
+          envVarKey: GOOGLE_CLIENT_ID
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: scilab-demo-db-bl06
+    plan: free
+    region: oregon
+    postgresMajorVersion: "16"
+    databaseName: scilab_demo
+    user: scilab_demo
+    ipAllowList: []

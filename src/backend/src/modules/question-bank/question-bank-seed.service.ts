@@ -12,6 +12,7 @@ export class QuestionBankSeedService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
+    if (process.env.DEMO_SEED_ON_START === 'false') return;
     const count = await this.questionRepo.count();
     if (count > 0) return;
     const questions = SEED_QUESTIONS.map(q => this.questionRepo.create({ ...q, createdBy: 'seed' }));

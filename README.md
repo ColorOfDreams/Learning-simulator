@@ -130,7 +130,7 @@ Monorepo, 3 tầng, API-first. AI trả lời theo pipeline **Hybrid RAG** (vect
 | **Mô phỏng** | Three.js 0.184 + `@react-three/fiber` / `drei` / `rapier`; SVG cho sim Toán 2D; KaTeX (công thức); ApexCharts (đồ thị) |
 | **Backend** | NestJS 11, TypeScript, TypeORM, `@nestjs/swagger`, `@nestjs/throttler` (rate limit), class-validator |
 | **Auth** | Passport JWT + Google OAuth 2.0 (`passport-google-oauth20`), bcryptjs |
-| **Database** | PostgreSQL + extension `pgvector` (`pgvector/pgvector:pg15`) |
+| **Database** | Supabase PostgreSQL + `pgvector` (cloud); `pgvector/pgvector:pg15` (Docker local) |
 | **AI / RAG** | Mistral qua cấu hình OpenAI-compatible (`LLM_*` chat, `EMBEDDING_*` embedding); Hybrid RAG (vector + keyword) trên `theory_chunks` |
 | **Khác** | exceljs (import/export Excel), OneSignal (push notification), TinyMCE (soạn thảo) |
 | **Hạ tầng** | Docker Compose (dev local) · Railway (production) · GitHub Actions (CI build/test) |
@@ -206,6 +206,25 @@ Cấu hình API base qua biến `APP_CONFIG_IP_ROOT` trong `src/frontend/.env` (
 ---
 
 ## 🔐 Biến môi trường
+
+### Supabase PostgreSQL
+
+Backend có thể dùng PostgreSQL do Supabase quản lý qua `DATABASE_URL` (session
+pooler cho kết nối IPv4), `DB_SSL=true`, `DB_SCHEMA=scilab`, `DB_POOL_MAX=5`,
+`DB_SYNCHRONIZE=false` và `DEMO_SEED_ON_START=false`. Chỉ bật các giá trị này sau
+khi đã restore schema/dữ liệu và kiểm tra. Dùng `DB_SSL_CA` nếu chuỗi chứng chỉ
+provider cần CA riêng; luôn kiểm tra chứng chỉ TLS. Không đưa connection string
+hoặc mật khẩu database ra frontend. Chi tiết: [ADR-0007](adrs/0007-supabase-postgres.md).
+
+Đây là thay nơi lưu PostgreSQL, không thay auth của ứng dụng bằng Supabase Auth.
+Các bảng ứng dụng nằm trong schema riêng; không cần bật Data API cho trình duyệt.
+
+Mẫu cấu hình: [src/backend/.env.supabase.example](src/backend/.env.supabase.example).
+Thêm các biến trong mẫu vào `src/backend/.env`, điền kết nối và CA của project,
+giữ các cấu hình JWT/Google/LLM hiện có. `DATABASE_URL` được ưu tiên hơn nhóm
+`DB_HOST`/`DB_PORT`/`DB_USER`/`DB_PASSWORD`/`DB_NAME`. Backend cục bộ đã được kiểm tra
+với project `scilab-learning-simulator` ngày 19/11/2026; trạng thái triển khai và
+giới hạn kiểm tra nằm trong [hướng dẫn chuyển database](docs/supabase-migration.md).
 
 Backend (`src/backend/.env`) — các nhóm chính:
 
@@ -295,6 +314,11 @@ Danh sách đầy đủ: xem Swagger `/api` hoặc [specs/api-contracts.md](spec
 ---
 
 ## ☁️ Deploy (Railway)
+
+Bản frontend cũng hỗ trợ Cloudflare Pages: dùng Node.js 22, chạy
+`yarn build:cloudflare` tại `src/frontend` và upload nội dung `dist`. Backend vẫn
+gọi API Render kết nối Supabase. Cấu hình và cách phát hành:
+[docs/cloudflare-deployment.md](docs/cloudflare-deployment.md).
 
 - Production build bằng **[Dockerfile.railway](Dockerfile.railway)** (backend) và **[Dockerfile.frontend.railway](Dockerfile.frontend.railway)** (frontend) — **build context là gốc repo**.
 - Deploy được **trigger khi push nhánh `dev`** (không chỉ `main`).

@@ -3,6 +3,7 @@ import * as THREE from 'three';
 // @ts-ignore
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import type { SimulationProps } from '../types';
+import { getResponsiveFov } from '../camera';
 import { CHEM_EXPERIMENT_ALIASES, EXPERIMENTS_CONFIG } from './experiments';
 
 // Easing helpers
@@ -1487,7 +1488,7 @@ export default function GenericChemSimulation({
     scene.fog = new THREE.Fog(0x0e1a2a, 34, 75);
 
     const aspect = mountRef.current.clientWidth / mountRef.current.clientHeight;
-    const camera = new THREE.PerspectiveCamera(46, aspect, 0.1, 200);
+    const camera = new THREE.PerspectiveCamera(getResponsiveFov(46, aspect), aspect, 0.1, 200);
     camera.position.set(0, 7, 14);
     cameraRef.current = camera;
 
@@ -2362,16 +2363,19 @@ export default function GenericChemSimulation({
       if (!mountRef.current) return;
       const w = mountRef.current.clientWidth;
       const h = mountRef.current.clientHeight;
+      if (w <= 0 || h <= 0) return;
       camera.aspect = w / h;
+      camera.fov = getResponsiveFov(46, camera.aspect);
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
-    window.addEventListener('resize', handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(mountRef.current);
 
     return () => {
       clearTimeout(thumbnailTimer);
       cancelAnimationFrame(reqId);
-      window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       canvasElement.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerup', handlePointerUp);
