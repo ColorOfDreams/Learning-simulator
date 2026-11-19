@@ -13,6 +13,22 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DB_SSL
+        value: "true"
+      - key: DB_SSL_CA
+        sync: false
+      - key: DB_SCHEMA
+        value: scilab
+      - key: DB_POOL_MAX
+        value: "5"
+      - key: DB_SYNCHRONIZE
+        value: "false"
+      - key: DEMO_SEED_ON_START
+        value: "false"
+      # Legacy Render DB variables remain available for rollback; DATABASE_URL
+      # takes precedence. Retain the source database until migration is verified.
       - key: DB_HOST
         fromDatabase:
           name: scilab-demo-db-bl06

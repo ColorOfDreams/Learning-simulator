@@ -1,5 +1,9 @@
 # Chuyển SciLab từ Render Postgres sang Supabase
 
+Project đích chuẩn bị ngày 19/11/2026: `scilab-learning-simulator`, Oregon,
+session pooler. Tài khoản backend `scilab_app` chỉ có quyền DML trong schema
+`scilab`, kết nối có CA Supabase và kiểm tra TLS. Không ghi mật khẩu vào tài liệu.
+
 ## Phạm vi
 
 Giữ NestJS, TypeORM, Google login và các API hiện có. Supabase đóng vai trò
