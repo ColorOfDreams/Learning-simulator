@@ -8,8 +8,8 @@ Frontend UmiJS/React chạy dưới dạng static assets trên Cloudflare Pages.
 NestJS vẫn ở `https://scilab-demo-api-bl06.onrender.com`, kết nối PostgreSQL trên
 Supabase theo [hướng dẫn database](supabase-migration.md).
 
-Project Pages: `scilab-learning-simulator`. Địa chỉ dự kiến:
-`https://scilab-learning-simulator.pages.dev` (xác nhận sau khi deploy).
+Project Pages: `scilab-learning-simulator`. Đã deploy production ngày 19/11/2026:
+**https://scilab-learning-simulator.pages.dev**.
 
 ## Build
 
@@ -61,6 +61,31 @@ nếu sau này cần Cloudflare tự build từ Git.
 Ngày 19/11/2026, tài khoản Google Cloud đang mở báo không có quyền xem/sửa project
 `617306138360`, nơi sở hữu Google client hiện tại. Nếu origin chưa được thêm,
 chủ project Google cần thực hiện bước này trước khi đăng nhập Google trên Pages.
+
+## Kết quả deploy ngày 19/11/2026
+
+Cloudflare báo `Success!` sau khi nhận đủ 441/441 tài nguyên và xuất bản project.
+Deployment production: `02ecbb1d-1ceb-4abf-9920-2f263c5a1f58`; URL bất biến:
+`https://02ecbb1d.scilab-learning-simulator.pages.dev`.
+Archive đã upload có SHA-256
+`d530f8e9654b7131113e6ad329f8ad68861fd142b7638717ae1e7b45f98410b5`;
+kích thước 22.431.582 byte. Chỉ gồm output build, không chứa `.env`, database
+backup hoặc sourcemap.
+
+Các kiểm tra đã hoàn tất:
+
+- `/`, `/user/login`, `/hoc-sinh/workspace` và một route động lớp học trả HTTP 200,
+  `text/html`, được phục vụ bởi Cloudflare.
+- SHA-256 của JavaScript bundle tải từ Pages khớp với bundle local đã build;
+  bundle dùng API Render đúng cấu hình, không chứa connection string PostgreSQL.
+- API health và CORS cho origin Pages hoạt động; API templates trả đủ 19 mục.
+- Đăng nhập email bằng tài khoản giáo viên demo thành công từ giao diện Pages,
+  chuyển tới `/dashboard`.
+- Giao diện mô phỏng ném xiên và phản ứng Fe với CuSO₄ hiển thị trên Pages.
+
+Google login trên origin mới chưa được xác minh hoàn tất; quyền chỉnh Google
+project vẫn là giới hạn được ghi ở trên. Backend và database tiếp tục chạy trên
+Render + Supabase. Đây là deployment Direct Upload, chưa có auto-deploy GitHub.
 
 ## Nguồn
 
