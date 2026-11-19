@@ -96,14 +96,42 @@ Giới hạn: hiện không có chunk nào mang embedding, vì vậy kiểm tra 
 xác nhận nhánh keyword, chưa xác nhận retrieval vector. Không chạy tạo embedding
 hoặc gọi LLM chỉ để kiểm tra việc đổi database.
 
-Dashboard Render tại thời điểm kiểm tra báo API `scilab-demo-api-bl06` đang
-**Suspended by you**, commit deploy gần nhất là `19a7705`; danh sách biến môi
-trường chưa có `DATABASE_URL` và các thiết lập Supabase mới. Vì vậy kết quả cục bộ
-không phải bằng chứng website công khai đã chuyển sang Supabase. Kết nối nguồn
-Render từ máy kiểm tra cũng chưa thành công, nên chưa đối chiếu lại được toàn bộ
-dữ liệu nguồn ở thời điểm cuối hoặc xác nhận đồng bộ các thay đổi sau snapshot.
-Phần cutover website cần hoàn tất bước đối chiếu này, deploy mã có hỗ trợ URL,
-cập nhật biến môi trường và smoke test trước khi mở lại ghi.
+### Cutover bản demo online
+
+Theo xác nhận của chủ dự án, API Render `scilab-demo-api-bl06` đã được bật lại,
+cấu hình kết nối Supabase và deploy mã có hỗ trợ `DATABASE_URL`. Các biến
+JWT/Google/LLM và địa chỉ API công khai được giữ nguyên.
+
+Trước khi mở lại API, đã thực hiện:
+
+- Đổi tạm đúng một rule IP `/32` của nguồn Render theo xác nhận của chủ dự án,
+  lấy bản backup đầy đủ bằng pg_dump 17 và kiểm tra archive bằng pg_restore.
+  Backup riêng ngoài repo có 25 mục TABLE DATA, kích thước 1.561.722 byte.
+- Đối chiếu nội dung từng bản ghi bằng SHA-256 trên JSON chuẩn hóa: mọi bản ghi
+  nguồn trong cả 25 bảng được bảo toàn tại đích. 23 bảng khớp hoàn toàn;
+  `ai_usage_logs` và `daily_active_users` chỉ có thêm bản ghi do kiểm tra ở đích.
+  Không cần ghi đè hoặc đồng bộ bổ sung dữ liệu nguồn.
+- Khôi phục rule IP cũ ngay sau khi lấy backup và đối chiếu; giữ database nguồn
+  Render để có thể phục hồi khi cần.
+- Thay mật khẩu role ứng dụng sau khi màn hình import biến của Render hiện
+  chuỗi kết nối trong kết quả kiểm tra. Cấu hình cục bộ và Render sử dụng mật khẩu
+  mới; không đưa connection string vào mã nguồn hoặc tài liệu.
+
+Kiểm chứng online sau deploy:
+
+- Log Render báo ứng dụng đã chạy và `Migrated database: startup dataset seed
+  disabled.`; dịch vụ đã live.
+- 7 request API thành công: health, danh sách simulation templates, keyword RAG,
+  danh sách phiên chat và tạo/đọc/xóa riêng một phiên kiểm tra.
+- Phiên chat được tạo qua API công khai đã xuất hiện trong Supabase khi truy vấn
+  bằng kết nối ứng dụng, rồi biến mất sau DELETE qua API. Đây là kiểm tra database
+  thực sự được bản online sử dụng, ngoài kiểm tra HTTP health.
+- Frontend `https://scilab-demo-web-bl06.onrender.com` trả HTTP 200; API giữ nguyên
+  tại `https://scilab-demo-api-bl06.onrender.com`.
+
+Thay đổi mã nguồn nằm trên `feature/ASS-040-render-demo`, PR #2 vào `dev`, chưa
+merge vào `dev` hoặc `main`. Hai CI checks build backend/frontend đã pass cho mã
+cấu hình Supabase. Việc xác minh này không bao gồm thử tải hoặc Google OAuth.
 
 ## Nguồn
 
