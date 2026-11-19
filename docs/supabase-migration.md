@@ -66,6 +66,45 @@ cutover lỗi, đưa kết nối về Render trước khi mở ghi trở lại. 
 Supabase, cần bảo toàn phần ghi mới trước rollback, không chỉ đổi URL ngược lại.
 Không xóa database cũ như một bước tự động sau deploy.
 
+## Kiểm chứng thực tế ngày 19/11/2026
+
+Backend cục bộ (`src/backend/.env`, không commit) đã chuyển sang session pooler
+của project hiện có `scilab-learning-simulator`, dùng role ứng dụng `scilab_app`
+và schema `scilab`. Cấu hình PostgreSQL cũ được sao lưu riêng ngoài repository;
+các biến auth/Google/LLM được giữ nguyên. Mẫu không chứa bí mật để tái sử dụng:
+[`../src/backend/.env.supabase.example`](../src/backend/.env.supabase.example).
+
+Các kiểm tra sau đã thực hiện với database Supabase thật:
+
+| Kiểm tra | Kết quả |
+| --- | --- |
+| TLS từ Node tới pooler | Mã hóa và xác minh chứng chỉ thành công |
+| Quyền role ứng dụng | Đọc/ghi được dữ liệu; không có quyền CREATE trong schema ứng dụng |
+| Schema | `scilab`, 25 bảng ứng dụng |
+| Dữ liệu hiện có | 15 users; 4.634 theory chunks; 19 simulation templates; 128 learning items; 24 problem patterns |
+| pgvector | Extension 0.8.2; cột vector 1.024 chiều |
+| Build backend | Pass |
+| Jest | 6 suites, 25 tests pass |
+| API dùng Supabase | 5/5 HTTP 200: simulation templates, theory chunks, keyword RAG search, chat sessions, hồ sơ với JWT hợp lệ |
+| Ghi dữ liệu | INSERT + SELECT phiên chat trong transaction thành công; ROLLBACK được xác minh không để lại bản ghi |
+
+`DB_SYNCHRONIZE=false` và `DEMO_SEED_ON_START=false` trong cấu hình cục bộ đã được
+kiểm tra, nhằm dùng dữ liệu hiện có trên Supabase. Kiểm tra hồ sơ dùng JWT ngắn
+hạn ký bằng khóa cục bộ và tài khoản đã tồn tại; chưa kiểm tra lại Google OAuth.
+
+Giới hạn: hiện không có chunk nào mang embedding, vì vậy kiểm tra RAG nói trên
+xác nhận nhánh keyword, chưa xác nhận retrieval vector. Không chạy tạo embedding
+hoặc gọi LLM chỉ để kiểm tra việc đổi database.
+
+Dashboard Render tại thời điểm kiểm tra báo API `scilab-demo-api-bl06` đang
+**Suspended by you**, commit deploy gần nhất là `19a7705`; danh sách biến môi
+trường chưa có `DATABASE_URL` và các thiết lập Supabase mới. Vì vậy kết quả cục bộ
+không phải bằng chứng website công khai đã chuyển sang Supabase. Kết nối nguồn
+Render từ máy kiểm tra cũng chưa thành công, nên chưa đối chiếu lại được toàn bộ
+dữ liệu nguồn ở thời điểm cuối hoặc xác nhận đồng bộ các thay đổi sau snapshot.
+Phần cutover website cần hoàn tất bước đối chiếu này, deploy mã có hỗ trợ URL,
+cập nhật biến môi trường và smoke test trước khi mở lại ghi.
+
 ## Nguồn
 
 - https://supabase.com/docs/guides/database/connecting-to-postgres
