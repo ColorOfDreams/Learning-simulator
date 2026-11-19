@@ -58,9 +58,9 @@ nếu sau này cần Cloudflare tự build từ Git.
   vào Authorized JavaScript origins của web client đang dùng. Đây là bước cấu hình
   trong Google Cloud, tách biệt với cấu hình CORS backend.
 
-Ngày 19/11/2026, tài khoản Google Cloud đang mở báo không có quyền xem/sửa project
-`617306138360`, nơi sở hữu Google client hiện tại. Nếu origin chưa được thêm,
-chủ project Google cần thực hiện bước này trước khi đăng nhập Google trên Pages.
+Google client hiện tại thuộc project `ai-lab-16-longbl` (số `617306138360`), tên
+hiển thị `ai-lab-16-gcp`. Tài khoản `thanosid17@gmail.com` có quyền cấu hình client;
+`baolongid2006@gmail.com` không có quyền truy cập project này.
 
 ## Kết quả deploy ngày 19/11/2026
 
@@ -83,9 +83,27 @@ Các kiểm tra đã hoàn tất:
   chuyển tới `/dashboard`.
 - Giao diện mô phỏng ném xiên và phản ứng Fe với CuSO₄ hiển thị trên Pages.
 
-Google login trên origin mới chưa được xác minh hoàn tất; quyền chỉnh Google
-project vẫn là giới hạn được ghi ở trên. Backend và database tiếp tục chạy trên
-Render + Supabase. Đây là deployment Direct Upload, chưa có auto-deploy GitHub.
+Backend và database tiếp tục chạy trên Render + Supabase. Đây là deployment
+Direct Upload, chưa có auto-deploy GitHub.
+
+## Sửa Google login trên Cloudflare ngày 19/11/2026
+
+Đã tái hiện lỗi Google `origin_mismatch`; log trình duyệt ghi rõ
+`The given origin is not allowed for the given client ID.` Client `SciLab Render
+Web` khi đó chỉ cho phép origin Render.
+
+Theo yêu cầu và xác nhận của chủ dự án, đã dùng tài khoản Google Cloud
+`thanosid17@gmail.com` thêm `https://scilab-learning-simulator.pages.dev` vào
+Authorized JavaScript origins của client
+`617306138360-lp9o43cbnndkadavilvu2fgtg9e8p5a7.apps.googleusercontent.com`.
+Origin Render được giữ lại. Google Cloud báo lưu thành công và mở lại client
+hiển thị cả hai origin. Thay đổi nằm trong Google Cloud; không cần build hoặc
+deploy lại frontend/backend.
+
+Sau khi tải lại trang, Google hiển thị màn hình chọn tài khoản thay vì báo
+`origin_mismatch`. Chủ dự án hoàn tất chọn tài khoản và xác nhận đăng nhập thành
+công; kiểm tra lại tab ứng dụng thấy `/hoc-sinh` với tài khoản và danh sách bài
+học. Luồng Google login trên tên miền Pages đã được kiểm chứng thành công.
 
 ## Nguồn
 
