@@ -315,6 +315,11 @@ Danh sách đầy đủ: xem Swagger `/api` hoặc [specs/api-contracts.md](spec
 
 ## ☁️ Deploy (Railway)
 
+Bản frontend cũng hỗ trợ Cloudflare Pages: dùng Node.js 22, chạy
+`yarn build:cloudflare` tại `src/frontend` và upload nội dung `dist`. Backend vẫn
+gọi API Render kết nối Supabase. Cấu hình và cách phát hành:
+[docs/cloudflare-deployment.md](docs/cloudflare-deployment.md).
+
 - Production build bằng **[Dockerfile.railway](Dockerfile.railway)** (backend) và **[Dockerfile.frontend.railway](Dockerfile.frontend.railway)** (frontend) — **build context là gốc repo**.
 - Deploy được **trigger khi push nhánh `dev`** (không chỉ `main`).
 - PostgreSQL trên Railway đã cài sẵn extension `pgvector`.
