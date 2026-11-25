@@ -132,5 +132,7 @@ Google đã duyệt tên/logo ứng dụng hoặc cấp quyền cho scope nhạy
 Ảnh cảnh báo do chủ dự án cung cấp có client ID bắt đầu bằng `190353788377`,
 trong khi bundle và nút Google trên Pages hiện dùng client `617306138360...`.
 Không thay đổi client khác khi chưa xác định project sở hữu. Sau cập nhật,
-quan sát phiên trình duyệt đang ở `/hoc-sinh` với tài khoản đã đăng nhập; việc
-kiểm tra cảnh báo cho lần consent mới được xác nhận riêng với chủ dự án.
+quan sát phiên trình duyệt đang ở `/hoc-sinh` với tài khoản đã đăng nhập.
+Chủ dự án đã thử lại luồng đăng nhập Google và xác nhận cảnh báo không còn xuất
+hiện. Đây là xác nhận cho luồng đăng nhập SciLab trên Pages; không phải bằng
+chứng Google đã xác minh một OAuth client khác trong ảnh ban đầu.

@@ -46,13 +46,20 @@ hạn JWT hoặc khôi phục API key đã hết hạn/thu hồi/hết quota.
 
 - Backend đã deploy endpoint readiness; kiểm tra online trả HTTP 200, database
   `ok`, header `Cache-Control: no-store`.
-- Worker production version `9622705f-03c0-4a5c-bed2-3ea5da03fa04`, deploy lúc
-  14:59 UTC (21:59 giờ Việt Nam). Cloudflare đã gắn Cron Trigger mỗi 5 phút và
-  dashboard hiển thị `Every 5 minutes`.
+- Worker production version `4e36aae8-155d-4c0b-8bea-d74ef618a190`. Cloudflare đã
+  gắn Cron Trigger mỗi 5 phút và dashboard hiển thị `Every 5 minutes`.
 - `workers_dev=false`, không có HTTP route; không cần public URL cho Worker.
 - Backend build pass, 27 Jest tests pass; 3 tests Worker pass, bao gồm phản hồi
   loading HTML, JSON thiếu database readiness, HTTP/network lỗi và log không lộ
   response upstream. ESLint/Prettier pass cho các file readiness backend.
+- Đã thực thi scheduled handler bằng runtime workerd của Wrangler với API thật:
+  HTTP 200, `ok=true`, thời gian truy vấn khoảng 854 ms. Chế độ redirect dùng
+  `manual` vì Workers không hỗ trợ `redirect: error`; redirect được coi là lỗi
+  readiness, không tự theo sang đích khác.
+- Đã quan sát lượt Cron Trigger thực sự trên Cloudflare lúc 22:15:16 giờ Việt
+  Nam (15:15:16 UTC): outcome `Ok`, `ok=true`, HTTP 200, `elapsedMs=225`.
+  Log này xác nhận Worker chạy từ lịch trên cloud, không phải request thủ công
+  từ máy phát triển.
 
 ## Nguồn
 
