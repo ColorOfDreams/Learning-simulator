@@ -1,0 +1,45 @@
+.sim-readouts {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	z-index: 2;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px 18px;
+	width: min(240px, calc(100% - 28px));
+	margin: 0;
+	padding: 14px 16px;
+	border: 1px solid rgba(200, 220, 238, 0.16);
+	border-radius: 12px;
+	background: rgba(12, 26, 39, 0.92);
+	color: #f3f7fb;
+	font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+	pointer-events: none;
+
+	dt {
+		margin-bottom: 4px;
+		color: #b8c8d7;
+		font-size: 12px;
+		font-weight: 400;
+		line-height: 1.4;
+	}
+
+	dd {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 5px;
+		margin: 0;
+		font-size: 17px;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		line-height: 1.4;
+		overflow-wrap: anywhere;
+	}
+
+	&__unit {
+		color: #b8c8d7;
+		font-size: 11px;
+		font-weight: 400;
+	}
+}

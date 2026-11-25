@@ -41,6 +41,21 @@ Ngoài phạm vi hiện tại: evaluation/benchmark tự động, `/ai/explain` 
 
 ## 2. Kiến trúc runtime
 
+### Bộ điều phối khóa LLM cho demo (18/11/2026)
+
+`LlmService` nhận khóa hiện hành từ `LLM_API_KEY` và các khóa bổ sung từ
+`LLM_API_KEYS` (mảng JSON, chỉ cấu hình ở backend). Khóa được loại trùng và phân
+phối theo số lượt đang xử lý, luân phiên khi bằng nhau. Không gửi khóa ra frontend.
+
+Giới hạn mặc định mỗi tiến trình: `LLM_MAX_CONCURRENT=8`,
+`LLM_KEY_MAX_CONCURRENT=2`, `LLM_MAX_QUEUE=32`, `LLM_QUEUE_TIMEOUT_MS=3000`,
+`LLM_MAX_REQUESTS_PER_MINUTE=30`. Thời hạn gọi bao gồm thời gian chờ admission.
+401/403 loại khóa khỏi pool đến khi restart; tối đa một lần đổi khóa trong cùng
+thời hạn. 429 làm toàn pool nghỉ theo Retry-After; không đổi khóa để vượt quota
+chung. Lỗi mạng/5xx/timeout không tự gửi lại generation. Chưa có Redis dùng chung:
+phải thêm điều phối phân tán trước khi chạy nhiều API replica với giới hạn tổng.
+Chi tiết quyết định: `adrs/0006-llm-key-pool.md`.
+
 ```text
 Frontend
   → POST /ai/analyze hoặc POST /ai/chat

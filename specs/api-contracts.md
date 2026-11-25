@@ -145,6 +145,11 @@
 
 ## Khác
 
+- **Readiness:** `GET /health/ready` (public, không cần JWT). Thực hiện `SELECT 1`
+  qua kết nối TypeORM hiện tại; trả `200` với `data: { status: "ok", database:
+  "ok" }` trong envelope khi truy vấn thành công. Khi DB không sẵn sàng, trả
+  `503` với thông báo chung, không lộ lỗi DB/credentials. Header
+  `Cache-Control: no-store`. Không ghi dữ liệu, seed hoặc gọi dịch vụ AI/Google.
 - **Thông báo:** `GET /notification/me/page`, `POST /notification/read`.
 - **Danh mục:** `/subjects`, `/topics`, `/difficulties`, `/question-types`, `/grades` (CRUD chuẩn).
 

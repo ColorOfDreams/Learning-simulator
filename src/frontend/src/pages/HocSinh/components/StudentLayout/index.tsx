@@ -1,13 +1,14 @@
+import NoticeIconView from '@/components/RightContent/NoticeIcon';
 import { useAuthActions } from '@/hooks/useAuthActions';
 import { calcLevel } from '@/utils/xp';
 import React, { useEffect, useState } from 'react';
 import { history, useLocation, useModel } from 'umi';
 import './index.less';
-import NoticeIconView from '@/components/RightContent/NoticeIcon';
 
 interface StudentLayoutProps {
 	children: React.ReactNode;
 	hideSidebar?: boolean;
+	className?: string;
 }
 
 interface NavItem {
@@ -119,7 +120,7 @@ const NAV_ITEMS: NavItem[] = [
 	},
 ];
 
-const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) => {
+const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar, className }) => {
 	const location = useLocation();
 	const { initialState } = useModel('@@initialState');
 	const user = initialState?.currentUser;
@@ -185,7 +186,7 @@ const StudentLayout: React.FC<StudentLayoutProps> = ({ children, hideSidebar }) 
 	};
 
 	return (
-		<div className='stu-root' data-theme={theme}>
+		<div className={`stu-root ${className || ''}`} data-theme={theme}>
 			{/* Google Fonts */}
 			<link rel='preconnect' href='https://fonts.googleapis.com' />
 			<link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='' />
