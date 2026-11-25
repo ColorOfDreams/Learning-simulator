@@ -1,0 +1,12 @@
+{
+  "name": "scilab-readiness-monitor",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-25",
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "vars": {
+    "TARGET_URL": "https://scilab-demo-api-bl06.onrender.com/health/ready",
+  },
+}

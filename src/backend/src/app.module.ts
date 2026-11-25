@@ -22,6 +22,7 @@ import { DifficultysModule } from './modules/difficulties/difficulties.module';
 import { ActivityModule } from './modules/activity/activity.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { databaseOptions } from './core/database-options';
+import { HealthController } from './core/health.controller';
 
 @Module({
   imports: [
@@ -52,7 +53,7 @@ import { databaseOptions } from './core/database-options';
     ActivityModule,
     AdminModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthController],
   providers: [AppService],
 })
 export class AppModule { }
