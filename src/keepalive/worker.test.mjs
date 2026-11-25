@@ -9,7 +9,7 @@ test("accepts readiness JSON and bypasses cached responses", async () => {
     assert.equal(target, url);
     assert.equal(options.method, "GET");
     assert.equal(options.cache, "no-store");
-    assert.equal(options.redirect, "error");
+    assert.equal(options.redirect, "manual");
     assert.ok(options.signal instanceof AbortSignal);
     return Response.json({ data: { status: "ok", database: "ok" } });
   });
@@ -22,6 +22,11 @@ test("rejects loading HTML, unhealthy JSON, HTTP failures and network errors", a
     () => new Response("<html>Starting service</html>"),
     () => Response.json({ data: { status: "ok" } }),
     () => Response.json({ data: { status: "ok", database: "unavailable" } }),
+    () =>
+      Response.json(
+        { data: { status: "ok", database: "ok" } },
+        { status: 302 },
+      ),
     () => new Response("private upstream details", { status: 503 }),
     () => {
       throw new Error("private connection details");

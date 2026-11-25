@@ -5,7 +5,7 @@ export async function checkReadiness(targetUrl, request = fetch) {
       method: "GET",
       headers: { Accept: "application/json", "Cache-Control": "no-cache" },
       cache: "no-store",
-      redirect: "error",
+      redirect: "manual",
       signal: AbortSignal.timeout(90000),
     });
     let ready = false;
