@@ -110,3 +110,27 @@ học. Luồng Google login trên tên miền Pages đã được kiểm chứng
 - https://developers.cloudflare.com/pages/get-started/direct-upload/
 - https://developers.cloudflare.com/pages/configuration/serving-pages/
 - https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid
+
+## Readiness và Google Production ngày 25/11/2026
+
+Worker `scilab-readiness-monitor` chạy trên Cloudflare mỗi 5 phút, gọi API Render
+và kiểm tra kết nối Supabase. Cấu hình, cách xem log và giới hạn gói Free nằm tại
+[readiness-monitor.md](readiness-monitor.md).
+
+Đã thêm trang quyền riêng tư công khai tại
+`https://scilab-learning-simulator.pages.dev/privacy.html`, liên kết từ trang
+đăng nhập. Bản Pages mới: `https://1c6f874f.scilab-learning-simulator.pages.dev`.
+Thông tin trên trang phản ánh luồng Google profile/email, hoạt động học tập, lưu
+trữ hội thoại và nhà cung cấp hạ tầng/AI đang cấu hình.
+
+Google project `ai-lab-16-longbl` được bổ sung trang chủ và URL chính sách quyền
+riêng tư trong Branding; trạng thái Audience đã chuyển từ Testing sang Production.
+Project hiện không khai báo scope nhạy cảm/restricted; luồng đăng nhập SciLab chỉ
+xin email/profile và ID token. Đổi trạng thái Production không phải bằng chứng
+Google đã duyệt tên/logo ứng dụng hoặc cấp quyền cho scope nhạy cảm.
+
+Ảnh cảnh báo do chủ dự án cung cấp có client ID bắt đầu bằng `190353788377`,
+trong khi bundle và nút Google trên Pages hiện dùng client `617306138360...`.
+Không thay đổi client khác khi chưa xác định project sở hữu. Sau cập nhật,
+quan sát phiên trình duyệt đang ở `/hoc-sinh` với tài khoản đã đăng nhập; việc
+kiểm tra cảnh báo cho lần consent mới được xác nhận riêng với chủ dự án.
