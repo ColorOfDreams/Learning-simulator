@@ -356,7 +356,7 @@ const Login: React.FC = () => {
 
 						<div className={styles.note}>
 							Bằng cách đăng nhập, bạn đồng ý với <a href='#'>Điều khoản sử dụng</a> và{' '}
-							<a href='#'>Chính sách bảo mật</a> của chúng tôi.
+							<a href='/privacy.html'>Chính sách bảo mật</a> của chúng tôi.
 						</div>
 					</div>
 				</div>
